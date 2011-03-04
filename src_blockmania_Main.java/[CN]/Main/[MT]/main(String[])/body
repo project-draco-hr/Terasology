@@ -1,11 +1,13 @@
 {
   Main main=null;
-  java.awt.EventQueue.invokeLater(new Runnable(){
-    @Override public void run(){
-      new DebugWindow().setVisible(true);
+  if (Configuration.displayDebug) {
+    java.awt.EventQueue.invokeLater(new Runnable(){
+      @Override public void run(){
+        new DebugWindow().setVisible(true);
+      }
     }
-  }
 );
+  }
   try {
     main=new Main();
     main.create();
