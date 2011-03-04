@@ -1,0 +1,23 @@
+{
+  Main main=null;
+  java.awt.EventQueue.invokeLater(new Runnable(){
+    @Override public void run(){
+      new DebugWindow().setVisible(true);
+    }
+  }
+);
+  try {
+    main=new Main();
+    main.create();
+    main.run();
+  }
+ catch (  Exception ex) {
+    LOGGER.log(Level.SEVERE,ex.toString(),ex);
+  }
+ finally {
+    if (main != null) {
+      main.destroy();
+    }
+  }
+  System.exit(0);
+}

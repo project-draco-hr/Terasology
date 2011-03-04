@@ -1,0 +1,22 @@
+{
+  long timeStart=System.currentTimeMillis();
+  for (int x=0; x < worldDimensions.x; x++) {
+    for (int z=0; z < worldDimensions.z; z++) {
+      float height=pGen.getTerrainHeightAt(x / 2,z / 2);
+      if (height < 0) {
+        height=0;
+      }
+      float y=height * 512 + 64;
+      if (y > 126) {
+        y=126;
+      }
+      blocks.add(new Vector4f(x,y,z,1.0f));
+      y--;
+      while (y >= 0) {
+        blocks.add(new Vector4f(x,y,z,2.0f));
+        y--;
+      }
+    }
+  }
+  System.out.println("World generated (" + (System.currentTimeMillis() - timeStart) / 1000d + "s).");
+}

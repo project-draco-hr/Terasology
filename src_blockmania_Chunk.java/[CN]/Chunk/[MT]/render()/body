@@ -1,0 +1,38 @@
+{
+  if (displayListID >= 0) {
+    glPushMatrix();
+    glTranslatef(position.x * (int)chunkDimensions.x,position.y * (int)chunkDimensions.y,position.z * (int)chunkDimensions.z);
+    glCallList(displayListID);
+    if (Configuration.displayDebug) {
+      glColor3f(255.0f,0.0f,0.0f);
+      glBegin(GL_LINE_LOOP);
+      glVertex3f(0.0f,0.0f,0.0f);
+      glVertex3f(chunkDimensions.x,0.0f,0.0f);
+      glVertex3f(chunkDimensions.x,chunkDimensions.y,0.0f);
+      glVertex3f(0.0f,chunkDimensions.y,0.0f);
+      glEnd();
+      glBegin(GL_LINE_LOOP);
+      glVertex3f(0.0f,0.0f,0.0f);
+      glVertex3f(0.0f,0.0f,chunkDimensions.z);
+      glVertex3f(0.0f,chunkDimensions.y,chunkDimensions.z);
+      glVertex3f(0.0f,chunkDimensions.y,0.0f);
+      glVertex3f(0.0f,0.0f,0.0f);
+      glEnd();
+      glBegin(GL_LINE_LOOP);
+      glVertex3f(0.0f,0.0f,chunkDimensions.z);
+      glVertex3f(chunkDimensions.x,0.0f,chunkDimensions.z);
+      glVertex3f(chunkDimensions.x,chunkDimensions.y,chunkDimensions.z);
+      glVertex3f(0.0f,chunkDimensions.y,chunkDimensions.z);
+      glVertex3f(0.0f,0.0f,chunkDimensions.z);
+      glEnd();
+      glBegin(GL_LINE_LOOP);
+      glVertex3f(chunkDimensions.x,0.0f,0.0f);
+      glVertex3f(chunkDimensions.x,0.0f,chunkDimensions.z);
+      glVertex3f(chunkDimensions.x,chunkDimensions.y,chunkDimensions.z);
+      glVertex3f(chunkDimensions.x,chunkDimensions.y,0.0f);
+      glVertex3f(chunkDimensions.x,0.0f,0.0f);
+      glEnd();
+    }
+    glPopMatrix();
+  }
+}

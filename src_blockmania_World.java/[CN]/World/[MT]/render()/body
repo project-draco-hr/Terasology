@@ -1,0 +1,16 @@
+{
+  for (int x=0; x < (int)Configuration.viewingDistanceInChunks.x; x++) {
+    for (int y=0; y < 2; y++) {
+      for (int z=0; z < (int)Configuration.viewingDistanceInChunks.y; z++) {
+        if (chunks[x][y][z] != null) {
+          chunks[x][y][z].render();
+          if (System.currentTimeMillis() - timeSinceLastChunkUpdate > 25) {
+            if (chunks[x][y][z].updateDisplayList()) {
+              timeSinceLastChunkUpdate=System.currentTimeMillis();
+            }
+          }
+        }
+      }
+    }
+  }
+}
