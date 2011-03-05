@@ -1,5 +1,5 @@
 {
-  if (displayListDebugID == -1) {
+  if (dirty) {
     displayListDebugID=glGenLists(1);
     glNewList(displayListDebugID,GL_COMPILE);
     glColor3f(255.0f,0.0f,0.0f);
@@ -32,7 +32,7 @@
     glEnd();
     glEndList();
   }
-  if (displayListID == -1) {
+  if (dirty) {
     displayListID=glGenLists(1);
     textureMap.bind();
     glNewList(displayListID,GL_COMPILE);
@@ -42,49 +42,22 @@
         for (int z=0; z < chunkDimensions.z; z++) {
           if (blocks[x][y][z] > 0) {
             boolean drawFront=true, drawBack=true, drawLeft=true, drawRight=true, drawTop=true, drawBottom=true;
-            if (z - 1 >= 0) {
-              if (blocks[x][y][z - 1] != 0) {
-                drawFront=false;
-              }
-            }
- else {
+            if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z - 1)))) != 0) {
               drawFront=false;
             }
-            if (z + 1 < chunkDimensions.z) {
-              if (blocks[x][y][z + 1] != 0) {
-                drawBack=false;
-              }
-            }
- else {
+            if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z + 1)))) != 0) {
               drawBack=false;
             }
-            if (x - 1 >= 0) {
-              if (blocks[x - 1][y][z] != 0) {
-                drawLeft=false;
-              }
-            }
- else {
+            if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z)))) != 0) {
               drawLeft=false;
             }
-            if (x + 1 < chunkDimensions.x) {
-              if (blocks[x + 1][y][z] != 0) {
-                drawRight=false;
-              }
-            }
- else {
+            if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z)))) != 0) {
               drawRight=false;
             }
-            if (y + 1 < chunkDimensions.y) {
-              if (blocks[x][y + 1][z] != 0) {
-                drawTop=false;
-              }
+            if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y + 1,z)))) != 0) {
+              drawTop=false;
             }
-            if (y - 1 >= 0) {
-              if (blocks[x][y - 1][z] != 0) {
-                drawBottom=false;
-              }
-            }
- else {
+            if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y - 1,z)))) != 0) {
               drawBottom=false;
             }
             glColor3f(1.0f,1.0f,1.0f);
@@ -186,26 +159,30 @@
             }
             glColor3f(1.0f - shadowIntens,1.0f - shadowIntens,1.0f - shadowIntens);
             if (drawTop) {
+              float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.TOP).x;
+              float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.TOP).y;
               quadCounter++;
-              glTexCoord2f(0.0f,0.0f);
+              glTexCoord2f(texOffsetX,texOffsetY);
               glVertex3f(-0.5f + x,0.5f + y,0.5f + z);
-              glTexCoord2f(0.0625f,0.0f);
+              glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
               glVertex3f(0.5f + x,0.5f + y,0.5f + z);
-              glTexCoord2f(0.0625f,0.0625f);
+              glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
               glVertex3f(0.5f + x,0.5f + y,-0.5f + z);
-              glTexCoord2f(0.0f,0.0625f);
+              glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
               glVertex3f(-0.5f + x,0.5f + y,-0.5f + z);
             }
             glColor3f(1.0f,1.0f,1.0f);
             if (drawBottom) {
+              float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.BOTTOM).x;
+              float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.BOTTOM).y;
               quadCounter++;
-              glTexCoord2f(0.0f,0.0625f);
+              glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
               glVertex3f(-0.5f + x,-0.5f + y,-0.5f + z);
-              glTexCoord2f(0.0625f,0.0625f);
+              glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
               glVertex3f(0.5f + x,-0.5f + y,-0.5f + z);
-              glTexCoord2f(0.0625f,0.0f);
+              glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
               glVertex3f(0.5f + x,-0.5f + y,0.5f + z);
-              glTexCoord2f(0.0f,0.0f);
+              glTexCoord2f(texOffsetX,texOffsetY);
               glVertex3f(-0.5f + x,-0.5f + y,0.5f + z);
             }
           }
@@ -214,6 +191,7 @@
     }
     glEnd();
     glEndList();
+    dirty=false;
     return true;
   }
   return false;

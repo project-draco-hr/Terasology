@@ -10,19 +10,11 @@
       if (y > 64) {
         y=64;
       }
-      int chunkX=(int)Math.floor(x / (int)Chunk.chunkDimensions.x);
-      int chunkY=(int)Math.floor(y / (int)Chunk.chunkDimensions.y);
-      int chunkZ=(int)Math.floor(z / (int)Chunk.chunkDimensions.z);
-      if (chunks[chunkX][chunkY][chunkZ] == null) {
-        System.out.println("Generating chunk at X: " + chunkX + ", Y: "+ chunkY+ ", Z: "+ chunkZ);
-        chunks[chunkX][chunkY][chunkZ]=new Chunk(new Vector3f(chunkX,chunkY,chunkZ));
-      }
-      Vector3f blockCoord=new Vector3f(x - (chunkX * Chunk.chunkDimensions.x),y - (chunkY * Chunk.chunkDimensions.y),z - (chunkZ * Chunk.chunkDimensions.z));
-      chunks[chunkX][chunkY][chunkZ].setBlock((int)blockCoord.x,(int)blockCoord.y,(int)blockCoord.z,0x1);
-      blockCoord.y--;
-      while (blockCoord.y >= 0) {
-        chunks[chunkX][chunkY][chunkZ].setBlock((int)blockCoord.x,(int)blockCoord.y,(int)blockCoord.z,0x2);
-        blockCoord.y--;
+      setBlock(new Vector3f(x,y,z),0x1);
+      y--;
+      while (y > 0) {
+        setBlock(new Vector3f(x,y,z),0x2);
+        y--;
       }
     }
   }
