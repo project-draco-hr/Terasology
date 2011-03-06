@@ -4,21 +4,9 @@
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_TEXTURE_2D);
-  glEnable(GL_FOG);
   glDisable(GL_LIGHTING);
   glDisable(GL_COLOR_MATERIAL);
-  glFogi(GL_FOG_MODE,GL_LINEAR);
-  glFogf(GL_FOG_DENSITY,1.0f);
-  glHint(GL_FOG_HINT,GL_DONT_CARE);
-  glFogf(GL_FOG_START,512.0f);
-  glFogf(GL_FOG_END,1024.0f);
-  try {
-    Class.forName("blockmania.Chunk");
-  }
- catch (  ClassNotFoundException ex) {
-    Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
-  }
   world=new World();
-  mainChar=new Player(world);
-  helper=new Helper();
+  player=new Player(world);
+  Chunk.init();
 }

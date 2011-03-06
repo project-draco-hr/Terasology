@@ -1,0 +1,13 @@
+{
+  yaw(Mouse.getDX());
+  pitch(-1 * Mouse.getDY());
+  getPosition().y+=acc.y + (gravity * Helper.getInstance().calcInterpolation());
+  if (!parent.isHitting(new Vector3f(getPosition().x,getPosition().y - 4.0f,getPosition().z))) {
+    if (gravity > -1.0f) {
+      gravity-=0.1f;
+    }
+  }
+ else {
+    gravity=0.0f;
+  }
+}

@@ -1,3 +1,7 @@
 {
-  fps=frameCounter / ((getTime() - timeLastUpdate) / 1000);
+  double secondsSinceLastUpdate=((getTime() - timeLastUpdate) / 1000d);
+  if (secondsSinceLastUpdate > 0d) {
+    return frameCounter / secondsSinceLastUpdate;
+  }
+  return 0d;
 }
