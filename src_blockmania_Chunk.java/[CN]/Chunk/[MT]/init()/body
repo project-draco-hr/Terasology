@@ -1,6 +1,9 @@
 {
   try {
     textureMap=TextureLoader.getTexture("PNG",new FileInputStream(Chunk.class.getResource("Terrain.png").getPath()),GL_NEAREST);
+    textureMap.bind();
+    GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
+    GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
   }
  catch (  IOException ex) {
     Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE,null,ex);

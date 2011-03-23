@@ -1,0 +1,15 @@
+{
+  initGL();
+  getDelta();
+  lastFPS=getTime();
+  while (!Display.isCloseRequested()) {
+    int delta=getDelta();
+    processKeyboard();
+    processMouse();
+    update(delta);
+    render();
+    Display.update();
+    Display.sync(60);
+  }
+  Display.destroy();
+}
