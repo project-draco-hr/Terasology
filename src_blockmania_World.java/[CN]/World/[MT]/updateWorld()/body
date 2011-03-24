@@ -2,8 +2,8 @@
   long timeStart=System.currentTimeMillis();
   for (int x=0; x < worldDimensions.x; x++) {
     for (int z=0; z < worldDimensions.z; z++) {
-      for (int y=0; y < 32; y++) {
-        if (pGen.getCaveDensityAt(x,y,z) < 0.25) {
+      for (int y=0; y < 128; y++) {
+        if (pGen.getCaveDensityAt(x,y,z) < 0.1) {
           setBlock(new Vector3f(x,y,z),0x3);
         }
       }
@@ -11,7 +11,8 @@
   }
   for (int x=0; x < worldDimensions.x; x++) {
     for (int z=0; z < worldDimensions.z; z++) {
-      float height=Math.abs(pGen.getTerrainHeightAt(x / 2.0f,z / 2.0f) * 256.0f + 64.0f);
+      float h1=Math.abs(pGen.getTerrainHeightAt(x / 1.0f,z / 1.0f) * 256.0f + 128.0f);
+      float height=h1;
       float y=height;
       while (y > 0) {
         if (pGen.getCaveDensityAt(x,y,z) < 0.5) {

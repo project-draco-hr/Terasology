@@ -1,51 +1,59 @@
 {
-  float result=0.0f;
+  float result=1.0f;
   if (side == SIDE.TOP) {
-    for (int i=y + 1; i < chunkDimensions.y; i++) {
+  }
+ else   if (side == SIDE.LEFT) {
+    x-=1;
+  }
+ else   if (side == SIDE.RIGHT) {
+    x+=1;
+  }
+ else   if (side == SIDE.BOTTOM) {
+    return 0.25f;
+  }
+ else   if (side == SIDE.FRONT) {
+    z-=1;
+  }
+ else   if (side == SIDE.BACK) {
+    z+=1;
+  }
+  for (int i=y + 1; i < chunkDimensions.y; i++) {
+    try {
       if (blocks[x][i][z] > 0) {
-        result=0.25f;
+        result=0.5f;
         break;
-      }
-    }
-    try {
-      if (blocks[x + 1][y + 1][z] > 0) {
-        result+=0.15;
-      }
-    }
- catch (    Exception e) {
-    }
-    try {
-      if (blocks[x - 1][y + 1][z] > 0) {
-        result+=0.15;
-      }
-    }
- catch (    Exception e) {
-    }
-    try {
-      if (blocks[x][y + 1][z + 1] > 0) {
-        result+=0.15;
-      }
-    }
- catch (    Exception e) {
-    }
-    try {
-      if (blocks[x][y + 1][z - 1] > 0) {
-        result+=0.15;
       }
     }
  catch (    Exception e) {
     }
   }
-  if (side == SIDE.FRONT || side == SIDE.LEFT || side == SIDE.RIGHT || side == SIDE.BACK) {
-    for (int i=y + 1; i < chunkDimensions.y; i++) {
-      if (blocks[x][i][z] > 0) {
-        result=0.25f;
-        break;
-      }
+  try {
+    if (blocks[x + 1][y + 1][z] > 0) {
+      result-=0.15f;
     }
   }
-  if (side == SIDE.BOTTOM) {
-    result=0.25f;
+ catch (  Exception e) {
+  }
+  try {
+    if (blocks[x - 1][y + 1][z] > 0) {
+      result-=0.15f;
+    }
+  }
+ catch (  Exception e) {
+  }
+  try {
+    if (blocks[x][y + 1][z + 1] > 0) {
+      result-=0.15f;
+    }
+  }
+ catch (  Exception e) {
+  }
+  try {
+    if (blocks[x][y + 1][z - 1] > 0) {
+      result-=0.15f;
+    }
+  }
+ catch (  Exception e) {
   }
   return result;
 }
