@@ -2,20 +2,29 @@
   long timeStart=System.currentTimeMillis();
   for (int x=0; x < worldDimensions.x; x++) {
     for (int z=0; z < worldDimensions.z; z++) {
-      float height=pGen.getTerrainHeightAt(x / 4.0f,z / 4.0f);
-      if (height < 0) {
-        height=0;
+      for (int y=0; y < 32; y++) {
+        if (pGen.getCaveDensityAt(x,y,z) < 0.25) {
+          setBlock(new Vector3f(x,y,z),0x3);
+        }
       }
-      float y=height * 256 + 32.0f;
-      if (y > 64) {
-        y=64;
-      }
-      setBlock(new Vector3f(x,y,z),0x1);
-      y--;
+    }
+  }
+  for (int x=0; x < worldDimensions.x; x++) {
+    for (int z=0; z < worldDimensions.z; z++) {
+      float height=Math.abs(pGen.getTerrainHeightAt(x / 2.0f,z / 2.0f) * 256.0f + 64.0f);
+      float y=height;
       while (y > 0) {
-        setBlock(new Vector3f(x,y,z),0x2);
+        if (pGen.getCaveDensityAt(x,y,z) < 0.5) {
+          if (height == y) {
+            setBlock(new Vector3f(x,y,z),0x1);
+          }
+ else {
+            setBlock(new Vector3f(x,y,z),0x2);
+          }
+        }
         y--;
       }
     }
   }
+  System.out.println("World updated (" + (System.currentTimeMillis() - timeStart) / 1000d + "s).");
 }

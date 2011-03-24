@@ -1,0 +1,51 @@
+{
+  float result=0.0f;
+  if (side == SIDE.TOP) {
+    for (int i=y + 1; i < chunkDimensions.y; i++) {
+      if (blocks[x][i][z] > 0) {
+        result=0.25f;
+        break;
+      }
+    }
+    try {
+      if (blocks[x + 1][y + 1][z] > 0) {
+        result+=0.15;
+      }
+    }
+ catch (    Exception e) {
+    }
+    try {
+      if (blocks[x - 1][y + 1][z] > 0) {
+        result+=0.15;
+      }
+    }
+ catch (    Exception e) {
+    }
+    try {
+      if (blocks[x][y + 1][z + 1] > 0) {
+        result+=0.15;
+      }
+    }
+ catch (    Exception e) {
+    }
+    try {
+      if (blocks[x][y + 1][z - 1] > 0) {
+        result+=0.15;
+      }
+    }
+ catch (    Exception e) {
+    }
+  }
+  if (side == SIDE.FRONT || side == SIDE.LEFT || side == SIDE.RIGHT || side == SIDE.BACK) {
+    for (int i=y + 1; i < chunkDimensions.y; i++) {
+      if (blocks[x][i][z] > 0) {
+        result=0.25f;
+        break;
+      }
+    }
+  }
+  if (side == SIDE.BOTTOM) {
+    result=0.25f;
+  }
+  return result;
+}

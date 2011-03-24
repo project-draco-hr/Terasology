@@ -1,4 +1,10 @@
 {
   chunks=new Chunk[(int)Configuration.viewingDistanceInChunks.x][(int)Configuration.viewingDistanceInChunks.y][(int)Configuration.viewingDistanceInChunks.z];
-  updateWorld();
+  Thread t=new Thread(new Runnable(){
+    @Override public void run(){
+      updateWorld();
+    }
+  }
+);
+  t.start();
 }
