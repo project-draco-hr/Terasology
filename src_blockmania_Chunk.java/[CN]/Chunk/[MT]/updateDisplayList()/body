@@ -1,39 +1,8 @@
 {
   if (dirty) {
-    displayListDebugID=glGenLists(1);
-    glNewList(displayListDebugID,GL_COMPILE);
-    glColor3f(255.0f,0.0f,0.0f);
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(0.0f,0.0f,0.0f);
-    glVertex3f(chunkDimensions.x,0.0f,0.0f);
-    glVertex3f(chunkDimensions.x,chunkDimensions.y,0.0f);
-    glVertex3f(0.0f,chunkDimensions.y,0.0f);
-    glEnd();
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(0.0f,0.0f,0.0f);
-    glVertex3f(0.0f,0.0f,chunkDimensions.z);
-    glVertex3f(0.0f,chunkDimensions.y,chunkDimensions.z);
-    glVertex3f(0.0f,chunkDimensions.y,0.0f);
-    glVertex3f(0.0f,0.0f,0.0f);
-    glEnd();
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(0.0f,0.0f,chunkDimensions.z);
-    glVertex3f(chunkDimensions.x,0.0f,chunkDimensions.z);
-    glVertex3f(chunkDimensions.x,chunkDimensions.y,chunkDimensions.z);
-    glVertex3f(0.0f,chunkDimensions.y,chunkDimensions.z);
-    glVertex3f(0.0f,0.0f,chunkDimensions.z);
-    glEnd();
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(chunkDimensions.x,0.0f,0.0f);
-    glVertex3f(chunkDimensions.x,0.0f,chunkDimensions.z);
-    glVertex3f(chunkDimensions.x,chunkDimensions.y,chunkDimensions.z);
-    glVertex3f(chunkDimensions.x,chunkDimensions.y,0.0f);
-    glVertex3f(chunkDimensions.x,0.0f,0.0f);
-    glEnd();
-    glEndList();
-  }
-  if (dirty) {
-    displayListID=glGenLists(1);
+    if (displayListID == -1) {
+      displayListID=glGenLists(1);
+    }
     glNewList(displayListID,GL_COMPILE);
     glBegin(GL_QUADS);
     for (int x=0; x < chunkDimensions.x; x++) {
@@ -65,7 +34,6 @@
               glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
               float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.TOP).x;
               float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.TOP).y;
-              quadCounter++;
               glTexCoord2f(texOffsetX,texOffsetY);
               glVertex3f(-0.5f + x,0.5f + y,0.5f + z);
               glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
@@ -81,7 +49,6 @@
               glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
               float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.FRONT).x;
               float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.FRONT).y;
-              quadCounter++;
               glTexCoord2f(texOffsetX,texOffsetY);
               glVertex3f(-0.5f + x,0.5f + y,-0.5f + z);
               glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
@@ -97,7 +64,6 @@
               glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
               float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.BACK).x;
               float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.BACK).y;
-              quadCounter++;
               glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
               glVertex3f(-0.5f + x,-0.5f + y,0.5f + z);
               glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
@@ -113,7 +79,6 @@
               glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
               float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.LEFT).x;
               float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.LEFT).y;
-              quadCounter++;
               glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
               glVertex3f(-0.5f + x,-0.5f + y,-0.5f + z);
               glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
@@ -129,7 +94,6 @@
               glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
               float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.RIGHT).x;
               float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.RIGHT).y;
-              quadCounter++;
               glTexCoord2f(texOffsetX,texOffsetY);
               glVertex3f(0.5f + x,0.5f + y,-0.5f + z);
               glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
@@ -145,7 +109,6 @@
               glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
               float texOffsetX=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.BOTTOM).x;
               float texOffsetY=BlockHelper.getTextureOffsetFor(blocks[x][y][z],BlockHelper.SIDE.BOTTOM).y;
-              quadCounter++;
               glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
               glVertex3f(-0.5f + x,-0.5f + y,-0.5f + z);
               glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);

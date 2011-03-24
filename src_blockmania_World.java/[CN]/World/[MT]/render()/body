@@ -1,13 +1,14 @@
 {
   glPushMatrix();
   glTranslatef(-512f,0.0f,-512f);
+  int chunkUpdates=0;
   for (int x=0; x < (int)Configuration.viewingDistanceInChunks.x; x++) {
     for (int y=0; y < (int)Configuration.viewingDistanceInChunks.y; y++) {
       for (int z=0; z < (int)Configuration.viewingDistanceInChunks.z; z++) {
         if (chunks[x][y][z] != null) {
-          if (System.currentTimeMillis() - timeSinceLastChunkUpdate > 0) {
+          if (chunkUpdates < 15 && !updateThread.isAlive()) {
             if (chunks[x][y][z].updateDisplayList()) {
-              timeSinceLastChunkUpdate=System.currentTimeMillis();
+              chunkUpdates++;
             }
           }
           chunks[x][y][z].render();
