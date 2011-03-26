@@ -19,7 +19,7 @@
   }
   for (int i=y + 1; i < chunkDimensions.y; i++) {
     try {
-      if (blocks[x][i][z] > 0) {
+      if (parent.getBlock(getBlockWorldPos(new Vector3f(x,i,z))) > 0) {
         result=0.5f;
         break;
       }
@@ -28,28 +28,28 @@
     }
   }
   try {
-    if (blocks[x + 1][y + 1][z] > 0) {
+    if (parent.getBlock(getBlockWorldPos(new Vector3f(x + 1,y + 1,z))) > 0) {
       result-=0.15f;
     }
   }
  catch (  Exception e) {
   }
   try {
-    if (blocks[x - 1][y + 1][z] > 0) {
+    if (parent.getBlock(getBlockWorldPos(new Vector3f(x - 1,y + 1,z))) > 0) {
       result-=0.15f;
     }
   }
  catch (  Exception e) {
   }
   try {
-    if (blocks[x][y + 1][z + 1] > 0) {
+    if (parent.getBlock(getBlockWorldPos(new Vector3f(x,y + 1,z + 1))) > 0) {
       result-=0.15f;
     }
   }
  catch (  Exception e) {
   }
   try {
-    if (blocks[x][y + 1][z - 1] > 0) {
+    if (parent.getBlock(getBlockWorldPos(new Vector3f(x,y + 1,z - 1))) > 0) {
       result-=0.15f;
     }
   }

@@ -1,8 +1,6 @@
 {
-  pos.x+=512;
-  pos.z+=512;
-  Vector3f chunkPos=new Vector3f((int)(pos.x / Chunk.chunkDimensions.x),(int)(pos.y / Chunk.chunkDimensions.y),(int)(pos.z / Chunk.chunkDimensions.z));
-  Vector3f blockCoord=new Vector3f(pos.x - (chunkPos.x * Chunk.chunkDimensions.x),pos.y - (chunkPos.y * Chunk.chunkDimensions.y),pos.z - (chunkPos.z * Chunk.chunkDimensions.z));
+  Vector3f chunkPos=calcChunkPos(pos);
+  Vector3f blockCoord=calcBlockPos(pos,chunkPos);
   try {
     Chunk c=chunks[(int)chunkPos.x][(int)chunkPos.y][(int)chunkPos.z];
     return (c.getBlock((int)blockCoord.x,(int)blockCoord.y,(int)blockCoord.z) > 0);
