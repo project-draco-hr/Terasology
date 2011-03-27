@@ -4,13 +4,11 @@
     for (int y=0; y < (int)Configuration.viewingDistanceInChunks.y; y++) {
       for (int z=0; z < (int)Configuration.viewingDistanceInChunks.z; z++) {
         if (chunks[x][y][z] != null) {
-          if (!updateThread.isAlive()) {
-            if (chunkUpdates < 15) {
-              boolean updated1=chunks[x][y][z].updateDisplayList(true);
-              boolean updated2=chunks[x][y][z].updateDisplayList(false);
-              if (updated1 || updated2) {
-                chunkUpdates++;
-              }
+          if (chunkUpdates < 3) {
+            boolean updated1=chunks[x][y][z].updateDisplayList(true);
+            boolean updated2=chunks[x][y][z].updateDisplayList(false);
+            if (updated1 || updated2) {
+              chunkUpdates++;
             }
           }
         }

@@ -18,17 +18,17 @@
     if (gravity > -MAX_GRAVITY) {
       gravity-=1;
     }
-    getPosition().y+=(gravity * delta) / 1000.0f;
+    getPosition().y+=(gravity / 1000.0f) * delta;
   }
  else   if (gravity > 0.0f) {
-    getPosition().y+=(gravity * delta) / 1000.0f;
+    getPosition().y+=(gravity / 1000.0f) * delta;
   }
   if (isObjectInFrontOfPlayer()) {
     accX=0;
     accZ=0;
   }
-  getPosition().x+=(accX * (float)delta) / 1000.0f;
-  getPosition().z+=(accZ * (float)delta) / 1000.0f;
+  getPosition().x+=(accX / 1000.0f) * delta;
+  getPosition().z+=(accZ / 1000.0f) * delta;
   accX=0;
   accZ=0;
 }

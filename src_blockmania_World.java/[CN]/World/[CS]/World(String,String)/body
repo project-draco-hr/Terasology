@@ -4,9 +4,17 @@
   chunks=new Chunk[(int)Configuration.viewingDistanceInChunks.x][(int)Configuration.viewingDistanceInChunks.y][(int)Configuration.viewingDistanceInChunks.z];
   updateThread=new Thread(new Runnable(){
     @Override public void run(){
-      updateWorld();
+      long timeStart=System.currentTimeMillis();
+      LOGGER.log(Level.INFO,"Generating chunks.");
+      for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+        for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+          for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+            generateChunk(new Vector3f(x,y,z));
+          }
+        }
+      }
+      LOGGER.log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
     }
   }
 );
-  updateThread.start();
 }
