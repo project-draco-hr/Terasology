@@ -10,18 +10,18 @@
       float height=calcTerrainElevation(x,z) + (calcTerrainRoughness(x,z) * calcTerrainDetail(x,z)) * 64 + 64;
       float y=height;
       while (y > 0) {
-        if (getCaveDensityAt(x,y,z) > 0) {
+        if (getCaveDensityAt(x,y,z) < 0.25) {
           if (height == y) {
             setBlock(new Vector3f(x,y,z),0x1,false);
-            if (rand.nextFloat() < 0.001f) {
-              generateTree(new Vector3f(x,y,z));
-            }
           }
  else {
             setBlock(new Vector3f(x,y,z),0x2,false);
           }
         }
         y--;
+      }
+      if (rand.nextFloat() < 150f / 100000f && height > 32) {
+        generateTree(new Vector3f(x,height,z));
       }
       for (int i=32; i > 0; i--) {
         if (getBlock(new Vector3f(x,i,z)) == 0) {
