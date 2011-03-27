@@ -1,0 +1,21 @@
+{
+  if (bufferDisplayListsT.position() < displayListsTranslucent.size()) {
+    for (int i=displayListsTranslucent.size() - 1; i >= 0; i--) {
+      bufferDisplayListsT.put(displayListsTranslucent.get(i));
+    }
+    if (bufferDisplayListsO.position() < displayListsOpaque.size()) {
+      for (      Integer i : displayListsOpaque) {
+        bufferDisplayListsO.put(i);
+      }
+    }
+    bufferDisplayListsO.rewind();
+    bufferDisplayListsT.rewind();
+    glEnable(GL_TEXTURE_2D);
+    glCallLists(bufferDisplayListsO);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glCallLists(bufferDisplayListsT);
+    glDisable(GL_BLEND);
+    glDisable(GL_TEXTURE_2D);
+  }
+}

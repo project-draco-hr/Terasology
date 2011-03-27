@@ -1,0 +1,144 @@
+{
+  Vector3f offset=new Vector3f(position.x * chunkDimensions.x,position.y * chunkDimensions.y,position.z * chunkDimensions.z);
+  if ((translucentDirty && translucent) || (opqaueDirty && !translucent)) {
+    if (displayListOpaque == -1 || displayListTranslucent == -1) {
+      displayListOpaque=glGenLists(1);
+      displayListTranslucent=glGenLists(1);
+      displayListsOpaque.add(displayListOpaque);
+      displayListsTranslucent.add(displayListTranslucent);
+    }
+    int activeDisplayList=-1;
+    if (translucent) {
+      activeDisplayList=displayListTranslucent;
+    }
+ else {
+      activeDisplayList=displayListOpaque;
+    }
+    glNewList(activeDisplayList,GL_COMPILE);
+    glBegin(GL_QUADS);
+    for (int x=0; x < chunkDimensions.x; x++) {
+      for (int y=0; y < chunkDimensions.y; y++) {
+        for (int z=0; z < chunkDimensions.z; z++) {
+          int block=blocks[x][y][z];
+          if (block > 0) {
+            if ((translucent && BlockHelper.isBlockTypeTranslucent(block)) || (!translucent && !BlockHelper.isBlockTypeTranslucent(block))) {
+              boolean drawFront=true, drawBack=true, drawLeft=true, drawRight=true, drawTop=true, drawBottom=true;
+              int blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z - 1))));
+              drawFront=shouldSideBeDrawn(blockToCheck);
+              blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z + 1))));
+              drawBack=shouldSideBeDrawn(blockToCheck);
+              blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z))));
+              drawLeft=shouldSideBeDrawn(blockToCheck);
+              blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z))));
+              drawRight=shouldSideBeDrawn(blockToCheck);
+              blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y + 1,z))));
+              drawTop=shouldSideBeDrawn(blockToCheck);
+              blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y - 1,z))));
+              drawBottom=shouldSideBeDrawn(blockToCheck);
+              if (drawTop) {
+                Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.TOP);
+                float shadowIntens=castRay(x,y,z,SIDE.TOP);
+                glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
+                float texOffsetX=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.TOP).x;
+                float texOffsetY=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.TOP).y;
+                glTexCoord2f(texOffsetX,texOffsetY);
+                glVertex3f(-0.5f + x + offset.x,0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
+                glVertex3f(0.5f + x + offset.x,0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
+                glVertex3f(0.5f + x + offset.x,0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
+                glVertex3f(-0.5f + x + offset.x,0.5f + y + offset.y,-0.5f + z + offset.z);
+              }
+              if (drawFront) {
+                Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.FRONT);
+                float shadowIntens=castRay(x,y,z,SIDE.FRONT);
+                glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
+                float texOffsetX=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.FRONT).x;
+                float texOffsetY=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.FRONT).y;
+                glTexCoord2f(texOffsetX,texOffsetY);
+                glVertex3f(-0.5f + x + offset.x,0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
+                glVertex3f(0.5f + x + offset.x,0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
+                glVertex3f(0.5f + x + offset.x,-0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
+                glVertex3f(-0.5f + x + offset.x,-0.5f + y + offset.y,-0.5f + z + offset.z);
+              }
+              if (drawBack) {
+                Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.BACK);
+                float shadowIntens=castRay(x,y,z,SIDE.BACK);
+                glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
+                float texOffsetX=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.BACK).x;
+                float texOffsetY=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.BACK).y;
+                glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
+                glVertex3f(-0.5f + x + offset.x,-0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
+                glVertex3f(0.5f + x + offset.x,-0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
+                glVertex3f(0.5f + x + offset.x,0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX,texOffsetY);
+                glVertex3f(-0.5f + x + offset.x,0.5f + y + offset.y,0.5f + z + offset.z);
+              }
+              if (drawLeft) {
+                Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.LEFT);
+                float shadowIntens=castRay(x,y,z,SIDE.LEFT);
+                glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
+                float texOffsetX=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.LEFT).x;
+                float texOffsetY=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.LEFT).y;
+                glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
+                glVertex3f(-0.5f + x + offset.x,-0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
+                glVertex3f(-0.5f + x + offset.x,-0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
+                glVertex3f(-0.5f + x + offset.x,0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX,texOffsetY);
+                glVertex3f(-0.5f + x + offset.x,0.5f + y + offset.y,-0.5f + z + offset.z);
+              }
+              if (drawRight) {
+                Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.RIGHT);
+                float shadowIntens=castRay(x,y,z,SIDE.RIGHT);
+                glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
+                float texOffsetX=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.RIGHT).x;
+                float texOffsetY=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.RIGHT).y;
+                glTexCoord2f(texOffsetX,texOffsetY);
+                glVertex3f(0.5f + x + offset.x,0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
+                glVertex3f(0.5f + x + offset.x,0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
+                glVertex3f(0.5f + x + offset.x,-0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
+                glVertex3f(0.5f + x + offset.x,-0.5f + y + offset.y,-0.5f + z + offset.z);
+              }
+              if (drawBottom) {
+                Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.BOTTOM);
+                float shadowIntens=castRay(x,y,z,SIDE.BOTTOM);
+                glColor3f(colorOffset.x * shadowIntens * daylight,colorOffset.y * shadowIntens * daylight,colorOffset.z * shadowIntens * daylight);
+                float texOffsetX=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.BOTTOM).x;
+                float texOffsetY=BlockHelper.getTextureOffsetFor(block,BlockHelper.SIDE.BOTTOM).y;
+                glTexCoord2f(texOffsetX,texOffsetY + 0.0625f);
+                glVertex3f(-0.5f + x + offset.x,-0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY + 0.0625f);
+                glVertex3f(0.5f + x + offset.x,-0.5f + y + offset.y,-0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX + 0.0625f,texOffsetY);
+                glVertex3f(0.5f + x + offset.x,-0.5f + y + offset.y,0.5f + z + offset.z);
+                glTexCoord2f(texOffsetX,texOffsetY);
+                glVertex3f(-0.5f + x + offset.x,-0.5f + y + offset.y,0.5f + z + offset.z);
+              }
+            }
+          }
+        }
+      }
+    }
+    glEnd();
+    glEndList();
+    if (translucent) {
+      translucentDirty=false;
+    }
+ else {
+      opqaueDirty=false;
+    }
+    return true;
+  }
+  return false;
+}

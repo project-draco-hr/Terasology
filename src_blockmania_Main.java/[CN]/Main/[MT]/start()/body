@@ -1,15 +1,20 @@
 {
-  getDelta();
-  lastFPS=getTime();
   while (!Display.isCloseRequested()) {
-    int delta=getDelta();
-    updateFPS();
-    processKeyboard();
-    processMouse();
+    Display.sync(60);
+    long delta=getTime() - lastLoopTime;
+    lastLoopTime=getTime();
+    lastFpsTime+=delta;
+    fps++;
+    if (lastFpsTime >= 1000) {
+      Display.setTitle(GAME_TITLE + " (FPS: " + fps+ ")");
+      lastFpsTime=0;
+      fps=0;
+    }
     update(delta);
     render();
     Display.update();
-    Display.sync(60);
+    processKeyboard();
+    processMouse();
   }
   Display.destroy();
 }
