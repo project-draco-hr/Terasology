@@ -12,6 +12,9 @@
       while (y > 0) {
         if (getCaveDensityAt(x,y,z) < 0.25) {
           if (height == y) {
+            if (rand.nextFloat() < 150f / 100000f && height > 32) {
+              generateTree(new Vector3f(x,height,z));
+            }
             setBlock(new Vector3f(x,y,z),0x1,false);
           }
  else {
@@ -19,9 +22,6 @@
           }
         }
         y--;
-      }
-      if (rand.nextFloat() < 150f / 100000f && height > 32) {
-        generateTree(new Vector3f(x,height,z));
       }
       for (int i=32; i > 0; i--) {
         if (getBlock(new Vector3f(x,i,z)) == 0) {
