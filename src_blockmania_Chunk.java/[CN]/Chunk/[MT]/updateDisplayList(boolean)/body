@@ -22,19 +22,19 @@
           int block=blocks[x][y][z];
           if (block > 0) {
             if ((translucent && BlockHelper.isBlockTypeTranslucent(block)) || (!translucent && !BlockHelper.isBlockTypeTranslucent(block))) {
-              boolean drawFront=true, drawBack=true, drawLeft=true, drawRight=true, drawTop=true, drawBottom=true;
+              boolean drawFront, drawBack, drawLeft, drawRight, drawTop, drawBottom;
               int blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z - 1))));
-              drawFront=shouldSideBeDrawn(blockToCheck);
+              drawFront=checkBlockTypeToDraw(blockToCheck);
               blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z + 1))));
-              drawBack=shouldSideBeDrawn(blockToCheck);
+              drawBack=checkBlockTypeToDraw(blockToCheck);
               blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z))));
-              drawLeft=shouldSideBeDrawn(blockToCheck);
+              drawLeft=checkBlockTypeToDraw(blockToCheck);
               blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z))));
-              drawRight=shouldSideBeDrawn(blockToCheck);
+              drawRight=checkBlockTypeToDraw(blockToCheck);
               blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y + 1,z))));
-              drawTop=shouldSideBeDrawn(blockToCheck);
+              drawTop=checkBlockTypeToDraw(blockToCheck);
               blockToCheck=parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y - 1,z))));
-              drawBottom=shouldSideBeDrawn(blockToCheck);
+              drawBottom=checkBlockTypeToDraw(blockToCheck);
               if (drawTop) {
                 Vector3f colorOffset=BlockHelper.getColorOffsetFor(block,BlockHelper.SIDE.TOP);
                 float shadowIntens=castRay(x,y,z,SIDE.TOP);

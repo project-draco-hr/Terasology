@@ -1,17 +1,19 @@
 {
+  long timeStart=System.currentTimeMillis();
   for (int i=displayListsTranslucent.size() - 1; i >= 0; i--) {
     bufferDisplayListsT.put(displayListsTranslucent.get(i));
   }
+  lastDLCountT=displayListsTranslucent.size();
   for (  Integer i : displayListsOpaque) {
     bufferDisplayListsO.put(i);
   }
+  lastDLCountO=displayListsOpaque.size();
   bufferDisplayListsO.rewind();
   bufferDisplayListsT.rewind();
-  glEnable(GL_TEXTURE_2D);
   glCallLists(bufferDisplayListsO);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glCallLists(bufferDisplayListsT);
   glDisable(GL_BLEND);
-  glDisable(GL_TEXTURE_2D);
+  LOGGER.log(Level.INFO,"Rendered chunks in {0} ms",System.currentTimeMillis() - timeStart);
 }
