@@ -2,7 +2,7 @@
   Vector3f chunkOrigin=new Vector3f(chunkPosition.x * Chunk.chunkDimensions.x,chunkPosition.y * Chunk.chunkDimensions.y,chunkPosition.z * Chunk.chunkDimensions.z);
   for (int x=(int)chunkOrigin.x; x < (int)chunkOrigin.x + Chunk.chunkDimensions.x; x++) {
     for (int z=(int)chunkOrigin.z; z < (int)chunkOrigin.z + Chunk.chunkDimensions.z; z++) {
-      setBlock(new Vector3f(x,0,z),0x3,false);
+      setBlock(new Vector3f(x,0,z),0x3);
     }
   }
   for (int x=(int)chunkOrigin.x; x < (int)chunkOrigin.x + Chunk.chunkDimensions.x; x++) {
@@ -15,23 +15,19 @@
             if (rand.nextFloat() < 150f / 100000f && height > 32) {
               generateTree(new Vector3f(x,height,z));
             }
-            setBlock(new Vector3f(x,y,z),0x1,false);
+            setBlock(new Vector3f(x,y,z),0x1);
           }
  else {
-            setBlock(new Vector3f(x,y,z),0x2,false);
+            setBlock(new Vector3f(x,y,z),0x2);
           }
         }
         y--;
       }
       for (int i=32; i > 0; i--) {
         if (getBlock(new Vector3f(x,i,z)) == 0) {
-          setBlock(new Vector3f(x,i,z),0x4,false);
+          setBlock(new Vector3f(x,i,z),0x4);
         }
       }
     }
-  }
-  Chunk c=chunks[(int)chunkPosition.x][(int)chunkPosition.y][(int)chunkPosition.z];
-  if (c != null) {
-    c.markAsDirty();
   }
 }

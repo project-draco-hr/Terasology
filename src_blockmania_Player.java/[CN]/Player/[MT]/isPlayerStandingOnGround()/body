@@ -1,3 +1,8 @@
 {
-  return parent.isHitting(new Vector3f(getPosition().x,getPosition().y - PLAYER_HEIGHT,getPosition().z));
+  if (getParent() != null) {
+    return getParent().isHitting(new Vector3f(getPosition().x,getPosition().y - PLAYER_HEIGHT,getPosition().z));
+  }
+ else {
+    return false;
+  }
 }

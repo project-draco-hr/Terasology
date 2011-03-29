@@ -1,0 +1,44 @@
+{
+  long timeStart=System.currentTimeMillis();
+  if (chunkID == -1) {
+    chunkID=rand.nextInt();
+    displayListOpaqueFront=glGenLists(1);
+    displayListOpaqueBack=glGenLists(1);
+    displayListOpaqueLeft=glGenLists(1);
+    displayListOpaqueRight=glGenLists(1);
+    displayListOpaqueBottom=glGenLists(1);
+    displayListOpaqueTop=glGenLists(1);
+    chunks.add(this);
+  }
+  glNewList(displayListOpaqueFront,GL_COMPILE);
+  glBegin(GL_QUADS);
+  generateDisplayList(SIDE.FRONT);
+  glEnd();
+  glEndList();
+  glNewList(displayListOpaqueBack,GL_COMPILE);
+  glBegin(GL_QUADS);
+  generateDisplayList(SIDE.BACK);
+  glEnd();
+  glEndList();
+  glNewList(displayListOpaqueTop,GL_COMPILE);
+  glBegin(GL_QUADS);
+  generateDisplayList(SIDE.TOP);
+  glEnd();
+  glEndList();
+  glNewList(displayListOpaqueBottom,GL_COMPILE);
+  glBegin(GL_QUADS);
+  generateDisplayList(SIDE.BOTTOM);
+  glEnd();
+  glEndList();
+  glNewList(displayListOpaqueLeft,GL_COMPILE);
+  glBegin(GL_QUADS);
+  generateDisplayList(SIDE.LEFT);
+  glEnd();
+  glEndList();
+  glNewList(displayListOpaqueRight,GL_COMPILE);
+  glBegin(GL_QUADS);
+  generateDisplayList(SIDE.RIGHT);
+  glEnd();
+  glEndList();
+  return true;
+}

@@ -1,5 +1,7 @@
 {
   while (!Display.isCloseRequested()) {
+    processKeyboard();
+    processMouse();
     Display.sync(60);
     long delta=getTime() - lastLoopTime;
     lastLoopTime=getTime();
@@ -13,8 +15,6 @@
     update(delta);
     render();
     Display.update();
-    processKeyboard();
-    processMouse();
   }
   Display.destroy();
 }

@@ -7,7 +7,8 @@
       c=new Chunk(this,new Vector3f(chunkPos.x,chunkPos.y,chunkPos.z));
       chunks[(int)chunkPos.x][(int)chunkPos.y][(int)chunkPos.z]=c;
     }
-    c.setBlock(blockCoord,type,dirty);
+    c.setBlock(blockCoord,type);
+    chunkUpdateQueue.add(c);
   }
  catch (  Exception e) {
     return;
