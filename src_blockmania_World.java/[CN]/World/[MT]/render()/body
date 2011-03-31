@@ -1,4 +1,10 @@
 {
+  glPushMatrix();
+  glDisable(GL_FOG);
+  glTranslatef(Configuration.viewingDistanceInChunks.x * Chunk.chunkDimensions.x,Configuration.viewingDistanceInChunks.y * Chunk.chunkDimensions.y * 2f,Configuration.viewingDistanceInChunks.z * Chunk.chunkDimensions.z);
+  glCallList(displayListSun);
+  glEnable(GL_FOG);
+  glPopMatrix();
   for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
     for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
       for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {

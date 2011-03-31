@@ -1,11 +1,11 @@
 {
-  int height=rand.nextInt() % 4 + 6;
+  int height=rand.nextInt() % 6 + 12;
   for (int i=0; i < height; i++) {
     setBlock(new Vector3f(pos.x,pos.y + i,pos.z),0x5);
   }
-  for (int y=height - 2; y < height + 2; y++) {
-    for (int x=-2; x <= 2; x++) {
-      for (int z=-2; z <= 2; z++) {
+  for (int y=height / 4; y < height + 2; y+=2) {
+    for (int x=-(height / 2 - y / 2); x <= (height / 2 - y / 2); x++) {
+      for (int z=-(height / 2 - y / 2); z <= (height / 2 - y / 2); z++) {
         if (rand.nextFloat() < 0.95 && !(x == 0 && z == 0)) {
           setBlock(new Vector3f(pos.x + x,pos.y + y,pos.z + z),0x6);
         }

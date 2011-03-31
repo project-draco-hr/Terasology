@@ -4,28 +4,27 @@
       boolean covered=false;
       for (int y=(int)chunkDimensions.y - 1; y >= 0; y--) {
         if (blocks[x][y][z] == 0 && !covered) {
-          boolean darken=false;
-          if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z)))) > 0) {
-            darken=true;
-          }
- else           if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z)))) > 0) {
-            darken=true;
-          }
- else           if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z + 1)))) > 0) {
-            darken=true;
-          }
- else           if (parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z - 1)))) > 0) {
-            darken=true;
-          }
-          if (darken) {
-            setLight(x,y,z,0.6f);
-          }
- else {
-            setLight(x,y,z,0.9f);
-          }
+          float dimming=0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z + 1)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z - 1)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z + 1)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z - 1)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z - 1)))) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z + 1)))) > 0) ? DIMMING_INTENS : 0.0f;
+          setLight(x,y,z,1.0f - dimming);
         }
  else         if (blocks[x][y][z] == 0 && covered) {
-          setLight(x,y,z,0.2f + (float)y / 200f);
+          float luminance=getLight(x - 1,y,z) * LUMINANCE_INTENS;
+          luminance+=getLight(x + 1,y,z) * LUMINANCE_INTENS;
+          luminance+=getLight(x,y,z + 1) * LUMINANCE_INTENS;
+          luminance+=getLight(x,y,z - 1) * LUMINANCE_INTENS;
+          luminance+=getLight(x + 1,y,z + 1) * LUMINANCE_INTENS;
+          luminance+=getLight(x - 1,y,z - 1) * LUMINANCE_INTENS;
+          luminance+=getLight(x + 1,y,z + 1) * LUMINANCE_INTENS;
+          luminance+=getLight(x + 1,y,z - 1) * LUMINANCE_INTENS;
+          setLight(x,y,z,0.05f + (float)Math.min(luminance,1.0f));
         }
  else {
           covered=true;
