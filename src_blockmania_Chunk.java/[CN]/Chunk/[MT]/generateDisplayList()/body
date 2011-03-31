@@ -1,0 +1,36 @@
+{
+  if (chunkID == -1) {
+    chunkID=rand.nextInt();
+    displayList=glGenLists(1);
+  }
+  int qSize=quads.size();
+  int tSize=tex.size();
+  int cSize=color.size();
+  FloatBuffer vb=BufferUtils.createFloatBuffer(qSize);
+  for (  Float f : quads) {
+    vb.put(f);
+  }
+  FloatBuffer tb=BufferUtils.createFloatBuffer(tSize);
+  for (  Float f : tex) {
+    tb.put(f);
+  }
+  FloatBuffer cb=BufferUtils.createFloatBuffer(cSize);
+  for (  Float f : color) {
+    cb.put(f);
+  }
+  vb.flip();
+  tb.flip();
+  cb.flip();
+  glNewList(displayList,GL_COMPILE);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  glColorPointer(3,0,cb);
+  glVertexPointer(3,0,vb);
+  glDrawArrays(GL_QUADS,0,qSize / 3);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glEndList();
+}

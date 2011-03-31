@@ -1,20 +1,19 @@
 {
   int chunkUpdates=0;
-  if (!updateThread.isAlive()) {
-    List<Chunk> deletedElements=new ArrayList<Chunk>();
-    for (    Chunk c : chunkUpdateQueue) {
-      if (chunkUpdates < 2) {
-        c.calcSunlight();
-        c.updateDisplayList();
+  List<Chunk> deletedElements=new ArrayList<Chunk>();
+  for (  Chunk c : chunkUpdateQueue) {
+    if (chunkUpdates < 16) {
+      if (!c.dirty) {
+        c.generateDisplayList();
         deletedElements.add(c);
         chunkUpdates++;
       }
+    }
  else {
-        break;
-      }
+      break;
     }
-    for (    Chunk c : deletedElements) {
-      chunkUpdateQueue.remove(c);
-    }
+  }
+  for (  Chunk c : deletedElements) {
+    removeChunkFromQueue(c);
   }
 }

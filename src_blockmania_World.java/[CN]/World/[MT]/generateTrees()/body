@@ -1,0 +1,13 @@
+{
+  for (int x=0; x < Configuration.viewingDistanceInChunks.x * Chunk.chunkDimensions.x; x++) {
+    for (int y=0; y < Configuration.viewingDistanceInChunks.y * Chunk.chunkDimensions.y; y++) {
+      for (int z=0; z < Configuration.viewingDistanceInChunks.z * Chunk.chunkDimensions.z; z++) {
+        if (getBlock(new Vector3f(x,y,z)) == 0x1) {
+          if (rand.nextFloat() > 0.998f) {
+            generateTree(new Vector3f(x,y + 1,z));
+          }
+        }
+      }
+    }
+  }
+}

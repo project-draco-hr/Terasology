@@ -1,7 +1,7 @@
 {
   this.player=p;
   rand=new Random(seed.hashCode());
-  pGen=new PerlinNoise(seed);
+  final World currentWorld=this;
   chunks=new Chunk[(int)Configuration.viewingDistanceInChunks.x][(int)Configuration.viewingDistanceInChunks.y][(int)Configuration.viewingDistanceInChunks.z];
   updateThread=new Thread(new Runnable(){
     @Override public void run(){
@@ -10,12 +10,55 @@
       for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
         for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
           for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
-            generateChunk(new Vector3f(x,y,z));
+            Chunk c=new Chunk(currentWorld,new Vector3f(x,y,z));
+            chunks[x][y][z]=c;
+            c.calcSunlight();
           }
         }
       }
       LOGGER.log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
+      for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+        for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+          for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+            Chunk c=chunks[x][y][z];
+            c.generateVertexArray();
+            addChunkToUpdateQueue(c);
+          }
+        }
+      }
+      while (true) {
+        for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+          for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+            for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+              Chunk c=chunks[x][y][z];
+              if (c.dirty) {
+                c.calcSunlight();
+                c.generateVertexArray();
+              }
+            }
+          }
+        }
+      }
     }
   }
 );
+  Timer t=new Timer();
+  t.schedule(new TimerTask(){
+    @Override public void run(){
+      daylight-=0.25f;
+      if (daylight < 0.25f) {
+        daylight=0.9f;
+      }
+      for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+        for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+          for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+            Chunk c=chunks[x][y][z];
+            c.dirty=true;
+            addChunkToUpdateQueue(c);
+          }
+        }
+      }
+    }
+  }
+,60000,20000);
 }

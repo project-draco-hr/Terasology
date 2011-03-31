@@ -1,0 +1,34 @@
+{
+  int xOffset=(int)position.x * (int)chunkDimensions.x;
+  int zOffset=(int)position.z * (int)chunkDimensions.z;
+  for (int x=0; x < Chunk.chunkDimensions.x; x++) {
+    for (int z=0; z < Chunk.chunkDimensions.z; z++) {
+      setBlock(new Vector3f(x,0,z),0x3,false);
+    }
+  }
+  for (int x=0; x < Chunk.chunkDimensions.x; x++) {
+    for (int z=0; z < Chunk.chunkDimensions.z; z++) {
+      float height=calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64 + 64;
+      float y=height;
+      while (y > 0) {
+        if (getCaveDensityAt(x + xOffset,y,z + zOffset) < 0.25) {
+          if (height == y) {
+            setBlock(new Vector3f(x,y,z),0x1,false);
+          }
+ else {
+            setBlock(new Vector3f(x,y,z),0x2,false);
+          }
+        }
+ else         if (getCaveDensityAt(x + xOffset,y,z + zOffset) < 0.30) {
+          setBlock(new Vector3f(x,y,z),0x3,false);
+        }
+        y--;
+      }
+      for (int i=32; i > 0; i--) {
+        if (getBlock(x,i,z) == 0) {
+          setBlock(new Vector3f(x,i,z),0x4,false);
+        }
+      }
+    }
+  }
+}
