@@ -1,0 +1,10 @@
+{
+  BBox childBound=new BBox();
+  childBound.pMin.x=(child & 4) != 0 ? pMid.x : nodeBound.pMin.x;
+  childBound.pMax.x=(child & 4) != 0 ? nodeBound.pMax.x : pMid.x;
+  childBound.pMin.y=(child & 2) != 0 ? pMid.y : nodeBound.pMin.y;
+  childBound.pMax.y=(child & 2) != 0 ? nodeBound.pMax.y : pMid.y;
+  childBound.pMin.z=(child & 1) != 0 ? pMid.z : nodeBound.pMin.z;
+  childBound.pMax.z=(child & 1) != 0 ? nodeBound.pMax.z : pMid.z;
+  return childBound;
+}

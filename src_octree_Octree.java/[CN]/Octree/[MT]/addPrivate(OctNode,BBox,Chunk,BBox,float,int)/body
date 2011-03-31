@@ -1,0 +1,21 @@
+{
+  if (depth == maxDepth || distanceSquared(nodeBound.pMin,nodeBound.pMax) < diag2) {
+    node.data.add(dataItem);
+    return;
+  }
+  Vector3f pMid=Vector3f.add(Vector3f.cross(new Vector3f(0.5f,0.5f,0.5f),nodeBound.pMin,null),Vector3f.cross(new Vector3f(0.5f,0.5f,0.5f),nodeBound.pMax,null),null);
+  boolean x[]={dataBound.pMin.x <= pMid.x,dataBound.pMax.x > pMid.x};
+  boolean y[]={dataBound.pMin.y <= pMid.y,dataBound.pMax.y > pMid.y};
+  boolean z[]={dataBound.pMin.z <= pMid.z,dataBound.pMax.z > pMid.z};
+  boolean over[]={x[0] & y[0] & z[0],x[0] & y[0] & z[1],x[0] & y[1] & z[0],x[0] & y[1] & z[1],x[1] & y[0] & z[0],x[1] & y[0] & z[1],x[1] & y[1] & z[0],x[1] & y[1] & z[1]};
+  for (int child=0; child < 8; ++child) {
+    if (!over[child]) {
+      continue;
+    }
+    if (node.children[child] == null) {
+      node.children[child]=new OctNode();
+    }
+    BBox childBound=octreeChildBound(child,nodeBound,pMid);
+    addPrivate(node.children[child],childBound,dataItem,dataBound,diag2,depth + 1);
+  }
+}

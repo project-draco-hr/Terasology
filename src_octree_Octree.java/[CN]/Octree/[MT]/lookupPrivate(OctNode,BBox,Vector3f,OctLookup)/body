@@ -1,0 +1,12 @@
+{
+  for (  Chunk c : node.data) {
+    if (!lookup.lookup(c))     return false;
+  }
+  Vector3f pMid=Vector3f.add(Vector3f.cross(new Vector3f(0.5f,0.5f,0.5f),nodeBound.pMin,null),Vector3f.cross(new Vector3f(0.5f,0.5f,0.5f),nodeBound.pMax,null),null);
+  int child=(p.x > pMid.x ? 4 : 0) + (p.y > pMid.y ? 2 : 0) + (p.z > pMid.z ? 1 : 0);
+  if (node.children[child] == null) {
+    return true;
+  }
+  BBox childBound=octreeChildBound(child,nodeBound,pMid);
+  return lookupPrivate(node.children[child],childBound,p,lookup);
+}

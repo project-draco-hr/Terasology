@@ -1,10 +1,10 @@
 {
   int chunkUpdates=0;
   if (!updateThread.isAlive()) {
-    LOGGER.log(Level.INFO,"Updating {0} chunks.",chunkUpdateQueue.size());
     List<Chunk> deletedElements=new ArrayList<Chunk>();
     for (    Chunk c : chunkUpdateQueue) {
-      if (chunkUpdates < 3) {
+      if (chunkUpdates < 2) {
+        c.calcSunlight();
         c.updateDisplayList();
         deletedElements.add(c);
         chunkUpdates++;

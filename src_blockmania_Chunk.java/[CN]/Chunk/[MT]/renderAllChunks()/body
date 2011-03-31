@@ -1,18 +1,10 @@
 {
-  long timeStart=System.currentTimeMillis();
   for (  Chunk c : chunks) {
-    Vector3f pPos=c.parent.getPlayer().getPosition();
-    Vector3f offset=new Vector3f(c.position.x * chunkDimensions.x,c.position.y * chunkDimensions.y,c.position.z * chunkDimensions.z);
-    Vector3f distance=new Vector3f(offset.x - pPos.y,offset.y - pPos.x,offset.z - pPos.z);
-    if (distance.x + distance.y + distance.z < 128) {
-      renderBuffer.put(c.displayListOpaqueTop);
-      renderBuffer.put(c.displayListOpaqueFront);
-      renderBuffer.put(c.displayListOpaqueBack);
-      renderBuffer.put(c.displayListOpaqueLeft);
-      renderBuffer.put(c.displayListOpaqueRight);
-      renderBuffer.put(c.displayListOpaqueBottom);
-    }
+    glCallList(c.displayListOpaqueTop);
+    glCallList(c.displayListOpaqueFront);
+    glCallList(c.displayListOpaqueBack);
+    glCallList(c.displayListOpaqueLeft);
+    glCallList(c.displayListOpaqueRight);
+    glCallList(c.displayListOpaqueBottom);
   }
-  renderBuffer.rewind();
-  glCallLists(renderBuffer);
 }
