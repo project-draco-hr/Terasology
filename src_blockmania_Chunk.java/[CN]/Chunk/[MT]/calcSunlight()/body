@@ -1,30 +1,31 @@
 {
+  light=new float[(int)chunkDimensions.x][(int)chunkDimensions.y][(int)chunkDimensions.z];
   for (int x=0; x < (int)chunkDimensions.x; x++) {
     for (int z=0; z < (int)chunkDimensions.z; z++) {
       boolean covered=false;
-      for (int y=(int)chunkDimensions.y - 1; y >= 0; y--) {
+      for (int y=(int)chunkDimensions.y - 1; y > 0; y--) {
         if (blocks[x][y][z] == 0 && !covered) {
           float dimming=0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z + 1)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x,y,z - 1)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z + 1)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z - 1)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x + 1,y,z - 1)))) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(new Vector3f(getBlockWorldPos(new Vector3f(x - 1,y,z + 1)))) > 0) ? DIMMING_INTENS : 0.0f;
-          setLight(x,y,z,1.0f - dimming);
+          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          setLight(x,y,z,Math.max(MAX_LIGHT - dimming,MIN_LIGHT));
         }
  else         if (blocks[x][y][z] == 0 && covered) {
-          float luminance=getLight(x - 1,y,z) * LUMINANCE_INTENS;
-          luminance+=getLight(x + 1,y,z) * LUMINANCE_INTENS;
-          luminance+=getLight(x,y,z + 1) * LUMINANCE_INTENS;
-          luminance+=getLight(x,y,z - 1) * LUMINANCE_INTENS;
-          luminance+=getLight(x + 1,y,z + 1) * LUMINANCE_INTENS;
-          luminance+=getLight(x - 1,y,z - 1) * LUMINANCE_INTENS;
-          luminance+=getLight(x + 1,y,z + 1) * LUMINANCE_INTENS;
-          luminance+=getLight(x + 1,y,z - 1) * LUMINANCE_INTENS;
-          setLight(x,y,z,0.1f + (float)Math.min(luminance,1.0f));
+          float luminance=parent.getLight(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) * LUMINANCE_INTENS;
+          luminance+=parent.getLight(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) * LUMINANCE_INTENS;
+          setLight(x,y,z,(float)Math.min(luminance,MAX_LUMINANCE));
         }
  else {
           covered=true;

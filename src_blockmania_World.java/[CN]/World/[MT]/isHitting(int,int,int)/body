@@ -1,0 +1,15 @@
+{
+  int chunkPosX=calcChunkPosX(x);
+  int chunkPosY=calcChunkPosY(y);
+  int chunkPosZ=calcChunkPosZ(z);
+  int blockPosX=calcBlockPosX(x,chunkPosX);
+  int blockPosY=calcBlockPosY(y,chunkPosY);
+  int blockPosZ=calcBlockPosZ(z,chunkPosZ);
+  try {
+    Chunk c=chunks[chunkPosX][chunkPosY][chunkPosZ];
+    return (c.getBlock(blockPosX,blockPosY,blockPosZ) > 0);
+  }
+ catch (  Exception e) {
+    return false;
+  }
+}

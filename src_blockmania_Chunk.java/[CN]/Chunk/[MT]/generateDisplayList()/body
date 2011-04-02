@@ -1,6 +1,7 @@
 {
   if (chunkID == -1) {
-    chunkID=rand.nextInt();
+    chunkID=maxChunkID + 1;
+    maxChunkID++;
     displayList=glGenLists(1);
   }
   int qSize=quads.size();
@@ -10,14 +11,17 @@
   for (  Float f : quads) {
     vb.put(f);
   }
+  quads=null;
   FloatBuffer tb=BufferUtils.createFloatBuffer(tSize);
   for (  Float f : tex) {
     tb.put(f);
   }
+  tex=null;
   FloatBuffer cb=BufferUtils.createFloatBuffer(cSize);
   for (  Float f : color) {
     cb.put(f);
   }
+  color=null;
   vb.flip();
   tb.flip();
   cb.flip();

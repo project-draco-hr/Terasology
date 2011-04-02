@@ -1,41 +1,47 @@
 {
-  glClearColor(world.getDaylightColor().x,world.getDaylightColor().y,world.getDaylightColor().z,1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
-  player.render();
-  world.render();
-  Vector3f blockPosition=player.calcViewBlockPosition();
-  if (blockPosition != null) {
-    int bpX=(int)blockPosition.x;
-    int bpY=(int)blockPosition.y;
-    int bpZ=(int)blockPosition.z;
-    glColor3f(1.0f,0.0f,0.0f);
-    glLineWidth(4.0f);
-    glBegin(GL_LINES);
-    glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
-    glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
-    glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
-    glEnd();
+  if (world.isWorldGenerated()) {
+    glClearColor(world.getDaylightColor().x,world.getDaylightColor().y,world.getDaylightColor().z,1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glLoadIdentity();
+    player.render();
+    world.render();
+    Vector3f blockPosition=player.calcViewBlockPosition();
+    if (blockPosition != null) {
+      int bpX=(int)blockPosition.x;
+      int bpY=(int)blockPosition.y;
+      int bpZ=(int)blockPosition.z;
+      glColor3f(1.0f,0.0f,0.0f);
+      glLineWidth(4.0f);
+      glBegin(GL_LINES);
+      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
+      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
+      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
+      glEnd();
+    }
+  }
+ else {
+    glClearColor(0.0f,0.0f,0.0f,1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
 }

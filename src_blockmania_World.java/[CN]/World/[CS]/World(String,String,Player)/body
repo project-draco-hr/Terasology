@@ -6,7 +6,7 @@
   updateThread=new Thread(new Runnable(){
     @Override public void run(){
       long timeStart=System.currentTimeMillis();
-      LOGGER.log(Level.INFO,"Generating chunks. Please wait.");
+      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait.");
       for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
         for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
           for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
@@ -15,7 +15,9 @@
           }
         }
       }
-      LOGGER.log(Level.INFO,"Calculating sunlight. Please wait.");
+      setWorldGenerated(true);
+      player.resetPlayer();
+      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Calculating sunlight. Please wait.");
       for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
         for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
           for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
@@ -24,25 +26,37 @@
           }
         }
       }
-      LOGGER.log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
+      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
         for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
           for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
             Chunk c=chunks[x][y][z];
             c.generateVertexArray();
-            addChunkToUpdateQueue(c);
+            chunkUpdateQueueDL.add(c);
           }
         }
       }
-      player.resetPlayer();
       while (true) {
-        for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
-          for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
-            for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
-              Chunk c=chunks[x][y][z];
-              if (c.dirty) {
-                c.calcSunlight();
-                c.generateVertexArray();
+        while (chunkUpdateQueue.size() > 0 && !disableChunkUpdates) {
+          Chunk c=chunkUpdateQueue.remove();
+          c.calcSunlight();
+          c.generateVertexArray();
+          if (!chunkUpdateQueueDL.contains(c)) {
+            chunkUpdateQueueDL.add(c);
+          }
+        }
+        if (Helper.getInstance().getTime() - daytime > 20000) {
+          if (chunkUpdateQueue.size() == 0) {
+            daylight-=0.1f;
+            if (daylight < 0.3f) {
+              daylight=0.8f;
+            }
+            for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+              for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+                for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+                  Chunk c=chunks[x][y][z];
+                  chunkUpdateQueue.add(c);
+                }
               }
             }
           }

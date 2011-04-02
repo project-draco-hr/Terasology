@@ -1,14 +1,12 @@
 {
-  Vector3f blockPosition=new Vector3f(position);
-  Vector2f viewingDirectionHorizontal=new Vector2f((float)Math.sin(Math.toRadians(yaw)),-1f * (float)Math.cos(Math.toRadians(yaw)));
-  Vector2f viewingDirectionVertical=new Vector2f(-1f * (float)Math.sin(Math.toRadians(pitch)),(float)Math.cos(Math.toRadians(pitch)));
-  for (int z=0; z < 4; z++) {
-    blockPosition.x+=viewingDirectionHorizontal.x * viewingDirectionVertical.y;
-    blockPosition.y+=viewingDirectionVertical.x;
-    blockPosition.z+=viewingDirectionHorizontal.y * viewingDirectionVertical.y;
-    if (parent.getBlock(blockPosition) != 0) {
-      return blockPosition;
-    }
+  Vector3f blockPosition=new Vector3f((int)position.x + 0.5f,(int)position.y + 0.5f,(int)position.z + 0.5f);
+  Vector3f vD=new Vector3f((float)Math.sin(Math.toRadians(yaw)),-1f * (float)Math.sin(Math.toRadians(pitch)),-1f * (float)Math.cos(Math.toRadians(yaw)));
+  vD.normalise();
+  for (int z=0; z < 16; z++) {
+    blockPosition.x+=vD.x;
+    blockPosition.y+=vD.y;
+    blockPosition.z+=vD.z;
+    return blockPosition;
   }
   return null;
 }

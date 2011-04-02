@@ -1,0 +1,18 @@
+{
+  int chunkPosX=calcChunkPosX(x);
+  int chunkPosY=calcChunkPosY(y);
+  int chunkPosZ=calcChunkPosZ(z);
+  int blockPosX=calcBlockPosX(x,chunkPosX);
+  int blockPosY=calcBlockPosY(y,chunkPosY);
+  int blockPosZ=calcBlockPosZ(z,chunkPosZ);
+  try {
+    Chunk c=chunks[chunkPosX][chunkPosY][chunkPosZ];
+    c.setBlock(blockPosX,blockPosY,blockPosZ,type);
+    if (!chunkUpdateQueue.contains(c)) {
+      chunkUpdateQueue.add(c);
+    }
+  }
+ catch (  Exception e) {
+    return;
+  }
+}

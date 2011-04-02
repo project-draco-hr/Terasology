@@ -1,19 +1,13 @@
 {
   int chunkUpdates=0;
-  List<Chunk> deletedElements=new ArrayList<Chunk>();
-  for (  Chunk c : chunkUpdateQueue) {
-    if (chunkUpdates < 16) {
-      if (!c.dirty) {
-        c.generateDisplayList();
-        deletedElements.add(c);
-        chunkUpdates++;
-      }
+  while (chunkUpdateQueueDL.size() > 0) {
+    if (chunkUpdates < 4) {
+      Chunk c=chunkUpdateQueueDL.remove();
+      c.generateDisplayList();
+      chunkUpdates++;
     }
  else {
       break;
     }
-  }
-  for (  Chunk c : deletedElements) {
-    removeChunkFromQueue(c);
   }
 }
