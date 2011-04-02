@@ -4,24 +4,23 @@
     maxChunkID++;
     displayList=glGenLists(1);
   }
-  int qSize=quads.size();
-  int tSize=tex.size();
-  int cSize=color.size();
-  FloatBuffer vb=BufferUtils.createFloatBuffer(qSize);
+  FloatBuffer cb=null;
+  FloatBuffer tb=null;
+  FloatBuffer vb=null;
+  vb=BufferUtils.createFloatBuffer(quads.size());
   for (  Float f : quads) {
     vb.put(f);
   }
-  quads=null;
-  FloatBuffer tb=BufferUtils.createFloatBuffer(tSize);
+  tb=BufferUtils.createFloatBuffer(tex.size());
   for (  Float f : tex) {
     tb.put(f);
   }
-  tex=null;
-  FloatBuffer cb=BufferUtils.createFloatBuffer(cSize);
+  tex.clear();
+  cb=BufferUtils.createFloatBuffer(color.size());
   for (  Float f : color) {
     cb.put(f);
   }
-  color=null;
+  color.clear();
   vb.flip();
   tb.flip();
   cb.flip();
@@ -32,9 +31,10 @@
   glTexCoordPointer(2,0,tb);
   glColorPointer(3,0,cb);
   glVertexPointer(3,0,vb);
-  glDrawArrays(GL_QUADS,0,qSize / 3);
+  glDrawArrays(GL_QUADS,0,quads.size() / 3);
   glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
+  quads.clear();
 }

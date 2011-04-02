@@ -8,8 +8,10 @@
   try {
     Chunk c=chunks[chunkPosX][chunkPosY][chunkPosZ];
     c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-    if (!chunkUpdateQueue.contains(c)) {
-      chunkUpdateQueue.add(c);
+synchronized (chunkUpdateQueue) {
+      if (!chunkUpdateQueue.contains(c)) {
+        chunkUpdateQueue.add(c);
+      }
     }
   }
  catch (  Exception e) {
