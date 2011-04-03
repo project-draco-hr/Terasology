@@ -22,31 +22,39 @@
       wSpeed=WALKING_SPEED;
     }
     boolean hitting=parent.isHitting((int)(getPosition().x + 0.5f),(int)(getPosition().y - PLAYER_HEIGHT),(int)(getPosition().z + 0.5f));
-    if (!hitting) {
-      if (gravity > -MAX_GRAVITY) {
-        gravity-=0.5f;
+    if (!godMode) {
+      if (!hitting) {
+        if (gravity > -MAX_GRAVITY) {
+          gravity-=0.5f;
+        }
+        getPosition().y+=(gravity / 1000.0f) * delta;
       }
-      getPosition().y+=(gravity / 1000.0f) * delta;
-    }
- else     if (gravity > 0.0f) {
-      getPosition().y+=(gravity / 1000.0f) * delta;
-    }
+ else       if (gravity > 0.0f) {
+        getPosition().y+=(gravity / 1000.0f) * delta;
+      }
  else {
-      gravity=0.0f;
+        gravity=0.0f;
+      }
+      Vector2f dir=new Vector2f((float)accX,(float)accZ);
+      try {
+        dir.normalise();
+      }
+ catch (      Exception e) {
+      }
+      if (checkForCollision(new Vector3f(getPosition().x + dir.x * 0.1f,getPosition().y - PLAYER_HEIGHT + 1,getPosition().z + dir.y * 0.1f))) {
+        accX=0;
+        accZ=0;
+      }
     }
-    Vector2f dir=new Vector2f((float)accX,(float)accZ);
-    try {
-      dir.normalise();
-    }
- catch (    Exception e) {
-    }
-    if (checkForCollision(new Vector3f(getPosition().x + dir.x * 0.1f,getPosition().y - PLAYER_HEIGHT + 1,getPosition().z + dir.y * 0.1f))) {
-      accX=0;
-      accZ=0;
+    if (demoAutoFlyMode) {
+      accX=8.f;
+      accZ=8.f;
     }
     getPosition().x+=(accX / 1000.0f) * delta;
+    getPosition().y+=(accY / 1000.0f) * delta;
     getPosition().z+=(accZ / 1000.0f) * delta;
     accX=0;
+    accY=0;
     accZ=0;
   }
 }
