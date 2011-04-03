@@ -1,11 +1,10 @@
 {
-  System.out.printf("1:%d 2:%d\n",chunkUpdateQueue.size(),chunkUpdateQueueDL.size());
   int chunkUpdates=0;
   while (chunkUpdateQueueDL.size() > 0) {
     if (chunkUpdates < 4) {
       Chunk c=null;
 synchronized (chunkUpdateQueueDL) {
-        c=chunkUpdateQueueDL.getLast();
+        c=chunkUpdateQueueDL.element();
       }
       c.generateDisplayList();
 synchronized (chunkUpdateQueueDL) {

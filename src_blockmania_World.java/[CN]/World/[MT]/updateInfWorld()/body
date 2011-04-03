@@ -1,0 +1,35 @@
+{
+  for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+    for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+      for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+        Chunk c=chunks[x][y][z];
+        if (c != null) {
+          Vector3f pos=new Vector3f(x,y,z);
+          int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration.viewingDistanceInChunks.z + 1;
+          if (z < calcPlayerChunkOffsetZ() % Configuration.viewingDistanceInChunks.z) {
+            pos.z+=Configuration.viewingDistanceInChunks.z * multZ;
+          }
+ else {
+            pos.z+=Configuration.viewingDistanceInChunks.z * (multZ - 1);
+          }
+          int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration.viewingDistanceInChunks.x + 1;
+          if (x < calcPlayerChunkOffsetX() % Configuration.viewingDistanceInChunks.x) {
+            pos.x+=Configuration.viewingDistanceInChunks.x * multX;
+          }
+ else {
+            pos.x+=Configuration.viewingDistanceInChunks.x * (multX - 1);
+          }
+          if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
+            c.setPosition(pos);
+            c.generate();
+synchronized (chunkUpdateQueue) {
+              if (!chunkUpdateQueue.contains(c)) {
+                chunkUpdateQueue.add(c);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
