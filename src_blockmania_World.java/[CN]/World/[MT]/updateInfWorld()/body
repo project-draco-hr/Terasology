@@ -22,9 +22,10 @@
           if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
             c.setPosition(pos);
             c.generate();
+            c.populate();
 synchronized (chunkUpdateQueue) {
               if (!chunkUpdateQueue.contains(c)) {
-                chunkUpdateQueue.add(c);
+                chunkUpdateQueue.addFirst(c);
               }
             }
           }

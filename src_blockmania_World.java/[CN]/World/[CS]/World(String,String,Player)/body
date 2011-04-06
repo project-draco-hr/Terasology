@@ -15,6 +15,7 @@
           for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
             Chunk c=new Chunk(currentWorld,new Vector3f(x,y,z));
             chunks[x][y][z]=c;
+            c.generate();
           }
         }
       }
@@ -29,6 +30,14 @@
           }
         }
       }
+      for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
+        for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
+          for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+            Chunk c=chunks[x][y][z];
+            c.populate();
+          }
+        }
+      }
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
         for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
@@ -36,7 +45,7 @@
             Chunk c=chunks[x][y][z];
             c.generateVertexArray();
             if (!chunkUpdateQueueDL.contains(c)) {
-              chunkUpdateQueueDL.add(c);
+              chunkUpdateQueueDL.addLast(c);
             }
           }
         }
@@ -45,13 +54,13 @@
         while (chunkUpdateQueue.size() > 0 && !disableChunkUpdates) {
           Chunk c=null;
 synchronized (chunkUpdateQueue) {
-            c=chunkUpdateQueue.element();
+            c=chunkUpdateQueue.getFirst();
           }
           c.calcSunlight();
           c.generateVertexArray();
 synchronized (chunkUpdateQueueDL) {
             if (!chunkUpdateQueueDL.contains(c)) {
-              chunkUpdateQueueDL.add(c);
+              chunkUpdateQueueDL.addLast(c);
               chunkUpdateQueue.remove(c);
             }
           }

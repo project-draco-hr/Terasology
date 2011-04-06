@@ -12,20 +12,20 @@
     for (int z=0; z < Chunk.chunkDimensions.z; z++) {
       float height=(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64) + 64f;
       float y=height;
+      setBlock(x,(int)y,z,0x1);
+      y--;
       while (y > 0) {
-        if (getCaveDensityAt(x + xOffset,y + yOffset,z + zOffset) < 0.45 && getCanyonDensityAt(x + xOffset,y + yOffset,z + zOffset) < 0.2) {
-          if (height == y) {
-            setBlock(x,(int)y,z,0x1);
-          }
- else {
-            setBlock(x,(int)y,z,0x2);
-          }
+        setBlock(x,(int)y,z,0x2);
+        if (height - y < height * 0.75f) {
+          setBlock(x,(int)y,z,0x3);
         }
         y--;
       }
-      for (int i=64; i > 0; i--) {
-        if (getBlock(x,i,z) == 0) {
-          setBlock(x,i,z,0x4);
+      if (height < 64) {
+        for (int i=64; i > 0; i--) {
+          if (getBlock(x,i,z) == 0) {
+            setBlock(x,i,z,0x4);
+          }
         }
       }
     }
