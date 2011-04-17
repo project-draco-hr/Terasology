@@ -7,9 +7,11 @@
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
   try {
     Chunk c=chunks[chunkPosX][chunkPosY][chunkPosZ];
-    return c.getBlock(blockPosX,blockPosY,blockPosZ);
+    if (c.getPosition().x == calcChunkPosX(x) && c.getPosition().y == calcChunkPosY(y) && c.getPosition().z == calcChunkPosZ(z)) {
+      return c.getBlock(blockPosX,blockPosY,blockPosZ);
+    }
   }
  catch (  Exception e) {
-    return 0;
   }
+  return 0;
 }

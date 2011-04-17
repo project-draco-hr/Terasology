@@ -1,16 +1,11 @@
 {
-  int chunkUpdates=0;
-  while (chunkUpdateQueueDL.size() > 0) {
-    if (chunkUpdates < 128) {
-      Chunk c=null;
+  Chunk c=null;
+  for (int i=0; i < 4; i++) {
 synchronized (chunkUpdateQueueDL) {
-        c=chunkUpdateQueueDL.remove();
-      }
-      c.generateDisplayList();
-      chunkUpdates++;
+      c=chunkUpdateQueueDL.poll();
     }
- else {
-      break;
+    if (c != null) {
+      c.generateDisplayList();
     }
   }
 }

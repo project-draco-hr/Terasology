@@ -17,36 +17,30 @@
             chunks[x][y][z]=c;
             c.generate();
             c.populate();
-            c.calcSunlight();
+synchronized (chunkUpdateQueue) {
+              if (!chunkUpdateQueue.contains(c)) {
+                chunkUpdateQueue.add(c);
+              }
+            }
           }
         }
       }
       setWorldGenerated(true);
       player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
-      for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
-        for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
-          for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
-            Chunk c=chunks[x][y][z];
-            c.generateVertexArray();
-            if (!chunkUpdateQueueDL.contains(c)) {
-              chunkUpdateQueueDL.add(c);
-            }
-          }
-        }
-      }
       while (true) {
-        while (chunkUpdateQueue.size() > 0 && !disableChunkUpdates) {
+        if (!disableChunkUpdates) {
           Chunk c=null;
 synchronized (chunkUpdateQueue) {
-            c=chunkUpdateQueue.remove();
+            c=chunkUpdateQueue.poll();
           }
-          c.calcSunlight();
-          c.generateVertexArray();
+          if (c != null) {
+            c.calcSunlight();
+            c.generateVertexArray();
 synchronized (chunkUpdateQueueDL) {
-            if (!chunkUpdateQueueDL.contains(c)) {
-              chunkUpdateQueueDL.add(c);
-              chunkUpdateQueue.remove(c);
+              if (!chunkUpdateQueueDL.contains(c)) {
+                chunkUpdateQueueDL.add(c);
+              }
             }
           }
         }
