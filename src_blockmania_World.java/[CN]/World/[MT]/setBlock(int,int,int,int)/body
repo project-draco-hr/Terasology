@@ -11,11 +11,7 @@
       return;
     }
     c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-synchronized (chunkUpdateQueue) {
-      if (!chunkUpdateQueue.contains(c)) {
-        chunkUpdateQueue.add(c);
-      }
-    }
+    queueChunkForUpdate(c);
   }
  catch (  Exception e) {
     return;

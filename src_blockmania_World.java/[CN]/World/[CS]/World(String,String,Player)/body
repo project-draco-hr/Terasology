@@ -17,11 +17,7 @@
             chunks[x][y][z]=c;
             c.generate();
             c.populate();
-synchronized (chunkUpdateQueue) {
-              if (!chunkUpdateQueue.contains(c)) {
-                chunkUpdateQueue.add(c);
-              }
-            }
+            queueChunkForUpdate(c);
           }
         }
       }
@@ -29,19 +25,21 @@ synchronized (chunkUpdateQueue) {
       player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
-        if (!disableChunkUpdates) {
-          Chunk c=null;
-synchronized (chunkUpdateQueue) {
-            c=chunkUpdateQueue.poll();
-          }
-          if (c != null) {
-            c.calcSunlight();
-            c.generateVertexArray();
+        Chunk c=null;
 synchronized (chunkUpdateQueueDL) {
-              if (!chunkUpdateQueueDL.contains(c)) {
-                chunkUpdateQueueDL.add(c);
-              }
-            }
+          c=chunkUpdateQueue.peek();
+          if (chunkUpdateQueueDL.contains(c)) {
+            c=null;
+          }
+ else {
+            chunkUpdateQueue.poll();
+          }
+        }
+        if (c != null) {
+          c.calcSunlight();
+          c.generateVertexArray();
+synchronized (chunkUpdateQueueDL) {
+            chunkUpdateQueueDL.add(c);
           }
         }
       }

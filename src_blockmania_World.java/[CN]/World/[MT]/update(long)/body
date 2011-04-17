@@ -2,10 +2,13 @@
   Chunk c=null;
   for (int i=0; i < 4; i++) {
 synchronized (chunkUpdateQueueDL) {
-      c=chunkUpdateQueueDL.poll();
+      c=chunkUpdateQueueDL.peek();
     }
     if (c != null) {
       c.generateDisplayList();
+synchronized (chunkUpdateQueueDL) {
+        chunkUpdateQueueDL.remove(c);
+      }
     }
   }
 }
