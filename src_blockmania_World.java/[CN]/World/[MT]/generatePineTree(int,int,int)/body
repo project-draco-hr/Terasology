@@ -1,0 +1,15 @@
+{
+  int height=rand.nextInt() % 2 + 12;
+  for (int i=0; i < height; i++) {
+    setBlock(posX,posY + i,posZ,0x5);
+  }
+  for (int y=height / 4; y < height; y+=2) {
+    for (int x=-(height / 2 - y / 2); x <= (height / 2 - y / 2); x++) {
+      for (int z=-(height / 2 - y / 2); z <= (height / 2 - y / 2); z++) {
+        if (rand.nextFloat() < 0.95 && !(x == 0 && z == 0)) {
+          setBlock(posX + x,posY + y,posZ + z,0x6);
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,12 @@
       for (int z=0; z < Configuration.viewingDistanceInChunks.z * Chunk.chunkDimensions.z; z++) {
         if (getBlock(x,y,z) == 0x1) {
           if (rand.nextFloat() > 0.9984f) {
-            generateTree(x,y + 1,z);
+            if (rand.nextBoolean()) {
+              generateTree(x,y + 1,z);
+            }
+ else {
+              generatePineTree(x,y + 1,z);
+            }
           }
         }
       }

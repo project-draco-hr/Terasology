@@ -10,19 +10,20 @@
   }
   for (int x=0; x < Chunk.chunkDimensions.x; x++) {
     for (int z=0; z < Chunk.chunkDimensions.z; z++) {
-      float height=(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64) + 64f;
-      float y=height;
-      setBlock(x,(int)y,z,0x1);
-      y--;
-      while (y > 0) {
-        setBlock(x,(int)y,z,0x2);
-        if (height - y < height * 0.75f) {
-          setBlock(x,(int)y,z,0x3);
+      int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64) + 64;
+      for (int i=(int)chunkDimensions.y; i > 0; i--) {
+        if (getCaveDensityAt(x + xOffset,i,z + zOffset) < 0.5 && getDetailDensity(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
+          if (i == height) {
+            setBlock(x,i,z,0x1);
+          }
+ else           if (i < height) {
+            setBlock(x,i,z,0x2);
+            if (height - i < height * 0.75f) {
+              setBlock(x,i,z,0x3);
+            }
+          }
         }
-        y--;
-      }
-      if (height < 64) {
-        for (int i=64; i > 0; i--) {
+        if (i < 32) {
           if (getBlock(x,i,z) == 0) {
             setBlock(x,i,z,0x4);
           }
