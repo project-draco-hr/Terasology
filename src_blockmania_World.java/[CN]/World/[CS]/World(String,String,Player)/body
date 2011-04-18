@@ -50,6 +50,14 @@ synchronized (chunkUpdateQueueDL) {
     @Override public void run(){
       while (true) {
         updateInfWorld();
+        if (Helper.getInstance().getTime() - daylightTimer > 20000) {
+          daylight-=0.2;
+          if (daylight <= 0.1f) {
+            daylight=0.9f;
+          }
+          daylightTimer=Helper.getInstance().getTime();
+          updateAllChunks();
+        }
       }
     }
   }
