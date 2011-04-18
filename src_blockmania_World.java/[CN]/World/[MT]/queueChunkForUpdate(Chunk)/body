@@ -1,7 +1,33 @@
 {
+  if (c != null) {
+    ArrayList<Chunk> cs=new ArrayList<Chunk>();
+    cs.add(c);
+    try {
+      cs.add(chunks[(int)c.getPosition().x + 1][(int)c.getPosition().y][(int)c.getPosition().z]);
+    }
+ catch (    Exception e) {
+    }
+    try {
+      cs.add(chunks[(int)c.getPosition().x - 1][(int)c.getPosition().y][(int)c.getPosition().z]);
+    }
+ catch (    Exception e) {
+    }
+    try {
+      cs.add(chunks[(int)c.getPosition().x][(int)c.getPosition().y][(int)c.getPosition().z + 1]);
+    }
+ catch (    Exception e) {
+    }
+    try {
+      cs.add(chunks[(int)c.getPosition().x][(int)c.getPosition().y][(int)c.getPosition().z - 1]);
+    }
+ catch (    Exception e) {
+    }
 synchronized (chunkUpdateQueueDL) {
-    if (!chunkUpdateQueue.contains(c)) {
-      chunkUpdateQueue.add(c);
+      for (      Chunk cc : cs) {
+        if (!chunkUpdateQueue.contains(cc) && cc != null) {
+          chunkUpdateQueue.add(cc);
+        }
+      }
     }
   }
 }

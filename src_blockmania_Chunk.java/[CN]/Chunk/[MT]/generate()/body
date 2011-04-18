@@ -5,13 +5,8 @@
   int zOffset=(int)position.z * (int)chunkDimensions.z;
   for (int x=0; x < Chunk.chunkDimensions.x; x++) {
     for (int z=0; z < Chunk.chunkDimensions.z; z++) {
-      setBlock(x,0,z,0x3);
-    }
-  }
-  for (int x=0; x < Chunk.chunkDimensions.x; x++) {
-    for (int z=0; z < Chunk.chunkDimensions.z; z++) {
       int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64) + 64;
-      for (int i=(int)chunkDimensions.y; i > 0; i--) {
+      for (int i=(int)chunkDimensions.y; i >= 0; i--) {
         if (getCaveDensityAt(x + xOffset,i,z + zOffset) < 0.5 && getDetailDensity(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
           if (i == height) {
             setBlock(x,i,z,0x1);
