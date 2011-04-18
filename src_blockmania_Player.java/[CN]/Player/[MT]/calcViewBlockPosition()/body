@@ -2,11 +2,13 @@
   Vector3f blockPosition=new Vector3f((int)position.x + 0.5f,(int)position.y + 0.5f,(int)position.z + 0.5f);
   Vector3f vD=new Vector3f((float)Math.sin(Math.toRadians(yaw)),-1f * (float)Math.sin(Math.toRadians(pitch)),-1f * (float)Math.cos(Math.toRadians(yaw)));
   vD.normalise();
-  for (int z=0; z < 16; z++) {
+  for (int z=0; z < 8; z++) {
     blockPosition.x+=vD.x;
     blockPosition.y+=vD.y;
     blockPosition.z+=vD.z;
-    return blockPosition;
+    if (parent.getBlock((int)blockPosition.x,(int)blockPosition.y,(int)blockPosition.z) > 0) {
+      return blockPosition;
+    }
   }
-  return null;
+  return blockPosition;
 }
