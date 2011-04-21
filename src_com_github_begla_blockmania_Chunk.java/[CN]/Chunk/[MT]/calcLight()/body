@@ -4,7 +4,20 @@
     for (int z=0; z < (int)chunkDimensions.z; z++) {
       for (int y=0; y < (int)chunkDimensions.y; y++) {
         if (blocks[x][y][z] == 0 && sunlight[x][y][z] == 0) {
-          setLight(x,y,z,maxLightFromNeighbors(x,y,z));
+          float sunl=maxLightFromNeighbors(x,y,z);
+          setLight(x,y,z,sunl);
+        }
+ else         if (blocks[x][y][z] == 0 && sunlight[x][y][z] > 0f) {
+          float dimming=0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
+          setLight(x,y,z,Math.max(sunlight[x][y][z] - dimming,0f));
         }
       }
     }

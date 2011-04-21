@@ -37,7 +37,6 @@ synchronized (chunkUpdateQueueDL) {
           }
         }
         if (c != null) {
-          c.calcSunlight();
           c.calcLight();
           c.generateVertexArray();
 synchronized (chunkUpdateQueueDL) {
@@ -52,7 +51,7 @@ synchronized (chunkUpdateQueueDL) {
     @Override public void run(){
       while (true) {
         updateInfWorld();
-        if (Helper.getInstance().getTime() - daylightTimer > 20000) {
+        if (Helper.getInstance().getTime() - daylightTimer > 120000) {
           daylight-=0.2;
           if (daylight <= 0.4f) {
             daylight=1.0f;

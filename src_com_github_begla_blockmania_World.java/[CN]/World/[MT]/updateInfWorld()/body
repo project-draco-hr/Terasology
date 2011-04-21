@@ -1,8 +1,9 @@
 {
+  ArrayList<Chunk> chunksToUpdate=new ArrayList<Chunk>();
   for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
     for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
       for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
-        Chunk c=chunks[x][y][z];
+        Chunk c=getChunk(x,y,z);
         if (c != null) {
           Vector3f pos=new Vector3f(x,y,z);
           int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration.viewingDistanceInChunks.z + 1;
@@ -23,10 +24,14 @@
             c.setPosition(pos);
             c.generate();
             c.populate();
-            queueChunkForUpdate(c);
+            c.calcSunlight();
+            chunksToUpdate.add(c);
           }
         }
       }
     }
+  }
+  for (  Chunk c : chunksToUpdate) {
+    queueChunkForUpdate(c);
   }
 }
