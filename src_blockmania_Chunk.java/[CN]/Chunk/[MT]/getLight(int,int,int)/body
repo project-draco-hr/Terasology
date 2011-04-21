@@ -1,10 +1,15 @@
 {
-  float result;
+  float result=0f;
   try {
     result=light[x][y][z];
+    if (result == 0.0f) {
+      result=sunlight[x][y][z];
+    }
   }
  catch (  Exception e) {
-    return 0.0f;
+  }
+  if (result == 0f) {
+    result=MIN_LIGHT;
   }
   return result;
 }

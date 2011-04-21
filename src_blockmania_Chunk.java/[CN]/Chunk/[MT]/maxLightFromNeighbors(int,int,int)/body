@@ -1,0 +1,40 @@
+{
+  float intens=0.0f;
+  for (int x1=0; x1 <= 16; ++x1) {
+    float tempInt=parent.getSunlight(getBlockWorldPosX(x + x1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) / Math.abs(x1);
+    if (tempInt > intens) {
+      intens=tempInt;
+    }
+    if (parent.getBlock(getBlockWorldPosX(x + x1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) {
+      break;
+    }
+  }
+  for (int x1=0; x1 >= -16; --x1) {
+    float tempInt=parent.getSunlight(getBlockWorldPosX(x + x1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) / Math.abs(x1);
+    if (tempInt > intens) {
+      intens=tempInt;
+    }
+    if (parent.getBlock(getBlockWorldPosX(x + x1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) {
+      break;
+    }
+  }
+  for (int z1=0; z1 <= 16; ++z1) {
+    float tempInt=parent.getSunlight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + z1)) / Math.abs(z1);
+    if (tempInt > intens) {
+      intens=tempInt;
+    }
+    if (parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + z1)) > 0) {
+      break;
+    }
+  }
+  for (int z1=0; z1 >= -16; --z1) {
+    float tempInt=parent.getSunlight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + z1)) / Math.abs(z1);
+    if (tempInt > intens) {
+      intens=tempInt;
+    }
+    if (parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + z1)) > 0) {
+      break;
+    }
+  }
+  return intens;
+}

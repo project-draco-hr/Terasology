@@ -17,6 +17,7 @@
             chunks[x][y][z]=c;
             c.generate();
             c.populate();
+            c.calcSunlight();
             queueChunkForUpdate(c);
           }
         }
@@ -36,7 +37,7 @@ synchronized (chunkUpdateQueueDL) {
           }
         }
         if (c != null) {
-          c.calcSunlight();
+          c.calcLight();
           c.generateVertexArray();
 synchronized (chunkUpdateQueueDL) {
             chunkUpdateQueueDL.add(c);

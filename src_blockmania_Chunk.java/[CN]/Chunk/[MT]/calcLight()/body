@@ -1,0 +1,12 @@
+{
+  light=new float[(int)chunkDimensions.x][(int)chunkDimensions.y][(int)chunkDimensions.z];
+  for (int x=0; x < (int)chunkDimensions.x; x++) {
+    for (int z=0; z < (int)chunkDimensions.z; z++) {
+      for (int y=0; y < (int)chunkDimensions.y; y++) {
+        if (blocks[x][y][z] == 0 && sunlight[x][y][z] == 0) {
+          setLight(x,y,z,maxLightFromNeighbors(x,y,z));
+        }
+      }
+    }
+  }
+}
