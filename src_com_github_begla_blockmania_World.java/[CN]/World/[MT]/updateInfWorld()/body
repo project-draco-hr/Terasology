@@ -1,30 +1,29 @@
 {
   ArrayList<Chunk> chunksToUpdate=new ArrayList<Chunk>();
-  for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
-    for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
-      for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+  for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
+    for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
+      for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
         Chunk c=getChunk(x,y,z);
         if (c != null) {
           Vector3f pos=new Vector3f(x,y,z);
-          int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration.viewingDistanceInChunks.z + 1;
-          if (z < calcPlayerChunkOffsetZ() % Configuration.viewingDistanceInChunks.z) {
-            pos.z+=Configuration.viewingDistanceInChunks.z * multZ;
+          int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration._viewingDistanceInChunks.z + 1;
+          if (z < calcPlayerChunkOffsetZ() % Configuration._viewingDistanceInChunks.z) {
+            pos.z+=Configuration._viewingDistanceInChunks.z * multZ;
           }
  else {
-            pos.z+=Configuration.viewingDistanceInChunks.z * (multZ - 1);
+            pos.z+=Configuration._viewingDistanceInChunks.z * (multZ - 1);
           }
-          int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration.viewingDistanceInChunks.x + 1;
-          if (x < calcPlayerChunkOffsetX() % Configuration.viewingDistanceInChunks.x) {
-            pos.x+=Configuration.viewingDistanceInChunks.x * multX;
+          int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration._viewingDistanceInChunks.x + 1;
+          if (x < calcPlayerChunkOffsetX() % Configuration._viewingDistanceInChunks.x) {
+            pos.x+=Configuration._viewingDistanceInChunks.x * multX;
           }
  else {
-            pos.x+=Configuration.viewingDistanceInChunks.x * (multX - 1);
+            pos.x+=Configuration._viewingDistanceInChunks.x * (multX - 1);
           }
           if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
             c.setPosition(pos);
             c.generate();
             c.populate();
-            c.updateLighting();
             chunksToUpdate.add(c);
           }
         }

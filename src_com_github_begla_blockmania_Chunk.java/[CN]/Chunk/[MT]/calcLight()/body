@@ -1,23 +1,9 @@
 {
-  light=new float[(int)chunkDimensions.x][(int)chunkDimensions.y][(int)chunkDimensions.z];
-  for (int x=0; x < (int)chunkDimensions.x; x++) {
-    for (int z=0; z < (int)chunkDimensions.z; z++) {
-      for (int y=0; y < (int)chunkDimensions.y; y++) {
-        if (blocks[x][y][z] == 0 && sunlight[x][y][z] == 0) {
-          float sunl=maxLightFromNeighbors(x,y,z);
-          setLight(x,y,z,sunl);
-        }
- else         if (blocks[x][y][z] == 0 && sunlight[x][y][z] > 0f) {
-          float dimming=0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) > 0) ? DIMMING_INTENS : 0.0f;
-          dimming+=(parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) > 0) ? DIMMING_INTENS : 0.0f;
-          setLight(x,y,z,Math.max(sunlight[x][y][z] - dimming,0f));
+  for (int x=0; x < (int)CHUNK_DIMENSIONS.x; x++) {
+    for (int z=0; z < (int)CHUNK_DIMENSIONS.z; z++) {
+      for (int y=(int)CHUNK_DIMENSIONS.y - 1; y > 0; y--) {
+        if (_blocks[x][y][z] == 0 && _light[x][y][z] == MAX_LIGHT) {
+          floodLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z),1);
         }
       }
     }

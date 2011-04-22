@@ -1,62 +1,62 @@
 {
-  this.player=p;
-  rand=new Random(seed.hashCode());
-  pGen1=new PerlinNoise(rand.nextInt());
-  pGen2=new PerlinNoise(rand.nextInt());
-  pGen3=new PerlinNoise(rand.nextInt());
+  this._player=p;
+  _rand=new Random(seed.hashCode());
+  _pGen1=new PerlinNoise(_rand.nextInt());
+  _pGen2=new PerlinNoise(_rand.nextInt());
+  _pGen3=new PerlinNoise(_rand.nextInt());
   final World currentWorld=this;
-  chunks=new Chunk[(int)Configuration.viewingDistanceInChunks.x][(int)Configuration.viewingDistanceInChunks.y][(int)Configuration.viewingDistanceInChunks.z];
-  updateThread=new Thread(new Runnable(){
+  _chunks=new Chunk[(int)Configuration._viewingDistanceInChunks.x][(int)Configuration._viewingDistanceInChunks.y][(int)Configuration._viewingDistanceInChunks.z];
+  _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       long timeStart=System.currentTimeMillis();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait.");
-      for (int x=0; x < Configuration.viewingDistanceInChunks.x; x++) {
-        for (int y=0; y < Configuration.viewingDistanceInChunks.y; y++) {
-          for (int z=0; z < Configuration.viewingDistanceInChunks.z; z++) {
+      for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
+        for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
+          for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
             Chunk c=new Chunk(currentWorld,new Vector3f(x,y,z));
-            chunks[x][y][z]=c;
+            _chunks[x][y][z]=c;
             c.generate();
             c.populate();
-            c.updateLighting();
+            c.calcSunlight();
             queueChunkForUpdate(c);
           }
         }
       }
-      setWorldGenerated(true);
-      player.resetPlayer();
+      _worldGenerated=true;
+      _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
         Chunk c=null;
-synchronized (chunkUpdateQueueDL) {
-          c=chunkUpdateQueue.peek();
-          if (chunkUpdateQueueDL.contains(c)) {
+synchronized (_chunkUpdateQueueDL) {
+          c=_chunkUpdateQueue.peek();
+          if (_chunkUpdateQueueDL.contains(c)) {
             c=null;
           }
  else {
-            chunkUpdateQueue.poll();
+            _chunkUpdateQueue.poll();
           }
         }
         if (c != null) {
-          c.updateLighting();
+          c.calcLight();
           c.generateVertexArray();
-synchronized (chunkUpdateQueueDL) {
-            chunkUpdateQueueDL.add(c);
+synchronized (_chunkUpdateQueueDL) {
+            _chunkUpdateQueueDL.add(c);
           }
         }
       }
     }
   }
 );
-  worldThread=new Thread(new Runnable(){
+  _worldThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
         updateInfWorld();
-        if (Helper.getInstance().getTime() - daylightTimer > 120000) {
-          daylight-=0.2;
-          if (daylight <= 0.4f) {
-            daylight=1.0f;
+        if (Helper.getInstance().getTime() - _daylightTimer > 120000) {
+          _daylight-=0.2;
+          if (_daylight <= 0.4f) {
+            _daylight=1.0f;
           }
-          daylightTimer=Helper.getInstance().getTime();
+          _daylightTimer=Helper.getInstance().getTime();
           updateAllChunks();
         }
       }

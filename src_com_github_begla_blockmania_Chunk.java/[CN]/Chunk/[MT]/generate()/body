@@ -1,13 +1,13 @@
 {
   clear();
-  int xOffset=(int)position.x * (int)chunkDimensions.x;
-  int yOffset=(int)position.y * (int)chunkDimensions.y;
-  int zOffset=(int)position.z * (int)chunkDimensions.z;
-  for (int x=0; x < Chunk.chunkDimensions.x; x++) {
-    for (int z=0; z < Chunk.chunkDimensions.z; z++) {
+  int xOffset=(int)_position.x * (int)CHUNK_DIMENSIONS.x;
+  int yOffset=(int)_position.y * (int)CHUNK_DIMENSIONS.y;
+  int zOffset=(int)_position.z * (int)CHUNK_DIMENSIONS.z;
+  for (int x=0; x < Chunk.CHUNK_DIMENSIONS.x; x++) {
+    for (int z=0; z < Chunk.CHUNK_DIMENSIONS.z; z++) {
       int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64) + 64;
-      for (int i=(int)chunkDimensions.y; i >= 0; i--) {
-        if (getCaveDensityAt(x + xOffset,i,z + zOffset) < 0.5 && getDetailDensity(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
+      for (int i=(int)CHUNK_DIMENSIONS.y; i >= 0; i--) {
+        if (calcCaveDensityAt(x + xOffset,i,z + zOffset) < 0.5 && calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
           if (i == height) {
             setBlock(x,i,z,0x1);
           }
@@ -26,5 +26,5 @@
       }
     }
   }
-  changed=true;
+  _changed=true;
 }
