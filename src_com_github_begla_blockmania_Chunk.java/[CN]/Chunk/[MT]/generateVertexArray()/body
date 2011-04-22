@@ -14,7 +14,8 @@
           drawTop=checkBlockTypeToDraw(blockToCheck,block);
           if (drawTop) {
             Vector3f colorOffset=Helper.getInstance().getColorOffsetFor(block,Helper.SIDE.TOP);
-            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y + 1),getBlockWorldPosZ(z)),MIN_LIGHT);
+            ;
+            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y + 1),getBlockWorldPosZ(z)) - (dimBlockAtLocalPos(x,y + 1,z) ? DIMMING_INTENS : 0.0f),MIN_LIGHT);
             float texOffsetX=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.TOP).x;
             float texOffsetY=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.TOP).y;
             _color.add(colorOffset.x * shadowIntens * _parent.getDaylight());
@@ -54,7 +55,7 @@
           drawFront=checkBlockTypeToDraw(blockToCheck,block);
           if (drawFront) {
             Vector3f colorOffset=Helper.getInstance().getColorOffsetFor(block,Helper.SIDE.FRONT);
-            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)),MIN_LIGHT);
+            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)) - BLOCK_SIDE_DIMMING - (dimBlockAtLocalPos(x,y,z - 1) ? DIMMING_INTENS : 0.0f),MIN_LIGHT);
             float texOffsetX=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.FRONT).x;
             float texOffsetY=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.FRONT).y;
             _color.add(colorOffset.x * shadowIntens * _parent.getDaylight());
@@ -94,7 +95,7 @@
           drawBack=checkBlockTypeToDraw(blockToCheck,block);
           if (drawBack) {
             Vector3f colorOffset=Helper.getInstance().getColorOffsetFor(block,Helper.SIDE.BACK);
-            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)),MIN_LIGHT);
+            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)) - BLOCK_SIDE_DIMMING - (dimBlockAtLocalPos(x,y,z + 1) ? DIMMING_INTENS : 0.0f),MIN_LIGHT);
             float texOffsetX=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.BACK).x;
             float texOffsetY=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.BACK).y;
             _color.add(colorOffset.x * shadowIntens * _parent.getDaylight());
@@ -134,7 +135,7 @@
           drawLeft=checkBlockTypeToDraw(blockToCheck,block);
           if (drawLeft) {
             Vector3f colorOffset=Helper.getInstance().getColorOffsetFor(block,Helper.SIDE.LEFT);
-            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)),MIN_LIGHT);
+            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) - BLOCK_SIDE_DIMMING - (dimBlockAtLocalPos(x - 1,y,z) ? DIMMING_INTENS : 0.0f),MIN_LIGHT);
             float texOffsetX=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.LEFT).x;
             float texOffsetY=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.LEFT).y;
             _color.add(colorOffset.x * shadowIntens * _parent.getDaylight());
@@ -174,7 +175,7 @@
           drawRight=checkBlockTypeToDraw(blockToCheck,block);
           if (drawRight) {
             Vector3f colorOffset=Helper.getInstance().getColorOffsetFor(block,Helper.SIDE.RIGHT);
-            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)),MIN_LIGHT);
+            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) - BLOCK_SIDE_DIMMING - (dimBlockAtLocalPos(x + 1,y,z) ? DIMMING_INTENS : 0.0f),MIN_LIGHT);
             float texOffsetX=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.RIGHT).x;
             float texOffsetY=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.RIGHT).y;
             _color.add(colorOffset.x * shadowIntens * _parent.getDaylight());
@@ -214,7 +215,7 @@
           drawBottom=checkBlockTypeToDraw(blockToCheck,block);
           if (drawBottom) {
             Vector3f colorOffset=Helper.getInstance().getColorOffsetFor(block,Helper.SIDE.BOTTOM);
-            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y - 1),getBlockWorldPosZ(z)),MIN_LIGHT);
+            float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y - 1),getBlockWorldPosZ(z)) - BLOCK_SIDE_DIMMING - (dimBlockAtLocalPos(x,y - 1,z) ? DIMMING_INTENS : 0.0f),MIN_LIGHT);
             float texOffsetX=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.BOTTOM).x;
             float texOffsetY=Helper.getInstance().getTextureOffsetFor(block,Helper.SIDE.BOTTOM).y;
             _color.add(colorOffset.x * shadowIntens * _parent.getDaylight());

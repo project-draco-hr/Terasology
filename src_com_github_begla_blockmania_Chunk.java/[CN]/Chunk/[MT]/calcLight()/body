@@ -1,9 +1,11 @@
 {
-  for (int x=0; x < (int)CHUNK_DIMENSIONS.x; x++) {
-    for (int z=0; z < (int)CHUNK_DIMENSIONS.z; z++) {
-      for (int y=(int)CHUNK_DIMENSIONS.y - 1; y > 0; y--) {
-        if (_blocks[x][y][z] == 0 && _light[x][y][z] == MAX_LIGHT) {
-          floodLight(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z),1);
+  for (int ite=0; ite < 16; ite++) {
+    for (int x=0; x < (int)CHUNK_DIMENSIONS.x; x++) {
+      for (int z=0; z < (int)CHUNK_DIMENSIONS.z; z++) {
+        for (int y=(int)CHUNK_DIMENSIONS.y - 1; y > 0; y--) {
+          if (_blocks[x][y][z] == 0 && _light[x][y][z] == MAX_LIGHT - ite * 0.0625f) {
+            floodLightAtWorldPos(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z));
+          }
         }
       }
     }
