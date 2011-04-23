@@ -27,20 +27,32 @@
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
         Chunk c=null;
+        if (_chunkUpdateQueueLight.size() == 0) {
 synchronized (_chunkUpdateQueueDL) {
-          c=_chunkUpdateQueue.peek();
-          if (_chunkUpdateQueueDL.contains(c)) {
-            c=null;
-          }
+            c=_chunkUpdateQueue.peek();
+            if (_chunkUpdateQueueDL.contains(c)) {
+              c=null;
+            }
  else {
-            _chunkUpdateQueue.poll();
+              _chunkUpdateQueue.poll();
+            }
+          }
+          if (c != null) {
+            c.generateVertexArray();
+synchronized (_chunkUpdateQueueDL) {
+              _chunkUpdateQueueDL.add(c);
+            }
           }
         }
-        if (c != null) {
-          c.calcLight();
-          c.generateVertexArray();
+ else {
 synchronized (_chunkUpdateQueueDL) {
-            _chunkUpdateQueueDL.add(c);
+            c=_chunkUpdateQueueLight.poll();
+          }
+          if (c != null) {
+            c.calcLight();
+synchronized (_chunkUpdateQueueDL) {
+              _chunkUpdateQueue.add(c);
+            }
           }
         }
       }

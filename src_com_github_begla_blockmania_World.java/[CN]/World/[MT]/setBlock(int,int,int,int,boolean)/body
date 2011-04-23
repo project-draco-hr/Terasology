@@ -11,7 +11,10 @@
       return;
     }
     c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-    queueChunkForUpdate(c);
+    if (update) {
+      c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
+      queueChunkForUpdate(c);
+    }
   }
  catch (  Exception e) {
     return;
