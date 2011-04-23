@@ -24,8 +24,9 @@
       _worldGenerated=true;
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
+      PriorityBlockingQueue<Chunk> _chunkUpdateQueue=null;
       while (true) {
-        _chunkUpdateQueue.clear();
+        _chunkUpdateQueue=new PriorityBlockingQueue<Chunk>();
         for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
           for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
             for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
@@ -48,7 +49,9 @@ synchronized (_chunkUpdateQueueDL) {
           c.calcLight();
           c.generateVertexArray();
           updateCounter++;
-          _chunkUpdateQueueDL.add(c);
+synchronized (_chunkUpdateQueueDL) {
+            _chunkUpdateQueueDL.add(c);
+          }
         }
       }
     }

@@ -1,5 +1,4 @@
 {
-  ArrayList<Chunk> chunksToUpdate=new ArrayList<Chunk>();
   for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
     for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
       for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
@@ -25,7 +24,7 @@
             c.generate();
             c.populate();
             c.calcSunlight();
-            chunksToUpdate.add(c);
+            markChunksAsDirty(c);
           }
         }
       }
