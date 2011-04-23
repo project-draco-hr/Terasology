@@ -11,12 +11,9 @@
       return;
     }
     c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-    if (update) {
-      c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
-      queueChunkForUpdate(c);
-    }
+    c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
+    markChunksAsDirty(chunkPosX,chunkPosY,chunkPosZ);
   }
  catch (  Exception e) {
-    return;
   }
 }

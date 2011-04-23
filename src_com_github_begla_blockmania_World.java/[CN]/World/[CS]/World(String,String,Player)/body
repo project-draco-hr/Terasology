@@ -18,7 +18,6 @@
             c.generate();
             c.populate();
             c.calcSunlight();
-            queueChunkForUpdate(c);
           }
         }
       }
@@ -26,34 +25,30 @@
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
-        Chunk c=null;
-        if (_chunkUpdateQueueLight.size() == 0) {
+        _chunkUpdateQueue.clear();
+        for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
+          for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
+            for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
 synchronized (_chunkUpdateQueueDL) {
-            c=_chunkUpdateQueue.peek();
-            if (_chunkUpdateQueueDL.contains(c)) {
-              c=null;
-            }
- else {
-              _chunkUpdateQueue.poll();
-            }
-          }
-          if (c != null) {
-            c.generateVertexArray();
-synchronized (_chunkUpdateQueueDL) {
-              _chunkUpdateQueueDL.add(c);
+                if (_chunks[x][y][z].isDirty()) {
+                  _chunkUpdateQueue.add(_chunks[x][y][z]);
+                }
+              }
             }
           }
         }
- else {
+        int updateCounter=0;
+        while (_chunkUpdateQueue.size() > 0 && updateCounter < 10) {
+          Chunk c=_chunkUpdateQueue.poll();
 synchronized (_chunkUpdateQueueDL) {
-            c=_chunkUpdateQueueLight.poll();
-          }
-          if (c != null) {
-            c.calcLight();
-synchronized (_chunkUpdateQueueDL) {
-              _chunkUpdateQueue.add(c);
+            if (_chunkUpdateQueueDL.contains(c)) {
+              continue;
             }
           }
+          c.calcLight();
+          c.generateVertexArray();
+          updateCounter++;
+          _chunkUpdateQueueDL.add(c);
         }
       }
     }
