@@ -7,6 +7,9 @@
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
   try {
     Chunk c=getChunk(chunkPosX,chunkPosY,chunkPosZ);
+    if (c.getPosition().x != calcChunkPosX(x) || c.getPosition().y != calcChunkPosY(y) || c.getPosition().z != calcChunkPosZ(z)) {
+      c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+    }
     c.setLight(blockPosX,blockPosY,blockPosZ,intens);
   }
  catch (  Exception e) {

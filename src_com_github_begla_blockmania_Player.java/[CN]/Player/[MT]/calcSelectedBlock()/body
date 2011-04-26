@@ -1,0 +1,19 @@
+{
+  ArrayList<RayFaceIntersection> inters=new ArrayList<RayFaceIntersection>();
+  Vector3f vD=viewDirection();
+  for (int x=-4; x < 4; x++) {
+    for (int y=-4; y < 4; y++) {
+      for (int z=-4; z < 4; z++) {
+        ArrayList<RayFaceIntersection> iss=_parent.rayBlockIntersection((int)_position.x + x,(int)_position.y + y,(int)_position.z + z,_position,vD);
+        if (iss != null) {
+          inters.addAll(iss);
+        }
+      }
+    }
+  }
+  if (inters.size() > 0) {
+    Collections.sort(inters);
+    return inters.get(0);
+  }
+  return null;
+}

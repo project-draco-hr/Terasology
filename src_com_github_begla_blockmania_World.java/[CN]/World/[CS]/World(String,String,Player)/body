@@ -4,50 +4,57 @@
   _pGen1=new PerlinNoise(_rand.nextInt());
   _pGen2=new PerlinNoise(_rand.nextInt());
   _pGen3=new PerlinNoise(_rand.nextInt());
-  final World currentWorld=this;
   _chunks=new Chunk[(int)Configuration._viewingDistanceInChunks.x][(int)Configuration._viewingDistanceInChunks.y][(int)Configuration._viewingDistanceInChunks.z];
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       long timeStart=System.currentTimeMillis();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait.");
       for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-        for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
-          for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
-            Chunk c=new Chunk(currentWorld,new Vector3f(x,y,z));
-            _chunks[x][y][z]=c;
-            c.generate();
-            c.populate();
-            c.calcSunlight();
-          }
+        for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+          Chunk c=loadOrCreateChunk(x,z);
+          _chunks[x][0][z]=c;
+        }
+      }
+      for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
+        for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+          Chunk c=_chunks[x][0][z];
+          c.populate();
+          c.calcSunlight();
+          c.fresh=false;
+          c.markDirty();
         }
       }
       _worldGenerated=true;
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
-      PriorityBlockingQueue<Chunk> _chunkUpdateQueue=null;
+      PriorityBlockingQueue<Chunk> updates=null;
       while (true) {
-        _chunkUpdateQueue=new PriorityBlockingQueue<Chunk>();
-        for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-          for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
-            for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+        updates=new PriorityBlockingQueue<Chunk>();
+        int updateCounter=0;
+        for (int x=0; x < (int)Configuration._viewingDistanceInChunks.x; x++) {
+          for (int z=0; z < (int)Configuration._viewingDistanceInChunks.z; z++) {
+            for (int y=0; y < (int)Configuration._viewingDistanceInChunks.y; y++) {
 synchronized (_chunkUpdateQueueDL) {
-                if (_chunks[x][y][z].isDirty()) {
-                  _chunkUpdateQueue.add(_chunks[x][y][z]);
+                Chunk c=_chunks[x][y][z];
+                if (!_chunkUpdateQueueDL.contains(c)) {
+                  if (c.isDirty()) {
+                    updates.add(c);
+                  }
                 }
               }
             }
           }
         }
-        int updateCounter=0;
-        while (_chunkUpdateQueue.size() > 0 && updateCounter < 10) {
-          Chunk c=_chunkUpdateQueue.poll();
-synchronized (_chunkUpdateQueueDL) {
-            if (_chunkUpdateQueueDL.contains(c)) {
-              continue;
-            }
+        while (updates.size() > 0 && updateCounter < 4) {
+          Chunk c=updates.poll();
+          if (c.fresh) {
+            c.populate();
+            c.calcSunlight();
+            c.fresh=false;
           }
           c.calcLight();
           c.generateVertexArray();
+          c.markClean();
           updateCounter++;
 synchronized (_chunkUpdateQueueDL) {
             _chunkUpdateQueueDL.add(c);
@@ -61,14 +68,6 @@ synchronized (_chunkUpdateQueueDL) {
     @Override public void run(){
       while (true) {
         updateInfWorld();
-        if (Helper.getInstance().getTime() - _daylightTimer > 120000) {
-          _daylight-=0.2;
-          if (_daylight <= 0.4f) {
-            _daylight=1.0f;
-          }
-          _daylightTimer=Helper.getInstance().getTime();
-          updateAllChunks();
-        }
       }
     }
   }

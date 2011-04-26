@@ -8,11 +8,10 @@
   try {
     Chunk c=getChunk(chunkPosX,chunkPosY,chunkPosZ);
     if (c.getPosition().x != calcChunkPosX(x) || c.getPosition().y != calcChunkPosY(y) || c.getPosition().z != calcChunkPosZ(z)) {
-      return;
+      c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
     }
     c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-    c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
-    markChunksAsDirty(c);
+    c.markChunkAndNeighborsDirty();
   }
  catch (  Exception e) {
   }

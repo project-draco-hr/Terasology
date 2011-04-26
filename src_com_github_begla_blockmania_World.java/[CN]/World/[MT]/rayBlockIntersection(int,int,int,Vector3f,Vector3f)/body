@@ -1,0 +1,34 @@
+{
+  if (getBlock(x,y,z) == 0) {
+    return null;
+  }
+  ArrayList<RayFaceIntersection> result=new ArrayList<RayFaceIntersection>();
+  Vector3f[] vertices=verticesForBlockAt(x,y,z);
+  Vector3f blockPos=new Vector3f(x,y,z);
+  RayFaceIntersection is=rayFaceIntersection(blockPos,vertices[0],vertices[3],vertices[2],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[4],vertices[5],vertices[6],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[0],vertices[4],vertices[7],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[1],vertices[2],vertices[6],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[3],vertices[7],vertices[6],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[0],vertices[1],vertices[5],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  Collections.sort(result);
+  return result;
+}

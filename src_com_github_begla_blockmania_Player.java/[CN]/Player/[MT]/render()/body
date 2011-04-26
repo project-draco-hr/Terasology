@@ -1,5 +1,13 @@
 {
-  glRotatef((float)pitch,1f,0f,0f);
-  glRotatef((float)yaw,0f,1f,0f);
+  glRotatef((float)_pitch,1f,0f,0f);
+  glRotatef((float)_yaw,0f,1f,0f);
   glTranslatef(-_position.x,-_position.y,-_position.z);
+  glPointSize(15f);
+  glColor3f(255.0f,0.0f,0.0f);
+  RayFaceIntersection is=calcSelectedBlock();
+  glBegin(GL_POINTS);
+  if (is != null) {
+    glVertex3f(is.getIntersectPoint().x,is.getIntersectPoint().y,is.getIntersectPoint().z);
+  }
+  glEnd();
 }

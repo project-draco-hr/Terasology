@@ -6,12 +6,10 @@
   glEnable(GL_FOG);
   glPopMatrix();
   for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-    for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
-      for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
-        Chunk c=getChunk(x,y,z);
-        if (c != null) {
-          c.render();
-        }
+    for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+      Chunk c=getChunk(x,0,z);
+      if (c != null) {
+        c.render();
       }
     }
   }

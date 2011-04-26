@@ -1,31 +1,27 @@
 {
   for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-    for (int y=0; y < Configuration._viewingDistanceInChunks.y; y++) {
-      for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
-        Chunk c=getChunk(x,y,z);
-        if (c != null) {
-          Vector3f pos=new Vector3f(x,y,z);
-          int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration._viewingDistanceInChunks.z + 1;
-          if (z < calcPlayerChunkOffsetZ() % Configuration._viewingDistanceInChunks.z) {
-            pos.z+=Configuration._viewingDistanceInChunks.z * multZ;
-          }
+    for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+      Chunk c=getChunk(x,0,z);
+      if (c != null) {
+        Vector3f pos=new Vector3f(x,0,z);
+        int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration._viewingDistanceInChunks.z + 1;
+        if (z < calcPlayerChunkOffsetZ() % Configuration._viewingDistanceInChunks.z) {
+          pos.z+=Configuration._viewingDistanceInChunks.z * multZ;
+        }
  else {
-            pos.z+=Configuration._viewingDistanceInChunks.z * (multZ - 1);
-          }
-          int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration._viewingDistanceInChunks.x + 1;
-          if (x < calcPlayerChunkOffsetX() % Configuration._viewingDistanceInChunks.x) {
-            pos.x+=Configuration._viewingDistanceInChunks.x * multX;
-          }
+          pos.z+=Configuration._viewingDistanceInChunks.z * (multZ - 1);
+        }
+        int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration._viewingDistanceInChunks.x + 1;
+        if (x < calcPlayerChunkOffsetX() % Configuration._viewingDistanceInChunks.x) {
+          pos.x+=Configuration._viewingDistanceInChunks.x * multX;
+        }
  else {
-            pos.x+=Configuration._viewingDistanceInChunks.x * (multX - 1);
-          }
-          if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
-            c.setPosition(pos);
-            c.generate();
-            c.populate();
-            c.calcSunlight();
-            markChunksAsDirty(c);
-          }
+          pos.x+=Configuration._viewingDistanceInChunks.x * (multX - 1);
+        }
+        if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
+          c=loadOrCreateChunk((int)pos.x,(int)pos.z);
+          _chunks[x][0][z]=c;
+          c.markChunkAndNeighborsDirty();
         }
       }
     }

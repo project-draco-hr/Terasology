@@ -1,6 +1,9 @@
 {
   if (getParent() != null) {
-    Vector3f blockPosition=calcViewBlockPosition();
-    getParent().setBlock((int)blockPosition.x,(int)blockPosition.y,(int)blockPosition.z,0x2);
+    RayFaceIntersection is=calcSelectedBlock();
+    if (is != null) {
+      Vector3f blockPos=is.calcAdjacentBlockPos();
+      getParent().setBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,0x2);
+    }
   }
 }
