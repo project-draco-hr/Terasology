@@ -5,14 +5,9 @@
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosY=calcBlockPosY(y,chunkPosY);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  try {
-    Chunk c=getChunk(chunkPosX,chunkPosY,chunkPosZ);
-    if (c.getPosition().x != calcChunkPosX(x) || c.getPosition().y != calcChunkPosY(y) || c.getPosition().z != calcChunkPosZ(z)) {
-      c=loadChunk(calcChunkPosX(x),calcChunkPosZ(z));
-    }
+  Chunk c=loadChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  if (c != null) {
     return c.getBlock(blockPosX,blockPosY,blockPosZ);
-  }
- catch (  Exception e) {
   }
   return 0;
 }

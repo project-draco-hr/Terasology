@@ -13,38 +13,25 @@
         for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
           Chunk c=loadOrCreateChunk(x,z);
           _chunks[x][0][z]=c;
-          c.generate();
           queueChunkForUpdate(c,0);
         }
       }
       _worldGenerated=true;
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
-      PriorityBlockingQueue<Chunk> sortedUpdates=null;
       while (true) {
-        sortedUpdates=new PriorityBlockingQueue<Chunk>();
-        for (        Chunk c : _chunkUpdateNormal) {
-          sortedUpdates.add(c);
-        }
-        Chunk c=null;
         if (_chunkUpdateImportant.size() > 0) {
-          c=_chunkUpdateImportant.poll();
+          Chunk c=_chunkUpdateImportant.poll();
+          processChunk(c);
         }
  else {
-          c=sortedUpdates.poll();
-          _chunkUpdateNormal.remove(c);
-        }
-        if (c != null) {
-          c.calcLight();
-          Chunk[] neighbors=c.getNeighbors();
-          for (          Chunk nc : neighbors) {
-            if (nc != null) {
-              nc.generateVertexArray();
-              _chunkUpdateQueueDL.add(nc);
-            }
+          ArrayList<Chunk> sortedUpdates=new ArrayList<Chunk>(_chunkUpdateNormal);
+          Collections.sort(sortedUpdates);
+          if (sortedUpdates.size() > 0) {
+            Chunk c=sortedUpdates.remove(0);
+            _chunkUpdateNormal.remove(c);
+            processChunk(c);
           }
-          c.generateVertexArray();
-          _chunkUpdateQueueDL.add(c);
         }
       }
     }

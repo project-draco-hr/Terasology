@@ -1,9 +1,11 @@
 {
-  if (_chunkID == -1) {
-    _chunkID=maxChunkID + 1;
-    maxChunkID++;
-    _displayList=glGenLists(1);
+  if (_color.isEmpty() && _tex.isEmpty() && _quads.isEmpty()) {
+    return;
   }
+  if (glIsList(_displayList)) {
+    glDeleteLists(_displayList,1);
+  }
+  _displayList=glGenLists(1);
   FloatBuffer cb=null;
   FloatBuffer tb=null;
   FloatBuffer vb=null;
@@ -34,9 +36,6 @@
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
-  vb=null;
-  tb=null;
-  cb=null;
   _quads.clear();
   _tex.clear();
   _color.clear();

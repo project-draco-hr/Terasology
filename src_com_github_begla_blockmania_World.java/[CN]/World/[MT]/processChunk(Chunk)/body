@@ -1,0 +1,25 @@
+{
+  if (c != null) {
+    if (!c.generate() && c._dirty) {
+      c.calcLight();
+    }
+    Chunk[] neighbors=c.getNeighbors();
+    for (    Chunk nc : neighbors) {
+      if (nc != null) {
+        if (!nc.generate() && nc._dirty) {
+          nc.calcLight();
+        }
+        if (nc._dirty) {
+          nc.generateVertexArray();
+          nc._dirty=false;
+          _chunkUpdateQueueDL.add(nc);
+        }
+      }
+    }
+    if (c._dirty) {
+      c.generateVertexArray();
+      c._dirty=false;
+      _chunkUpdateQueueDL.add(c);
+    }
+  }
+}

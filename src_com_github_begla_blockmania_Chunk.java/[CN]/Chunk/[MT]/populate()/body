@@ -3,11 +3,11 @@
     for (int x=0; x < Chunk.CHUNK_DIMENSIONS.x; x++) {
       for (int z=0; z < Chunk.CHUNK_DIMENSIONS.z; z++) {
         float dens=calcForestDensity(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z));
-        if (dens > 0.55 && dens < 0.7f && _parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z)) == 0x1 && y > 32) {
+        if (dens > 0.55 && dens < 0.7f && getBlock(x,y,z) == 0x1 && y > 32) {
           _parent.generateTree(getBlockWorldPosX(x),getBlockWorldPosY((int)y) + 1,getBlockWorldPosZ(z),false);
           return;
         }
- else         if (dens >= 0.7f && _parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z)) == 0x1 && y > 32) {
+ else         if (dens >= 0.7f && getBlock(x,y,z) == 0x1 && y > 32) {
           _parent.generatePineTree(getBlockWorldPosX(x),getBlockWorldPosY((int)y) + 1,getBlockWorldPosZ(z),false);
           return;
         }

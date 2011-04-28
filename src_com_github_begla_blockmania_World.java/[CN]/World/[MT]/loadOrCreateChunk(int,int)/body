@@ -1,12 +1,28 @@
 {
-  Chunk c=_chunkCache.get(Helper.getInstance().cantorize(x,z));
+  Chunk c=getChunk(x,0,z);
+  if (c != null) {
+    if (c.getPosition().x != x || c.getPosition().y != 0 || c.getPosition().z != z) {
+      c=_chunkCache.get(Helper.getInstance().cantorize(x,z));
+    }
+  }
   if (c != null) {
     return c;
   }
+ else {
+  }
+  if (_chunkCache.size() >= 1024) {
+    ArrayList<Chunk> sortedChunks=new ArrayList<Chunk>(_chunkCache.values());
+    Collections.sort(sortedChunks);
+    System.out.println("Sorting...");
+    for (int i=0; i < 256; i++) {
+      int indexToDelete=sortedChunks.size() - i;
+      if (indexToDelete >= 0 && indexToDelete < sortedChunks.size()) {
+        Chunk cc=sortedChunks.get(indexToDelete);
+        _chunkCache.remove(Helper.getInstance().cantorize((int)cc.getPosition().x,(int)cc.getPosition().z));
+      }
+    }
+  }
   c=new Chunk(this,new Vector3f(x,0,z));
   _chunkCache.put(Helper.getInstance().cantorize(x,z),c);
-  while (_chunkCache.size() >= 1024) {
-    _chunkCache.pollFirstEntry();
-  }
   return c;
 }
