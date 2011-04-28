@@ -3,12 +3,10 @@
   if (c != null) {
     return c;
   }
-  if (_chunkCache.size() == 1024) {
-    for (int i=0; i < 16; i++) {
-      _chunkCache.pollFirstEntry().getValue().clear();
-    }
-  }
   c=new Chunk(this,new Vector3f(x,0,z));
   _chunkCache.put(Helper.getInstance().cantorize(x,z),c);
+  while (_chunkCache.size() >= 512) {
+    _chunkCache.pollFirstEntry();
+  }
   return c;
 }

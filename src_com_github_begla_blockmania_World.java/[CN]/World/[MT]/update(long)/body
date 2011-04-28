@@ -1,14 +1,6 @@
 {
-  Chunk c=null;
-  for (int i=0; i < 8; i++) {
-synchronized (_chunkUpdateQueueDL) {
-      c=_chunkUpdateQueueDL.peek();
-    }
-    if (c != null) {
-      c.generateDisplayList();
-synchronized (_chunkUpdateQueueDL) {
-        _chunkUpdateQueueDL.remove(c);
-      }
-    }
+  Chunk c=_chunkUpdateQueueDL.poll();
+  if (c != null) {
+    c.generateDisplayList();
   }
 }

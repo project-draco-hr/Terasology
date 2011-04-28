@@ -13,50 +13,44 @@
         for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
           Chunk c=loadOrCreateChunk(x,z);
           _chunks[x][0][z]=c;
-        }
-      }
-      for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-        for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
-          Chunk c=_chunks[x][0][z];
-          c.populate();
-          c.calcSunlight();
-          c.fresh=false;
-          c.markDirty();
+          queueChunkForUpdate(c,0);
         }
       }
       _worldGenerated=true;
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
-      PriorityBlockingQueue<Chunk> updates=null;
+      PriorityBlockingQueue<Chunk> sortedUpdates=null;
       while (true) {
-        updates=new PriorityBlockingQueue<Chunk>();
-        int updateCounter=0;
-        for (int x=0; x < (int)Configuration._viewingDistanceInChunks.x; x++) {
-          for (int z=0; z < (int)Configuration._viewingDistanceInChunks.z; z++) {
-            for (int y=0; y < (int)Configuration._viewingDistanceInChunks.y; y++) {
-synchronized (_chunkUpdateQueueDL) {
-                Chunk c=_chunks[x][y][z];
-                if (!_chunkUpdateQueueDL.contains(c)) {
-                  if (c.isDirty()) {
-                    updates.add(c);
-                  }
-                }
+        sortedUpdates=new PriorityBlockingQueue<Chunk>();
+        for (        Chunk c : _chunkUpdateNormal) {
+          sortedUpdates.add(c);
+        }
+        for (int i=0; i < 4; i++) {
+          Chunk c=null;
+          if (_chunkUpdateImportant.size() > 0) {
+            c=_chunkUpdateImportant.poll();
+          }
+ else {
+            c=sortedUpdates.poll();
+            _chunkUpdateNormal.remove(c);
+          }
+          if (c != null) {
+            c.generate();
+            c.calcLight();
+            Chunk[] neighbors=c.getNeighbors();
+            for (            Chunk nc : neighbors) {
+              if (nc != null) {
+                nc.generate();
+                nc.calcLight();
               }
             }
-          }
-        }
-        while (updates.size() > 0 && updateCounter < 16) {
-          Chunk c=updates.poll();
-          if (c.fresh) {
-            c.populate();
-            c.calcSunlight();
-            c.fresh=false;
-          }
-          c.calcLight();
-          c.generateVertexArray();
-          c.markClean();
-          updateCounter++;
-synchronized (_chunkUpdateQueueDL) {
+            for (            Chunk nc : neighbors) {
+              if (nc != null) {
+                nc.generateVertexArray();
+                _chunkUpdateQueueDL.add(nc);
+              }
+            }
+            c.generateVertexArray();
             _chunkUpdateQueueDL.add(c);
           }
         }

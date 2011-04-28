@@ -1,10 +1,10 @@
 {
+  try {
+    _textureSun=TextureLoader.getTexture("PNG",new FileInputStream(Chunk.class.getResource("/com/github/begla/blockmania/images/sun.png").getPath()),GL_NEAREST);
+  }
+ catch (  IOException ex) {
+    Logger.getLogger(World.class.getName()).log(Level.SEVERE,null,ex);
+  }
   _updateThread.start();
   _worldThread.start();
-  Sphere s=new Sphere();
-  _displayListSun=glGenLists(1);
-  glNewList(_displayListSun,GL_COMPILE);
-  glColor4f(1.0f,0.7f,0.0f,1.0f);
-  s.draw(256.0f,16,32);
-  glEndList();
 }

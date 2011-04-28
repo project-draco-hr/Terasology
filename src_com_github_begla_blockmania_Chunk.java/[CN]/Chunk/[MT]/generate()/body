@@ -1,39 +1,8 @@
 {
-  clear();
-  int xOffset=(int)_position.x * (int)CHUNK_DIMENSIONS.x;
-  int yOffset=(int)_position.y * (int)CHUNK_DIMENSIONS.y;
-  int zOffset=(int)_position.z * (int)CHUNK_DIMENSIONS.z;
-  for (int x=0; x < Chunk.CHUNK_DIMENSIONS.x; x++) {
-    for (int z=0; z < Chunk.CHUNK_DIMENSIONS.z; z++) {
-      int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64) + 64;
-      for (int i=(int)CHUNK_DIMENSIONS.y; i > 0; i--) {
-        if (calcCaveDensityAt(x + xOffset,i,z + zOffset) < 0.5 && calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
-          if (i == height) {
-            if (i != 36) {
-              setBlock(x,i,z,0x1);
-            }
- else {
-              setBlock(x,i,z,0x7);
-            }
-          }
- else           if (i < height) {
-            if (i < height * 0.75f) {
-              setBlock(x,i,z,0x3);
-            }
- else {
-              setBlock(x,i,z,0x2);
-            }
-            if (i <= 36 && i >= 32) {
-              setBlock(x,i,z,0x7);
-            }
-          }
-        }
-        if (i <= 32) {
-          if (getBlock(x,i,z) == 0) {
-            setBlock(x,i,z,0x4);
-          }
-        }
-      }
-    }
+  if (_fresh) {
+    generateTerrain();
+    populate();
+    calcSunlight();
+    _fresh=false;
   }
 }

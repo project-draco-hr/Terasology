@@ -14,6 +14,11 @@
         _parent.generateForest();
       }
  else       if (Keyboard.getEventKey() == Keyboard.KEY_Z) {
+        RayFaceIntersection is=calcSelectedBlock();
+        if (is != null) {
+          Vector3f blockPos=is.getBlockPos();
+          _parent.generateTree((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,true);
+        }
       }
  else       if (Keyboard.getEventKey() == Keyboard.KEY_U) {
         _parent.updateAllChunks();
@@ -23,6 +28,9 @@
       }
  else       if (Keyboard.getEventKey() == Keyboard.KEY_H) {
         this.demoAutoFlyMode=!demoAutoFlyMode;
+      }
+ else       if (Keyboard.getEventKey() == Keyboard.KEY_P) {
+        Configuration._showPlacingBox=!Configuration._showPlacingBox;
       }
  else       if (Keyboard.getEventKey() == Keyboard.KEY_I) {
         Configuration._showChunkOutlines=!Configuration._showChunkOutlines;

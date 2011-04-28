@@ -1,15 +1,18 @@
 {
+  glShadeModel(GL_SMOOTH);
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_FOG);
   glDepthFunc(GL_LEQUAL);
   glLineWidth(4.0f);
+  glHint(GL_PERSPECTIVE_CORRECTION_HINT,GL_NICEST);
   glHint(GL_FOG_HINT,GL_NICEST);
   glFogi(GL_FOG_MODE,GL_LINEAR);
   glFogf(GL_FOG_DENSITY,1.0f);
-  glFogf(GL_FOG_START,64);
-  glFogf(GL_FOG_END,256);
+  float viewingDistance=(Configuration._viewingDistanceInChunks.x * Chunk.CHUNK_DIMENSIONS.x) / 2f;
+  glFogf(GL_FOG_START,viewingDistance - 64f);
+  glFogf(GL_FOG_END,viewingDistance);
   player=new Player();
   world=new World("WORLD1","ABCDEF",player);
   player.setParent(world);

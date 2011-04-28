@@ -1,0 +1,20 @@
+{
+  int chunkPosX=calcChunkPosX(x) % (int)Configuration._viewingDistanceInChunks.x;
+  int chunkPosY=calcChunkPosY(y) % (int)Configuration._viewingDistanceInChunks.y;
+  int chunkPosZ=calcChunkPosZ(z) % (int)Configuration._viewingDistanceInChunks.z;
+  int blockPosX=calcBlockPosX(x,chunkPosX);
+  int blockPosY=calcBlockPosY(y,chunkPosY);
+  int blockPosZ=calcBlockPosZ(z,chunkPosZ);
+  try {
+    Chunk c=getChunk(chunkPosX,chunkPosY,chunkPosZ);
+    if (c.getPosition().x != calcChunkPosX(x) || c.getPosition().y != calcChunkPosY(y) || c.getPosition().z != calcChunkPosZ(z)) {
+      c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+    }
+    c.setBlock(blockPosX,blockPosY,blockPosZ,type);
+    if (update) {
+      queueChunkForUpdate(c,1);
+    }
+  }
+ catch (  Exception e) {
+  }
+}

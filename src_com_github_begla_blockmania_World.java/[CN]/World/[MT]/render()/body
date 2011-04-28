@@ -1,8 +1,25 @@
 {
   glPushMatrix();
+  glTranslatef(_player.getPosition().x,Configuration._viewingDistanceInChunks.y * Chunk.CHUNK_DIMENSIONS.y * 1.25f,Configuration._viewingDistanceInChunks.z * Chunk.CHUNK_DIMENSIONS.z + _player.getPosition().z);
   glDisable(GL_FOG);
-  glTranslatef(Configuration._viewingDistanceInChunks.x * Chunk.CHUNK_DIMENSIONS.x * 1.5f + _player.getPosition().x,Configuration._viewingDistanceInChunks.y * Chunk.CHUNK_DIMENSIONS.y + _player.getPosition().y,Configuration._viewingDistanceInChunks.z * Chunk.CHUNK_DIMENSIONS.z * 1.5f + _player.getPosition().z);
-  glCallList(_displayListSun);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_TEXTURE_2D);
+  _textureSun.bind();
+  glColor4f(1f,1f,1f,1.0f);
+  glRotatef(-15f,1f,0f,0f);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0f,0.0f);
+  glVertex3f(-SUN_SIZE,SUN_SIZE,-SUN_SIZE);
+  glTexCoord2f(1.f,0.0f);
+  glVertex3f(SUN_SIZE,SUN_SIZE,-SUN_SIZE);
+  glTexCoord2f(1.f,1.0f);
+  glVertex3f(SUN_SIZE,-SUN_SIZE,-SUN_SIZE);
+  glTexCoord2f(0.f,1.0f);
+  glVertex3f(-SUN_SIZE,-SUN_SIZE,-SUN_SIZE);
+  glEnd();
+  glDisable(GL_TEXTURE_2D);
+  glDisable(GL_BLEND);
   glEnable(GL_FOG);
   glPopMatrix();
   for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {

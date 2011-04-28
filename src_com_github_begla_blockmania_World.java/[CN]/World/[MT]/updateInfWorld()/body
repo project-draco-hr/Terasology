@@ -19,9 +19,10 @@
           pos.x+=Configuration._viewingDistanceInChunks.x * (multX - 1);
         }
         if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
+          _chunkUpdateNormal.remove(c);
           c=loadOrCreateChunk((int)pos.x,(int)pos.z);
           _chunks[x][0][z]=c;
-          c.markChunkAndNeighborsDirty();
+          queueChunkForUpdate(c,0);
         }
       }
     }
