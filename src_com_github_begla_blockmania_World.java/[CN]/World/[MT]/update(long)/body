@@ -1,6 +1,8 @@
 {
-  Chunk c=_chunkUpdateQueueDL.poll();
-  if (c != null) {
-    c.generateDisplayList();
+  for (int i=0; i < 8 && !_chunkUpdateQueueDL.isEmpty(); i++) {
+    Chunk c=_chunkUpdateQueueDL.poll();
+    if (c != null) {
+      c.generateDisplayList();
+    }
   }
 }
