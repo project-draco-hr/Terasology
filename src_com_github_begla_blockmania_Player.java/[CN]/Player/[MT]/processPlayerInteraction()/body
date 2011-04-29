@@ -27,13 +27,37 @@
         this.demoAutoFlyMode=!demoAutoFlyMode;
       }
  else       if (Keyboard.getEventKey() == Keyboard.KEY_P) {
-        Configuration._showPlacingBox=!Configuration._showPlacingBox;
+        Configuration.SHOW_PLACING_BOX=!Configuration.SHOW_PLACING_BOX;
       }
  else       if (Keyboard.getEventKey() == Keyboard.KEY_I) {
-        Configuration._showChunkOutlines=!Configuration._showChunkOutlines;
+        Configuration.SHOW_CHUNK_OUTLINES=!Configuration.SHOW_CHUNK_OUTLINES;
+      }
+ else       if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
+        cycleBlockTypes(1);
+      }
+ else       if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {
+        cycleBlockTypes(-1);
+      }
+ else {
       }
     }
     if (Keyboard.getEventKeyState()) {
+      _keyPressed=true;
+    }
+ else {
+      _keyPressed=false;
+    }
+  }
+  while (Mouse.next()) {
+    if (!_keyPressed) {
+      if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+        placeBlock();
+      }
+ else       if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
+        removeBlock();
+      }
+    }
+    if (Mouse.getEventButtonState()) {
       _keyPressed=true;
     }
  else {

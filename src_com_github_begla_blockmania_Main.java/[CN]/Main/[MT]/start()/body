@@ -1,17 +1,15 @@
 {
   while (!Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-    processKeyboard();
-    processMouse();
     Display.sync(60);
-    long delta=Helper.getInstance().getTime() - lastLoopTime;
-    lastLoopTime=Helper.getInstance().getTime();
-    lastFpsTime+=delta;
-    fps++;
-    if (lastFpsTime >= 1000) {
-      lastFpsTime=0;
-      meanFps+=fps;
-      meanFps/=2;
-      fps=0;
+    long delta=Helper.getInstance().getTime() - _lastLoopTime;
+    _lastLoopTime=Helper.getInstance().getTime();
+    _lastFpsTime+=delta;
+    _fps++;
+    if (_lastFpsTime >= 1000) {
+      _lastFpsTime=0;
+      _meanFps+=_fps;
+      _meanFps/=2;
+      _fps=0;
     }
     update(delta);
     render();

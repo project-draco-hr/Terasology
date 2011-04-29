@@ -1,4 +1,5 @@
 {
+  _font1=new TrueTypeFont(new Font("Arial",Font.PLAIN,12),true);
   glEnable(GL_CULL_FACE);
   glCullFace(GL_BACK);
   glEnable(GL_DEPTH_TEST);
@@ -7,12 +8,12 @@
   glHint(GL_FOG_HINT,GL_NICEST);
   glFogi(GL_FOG_MODE,GL_LINEAR);
   glFogf(GL_FOG_DENSITY,1.0f);
-  float viewingDistance=(Configuration._viewingDistanceInChunks.x * Chunk.CHUNK_DIMENSIONS.x) / 2f;
+  float viewingDistance=(Configuration.VIEWING_DISTANCE_IN_CHUNKS.x * Chunk.CHUNK_DIMENSIONS.x) / 2f;
   glFogf(GL_FOG_START,viewingDistance - 64f);
   glFogf(GL_FOG_END,viewingDistance - 32f);
-  player=new Player();
-  world=new World("WORLD1","ABCDEF",player);
-  player.setParent(world);
   Chunk.init();
-  world.init();
+  World.init();
+  player=new Player();
+  world=new World("WORLD1",String.valueOf(Math.random()),player);
+  player.setParent(world);
 }

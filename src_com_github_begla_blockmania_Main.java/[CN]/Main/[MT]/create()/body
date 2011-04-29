@@ -1,12 +1,11 @@
 {
-  Display.setDisplayMode(new DisplayMode((int)DISPLAY_WIDTH,(int)DISPLAY_HEIGHT));
-  Display.setFullscreen(false);
+  Display.setDisplayMode(new DisplayMode(Configuration.DISPLAY_WIDTH,Configuration.DISPLAY_HEIGHT));
+  Display.setFullscreen(Configuration.FULLSCREEN);
   Display.setTitle(GAME_TITLE);
-  Display.create(new PixelFormat());
+  Display.create(new PixelFormat().withDepthBits(32));
   Keyboard.create();
   Mouse.setGrabbed(true);
   Mouse.create();
   initGL();
   resizeGL();
-  font1=new TrueTypeFont(new Font("Arial",Font.PLAIN,12),true);
 }

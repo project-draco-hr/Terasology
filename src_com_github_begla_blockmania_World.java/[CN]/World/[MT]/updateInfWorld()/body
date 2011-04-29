@@ -1,22 +1,22 @@
 {
-  for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-    for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+  for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
+    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
       Chunk c=getChunk(x,0,z);
       if (c != null) {
         Vector3f pos=new Vector3f(x,0,z);
-        int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration._viewingDistanceInChunks.z + 1;
-        if (z < calcPlayerChunkOffsetZ() % Configuration._viewingDistanceInChunks.z) {
-          pos.z+=Configuration._viewingDistanceInChunks.z * multZ;
+        int multZ=(int)calcPlayerChunkOffsetZ() / (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z + 1;
+        if (z < calcPlayerChunkOffsetZ() % Configuration.VIEWING_DISTANCE_IN_CHUNKS.z) {
+          pos.z+=Configuration.VIEWING_DISTANCE_IN_CHUNKS.z * multZ;
         }
  else {
-          pos.z+=Configuration._viewingDistanceInChunks.z * (multZ - 1);
+          pos.z+=Configuration.VIEWING_DISTANCE_IN_CHUNKS.z * (multZ - 1);
         }
-        int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration._viewingDistanceInChunks.x + 1;
-        if (x < calcPlayerChunkOffsetX() % Configuration._viewingDistanceInChunks.x) {
-          pos.x+=Configuration._viewingDistanceInChunks.x * multX;
+        int multX=(int)calcPlayerChunkOffsetX() / (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x + 1;
+        if (x < calcPlayerChunkOffsetX() % Configuration.VIEWING_DISTANCE_IN_CHUNKS.x) {
+          pos.x+=Configuration.VIEWING_DISTANCE_IN_CHUNKS.x * multX;
         }
  else {
-          pos.x+=Configuration._viewingDistanceInChunks.x * (multX - 1);
+          pos.x+=Configuration.VIEWING_DISTANCE_IN_CHUNKS.x * (multX - 1);
         }
         if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
           _chunkUpdateNormal.remove(c);

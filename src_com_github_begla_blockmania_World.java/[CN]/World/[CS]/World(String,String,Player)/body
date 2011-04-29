@@ -4,13 +4,13 @@
   _pGen1=new PerlinNoise(_rand.nextInt());
   _pGen2=new PerlinNoise(_rand.nextInt());
   _pGen3=new PerlinNoise(_rand.nextInt());
-  _chunks=new Chunk[(int)Configuration._viewingDistanceInChunks.x][(int)Configuration._viewingDistanceInChunks.y][(int)Configuration._viewingDistanceInChunks.z];
+  _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z];
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       long timeStart=System.currentTimeMillis();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait.");
-      for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-        for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+      for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
+        for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
           Chunk c=loadOrCreateChunk(x,z);
           _chunks[x][0][z]=c;
           queueChunkForUpdate(c,0);
@@ -45,4 +45,6 @@
     }
   }
 );
+  _updateThread.start();
+  _worldThread.start();
 }

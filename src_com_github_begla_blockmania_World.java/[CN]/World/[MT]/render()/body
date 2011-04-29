@@ -1,6 +1,6 @@
 {
   glPushMatrix();
-  glTranslatef(_player.getPosition().x,Configuration._viewingDistanceInChunks.y * Chunk.CHUNK_DIMENSIONS.y * 1.25f,Configuration._viewingDistanceInChunks.z * Chunk.CHUNK_DIMENSIONS.z + _player.getPosition().z);
+  glTranslatef(_player.getPosition().x,Configuration.VIEWING_DISTANCE_IN_CHUNKS.y * Chunk.CHUNK_DIMENSIONS.y * 1.25f,Configuration.VIEWING_DISTANCE_IN_CHUNKS.z * Chunk.CHUNK_DIMENSIONS.z + _player.getPosition().z);
   glDisable(GL_FOG);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -22,8 +22,8 @@
   glDisable(GL_BLEND);
   glEnable(GL_FOG);
   glPopMatrix();
-  for (int x=0; x < Configuration._viewingDistanceInChunks.x; x++) {
-    for (int z=0; z < Configuration._viewingDistanceInChunks.z; z++) {
+  for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
+    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
       Chunk c=getChunk(x,0,z);
       if (c != null) {
         c.render();
