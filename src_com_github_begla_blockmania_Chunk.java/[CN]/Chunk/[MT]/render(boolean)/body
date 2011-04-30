@@ -35,6 +35,11 @@
   }
   _textureMap.bind();
   glEnable(GL_TEXTURE_2D);
-  glCallList(_displayList);
+  if (!translucent) {
+    glCallList(_displayListOpaque);
+  }
+ else {
+    glCallList(_displayListTranslucent);
+  }
   glDisable(GL_TEXTURE_2D);
 }

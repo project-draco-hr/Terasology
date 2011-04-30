@@ -1,42 +1,76 @@
 {
-  if (_color.isEmpty() && _tex.isEmpty() && _quads.isEmpty()) {
+  if (_colorOpaque.isEmpty() && _texOpaque.isEmpty() && _quadsOpaque.isEmpty()&& _colorTranslucent.isEmpty()&& _texTranslucent.isEmpty()&& _quadsTranslucent.isEmpty()) {
     return;
   }
-  if (glIsList(_displayList)) {
-    glDeleteLists(_displayList,1);
+  if (glIsList(_displayListOpaque)) {
+    glDeleteLists(_displayListOpaque,1);
   }
-  _displayList=glGenLists(1);
+  if (glIsList(_displayListTranslucent)) {
+    glDeleteLists(_displayListTranslucent,1);
+  }
+  _displayListOpaque=glGenLists(1);
+  _displayListTranslucent=glGenLists(1);
   FloatBuffer cb=null;
   FloatBuffer tb=null;
   FloatBuffer vb=null;
-  vb=BufferUtils.createFloatBuffer(_quads.size());
-  for (  Float f : _quads) {
+  vb=BufferUtils.createFloatBuffer(_quadsOpaque.size());
+  for (  Float f : _quadsOpaque) {
     vb.put(f);
   }
-  tb=BufferUtils.createFloatBuffer(_tex.size());
-  for (  Float f : _tex) {
+  tb=BufferUtils.createFloatBuffer(_texOpaque.size());
+  for (  Float f : _texOpaque) {
     tb.put(f);
   }
-  cb=BufferUtils.createFloatBuffer(_color.size());
-  for (  Float f : _color) {
+  cb=BufferUtils.createFloatBuffer(_colorOpaque.size());
+  for (  Float f : _colorOpaque) {
     cb.put(f);
   }
   vb.flip();
   tb.flip();
   cb.flip();
-  glNewList(_displayList,GL_COMPILE);
+  glNewList(_displayListOpaque,GL_COMPILE);
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_TEXTURE_COORD_ARRAY);
   glEnableClientState(GL_COLOR_ARRAY);
   glTexCoordPointer(2,0,tb);
-  glColorPointer(3,0,cb);
+  glColorPointer(4,0,cb);
   glVertexPointer(3,0,vb);
-  glDrawArrays(GL_QUADS,0,_quads.size() / 3);
+  glDrawArrays(GL_QUADS,0,_quadsOpaque.size() / 3);
   glDisableClientState(GL_COLOR_ARRAY);
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
-  _quads.clear();
-  _tex.clear();
-  _color.clear();
+  _quadsOpaque.clear();
+  _texOpaque.clear();
+  _colorOpaque.clear();
+  vb=BufferUtils.createFloatBuffer(_quadsTranslucent.size());
+  for (  Float f : _quadsTranslucent) {
+    vb.put(f);
+  }
+  tb=BufferUtils.createFloatBuffer(_texTranslucent.size());
+  for (  Float f : _texTranslucent) {
+    tb.put(f);
+  }
+  cb=BufferUtils.createFloatBuffer(_colorTranslucent.size());
+  for (  Float f : _colorTranslucent) {
+    cb.put(f);
+  }
+  vb.flip();
+  tb.flip();
+  cb.flip();
+  glNewList(_displayListTranslucent,GL_COMPILE);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  glColorPointer(4,0,cb);
+  glVertexPointer(3,0,vb);
+  glDrawArrays(GL_QUADS,0,_quadsTranslucent.size() / 3);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glEndList();
+  _quadsTranslucent.clear();
+  _texTranslucent.clear();
+  _colorTranslucent.clear();
 }

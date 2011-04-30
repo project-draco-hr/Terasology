@@ -1,0 +1,18 @@
+{
+  Vector3f oldPosition=new Vector3f(_position);
+  if (_demoAutoFlyMode) {
+    _acc.x=32.f;
+    _acc.z=32.f;
+  }
+  getPosition().y+=(_acc.y / 1000.0f) * delta;
+  getPosition().y+=(_gravity / 1000.0f) * delta;
+  boolean vHit=verticalHitTest(oldPosition,delta);
+  if (vHit && _jump) {
+    _jump=false;
+    _gravity=Configuration.JUMP_INTENSITY;
+  }
+  horizontalHitTest(oldPosition,delta);
+  _acc.x=0;
+  _acc.y=0;
+  _acc.z=0;
+}

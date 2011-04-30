@@ -1,0 +1,14 @@
+{
+  int blockType=_parent.getBlock((int)(getPosition().x + 0.5f),(int)(getPosition().y - 1),(int)(getPosition().z + 0.5f));
+  if (_gravity > -Configuration.MAX_GRAVITY) {
+    _gravity-=0.05f * delta;
+  }
+  if (blockType > 0 || _godMode) {
+    _gravity=0.0f;
+    if (!_godMode) {
+      _position.y=oldPosition.y;
+    }
+    return true;
+  }
+  return false;
+}

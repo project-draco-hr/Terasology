@@ -1,67 +1,54 @@
 {
-  while (Keyboard.next()) {
-    if (!_keyPressed) {
-      if (Keyboard.getEventKey() == Keyboard.KEY_E) {
-        placeBlock();
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_Q) {
-        removeBlock();
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_R) {
-        resetPlayer();
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_T) {
-        RayFaceIntersection is=calcSelectedBlock();
-        if (is != null) {
-          Vector3f blockPos=is.getBlockPos();
-          _parent.generateTree((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,true);
-        }
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_U) {
-        _parent.updateAllChunks();
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_G) {
-        this.godMode=!godMode;
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_H) {
-        this.demoAutoFlyMode=!demoAutoFlyMode;
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_P) {
-        Configuration.SHOW_PLACING_BOX=!Configuration.SHOW_PLACING_BOX;
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_I) {
-        Configuration.SHOW_CHUNK_OUTLINES=!Configuration.SHOW_CHUNK_OUTLINES;
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
-        cycleBlockTypes(1);
-      }
- else       if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {
-        cycleBlockTypes(-1);
-      }
- else {
+  while (Keyboard.next() && Keyboard.getEventKeyState()) {
+    if (Keyboard.getEventKey() == Keyboard.KEY_E) {
+      placeBlock();
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_Q) {
+      removeBlock();
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_R) {
+      resetPlayer();
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_T) {
+      RayFaceIntersection is=calcSelectedBlock();
+      if (is != null) {
+        Vector3f blockPos=is.getBlockPos();
+        _parent.generateTree((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,true);
       }
     }
-    if (Keyboard.getEventKeyState()) {
-      _keyPressed=true;
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_U) {
+      _parent.updateAllChunks();
     }
- else {
-      _keyPressed=false;
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_G) {
+      this._godMode=!_godMode;
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_H) {
+      this._demoAutoFlyMode=!_demoAutoFlyMode;
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_P) {
+      Configuration.SHOW_PLACING_BOX=!Configuration.SHOW_PLACING_BOX;
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_I) {
+      Configuration.SHOW_CHUNK_OUTLINES=!Configuration.SHOW_CHUNK_OUTLINES;
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
+      cycleBlockTypes(1);
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {
+      cycleBlockTypes(-1);
+    }
+ else     if (Keyboard.getEventKey() == Keyboard.KEY_SPACE) {
+      if (!Keyboard.isRepeatEvent()) {
+        jump();
+      }
     }
   }
   while (Mouse.next()) {
-    if (!_keyPressed) {
-      if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
-        placeBlock();
-      }
- else       if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
-        removeBlock();
-      }
+    if (Mouse.getEventButton() == 0 && Mouse.getEventButtonState() == true) {
+      placeBlock();
     }
-    if (Mouse.getEventButtonState()) {
-      _keyPressed=true;
-    }
- else {
-      _keyPressed=false;
+ else     if (Mouse.getEventButton() == 1 && Mouse.getEventButtonState() == true) {
+      removeBlock();
     }
   }
 }

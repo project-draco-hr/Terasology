@@ -2,12 +2,12 @@
   x=getBlockWorldPosX(x);
   y=getBlockWorldPosY(y);
   z=getBlockWorldPosZ(z);
-  float val_n1=_parent.getBlock(x + 1,y,z) == 0 ? _parent.getLight(x + 1,y,z) : -1f;
-  float val_n2=_parent.getBlock(x - 1,y,z) == 0 ? _parent.getLight(x - 1,y,z) : -1f;
-  float val_n3=_parent.getBlock(x,y,z + 1) == 0 ? _parent.getLight(x,y,z + 1) : -1f;
-  float val_n4=_parent.getBlock(x,y,z - 1) == 0 ? _parent.getLight(x,y,z - 1) : -1f;
-  float val_n5=_parent.getBlock(x,y + 1,z) == 0 ? _parent.getLight(x,y + 1,z) : -1f;
-  float val_n6=_parent.getBlock(x,y - 1,z) == 0 ? _parent.getLight(x,y - 1,z) : -1f;
+  float val_n1=Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(x + 1,y,z)) ? _parent.getLight(x + 1,y,z) : -1f;
+  float val_n2=Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(x - 1,y,z)) ? _parent.getLight(x - 1,y,z) : -1f;
+  float val_n3=Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(x,y,z + 1)) ? _parent.getLight(x,y,z + 1) : -1f;
+  float val_n4=Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(x,y,z - 1)) ? _parent.getLight(x,y,z - 1) : -1f;
+  float val_n5=Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(x,y + 1,z)) ? _parent.getLight(x,y + 1,z) : -1f;
+  float val_n6=Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(x,y - 1,z)) ? _parent.getLight(x,y - 1,z) : -1f;
   float val_light=_parent.getLight(x,y,z);
   float val_light_next=Math.max(val_light - 0.0625f,0f);
   if (val_n1 < val_light_next && val_n1 != -1) {
