@@ -1,14 +1,14 @@
 {
   this._player=p;
-  _rand=new Random(seed.hashCode());
-  _pGen1=new PerlinNoise(_rand.nextInt());
-  _pGen2=new PerlinNoise(_rand.nextInt());
-  _pGen3=new PerlinNoise(_rand.nextInt());
+  _rand=new FastRandom(seed.hashCode());
+  _pGen1=new PerlinNoise(_rand.randomInt());
+  _pGen2=new PerlinNoise(_rand.randomInt());
+  _pGen3=new PerlinNoise(_rand.randomInt());
   _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z];
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       long timeStart=System.currentTimeMillis();
-      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait.");
+      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait...");
       for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
         for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
           Chunk c=loadOrCreateChunk(x,z);
@@ -18,7 +18,7 @@
       }
       _worldGenerated=true;
       _player.resetPlayer();
-      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"World updated ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
+      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunks created! ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
         if (_chunkUpdateImportant.size() > 0) {
           Chunk c=_chunkUpdateImportant.poll();
@@ -41,6 +41,7 @@
     @Override public void run(){
       while (true) {
         updateInfWorld();
+        updateDaytime();
       }
     }
   }

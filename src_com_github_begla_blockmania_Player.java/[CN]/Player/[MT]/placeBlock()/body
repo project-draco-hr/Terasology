@@ -3,7 +3,13 @@
     RayFaceIntersection is=calcSelectedBlock();
     if (is != null) {
       Vector3f blockPos=is.calcAdjacentBlockPos();
-      getParent().setBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,_selectedBlockType,true);
+      Vector3f playerBlockPos=new Vector3f(_position);
+      playerBlockPos.x=(int)(playerBlockPos.x + 0.5f);
+      playerBlockPos.y=(int)(playerBlockPos.y - Configuration.PLAYER_HEIGHT);
+      playerBlockPos.z=(int)(playerBlockPos.z + 0.5f);
+      if (blockPos.x != playerBlockPos.x || (blockPos.y != playerBlockPos.y && blockPos.y != playerBlockPos.y + 1f) || blockPos.z != playerBlockPos.z) {
+        getParent().setBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,_selectedBlockType,true);
+      }
     }
   }
 }

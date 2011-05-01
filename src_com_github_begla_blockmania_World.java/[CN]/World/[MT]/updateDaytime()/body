@@ -1,0 +1,45 @@
+{
+  if (Helper.getInstance().getTime() - lastDaytimeMeasurement >= 30000) {
+    _daytime=(short)((_daytime + 1) % 24);
+    lastDaytimeMeasurement=Helper.getInstance().getTime();
+    Logger.getLogger(World.class.getName()).log(Level.INFO,"Updated daytime to {0}h.",_daytime);
+switch (_daytime) {
+case 18:
+      _daylight=0.8f * Configuration.MAX_LIGHT;
+    break;
+case 20:
+  _daylight=0.6f * Configuration.MAX_LIGHT;
+break;
+case 21:
+_daylight=0.4f * Configuration.MAX_LIGHT;
+break;
+case 22:
+_daylight=0.2f * Configuration.MAX_LIGHT;
+break;
+case 23:
+_daylight=Configuration.MIN_LIGHT;
+break;
+case 5:
+_daylight=0.4f * Configuration.MAX_LIGHT;
+break;
+case 6:
+_daylight=0.6f * Configuration.MAX_LIGHT;
+break;
+case 7:
+_daylight=0.8f * Configuration.MAX_LIGHT;
+break;
+case 8:
+_daylight=Configuration.MAX_LIGHT;
+break;
+}
+for (int key : _chunkCache.keySet()) {
+_chunkCache.get(key)._dirty=true;
+}
+for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
+for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
+Chunk c=_chunks[x][0][z];
+queueChunkForUpdate(c,0);
+}
+}
+}
+}
