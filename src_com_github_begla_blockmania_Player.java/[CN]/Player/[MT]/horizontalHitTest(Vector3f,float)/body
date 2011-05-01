@@ -1,10 +1,15 @@
 {
-  Vector3f dir=_moveVector.normalise(null);
-  Vector3f blockPos=new Vector3f((int)(getPosition().x + 0.5f + dir.x * 0.1f),(int)(getPosition().y + 0.5f - Configuration.PLAYER_HEIGHT),(int)(getPosition().z + 0.5f + dir.z * 0.1f));
-  int blockType=_parent.getBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z);
-  if (blockType > 0) {
-    _position.x=oldPosition.x;
-    _position.z=oldPosition.z;
+  Vector3f dir=_accVector.normalise(null);
+  Vector3f blockPos=new Vector3f((int)(getPosition().x + 0.5f + dir.x * 0.1f),(int)(getPosition().y - Configuration.PLAYER_HEIGHT),(int)(getPosition().z + 0.5f + dir.z * 0.1f));
+  int blockType1=_parent.getBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z);
+  int blockType2=_parent.getBlock((int)blockPos.x,(int)blockPos.y + 1,(int)blockPos.z);
+  if (blockType1 > 0 || blockType2 > 0) {
+    if (!_godMode) {
+      _position.x=oldPosition.x;
+      _position.z=oldPosition.z;
+      _accVector.x=0f;
+      _accVector.z=0f;
+    }
     return true;
   }
   return false;

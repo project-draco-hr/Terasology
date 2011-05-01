@@ -2,6 +2,7 @@
   Vector3f oldPosition=new Vector3f(_position);
   if (_godMode) {
     getPosition().y+=(_accVector.y / 1000.0f) * delta;
+    _gravity=0.0f;
   }
  else {
     getPosition().y+=(_gravity / 1000.0f) * delta;
@@ -11,9 +12,6 @@
   _accVector.x+=_moveVector.x;
   _accVector.y+=_moveVector.y;
   _accVector.z+=_moveVector.z;
-  if (_gravity > -Configuration.MAX_GRAVITY) {
-    _gravity-=0.05f * delta;
-  }
   if (Math.abs(_accVector.y) > 0f) {
     _accVector.y+=-1f * _accVector.y * 0.05f;
   }
@@ -30,16 +28,14 @@
     _accVector.z/=div;
     _accVector.y/=div;
   }
-  if (!_godMode) {
-    boolean vHit=verticalHitTest(oldPosition,delta);
-    if (vHit && _jump) {
-      _jump=false;
-      _gravity=Configuration.JUMP_INTENSITY;
-    }
-    horizontalHitTest(oldPosition,delta);
+  boolean vHit=verticalHitTest(oldPosition,delta);
+  horizontalHitTest(oldPosition,delta);
+  if (vHit && _jump) {
+    _jump=false;
+    _gravity=Configuration.JUMP_INTENSITY;
   }
- else {
-    _gravity=0f;
+  if (_gravity > -Configuration.MAX_GRAVITY) {
+    _gravity-=0.05f * delta;
   }
   if (_demoAutoFlyMode && _godMode) {
     _accVector.x=16.f;

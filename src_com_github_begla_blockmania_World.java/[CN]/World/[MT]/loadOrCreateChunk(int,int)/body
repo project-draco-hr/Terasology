@@ -13,7 +13,7 @@
   if (_chunkCache.size() >= 1024) {
     ArrayList<Chunk> sortedChunks=new ArrayList<Chunk>(_chunkCache.values());
     Collections.sort(sortedChunks);
-    System.out.println("Sorting...");
+    Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Cache full. Removing some chunks from the chunk cache...");
     for (int i=0; i < 256; i++) {
       int indexToDelete=sortedChunks.size() - i;
       if (indexToDelete >= 0 && indexToDelete < sortedChunks.size()) {
@@ -21,6 +21,7 @@
         _chunkCache.remove(Helper.getInstance().cantorize((int)cc.getPosition().x,(int)cc.getPosition().z));
       }
     }
+    Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Finished removing chunks from chunk cache.");
   }
   c=new Chunk(this,new Vector3f(x,0,z));
   _chunkCache.put(Helper.getInstance().cantorize(x,z),c);

@@ -14,9 +14,23 @@
   float viewingDistance=(Configuration.VIEWING_DISTANCE_IN_CHUNKS.x * Configuration.CHUNK_DIMENSIONS.x) / 2f;
   glFogf(GL_FOG_START,viewingDistance - 64f);
   glFogf(GL_FOG_END,viewingDistance);
-  Chunk.init();
-  World.init();
+  try {
+    Class.forName("com.github.begla.blockmania.Chunk");
+    Chunk.init();
+  }
+ catch (  ClassNotFoundException ex) {
+    Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
+  }
+  try {
+    Class.forName("com.github.begla.blockmania.World");
+    World.init();
+  }
+ catch (  ClassNotFoundException ex) {
+    Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
+  }
   player=new Player();
-  world=new World("WORLD1",String.valueOf(Math.random()),player);
+  String worldSeed=rand.randomCharacterString(16);
+  LOGGER.log(Level.INFO,"Creating new World with random seed \"{0}\"",worldSeed);
+  world=new World("WORLD1",worldSeed,player);
   player.setParent(world);
 }
