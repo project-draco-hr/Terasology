@@ -1,11 +1,10 @@
 {
-  Vector3f dir=_acc.normalise(null);
-  Vector3f blockPos=new Vector3f((int)(getPosition().x + 0.5f + dir.x * 0.1f),(int)(getPosition().y - 1),(int)(getPosition().z + 0.5f + dir.z * 0.1f));
+  Vector3f dir=_moveVector.normalise(null);
+  Vector3f blockPos=new Vector3f((int)(getPosition().x + 0.5f + dir.x * 0.1f),(int)(getPosition().y + 0.5f - Configuration.PLAYER_HEIGHT),(int)(getPosition().z + 0.5f + dir.z * 0.1f));
   int blockType=_parent.getBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z);
-  getPosition().x+=(_acc.x / 1000.0f) * delta;
-  getPosition().z+=(_acc.z / 1000.0f) * delta;
   if (blockType > 0) {
-    _position=oldPosition;
+    _position.x=oldPosition.x;
+    _position.z=oldPosition.z;
     return true;
   }
   return false;

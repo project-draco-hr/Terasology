@@ -1,6 +1,14 @@
 {
+  if (Configuration.ENABLE_BOBBING && !_godMode) {
+    float bobbing2=_parent.getpGen2().noise(_position.x / 1.5f,_position.z / 1.5f,0f) * 2f;
+    glRotatef(bobbing2,0f,0f,1f);
+  }
   glRotatef((float)_pitch,1f,0f,0f);
   glRotatef((float)_yaw,0f,1f,0f);
+  if (Configuration.ENABLE_BOBBING && !_godMode) {
+    float bobbing1=_parent.getpGen1().noise(_position.x * 1.5f,_position.z * 1.5f,0f) * 0.15f;
+    glTranslatef(0.0f,bobbing1,0);
+  }
   glTranslatef(-_position.x,-_position.y,-_position.z);
   RayFaceIntersection is=calcSelectedBlock();
   if (Configuration.SHOW_PLACING_BOX) {
