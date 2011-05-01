@@ -1,9 +1,6 @@
 {
-  int blockType=_parent.getBlock((int)(getPosition().x + 0.5f),(int)(getPosition().y - 1),(int)(getPosition().z + 0.5f));
-  if (_gravity > -Configuration.MAX_GRAVITY) {
-    _gravity-=0.05f * delta;
-  }
-  if (blockType > 0 || _godMode) {
+  int blockType=_parent.getBlock((int)(getPosition().x + 0.5f),(int)(getPosition().y + 0.5f - Configuration.PLAYER_HEIGHT),(int)(getPosition().z + 0.5f));
+  if (blockType > 0) {
     _gravity=0.0f;
     if (!_godMode) {
       _position.y=oldPosition.y;
