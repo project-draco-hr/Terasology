@@ -8,6 +8,7 @@
   Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
   c.setBlock(blockPosX,blockPosY,blockPosZ,type);
   if (update) {
+    c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
     queueChunkForUpdate(c,1);
   }
 }
