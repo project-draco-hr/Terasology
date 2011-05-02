@@ -1,14 +1,7 @@
 {
   for (int x=0; x < (int)Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int z=0; z < (int)Configuration.CHUNK_DIMENSIONS.z; z++) {
-      for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
-        if (Helper.getInstance().isBlockTypeTranslucent(_blocks[x][y][z])) {
-          _light[x][y][z]=Configuration.MAX_LIGHT;
-        }
- else {
-          break;
-        }
-      }
+      calcSunlightAtLocalPos(x,z);
     }
   }
 }
