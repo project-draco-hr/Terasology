@@ -3,6 +3,7 @@
     _daytime=(short)((_daytime + 1) % 24);
     lastDaytimeMeasurement=Helper.getInstance().getTime();
     Logger.getLogger(World.class.getName()).log(Level.INFO,"Updated daytime to {0}h.",_daytime);
+    float oldDaylight=_daylight;
 switch (_daytime) {
 case 18:
       _daylight=0.8f * Configuration.MAX_LIGHT;
@@ -32,6 +33,7 @@ case 8:
 _daylight=Configuration.MAX_LIGHT;
 break;
 }
+if (_daylight != oldDaylight) {
 for (int key : _chunkCache.keySet()) {
 _chunkCache.get(key)._dirty=true;
 }
@@ -39,6 +41,7 @@ for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
 for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
 Chunk c=_chunks[x][0][z];
 queueChunkForUpdate(c,0);
+}
 }
 }
 }
