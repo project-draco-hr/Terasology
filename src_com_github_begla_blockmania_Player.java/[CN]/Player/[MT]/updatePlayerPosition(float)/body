@@ -1,25 +1,13 @@
 {
   Vector3f oldPosition=new Vector3f(_position);
-  if (_godMode) {
-    getPosition().y+=(_accVector.y / 1000.0f) * delta;
-    _gravity=0.0f;
-  }
- else {
-    getPosition().y+=(_gravity / 1000.0f) * delta;
-  }
-  getPosition().x+=(_accVector.x / 1000.0f) * delta;
-  getPosition().z+=(_accVector.z / 1000.0f) * delta;
-  _accVector.x+=_moveVector.x;
-  _accVector.y+=_moveVector.y;
-  _accVector.z+=_moveVector.z;
   if (Math.abs(_accVector.y) > 0f) {
-    _accVector.y+=-1f * _accVector.y * 0.05f;
+    _accVector.y+=-1f * _accVector.y * Configuration.SLOWDOWN_INTENS;
   }
   if (Math.abs(_accVector.x) > 0f) {
-    _accVector.x+=-1f * _accVector.x * 0.05f;
+    _accVector.x+=-1f * _accVector.x * Configuration.SLOWDOWN_INTENS;
   }
   if (Math.abs(_accVector.z) > 0f) {
-    _accVector.z+=-1f * _accVector.z * 0.05f;
+    _accVector.z+=-1f * _accVector.z * Configuration.SLOWDOWN_INTENS;
   }
   if (Math.abs(_accVector.x) > _wSpeed || Math.abs(_accVector.z) > _wSpeed || Math.abs(_accVector.z) > _wSpeed) {
     float max=Math.max(Math.max(Math.abs(_accVector.x),Math.abs(_accVector.z)),_accVector.y);
@@ -28,17 +16,34 @@
     _accVector.z/=div;
     _accVector.y/=div;
   }
-  boolean vHit=verticalHitTest(oldPosition,delta);
-  horizontalHitTest(oldPosition,delta);
-  if (vHit && _jump) {
-    _jump=false;
-    _gravity=Configuration.JUMP_INTENSITY;
-  }
-  if (_gravity > -Configuration.MAX_GRAVITY) {
-    _gravity-=0.05f * delta;
-  }
-  if (_demoAutoFlyMode && _godMode) {
-    _accVector.x=16.f;
-    _accVector.z=16.f;
+  _accVector.x+=_moveVector.x;
+  _accVector.y+=_moveVector.y;
+  _accVector.z+=_moveVector.z;
+  getPosition().y+=(_accVector.y / 1000.0f) * delta;
+  getPosition().y+=(_gravity / 1000.0f) * delta;
+  getPosition().x+=(_accVector.x / 1000.0f) * delta;
+  getPosition().z+=(_accVector.z / 1000.0f) * delta;
+  if (!_godMode) {
+    boolean vHit=verticalHitTest();
+    if (!vHit) {
+      if (_gravity > -Configuration.MAX_GRAVITY) {
+        _gravity-=Configuration.G_FORCE * delta;
+      }
+    }
+ else {
+      _position.y=oldPosition.y;
+      if (_jump) {
+        _jump=false;
+        _gravity=Configuration.JUMP_INTENSITY;
+      }
+ else {
+        _gravity=0f;
+      }
+    }
+    if (horizontalHitTest()) {
+      Vector3f norm=new Vector3f(1,0,0);
+      _position.z=oldPosition.z + (_accVector.z / 1000.0f) * delta * norm.z;
+      _position.x=oldPosition.x + (_accVector.x / 1000.0f) * delta * norm.x;
+    }
   }
 }
