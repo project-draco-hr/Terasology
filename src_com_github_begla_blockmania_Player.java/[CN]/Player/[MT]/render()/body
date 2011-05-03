@@ -10,6 +10,13 @@
     glTranslatef(0.0f,bobbing1,0);
   }
   glTranslatef(-_position.x,-_position.y,-_position.z);
+  glTranslatef(0,-Configuration.PLAYER_HEIGHT,0);
+  glPushMatrix();
+  glTranslatef(_position.x,_position.y,_position.z);
+  glColor3f(1f,0f,0f);
+  Sphere s=new Sphere();
+  s.draw(0.1f,64,4);
+  glPopMatrix();
   RayFaceIntersection is=calcSelectedBlock();
   if (Configuration.SHOW_PLACING_BOX) {
     if (is != null) {
