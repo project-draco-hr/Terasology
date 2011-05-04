@@ -6,32 +6,34 @@
     for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
       int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64);
       for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
-        if (calcCaveDensityAt(x + xOffset,i,z + zOffset) < 0.5 && calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) < 0.5f) {
-          if (i == height) {
-            if (i > 32) {
-              setBlock(x,i,z,0x1);
-            }
- else             if (i <= 34 && i >= 28) {
-              setBlock(x,i,z,0x7);
-            }
- else {
-              setBlock(x,i,z,0x2);
-            }
-          }
- else           if (i < height) {
-            if (i < height * 0.75f) {
-              setBlock(x,i,z,0x3);
-            }
- else {
-              if (i <= 34 && i >= 28) {
+        if (calcCaveDensityAt(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
+          if (calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) > 0.1f) {
+            if (i == height) {
+              if (i > 32) {
+                setBlock(x,i,z,0x1);
+              }
+ else               if (i <= 34 && i >= 28) {
                 setBlock(x,i,z,0x7);
               }
  else {
                 setBlock(x,i,z,0x2);
               }
             }
-            if (i <= 34 && i >= 28) {
-              setBlock(x,i,z,0x7);
+ else             if (i < height) {
+              if (i < height * 0.75f) {
+                setBlock(x,i,z,0x3);
+              }
+ else {
+                if (i <= 34 && i >= 28) {
+                  setBlock(x,i,z,0x7);
+                }
+ else {
+                  setBlock(x,i,z,0x2);
+                }
+              }
+              if (i <= 34 && i >= 28) {
+                setBlock(x,i,z,0x7);
+              }
             }
           }
         }

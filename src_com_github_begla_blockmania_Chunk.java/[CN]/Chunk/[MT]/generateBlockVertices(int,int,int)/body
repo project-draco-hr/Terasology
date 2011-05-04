@@ -232,7 +232,7 @@
   drawBottom=isSideVisibleForBlockTypes(blockToCheck,block);
   if (drawBottom) {
     Vector4f colorOffset=Block.getBlock(block).getColorOffsetFor(Block.SIDE.BOTTOM);
-    float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y - 1),getBlockWorldPosZ(z)) - Configuration.BLOCK_SIDE_DIMMING - (calcSimpleOcclusionAmount(x,y - 1,z) * Configuration.DIMMING_INTENS),Configuration.MIN_LIGHT);
+    float shadowIntens=Math.max(_parent.getLight(getBlockWorldPosX(x),getBlockWorldPosY(y - 1),getBlockWorldPosZ(z)) - (calcSimpleOcclusionAmount(x,y - 1,z) * Configuration.DIMMING_INTENS),Configuration.MIN_LIGHT);
     float texOffsetX=Block.getBlock(block).getTextureOffsetFor(Block.SIDE.BOTTOM).x;
     float texOffsetY=Block.getBlock(block).getTextureOffsetFor(Block.SIDE.BOTTOM).y;
     color.add(colorOffset.x * shadowIntens * _parent.getDaylight());

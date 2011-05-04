@@ -1,3 +1,6 @@
 {
-  return _chunkCache.get(Helper.getInstance().cantorize(x,z));
+synchronized (_chunkCache) {
+    Chunk c=_chunkCache.get(Helper.getInstance().cantorize(x,z));
+    return c;
+  }
 }
