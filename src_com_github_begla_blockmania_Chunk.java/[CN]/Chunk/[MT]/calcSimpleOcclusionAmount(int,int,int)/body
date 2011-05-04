@@ -1,15 +1,15 @@
 {
   float intens=0;
-  if (!Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)))) {
+  if (Block.getBlock(_parent.getBlock(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z))).isCastingShadows()) {
     intens++;
   }
-  if (!Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)))) {
+  if (Block.getBlock(_parent.getBlock(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z))).isCastingShadows()) {
     intens++;
   }
-  if (!Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1)))) {
+  if (Block.getBlock(_parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z + 1))).isCastingShadows()) {
     intens++;
   }
-  if (!Helper.getInstance().isBlockTypeTranslucent(_parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1)))) {
+  if (Block.getBlock(_parent.getBlock(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z - 1))).isCastingShadows()) {
     intens++;
   }
   return intens;

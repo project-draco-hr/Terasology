@@ -8,8 +8,12 @@
   if (glIsList(_displayListTranslucent)) {
     glDeleteLists(_displayListTranslucent,1);
   }
+  if (glIsList(_displayListBillboard)) {
+    glDeleteLists(_displayListBillboard,1);
+  }
   _displayListOpaque=glGenLists(1);
   _displayListTranslucent=glGenLists(1);
+  _displayListBillboard=glGenLists(1);
   FloatBuffer cb=null;
   FloatBuffer tb=null;
   FloatBuffer vb=null;
@@ -73,4 +77,34 @@
   _quadsTranslucent.clear();
   _texTranslucent.clear();
   _colorTranslucent.clear();
+  vb=BufferUtils.createFloatBuffer(_quadsBillboard.size());
+  for (  Float f : _quadsBillboard) {
+    vb.put(f);
+  }
+  tb=BufferUtils.createFloatBuffer(_texBillboard.size());
+  for (  Float f : _texBillboard) {
+    tb.put(f);
+  }
+  cb=BufferUtils.createFloatBuffer(_colorBillboard.size());
+  for (  Float f : _colorBillboard) {
+    cb.put(f);
+  }
+  vb.flip();
+  tb.flip();
+  cb.flip();
+  glNewList(_displayListBillboard,GL_COMPILE);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  glColorPointer(4,0,cb);
+  glVertexPointer(3,0,vb);
+  glDrawArrays(GL_QUADS,0,_quadsBillboard.size() / 3);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glEndList();
+  _quadsBillboard.clear();
+  _texBillboard.clear();
+  _colorBillboard.clear();
 }

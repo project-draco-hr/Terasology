@@ -1,15 +1,29 @@
 {
+  int treeCount=0;
   for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
     for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
         float dens=calcForestDensity(getBlockWorldPosX(x),getBlockWorldPosY(y),getBlockWorldPosZ(z));
-        if (dens > 0.25 && dens < 0.6f && getBlock(x,y,z) == 0x1 && y > 32) {
-          _parent.generateTree(getBlockWorldPosX(x),getBlockWorldPosY((int)y) + 1,getBlockWorldPosZ(z),false);
-          return;
+        if (getBlock(x,y,z) == 0x1 && dens > 0.25) {
+          setBlock(x,y + 1,z,0xB);
         }
- else         if (dens >= 0.6f && getBlock(x,y,z) == 0x1 && y > 32) {
-          _parent.generatePineTree(getBlockWorldPosX(x),getBlockWorldPosY((int)y) + 1,getBlockWorldPosZ(z),false);
-          return;
+        if (getBlock(x,y,z) == 0x1 && dens > 0.5) {
+          if (_parent.getRand().randomDouble() > 0.5f) {
+            setBlock(x,y + 1,z,0x9);
+          }
+ else {
+            setBlock(x,y + 1,z,0xA);
+          }
+        }
+        if (treeCount < 1) {
+          if (dens > 0.25 && dens < 0.6f && getBlock(x,y,z) == 0x1 && y > 32) {
+            _parent.generateTree(getBlockWorldPosX(x),getBlockWorldPosY((int)y) + 1,getBlockWorldPosZ(z),false);
+            treeCount++;
+          }
+ else           if (dens >= 0.6f && getBlock(x,y,z) == 0x1 && y > 32) {
+            _parent.generatePineTree(getBlockWorldPosX(x),getBlockWorldPosY((int)y) + 1,getBlockWorldPosZ(z),false);
+            treeCount++;
+          }
         }
       }
     }
