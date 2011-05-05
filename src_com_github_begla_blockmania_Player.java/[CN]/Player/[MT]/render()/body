@@ -13,40 +13,20 @@
   glTranslatef(0,-Configuration.PLAYER_HEIGHT,0);
   glPushMatrix();
   glTranslatef(_position.x,_position.y,_position.z);
+  glColor3f(1f,0f,0f);
+  Sphere s=new Sphere();
+  s.draw(0.1f,128,12);
   glPopMatrix();
   RayFaceIntersection is=calcSelectedBlock();
+  if (is != null) {
+    System.out.println(is.getBlockPos());
+  }
   if (Configuration.SHOW_PLACING_BOX) {
     if (is != null) {
-      int bpX=(int)is.getBlockPos().x;
-      int bpY=(int)is.getBlockPos().y;
-      int bpZ=(int)is.getBlockPos().z;
-      glColor3f(1.0f,1.0f,1.0f);
-      glBegin(GL_LINES);
-      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ - 0.5f);
-      glVertex3f(bpX - 0.5f,bpY - 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX - 0.5f,bpY + 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX + 0.5f,bpY - 0.5f,bpZ + 0.5f);
-      glVertex3f(bpX + 0.5f,bpY + 0.5f,bpZ + 0.5f);
-      glEnd();
+      glPushMatrix();
+      glTranslatef((int)is.getBlockPos().x,(int)is.getBlockPos().y,(int)is.getBlockPos().z);
+      _placingBox.render();
+      glPopMatrix();
     }
   }
 }

@@ -1,0 +1,19 @@
+{
+  boolean result=false;
+  for (int x=-1; x < 2; ++x) {
+    for (int z=-1; z < 2; ++z) {
+      for (int y=-1; y < 1; ++y) {
+        Vector3f blockPos=new Vector3f((int)(origin.x + x + 0.5f),(int)(origin.y + y + 0.5f),(int)(origin.z + z + 0.5f));
+        int blockType1=_parent.getBlock((int)(blockPos.x + 0.5f),(int)(blockPos.y + 0.5f),(int)(blockPos.z + 0.5f));
+        if (!Block.getBlock(blockType1).isPenetrable()) {
+          if (_position.x + 0.1f > blockPos.x - 0.5f && _position.x - 0.1f < blockPos.x + 0.5f && _position.z + 0.1f > blockPos.z - 0.5f && _position.z - 0.1f < blockPos.z + 0.5f && _position.y + 0.1f > blockPos.y - 0.5f && _position.y - 0.1f < blockPos.y + 0.5f) {
+            result=true;
+            _position.y=origin.y;
+            _gravity=0f;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
