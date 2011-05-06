@@ -1,5 +1,9 @@
 {
   Vector3f oldPosition=new Vector3f(_position);
+  if (_demoAutoFlyMode && _godMode) {
+    walkForward();
+    _wSpeed=16f;
+  }
   if (Math.abs(_accVector.y) > 0f) {
     _accVector.y+=-1f * _accVector.y * Configuration.SLOWDOWN_INTENS;
   }
@@ -19,22 +23,28 @@
   _accVector.x+=_moveVector.x;
   _accVector.y+=_moveVector.y;
   _accVector.z+=_moveVector.z;
-  getPosition().x+=(_accVector.x / 1000.0f) * delta;
-  getPosition().z+=(_accVector.z / 1000.0f) * delta;
-  Vector3f originalPosition=new Vector3f(_position);
-  horizontalHitTest(oldPosition);
-  horizontalHitTest(originalPosition);
+  getPosition().y+=(_accVector.y / 1000.0f) * delta;
   getPosition().y+=(_gravity / 1000.0f) * delta;
-  boolean vHit=verticalHitTest(oldPosition);
-  if (!vHit) {
-    if (_gravity > -Configuration.MAX_GRAVITY) {
-      _gravity-=Configuration.G_FORCE * delta;
+  if (!_godMode) {
+    boolean vHit=verticalHitTest(oldPosition);
+    if (!vHit) {
+      if (_gravity > -Configuration.MAX_GRAVITY) {
+        _gravity-=Configuration.G_FORCE * delta;
+      }
+    }
+ else {
+      if (_jump) {
+        _jump=false;
+        _gravity=Configuration.JUMP_INTENSITY;
+      }
     }
   }
  else {
-    if (_jump) {
-      _jump=false;
-      _gravity=Configuration.JUMP_INTENSITY;
-    }
+    _gravity=0f;
+  }
+  getPosition().x+=(_accVector.x / 1000.0f) * delta;
+  getPosition().z+=(_accVector.z / 1000.0f) * delta;
+  if (!_godMode) {
+    horizontalHitTest(oldPosition);
   }
 }

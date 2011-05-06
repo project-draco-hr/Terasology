@@ -1,10 +1,9 @@
 {
   this._player=p;
   _rand=new FastRandom(seed.hashCode());
-  _pGen1=new PerlinNoise(_rand.randomInt());
-  _pGen2=new PerlinNoise(_rand.randomInt());
-  _pGen3=new PerlinNoise(_rand.randomInt());
   _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z];
+  _generatorTerrain=new GeneratorTerrain(seed);
+  _generatorForest=new GeneratorForest(seed);
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       long timeStart=System.currentTimeMillis();

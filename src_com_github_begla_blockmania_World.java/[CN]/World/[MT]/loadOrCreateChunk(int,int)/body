@@ -27,7 +27,10 @@ synchronized (_chunkCache) {
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Finished removing chunks from chunk cache.");
     }
   }
-  c=new Chunk(this,new Vector3f(x,0,z));
+  ArrayList<Generator> gs=new ArrayList<Generator>();
+  gs.add(_generatorTerrain);
+  gs.add(_generatorForest);
+  c=new Chunk(this,new Vector3f(x,0,z),gs);
 synchronized (_chunkCache) {
     _chunkCache.put(Helper.getInstance().cantorize(x,z),c);
   }

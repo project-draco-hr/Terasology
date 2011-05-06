@@ -1,0 +1,51 @@
+{
+  int xOffset=(int)c.getPosition().x * (int)Configuration.CHUNK_DIMENSIONS.x;
+  int yOffset=(int)c.getPosition().y * (int)Configuration.CHUNK_DIMENSIONS.y;
+  int zOffset=(int)c.getPosition().z * (int)Configuration.CHUNK_DIMENSIONS.z;
+  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
+    for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+      int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)) * 64);
+      for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
+        if (calcCaveDensityAt(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
+          if (calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) > 0.1f) {
+            if (i == height) {
+              if (i > 32) {
+                c.setBlock(x,i,z,0x1);
+              }
+ else               if (i <= 34 && i >= 28) {
+                c.setBlock(x,i,z,0x7);
+              }
+ else {
+                c.setBlock(x,i,z,0x2);
+              }
+            }
+ else             if (i < height) {
+              if (i < height * 0.75f) {
+                c.setBlock(x,i,z,0x3);
+              }
+ else {
+                if (i <= 34 && i >= 28) {
+                  c.setBlock(x,i,z,0x7);
+                }
+ else {
+                  c.setBlock(x,i,z,0x2);
+                }
+              }
+              if (i <= 34 && i >= 28) {
+                c.setBlock(x,i,z,0x7);
+              }
+            }
+          }
+        }
+        if (i <= 30 && i > 0) {
+          if (c.getBlock(x,i,z) == 0) {
+            c.setBlock(x,i,z,0x4);
+          }
+        }
+        if (i == 0) {
+          c.setBlock(x,i,z,0x8);
+        }
+      }
+    }
+  }
+}

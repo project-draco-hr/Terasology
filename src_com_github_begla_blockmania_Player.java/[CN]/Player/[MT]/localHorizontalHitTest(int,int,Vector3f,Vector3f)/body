@@ -1,0 +1,14 @@
+{
+  Vector3f blockPos=new Vector3f((int)(oldPosition.x + 0.5f) + x,(int)(oldPosition.y + 0.5f),(int)(oldPosition.z + 0.5f) + z);
+  int blockType1=_parent.getBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z);
+  if (!Block.getBlock(blockType1).isPenetrable()) {
+    if (_position.x + 0.1f > blockPos.x - 0.5f && _position.x - 0.1f < blockPos.x + 0.5f && _position.z + 0.1f > blockPos.z - 0.5f && _position.z - 0.1f < blockPos.z + 0.5f) {
+      Vector3f scratch=new Vector3f(_position.x,0f,_position.z);
+      scratch.x-=oldPosition.x;
+      scratch.z-=oldPosition.z;
+      float length=Vector3f.dot(normal,scratch);
+      _position.z=oldPosition.z + length * normal.z;
+      _position.x=oldPosition.x + length * normal.x;
+    }
+  }
+}

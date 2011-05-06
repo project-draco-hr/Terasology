@@ -1,7 +1,8 @@
 {
   if (_fresh) {
-    generateTerrain();
-    populate();
+    for (    Generator g : _generators) {
+      g.generate(this,_parent);
+    }
     calcSunlight();
     calcLight();
     _fresh=false;
