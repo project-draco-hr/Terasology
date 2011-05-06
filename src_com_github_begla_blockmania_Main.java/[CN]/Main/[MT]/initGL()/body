@@ -29,8 +29,11 @@
     Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
   }
   player=new Player();
-  String worldSeed=rand.randomCharacterString(16);
-  LOGGER.log(Level.INFO,"Creating new World with random seed \"{0}\"",worldSeed);
+  String worldSeed=Configuration.DEFAULT_SEED;
+  if (worldSeed.length() == 0) {
+    worldSeed=rand.randomCharacterString(16);
+  }
+  LOGGER.log(Level.INFO,"Creating new World with seed \"{0}\"",worldSeed);
   world=new World("WORLD1",worldSeed,player);
   player.setParent(world);
 }

@@ -8,6 +8,7 @@
       for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
         if (calcCaveDensityAt(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
           if (calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) > 0.1f) {
+            float stoneDensity=calcStoneDensity(x + xOffset,i + yOffset,z + zOffset);
             if (i == height) {
               if (i > 32) {
                 c.setBlock(x,i,z,0x1);
@@ -20,16 +21,14 @@
               }
             }
  else             if (i < height) {
-              if (i < height * 0.75f) {
+              if (i <= 34 && i >= 28 && stoneDensity > 0f) {
+                c.setBlock(x,i,z,0x7);
+              }
+ else               if (i < height * 0.75f && stoneDensity < 0f) {
                 c.setBlock(x,i,z,0x3);
               }
  else {
-                if (i <= 34 && i >= 28) {
-                  c.setBlock(x,i,z,0x7);
-                }
- else {
-                  c.setBlock(x,i,z,0x2);
-                }
+                c.setBlock(x,i,z,0x2);
               }
               if (i <= 34 && i >= 28) {
                 c.setBlock(x,i,z,0x7);
