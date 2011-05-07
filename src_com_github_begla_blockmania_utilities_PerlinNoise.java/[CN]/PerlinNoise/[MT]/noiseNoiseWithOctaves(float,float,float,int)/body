@@ -1,0 +1,13 @@
+{
+  float result=0.0f;
+  float noise;
+  float pers=1f;
+  float scale=1f;
+  for (int i=0; i < octaves; i++) {
+    noise=noise(x * scale,y * scale,z * scale) * pers;
+    result+=noise;
+    scale*=2;
+    pers/=2;
+  }
+  return result;
+}

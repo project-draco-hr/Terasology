@@ -4,5 +4,7 @@
   processPlayerInteraction();
   processMovement(delta);
   updatePlayerPosition(delta);
+  _viewDirection.set((float)Math.sin(Math.toRadians(_yaw)) * (float)Math.cos(Math.toRadians(_pitch)),-1f * (float)Math.sin(Math.toRadians(_pitch)),-1 * (float)Math.cos(Math.toRadians(_pitch)) * (float)Math.cos(Math.toRadians(_yaw)));
+  _viewDirection.normalise();
   _moveVector.set(0,0,0);
 }

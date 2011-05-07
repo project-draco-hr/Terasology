@@ -1,8 +1,10 @@
 {
   if (_fresh) {
+    long timeStart=System.currentTimeMillis();
     for (    Generator g : _generators) {
       g.generate(this,_parent);
     }
+    Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
     calcSunlight();
     calcLight();
     _fresh=false;

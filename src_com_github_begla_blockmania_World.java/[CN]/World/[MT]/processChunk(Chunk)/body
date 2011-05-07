@@ -9,17 +9,13 @@
         if (!nc.generate() && nc._dirty) {
           nc.calcLight();
         }
-        if (nc._dirty) {
-          nc.generateVertexArrays();
-          nc._dirty=false;
-          _chunkUpdateQueueDL.add(nc);
-        }
+        nc.generateVertexArrays();
+        nc._dirty=false;
+        _chunkUpdateQueueDL.add(nc);
       }
     }
-    if (c._dirty) {
-      c.generateVertexArrays();
-      c._dirty=false;
-      _chunkUpdateQueueDL.add(c);
-    }
+    c.generateVertexArrays();
+    c._dirty=false;
+    _chunkUpdateQueueDL.add(c);
   }
 }

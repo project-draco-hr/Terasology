@@ -1,11 +1,11 @@
 {
-  float light=Configuration.MAX_LIGHT;
+  byte light=Configuration.MAX_LIGHT;
   for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
     if (Block.getBlock(_blocks[x][y][z]).isBlockTypeTranslucent()) {
       _light[x][y][z]=light;
       if (_blocks[x][y][z] != 0x0) {
         light-=Configuration.LIGHT_ABSORPTION;
-        light=Math.max(Configuration.MIN_LIGHT,light);
+        light=(byte)Math.max(Configuration.MIN_LIGHT,light);
       }
     }
  else {

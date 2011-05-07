@@ -8,8 +8,8 @@
   float val_n4=Block.getBlock(_parent.getBlock(x,y,z - 1)).isBlockTypeTranslucent() ? _parent.getLight(x,y,z - 1) : -1f;
   float val_n5=Block.getBlock(_parent.getBlock(x,y + 1,z)).isBlockTypeTranslucent() ? _parent.getLight(x,y + 1,z) : -1f;
   float val_n6=Block.getBlock(_parent.getBlock(x,y - 1,z)).isBlockTypeTranslucent() ? _parent.getLight(x,y - 1,z) : -1f;
-  float val_light=_parent.getLight(x,y,z);
-  float val_light_next=Math.max(val_light - 0.0625f,0f);
+  byte val_light=_parent.getLight(x,y,z);
+  byte val_light_next=(byte)Math.max(val_light - 1,0);
   if (val_n1 < val_light_next && val_n1 != -1) {
     _parent.setLight(x + 1,y,z,val_light_next);
   }
