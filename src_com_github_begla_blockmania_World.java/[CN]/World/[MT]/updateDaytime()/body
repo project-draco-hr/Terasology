@@ -34,10 +34,8 @@ _daylight=Configuration.MAX_LIGHT;
 break;
 }
 if (_daylight != oldDaylight) {
-synchronized (_chunkCache) {
 for (int key : _chunkCache.keySet()) {
 _chunkCache.get(key)._dirty=true;
-}
 }
 for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
 for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
