@@ -19,16 +19,16 @@
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunks created! ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
-        if (_chunkUpdateImportant.size() > 0) {
-          Chunk c=_chunkUpdateImportant.poll();
-          processChunk(c);
-        }
- else {
-          ArrayList<Chunk> sortedUpdates=new ArrayList<Chunk>(_chunkUpdateNormal);
-          Collections.sort(sortedUpdates);
-          if (sortedUpdates.size() > 0) {
+        ArrayList<Chunk> sortedUpdates=new ArrayList<Chunk>(_chunkUpdateNormal);
+        Collections.sort(sortedUpdates);
+        for (int i=0; i < 16; i++) {
+          if (sortedUpdates.size() > 0 && _chunkUpdateImportant.isEmpty()) {
             Chunk c=sortedUpdates.remove(0);
             _chunkUpdateNormal.remove(c);
+            processChunk(c);
+          }
+ else {
+            Chunk c=_chunkUpdateImportant.poll();
             processChunk(c);
           }
         }
