@@ -12,21 +12,26 @@ synchronized (_chunkCache) {
   }
  else {
   }
+  if (_chunkCache.size() >= 1024) {
+    ArrayList<Chunk> sortedChunks=null;
 synchronized (_chunkCache) {
-    if (_chunkCache.size() >= 1024) {
-      ArrayList<Chunk> sortedChunks=new ArrayList<Chunk>(_chunkCache.values());
-      Collections.sort(sortedChunks);
-      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Cache full. Removing some chunks from the chunk cache...");
-      for (int i=0; i < 256; i++) {
-        int indexToDelete=sortedChunks.size() - i;
-        if (indexToDelete >= 0 && indexToDelete < sortedChunks.size()) {
-          Chunk cc=sortedChunks.get(indexToDelete);
+      sortedChunks=new ArrayList<Chunk>(_chunkCache.values());
+    }
+    Collections.sort(sortedChunks);
+    Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Cache full. Removing some chunks from the chunk cache...");
+    for (int i=0; i < 256; i++) {
+      int indexToDelete=sortedChunks.size() - i;
+      if (indexToDelete >= 0 && indexToDelete < sortedChunks.size()) {
+        Chunk cc=sortedChunks.get(indexToDelete);
+synchronized (_chunkCache) {
           _chunkCache.remove(Helper.getInstance().cantorize((int)cc.getPosition().x,(int)cc.getPosition().z));
+        }
+synchronized (_chunkUpdateNormal) {
           _chunkUpdateNormal.remove(cc);
         }
       }
-      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Finished removing chunks from chunk cache.");
     }
+    Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Finished removing chunks from chunk cache.");
   }
   ArrayList<Generator> gs=new ArrayList<Generator>();
   gs.add(_generatorTerrain);

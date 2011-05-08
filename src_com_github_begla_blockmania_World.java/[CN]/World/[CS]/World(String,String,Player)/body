@@ -4,51 +4,42 @@
   _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z];
   _generatorTerrain=new GeneratorTerrain(seed);
   _generatorForest=new GeneratorForest(seed);
-  _updateThread=new Thread(new Runnable(){
-    @Override public void run(){
-      long timeStart=System.currentTimeMillis();
-      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Generating chunks. Please wait...");
-      for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
-        for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
-          Chunk c=loadOrCreateChunk(x,z);
-          _chunks[x][0][z]=c;
-          queueChunkForUpdate(c,0);
-        }
-      }
-      _worldGenerated=true;
-      _player.resetPlayer();
-      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunks created! ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
-      while (true) {
-        Chunk ci=_chunkUpdateImportant.poll();
-        if (ci != null) {
-          processChunk(ci);
-        }
-        ArrayList<Chunk> sortedUpdates=new ArrayList<Chunk>(_chunkUpdateNormal);
-        Collections.sort(sortedUpdates);
-        Vector3f pPos=new Vector3f(_player.getPosition());
-        int updateCounter=0;
-        for (        Chunk c : sortedUpdates) {
-          processChunk(c);
-          updateCounter++;
-          _chunkUpdateNormal.remove(c);
-          Vector3f pDist=Vector3f.sub(pPos,_player.getPosition(),null);
-          if (pDist.length() > 2 || !_chunkUpdateImportant.isEmpty() || updateCounter == 32) {
-            break;
-          }
-        }
-      }
+  for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
+    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
+      Chunk c=loadOrCreateChunk(x,z);
+      _chunks[x][0][z]=c;
+      queueChunkForUpdate(c);
     }
   }
-);
-  _worldThread=new Thread(new Runnable(){
+  _worldGenerated=true;
+  _player.resetPlayer();
+  _updateThread=new Thread(new Runnable(){
     @Override public void run(){
+      int itCounter=0;
       while (true) {
+        long timeStart=System.currentTimeMillis();
+        timeStart=System.currentTimeMillis();
+synchronized (_chunkUpdateNormal) {
+          Collections.sort(_chunkUpdateNormal);
+        }
+        if (_chunkUpdateNormal.size() > 0) {
+          Chunk c=null;
+synchronized (_chunkUpdateNormal) {
+            c=_chunkUpdateNormal.get(0);
+          }
+          processChunk(c);
+synchronized (_chunkUpdateNormal) {
+            _chunkUpdateNormal.remove(c);
+          }
+        }
         updateInfWorld();
         updateDaytime();
+        _statUpdateDuration+=System.currentTimeMillis() - timeStart;
+        _statUpdateDuration/=2;
+        itCounter++;
       }
     }
   }
 );
   _updateThread.start();
-  _worldThread.start();
 }

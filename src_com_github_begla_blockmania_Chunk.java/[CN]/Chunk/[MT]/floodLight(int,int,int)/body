@@ -1,31 +1,28 @@
 {
-  x=getBlockWorldPosX(x);
-  y=getBlockWorldPosY(y);
-  z=getBlockWorldPosZ(z);
-  float val_n1=Block.getBlock(_parent.getBlock(x + 1,y,z)).isBlockTypeTranslucent() ? _parent.getLight(x + 1,y,z) : -1f;
-  float val_n2=Block.getBlock(_parent.getBlock(x - 1,y,z)).isBlockTypeTranslucent() ? _parent.getLight(x - 1,y,z) : -1f;
-  float val_n3=Block.getBlock(_parent.getBlock(x,y,z + 1)).isBlockTypeTranslucent() ? _parent.getLight(x,y,z + 1) : -1f;
-  float val_n4=Block.getBlock(_parent.getBlock(x,y,z - 1)).isBlockTypeTranslucent() ? _parent.getLight(x,y,z - 1) : -1f;
-  float val_n5=Block.getBlock(_parent.getBlock(x,y + 1,z)).isBlockTypeTranslucent() ? _parent.getLight(x,y + 1,z) : -1f;
-  float val_n6=Block.getBlock(_parent.getBlock(x,y - 1,z)).isBlockTypeTranslucent() ? _parent.getLight(x,y - 1,z) : -1f;
-  byte val_light=_parent.getLight(x,y,z);
+  float val_n1=Block.getBlock(getBlock(x + 1,y,z)).isBlockTypeTranslucent() ? getLight(x + 1,y,z) : -1f;
+  float val_n2=Block.getBlock(getBlock(x - 1,y,z)).isBlockTypeTranslucent() ? getLight(x - 1,y,z) : -1f;
+  float val_n3=Block.getBlock(getBlock(x,y,z + 1)).isBlockTypeTranslucent() ? getLight(x,y,z + 1) : -1f;
+  float val_n4=Block.getBlock(getBlock(x,y,z - 1)).isBlockTypeTranslucent() ? getLight(x,y,z - 1) : -1f;
+  float val_n5=Block.getBlock(getBlock(x,y + 1,z)).isBlockTypeTranslucent() ? getLight(x,y + 1,z) : -1f;
+  float val_n6=Block.getBlock(getBlock(x,y - 1,z)).isBlockTypeTranslucent() ? getLight(x,y - 1,z) : -1f;
+  byte val_light=getLight(x,y,z);
   byte val_light_next=(byte)Math.max(val_light - 1,0);
   if (val_n1 < val_light_next && val_n1 != -1) {
-    _parent.setLight(x + 1,y,z,val_light_next);
+    setLight(x + 1,y,z,val_light_next);
   }
   if (val_n2 < val_light_next && val_n2 != -1) {
-    _parent.setLight(x - 1,y,z,val_light_next);
+    setLight(x - 1,y,z,val_light_next);
   }
   if (val_n3 < val_light_next && val_n3 != -1) {
-    _parent.setLight(x,y,z + 1,val_light_next);
+    setLight(x,y,z + 1,val_light_next);
   }
   if (val_n4 < val_light_next && val_n4 != -1) {
-    _parent.setLight(x,y,z - 1,val_light_next);
+    setLight(x,y,z - 1,val_light_next);
   }
   if (val_n5 < val_light_next && val_n5 != -1) {
-    _parent.setLight(x,y + 1,z,val_light_next);
+    setLight(x,y + 1,z,val_light_next);
   }
   if (val_n6 < val_light_next && val_n6 != -1) {
-    _parent.setLight(x,y - 1,z,val_light_next);
+    setLight(x,y - 1,z,val_light_next);
   }
 }
