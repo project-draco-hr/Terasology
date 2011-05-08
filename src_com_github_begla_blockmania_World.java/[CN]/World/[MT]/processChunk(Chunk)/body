@@ -1,13 +1,15 @@
 {
   if (c != null) {
-    if (!c.generate() && c._dirty) {
+    if (!c.generate() && c._lightDirty) {
       c.calcLight();
+      c._lightDirty=false;
     }
     Chunk[] neighbors=c.getNeighbors();
     for (    Chunk nc : neighbors) {
       if (nc != null) {
-        if (!nc.generate() && nc._dirty) {
+        if (!nc.generate() && nc._lightDirty) {
           nc.calcLight();
+          nc._lightDirty=false;
         }
         if (nc._dirty) {
           nc.generateVertexArrays();

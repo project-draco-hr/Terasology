@@ -19,17 +19,21 @@
       _player.resetPlayer();
       Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunks created! ({0}s).",(System.currentTimeMillis() - timeStart) / 1000d);
       while (true) {
+        Chunk ci=_chunkUpdateImportant.poll();
+        if (ci != null) {
+          processChunk(ci);
+        }
         ArrayList<Chunk> sortedUpdates=new ArrayList<Chunk>(_chunkUpdateNormal);
         Collections.sort(sortedUpdates);
-        for (int i=0; i < 8; i++) {
-          if (sortedUpdates.size() > 0 && _chunkUpdateImportant.isEmpty()) {
-            Chunk c=sortedUpdates.remove(0);
-            _chunkUpdateNormal.remove(c);
-            processChunk(c);
-          }
- else {
-            Chunk c=_chunkUpdateImportant.poll();
-            processChunk(c);
+        Vector3f pPos=new Vector3f(_player.getPosition());
+        int updateCounter=0;
+        for (        Chunk c : sortedUpdates) {
+          processChunk(c);
+          updateCounter++;
+          _chunkUpdateNormal.remove(c);
+          Vector3f pDist=Vector3f.sub(pPos,_player.getPosition(),null);
+          if (pDist.length() > 2 || !_chunkUpdateImportant.isEmpty() || updateCounter == 32) {
+            break;
           }
         }
       }

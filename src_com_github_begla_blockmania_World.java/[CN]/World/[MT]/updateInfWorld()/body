@@ -19,9 +19,6 @@
           pos.x+=Configuration.VIEWING_DISTANCE_IN_CHUNKS.x * (multX - 1);
         }
         if (c.getPosition().x != pos.x || c.getPosition().z != pos.z) {
-          while (_chunkUpdateNormal.contains(c)) {
-            _chunkUpdateNormal.remove(c);
-          }
           c=loadOrCreateChunk((int)pos.x,(int)pos.z);
           _chunks[x][0][z]=c;
           queueChunkForUpdate(c,0);
