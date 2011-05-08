@@ -1,11 +1,8 @@
 {
-  Chunk c=null;
-synchronized (_chunkUpdateQueueDL) {
-    if (_chunkUpdateQueueDL.size() > 0) {
-      c=_chunkUpdateQueueDL.remove(0);
-    }
-  }
-  if (c != null) {
+  try {
+    Chunk c=_chunkUpdateQueueDL.remove(0);
     c.generateDisplayList();
+  }
+ catch (  Exception e) {
   }
 }

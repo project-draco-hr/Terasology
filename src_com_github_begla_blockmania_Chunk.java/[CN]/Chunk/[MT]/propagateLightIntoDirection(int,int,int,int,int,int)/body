@@ -7,7 +7,8 @@
     return;
   }
   for (int i=1; i <= originLightValue; i++) {
-    if (!Block.getBlock(_parent.getBlock(blockPosX + (i * dirX),blockPosY + (i * dirY),blockPosZ + (i * dirZ))).isBlockTypeTranslucent()) {
+    byte blockType=_parent.getBlock(blockPosX + (i * dirX),blockPosY + (i * dirY),blockPosZ + (i * dirZ));
+    if (!Block.getBlock(blockType).isBlockTypeTranslucent()) {
       break;
     }
     byte newLightValue=(byte)(originLightValue - Math.abs(i));
