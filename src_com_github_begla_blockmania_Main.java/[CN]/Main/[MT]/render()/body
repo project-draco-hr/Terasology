@@ -1,14 +1,14 @@
 {
-  glClearColor(world.getDaylightColor().x,world.getDaylightColor().y,world.getDaylightColor().z,1.0f);
-  float[] fogColor={world.getDaylightColor().x,world.getDaylightColor().y,world.getDaylightColor().z,1.0f};
+  glClearColor(_world.getDaylightColor().x,_world.getDaylightColor().y,_world.getDaylightColor().z,1.0f);
+  float[] fogColor={_world.getDaylightColor().x,_world.getDaylightColor().y,_world.getDaylightColor().z,1.0f};
   FloatBuffer fogColorBuffer=BufferUtils.createFloatBuffer(4);
   fogColorBuffer.put(fogColor);
   fogColorBuffer.rewind();
   glFog(GL_FOG_COLOR,fogColorBuffer);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
-  player.render();
-  world.render();
+  _player.render();
+  _world.render();
   if (Configuration.SHOW_HUD) {
     renderHUD();
   }

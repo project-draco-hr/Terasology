@@ -4,38 +4,33 @@
     lastDaytimeMeasurement=Helper.getInstance().getTime();
     Logger.getLogger(World.class.getName()).log(Level.INFO,"Updated daytime to {0}h.",_daytime);
     byte oldDaylight=_daylight;
-switch (_daytime) {
-case 18:
+    if (_daytime >= 18 && _daytime < 20) {
       _daylight=(byte)(0.8f * Configuration.MAX_LIGHT);
-    break;
-case 20:
-  _daylight=(byte)(0.6f * Configuration.MAX_LIGHT);
-break;
-case 21:
-_daylight=(byte)(0.4f * Configuration.MAX_LIGHT);
-break;
-case 22:
-_daylight=(byte)(0.3f * Configuration.MAX_LIGHT);
-break;
-case 23:
-_daylight=(byte)(0.2f * Configuration.MAX_LIGHT);
-break;
-case 5:
-_daylight=(byte)(0.3f * Configuration.MAX_LIGHT);
-break;
-case 6:
-_daylight=(byte)(0.6f * Configuration.MAX_LIGHT);
-break;
-case 7:
-_daylight=(byte)(0.8f * Configuration.MAX_LIGHT);
-break;
-case 8:
-_daylight=Configuration.MAX_LIGHT;
-break;
-}
-if (_daylight != oldDaylight) {
-markCachedChunksDirty(false);
-updateAllChunks();
-}
-}
+    }
+ else     if (_daytime == 20) {
+      _daylight=(byte)(0.6f * Configuration.MAX_LIGHT);
+    }
+ else     if (_daytime == 21) {
+      _daylight=(byte)(0.4f * Configuration.MAX_LIGHT);
+    }
+ else     if (_daytime == 22) {
+      _daylight=(byte)(0.3f * Configuration.MAX_LIGHT);
+    }
+ else     if (_daytime >= 0 && _daytime <= 5) {
+      _daylight=(byte)(0.2f * Configuration.MAX_LIGHT);
+    }
+ else     if (_daytime == 6) {
+      _daylight=(byte)(0.3f * Configuration.MAX_LIGHT);
+    }
+ else     if (_daytime == 7) {
+      _daylight=(byte)(0.6f * Configuration.MAX_LIGHT);
+    }
+ else     if (_daytime >= 8 && _daytime < 18) {
+      _daylight=(byte)Configuration.MAX_LIGHT;
+    }
+    if (_daylight != oldDaylight) {
+      markCachedChunksDirty(false);
+      updateAllChunks();
+    }
+  }
 }

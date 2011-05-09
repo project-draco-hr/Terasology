@@ -15,6 +15,16 @@
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
+        if (!_updatingEnabled) {
+synchronized (_updateThread) {
+            try {
+              _updateThread.wait();
+            }
+ catch (            InterruptedException ex) {
+              Logger.getLogger(World.class.getName()).log(Level.SEVERE,null,ex);
+            }
+          }
+        }
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
         if (!_chunkUpdateNormal.isEmpty()) {

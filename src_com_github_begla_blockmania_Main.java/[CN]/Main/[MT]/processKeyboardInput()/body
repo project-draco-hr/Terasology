@@ -1,0 +1,33 @@
+{
+  while (Keyboard.next()) {
+    int key=Keyboard.getEventKey();
+    if (key == Keyboard.KEY_ESCAPE && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+      toggleDebugConsole();
+    }
+    if (_showDebugConsole) {
+      if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+        if (key == Keyboard.KEY_BACK) {
+          try {
+            _consoleString=_consoleString.substring(0,_consoleString.length() - 1);
+          }
+ catch (          Exception e) {
+          }
+        }
+ else         if (key == Keyboard.KEY_RETURN) {
+          processConsoleString();
+        }
+        char c=Keyboard.getEventCharacter();
+        try {
+          if (c >= 'a' && c < 'z' || c >= '0' && c < '9' + 1 || c >= 'A' && c < 'A' + 1 || c == ' ' || c == '_' || c == '.') {
+            _consoleString=_consoleString.concat(String.valueOf(c));
+          }
+        }
+ catch (        Exception e) {
+        }
+      }
+    }
+ else {
+      _player.processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+    }
+  }
+}

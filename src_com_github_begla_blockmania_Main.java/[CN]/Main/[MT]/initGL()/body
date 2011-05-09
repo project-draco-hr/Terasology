@@ -15,13 +15,13 @@
   glFogf(GL_FOG_END,viewingDistance);
   Chunk.init();
   World.init();
-  player=new Player();
+  _player=new Player();
   String worldSeed=Configuration.DEFAULT_SEED;
   if (worldSeed.length() == 0) {
-    worldSeed=rand.randomCharacterString(16);
+    worldSeed=_rand.randomCharacterString(16);
   }
-  LOGGER.log(Level.INFO,"Creating new World with seed \"{0}\"",worldSeed);
-  world=new World("WORLD1",worldSeed,player);
-  player.setParent(world);
-  world.startUpdateThread();
+  _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",worldSeed);
+  _world=new World("WORLD1",worldSeed,_player);
+  _player.setParent(_world);
+  _world.startUpdateThread();
 }
