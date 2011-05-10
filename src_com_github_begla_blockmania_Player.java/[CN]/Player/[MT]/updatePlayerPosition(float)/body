@@ -1,6 +1,6 @@
 {
   Vector3f oldPosition=new Vector3f(_position);
-  if (Configuration.DEMO_FLIGHT && Configuration.GOD_MODE) {
+  if (Configuration.getSettingBoolean("DEMO_FLIGHT") && Configuration.getSettingBoolean("GOD_MODE")) {
     for (int i=127; i > 0; i--) {
       int block=_parent.getBlock((int)getPosition().x,i,(int)getPosition().z);
       if (block > 0) {
@@ -12,13 +12,13 @@
     return;
   }
   if (Math.abs(_accVector.y) > 0f) {
-    _accVector.y+=-1f * _accVector.y * Configuration.SLOWDOWN_INTENS;
+    _accVector.y+=-1f * _accVector.y * Configuration.getSettingNumeric("SLOWDOWN_INTENS");
   }
   if (Math.abs(_accVector.x) > 0f) {
-    _accVector.x+=-1f * _accVector.x * Configuration.SLOWDOWN_INTENS;
+    _accVector.x+=-1f * _accVector.x * Configuration.getSettingNumeric("SLOWDOWN_INTENS");
   }
   if (Math.abs(_accVector.z) > 0f) {
-    _accVector.z+=-1f * _accVector.z * Configuration.SLOWDOWN_INTENS;
+    _accVector.z+=-1f * _accVector.z * Configuration.getSettingNumeric("SLOWDOWN_INTENS");
   }
   if (Math.abs(_accVector.x) > _wSpeed || Math.abs(_accVector.z) > _wSpeed || Math.abs(_accVector.z) > _wSpeed) {
     float max=Math.max(Math.max(Math.abs(_accVector.x),Math.abs(_accVector.z)),_accVector.y);
@@ -32,17 +32,17 @@
   _accVector.z+=_moveVector.z;
   getPosition().y+=(_accVector.y / 1000.0f) * delta;
   getPosition().y+=(_gravity / 1000.0f) * delta;
-  if (!Configuration.GOD_MODE) {
+  if (!Configuration.getSettingBoolean("GOD_MODE")) {
     boolean vHit=verticalHitTest(oldPosition);
     if (!vHit) {
-      if (_gravity > -Configuration.MAX_GRAVITY) {
-        _gravity-=Configuration.G_FORCE * delta;
+      if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY")) {
+        _gravity-=Configuration.getSettingNumeric("G_FORCE") * delta;
       }
     }
  else {
       if (_jump) {
         _jump=false;
-        _gravity=Configuration.JUMP_INTENSITY;
+        _gravity=Configuration.getSettingNumeric("JUMP_INTENSITY");
       }
     }
   }
@@ -51,7 +51,7 @@
   }
   getPosition().x+=(_accVector.x / 1000.0f) * delta;
   getPosition().z+=(_accVector.z / 1000.0f) * delta;
-  if (!Configuration.GOD_MODE) {
+  if (!Configuration.getSettingBoolean("GOD_MODE")) {
     horizontalHitTest(oldPosition);
   }
 }

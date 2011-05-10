@@ -2,12 +2,12 @@
   boolean success=false;
   ArrayList<String> parsingResult=new ArrayList<String>();
   String temp="";
-  for (int i=0; i < _consoleString.length(); i++) {
-    char c=_consoleString.charAt(i);
+  for (int i=0; i < _consoleInput.length(); i++) {
+    char c=_consoleInput.charAt(i);
     if (c != ' ') {
       temp=temp.concat(String.valueOf(c));
     }
-    if (c == ' ' || i == _consoleString.length() - 1) {
+    if (c == ' ' || i == _consoleInput.length() - 1) {
       parsingResult.add(temp);
       temp="";
     }
@@ -18,56 +18,52 @@
         _player.plantTree(Integer.parseInt(parsingResult.get(2)));
         success=true;
       }
+ else       if (parsingResult.get(1).equals("block")) {
+        _player.placeBlock(Byte.parseByte(parsingResult.get(2)));
+        success=true;
+      }
     }
  else     if (parsingResult.get(0).equals("set")) {
-      if (parsingResult.get(1).equals("time")) {
+      if (parsingResult.get(1).equals("TIME")) {
         _world.setDaytime(Short.parseShort(parsingResult.get(2)));
         success=true;
       }
- else       if (parsingResult.get(1).equals("god_mode")) {
-        Configuration.GOD_MODE=Boolean.parseBoolean(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("demo_flight")) {
-        Configuration.DEMO_FLIGHT=Boolean.parseBoolean(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("hud")) {
-        Configuration.SHOW_HUD=Boolean.parseBoolean(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("placing_box")) {
-        Configuration.SHOW_PLACING_BOX=Boolean.parseBoolean(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("chunk_outlines")) {
-        Configuration.SHOW_CHUNK_OUTLINES=Boolean.parseBoolean(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("g_force")) {
-        Configuration.G_FORCE=Float.parseFloat(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("jump_intens")) {
-        Configuration.JUMP_INTENSITY=Float.parseFloat(parsingResult.get(2));
-        success=true;
-      }
- else       if (parsingResult.get(1).equals("walking_speed")) {
-        Configuration.WALKING_SPEED=Float.parseFloat(parsingResult.get(2));
-        success=true;
+ else {
+        Boolean bRes=Configuration.getSettingBoolean(parsingResult.get(1).toUpperCase());
+        if (bRes != null) {
+          Configuration.setSetting(parsingResult.get(1).toUpperCase(),Boolean.parseBoolean(parsingResult.get(2)));
+          success=true;
+        }
+ else {
+          Float fRes=Configuration.getSettingNumeric(parsingResult.get(1).toUpperCase());
+          if (fRes != null) {
+            Configuration.setSetting(parsingResult.get(1).toUpperCase(),Float.parseFloat(parsingResult.get(2)));
+            success=true;
+          }
+        }
       }
     }
  else     if (parsingResult.get(0).equals("reset_player")) {
       _player.resetPlayer();
     }
+ else     if (parsingResult.get(0).equals("goto")) {
+      int x=Integer.parseInt(parsingResult.get(1));
+      int y=Integer.parseInt(parsingResult.get(2));
+      int z=Integer.parseInt(parsingResult.get(3));
+      _player.setPosition(new Vector3f(x,y,z));
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("exit")) {
+      System.exit(0);
+    }
   }
  catch (  Exception e) {
   }
   if (success) {
-    _logger.log(Level.INFO,"Console command \"{0}\" accepted.",_consoleString);
+    _logger.log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
   }
  else {
-    _logger.log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleString);
+    _logger.log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
   }
   toggleDebugConsole();
 }
