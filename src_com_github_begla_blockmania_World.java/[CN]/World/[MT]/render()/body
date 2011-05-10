@@ -6,7 +6,12 @@
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_TEXTURE_2D);
-  _textureSun.bind();
+  if (isDaytime()) {
+    _textureSun.bind();
+  }
+ else {
+    _textureMoon.bind();
+  }
   glBegin(GL_QUADS);
   glTexCoord2f(0.0f,0.0f);
   glVertex3f(-Configuration.SUN_SIZE,Configuration.SUN_SIZE,-Configuration.SUN_SIZE);
