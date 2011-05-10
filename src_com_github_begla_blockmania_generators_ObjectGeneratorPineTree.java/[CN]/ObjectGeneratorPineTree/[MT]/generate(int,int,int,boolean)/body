@@ -1,0 +1,15 @@
+{
+  int height=_rand.randomInt() % 4 + 12;
+  for (int i=0; i < height; i++) {
+    _world.setBlock(posX,posY + i,posZ,(byte)0x5,update);
+  }
+  for (int y=0; y < 10; y+=2) {
+    for (int x=-5 + y / 2; x <= 5 - y / 2; x++) {
+      for (int z=-5 + y / 2; z <= 5 - y / 2; z++) {
+        if (!(x == 0 && z == 0)) {
+          _world.setBlock(posX + x,posY + y + (height - 10),posZ + z,(byte)0x6,update);
+        }
+      }
+    }
+  }
+}

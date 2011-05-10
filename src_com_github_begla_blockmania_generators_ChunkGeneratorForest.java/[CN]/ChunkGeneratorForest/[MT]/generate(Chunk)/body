@@ -1,0 +1,31 @@
+{
+  for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
+    for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
+      for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+        float dens=calcForestDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z));
+        if (c.getBlock(x,y,z) == 0x1 && dens > 0.15) {
+          if (_rand.randomBoolean()) {
+            c.setBlock(x,y + 1,z,(byte)0xB);
+          }
+ else {
+            c.setBlock(x,y + 1,z,(byte)0xC);
+          }
+        }
+        if (c.getBlock(x,y,z) == 0x1 && dens > 0.5) {
+          if (_rand.randomDouble() > 0.25f) {
+            c.setBlock(x,y + 1,z,(byte)0x9);
+          }
+ else {
+            c.setBlock(x,y + 1,z,(byte)0xA);
+          }
+        }
+        if (dens > 0.7 && c.getBlock(x,y,z) == 0x1 && y > 32) {
+          c.getParent().getGeneratorPineTree().generate(c.getBlockWorldPosX(x),c.getBlockWorldPosY((int)y) + 1,c.getBlockWorldPosZ(z),false);
+        }
+ else         if (dens > 0.6f && c.getBlock(x,y,z) == 0x1 && y > 32) {
+          c.getParent().getGeneratorTree().generate(c.getBlockWorldPosX(x),c.getBlockWorldPosY((int)y) + 1,c.getBlockWorldPosZ(z),false);
+        }
+      }
+    }
+  }
+}
