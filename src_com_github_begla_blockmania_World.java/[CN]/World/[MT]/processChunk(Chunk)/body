@@ -1,13 +1,17 @@
 {
   if (c != null) {
     if (!c.generate() && c._lightDirty) {
-      c.calcLight();
+      if (!Configuration.getSettingBoolean("DISABLE_LIGHT_UPDATES")) {
+        c.calcLight();
+      }
     }
     Chunk[] neighbors=c.getNeighbors();
     for (    Chunk nc : neighbors) {
       if (nc != null) {
         if (!nc.generate() && nc._lightDirty) {
-          nc.calcLight();
+          if (!Configuration.getSettingBoolean("DISABLE_LIGHT_UPDATES")) {
+            nc.calcLight();
+          }
         }
         if (nc._dirty) {
           nc.generateVertexArrays();

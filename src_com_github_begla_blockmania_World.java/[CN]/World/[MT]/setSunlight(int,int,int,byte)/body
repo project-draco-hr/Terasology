@@ -5,13 +5,10 @@
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosY=calcBlockPosY(y,chunkPosY);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
-  if (overwrite || c.getBlock(blockPosX,blockPosY,blockPosZ) == 0) {
-    c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-    if (update) {
-      byte oldValue=getLight(x,y,z);
-      c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
-      queueChunkForUpdate(c);
-    }
+  try {
+    Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+    c.setSunlight(blockPosX,blockPosY,blockPosZ,intens);
+  }
+ catch (  Exception e) {
   }
 }

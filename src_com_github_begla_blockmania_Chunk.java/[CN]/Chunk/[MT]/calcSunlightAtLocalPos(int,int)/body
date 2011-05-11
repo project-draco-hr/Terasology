@@ -1,17 +1,21 @@
 {
   byte light=Configuration.MAX_LIGHT;
+  boolean covered=false;
   for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
-    if (Block.getBlock(_blocks[x][y][z]).isBlockTypeTranslucent()) {
-      _light[x][y][z]=light;
+    if (Block.getBlock(_blocks[x][y][z]).isBlockTypeTranslucent() && !covered) {
+      setSunlight(x,y,z,light);
       if (_blocks[x][y][z] != 0x0) {
         light-=Configuration.LIGHT_ABSORPTION;
-        light=(byte)Math.max(Configuration.MIN_LIGHT,light);
+        light=(byte)Math.max(0,light);
       }
     }
+ else     if (Block.getBlock(_blocks[x][y][z]).isBlockTypeTranslucent() && covered) {
+      setSunlight(x,y,z,(byte)0);
+    }
  else {
-      break;
+      setSunlight(x,y,z,(byte)0);
+      covered=true;
     }
   }
-  _dirty=true;
   _lightDirty=true;
 }

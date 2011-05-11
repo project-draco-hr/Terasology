@@ -2,6 +2,10 @@
   this._player=p;
   _rand=new FastRandom(seed.hashCode());
   _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z];
+  _title=title;
+  if (_title.equals("")) {
+    _title=_rand.randomCharacterString(16);
+  }
   _generatorTerrain=new ChunkGeneratorTerrain(seed);
   _generatorForest=new ChunkGeneratorForest(seed);
   _generatorTree=new ObjectGeneratorTree(this,seed);

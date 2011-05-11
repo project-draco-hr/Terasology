@@ -21,6 +21,7 @@
         Chunk cc=sortedChunks.get(indexToDelete);
         _chunkCache.remove(Helper.getInstance().cantorize((int)cc.getPosition().x,(int)cc.getPosition().z));
         _chunkUpdateNormal.remove(cc);
+        cc.writeChunkToDisk();
       }
     }
     Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Finished removing chunks from chunk cache.");

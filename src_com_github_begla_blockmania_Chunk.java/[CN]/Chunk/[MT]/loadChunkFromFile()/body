@@ -1,0 +1,32 @@
+{
+  ByteBuffer input=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3);
+  File f=new File(String.format("%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
+  if (!f.exists()) {
+    return false;
+  }
+  try {
+    FileInputStream iS=new FileInputStream(f);
+    FileChannel c=iS.getChannel();
+    c.read(input);
+    iS.close();
+  }
+ catch (  FileNotFoundException ex) {
+    Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE,null,ex);
+    return false;
+  }
+catch (  IOException ex) {
+    Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE,null,ex);
+    return false;
+  }
+  input.rewind();
+  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
+    for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
+      for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+        _blocks[x][y][z]=input.get();
+        _sunlight[x][y][z]=input.get();
+        _light[x][y][z]=input.get();
+      }
+    }
+  }
+  return true;
+}

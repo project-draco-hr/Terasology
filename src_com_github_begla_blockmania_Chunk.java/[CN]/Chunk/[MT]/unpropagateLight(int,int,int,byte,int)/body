@@ -1,0 +1,41 @@
+{
+  if (depth >= 16) {
+    return;
+  }
+  int blockPosX=getBlockWorldPosX(x);
+  int blockPosY=getBlockWorldPosY(y);
+  int blockPosZ=getBlockWorldPosZ(z);
+  byte blockType=_parent.getBlock(blockPosX,blockPosY,blockPosZ);
+  if ((!Block.getBlock(blockType).isBlockTypeTranslucent() && depth > 0)) {
+    return;
+  }
+  if (oldLightValue <= 0) {
+    return;
+  }
+  _parent.setSunlight(blockPosX,blockPosY,blockPosZ,(byte)0);
+  byte val1=_parent.getLight(blockPosX + 1,blockPosY,blockPosZ);
+  if (val1 < oldLightValue && val1 > 0) {
+    _parent.unpropagateLight(blockPosX + 1,blockPosY,blockPosZ,oldLightValue,++depth);
+  }
+  byte val2=_parent.getLight(blockPosX - 1,blockPosY,blockPosZ);
+  if (val2 < oldLightValue && val2 > 0) {
+    _parent.unpropagateLight(blockPosX - 1,blockPosY,blockPosZ,oldLightValue,++depth);
+  }
+  byte val3=_parent.getLight(blockPosX,blockPosY,blockPosZ + 1);
+  if (val3 < oldLightValue && val3 > 0) {
+    _parent.unpropagateLight(blockPosX,blockPosY,blockPosZ + 1,oldLightValue,++depth);
+  }
+  byte val4=_parent.getLight(blockPosX,blockPosY,blockPosZ - 1);
+  if (val4 < oldLightValue && val4 > 0) {
+    _parent.unpropagateLight(blockPosX,blockPosY,blockPosZ - 1,oldLightValue,++depth);
+  }
+  byte val5=_parent.getLight(blockPosX,blockPosY + 1,blockPosZ);
+  if (val5 < oldLightValue && val5 > 0) {
+    _parent.unpropagateLight(blockPosX,blockPosY + 1,blockPosZ,oldLightValue,++depth);
+  }
+  byte val6=_parent.getLight(blockPosX,blockPosY - 1,blockPosZ);
+  if (val6 < oldLightValue && val6 > 0) {
+    _parent.unpropagateLight(blockPosX,blockPosY - 1,blockPosZ,oldLightValue,++depth);
+  }
+  _lightDirty=true;
+}
