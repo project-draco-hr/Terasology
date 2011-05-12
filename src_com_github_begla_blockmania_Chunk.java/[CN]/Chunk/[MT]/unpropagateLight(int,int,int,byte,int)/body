@@ -1,5 +1,5 @@
 {
-  if (depth >= 16) {
+  if (depth > oldLightValue) {
     return;
   }
   int blockPosX=getBlockWorldPosX(x);
@@ -7,9 +7,6 @@
   int blockPosZ=getBlockWorldPosZ(z);
   byte blockType=_parent.getBlock(blockPosX,blockPosY,blockPosZ);
   if ((!Block.getBlock(blockType).isBlockTypeTranslucent() && depth > 0)) {
-    return;
-  }
-  if (oldLightValue <= 0) {
     return;
   }
   _parent.setSunlight(blockPosX,blockPosY,blockPosZ,(byte)0);

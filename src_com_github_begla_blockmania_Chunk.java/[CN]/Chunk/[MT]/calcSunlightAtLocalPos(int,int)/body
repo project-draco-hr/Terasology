@@ -10,10 +10,14 @@
       }
     }
  else     if (Block.getBlock(_blocks[x][y][z]).isBlockTypeTranslucent() && covered) {
+      byte lightValue=getLight(x,y,z);
       setSunlight(x,y,z,(byte)0);
+      unpropagateLight(x,y,z,lightValue);
     }
  else {
+      byte lightValue=getLight(x,y,z);
       setSunlight(x,y,z,(byte)0);
+      unpropagateLight(x,y,z,lightValue);
       covered=true;
     }
   }
