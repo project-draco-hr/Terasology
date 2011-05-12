@@ -6,30 +6,29 @@
     }
   }
   if (c != null) {
+    queueChunkForUpdate(c);
     return c;
   }
  else {
   }
-  if (_chunkCache.size() >= 1024) {
+  if (_chunkCache.size() >= 512) {
     ArrayList<Chunk> sortedChunks=null;
     sortedChunks=new ArrayList<Chunk>(_chunkCache.values());
     Collections.sort(sortedChunks);
     Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Cache full. Removing some chunks from the chunk cache...");
-    for (int i=0; i < 256; i++) {
+    for (int i=0; i < 32; i++) {
       int indexToDelete=sortedChunks.size() - i;
       if (indexToDelete >= 0 && indexToDelete < sortedChunks.size()) {
         Chunk cc=sortedChunks.get(indexToDelete);
+        cc.writeChunkToDisk();
         _chunkCache.remove(Helper.getInstance().cantorize((int)cc.getPosition().x,(int)cc.getPosition().z));
         _chunkUpdateNormal.remove(cc);
-        cc.writeChunkToDisk();
       }
     }
     Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Finished removing chunks from chunk cache.");
   }
-  ArrayList<ChunkGenerator> gs=new ArrayList<ChunkGenerator>();
-  gs.add(_generatorTerrain);
-  gs.add(_generatorForest);
-  c=new Chunk(this,new Vector3f(x,0,z),gs);
+  c=prepareNewChunk(x,z);
+  queueChunkForUpdate(c);
   _chunkCache.put(Helper.getInstance().cantorize(x,z),c);
   return c;
 }

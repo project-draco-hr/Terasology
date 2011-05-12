@@ -1,25 +1,25 @@
 {
   if (c != null) {
-    if (!c.generate() && c._lightDirty) {
+    if (!c.generate() && c.isLightDirty()) {
       if (!Configuration.getSettingBoolean("DISABLE_LIGHT_UPDATES")) {
-        c.calcLight();
+        c.updateLight();
       }
     }
     Chunk[] neighbors=c.getNeighbors();
     for (    Chunk nc : neighbors) {
       if (nc != null) {
-        if (!nc.generate() && nc._lightDirty) {
+        if (!nc.generate() && nc.isLightDirty()) {
           if (!Configuration.getSettingBoolean("DISABLE_LIGHT_UPDATES")) {
-            nc.calcLight();
+            nc.updateLight();
           }
         }
-        if (nc._dirty) {
+        if (nc.isDirty()) {
           nc.generateVertexArrays();
           _chunkUpdateQueueDL.add(nc);
         }
       }
     }
-    if (c._dirty) {
+    if (c.isDirty()) {
       c.generateVertexArrays();
       _chunkUpdateQueueDL.add(c);
     }

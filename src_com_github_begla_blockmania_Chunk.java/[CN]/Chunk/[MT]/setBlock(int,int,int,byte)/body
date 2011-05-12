@@ -1,6 +1,10 @@
 {
   try {
     _blocks[x][y][z]=type;
+    Block b=Block.getBlock(type);
+    if (!b.isBlockTypeTranslucent()) {
+      setSunlight(x,y,z,(byte)0,false);
+    }
     _dirty=true;
     markNeighborsDirty(x,z);
   }

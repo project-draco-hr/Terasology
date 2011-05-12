@@ -11,11 +11,11 @@
     for (    ChunkGenerator g : _generators) {
       g.generate(this);
     }
-    calcSunlight();
-    calcLight();
+    updateSunlight();
+    updateLight();
+    writeChunkToDisk();
     _lightDirty=false;
     _fresh=false;
-    writeChunkToDisk();
     Logger.getLogger(this.getClass().getName()).log(Level.FINEST,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
     return true;
   }

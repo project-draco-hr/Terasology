@@ -8,10 +8,10 @@
     if (!Block.getBlock(blockType).isBlockTypeTranslucent()) {
       break;
     }
-    byte newLightValue=(byte)(originLightValue - Math.abs(i));
+    byte newLightValue=(byte)(originLightValue - i);
     byte lightValue=_parent.getLight(blockPosX + (i * dirX),blockPosY + (i * dirY),blockPosZ + (i * dirZ));
     if (newLightValue > lightValue) {
-      _parent.setSunlight(blockPosX + (i * dirX),blockPosY + (i * dirY),blockPosZ + (i * dirZ),newLightValue);
+      _parent.setSunlight(blockPosX + (i * dirX),blockPosY + (i * dirY),blockPosZ + (i * dirZ),newLightValue,true);
     }
  else {
       break;
