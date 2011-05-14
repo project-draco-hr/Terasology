@@ -1,0 +1,19 @@
+{
+  _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
+  if (_world != null) {
+    _world.dispose();
+  }
+  _world=new World("",seed,_player);
+  _player.setParent(_world);
+  _world.startUpdateThread();
+  for (int i=0; i < 15; i++) {
+    try {
+      Thread.sleep(100);
+    }
+ catch (    InterruptedException ex) {
+      Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
+    }
+    System.out.printf("Waiting for some chunks to pop up... %.3f%%\n",((i + 1) / 15f) * 100f);
+  }
+  _player.resetPlayer();
+}

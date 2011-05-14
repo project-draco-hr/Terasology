@@ -72,13 +72,7 @@
       if (parsingResult.size() > 1) {
         worldSeed=parsingResult.get(1);
       }
-      _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",worldSeed);
-      _world.dispose();
-      _world=new World("",worldSeed,_player);
-      _player.setParent(_world);
-      _world.startUpdateThread();
-      Thread.sleep(3000);
-      _player.resetPlayer();
+      initNewWorld(worldSeed);
       success=true;
     }
  else     if (parsingResult.get(0).equals("chunk_information")) {
