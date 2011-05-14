@@ -1,6 +1,6 @@
 {
   glPushMatrix();
-  glTranslatef(_player.getPosition().x,Configuration.VIEWING_DISTANCE_IN_CHUNKS.y * Configuration.CHUNK_DIMENSIONS.y * 0.75f,Configuration.VIEWING_DISTANCE_IN_CHUNKS.z * Configuration.CHUNK_DIMENSIONS.z + _player.getPosition().z);
+  glTranslatef(_player.getPosition().x,Configuration.VIEWING_DISTANCE_IN_CHUNKS.y * Configuration.CHUNK_DIMENSIONS.y * 0.75f,Configuration.CHUNK_DIMENSIONS.z + _player.getPosition().z);
   glDisable(GL_FOG);
   glColor4f(1f,1f,1f,1.0f);
   glEnable(GL_BLEND);
@@ -27,16 +27,16 @@
   glEnable(GL_FOG);
   glPopMatrix();
   for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
-    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
-      Chunk c=getChunk(x,0,z);
+    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.y; z++) {
+      Chunk c=getChunk(x,z);
       if (c != null) {
         c.render(false);
       }
     }
   }
   for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
-    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.z; z++) {
-      Chunk c=getChunk(x,0,z);
+    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.y; z++) {
+      Chunk c=getChunk(x,z);
       if (c != null) {
         c.render(true);
       }
