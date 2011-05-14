@@ -56,6 +56,12 @@ synchronized (_updateThread) {
         updateInfWorld();
         updateDaytime();
         generateNewChunks();
+        try {
+          Thread.sleep(15);
+        }
+ catch (        InterruptedException ex) {
+          Logger.getLogger(World.class.getName()).log(Level.SEVERE,null,ex);
+        }
       }
     }
   }

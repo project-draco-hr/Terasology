@@ -1,9 +1,7 @@
 {
-  try {
-    _updateThread.interrupt();
+synchronized (_updateThread) {
+    _updateThreadAlive=false;
+    _updateThread.notify();
   }
- catch (  Exception e) {
-  }
-  _updateThreadAlive=false;
   writeAllChunksToDisk();
 }
