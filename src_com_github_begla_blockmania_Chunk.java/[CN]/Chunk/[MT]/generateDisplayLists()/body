@@ -4,18 +4,15 @@
       return;
     }
   }
-  if (glIsList(_displayListOpaque)) {
-    glDeleteLists(_displayListOpaque,1);
+  if (_displayListOpaque == -1) {
+    _displayListOpaque=glGenLists(1);
   }
-  if (glIsList(_displayListTranslucent)) {
-    glDeleteLists(_displayListTranslucent,1);
+  if (_displayListTranslucent == -1) {
+    _displayListTranslucent=glGenLists(1);
   }
-  if (glIsList(_displayListBillboard)) {
-    glDeleteLists(_displayListBillboard,1);
+  if (_displayListBillboard == -1) {
+    _displayListBillboard=glGenLists(1);
   }
-  _displayListOpaque=glGenLists(1);
-  _displayListTranslucent=glGenLists(1);
-  _displayListBillboard=glGenLists(1);
   FloatBuffer cb=null;
   FloatBuffer tb=null;
   FloatBuffer vb=null;

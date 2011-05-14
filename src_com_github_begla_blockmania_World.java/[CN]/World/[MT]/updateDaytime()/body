@@ -1,6 +1,11 @@
 {
   if (Helper.getInstance().getTime() - lastDaytimeMeasurement >= 30000) {
-    _time=(short)((_time + 1) % 24);
+    if (_chunkUpdateNormal.isEmpty()) {
+      _time=(short)((_time + 1) % 24);
+    }
+ else {
+      return;
+    }
     lastDaytimeMeasurement=Helper.getInstance().getTime();
     Logger.getLogger(World.class.getName()).log(Level.INFO,"Updated daytime to {0}h.",_time);
     byte oldDaylight=_daylight;
@@ -29,7 +34,7 @@
       _daylight=(byte)Configuration.MAX_LIGHT;
     }
     if (_daylight != oldDaylight) {
-      markCachedChunksDirty(false);
+      markCachedChunksDirty();
       updateAllChunks();
     }
   }

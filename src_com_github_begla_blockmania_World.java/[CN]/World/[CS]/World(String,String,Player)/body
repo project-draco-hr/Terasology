@@ -1,10 +1,9 @@
 {
   this._player=p;
-  _rand=new FastRandom(seed.hashCode());
   _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z];
   _title=title;
   if (_title.equals("")) {
-    _title=_rand.randomCharacterString(16);
+    _title=seed;
   }
   _generatorTerrain=new ChunkGeneratorTerrain(seed);
   _generatorForest=new ChunkGeneratorForest(seed);
@@ -21,19 +20,21 @@
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
+        if (!_updateThreadAlive) {
+          return;
+        }
         if (!_updatingEnabled) {
 synchronized (_updateThread) {
             try {
               _updateThread.wait();
             }
  catch (            InterruptedException ex) {
-              Logger.getLogger(World.class.getName()).log(Level.SEVERE,null,ex);
             }
           }
         }
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
-        if (!_chunkUpdateNormal.isEmpty() && _chunkUpdateQueueDL.isEmpty()) {
+        if (!_chunkUpdateNormal.isEmpty()) {
           Chunk[] chunks=_chunkUpdateNormal.toArray(new Chunk[0]);
           double dist=Float.MAX_VALUE;
           int index=-1;
@@ -48,7 +49,6 @@ synchronized (_updateThread) {
           if (index >= 0) {
             Chunk c=(Chunk)chunks[index];
             processChunk(c);
-            _chunkUpdateNormal.remove(c);
           }
           _statUpdateDuration+=System.currentTimeMillis() - timeStart;
           _statUpdateDuration/=2;

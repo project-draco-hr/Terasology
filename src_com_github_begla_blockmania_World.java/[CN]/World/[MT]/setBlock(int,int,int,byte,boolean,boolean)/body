@@ -5,20 +5,24 @@
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosY=calcBlockPosY(y,chunkPosY);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
-  if (overwrite || c.getBlock(blockPosX,blockPosY,blockPosZ) == 0) {
-    c.setBlock(blockPosX,blockPosY,blockPosZ,type);
-    if (update) {
-      byte oldValue=getLight(x,y,z);
-      c.calcSunlightAtLocalPos(blockPosX,blockPosZ);
-      c.refreshLightAtLocalPos(blockPosX,blockPosY,blockPosZ);
-      byte newValue=getLight(x,y,z);
-      if (newValue > oldValue) {
-        c.spreadLight(blockPosX,blockPosY,blockPosZ,newValue,false);
+  try {
+    Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+    if (overwrite || c.getBlock(blockPosX,blockPosY,blockPosZ) == 0) {
+      c.setBlock(blockPosX,blockPosY,blockPosZ,type);
+      if (update) {
+        byte oldValue=getLight(x,y,z);
+        c.calcSunlightAtLocalPos(blockPosX,blockPosZ,true);
+        c.refreshLightAtLocalPos(blockPosX,blockPosY,blockPosZ);
+        byte newValue=getLight(x,y,z);
+        if (newValue > oldValue) {
+          c.spreadLight(blockPosX,blockPosY,blockPosZ,newValue);
+        }
+ else         if (newValue < oldValue) {
+        }
+        queueChunkForUpdate(c);
       }
- else       if (newValue < oldValue) {
-      }
-      queueChunkForUpdate(c);
     }
+  }
+ catch (  Exception e) {
   }
 }

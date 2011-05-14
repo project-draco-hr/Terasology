@@ -1,0 +1,14 @@
+{
+  if (isFresh()) {
+    Logger.getLogger(Chunk.class.getName()).log(Level.SEVERE,"Sunlight can not be changed within fresh blocks.");
+    return;
+  }
+  try {
+    Block b=Block.getBlock(getBlock(x,y,z));
+    _sunlight[x][y][z]=intens;
+    _dirty=true;
+    markNeighborsDirty(x,z);
+  }
+ catch (  Exception e) {
+  }
+}

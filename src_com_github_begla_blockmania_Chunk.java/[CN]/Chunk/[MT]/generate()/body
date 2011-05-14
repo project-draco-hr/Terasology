@@ -2,21 +2,17 @@
   if (_fresh) {
     long timeStart=System.currentTimeMillis();
     if (loadChunkFromFile()) {
-      _lightDirty=false;
+      setLightDirty(false);
       _fresh=false;
-      markNeighborsDirty();
-      Logger.getLogger(this.getClass().getName()).log(Level.FINEST,"Chunk ({1}) loaded from disk ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
+      Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunk ({1}) loaded from disk ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
       return true;
     }
     for (    ChunkGenerator g : _generators) {
       g.generate(this);
     }
     updateSunlight();
-    updateLight();
-    writeChunkToDisk();
-    _lightDirty=false;
     _fresh=false;
-    Logger.getLogger(this.getClass().getName()).log(Level.FINEST,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
+    Logger.getLogger(this.getClass().getName()).log(Level.INFO,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
     return true;
   }
   return false;

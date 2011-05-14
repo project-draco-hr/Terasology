@@ -1,6 +1,6 @@
 {
   ByteBuffer input=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3);
-  File f=new File(String.format("%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
+  File f=new File(String.format("SAVED_WORLDS/%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
   if (!f.exists()) {
     return false;
   }
@@ -24,7 +24,6 @@ catch (  IOException ex) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
         _blocks[x][y][z]=input.get();
         _sunlight[x][y][z]=input.get();
-        _light[x][y][z]=input.get();
       }
     }
   }

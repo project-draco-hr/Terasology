@@ -1,0 +1,14 @@
+{
+  int chunkPosX=calcChunkPosX(x) % (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x;
+  int chunkPosY=calcChunkPosY(y) % (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y;
+  int chunkPosZ=calcChunkPosZ(z) % (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.z;
+  int blockPosX=calcBlockPosX(x,chunkPosX);
+  int blockPosY=calcBlockPosY(y,chunkPosY);
+  int blockPosZ=calcBlockPosZ(z,chunkPosZ);
+  try {
+    Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+    c.setSunlight(blockPosX,blockPosY,blockPosZ,intens);
+  }
+ catch (  Exception e) {
+  }
+}

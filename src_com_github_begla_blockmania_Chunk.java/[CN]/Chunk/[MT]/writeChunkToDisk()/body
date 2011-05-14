@@ -1,19 +1,22 @@
 {
-  if (_fresh) {
+  if (_fresh || _lightDirty) {
     return false;
   }
   ByteBuffer output=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3);
-  File dir=new File(String.format("%s",_parent.getTitle()));
-  if (!dir.exists()) {
-    dir.mkdir();
+  File dir1=new File(String.format("SAVED_WORLDS",_parent.getTitle()));
+  if (!dir1.exists()) {
+    dir1.mkdir();
   }
-  File f=new File(String.format("%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
+  File dir2=new File(String.format("SAVED_WORLDS/%s",_parent.getTitle()));
+  if (!dir2.exists()) {
+    dir2.mkdir();
+  }
+  File f=new File(String.format("SAVED_WORLDS/%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
         output.put(_blocks[x][y][z]);
         output.put(_sunlight[x][y][z]);
-        output.put(_light[x][y][z]);
       }
     }
   }

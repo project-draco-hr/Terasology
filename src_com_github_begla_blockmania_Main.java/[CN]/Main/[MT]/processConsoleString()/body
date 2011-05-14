@@ -55,7 +55,7 @@
       success=true;
     }
  else     if (parsingResult.get(0).equals("exit")) {
-      _world.writeAllChunksToDisk();
+      _world.dispose();
       System.exit(0);
       success=true;
     }
@@ -65,6 +65,28 @@
     }
  else     if (parsingResult.get(0).equals("i")) {
       _logger.log(Level.INFO,_player.selectedBlockInformation());
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("generate_new_world")) {
+      String worldSeed=_rand.randomCharacterString(16);
+      if (parsingResult.size() > 1) {
+        worldSeed=parsingResult.get(1);
+      }
+      _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",worldSeed);
+      _world.dispose();
+      _world=new World("",worldSeed,_player);
+      _player.setParent(_world);
+      _world.startUpdateThread();
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("chunk_information")) {
+      _world.printDirtyChunks();
+      _world.printLightDirtyChunks();
+      _world.printFreshChunks();
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("chunk_pos")) {
+      _world.printPlayerChunkPosition();
       success=true;
     }
   }
