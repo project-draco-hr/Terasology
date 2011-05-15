@@ -1,0 +1,14 @@
+{
+  int size=sizeX * sizeZ;
+  World w=new World(title,seed,null);
+  int counter=0;
+  for (int x=0; x < sizeX; x++) {
+    for (int z=0; z < sizeZ; z++) {
+      w.generateNewChunk(x,z);
+      counter++;
+      if (counter % 10 == 0) {
+        System.out.printf("World generation running... %.3f%%\n",((float)counter / size) * 100);
+      }
+    }
+  }
+}
