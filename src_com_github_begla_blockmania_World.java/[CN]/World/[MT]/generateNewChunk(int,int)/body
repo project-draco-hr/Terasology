@@ -1,0 +1,15 @@
+{
+  Chunk c=loadOrCreateChunk(x,z);
+  c.generate();
+  if (c == null) {
+    return;
+  }
+  Chunk[] neighbors=c.loadOrCreateNeighbors();
+  for (  Chunk nc : neighbors) {
+    if (nc != null) {
+      nc.generate();
+    }
+  }
+  c.updateLight();
+  c.writeChunkToDisk();
+}
