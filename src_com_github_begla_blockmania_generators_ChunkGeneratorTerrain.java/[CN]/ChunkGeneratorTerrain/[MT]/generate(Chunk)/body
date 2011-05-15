@@ -4,10 +4,10 @@
   int zOffset=(int)c.getPosition().z * (int)Configuration.CHUNK_DIMENSIONS.z;
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-      int height=(int)(calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)));
+      int height=(int)(((calcTerrainElevation(x + xOffset,z + zOffset) + (calcTerrainRoughness(x + xOffset,z + zOffset) * calcTerrainDetail(x + xOffset,z + zOffset)))) * 128f);
       for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
         if (calcCaveDensityAt(x + xOffset,i + yOffset,z + zOffset) < 0.5) {
-          if (calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) > 0.1f) {
+          if (calcCanyonDensity(x + xOffset,i + yOffset,z + zOffset) < 0.1f) {
             float stoneDensity=calcStoneDensity(x + xOffset,i + yOffset,z + zOffset);
             if (i == height) {
               if (i > 32) {
