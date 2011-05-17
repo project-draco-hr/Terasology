@@ -1,0 +1,21 @@
+{
+  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
+    for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+      for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
+        int type=c.getBlock(x,y,z);
+        if (Block.getBlockForType(type).getClass() != BlockDirt.class && !Block.getBlockForType(type).isBlockTypeTranslucent()) {
+          break;
+        }
+        if (Block.getBlockForType(type).getClass() == BlockWater.class) {
+          break;
+        }
+        if (_rand.randomDouble() > 0.025f) {
+          if (Block.getBlockForType(type).getClass() == BlockDirt.class) {
+            c.setBlock(x,y,z,(byte)0x1);
+            generateGrassAndFlowers(c,x,y,z);
+          }
+        }
+      }
+    }
+  }
+}

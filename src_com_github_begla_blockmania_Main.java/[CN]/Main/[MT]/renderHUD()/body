@@ -9,10 +9,12 @@
   glDisable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glEnable(GL_TEXTURE_2D);
-  _font1.drawString(4,4,String.format("%s (fps: %.2f, free heap space: %d MB)",Configuration.GAME_TITLE,_meanFps,Runtime.getRuntime().freeMemory() / 1048576),Color.white);
-  _font1.drawString(4,22,String.format("%s",_player,Color.white));
-  _font1.drawString(4,38,String.format("%s",_world,Color.white));
-  _font1.drawString(4,54,String.format("total vus: %s",Chunk.getVertexArrayUpdateCount(),Color.white));
+  if (Configuration.getSettingBoolean("SHOW_DEBUG_INFORMATION")) {
+    _font1.drawString(4,4,String.format("%s (fps: %.2f, free heap space: %d MB)",Configuration.GAME_TITLE,_meanFps,Runtime.getRuntime().freeMemory() / 1048576),Color.white);
+    _font1.drawString(4,22,String.format("%s",_player,Color.white));
+    _font1.drawString(4,38,String.format("%s",_world,Color.white));
+    _font1.drawString(4,54,String.format("total vus: %s",Chunk.getVertexArrayUpdateCount(),Color.white));
+  }
   if (_showDebugConsole) {
     _font1.drawString(4,Configuration.DISPLAY_HEIGHT - 16 - 4,String.format("%s_",_consoleInput),Color.red);
   }

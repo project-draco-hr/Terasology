@@ -4,26 +4,26 @@
     _position.z+=8f / 1000f * delta;
     return;
   }
-  if (Math.abs(_accVector.y) > 0f) {
-    _accVector.y+=-1f * _accVector.y * Configuration.getSettingNumeric("FRICTION")* delta;
+  if (Math.abs(_acc.y) > 0f) {
+    _acc.y+=-1f * _acc.y * Configuration.getSettingNumeric("FRICTION")* delta;
   }
-  if (Math.abs(_accVector.x) > 0f) {
-    _accVector.x+=-1f * _accVector.x * Configuration.getSettingNumeric("FRICTION")* delta;
+  if (Math.abs(_acc.x) > 0f) {
+    _acc.x+=-1f * _acc.x * Configuration.getSettingNumeric("FRICTION")* delta;
   }
-  if (Math.abs(_accVector.z) > 0f) {
-    _accVector.z+=-1f * _accVector.z * Configuration.getSettingNumeric("FRICTION")* delta;
+  if (Math.abs(_acc.z) > 0f) {
+    _acc.z+=-1f * _acc.z * Configuration.getSettingNumeric("FRICTION")* delta;
   }
-  if (Math.abs(_accVector.x) > _wSpeed || Math.abs(_accVector.z) > _wSpeed || Math.abs(_accVector.z) > _wSpeed) {
-    double max=Math.max(Math.max(Math.abs(_accVector.x),Math.abs(_accVector.z)),_accVector.y);
+  if (Math.abs(_acc.x) > _wSpeed || Math.abs(_acc.z) > _wSpeed || Math.abs(_acc.z) > _wSpeed) {
+    double max=Math.max(Math.max(Math.abs(_acc.x),Math.abs(_acc.z)),_acc.y);
     double div=max / _wSpeed;
-    _accVector.x/=div;
-    _accVector.z/=div;
-    _accVector.y/=div;
+    _acc.x/=div;
+    _acc.z/=div;
+    _acc.y/=div;
   }
-  _accVector.x+=_moveVector.x;
-  _accVector.y+=_moveVector.y;
-  _accVector.z+=_moveVector.z;
-  getPosition().y+=(_accVector.y / 1000.0f) * delta;
+  _acc.x+=_movement.x;
+  _acc.y+=_movement.y;
+  _acc.z+=_movement.z;
+  getPosition().y+=(_acc.y / 1000.0f) * delta;
   getPosition().y+=(_gravity / 1000.0f) * delta;
   if (!Configuration.getSettingBoolean("GOD_MODE")) {
     boolean vHit=verticalHitTest(oldPosition);
@@ -42,9 +42,10 @@
  else {
     _gravity=0f;
   }
-  getPosition().x+=(_accVector.x / 1000.0f) * delta;
-  getPosition().z+=(_accVector.z / 1000.0f) * delta;
+  getPosition().x+=(_acc.x / 1000.0f) * delta;
+  getPosition().z+=(_acc.z / 1000.0f) * delta;
   if (!Configuration.getSettingBoolean("GOD_MODE")) {
-    horizontalHitTest(oldPosition);
+    if (horizontalHitTest(oldPosition)) {
+    }
   }
 }

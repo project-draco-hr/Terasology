@@ -8,9 +8,9 @@
   sides[5]=new Vector3f(_position.x,_position.y,_position.z - _dimensions.z);
   int closestSideIndex=-1;
   float closestSideDistance=Integer.MAX_VALUE;
-  for (int i=0; i < sides.length; i++) {
+  for (int i=sides.length - 1; i >= 0; i--) {
     Vector3f sideToPoint=Vector3f.sub(point,sides[i],null);
-    float distance=sideToPoint.lengthSquared();
+    float distance=sideToPoint.length();
     if (distance < closestSideDistance) {
       closestSideDistance=distance;
       closestSideIndex=i;
@@ -20,9 +20,9 @@ switch (closestSideIndex) {
 case 0:
     return new Vector3f(0,1,0);
 case 1:
-  return new Vector3f(-1,0,0);
+  return new Vector3f(1,0,0);
 case 2:
-return new Vector3f(1,0,0);
+return new Vector3f(-1,0,0);
 case 3:
 return new Vector3f(0,-1,0);
 case 4:

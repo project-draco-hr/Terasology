@@ -1,0 +1,15 @@
+{
+  if (_chunkUpdateNormal.isEmpty()) {
+    for (int i=0; i < 32; i++) {
+      int randX=_rand.randomInt() % (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x;
+      int randZ=_rand.randomInt() % (int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y;
+      Chunk c=getChunk(randX,randZ);
+      if (c != null) {
+        if (!c.isFresh()) {
+          _generatorGrass.generate(c);
+          queueChunkForUpdate(c);
+        }
+      }
+    }
+  }
+}
