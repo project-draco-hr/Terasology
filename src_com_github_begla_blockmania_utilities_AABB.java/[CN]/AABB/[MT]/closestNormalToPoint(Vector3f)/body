@@ -1,0 +1,34 @@
+{
+  Vector3f[] sides=new Vector3f[6];
+  sides[0]=new Vector3f(_position.x,_position.y + _dimensions.y,_position.z);
+  sides[1]=new Vector3f(_position.x - _dimensions.x,_position.y,_position.z);
+  sides[2]=new Vector3f(_position.x + _dimensions.x,_position.y,_position.z);
+  sides[3]=new Vector3f(_position.x,_position.y - _dimensions.y,_position.z);
+  sides[4]=new Vector3f(_position.x,_position.y,_position.z + _dimensions.z);
+  sides[5]=new Vector3f(_position.x,_position.y,_position.z - _dimensions.z);
+  int closestSideIndex=-1;
+  float closestSideDistance=Integer.MAX_VALUE;
+  for (int i=0; i < sides.length; i++) {
+    Vector3f sideToPoint=Vector3f.sub(point,sides[i],null);
+    float distance=sideToPoint.lengthSquared();
+    if (distance < closestSideDistance) {
+      closestSideDistance=distance;
+      closestSideIndex=i;
+    }
+  }
+switch (closestSideIndex) {
+case 0:
+    return new Vector3f(0,1,0);
+case 1:
+  return new Vector3f(-1,0,0);
+case 2:
+return new Vector3f(1,0,0);
+case 3:
+return new Vector3f(0,-1,0);
+case 4:
+return new Vector3f(0,0,1);
+case 5:
+return new Vector3f(0,0,-1);
+}
+return new Vector3f();
+}

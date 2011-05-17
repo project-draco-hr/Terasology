@@ -1,10 +1,24 @@
 {
-  localHorizontalHitTest(0,1,oldPosition,new Vector3f(1,0,0));
-  localHorizontalHitTest(0,-1,oldPosition,new Vector3f(-1,0,0));
-  localHorizontalHitTest(1,0,oldPosition,new Vector3f(0,0,1));
-  localHorizontalHitTest(-1,0,oldPosition,new Vector3f(0,0,-1));
-  localHorizontalHitTest(1,1,oldPosition,new Vector3f(-1,0,1));
-  localHorizontalHitTest(-1,-1,oldPosition,new Vector3f(-1,0,1));
-  localHorizontalHitTest(1,-1,oldPosition,new Vector3f(1,0,1));
-  localHorizontalHitTest(-1,1,oldPosition,new Vector3f(1,0,1));
+  for (int x=-1; x <= 1; x++) {
+    for (int z=-1; z <= 1; z++) {
+      for (int y=-8; y <= 8; y++) {
+        int blockPosX=(int)(_position.x + x + 0.5f);
+        int blockPosY=(int)(_position.y + y + 0.5f);
+        int blockPosZ=(int)(_position.z + z + 0.5f);
+        int blockType1=_parent.getBlockAtPosition(new Vector3f(blockPosX,blockPosY,blockPosZ));
+        if (!Block.getBlockForType(blockType1).isPenetrable()) {
+          if (getAABB().isIntersecting(Block.AABBForBlockAt(blockPosX,blockPosY,blockPosZ))) {
+            Vector3f normal=Block.AABBForBlockAt(blockPosX,blockPosY,blockPosZ).closestNormalToPoint(origin);
+            Vector3f slideVector=Vector3f.cross(normal,new Vector3f(0,1,0),null);
+            Vector3f direction=new Vector3f(_position.x,0f,_position.z);
+            direction.x-=origin.x;
+            direction.z-=origin.z;
+            float length=Vector3f.dot(slideVector,direction);
+            _position.z=origin.z + length * slideVector.z;
+            _position.x=origin.x + length * slideVector.x;
+          }
+        }
+      }
+    }
+  }
 }

@@ -1,6 +1,6 @@
 {
   byte block=_blocks[x][y][z];
-  if (Block.getBlock(block).isBlockInvisible() || !Block.getBlock(block).isBlockBillboard()) {
+  if (Block.getBlockForType(block).isBlockInvisible() || !Block.getBlockForType(block).isBlockBillboard()) {
     return;
   }
   float offsetX=_position.x * Configuration.CHUNK_DIMENSIONS.x;
@@ -9,9 +9,9 @@
   List<Float> quads=new ArrayList<Float>();
   List<Float> tex=new ArrayList<Float>();
   List<Float> color=new ArrayList<Float>();
-  Vector4f colorOffset=Block.getBlock(block).getColorOffsetFor(Block.SIDE.FRONT);
-  float texOffsetX=Block.getBlock(block).getTextureOffsetFor(Block.SIDE.FRONT).x;
-  float texOffsetY=Block.getBlock(block).getTextureOffsetFor(Block.SIDE.FRONT).y;
+  Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT);
+  float texOffsetX=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.FRONT).x;
+  float texOffsetY=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.FRONT).y;
   color.add(colorOffset.x * _parent.getDaylightAsFloat());
   color.add(colorOffset.y * _parent.getDaylightAsFloat());
   color.add(colorOffset.z * _parent.getDaylightAsFloat());
@@ -48,9 +48,9 @@
   quads.add(-0.5f + x + offsetX);
   quads.add(0.5f + y + offsetY);
   quads.add(z + offsetZ);
-  colorOffset=Block.getBlock(block).getColorOffsetFor(Block.SIDE.BACK);
-  texOffsetX=Block.getBlock(block).getTextureOffsetFor(Block.SIDE.BACK).x;
-  texOffsetY=Block.getBlock(block).getTextureOffsetFor(Block.SIDE.BACK).y;
+  colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.BACK);
+  texOffsetX=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BACK).x;
+  texOffsetY=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BACK).y;
   color.add(colorOffset.x * _parent.getDaylightAsFloat());
   color.add(colorOffset.y * _parent.getDaylightAsFloat());
   color.add(colorOffset.z * _parent.getDaylightAsFloat());

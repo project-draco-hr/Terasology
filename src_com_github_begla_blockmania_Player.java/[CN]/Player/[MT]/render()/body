@@ -9,14 +9,13 @@
     float bobbing1=_pGen.noise(_position.x * 1.5f,_position.z * 1.5f,0f) * 0.15f;
     glTranslatef(0.0f,bobbing1,0);
   }
-  glTranslatef(-_position.x,-_position.y,-_position.z);
+  glTranslatef(-_position.x,-_position.y - getAABB().getDimensions().y / 1.2f,-_position.z);
   RayFaceIntersection is=calcSelectedBlock();
   if (Configuration.getSettingBoolean("SHOW_PLACING_BOX")) {
     if (is != null) {
-      glPushMatrix();
-      glTranslatef((int)is.getBlockPos().x,(int)is.getBlockPos().y,(int)is.getBlockPos().z);
-      _placingBox.render();
-      glPopMatrix();
+      if (Block.getBlockForType(_parent.getBlockAtPosition(is.getBlockPos())).renderBoundingBox()) {
+        Block.AABBForBlockAt((int)is.getBlockPos().x,(int)is.getBlockPos().y,(int)is.getBlockPos().z).render();
+      }
     }
   }
 }
