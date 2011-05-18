@@ -1,5 +1,9 @@
 {
   if (c != null) {
+    if (!_visibleChunks.contains(c)) {
+      _chunkUpdateNormal.remove(c);
+      return;
+    }
     c.generate();
     Chunk[] neighbors=c.loadOrCreateNeighbors();
     for (    Chunk nc : neighbors) {

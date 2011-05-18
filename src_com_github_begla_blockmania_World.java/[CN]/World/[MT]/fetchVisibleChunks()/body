@@ -1,0 +1,15 @@
+{
+  ArrayList<Chunk> visibleChunks=new ArrayList<Chunk>();
+  for (int x=-((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x / 2); x < ((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x / 2); x++) {
+    for (int z=-((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y / 2); z < ((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y / 2); z++) {
+      Chunk c=loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
+      if (c != null) {
+        if (c.isFresh() || c.isDirty() || c.isLightDirty()) {
+          queueChunkForUpdate(c);
+        }
+        visibleChunks.add(c);
+      }
+    }
+  }
+  return visibleChunks;
+}

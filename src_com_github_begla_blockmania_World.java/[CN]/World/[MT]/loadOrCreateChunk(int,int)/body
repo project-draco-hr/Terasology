@@ -2,12 +2,7 @@
   if (x < 0 || z < 0) {
     return null;
   }
-  Chunk c=getChunk(x,z);
-  if (c != null) {
-    if (c.getPosition().x != x || c.getPosition().y != 0 || c.getPosition().z != z) {
-      c=_chunkCache.get(Helper.getInstance().cantorize(x,z));
-    }
-  }
+  Chunk c=_chunkCache.get(Helper.getInstance().cantorize(x,z));
   if (c != null) {
     return c;
   }

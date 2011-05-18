@@ -1,6 +1,5 @@
 {
   this._player=p;
-  _chunks=new Chunk[(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x][(int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y];
   _title=title;
   _seed=seed;
   if (_title.equals("")) {
@@ -12,13 +11,6 @@
   _generatorPineTree=new ObjectGeneratorPineTree(this,seed);
   _generatorGrass=new ChunkGeneratorFlora(seed);
   _rand=new FastRandom(seed.hashCode());
-  for (int x=0; x < Configuration.VIEWING_DISTANCE_IN_CHUNKS.x; x++) {
-    for (int z=0; z < Configuration.VIEWING_DISTANCE_IN_CHUNKS.y; z++) {
-      Chunk c=loadOrCreateChunk(x,z);
-      _chunks[x][z]=c;
-      queueChunkForUpdate(c);
-    }
-  }
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
@@ -55,9 +47,12 @@ synchronized (_updateThread) {
           _statUpdateDuration+=System.currentTimeMillis() - timeStart;
           _statUpdateDuration/=2;
         }
-        updateInfWorld();
         updateDaytime();
         evolveChunks();
+        if (Helper.getInstance().getTime() - _lastWorldUpdate > 1000) {
+          _visibleChunks=fetchVisibleChunks();
+          _lastWorldUpdate=Helper.getInstance().getTime();
+        }
         try {
           Thread.sleep(15);
         }
