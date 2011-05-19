@@ -29,11 +29,10 @@ synchronized (_updateThread) {
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
         if (!_chunkUpdateNormal.isEmpty()) {
-          Chunk[] chunks=_chunkUpdateNormal.toArray(new Chunk[0]);
           double dist=Float.MAX_VALUE;
           int index=-1;
-          for (int i=0; i < chunks.length; i++) {
-            Chunk c=chunks[i];
+          for (int i=0; i < _chunkUpdateNormal.size(); i++) {
+            Chunk c=_chunkUpdateNormal.get(i);
             double tDist=c.calcDistanceToPlayer();
             if (tDist <= dist) {
               dist=tDist;
@@ -41,7 +40,7 @@ synchronized (_updateThread) {
             }
           }
           if (index >= 0) {
-            Chunk c=(Chunk)chunks[index];
+            Chunk c=(Chunk)_chunkUpdateNormal.get(index);
             processChunk(c);
           }
           _statUpdateDuration+=System.currentTimeMillis() - timeStart;
