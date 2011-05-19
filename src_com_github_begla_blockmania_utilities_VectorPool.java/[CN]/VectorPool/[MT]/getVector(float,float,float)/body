@@ -1,0 +1,16 @@
+{
+  Vector3f v=null;
+  try {
+    v=_pool.removeFirst();
+    _reUseCounter++;
+  }
+ catch (  Exception e) {
+  }
+  if (v == null) {
+    v=new Vector3f(x,y,z);
+  }
+ else {
+    v.set(x,y,z);
+  }
+  return v;
+}

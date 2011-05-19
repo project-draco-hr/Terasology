@@ -1,22 +1,23 @@
 {
   Vector3f norm=calcSurfaceNormal();
-  if (norm.equals(new Vector3f(0,1,0))) {
+  if (norm.equals(VectorPool.getVector(0,1,0))) {
     return SIDE.TOP;
   }
- else   if (norm.equals(new Vector3f(0,-1,0))) {
+ else   if (norm.equals(VectorPool.getVector(0,-1,0))) {
     return SIDE.BOTTOM;
   }
- else   if (norm.equals(new Vector3f(0,0,1))) {
+ else   if (norm.equals(VectorPool.getVector(0,0,1))) {
     return SIDE.BACK;
   }
- else   if (norm.equals(new Vector3f(0,0,-1))) {
+ else   if (norm.equals(VectorPool.getVector(0,0,-1))) {
     return SIDE.FRONT;
   }
- else   if (norm.equals(new Vector3f(1,0,0))) {
+ else   if (norm.equals(VectorPool.getVector(1,0,0))) {
     return SIDE.RIGHT;
   }
- else   if (norm.equals(new Vector3f(-1,0,0))) {
+ else   if (norm.equals(VectorPool.getVector(-1,0,0))) {
     return SIDE.LEFT;
   }
+  VectorPool.putVector(norm);
   return SIDE.NONE;
 }

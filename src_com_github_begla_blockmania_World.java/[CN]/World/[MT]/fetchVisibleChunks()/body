@@ -1,7 +1,7 @@
 {
   FastList<Chunk> visibleChunks=new FastList<Chunk>();
-  for (int x=-((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x / 2); x < ((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.x / 2); x++) {
-    for (int z=-((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y / 2); z < ((int)Configuration.VIEWING_DISTANCE_IN_CHUNKS.y / 2); z++) {
+  for (int x=-(Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x < (Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x++) {
+    for (int z=-(Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z < (Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z++) {
       Chunk c=loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
       if (c != null) {
         if (c.isFresh() || c.isDirty() || c.isLightDirty()) {

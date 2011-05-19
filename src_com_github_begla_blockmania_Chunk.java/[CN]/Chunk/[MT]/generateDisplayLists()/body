@@ -1,8 +1,6 @@
 {
-  if (_colorOpaque.isEmpty() && _texOpaque.isEmpty() && _quadsOpaque.isEmpty()&& _colorTranslucent.isEmpty()&& _texTranslucent.isEmpty()&& _quadsTranslucent.isEmpty()) {
-    if (_colorBillboard.isEmpty() && _texBillboard.isEmpty() && _quadsBillboard.isEmpty()) {
-      return;
-    }
+  if (_colorOpaque == null) {
+    return;
   }
   if (_displayListOpaque == -1) {
     _displayListOpaque=glGenLists(1);
@@ -17,16 +15,16 @@
   FloatBuffer tb=null;
   FloatBuffer vb=null;
   vb=BufferUtils.createFloatBuffer(_quadsOpaque.size());
-  for (  Float f : _quadsOpaque) {
-    vb.put(f);
+  for (FastList.Node<Float> n=_quadsOpaque.head(), end=_quadsOpaque.tail(); (n=n.getNext()) != end; ) {
+    vb.put(n.getValue());
   }
   tb=BufferUtils.createFloatBuffer(_texOpaque.size());
-  for (  Float f : _texOpaque) {
-    tb.put(f);
+  for (FastList.Node<Float> n=_texOpaque.head(), end=_texOpaque.tail(); (n=n.getNext()) != end; ) {
+    tb.put(n.getValue());
   }
   cb=BufferUtils.createFloatBuffer(_colorOpaque.size());
-  for (  Float f : _colorOpaque) {
-    cb.put(f);
+  for (FastList.Node<Float> n=_colorOpaque.head(), end=_colorOpaque.tail(); (n=n.getNext()) != end; ) {
+    cb.put(n.getValue());
   }
   vb.flip();
   tb.flip();
@@ -43,20 +41,17 @@
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
-  _quadsOpaque.clear();
-  _texOpaque.clear();
-  _colorOpaque.clear();
   vb=BufferUtils.createFloatBuffer(_quadsTranslucent.size());
-  for (  Float f : _quadsTranslucent) {
-    vb.put(f);
+  for (FastList.Node<Float> n=_quadsTranslucent.head(), end=_quadsTranslucent.tail(); (n=n.getNext()) != end; ) {
+    vb.put(n.getValue());
   }
   tb=BufferUtils.createFloatBuffer(_texTranslucent.size());
-  for (  Float f : _texTranslucent) {
-    tb.put(f);
+  for (FastList.Node<Float> n=_texTranslucent.head(), end=_texTranslucent.tail(); (n=n.getNext()) != end; ) {
+    tb.put(n.getValue());
   }
   cb=BufferUtils.createFloatBuffer(_colorTranslucent.size());
-  for (  Float f : _colorTranslucent) {
-    cb.put(f);
+  for (FastList.Node<Float> n=_colorTranslucent.head(), end=_colorTranslucent.tail(); (n=n.getNext()) != end; ) {
+    cb.put(n.getValue());
   }
   vb.flip();
   tb.flip();
@@ -73,20 +68,17 @@
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
-  _quadsTranslucent.clear();
-  _texTranslucent.clear();
-  _colorTranslucent.clear();
   vb=BufferUtils.createFloatBuffer(_quadsBillboard.size());
-  for (  Float f : _quadsBillboard) {
-    vb.put(f);
+  for (FastList.Node<Float> n=_quadsBillboard.head(), end=_quadsBillboard.tail(); (n=n.getNext()) != end; ) {
+    vb.put(n.getValue());
   }
   tb=BufferUtils.createFloatBuffer(_texBillboard.size());
-  for (  Float f : _texBillboard) {
-    tb.put(f);
+  for (FastList.Node<Float> n=_texBillboard.head(), end=_texBillboard.tail(); (n=n.getNext()) != end; ) {
+    tb.put(n.getValue());
   }
   cb=BufferUtils.createFloatBuffer(_colorBillboard.size());
-  for (  Float f : _colorBillboard) {
-    cb.put(f);
+  for (FastList.Node<Float> n=_colorBillboard.head(), end=_colorBillboard.tail(); (n=n.getNext()) != end; ) {
+    cb.put(n.getValue());
   }
   vb.flip();
   tb.flip();
@@ -103,7 +95,13 @@
   glDisableClientState(GL_TEXTURE_COORD_ARRAY);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
-  _quadsBillboard.clear();
-  _texBillboard.clear();
-  _colorBillboard.clear();
+  _quadsTranslucent=null;
+  _texTranslucent=null;
+  _colorTranslucent=null;
+  _quadsOpaque=null;
+  _texOpaque=null;
+  _colorOpaque=null;
+  _quadsBillboard=null;
+  _texBillboard=null;
+  _colorBillboard=null;
 }

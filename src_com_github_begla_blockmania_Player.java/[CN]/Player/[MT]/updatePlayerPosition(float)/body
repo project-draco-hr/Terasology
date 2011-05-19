@@ -1,5 +1,6 @@
 {
-  Vector3f oldPosition=new Vector3f(_position);
+  Vector3f oldPosition=VectorPool.getVector();
+  oldPosition.set(_position);
   if (Configuration.getSettingBoolean("DEMO_FLIGHT") && Configuration.getSettingBoolean("GOD_MODE")) {
     _position.z+=8f / 1000f * delta;
     return;
@@ -48,4 +49,5 @@
     if (horizontalHitTest(oldPosition)) {
     }
   }
+  VectorPool.putVector(oldPosition);
 }

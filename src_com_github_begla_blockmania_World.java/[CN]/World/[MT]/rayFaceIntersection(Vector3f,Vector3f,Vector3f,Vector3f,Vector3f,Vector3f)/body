@@ -7,7 +7,7 @@
   if (t < 0) {
     return null;
   }
-  Vector3f intersectPoint=new Vector3f(ray.x * t,ray.y * t,ray.z * t);
+  Vector3f intersectPoint=VectorPool.getVector(ray.x * t,ray.y * t,ray.z * t);
   Vector3f.add(intersectPoint,origin,intersectPoint);
   if (intersectPoint.x >= v0.x && intersectPoint.x <= v2.x && intersectPoint.y >= v0.y && intersectPoint.y <= v2.y && intersectPoint.z >= v0.z && intersectPoint.z <= v2.z) {
     return new RayFaceIntersection(blockPos,v0,v1,v2,d,t,origin,ray,intersectPoint);

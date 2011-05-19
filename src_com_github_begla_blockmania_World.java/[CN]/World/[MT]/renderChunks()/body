@@ -1,8 +1,8 @@
 {
-  for (  Chunk c : _visibleChunks) {
-    c.render(false);
+  for (FastList.Node<Chunk> n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    n.getValue().render(false);
   }
-  for (  Chunk c : _visibleChunks) {
-    c.render(true);
+  for (FastList.Node<Chunk> n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    n.getValue().render(true);
   }
 }

@@ -5,6 +5,10 @@
   fogColorBuffer.put(fogColor);
   fogColorBuffer.rewind();
   glFog(GL_FOG_COLOR,fogColorBuffer);
+  float maxDist=Math.max(Configuration.getSettingNumeric("V_DIST_X") * Configuration.CHUNK_DIMENSIONS.x,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z);
+  float viewingDistance=maxDist / 2f;
+  glFogf(GL_FOG_START,16f);
+  glFogf(GL_FOG_END,viewingDistance);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   _player.render();

@@ -1,5 +1,5 @@
 {
-  for (  Chunk c : _visibleChunks) {
-    queueChunkForUpdate(c);
+  for (FastList.Node<Chunk> n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    queueChunkForUpdate(n.getValue());
   }
 }

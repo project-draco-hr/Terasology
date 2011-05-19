@@ -6,18 +6,18 @@
     }
     c.generate();
     Chunk[] neighbors=c.loadOrCreateNeighbors();
-    for (    Chunk nc : neighbors) {
-      if (nc != null) {
-        nc.generate();
+    for (int i=0; i < neighbors.length; i++) {
+      if (neighbors[i] != null) {
+        neighbors[i].generate();
       }
     }
     if (c.isLightDirty()) {
       c.updateLight();
     }
-    for (    Chunk nc : neighbors) {
-      if (nc != null) {
-        if (nc.isDirty() && isChunkVisible(nc)) {
-          queueChunkForUpdate(nc);
+    for (int i=0; i < neighbors.length; i++) {
+      if (neighbors[i] != null) {
+        if (neighbors[i].isDirty() && isChunkVisible(neighbors[i])) {
+          queueChunkForUpdate(neighbors[i]);
         }
       }
     }

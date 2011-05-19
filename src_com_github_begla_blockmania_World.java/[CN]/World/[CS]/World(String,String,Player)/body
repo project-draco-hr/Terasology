@@ -31,13 +31,15 @@ synchronized (_updateThread) {
         if (!_chunkUpdateNormal.isEmpty()) {
           double dist=Float.MAX_VALUE;
           int index=-1;
-          for (int i=0; i < _chunkUpdateNormal.size(); i++) {
-            Chunk c=_chunkUpdateNormal.get(i);
+          int i=0;
+          for (FastList.Node<Chunk> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+            Chunk c=n.getValue();
             double tDist=c.calcDistanceToPlayer();
             if (tDist <= dist) {
               dist=tDist;
               index=i;
             }
+            i++;
           }
           if (index >= 0) {
             Chunk c=(Chunk)_chunkUpdateNormal.get(index);
@@ -51,6 +53,17 @@ synchronized (_updateThread) {
         if (Helper.getInstance().getTime() - _lastWorldUpdate > 1000) {
           _visibleChunks=fetchVisibleChunks();
           _lastWorldUpdate=Helper.getInstance().getTime();
+          FastList<Chunk> chunksToDelete=new FastList<Chunk>();
+          for (FastList.Node<Chunk> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+            Chunk c=n.getValue();
+            if (!_visibleChunks.contains(c)) {
+              chunksToDelete.add(c);
+            }
+          }
+          for (FastList.Node<Chunk> n=chunksToDelete.head(), end=chunksToDelete.tail(); (n=n.getNext()) != end; ) {
+            _chunkUpdateNormal.remove(n.getValue());
+          }
+          chunksToDelete.clear();
         }
         try {
           Thread.sleep(15);

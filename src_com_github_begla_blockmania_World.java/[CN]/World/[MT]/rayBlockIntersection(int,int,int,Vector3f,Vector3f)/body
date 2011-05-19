@@ -4,7 +4,7 @@
   }
   FastList<RayFaceIntersection> result=new FastList<RayFaceIntersection>();
   Vector3f[] vertices=verticesForBlockAt(x,y,z);
-  Vector3f blockPos=new Vector3f(x,y,z);
+  Vector3f blockPos=VectorPool.getVector(x,y,z);
   RayFaceIntersection is=rayFaceIntersection(blockPos,vertices[0],vertices[3],vertices[2],origin,ray);
   if (is != null) {
     result.add(is);
