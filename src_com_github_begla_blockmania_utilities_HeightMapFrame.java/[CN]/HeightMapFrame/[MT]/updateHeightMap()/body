@@ -1,0 +1,15 @@
+{
+  _heightMap=new BufferedImage(getWidth(),getHeight(),BufferedImage.TYPE_INT_RGB);
+  Graphics g=_heightMap.getGraphics();
+  for (int x=0; x < getWidth(); x++) {
+    for (int z=0; z < getHeight(); z++) {
+      float height=_tGen.calcHeightMap(x,z);
+      height=(float)Math.min(height,1.0);
+      height=(float)Math.max(height,0.0);
+      g.setColor(new Color(height,height,height));
+      g.fillRect(x,z,1,1);
+      g.setColor(Color.red);
+      g.fillRect((int)_parent.getPlayer().getPosition().x,(int)_parent.getPlayer().getPosition().z,5,5);
+    }
+  }
+}
