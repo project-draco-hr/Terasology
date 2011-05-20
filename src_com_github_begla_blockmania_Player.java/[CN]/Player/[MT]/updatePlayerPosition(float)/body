@@ -24,20 +24,21 @@
   _acc.x+=_movement.x;
   _acc.y+=_movement.y;
   _acc.z+=_movement.z;
+  if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY") && !Configuration.getSettingBoolean("GOD_MODE")) {
+    _gravity-=Configuration.getSettingNumeric("GRAVITY") * delta;
+  }
   getPosition().y+=(_acc.y / 1000.0f) * delta;
   getPosition().y+=(_gravity / 1000.0f) * delta;
   if (!Configuration.getSettingBoolean("GOD_MODE")) {
     boolean vHit=verticalHitTest(oldPosition);
-    if (!vHit) {
-      if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY")) {
-        _gravity-=Configuration.getSettingNumeric("GRAVITY") * delta;
-      }
-    }
- else {
+    if (vHit) {
       if (_jump) {
         _jump=false;
         _gravity=Configuration.getSettingNumeric("JUMP_INTENSITY");
       }
+    }
+ else {
+      _jump=false;
     }
   }
  else {
