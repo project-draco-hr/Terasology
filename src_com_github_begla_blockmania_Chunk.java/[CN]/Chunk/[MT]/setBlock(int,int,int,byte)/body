@@ -1,5 +1,5 @@
 {
-  try {
+  if (Helper.getInstance().checkBounds3D(x,y,z,_blocks)) {
     _blocks[x][y][z]=type;
     Block b=Block.getBlockForType(type);
     if (!b.isBlockTypeTranslucent()) {
@@ -7,7 +7,5 @@
     }
     setDirty(true);
     markNeighborsDirty(x,z);
-  }
- catch (  Exception e) {
   }
 }

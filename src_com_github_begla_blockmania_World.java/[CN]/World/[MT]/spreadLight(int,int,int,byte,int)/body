@@ -3,10 +3,6 @@
   int chunkPosZ=calcChunkPosZ(z) % Configuration.getSettingNumeric("V_DIST_Z").intValue();
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  try {
-    Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
-    c.spreadLight(blockPosX,y,blockPosZ,lightValue,depth);
-  }
- catch (  Exception e) {
-  }
+  Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  c.spreadLight(blockPosX,y,blockPosZ,lightValue,depth);
 }

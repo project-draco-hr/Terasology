@@ -1,8 +1,7 @@
 {
-  try {
-    Chunk c=_chunkUpdateQueueDL.remove(0);
-    c.generateDisplayLists();
+  if (_chunkUpdateQueueDL.isEmpty()) {
+    return;
   }
- catch (  Exception e) {
-  }
+  Chunk c=_chunkUpdateQueueDL.removeFirst();
+  c.generateDisplayLists();
 }

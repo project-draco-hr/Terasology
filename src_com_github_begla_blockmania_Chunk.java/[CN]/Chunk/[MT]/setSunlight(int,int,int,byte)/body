@@ -2,12 +2,10 @@
   if (isFresh()) {
     return;
   }
-  try {
+  if (Helper.getInstance().checkBounds3D(x,y,z,_sunlight)) {
     Block b=Block.getBlockForType(getBlock(x,y,z));
     _sunlight[x][y][z]=intens;
     _dirty=true;
     markNeighborsDirty(x,z);
-  }
- catch (  Exception e) {
   }
 }

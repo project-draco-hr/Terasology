@@ -23,6 +23,7 @@ synchronized (_updateThread) {
               _updateThread.wait();
             }
  catch (            InterruptedException ex) {
+              Logger.getLogger(World.class.getName()).log(Level.SEVERE,ex.toString());
             }
           }
         }
@@ -30,20 +31,17 @@ synchronized (_updateThread) {
         timeStart=System.currentTimeMillis();
         if (!_chunkUpdateNormal.isEmpty()) {
           double dist=Float.MAX_VALUE;
-          int index=-1;
-          int i=0;
+          Chunk nearestChunk=null;
           for (FastList.Node<Chunk> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
             Chunk c=n.getValue();
             double tDist=c.calcDistanceToPlayer();
             if (tDist <= dist) {
               dist=tDist;
-              index=i;
+              nearestChunk=c;
             }
-            i++;
           }
-          if (index >= 0) {
-            Chunk c=(Chunk)_chunkUpdateNormal.get(index);
-            processChunk(c);
+          if (nearestChunk != null) {
+            processChunk(nearestChunk);
           }
           _statUpdateDuration+=System.currentTimeMillis() - timeStart;
           _statUpdateDuration/=2;
@@ -63,13 +61,7 @@ synchronized (_updateThread) {
           for (FastList.Node<Chunk> n=chunksToDelete.head(), end=chunksToDelete.tail(); (n=n.getNext()) != end; ) {
             _chunkUpdateNormal.remove(n.getValue());
           }
-          chunksToDelete.clear();
-        }
-        try {
-          Thread.sleep(15);
-        }
- catch (        InterruptedException ex) {
-          Logger.getLogger(World.class.getName()).log(Level.SEVERE,null,ex);
+          chunksToDelete=null;
         }
       }
     }
