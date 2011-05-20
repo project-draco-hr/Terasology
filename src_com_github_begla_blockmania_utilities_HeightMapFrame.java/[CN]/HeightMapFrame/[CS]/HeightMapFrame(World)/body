@@ -3,4 +3,12 @@
   _tGen=new ChunkGeneratorTerrain(w.getSeed());
   initComponents();
   updateHeightMap();
+  setAlwaysOnTop(true);
+  Timer t=new Timer();
+  t.schedule(new TimerTask(){
+    @Override public void run(){
+      updateHeightMap();
+    }
+  }
+,0,3000);
 }

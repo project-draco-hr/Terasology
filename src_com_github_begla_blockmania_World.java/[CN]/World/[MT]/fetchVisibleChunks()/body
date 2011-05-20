@@ -4,7 +4,7 @@
     for (int z=-(Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z < (Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z++) {
       Chunk c=loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
       if (c != null) {
-        if (c.isFresh() || c.isDirty() || c.isLightDirty()) {
+        if (c.isDirty() || c.isLightDirty()) {
           queueChunkForUpdate(c);
         }
         visibleChunks.add(c);

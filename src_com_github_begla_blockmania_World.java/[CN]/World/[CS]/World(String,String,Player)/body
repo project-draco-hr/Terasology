@@ -27,41 +27,38 @@ synchronized (_updateThread) {
             }
           }
         }
+        if (_chunkUpdateQueueDL.size() > 32) {
+          continue;
+        }
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
-        if (!_chunkUpdateNormal.isEmpty()) {
-          double dist=Float.MAX_VALUE;
-          Chunk nearestChunk=null;
-          for (FastList.Node<Chunk> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-            Chunk c=n.getValue();
-            double tDist=c.calcDistanceToPlayer();
-            if (tDist <= dist) {
-              dist=tDist;
-              nearestChunk=c;
-            }
+        double dist=Float.MAX_VALUE;
+        Chunk nearestChunk=null;
+        for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+          Chunk c=_chunkUpdateNormal.valueOf(n);
+          double tDist=c.calcDistanceToPlayer();
+          if (tDist <= dist) {
+            dist=tDist;
+            nearestChunk=c;
           }
-          if (nearestChunk != null) {
-            processChunk(nearestChunk);
-          }
+        }
+        if (nearestChunk != null) {
+          processChunk(nearestChunk);
           _statUpdateDuration+=System.currentTimeMillis() - timeStart;
           _statUpdateDuration/=2;
         }
         updateDaytime();
         evolveChunks();
-        if (Helper.getInstance().getTime() - _lastWorldUpdate > 1000) {
-          _visibleChunks=fetchVisibleChunks();
-          _lastWorldUpdate=Helper.getInstance().getTime();
-          FastList<Chunk> chunksToDelete=new FastList<Chunk>();
-          for (FastList.Node<Chunk> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-            Chunk c=n.getValue();
-            if (!_visibleChunks.contains(c)) {
-              chunksToDelete.add(c);
-            }
+        _visibleChunks=fetchVisibleChunks();
+        FastList<Chunk> chunksToDelete=new FastList<Chunk>();
+        for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+          Chunk c=_chunkUpdateNormal.valueOf(n);
+          if (!_visibleChunks.contains(c)) {
+            chunksToDelete.add(c);
           }
-          for (FastList.Node<Chunk> n=chunksToDelete.head(), end=chunksToDelete.tail(); (n=n.getNext()) != end; ) {
-            _chunkUpdateNormal.remove(n.getValue());
-          }
-          chunksToDelete=null;
+        }
+        for (FastList.Node<Chunk> n=chunksToDelete.head(), end=chunksToDelete.tail(); (n=n.getNext()) != end; ) {
+          _chunkUpdateNormal.remove(n.getValue());
         }
       }
     }
