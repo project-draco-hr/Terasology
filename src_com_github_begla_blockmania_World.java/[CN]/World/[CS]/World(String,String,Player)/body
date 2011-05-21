@@ -11,6 +11,7 @@
   _generatorPineTree=new ObjectGeneratorPineTree(this,seed);
   _generatorGrass=new ChunkGeneratorFlora(seed);
   _rand=new FastRandom(seed.hashCode());
+  resetPlayer();
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
@@ -23,43 +24,36 @@ synchronized (_updateThread) {
               _updateThread.wait();
             }
  catch (            InterruptedException ex) {
-              Logger.getLogger(World.class.getName()).log(Level.SEVERE,ex.toString());
+              Helper.LOGGER.log(Level.SEVERE,ex.toString());
             }
           }
         }
-        if (_chunkUpdateQueueDL.size() > 32) {
-          continue;
-        }
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
+        _visibleChunks=fetchVisibleChunks();
         double dist=Float.MAX_VALUE;
-        Chunk nearestChunk=null;
+        ChunkUpdate nearestChunkUpdate=null;
+        FastList<ChunkUpdate> deletableUpdates=new FastList<ChunkUpdate>();
         for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-          Chunk c=_chunkUpdateNormal.valueOf(n);
-          double tDist=c.calcDistanceToPlayer();
-          if (tDist <= dist) {
+          ChunkUpdate cu=_chunkUpdateNormal.valueOf(n);
+          double tDist=cu.getChunk().calcDistanceToPlayer();
+          if (!isChunkVisible(cu.getChunk())) {
+            deletableUpdates.add(cu);
+          }
+          if (tDist < dist) {
             dist=tDist;
-            nearestChunk=c;
+            nearestChunkUpdate=cu;
           }
         }
-        if (nearestChunk != null) {
-          processChunk(nearestChunk);
-          _statUpdateDuration+=System.currentTimeMillis() - timeStart;
-          _statUpdateDuration/=2;
+        if (nearestChunkUpdate != null) {
+          _chunkUpdateNormal.remove(nearestChunkUpdate);
+          processChunkUpdate(nearestChunkUpdate);
         }
+        _chunkUpdateNormal.removeAll(deletableUpdates);
         updateDaytime();
         evolveChunks();
-        _visibleChunks=fetchVisibleChunks();
-        FastList<Chunk> chunksToDelete=new FastList<Chunk>();
-        for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-          Chunk c=_chunkUpdateNormal.valueOf(n);
-          if (!_visibleChunks.contains(c)) {
-            chunksToDelete.add(c);
-          }
-        }
-        for (FastList.Node<Chunk> n=chunksToDelete.head(), end=chunksToDelete.tail(); (n=n.getNext()) != end; ) {
-          _chunkUpdateNormal.remove(n.getValue());
-        }
+        _statUpdateDuration+=System.currentTimeMillis() - timeStart;
+        _statUpdateDuration/=2;
       }
     }
   }

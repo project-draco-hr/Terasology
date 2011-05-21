@@ -9,13 +9,15 @@
     }
     if (b.isBlockTypeTranslucent() && !covered) {
       _sunlight[x][y][z]=light;
+      if (refresh) {
+        spreadLight(x,y,z,light);
+      }
       if (_blocks[x][y][z] != 0x0) {
         light-=Configuration.LIGHT_ABSORPTION;
         light=(byte)Math.max(0,light);
       }
     }
  else     if (b.isBlockTypeTranslucent() && covered) {
-      byte oldLightValue=_sunlight[x][y][z];
       _sunlight[x][y][z]=0;
       if (refresh) {
         refreshLightAtLocalPos(x,y,z);

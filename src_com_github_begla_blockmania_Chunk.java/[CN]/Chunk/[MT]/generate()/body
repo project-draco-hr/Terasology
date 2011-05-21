@@ -4,7 +4,7 @@
     if (loadChunkFromFile()) {
       setLightDirty(false);
       _fresh=false;
-      Logger.getLogger(this.getClass().getName()).log(Level.FINEST,"Chunk ({1}) loaded from disk ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
+      Helper.LOGGER.log(Level.FINEST,"Chunk ({1}) loaded from disk ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
       return true;
     }
     for (FastList.Node<ChunkGenerator> n=_generators.head(), end=_generators.tail(); (n=n.getNext()) != end; ) {
@@ -12,7 +12,7 @@
     }
     updateSunlight();
     _fresh=false;
-    Logger.getLogger(this.getClass().getName()).log(Level.FINEST,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
+    Helper.LOGGER.log(Level.FINEST,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
     return true;
   }
   return false;

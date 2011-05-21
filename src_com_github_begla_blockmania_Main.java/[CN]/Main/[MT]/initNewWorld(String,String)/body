@@ -1,21 +1,20 @@
 {
-  _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
+  Helper.LOGGER.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   if (_world != null) {
     _world.dispose();
   }
   _world=new World(title,seed,_player);
   _player.setParent(_world);
   _world.startUpdateThread();
-  _logger.log(Level.INFO,"Waiting for some chunks to pop up...",seed);
+  Helper.LOGGER.log(Level.INFO,"Waiting for some chunks to pop up...",seed);
   while (_world.getStatGeneratedChunks() < 32) {
     try {
       Thread.sleep(500);
     }
  catch (    InterruptedException ex) {
-      Logger.getLogger(Main.class.getName()).log(Level.SEVERE,null,ex);
+      Helper.LOGGER.log(Level.SEVERE,null,ex);
     }
   }
-  _logger.log(Level.INFO,"Enough chunks generated. Resetting player...",seed);
-  _world.resetPlayer();
+  Helper.LOGGER.log(Level.INFO,"Enough chunks generated. Resetting player...",seed);
   _lastLoopTime=Helper.getInstance().getTime();
 }

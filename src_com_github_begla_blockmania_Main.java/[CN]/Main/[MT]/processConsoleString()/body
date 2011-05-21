@@ -64,7 +64,7 @@
       success=true;
     }
  else     if (parsingResult.get(0).equals("i")) {
-      _logger.log(Level.INFO,_player.selectedBlockInformation());
+      Helper.LOGGER.log(Level.INFO,_player.selectedBlockInformation());
       success=true;
     }
  else     if (parsingResult.get(0).equals("generate_new_world")) {
@@ -83,14 +83,18 @@
       new HeightMapFrame(_world).setVisible(true);
       success=true;
     }
+ else     if (parsingResult.get(0).equals("check")) {
+      _world.checkVisibleChunks();
+      success=true;
+    }
   }
  catch (  Exception e) {
   }
   if (success) {
-    _logger.log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
+    Helper.LOGGER.log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
   }
  else {
-    _logger.log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
+    Helper.LOGGER.log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
   }
   toggleDebugConsole();
 }

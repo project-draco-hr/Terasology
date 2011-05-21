@@ -1,0 +1,26 @@
+{
+  if (cu != null) {
+    cu.getChunk().generate();
+    Chunk[] neighbors=cu.getChunk().loadOrCreateNeighbors();
+    for (int i=0; i < neighbors.length; i++) {
+      if (neighbors[i] != null) {
+        neighbors[i].generate();
+      }
+    }
+    if (cu.getChunk().isLightDirty()) {
+      cu.getChunk().updateLight();
+    }
+    for (int i=0; i < neighbors.length; i++) {
+      if (neighbors[i] != null) {
+        if (isChunkVisible(neighbors[i]) && neighbors[i].isDirty() && cu.isUpdateNeighbors()) {
+          queueChunkForUpdate(neighbors[i],false);
+        }
+      }
+    }
+    if (cu.getChunk().isDirty()) {
+      cu.getChunk().generateVertexArrays();
+      _chunkUpdateQueueDL.add(cu.getChunk());
+      _statGeneratedChunks++;
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
-  if (!_chunkUpdateNormal.isEmpty() || _visibleChunks.isEmpty()) {
-    return;
-  }
-  Chunk c=_visibleChunks.get((int)(Math.abs(_rand.randomLong()) % _visibleChunks.size()));
-  if (!c.isFresh()) {
-    _generatorGrass.generate(c);
-    queueChunkForUpdate(c);
+  if (Helper.getInstance().getTime() - latestGrassEvolvement > 100) {
+    Chunk c=_visibleChunks.get((int)(Math.abs(_rand.randomLong()) % _visibleChunks.size()));
+    if (!c.isFresh() && !c.isDirty() && !c.isLightDirty()) {
+      _generatorGrass.generate(c);
+      queueChunkForUpdate(c,false);
+    }
+    latestGrassEvolvement=Helper.getInstance().getTime();
   }
 }

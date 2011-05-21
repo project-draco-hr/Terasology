@@ -1,5 +1,6 @@
 {
   for (FastList.Node<Chunk> n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    queueChunkForUpdate(n.getValue());
+    n.getValue().setDirty(true);
+    queueChunkForUpdate(n.getValue(),false);
   }
 }
