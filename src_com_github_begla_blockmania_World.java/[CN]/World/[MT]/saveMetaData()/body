@@ -1,0 +1,35 @@
+{
+  File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
+  try {
+    f.createNewFile();
+  }
+ catch (  IOException ex) {
+    Helper.LOGGER.log(Level.SEVERE,null,ex);
+  }
+  Element root=new Element("World");
+  Document doc=new Document(root);
+  root.setAttribute("seed",_seed);
+  root.setAttribute("title",_title);
+  root.setAttribute("time",Short.toString(_time));
+  Element player=new Element("Player");
+  player.setAttribute("x",new Float(_player.getPosition().x).toString());
+  player.setAttribute("y",new Float(_player.getPosition().y).toString());
+  player.setAttribute("z",new Float(_player.getPosition().z).toString());
+  root.addContent(player);
+  XMLOutputter outputter=new XMLOutputter();
+  FileOutputStream output=null;
+  try {
+    output=new FileOutputStream(f);
+    try {
+      outputter.output(doc,output);
+    }
+ catch (    IOException ex) {
+      Helper.LOGGER.log(Level.SEVERE,null,ex);
+    }
+    return true;
+  }
+ catch (  FileNotFoundException ex) {
+    Helper.LOGGER.log(Level.SEVERE,null,ex);
+  }
+  return false;
+}

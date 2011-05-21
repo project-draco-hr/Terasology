@@ -1,0 +1,27 @@
+{
+  File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
+  try {
+    SAXBuilder sxbuild=new SAXBuilder();
+    InputSource is=new InputSource(new FileInputStream(f));
+    Document doc;
+    try {
+      doc=sxbuild.build(is);
+      Element root=doc.getRootElement();
+      Element player=root.getChild("Player");
+      _seed=root.getAttribute("seed").getValue();
+      _spawningPoint=VectorPool.getVector(Float.parseFloat(player.getAttribute("x").getValue()),Float.parseFloat(player.getAttribute("y").getValue()),Float.parseFloat(player.getAttribute("z").getValue()));
+      _title=root.getAttributeValue("title");
+      _time=Short.parseShort(root.getAttributeValue("time"));
+      return true;
+    }
+ catch (    JDOMException ex) {
+      Helper.LOGGER.log(Level.SEVERE,null,ex);
+    }
+catch (    IOException ex) {
+      Helper.LOGGER.log(Level.SEVERE,null,ex);
+    }
+  }
+ catch (  FileNotFoundException ex) {
+  }
+  return false;
+}

@@ -1,6 +1,6 @@
 {
-  ByteBuffer input=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3);
-  File f=new File(String.format("SAVED_WORLDS/%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
+  ByteBuffer input=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 2 + 1);
+  File f=new File(String.format("%s/%d.bc",_parent.getWorldSavePath(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
   if (!f.exists()) {
     return false;
   }
@@ -19,6 +19,8 @@ catch (  IOException ex) {
     return false;
   }
   input.rewind();
+  byte flags=input.get();
+  _lightDirty=Helper.getInstance().isFlagSet(flags,(short)0);
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {

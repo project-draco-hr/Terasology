@@ -1,17 +1,14 @@
 {
-  if (_fresh || _lightDirty) {
+  if (_fresh) {
     return false;
   }
-  ByteBuffer output=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3);
-  File dir1=new File(String.format("SAVED_WORLDS",_parent.getTitle()));
-  if (!dir1.exists()) {
-    dir1.mkdir();
+  ByteBuffer output=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 2 + 1);
+  File f=new File(String.format("%s/%d.bc",_parent.getWorldSavePath().toString(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
+  byte flags=0x0;
+  if (_lightDirty) {
+    flags=Helper.getInstance().setFlag(flags,(short)0);
   }
-  File dir2=new File(String.format("SAVED_WORLDS/%s",_parent.getTitle()));
-  if (!dir2.exists()) {
-    dir2.mkdir();
-  }
-  File f=new File(String.format("SAVED_WORLDS/%s/%d.bc",_parent.getTitle(),Helper.getInstance().cantorize((int)_position.x,(int)_position.z)));
+  output.put(flags);
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
@@ -26,13 +23,14 @@
     FileChannel c=oS.getChannel();
     c.write(output);
     oS.close();
-    return true;
   }
  catch (  FileNotFoundException ex) {
     Helper.LOGGER.log(Level.SEVERE,null,ex);
+    return false;
   }
 catch (  IOException ex) {
     Helper.LOGGER.log(Level.SEVERE,null,ex);
+    return false;
   }
-  return false;
+  return true;
 }

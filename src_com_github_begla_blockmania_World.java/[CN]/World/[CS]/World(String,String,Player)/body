@@ -1,9 +1,28 @@
 {
+  if (title == null) {
+    throw new IllegalArgumentException("No title provided.");
+  }
+  if (title.isEmpty()) {
+    throw new IllegalArgumentException("No title provided.");
+  }
+  if (seed == null) {
+    throw new IllegalArgumentException("No seed provided.");
+  }
+  if (seed.isEmpty()) {
+    throw new IllegalArgumentException("No seed provided.");
+  }
+  if (p == null) {
+    throw new IllegalArgumentException("No player provided.");
+  }
   this._player=p;
-  _title=title;
-  _seed=seed;
-  if (_title.equals("")) {
-    _title=seed;
+  this._title=title;
+  this._seed=seed;
+  if (!loadMetaData()) {
+    File dir=new File(getWorldSavePath());
+    if (!dir.exists()) {
+      dir.mkdirs();
+    }
+    saveMetaData();
   }
   _generatorTerrain=new ChunkGeneratorTerrain(seed);
   _generatorForest=new ChunkGeneratorForest(seed);
@@ -12,6 +31,7 @@
   _generatorGrass=new ChunkGeneratorFlora(seed);
   _rand=new FastRandom(seed.hashCode());
   resetPlayer();
+  updateDaylight();
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
@@ -51,7 +71,7 @@ synchronized (_updateThread) {
         }
         _chunkUpdateNormal.removeAll(deletableUpdates);
         updateDaytime();
-        evolveChunks();
+        replantDirt();
         _statUpdateDuration+=System.currentTimeMillis() - timeStart;
         _statUpdateDuration/=2;
       }
