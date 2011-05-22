@@ -4,6 +4,9 @@
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
   Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  if (c == null) {
+    return;
+  }
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0) {
     c.setBlock(blockPosX,y,blockPosZ,type);
     if (update) {
@@ -16,7 +19,7 @@
       }
  else       if (newValue < oldValue) {
       }
-      queueChunkForUpdate(c,true);
+      queueChunkForUpdate(c,true,false);
     }
   }
 }

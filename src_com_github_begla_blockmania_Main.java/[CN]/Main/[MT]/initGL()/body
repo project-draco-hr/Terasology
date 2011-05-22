@@ -4,6 +4,10 @@
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_FOG);
   glDepthFunc(GL_LEQUAL);
+  if (GLContext.getCapabilities().GL_NV_fog_distance) {
+    glFogi(NVFogDistance.GL_FOG_DISTANCE_MODE_NV,NVFogDistance.GL_EYE_RADIAL_NV);
+    Helper.LOGGER.log(Level.INFO,"Extension 'GL_NV_fog_distance' is supported.");
+  }
   glEnable(GL_LINE_SMOOTH);
   glHint(GL_FOG_HINT,GL_NICEST);
   glFogi(GL_FOG_MODE,GL_LINEAR);

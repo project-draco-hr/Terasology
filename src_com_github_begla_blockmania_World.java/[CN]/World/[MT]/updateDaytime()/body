@@ -1,17 +1,12 @@
 {
   if (Helper.getInstance().getTime() - lastDaytimeMeasurement >= 30000) {
     if (_chunkUpdateNormal.isEmpty()) {
-      _time=(short)((_time + 1) % 24);
+      setTime((short)(_time + 1));
     }
  else {
       return;
     }
     lastDaytimeMeasurement=Helper.getInstance().getTime();
     Helper.LOGGER.log(Level.INFO,"Updated daytime to {0}h.",_time);
-    byte oldDaylight=_daylight;
-    updateDaylight();
-    if (_daylight != oldDaylight) {
-      updateAllChunks();
-    }
   }
 }
