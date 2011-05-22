@@ -1,8 +1,8 @@
 {
-  Record r=_chunkUpdateQueueDL.head().getNext();
-  Chunk c=_chunkUpdateQueueDL.valueOf(r);
-  if (c != null) {
-    c.generateDisplayLists();
-    _chunkUpdateQueueDL.remove(c);
+  if (!_chunkUpdateQueueDL.isEmpty()) {
+    Chunk c=_chunkUpdateQueueDL.removeFirst();
+    if (c != null) {
+      c.generateDisplayLists();
+    }
   }
 }

@@ -51,25 +51,26 @@ synchronized (_updateThread) {
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
         _visibleChunks=fetchVisibleChunks();
-        double dist=Float.MAX_VALUE;
+        double weight=Double.MAX_VALUE;
         ChunkUpdate nearestChunkUpdate=null;
         FastList<ChunkUpdate> deletableUpdates=new FastList<ChunkUpdate>();
-        for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-          ChunkUpdate cu=_chunkUpdateNormal.valueOf(n);
-          double tDist=cu.getChunk().calcDistanceToPlayer();
+        for (FastList.Node<ChunkUpdate> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+          ChunkUpdate cu=n.getValue();
+          double tWeight=cu.getWeight();
           if (!isChunkVisible(cu.getChunk())) {
             deletableUpdates.add(cu);
+            continue;
           }
-          if (tDist < dist) {
-            dist=tDist;
+          if (tWeight < weight) {
+            weight=tWeight;
             nearestChunkUpdate=cu;
           }
         }
+        _chunkUpdateNormal.removeAll(deletableUpdates);
         if (nearestChunkUpdate != null) {
           _chunkUpdateNormal.remove(nearestChunkUpdate);
           processChunkUpdate(nearestChunkUpdate);
         }
-        _chunkUpdateNormal.removeAll(deletableUpdates);
         updateDaytime();
         replantDirt();
         _statUpdateDuration+=System.currentTimeMillis() - timeStart;
