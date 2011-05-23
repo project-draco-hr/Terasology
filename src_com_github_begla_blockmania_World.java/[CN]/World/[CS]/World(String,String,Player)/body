@@ -54,8 +54,8 @@ synchronized (_updateThread) {
         double weight=Double.MAX_VALUE;
         ChunkUpdate nearestChunkUpdate=null;
         FastList<ChunkUpdate> deletableUpdates=new FastList<ChunkUpdate>();
-        for (FastList.Node<ChunkUpdate> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-          ChunkUpdate cu=n.getValue();
+        for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+          ChunkUpdate cu=_chunkUpdateNormal.valueOf(n);
           double tWeight=cu.getWeight();
           if (!isChunkVisible(cu.getChunk())) {
             deletableUpdates.add(cu);

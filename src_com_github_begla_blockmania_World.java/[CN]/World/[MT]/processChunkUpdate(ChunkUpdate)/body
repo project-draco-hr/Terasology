@@ -1,5 +1,8 @@
 {
   if (cu != null) {
+    if (!(cu.getChunk().isDirty() || cu.getChunk().isLightDirty())) {
+      return;
+    }
     cu.getChunk().generate();
     Chunk[] neighbors=cu.getChunk().loadOrCreateNeighbors();
     for (int i=0; i < neighbors.length; i++) {

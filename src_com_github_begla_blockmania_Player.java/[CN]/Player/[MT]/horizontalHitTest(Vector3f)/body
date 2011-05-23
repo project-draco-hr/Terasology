@@ -1,12 +1,12 @@
 {
   boolean result=false;
   FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
-  for (  BlockPosition bp : blockPositions) {
-    byte blockType1=_parent.getBlockAtPosition(VectorPool.getVector(bp.x,bp.y,bp.z));
+  for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
+    byte blockType1=_parent.getBlockAtPosition(VectorPool.getVector(n.getValue().x,n.getValue().y,n.getValue().z));
     if (!Block.getBlockForType(blockType1).isPenetrable()) {
-      if (getAABB().overlaps(Block.AABBForBlockAt(bp.x,bp.y,bp.z))) {
+      if (getAABB().overlaps(Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z))) {
         result=true;
-        Vector3f normal=Block.AABBForBlockAt(bp.x,bp.y,bp.z).closestNormalToPoint(origin);
+        Vector3f normal=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z).closestNormalToPoint(origin);
         Vector3f slideVector=Vector3f.cross(normal,VectorPool.getVector(0,1,0),null);
         Vector3f direction=VectorPool.getVector(_position.x,0f,_position.z);
         direction.x-=origin.x;
