@@ -51,22 +51,17 @@ synchronized (_updateThread) {
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
         _visibleChunks=fetchVisibleChunks();
-        double weight=Double.MAX_VALUE;
         ChunkUpdate nearestChunkUpdate=null;
-        FastList<ChunkUpdate> deletableUpdates=new FastList<ChunkUpdate>();
-        for (FastSet.Record n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
-          ChunkUpdate cu=_chunkUpdateNormal.valueOf(n);
-          double tWeight=cu.getWeight();
-          if (!isChunkVisible(cu.getChunk())) {
-            deletableUpdates.add(cu);
-            continue;
-          }
-          if (tWeight < weight) {
-            weight=tWeight;
-            nearestChunkUpdate=cu;
+        ChunkUpdate farthestChunkUpdate=null;
+        if (!_chunkUpdateNormal.isEmpty()) {
+          nearestChunkUpdate=_chunkUpdateNormal.getFirst();
+          farthestChunkUpdate=_chunkUpdateNormal.getLast();
+        }
+        if (farthestChunkUpdate != null) {
+          if (!isChunkVisible(farthestChunkUpdate.getChunk()) && nearestChunkUpdate != farthestChunkUpdate) {
+            _chunkUpdateNormal.remove(farthestChunkUpdate);
           }
         }
-        _chunkUpdateNormal.removeAll(deletableUpdates);
         if (nearestChunkUpdate != null) {
           _chunkUpdateNormal.remove(nearestChunkUpdate);
           processChunkUpdate(nearestChunkUpdate);

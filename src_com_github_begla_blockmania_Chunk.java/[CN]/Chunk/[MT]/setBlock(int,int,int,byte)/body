@@ -1,11 +1,14 @@
 {
   if (Helper.getInstance().checkBounds3D(x,y,z,_blocks)) {
+    byte oldValue=_blocks[x][y][z];
     _blocks[x][y][z]=type;
     Block b=Block.getBlockForType(type);
     if (!b.isBlockTypeTranslucent()) {
       _sunlight[x][y][z]=0;
     }
-    setDirty(true);
-    markNeighborsDirty(x,z);
+    if (oldValue != type) {
+      setDirty(true);
+      markNeighborsDirty(x,z);
+    }
   }
 }

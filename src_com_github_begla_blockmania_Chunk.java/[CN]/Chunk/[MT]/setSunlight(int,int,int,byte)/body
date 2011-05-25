@@ -4,8 +4,11 @@
   }
   if (Helper.getInstance().checkBounds3D(x,y,z,_sunlight)) {
     Block b=Block.getBlockForType(getBlock(x,y,z));
+    byte oldValue=_sunlight[x][y][z];
     _sunlight[x][y][z]=intens;
-    _dirty=true;
-    markNeighborsDirty(x,z);
+    if (oldValue != intens) {
+      setDirty(true);
+      markNeighborsDirty(x,z);
+    }
   }
 }
