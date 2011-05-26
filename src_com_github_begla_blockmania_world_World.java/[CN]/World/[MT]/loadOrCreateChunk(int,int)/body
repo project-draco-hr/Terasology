@@ -1,0 +1,27 @@
+{
+  if (x < 0 || z < 0) {
+    return null;
+  }
+  Chunk c=_chunkCache.get(Helper.getInstance().cantorize(x,z));
+  if (c != null) {
+    return c;
+  }
+  if (_chunkCache.size() > 2048) {
+    FastList<Chunk> sortedChunks=null;
+    sortedChunks=new FastList<Chunk>(_chunkCache.values());
+    Collections.sort(sortedChunks);
+    Helper.LOGGER.log(Level.FINE,"Cache full. Removing some chunks from the chunk cache...");
+    for (int i=0; i < 32; i++) {
+      int indexToDelete=sortedChunks.size() - i;
+      if (indexToDelete >= 0 && indexToDelete < sortedChunks.size()) {
+        Chunk cc=sortedChunks.get(indexToDelete);
+        _chunkCache.remove(Helper.getInstance().cantorize((int)cc.getPosition().x,(int)cc.getPosition().z));
+        cc.dispose();
+      }
+    }
+    Helper.LOGGER.log(Level.FINE,"Finished removing chunks from the chunk cache.");
+  }
+  c=prepareNewChunk(x,z);
+  _chunkCache.put(Helper.getInstance().cantorize(x,z),c);
+  return c;
+}

@@ -1,0 +1,34 @@
+{
+  if (Block.getBlockForType(getBlock(x,y,z)).isBlockInvisible()) {
+    return null;
+  }
+  FastList<Intersection> result=new FastList<Intersection>();
+  Vector3f[] vertices=verticesForBlockAt(x,y,z);
+  Vector3f blockPos=VectorPool.getVector(x,y,z);
+  Intersection is=rayFaceIntersection(blockPos,vertices[0],vertices[3],vertices[2],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[4],vertices[5],vertices[6],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[0],vertices[4],vertices[7],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[1],vertices[2],vertices[6],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[3],vertices[7],vertices[6],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  is=rayFaceIntersection(blockPos,vertices[0],vertices[1],vertices[5],origin,ray);
+  if (is != null) {
+    result.add(is);
+  }
+  Collections.sort(result);
+  return result;
+}

@@ -1,0 +1,107 @@
+{
+  if (_quadsOpaque == null) {
+    return;
+  }
+  if (_displayListOpaque == -1) {
+    _displayListOpaque=glGenLists(1);
+  }
+  if (_displayListTranslucent == -1) {
+    _displayListTranslucent=glGenLists(1);
+  }
+  if (_displayListBillboard == -1) {
+    _displayListBillboard=glGenLists(1);
+  }
+  FloatBuffer cb=null;
+  FloatBuffer tb=null;
+  FloatBuffer vb=null;
+  vb=BufferUtils.createFloatBuffer(_quadsOpaque.size());
+  for (TFloatIterator it=_quadsOpaque.iterator(); it.hasNext(); ) {
+    vb.put(it.next());
+  }
+  tb=BufferUtils.createFloatBuffer(_texOpaque.size());
+  for (TFloatIterator it=_texOpaque.iterator(); it.hasNext(); ) {
+    tb.put(it.next());
+  }
+  cb=BufferUtils.createFloatBuffer(_colorOpaque.size());
+  for (TFloatIterator it=_colorOpaque.iterator(); it.hasNext(); ) {
+    cb.put(it.next());
+  }
+  vb.flip();
+  tb.flip();
+  cb.flip();
+  glNewList(_displayListOpaque,GL_COMPILE);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  glColorPointer(4,0,cb);
+  glVertexPointer(3,0,vb);
+  glDrawArrays(GL_QUADS,0,_quadsOpaque.size() / 3);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glEndList();
+  vb=BufferUtils.createFloatBuffer(_quadsTranslucent.size());
+  for (TFloatIterator it=_quadsTranslucent.iterator(); it.hasNext(); ) {
+    vb.put(it.next());
+  }
+  tb=BufferUtils.createFloatBuffer(_texTranslucent.size());
+  for (TFloatIterator it=_texTranslucent.iterator(); it.hasNext(); ) {
+    tb.put(it.next());
+  }
+  cb=BufferUtils.createFloatBuffer(_colorTranslucent.size());
+  for (TFloatIterator it=_colorTranslucent.iterator(); it.hasNext(); ) {
+    cb.put(it.next());
+  }
+  vb.flip();
+  tb.flip();
+  cb.flip();
+  glNewList(_displayListTranslucent,GL_COMPILE);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  glColorPointer(4,0,cb);
+  glVertexPointer(3,0,vb);
+  glDrawArrays(GL_QUADS,0,_quadsTranslucent.size() / 3);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glEndList();
+  vb=BufferUtils.createFloatBuffer(_quadsBillboard.size());
+  for (TFloatIterator it=_quadsBillboard.iterator(); it.hasNext(); ) {
+    vb.put(it.next());
+  }
+  tb=BufferUtils.createFloatBuffer(_texBillboard.size());
+  for (TFloatIterator it=_texBillboard.iterator(); it.hasNext(); ) {
+    tb.put(it.next());
+  }
+  cb=BufferUtils.createFloatBuffer(_colorBillboard.size());
+  for (TFloatIterator it=_colorBillboard.iterator(); it.hasNext(); ) {
+    cb.put(it.next());
+  }
+  vb.flip();
+  tb.flip();
+  cb.flip();
+  glNewList(_displayListBillboard,GL_COMPILE);
+  glEnableClientState(GL_VERTEX_ARRAY);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  glColorPointer(4,0,cb);
+  glVertexPointer(3,0,vb);
+  glDrawArrays(GL_QUADS,0,_quadsBillboard.size() / 3);
+  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glDisableClientState(GL_VERTEX_ARRAY);
+  glEndList();
+  _quadsTranslucent=null;
+  _texTranslucent=null;
+  _colorTranslucent=null;
+  _quadsOpaque=null;
+  _texOpaque=null;
+  _colorOpaque=null;
+  _quadsBillboard=null;
+  _texBillboard=null;
+  _colorBillboard=null;
+}
