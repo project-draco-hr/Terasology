@@ -1,0 +1,6 @@
+{
+  Vector3f offset=_parent.getPlayer().getPosition();
+  Vector2f newPosition=new Vector2f(offset.x + evt.getX() - getWidth() / 2,offset.z + evt.getY() - getHeight() / 2);
+  float height=_tGen.calcHeightMap(newPosition.x,newPosition.y) * 128 + 16;
+  _parent.getPlayer().setPosition(new Vector3f(newPosition.x,height,newPosition.y));
+}
