@@ -10,7 +10,7 @@
     if (b.isBlockTypeTranslucent() && !covered) {
       _sunlight[x][y][z]=light;
       if (refresh) {
-        spreadLight(x,y,z,light);
+        spreadLight(x,y,z,light,LIGHT_TYPE.SUN);
       }
       if (_blocks[x][y][z] != 0x0) {
         light-=Configuration.LIGHT_ABSORPTION;
@@ -20,7 +20,7 @@
  else     if (b.isBlockTypeTranslucent() && covered) {
       _sunlight[x][y][z]=0;
       if (refresh) {
-        refreshLightAtLocalPos(x,y,z);
+        refreshLightAtLocalPos(x,y,z,LIGHT_TYPE.SUN);
       }
     }
   }

@@ -10,14 +10,19 @@
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0) {
     c.setBlock(blockPosX,y,blockPosZ,type);
     if (update) {
-      byte oldValue=getLight(x,y,z);
+      byte oldValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
       c.calcSunlightAtLocalPos(blockPosX,blockPosZ,true);
-      c.refreshLightAtLocalPos(blockPosX,y,blockPosZ);
-      byte newValue=getLight(x,y,z);
+      c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.SUN);
+      byte newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
       if (newValue > oldValue) {
-        c.spreadLight(blockPosX,y,blockPosZ,newValue);
+        c.spreadLight(blockPosX,y,blockPosZ,newValue,Chunk.LIGHT_TYPE.SUN);
       }
  else       if (newValue < oldValue) {
+      }
+      byte luminance=Block.getBlockForType(type).getLuminance();
+      if (luminance > newValue) {
+        c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+        c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
       }
       queueChunkForUpdate(c,true,false);
     }
