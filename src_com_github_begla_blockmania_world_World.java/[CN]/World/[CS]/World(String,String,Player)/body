@@ -59,11 +59,15 @@ synchronized (_updateThread) {
         }
         if (farthestChunkUpdate != null) {
           if (!isChunkVisible(farthestChunkUpdate.getChunk()) && nearestChunkUpdate != farthestChunkUpdate) {
-            _chunkUpdateNormal.remove(farthestChunkUpdate);
+synchronized (_chunkUpdateNormal) {
+              _chunkUpdateNormal.remove(farthestChunkUpdate);
+            }
           }
         }
         if (nearestChunkUpdate != null) {
-          _chunkUpdateNormal.remove(nearestChunkUpdate);
+synchronized (_chunkUpdateNormal) {
+            _chunkUpdateNormal.remove(nearestChunkUpdate);
+          }
           processChunkUpdate(nearestChunkUpdate);
         }
         updateDaytime();

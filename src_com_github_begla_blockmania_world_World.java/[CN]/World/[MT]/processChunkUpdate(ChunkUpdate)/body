@@ -19,7 +19,9 @@
     for (int i=0; i < neighbors.length; i++) {
       if (neighbors[i] != null) {
         if ((isChunkVisible(neighbors[i]) && neighbors[i].isDirty() && cu.isUpdateNeighbors()) || lightCalculated) {
-          queueChunkForUpdate(neighbors[i],false,false);
+          neighbors[i].generateVertexArrays();
+          _chunkUpdateQueueDL.add(neighbors[i]);
+          _statGeneratedChunks++;
         }
       }
     }

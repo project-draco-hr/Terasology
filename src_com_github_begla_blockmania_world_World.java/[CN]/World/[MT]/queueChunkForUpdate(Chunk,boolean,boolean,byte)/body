@@ -4,6 +4,8 @@
   }
   if (c.isDirty()) {
     _chunkUpdateNormal.add(new ChunkUpdate(updateNeighbors,c,priority));
-    Collections.sort(_chunkUpdateNormal);
+synchronized (_chunkUpdateNormal) {
+      Collections.sort(_chunkUpdateNormal);
+    }
   }
 }
