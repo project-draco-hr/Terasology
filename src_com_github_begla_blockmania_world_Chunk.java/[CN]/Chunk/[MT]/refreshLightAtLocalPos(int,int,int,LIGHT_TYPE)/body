@@ -2,11 +2,12 @@
   int blockPosX=getBlockWorldPosX(x);
   int blockPosY=getBlockWorldPosY(y);
   int blockPosZ=getBlockWorldPosZ(z);
-  byte val=getBlock(x,y,z);
-  if (!Block.getBlockForType(val).isBlockTypeTranslucent()) {
+  byte bType=getBlock(x,y,z);
+  if (!Block.getBlockForType(bType).isBlockTypeTranslucent()) {
     setLight(x,y,z,(byte)0,type);
   }
  else {
+    byte val=_parent.getLight(blockPosX,blockPosY,blockPosZ,type);
     byte val1=_parent.getLight(blockPosX + 1,blockPosY,blockPosZ,type);
     byte val2=_parent.getLight(blockPosX - 1,blockPosY,blockPosZ,type);
     byte val3=_parent.getLight(blockPosX,blockPosY,blockPosZ + 1,type);
@@ -17,6 +18,7 @@
     if (max < 0) {
       max=0;
     }
-    setLight(x,y,z,max,type);
+    byte res=(byte)Math.max(max,val);
+    setLight(x,y,z,res,type);
   }
 }

@@ -12,7 +12,7 @@
       if (refresh) {
         spreadLight(x,y,z,light,LIGHT_TYPE.SUN);
       }
-      if (_blocks[x][y][z] != 0x0) {
+      if (_blocks[x][y][z] != 0x0 && !Block.getBlockForType(_blocks[x][y][z]).isBlockBillboard()) {
         light-=Configuration.LIGHT_ABSORPTION;
         light=(byte)Math.max(0,light);
       }
