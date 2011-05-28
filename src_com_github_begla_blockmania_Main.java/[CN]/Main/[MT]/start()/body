@@ -1,23 +1,19 @@
 {
   Helper.LOGGER.log(Level.INFO,"Starting the game...");
   _lastLoopTime=Helper.getInstance().getTime();
+  double nextGameTick=Helper.getInstance().getTime();
+  int loopCounter=0;
   while (_runGame) {
-    Display.sync(60);
-    long delta=Helper.getInstance().getTime() - _lastLoopTime;
-    _lastLoopTime=Helper.getInstance().getTime();
-    _lastFpsTime+=delta;
-    _fps++;
-    if (_lastFpsTime >= 1000) {
-      _lastFpsTime=0;
-      _meanFps+=_fps;
-      _meanFps/=2;
-      _memoryUsage=(Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory()) / 1048576;
-      _fps=0;
-    }
+    updateStatistics();
     processKeyboardInput();
     processMouseInput();
-    if (!_showDebugConsole) {
-      update(delta);
+    loopCounter=0;
+    while (Helper.getInstance().getTime() > nextGameTick && loopCounter < MAX_FRAMESKIP) {
+      if (!_pauseGame) {
+        update();
+      }
+      nextGameTick+=SKIP_TICKS;
+      loopCounter++;
     }
     render();
     Display.update();

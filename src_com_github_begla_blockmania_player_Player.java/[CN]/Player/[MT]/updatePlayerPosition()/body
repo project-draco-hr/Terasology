@@ -2,17 +2,17 @@
   Vector3f oldPosition=VectorPool.getVector();
   oldPosition.set(_position);
   if (Configuration.getSettingBoolean("DEMO_FLIGHT") && Configuration.getSettingBoolean("GOD_MODE")) {
-    _position.z+=8f / 1000f * delta;
+    _position.z+=0.75f;
     return;
   }
   if (Math.abs(_acc.y) > 0f) {
-    _acc.y+=-1f * _acc.y * Configuration.getSettingNumeric("FRICTION")* delta;
+    _acc.y+=-1f * _acc.y * Configuration.getSettingNumeric("FRICTION");
   }
   if (Math.abs(_acc.x) > 0f) {
-    _acc.x+=-1f * _acc.x * Configuration.getSettingNumeric("FRICTION")* delta;
+    _acc.x+=-1f * _acc.x * Configuration.getSettingNumeric("FRICTION");
   }
   if (Math.abs(_acc.z) > 0f) {
-    _acc.z+=-1f * _acc.z * Configuration.getSettingNumeric("FRICTION")* delta;
+    _acc.z+=-1f * _acc.z * Configuration.getSettingNumeric("FRICTION");
   }
   if (Math.abs(_acc.x) > _wSpeed || Math.abs(_acc.z) > _wSpeed || Math.abs(_acc.z) > _wSpeed) {
     double max=Math.max(Math.max(Math.abs(_acc.x),Math.abs(_acc.z)),_acc.y);
@@ -25,10 +25,13 @@
   _acc.y+=_movement.y;
   _acc.z+=_movement.z;
   if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY") && !Configuration.getSettingBoolean("GOD_MODE")) {
-    _gravity-=Configuration.getSettingNumeric("GRAVITY") * delta;
+    _gravity-=Configuration.getSettingNumeric("GRAVITY");
+    if (_gravity < -Configuration.getSettingNumeric("MAX_GRAVITY")) {
+      _gravity=-Configuration.getSettingNumeric("MAX_GRAVITY");
+    }
   }
-  getPosition().y+=(_acc.y / 1000.0f) * delta;
-  getPosition().y+=(_gravity / 1000.0f) * delta;
+  getPosition().y+=_acc.y;
+  getPosition().y+=_gravity;
   if (!Configuration.getSettingBoolean("GOD_MODE")) {
     boolean vHit=verticalHitTest(oldPosition);
     if (vHit) {
@@ -43,8 +46,8 @@
  else {
     _gravity=0f;
   }
-  getPosition().x+=(_acc.x / 1000.0f) * delta;
-  getPosition().z+=(_acc.z / 1000.0f) * delta;
+  getPosition().x+=_acc.x;
+  getPosition().z+=_acc.z;
   if (!Configuration.getSettingBoolean("GOD_MODE")) {
     if (horizontalHitTest(oldPosition)) {
     }
