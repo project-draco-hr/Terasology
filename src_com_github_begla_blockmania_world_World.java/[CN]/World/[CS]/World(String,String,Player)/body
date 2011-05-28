@@ -49,27 +49,14 @@ synchronized (_updateThread) {
             }
           }
         }
-        long timeStart=System.currentTimeMillis();
-        timeStart=System.currentTimeMillis();
+        _chunkUpdateManager.updateChunks();
         if (Helper.getInstance().getTime() - _lastUpdateTime > 1000) {
           _visibleChunks=fetchVisibleChunks();
-          removeInvisibleChunkUpdates();
+          _chunkUpdateManager.removeInvisibleChunkUpdates();
           _lastUpdateTime=Helper.getInstance().getTime();
-        }
-        ChunkUpdate nearestChunkUpdate=null;
-        if (!_chunkUpdateNormal.isEmpty()) {
-          nearestChunkUpdate=_chunkUpdateNormal.getFirst();
-        }
-        if (nearestChunkUpdate != null) {
-synchronized (_chunkUpdateNormal) {
-            _chunkUpdateNormal.remove(nearestChunkUpdate);
-          }
-          processChunkUpdate(nearestChunkUpdate);
         }
         updateDaytime();
         replantDirt();
-        _statUpdateDuration+=System.currentTimeMillis() - timeStart;
-        _statUpdateDuration/=2;
       }
     }
   }

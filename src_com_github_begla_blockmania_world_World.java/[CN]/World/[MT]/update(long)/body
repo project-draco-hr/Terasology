@@ -1,15 +1,3 @@
 {
-  if (!_chunkUpdateQueueDL.isEmpty()) {
-    Chunk c=_chunkUpdateQueueDL.valueOf(_chunkUpdateQueueDL.head().getNext());
-    if (c != null) {
-      c.generateDisplayLists();
-      _chunkUpdateQueueDL.remove(c);
-      Chunk[] neighbors=c.loadOrCreateNeighbors();
-      for (      Chunk n : neighbors) {
-        if (n != null) {
-          n.generateDisplayLists();
-        }
-      }
-    }
-  }
+  _chunkUpdateManager.updateDisplayLists();
 }

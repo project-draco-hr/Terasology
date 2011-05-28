@@ -1,12 +1,12 @@
 {
   if (Helper.getInstance().getTime() - _latestDirtEvolvement > 100) {
-    if (!_chunkUpdateNormal.isEmpty() || isNighttime()) {
+    if (_chunkUpdateManager.updatesSize() > 0 || isNighttime()) {
       return;
     }
     Chunk c=_visibleChunks.get((int)(Math.abs(_rand.randomLong()) % _visibleChunks.size()));
     if (!c.isFresh() && !c.isDirty() && !c.isLightDirty()) {
       _generatorGrass.generate(c);
-      queueChunkForUpdate(c,false,false,false);
+      _chunkUpdateManager.queueChunkForUpdate(c,false,false,false);
     }
     _latestDirtEvolvement=Helper.getInstance().getTime();
   }

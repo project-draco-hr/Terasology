@@ -1,0 +1,14 @@
+{
+  if (markDirty) {
+    c.setDirty(true);
+  }
+  if (c.isDirty() && (_parent.isChunkVisible(c) || forceInvisibleChunks)) {
+    ChunkUpdate cu=new ChunkUpdate(updateNeighbors,c);
+    if (!_chunkUpdates.contains(cu)) {
+      _chunkUpdates.add(cu);
+synchronized (_chunkUpdates) {
+        Collections.sort(_chunkUpdates);
+      }
+    }
+  }
+}

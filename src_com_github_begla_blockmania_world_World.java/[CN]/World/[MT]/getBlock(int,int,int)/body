@@ -3,7 +3,7 @@
   int chunkPosZ=calcChunkPosZ(z) % Configuration.getSettingNumeric("V_DIST_Z").intValue();
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
   if (c != null) {
     return c.getBlock(blockPosX,y,blockPosZ);
   }

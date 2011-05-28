@@ -1,0 +1,16 @@
+{
+  long timeStart=System.currentTimeMillis();
+  timeStart=System.currentTimeMillis();
+  ChunkUpdate nearestChunkUpdate=null;
+  if (!_chunkUpdates.isEmpty()) {
+    nearestChunkUpdate=_chunkUpdates.getFirst();
+  }
+  if (nearestChunkUpdate != null) {
+synchronized (_chunkUpdates) {
+      _chunkUpdates.remove(nearestChunkUpdate);
+    }
+    processChunkUpdate(nearestChunkUpdate);
+  }
+  _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
+  _meanUpdateDuration/=2;
+}

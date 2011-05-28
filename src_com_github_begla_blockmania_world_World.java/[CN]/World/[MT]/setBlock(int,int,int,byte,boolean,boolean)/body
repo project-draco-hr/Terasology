@@ -3,7 +3,7 @@
   int chunkPosZ=calcChunkPosZ(z) % Configuration.getSettingNumeric("V_DIST_Z").intValue();
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  Chunk c=loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
   if (c == null) {
     return;
   }
@@ -25,7 +25,7 @@
         c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
         c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
       }
-      queueChunkForUpdate(c,true,false,false);
+      _chunkUpdateManager.queueChunkForUpdate(c,true,false,false);
     }
   }
 }
