@@ -31,6 +31,7 @@
   _generatorGrass=new ChunkGeneratorFlora(seed);
   _rand=new FastRandom(seed.hashCode());
   resetPlayer();
+  _visibleChunks=fetchVisibleChunks();
   updateDaylight();
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
@@ -50,19 +51,14 @@ synchronized (_updateThread) {
         }
         long timeStart=System.currentTimeMillis();
         timeStart=System.currentTimeMillis();
-        _visibleChunks=fetchVisibleChunks();
+        if (Helper.getInstance().getTime() - _lastUpdateTime > 1000) {
+          _visibleChunks=fetchVisibleChunks();
+          removeInvisibleChunkUpdates();
+          _lastUpdateTime=Helper.getInstance().getTime();
+        }
         ChunkUpdate nearestChunkUpdate=null;
-        ChunkUpdate farthestChunkUpdate=null;
         if (!_chunkUpdateNormal.isEmpty()) {
           nearestChunkUpdate=_chunkUpdateNormal.getFirst();
-          farthestChunkUpdate=_chunkUpdateNormal.getLast();
-        }
-        if (farthestChunkUpdate != null) {
-          if (!isChunkVisible(farthestChunkUpdate.getChunk()) && nearestChunkUpdate != farthestChunkUpdate) {
-synchronized (_chunkUpdateNormal) {
-              _chunkUpdateNormal.remove(farthestChunkUpdate);
-            }
-          }
         }
         if (nearestChunkUpdate != null) {
 synchronized (_chunkUpdateNormal) {

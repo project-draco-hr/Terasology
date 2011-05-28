@@ -1,0 +1,11 @@
+{
+  FastList<ChunkUpdate> updatesToDelete=new FastList<ChunkUpdate>();
+  for (FastList.Node<ChunkUpdate> n=_chunkUpdateNormal.head(), end=_chunkUpdateNormal.tail(); (n=n.getNext()) != end; ) {
+    if (!isChunkVisible(n.getValue().getChunk())) {
+      updatesToDelete.add(n.getValue());
+    }
+  }
+synchronized (_chunkUpdateNormal) {
+    _chunkUpdateNormal.removeAll(updatesToDelete);
+  }
+}

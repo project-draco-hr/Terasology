@@ -1,8 +1,5 @@
 {
   if (cu != null) {
-    if (!(cu.getChunk().isDirty()) || !isChunkVisible(cu.getChunk())) {
-      return;
-    }
     boolean lightCalculated=false;
     cu.getChunk().generate();
     Chunk[] neighbors=null;
@@ -18,10 +15,16 @@
     }
     for (int i=0; i < neighbors.length; i++) {
       if (neighbors[i] != null) {
-        if ((isChunkVisible(neighbors[i]) && neighbors[i].isDirty() && cu.isUpdateNeighbors()) || lightCalculated) {
-          neighbors[i].generateVertexArrays();
-          _chunkUpdateQueueDL.add(neighbors[i]);
-          _statGeneratedChunks++;
+        if (neighbors[i].isDirty() && cu.isUpdateNeighbors()) {
+          if (neighbors[i].isLightDirty()) {
+            queueChunkForUpdate(neighbors[i],false,false,false);
+          }
+ else {
+            neighbors[i].generateVertexArrays();
+          }
+        }
+ else         if (lightCalculated) {
+          queueChunkForUpdate(neighbors[i],false,false,false);
         }
       }
     }
