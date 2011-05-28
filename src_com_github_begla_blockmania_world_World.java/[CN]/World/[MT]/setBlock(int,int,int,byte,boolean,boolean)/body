@@ -21,7 +21,8 @@
       }
       c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
       byte luminance=Block.getBlockForType(type).getLuminance();
-      if (luminance > newValue) {
+      byte blockLightValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+      if (luminance > blockLightValue) {
         c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
         c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
       }
