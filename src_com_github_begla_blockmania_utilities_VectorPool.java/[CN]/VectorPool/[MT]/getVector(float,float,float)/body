@@ -1,11 +1,5 @@
 {
-  Vector3f v=null;
-  try {
-    v=_pool.removeFirst();
-    _reUseCounter++;
-  }
- catch (  Exception e) {
-  }
+  Vector3f v=_pool.poll();
   if (v == null) {
     v=new Vector3f(x,y,z);
   }

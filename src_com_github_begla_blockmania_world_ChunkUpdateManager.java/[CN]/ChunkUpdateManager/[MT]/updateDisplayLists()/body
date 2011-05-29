@@ -1,9 +1,9 @@
 {
-  if (!displayListUpdates.isEmpty()) {
-    Chunk c=displayListUpdates.valueOf(displayListUpdates.head().getNext());
+  if (!_displayListUpdates.isEmpty()) {
+    Chunk c=_displayListUpdates.valueOf(_displayListUpdates.head().getNext());
     if (c != null) {
       c.generateDisplayLists();
-      displayListUpdates.remove(c);
+      _displayListUpdates.remove(c);
       Chunk[] neighbors=c.loadOrCreateNeighbors();
       for (      Chunk n : neighbors) {
         if (n != null) {

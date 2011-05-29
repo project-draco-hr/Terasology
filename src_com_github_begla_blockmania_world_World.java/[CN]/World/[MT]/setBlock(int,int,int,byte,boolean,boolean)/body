@@ -8,7 +8,7 @@
     return;
   }
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
-    c.setBlock(blockPosX,y,blockPosZ,type);
+    if (Block.getBlockForType(c.getBlock(blockPosX,y,blockPosZ)).isRemovable())     c.setBlock(blockPosX,y,blockPosZ,type);
     if (update) {
       byte oldValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
       c.calcSunlightAtLocalPos(blockPosX,blockPosZ,true);
@@ -19,12 +19,15 @@
       }
  else       if (newValue < oldValue) {
       }
-      c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
       byte luminance=Block.getBlockForType(type).getLuminance();
-      byte blockLightValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
-      if (luminance > blockLightValue) {
-        c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+      oldValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+      c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+      newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+      if (newValue > oldValue) {
         c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+      }
+ else {
+        c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
       }
       _chunkUpdateManager.queueChunkForUpdate(c,true,false,false);
     }
