@@ -1,3 +1,5 @@
 {
-  return blockToCheck == 0x0 || blockToCheck == 0x6 || Block.getBlockForType(blockToCheck).isBlockBillboard() || (Block.getBlockForType(blockToCheck).isBlockTypeTranslucent() && !Block.getBlockForType(currentBlock).isBlockTypeTranslucent());
+  Block bCheck=Block.getBlockForType(blockToCheck);
+  Block cBlock=Block.getBlockForType(currentBlock);
+  return bCheck.getClass() == BlockAir.class || bCheck.getClass() == BlockLeaf.class || bCheck.getClass() == BlockGlass.class || Block.getBlockForType(blockToCheck).isBlockBillboard() || (Block.getBlockForType(blockToCheck).isBlockTypeTranslucent() && !Block.getBlockForType(currentBlock).isBlockTypeTranslucent());
 }

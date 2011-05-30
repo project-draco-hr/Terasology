@@ -3,7 +3,7 @@
   _lastLoopTime=Helper.getInstance().getTime();
   double nextGameTick=Helper.getInstance().getTime();
   int loopCounter=0;
-  while (_runGame) {
+  while (_runGame && !Display.isCloseRequested()) {
     updateStatistics();
     processKeyboardInput();
     processMouseInput();
@@ -17,6 +17,9 @@
     }
     render();
     Display.update();
+  }
+  if (_saveWorldOnExit) {
+    _world.dispose();
   }
   Display.destroy();
 }
