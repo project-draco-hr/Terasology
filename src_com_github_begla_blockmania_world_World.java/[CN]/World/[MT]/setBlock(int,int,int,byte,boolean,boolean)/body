@@ -8,7 +8,9 @@
     return;
   }
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
-    if (Block.getBlockForType(c.getBlock(blockPosX,y,blockPosZ)).isRemovable())     c.setBlock(blockPosX,y,blockPosZ,type);
+    if (Block.getBlockForType(c.getBlock(blockPosX,y,blockPosZ)).isRemovable()) {
+      c.setBlock(blockPosX,y,blockPosZ,type);
+    }
     if (update) {
       byte oldValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
       c.calcSunlightAtLocalPos(blockPosX,blockPosZ,true);

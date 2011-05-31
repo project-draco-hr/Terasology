@@ -19,6 +19,9 @@
   byte type6=_parent.getBlock(blockPosX,blockPosY - 1,blockPosZ);
   byte newLightValue=0;
   newLightValue=(byte)(lightValue - depth);
+  if (_parent.getBlock(blockPosX,blockPosY,blockPosZ) == 0x4) {
+    newLightValue/=2;
+  }
   _parent.setLight(blockPosX,blockPosY,blockPosZ,newLightValue,type);
   if (lightValue <= 0) {
     return;

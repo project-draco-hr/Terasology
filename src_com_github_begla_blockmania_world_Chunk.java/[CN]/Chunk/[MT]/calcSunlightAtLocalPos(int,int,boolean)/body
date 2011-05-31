@@ -1,26 +1,20 @@
 {
-  float absorption=0;
   boolean covered=false;
   for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
     Block b=Block.getBlockForType(_blocks[x][y][z]);
-    if (!b.isBlockTypeTranslucent()) {
+    if ((b.getClass() != BlockAir.class && !b.isBlockBillboard())) {
       covered=true;
       continue;
     }
-    if (b.isBlockTypeTranslucent() && !covered) {
-      byte light=(byte)((float)Configuration.MAX_LIGHT - absorption);
+    if ((b.getClass() == BlockAir.class || b.isBlockBillboard()) && !covered) {
       byte oldValue=_sunlight[x][y][z];
-      _sunlight[x][y][z]=light;
+      _sunlight[x][y][z]=Configuration.MAX_LIGHT;
       byte newValue=_sunlight[x][y][z];
       if (refresh && oldValue < newValue) {
-        spreadLight(x,y,z,light,LIGHT_TYPE.SUN);
-      }
-      if (_blocks[x][y][z] != 0x0 && !Block.getBlockForType(_blocks[x][y][z]).isBlockBillboard()) {
-        absorption+=Configuration.LIGHT_ABSORPTION;
-        absorption=Math.min(Configuration.MAX_LIGHT,absorption);
+        spreadLight(x,y,z,newValue,LIGHT_TYPE.SUN);
       }
     }
- else     if (b.isBlockTypeTranslucent() && covered) {
+ else     if ((b.getClass() == BlockAir.class || b.isBlockBillboard()) && covered) {
       _sunlight[x][y][z]=0;
       if (refresh) {
         refreshLightAtLocalPos(x,y,z,LIGHT_TYPE.SUN);

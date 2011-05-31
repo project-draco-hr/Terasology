@@ -1,4 +1,7 @@
 {
+  if (c.getParent().isBlockSurrounded(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y + 1),c.getBlockWorldPosZ(z)) || !c.canBlockSeeTheSky(x,y + 1,z)) {
+    return;
+  }
   float forestDens=calcForestDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z));
   if (forestDens > 0f && c.getBlock(x,y,z) == 0x1 && y > 32) {
     if (Math.abs(_rand.randomDouble()) < 0.04f) {
