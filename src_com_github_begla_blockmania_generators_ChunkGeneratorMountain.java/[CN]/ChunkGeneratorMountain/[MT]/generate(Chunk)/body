@@ -1,40 +1,34 @@
 {
-  int xOffset=(int)c.getPosition().x * (int)Configuration.CHUNK_DIMENSIONS.x;
-  int yOffset=(int)c.getPosition().y * (int)Configuration.CHUNK_DIMENSIONS.y;
-  int zOffset=(int)c.getPosition().z * (int)Configuration.CHUNK_DIMENSIONS.z;
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-      int height=(int)(calcMountainIntensity(x + xOffset,z + zOffset) * 32f);
-      if (height == 0) {
-        break;
-      }
-      int startY=0;
+      int height=(int)(calcMountainIntensity(x + getOffsetX(c),z + getOffsetZ(c)) * 64f);
+      int startY=-1;
       for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
-        if (Block.getBlockForType(c.getBlock(x,i,z)).getClass() == BlockGrass.class) {
-          startY=i;
+        Block b=Block.getBlockForType(c.getBlock(x,i,z));
+        if (b.getClass() == BlockGrass.class || b.getClass() == BlockDirt.class || b.getClass() == BlockSand.class) {
+          startY=i + 1;
           break;
         }
       }
+      if (startY == -1) {
+        break;
+      }
+      byte groundBlockType=c.getBlock(x,startY - 1,z);
+      c.setBlock(x,startY - 1,z,(byte)0x2);
+      boolean blockGenerated=false;
       for (int i=0; i < height; i++) {
-        float stoneDensity=calcStoneDensity(x + xOffset,i + yOffset + startY,z + zOffset);
-        if (calcCanyonDensity(x + xOffset,i + yOffset + startY,z + zOffset) < 0.075) {
+        if (calcCanyonDensity(x + getOffsetX(c),i + getOffsetY(c) + startY,z + getOffsetZ(c)) < 0.05) {
           if (i == height - 1) {
-            if (c.canBlockSeeTheSky(x,i + startY,z)) {
-              c.setBlock(x,i + startY,z,(byte)0x1);
-            }
- else {
-              c.setBlock(x,i + startY,z,(byte)0x2);
-            }
+            c.setBlock(x,i + startY,z,getBlockTailpiece(c,getBlockTypeForPosition(c,x,i + startY,z,8),i + startY));
           }
  else           if (i < height - 1) {
-            if (i < height * 0.75f && stoneDensity < 0.2f) {
-              c.setBlock(x,i + startY,z,(byte)0x3);
-            }
- else {
-              c.setBlock(x,i + startY,z,(byte)0x2);
-            }
+            c.setBlock(x,i + startY,z,getBlockTypeForPosition(c,x,i + startY,z,8));
           }
+          blockGenerated=true;
         }
+      }
+      if (!blockGenerated) {
+        c.setBlock(x,startY - 1,z,groundBlockType);
       }
     }
   }
