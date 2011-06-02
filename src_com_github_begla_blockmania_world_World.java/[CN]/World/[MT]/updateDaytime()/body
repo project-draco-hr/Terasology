@@ -1,11 +1,6 @@
 {
-  if (Helper.getInstance().getTime() - _lastDaytimeMeasurement >= 30000) {
-    if (_chunkUpdateManager.updatesSize() == 0) {
-      setTime((short)(_time + 1));
-    }
- else {
-      return;
-    }
+  if (Helper.getInstance().getTime() - _lastDaytimeMeasurement >= 15000) {
+    setTime(_time + 0.5f);
     _lastDaytimeMeasurement=Helper.getInstance().getTime();
     Helper.LOGGER.log(Level.INFO,"Updated daytime to {0}h.",_time);
   }

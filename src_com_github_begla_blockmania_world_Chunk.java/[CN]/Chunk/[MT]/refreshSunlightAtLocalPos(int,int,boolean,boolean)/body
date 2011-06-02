@@ -10,13 +10,13 @@
       byte oldValue=_sunlight[x][y][z];
       _sunlight[x][y][z]=Configuration.MAX_LIGHT;
       byte newValue=_sunlight[x][y][z];
-      if (refresh && oldValue < newValue) {
+      if (spreadLight && oldValue < newValue) {
         spreadLight(x,y,z,newValue,LIGHT_TYPE.SUN);
       }
     }
  else     if ((b.getClass() == BlockAir.class || b.isBlockBillboard()) && covered) {
       _sunlight[x][y][z]=0;
-      if (refresh) {
+      if (refreshSunlight) {
         refreshLightAtLocalPos(x,y,z,LIGHT_TYPE.SUN);
       }
     }
