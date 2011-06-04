@@ -1,7 +1,8 @@
 {
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-      int height=(int)(calcMountainIntensity(x + getOffsetX(c),z + getOffsetZ(c)) * 64f);
+      float mIntens=calcMountainIntensity(x + getOffsetX(c),z + getOffsetZ(c));
+      int height=(int)(mIntens * 64);
       int startY=-1;
       for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
         Block b=Block.getBlockForType(c.getBlock(x,i,z));
@@ -15,7 +16,7 @@
       }
       boolean blockGenerated=false;
       for (int i=0; i < height; i++) {
-        if (calcCanyonDensity(x + getOffsetX(c),i + getOffsetY(c) + startY,z + getOffsetZ(c)) < 0.05) {
+        if (calcCanyonDensity(x + getOffsetX(c),i + getOffsetY(c) + startY,z + getOffsetZ(c)) >= 0) {
           if (i == height - 1) {
             c.setBlock(x,i + startY,z,getBlockTailpiece(c,getBlockTypeForPosition(c,x,i + startY,z,8),i + startY));
           }
