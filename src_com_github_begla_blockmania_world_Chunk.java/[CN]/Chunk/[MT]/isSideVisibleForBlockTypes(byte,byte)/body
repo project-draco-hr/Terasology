@@ -1,5 +1,5 @@
 {
   Block bCheck=Block.getBlockForType(blockToCheck);
   Block cBlock=Block.getBlockForType(currentBlock);
-  return bCheck.getClass() == BlockAir.class || bCheck.getClass() == BlockLeaf.class || bCheck.getClass() == BlockGlass.class || Block.getBlockForType(blockToCheck).isBlockBillboard() || (Block.getBlockForType(blockToCheck).isBlockTypeTranslucent() && !Block.getBlockForType(currentBlock).isBlockTypeTranslucent());
+  return bCheck.getClass() == BlockAir.class || cBlock.doNotTessellate() || bCheck.isBlockBillboard() || (Block.getBlockForType(blockToCheck).isBlockTypeTranslucent() && !Block.getBlockForType(currentBlock).isBlockTypeTranslucent());
 }

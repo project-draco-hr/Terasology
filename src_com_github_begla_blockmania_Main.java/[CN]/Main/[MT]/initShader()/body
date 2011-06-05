@@ -1,21 +1,18 @@
 {
-  _shader=ARBShaderObjects.glCreateProgramObjectARB();
-  if (_shader != 0) {
-    createFragShader("gamma.frag","gamma");
-    createVertexShader("gamma.vert","gamma");
-  }
-  for (  Integer i : _fragmentShader.values()) {
-    if (i != 0) {
-      ARBShaderObjects.glAttachObjectARB(_shader,i);
-      ARBShaderObjects.glLinkProgramARB(_shader);
-      ARBShaderObjects.glValidateProgramARB(_shader);
+  _gammaShader=ARBShaderObjects.glCreateProgramObjectARB();
+  if (_gammaShader != 0) {
+    int fragShader=createFragShader("gamma_frag.glsl","gamma");
+    int vertShader=createVertexShader("gamma_vert.glsl","gamma");
+    if (fragShader != 0 && vertShader != 0) {
+      ARBShaderObjects.glAttachObjectARB(_gammaShader,fragShader);
+      ARBShaderObjects.glLinkProgramARB(_gammaShader);
+      ARBShaderObjects.glValidateProgramARB(_gammaShader);
+      ARBShaderObjects.glAttachObjectARB(_gammaShader,vertShader);
+      ARBShaderObjects.glLinkProgramARB(_gammaShader);
+      ARBShaderObjects.glValidateProgramARB(_gammaShader);
     }
-  }
-  for (  Integer i : _vertexShader.values()) {
-    if (i != 0) {
-      ARBShaderObjects.glAttachObjectARB(_shader,i);
-      ARBShaderObjects.glLinkProgramARB(_shader);
-      ARBShaderObjects.glValidateProgramARB(_shader);
+ else {
+      Helper.LOGGER.log(Level.SEVERE,"Shader: Failed to load gamma shader.");
     }
   }
 }

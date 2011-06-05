@@ -1,4 +1,5 @@
 {
+  ARBShaderObjects.glUseProgramObjectARB(_gammaShader);
   glClearColor(_world.getDaylightColor().x,_world.getDaylightColor().y,_world.getDaylightColor().z,1.0f);
   float[] fogColor={_world.getDaylightColor().x,_world.getDaylightColor().y,_world.getDaylightColor().z,1.0f};
   FloatBuffer fogColorBuffer=BufferUtils.createFloatBuffer(4);
@@ -12,7 +13,6 @@
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   _player.render();
-  ARBShaderObjects.glUseProgramObjectARB(_shader);
   _world.render();
   ARBShaderObjects.glUseProgramObjectARB(0);
   renderHUD();
