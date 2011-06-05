@@ -1,0 +1,24 @@
+{
+  _fragmentShader.put(title,ARBShaderObjects.glCreateShaderObjectARB(ARBFragmentShader.GL_FRAGMENT_SHADER_ARB));
+  if (_fragmentShader.get(title) == 0) {
+    return 0;
+  }
+  String fragCode="";
+  String line;
+  try {
+    BufferedReader reader=new BufferedReader(new FileReader(ResourceLoader.getResource("com/github/begla/blockmania/shader/" + filename).getFile()));
+    while ((line=reader.readLine()) != null) {
+      fragCode+=line + "\n";
+    }
+  }
+ catch (  Exception e) {
+    Helper.LOGGER.log(Level.SEVERE,"Failed reading fragment shading code.");
+    return 0;
+  }
+  ARBShaderObjects.glShaderSourceARB(_fragmentShader.get(title),fragCode);
+  ARBShaderObjects.glCompileShaderARB(_fragmentShader.get(title));
+  if (!printLogInfo(_fragmentShader.get(title))) {
+    _fragmentShader.put(title,0);
+  }
+  return _fragmentShader.get(title);
+}

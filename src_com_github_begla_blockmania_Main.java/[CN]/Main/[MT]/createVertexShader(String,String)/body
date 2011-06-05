@@ -1,0 +1,24 @@
+{
+  _vertexShader.put(title,ARBShaderObjects.glCreateShaderObjectARB(ARBVertexShader.GL_VERTEX_SHADER_ARB));
+  if (_vertexShader.get(title) == 0) {
+    return 0;
+  }
+  String fragCode="";
+  String line;
+  try {
+    BufferedReader reader=new BufferedReader(new FileReader(ResourceLoader.getResource("com/github/begla/blockmania/shader/" + filename).getFile()));
+    while ((line=reader.readLine()) != null) {
+      fragCode+=line + "\n";
+    }
+  }
+ catch (  Exception e) {
+    Helper.LOGGER.log(Level.SEVERE,"Fail reading vertex shading code.");
+    return 0;
+  }
+  ARBShaderObjects.glShaderSourceARB(_vertexShader.get(title),fragCode);
+  ARBShaderObjects.glCompileShaderARB(_vertexShader.get(title));
+  if (!printLogInfo(_vertexShader.get(title))) {
+    _vertexShader.put(title,0);
+  }
+  return _vertexShader.get(title);
+}

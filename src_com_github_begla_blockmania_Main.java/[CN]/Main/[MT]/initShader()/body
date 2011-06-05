@@ -1,0 +1,21 @@
+{
+  _shader=ARBShaderObjects.glCreateProgramObjectARB();
+  if (_shader != 0) {
+    createFragShader("gamma.frag","gamma");
+    createVertexShader("gamma.vert","gamma");
+  }
+  for (  Integer i : _fragmentShader.values()) {
+    if (i != 0) {
+      ARBShaderObjects.glAttachObjectARB(_shader,i);
+      ARBShaderObjects.glLinkProgramARB(_shader);
+      ARBShaderObjects.glValidateProgramARB(_shader);
+    }
+  }
+  for (  Integer i : _vertexShader.values()) {
+    if (i != 0) {
+      ARBShaderObjects.glAttachObjectARB(_shader,i);
+      ARBShaderObjects.glLinkProgramARB(_shader);
+      ARBShaderObjects.glValidateProgramARB(_shader);
+    }
+  }
+}
