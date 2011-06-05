@@ -1,12 +1,14 @@
 {
+  FastRandom rand=new FastRandom(getSeed().hashCode());
   try {
     glNewList(_displayListClouds,GL_COMPILE);
     glBegin(GL_QUADS);
     int length=_clouds.length;
     for (int x=0; x < length; x++) {
       for (int y=0; y < length; y++) {
-        if (_clouds[x][y]) {
-          Primitives.drawCloud(32,8,16,x * 64f - (length / 2 * 64f),0,y * 32f - (length / 2 * 32f),getDaylight());
+        double r=rand.standNormalDistrDouble();
+        if (_clouds[x][y] && r > -2 && r < 0) {
+          Primitives.drawCloud(32,8,16,x * 32f - (length / 2 * 32f),0,y * 16f - (length / 2 * 16f),getDaylight());
         }
       }
     }

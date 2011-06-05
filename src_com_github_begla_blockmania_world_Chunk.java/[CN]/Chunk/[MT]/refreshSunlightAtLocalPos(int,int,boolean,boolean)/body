@@ -15,8 +15,10 @@
       }
     }
  else     if ((b.getClass() == BlockAir.class || b.isBlockBillboard()) && covered) {
+      byte oldValue=_sunlight[x][y][z];
       _sunlight[x][y][z]=0;
       if (refreshSunlight) {
+        unspreadLight(x,y,z,oldValue,LIGHT_TYPE.SUN);
         refreshLightAtLocalPos(x,y,z,LIGHT_TYPE.SUN);
       }
     }
