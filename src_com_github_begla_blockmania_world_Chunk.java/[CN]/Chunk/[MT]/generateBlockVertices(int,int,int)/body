@@ -152,7 +152,7 @@
   drawLeft=isSideVisibleForBlockTypes(blockToCheck,block);
   if (drawLeft) {
     Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.LEFT);
-    float shadowIntens=Math.max(_parent.getRenderingLightValue(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) * (simpleOcclusionAmount(x,y,z,-1,0,0) - Configuration.BLOCK_SIDE_DIMMING),0);
+    float shadowIntens=Math.max(_parent.getRenderingLightValue(getBlockWorldPosX(x - 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) * Configuration.BLOCK_SIDE_DIMMING,0);
     float texOffsetX=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.LEFT).x;
     float texOffsetY=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.LEFT).y;
     color.add(colorOffset.x * shadowIntens * Configuration.BRIGHTNESS_FACTOR);
@@ -196,7 +196,7 @@
   drawRight=isSideVisibleForBlockTypes(blockToCheck,block);
   if (drawRight) {
     Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.RIGHT);
-    float shadowIntens=Math.max(_parent.getRenderingLightValue(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) * (simpleOcclusionAmount(x,y,z,1,0,0) - Configuration.BLOCK_SIDE_DIMMING),0);
+    float shadowIntens=Math.max(_parent.getRenderingLightValue(getBlockWorldPosX(x + 1),getBlockWorldPosY(y),getBlockWorldPosZ(z)) * Configuration.BLOCK_SIDE_DIMMING,0);
     float texOffsetX=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.RIGHT).x;
     float texOffsetY=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.RIGHT).y;
     color.add(colorOffset.x * shadowIntens * Configuration.BRIGHTNESS_FACTOR);
