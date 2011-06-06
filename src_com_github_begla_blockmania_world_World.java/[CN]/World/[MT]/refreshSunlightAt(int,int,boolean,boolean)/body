@@ -1,0 +1,10 @@
+{
+  int chunkPosX=calcChunkPosX(x) % Configuration.getSettingNumeric("V_DIST_X").intValue();
+  int chunkPosZ=calcChunkPosZ(z) % Configuration.getSettingNumeric("V_DIST_Z").intValue();
+  int blockPosX=calcBlockPosX(x,chunkPosX);
+  int blockPosZ=calcBlockPosZ(z,chunkPosZ);
+  Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  if (c != null) {
+    c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,spreadLight,refreshSunlight);
+  }
+}

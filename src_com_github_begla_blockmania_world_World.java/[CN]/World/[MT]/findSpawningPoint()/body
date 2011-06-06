@@ -1,8 +1,8 @@
 {
-  for (int xz=0; ; xz++) {
+  for (int xz=1024; ; xz++) {
     float height=_generatorTerrain.calcHeightMap(xz,xz) * 128f;
-    if (height > 64) {
-      return VectorPool.getVector(xz,height + 16,xz);
+    if (height > 32 && height < 34 && _generatorMountain.calcMountainIntensity(xz,xz) <= 0f) {
+      return VectorPool.getVector(xz,height + 8,xz);
     }
   }
 }

@@ -8,4 +8,18 @@
  catch (  IOException ex) {
     Helper.LOGGER.log(Level.SEVERE,null,ex);
   }
+  try {
+    BufferedImage cloudImage=ImageIO.read(ResourceLoader.getResource("com/github/begla/blockmania/images/clouds.png").openStream());
+    _clouds=new boolean[cloudImage.getWidth()][cloudImage.getHeight()];
+    for (int x=0; x < cloudImage.getWidth(); x++) {
+      for (int y=0; y < cloudImage.getHeight(); y++) {
+        if (cloudImage.getRGB(x,y) > 0) {
+          _clouds[x][y]=true;
+        }
+      }
+    }
+  }
+ catch (  IOException ex) {
+    Helper.LOGGER.log(Level.SEVERE,null,ex);
+  }
 }

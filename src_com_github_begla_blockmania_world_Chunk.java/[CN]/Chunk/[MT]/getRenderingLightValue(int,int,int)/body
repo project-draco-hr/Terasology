@@ -1,6 +1,13 @@
 {
   if (Helper.getInstance().checkBounds3D(x,y,z,_sunlight)) {
-    return Math.max(_sunlight[x][y][z] * _parent.getDaylightAsFloat(),_light[x][y][z]);
+    float sunlight=(float)Math.pow(0.8,15 - _sunlight[x][y][z] * _parent.getDaylight());
+    float light=(float)Math.pow(0.8,15 - _light[x][y][z]);
+    if (sunlight >= light) {
+      return sunlight;
+    }
+ else {
+      return light;
+    }
   }
   return -1;
 }

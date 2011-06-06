@@ -1,0 +1,36 @@
+{
+  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
+    for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+      float mIntens=calcMountainIntensity(x + getOffsetX(c),z + getOffsetZ(c));
+      int height=(int)(mIntens * 64);
+      int startY=-1;
+      for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
+        Block b=Block.getBlockForType(c.getBlock(x,i,z));
+        if (b.getClass() == BlockGrass.class || b.getClass() == BlockDirt.class || b.getClass() == BlockSand.class) {
+          startY=i + 1;
+          break;
+        }
+      }
+      if (startY == -1) {
+        break;
+      }
+      boolean blockGenerated=false;
+      for (int i=0; i < height; i++) {
+        if (calcCanyonDensity(x + getOffsetX(c),i + getOffsetY(c) + startY,z + getOffsetZ(c)) >= 0) {
+          if (i == height - 1) {
+            c.setBlock(x,i + startY,z,getBlockTailpiece(c,getBlockTypeForPosition(c,x,i + startY,z,height + startY),i + startY));
+          }
+ else           if (i < height - 1) {
+            c.setBlock(x,i + startY,z,getBlockTypeForPosition(c,x,i + startY,z,height + startY));
+          }
+          blockGenerated=true;
+        }
+      }
+      if (blockGenerated) {
+        if (c.getBlock(x,startY - 1,z) == 0x1) {
+          c.setBlock(x,startY - 1,z,(byte)0x2);
+        }
+      }
+    }
+  }
+}

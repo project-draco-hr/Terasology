@@ -1,17 +1,28 @@
 {
-  glClearColor(_world.getDaylightColor().x,_world.getDaylightColor().y,_world.getDaylightColor().z,1.0f);
-  float[] fogColor={_world.getDaylightColor().x,_world.getDaylightColor().y,_world.getDaylightColor().z,1.0f};
+  ARBShaderObjects.glUseProgramObjectARB(_gammaShader);
+  float[] fogColor={_world.getDaylight(),_world.getDaylight(),_world.getDaylight(),1.0f};
   FloatBuffer fogColorBuffer=BufferUtils.createFloatBuffer(4);
   fogColorBuffer.put(fogColor);
   fogColorBuffer.rewind();
   glFog(GL_FOG_COLOR,fogColorBuffer);
   float minDist=Math.min(Configuration.getSettingNumeric("V_DIST_X") * Configuration.CHUNK_DIMENSIONS.x,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z);
   float viewingDistance=minDist / 2f;
-  glFogf(GL_FOG_START,viewingDistance - 16f);
+  glFogf(GL_FOG_START,16f);
   glFogf(GL_FOG_END,viewingDistance);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
+  glRotatef((float)_player.getPitch(),1f,0f,0f);
+  glRotatef((float)_player.getYaw(),0f,1f,0f);
+  glDisable(GL_CULL_FACE);
+  glDisable(GL_DEPTH_TEST);
+  glBegin(GL_QUADS);
+  Primitives.drawSkyBox(_world.getDaylight());
+  glEnd();
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_DEPTH_TEST);
+  glLoadIdentity();
   _player.render();
   _world.render();
+  ARBShaderObjects.glUseProgramObjectARB(0);
   renderHUD();
 }

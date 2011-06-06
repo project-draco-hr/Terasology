@@ -25,10 +25,15 @@
     saveMetaData();
   }
   _generatorTerrain=new ChunkGeneratorTerrain(seed);
+  _generatorMountain=new ChunkGeneratorMountain(seed);
   _generatorForest=new ChunkGeneratorForest(seed);
+  _generatorResources=new ChunkGeneratorResources(seed);
+  _generatorLakes=new ChunkGeneratorLakes(seed);
   _generatorTree=new ObjectGeneratorTree(this,seed);
   _generatorPineTree=new ObjectGeneratorPineTree(this,seed);
+  _generatorFirTree=new ObjectGeneratorFirTree(this,seed);
   _generatorGrass=new ChunkGeneratorFlora(seed);
+  _displayListClouds=glGenLists(1);
   _rand=new FastRandom(seed.hashCode());
   resetPlayer();
   _visibleChunks=fetchVisibleChunks();

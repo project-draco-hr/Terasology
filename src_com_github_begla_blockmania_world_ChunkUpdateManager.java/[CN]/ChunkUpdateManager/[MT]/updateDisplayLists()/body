@@ -1,13 +1,15 @@
 {
-  if (!_displayListUpdates.isEmpty()) {
-    Chunk c=_displayListUpdates.valueOf(_displayListUpdates.head().getNext());
-    if (c != null) {
-      c.generateDisplayLists();
-      _displayListUpdates.remove(c);
-      Chunk[] neighbors=c.loadOrCreateNeighbors();
-      for (      Chunk n : neighbors) {
-        if (n != null) {
-          n.generateDisplayLists();
+  for (int i=0; i < Configuration.DL_UPDATES_PER_CYCLE; i++) {
+    if (!_displayListUpdates.isEmpty()) {
+      Chunk c=_displayListUpdates.getFirst();
+      if (c != null) {
+        c.generateDisplayLists();
+        _displayListUpdates.remove(c);
+        Chunk[] neighbors=c.loadOrCreateNeighbors();
+        for (        Chunk n : neighbors) {
+          if (n != null) {
+            n.generateDisplayLists();
+          }
         }
       }
     }

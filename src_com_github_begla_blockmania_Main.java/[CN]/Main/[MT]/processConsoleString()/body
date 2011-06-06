@@ -25,7 +25,7 @@
     }
  else     if (parsingResult.get(0).equals("set")) {
       if (parsingResult.get(1).equals("time")) {
-        _world.setTime(Short.parseShort(parsingResult.get(2)));
+        _world.setTime(Float.parseFloat(parsingResult.get(2)));
         success=true;
       }
  else {
@@ -55,12 +55,13 @@
       success=true;
     }
  else     if (parsingResult.get(0).equals("exit")) {
-      _world.dispose();
-      System.exit(0);
+      _saveWorldOnExit=true;
+      _runGame=false;
       success=true;
     }
  else     if (parsingResult.get(0).equals("exit!")) {
-      System.exit(0);
+      _saveWorldOnExit=false;
+      _runGame=false;
       success=true;
     }
  else     if (parsingResult.get(0).equals("info")) {
@@ -85,6 +86,10 @@
     }
  else     if (parsingResult.get(0).equals("update_all")) {
       _world.updateAllChunks();
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("set_spawn")) {
+      _world.setSpawningPoint();
       success=true;
     }
   }
