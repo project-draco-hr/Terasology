@@ -1,10 +1,10 @@
 {
-  ARBShaderObjects.glUseProgramObjectARB(_gammaShader);
   float[] fogColor={_world.getDaylight(),_world.getDaylight(),_world.getDaylight(),1.0f};
   FloatBuffer fogColorBuffer=BufferUtils.createFloatBuffer(4);
   fogColorBuffer.put(fogColor);
   fogColorBuffer.rewind();
   glFog(GL_FOG_COLOR,fogColorBuffer);
+  glFogi(GL_FOG_MODE,GL_LINEAR);
   float minDist=Math.min(Configuration.getSettingNumeric("V_DIST_X") * Configuration.CHUNK_DIMENSIONS.x,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z);
   float viewingDistance=minDist / 2f;
   glFogf(GL_FOG_START,16f);
@@ -23,6 +23,7 @@
   glLoadIdentity();
   _player.render();
   _world.render();
-  ARBShaderObjects.glUseProgramObjectARB(0);
   renderHUD();
+  glBindTexture(GL_TEXTURE_2D,0);
+  ShaderManager.getInstance().enableShader(null);
 }

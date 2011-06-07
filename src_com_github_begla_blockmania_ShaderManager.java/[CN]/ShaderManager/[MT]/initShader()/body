@@ -1,0 +1,12 @@
+{
+  createVertexShader("fog_vert.glsl","fog");
+  createFragShader("fog_frag.glsl","fog");
+  for (  String s : _fragmentShader.keySet()) {
+    int shaderProgram=GL20.glCreateProgram();
+    GL20.glAttachShader(shaderProgram,_fragmentShader.get(s));
+    GL20.glAttachShader(shaderProgram,_vertexShader.get(s));
+    GL20.glLinkProgram(shaderProgram);
+    GL20.glValidateProgram(shaderProgram);
+    _shaderPrograms.put(s,shaderProgram);
+  }
+}

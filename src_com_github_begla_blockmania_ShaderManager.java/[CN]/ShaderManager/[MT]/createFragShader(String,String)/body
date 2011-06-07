@@ -1,5 +1,5 @@
 {
-  _fragmentShader.put(title,ARBShaderObjects.glCreateShaderObjectARB(ARBFragmentShader.GL_FRAGMENT_SHADER_ARB));
+  _fragmentShader.put(title,GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER));
   if (_fragmentShader.get(title) == 0) {
     return 0;
   }
@@ -15,8 +15,8 @@
     Helper.LOGGER.log(Level.SEVERE,"Failed reading fragment shading code.");
     return 0;
   }
-  ARBShaderObjects.glShaderSourceARB(_fragmentShader.get(title),fragCode);
-  ARBShaderObjects.glCompileShaderARB(_fragmentShader.get(title));
+  GL20.glShaderSource(_fragmentShader.get(title),fragCode);
+  GL20.glCompileShader(_fragmentShader.get(title));
   if (!printLogInfo(_fragmentShader.get(title))) {
     _fragmentShader.put(title,0);
   }

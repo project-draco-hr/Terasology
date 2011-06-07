@@ -1,5 +1,5 @@
 {
-  _vertexShader.put(title,ARBShaderObjects.glCreateShaderObjectARB(ARBVertexShader.GL_VERTEX_SHADER_ARB));
+  _vertexShader.put(title,GL20.glCreateShader(GL20.GL_VERTEX_SHADER));
   if (_vertexShader.get(title) == 0) {
     return 0;
   }
@@ -15,8 +15,8 @@
     Helper.LOGGER.log(Level.SEVERE,"Failed reading vertex shading code.");
     return 0;
   }
-  ARBShaderObjects.glShaderSourceARB(_vertexShader.get(title),fragCode);
-  ARBShaderObjects.glCompileShaderARB(_vertexShader.get(title));
+  GL20.glShaderSource(_vertexShader.get(title),fragCode);
+  GL20.glCompileShader(_vertexShader.get(title));
   if (!printLogInfo(_vertexShader.get(title))) {
     _vertexShader.put(title,0);
   }
