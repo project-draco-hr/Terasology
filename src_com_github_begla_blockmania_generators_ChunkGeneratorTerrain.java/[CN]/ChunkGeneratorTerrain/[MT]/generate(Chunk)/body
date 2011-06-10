@@ -1,25 +1,8 @@
 {
-  float[][] heightMap=new float[(int)Configuration.CHUNK_DIMENSIONS.x + 1][(int)Configuration.CHUNK_DIMENSIONS.z + 1];
-  for (int x=0; x <= Configuration.CHUNK_DIMENSIONS.x; x++) {
-    for (int y=0; y <= Configuration.CHUNK_DIMENSIONS.z; y++) {
-      if (x % INTERPOLATION_INTERVAL == 0 && y % INTERPOLATION_INTERVAL == 0) {
-        float height=calcHeightMap(x + getOffsetX(c),y + getOffsetZ(c));
-        heightMap[x][y]=height;
-      }
-    }
-  }
-  for (int y=0; y < Configuration.CHUNK_DIMENSIONS.z; y++) {
-    for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
-      if (!(x % INTERPOLATION_INTERVAL == 0 && y % INTERPOLATION_INTERVAL == 0)) {
-        int offsetX=(x / INTERPOLATION_INTERVAL) * INTERPOLATION_INTERVAL;
-        int offsetY=(y / INTERPOLATION_INTERVAL) * INTERPOLATION_INTERVAL;
-        heightMap[x][y]=Helper.getInstance().bilinearInterpolation(x,y,heightMap[offsetX][offsetY],heightMap[offsetX][INTERPOLATION_INTERVAL + offsetY],heightMap[INTERPOLATION_INTERVAL + offsetX][offsetY],heightMap[INTERPOLATION_INTERVAL + offsetX][offsetY + INTERPOLATION_INTERVAL],offsetX,INTERPOLATION_INTERVAL + offsetX,offsetY,INTERPOLATION_INTERVAL + offsetY);
-      }
-    }
-  }
+  float[][] heightMap=generateHeightMap(c);
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-      int height=(int)(128 * heightMap[x][z]);
+      int height=(int)(128f * heightMap[x][z]);
       boolean first=true;
       for (int i=(int)Configuration.CHUNK_DIMENSIONS.y; i >= 0; i--) {
         if (first && i == height) {
