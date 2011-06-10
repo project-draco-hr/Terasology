@@ -1,13 +1,11 @@
 {
   float[][] heightMap=new float[(int)Configuration.CHUNK_DIMENSIONS.x + 1][(int)Configuration.CHUNK_DIMENSIONS.z + 1];
-  for (int x=0; x <= Configuration.CHUNK_DIMENSIONS.x; x++) {
-    for (int y=0; y <= Configuration.CHUNK_DIMENSIONS.z; y++) {
-      if (x % INTERPOLATION_INTERVAL == 0 && y % INTERPOLATION_INTERVAL == 0) {
-        float height=calcHeightMap(x + getOffsetX(c),y + getOffsetZ(c));
-        heightMap[x][y]=height;
-      }
+  for (int x=0; x <= Configuration.CHUNK_DIMENSIONS.x; x+=SAMPLE_RATE_2D) {
+    for (int y=0; y <= Configuration.CHUNK_DIMENSIONS.z; y+=SAMPLE_RATE_2D) {
+      float height=calcHeightMap(x + getOffsetX(c),y + getOffsetZ(c));
+      heightMap[x][y]=height;
     }
   }
-  bilinearInterpolateHeigthMap(heightMap);
+  biLerpHeightMap(heightMap);
   return heightMap;
 }
