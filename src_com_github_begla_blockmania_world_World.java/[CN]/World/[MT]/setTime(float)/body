@@ -1,9 +1,10 @@
 {
-  _time=time % 24;
-  float oldDaylight=_daylight;
-  updateDaylight();
-  if (_daylight != oldDaylight) {
-    _daytimeUpdated=true;
-    updateAllChunks();
+  _time=time;
+  if (_time < 0) {
+    _time=1.0f;
   }
+ else   if (_time > 1.0f) {
+    _time=0.0f;
+  }
+  updateDaylight();
 }

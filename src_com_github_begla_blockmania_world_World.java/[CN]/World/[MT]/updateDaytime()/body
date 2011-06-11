@@ -1,7 +1,6 @@
 {
-  if (Helper.getInstance().getTime() - _lastDaytimeMeasurement >= 15000) {
-    setTime(_time + 0.5f);
+  if (Helper.getInstance().getTime() - _lastDaytimeMeasurement >= 100) {
+    setTime(_time + 1f / ((5f * 60f * 10f)));
     _lastDaytimeMeasurement=Helper.getInstance().getTime();
-    Helper.LOGGER.log(Level.INFO,"Updated daytime to {0}h.",_time);
   }
 }

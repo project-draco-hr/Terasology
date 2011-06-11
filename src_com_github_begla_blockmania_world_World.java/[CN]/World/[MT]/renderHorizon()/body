@@ -1,10 +1,14 @@
 {
+  ShaderManager.getInstance().enableShader("cloud");
+  int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("cloud"),"daylight");
+  GL20.glUniform1f(daylight,getDaylight());
   if (_displayListClouds > 0) {
     glPushMatrix();
     glTranslatef(_player.getPosition().x + _cloudOffset.x,100f,_player.getPosition().z + _cloudOffset.y);
     glCallList(_displayListClouds);
     glPopMatrix();
   }
+  ShaderManager.getInstance().enableShader(null);
   glPushMatrix();
   glTranslatef(_player.getPosition().x,Configuration.CHUNK_DIMENSIONS.y * 2.0f,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z + _player.getPosition().z);
   glRotatef(-35,1,0,0);

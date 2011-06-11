@@ -1,0 +1,17 @@
+{
+  if (r == RENDER_TYPE.BILLBOARD) {
+    _texLightBillboard.add((float)_parent.getLight(getBlockWorldPosX(x) + dirX,getBlockWorldPosY(y) + dirY,getBlockWorldPosZ(z) + dirZ,LIGHT_TYPE.SUN) / 15f);
+    _texLightBillboard.add((float)_parent.getLight(getBlockWorldPosX(x) + dirX,getBlockWorldPosY(y) + dirY,getBlockWorldPosZ(z) + dirZ,LIGHT_TYPE.BLOCK) / 15f);
+    _texLightBillboard.add(0f);
+  }
+ else   if (r == RENDER_TYPE.OPAQUE) {
+    _texLightOpaque.add((float)_parent.getLight(getBlockWorldPosX(x) + dirX,getBlockWorldPosY(y) + dirY,getBlockWorldPosZ(z) + dirZ,LIGHT_TYPE.SUN) / 15f);
+    _texLightOpaque.add((float)_parent.getLight(getBlockWorldPosX(x) + dirX,getBlockWorldPosY(y) + dirY,getBlockWorldPosZ(z) + dirZ,LIGHT_TYPE.BLOCK) / 15f);
+    _texLightOpaque.add(0f);
+  }
+ else   if (r == RENDER_TYPE.TRANS) {
+    _texLightTranslucent.add((float)_parent.getLight(getBlockWorldPosX(x) + dirX,getBlockWorldPosY(y) + dirY,getBlockWorldPosZ(z) + dirZ,LIGHT_TYPE.SUN) / 15f);
+    _texLightTranslucent.add((float)_parent.getLight(getBlockWorldPosX(x) + dirX,getBlockWorldPosY(y) + dirY,getBlockWorldPosZ(z) + dirZ,LIGHT_TYPE.BLOCK) / 15f);
+    _texLightTranslucent.add(0f);
+  }
+}

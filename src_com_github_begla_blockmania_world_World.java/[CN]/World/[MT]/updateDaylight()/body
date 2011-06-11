@@ -1,14 +1,14 @@
 {
-  if (_time >= 16f && _time <= 24) {
-    _daylight=(float)Math.pow(0.8f,(_time - 16f));
+  if (_time < 0.1f && _time > 0.0f) {
+    _daylight=_time / 0.1f;
   }
- else   if (_time >= 4 && _time <= 12) {
-    _daylight=1f - (float)Math.pow(0.8f,(_time - 4f));
+ else   if (_time >= 0.1 && _time <= 0.5f) {
+    _daylight=1.0f;
   }
- else   if (_time >= 0 && _time < 5) {
-    _daylight=(float)Math.pow(0.8f,9);
+  if (_time > 0.5f && _time < 0.6f) {
+    _daylight=1.0f - (_time - 0.5f) / 0.1f;
   }
- else {
-    _daylight=1f;
+ else   if (_time >= 0.6f && _time <= 1.0f) {
+    _daylight=0.0f;
   }
 }

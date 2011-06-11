@@ -33,7 +33,10 @@
     glEnd();
     glPopMatrix();
   }
+  ShaderManager.getInstance().enableShader("chunk");
   _textureMap.bind();
+  int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
+  GL20.glUniform1f(daylight,_parent.getDaylight());
   if (!translucent) {
     glCallList(_displayListOpaque);
   }
@@ -49,4 +52,5 @@
     glDisable(GL_BLEND);
     glDisable(GL_ALPHA_TEST);
   }
+  ShaderManager.getInstance().enableShader(null);
 }
