@@ -18,9 +18,6 @@
   if (drawTop) {
     Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.TOP);
     float shadowIntens=Math.max(_parent.getRenderingLightValue(getBlockWorldPosX(x),getBlockWorldPosY(y + 1),getBlockWorldPosZ(z)) * simpleOcclusionAmount(x,y,z,0,1,0),0);
-    if (y == Configuration.CHUNK_DIMENSIONS.y - 1) {
-      shadowIntens=1.0f;
-    }
     float texOffsetX=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.TOP).x;
     float texOffsetY=Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.TOP).y;
     color.add(colorOffset.x * shadowIntens * Configuration.BRIGHTNESS_FACTOR);

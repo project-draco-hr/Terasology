@@ -6,9 +6,7 @@
     nearestChunkUpdate=_chunkUpdates.getFirst();
   }
   if (nearestChunkUpdate != null) {
-synchronized (_chunkUpdates) {
-      _chunkUpdates.remove(nearestChunkUpdate);
-    }
+    _chunkUpdates.remove(nearestChunkUpdate);
     processChunkUpdate(nearestChunkUpdate);
   }
   _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
