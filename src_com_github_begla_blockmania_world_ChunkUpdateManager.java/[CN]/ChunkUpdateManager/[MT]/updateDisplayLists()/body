@@ -1,6 +1,6 @@
 {
   for (int i=0; i < Configuration.DL_UPDATES_PER_CYCLE; i++) {
-    if (!_displayListUpdates.isEmpty()) {
+    try {
       Chunk c=_displayListUpdates.getFirst();
       if (c != null) {
         c.generateDisplayLists();
@@ -12,6 +12,8 @@
           }
         }
       }
+    }
+ catch (    Exception e) {
     }
   }
 }
