@@ -8,6 +8,16 @@
   glLoadIdentity();
   glDisable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
+  if (Configuration.getSettingBoolean("CROSSHAIR")) {
+    glColor3f(1f,1f,1f);
+    glLineWidth(2f);
+    glBegin(GL_LINES);
+    glVertex2d(Display.getDisplayMode().getWidth() / 2f - 8f,Display.getDisplayMode().getHeight() / 2f);
+    glVertex2d(Display.getDisplayMode().getWidth() / 2f + 8f,Display.getDisplayMode().getHeight() / 2f);
+    glVertex2d(Display.getDisplayMode().getWidth() / 2f,Display.getDisplayMode().getHeight() / 2f - 8f);
+    glVertex2d(Display.getDisplayMode().getWidth() / 2f,Display.getDisplayMode().getHeight() / 2f + 8f);
+    glEnd();
+  }
   if (Configuration.getSettingBoolean("DEBUG")) {
     _font1.drawString(4,4,String.format("%s (fps: %.2f, mem usage: %.2f MB)",Configuration.GAME_TITLE,_meanFps,_memoryUsage,Color.white));
     _font1.drawString(4,22,String.format("%s",_player,Color.white));
@@ -16,16 +26,6 @@
   }
   if (_pauseGame) {
     _font1.drawString(4,Display.getDisplayMode().getHeight() - 16 - 4,String.format("%s_",_consoleInput),Color.red);
-  }
-  glColor3f(1f,1f,1f);
-  glLineWidth(2f);
-  if (Configuration.getSettingBoolean("CROSSHAIR")) {
-    glBegin(GL_LINES);
-    glVertex2d(Display.getDisplayMode().getWidth() / 2f - 8f,Display.getDisplayMode().getHeight() / 2f);
-    glVertex2d(Display.getDisplayMode().getWidth() / 2f + 8f,Display.getDisplayMode().getHeight() / 2f);
-    glVertex2d(Display.getDisplayMode().getWidth() / 2f,Display.getDisplayMode().getHeight() / 2f - 8f);
-    glVertex2d(Display.getDisplayMode().getWidth() / 2f,Display.getDisplayMode().getHeight() / 2f + 8f);
-    glEnd();
   }
   glDisable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
