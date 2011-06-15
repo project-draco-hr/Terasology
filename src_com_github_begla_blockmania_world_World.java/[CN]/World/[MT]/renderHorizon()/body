@@ -2,10 +2,10 @@
   ShaderManager.getInstance().enableShader("cloud");
   int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("cloud"),"daylight");
   GL20.glUniform1f(daylight,getDaylight());
-  if (_displayListClouds > 0) {
+  if (_dlClouds > 0) {
     glPushMatrix();
     glTranslatef(_player.getPosition().x + _cloudOffset.x,100f,_player.getPosition().z + _cloudOffset.y);
-    glCallList(_displayListClouds);
+    glCallList(_dlClouds);
     glPopMatrix();
   }
   ShaderManager.getInstance().enableShader(null);
@@ -23,16 +23,9 @@
  else {
     _textureMoon.bind();
   }
-  glBegin(GL_QUADS);
-  glTexCoord2f(0.0f,0.0f);
-  glVertex3f(-Configuration.SUN_SIZE,Configuration.SUN_SIZE,-Configuration.SUN_SIZE);
-  glTexCoord2f(1.f,0.0f);
-  glVertex3f(Configuration.SUN_SIZE,Configuration.SUN_SIZE,-Configuration.SUN_SIZE);
-  glTexCoord2f(1.f,1.0f);
-  glVertex3f(Configuration.SUN_SIZE,-Configuration.SUN_SIZE,-Configuration.SUN_SIZE);
-  glTexCoord2f(0.f,1.0f);
-  glVertex3f(-Configuration.SUN_SIZE,-Configuration.SUN_SIZE,-Configuration.SUN_SIZE);
-  glEnd();
+  if (_dlSunMoon > 0) {
+    glCallList(_dlSunMoon);
+  }
   glDisable(GL_BLEND);
   glPopMatrix();
   glBlendFunc(blend_src,blend_dst);

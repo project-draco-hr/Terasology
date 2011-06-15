@@ -1,0 +1,19 @@
+{
+  FastRandom rand=new FastRandom();
+  try {
+    glNewList(_dlClouds,GL_COMPILE);
+    glBegin(GL_QUADS);
+    int length=_clouds.length;
+    for (int x=0; x < length; x++) {
+      for (int y=0; y < length; y++) {
+        if (!_clouds[x][y]) {
+          Primitives.drawCloud(32,8,16,x * 32f - (length / 2 * 32f),0,y * 16f - (length / 2 * 16f));
+        }
+      }
+    }
+    glEnd();
+    glEndList();
+  }
+ catch (  Exception e) {
+  }
+}
