@@ -1,5 +1,10 @@
 {
   Helper.LOGGER.log(Level.INFO,"Welcome to {0}!",Configuration.GAME_TITLE);
+  WebUpdater wu=new WebUpdater();
+  if (!wu.update()) {
+    Helper.LOGGER.log(Level.SEVERE,"Couldn't download missing game files. Sorry.");
+    System.exit(0);
+  }
   Main main=null;
   try {
     main=new Main();

@@ -1,4 +1,11 @@
 {
+  ShaderManager.getInstance().enableShader("chunk");
+  int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
+  GL20.glUniform1f(daylight,getDaylight());
+  ShaderManager.getInstance().enableShader("cloud");
+  daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("cloud"),"daylight");
+  GL20.glUniform1f(daylight,getDaylight());
+  ShaderManager.getInstance().enableShader(null);
   renderHorizon();
   renderChunks();
 }

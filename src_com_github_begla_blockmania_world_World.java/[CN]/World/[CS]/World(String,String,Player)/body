@@ -35,7 +35,6 @@
   _rand=new FastRandom(seed.hashCode());
   resetPlayer();
   _visibleChunks=fetchVisibleChunks();
-  updateDaylight();
   _updateThread=new Thread(new Runnable(){
     @Override public void run(){
       while (true) {
@@ -53,11 +52,7 @@ synchronized (_updateThread) {
           }
         }
         _chunkUpdateManager.updateChunks();
-        if (Helper.getInstance().getTime() - _lastUpdateTime > 1000) {
-          _visibleChunks=fetchVisibleChunks();
-          _chunkUpdateManager.removeInvisibleChunkUpdates();
-          _lastUpdateTime=Helper.getInstance().getTime();
-        }
+        _visibleChunks=fetchVisibleChunks();
         updateDaytime();
         replantDirt();
       }

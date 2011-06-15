@@ -1,6 +1,7 @@
 {
   if (Helper.getInstance().getTime() - _latestDirtEvolvement > 100) {
-    if (_chunkUpdateManager.updatesSize() > 0 || isNighttime() || _visibleChunks.isEmpty()) {
+    if (isNighttime()) {
+      _latestDirtEvolvement=Helper.getInstance().getTime();
       return;
     }
     Chunk c=_visibleChunks.get((int)(Math.abs(_rand.randomLong()) % _visibleChunks.size()));

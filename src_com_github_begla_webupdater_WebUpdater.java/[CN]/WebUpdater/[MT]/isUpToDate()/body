@@ -1,0 +1,26 @@
+{
+  ArrayList<UpdateComponent> components=getUpdateComponents();
+  for (  UpdateComponent c : components) {
+    File f=new File(c.getLocalPath());
+    if (!f.exists()) {
+      Helper.LOGGER.log(Level.INFO,"Blockmania is  out of date.");
+      return false;
+    }
+ else {
+      try {
+        URL u=c.getURL();
+        URLConnection uc=u.openConnection();
+        int length=uc.getContentLength();
+        if (length != f.length()) {
+          return false;
+        }
+      }
+ catch (      IOException ex) {
+        Helper.LOGGER.log(Level.SEVERE,null,ex);
+        return false;
+      }
+    }
+  }
+  Helper.LOGGER.log(Level.INFO,"Blockmania is up-to-date.");
+  return true;
+}

@@ -1,26 +1,28 @@
 {
-  _quadsTranslucent=new TFloatArrayList();
-  _normalsOpaque=new TFloatArrayList();
-  _normalsTranslucent=new TFloatArrayList();
-  _texTranslucent=new TFloatArrayList();
-  _colorTranslucent=new TFloatArrayList();
-  _quadsOpaque=new TFloatArrayList();
-  _texOpaque=new TFloatArrayList();
-  _colorOpaque=new TFloatArrayList();
-  _quadsBillboard=new TFloatArrayList();
-  _texBillboard=new TFloatArrayList();
-  _colorBillboard=new TFloatArrayList();
-  _texLightTranslucent=new TFloatArrayList();
-  _texLightOpaque=new TFloatArrayList();
-  _texLightBillboard=new TFloatArrayList();
-  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
-    for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
-      for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-        generateBlockVertices(x,y,z);
-        generateBillboardVertices(x,y,z);
+  if (!_fresh) {
+    _quadsTranslucent=new TFloatArrayList();
+    _normalsOpaque=new TFloatArrayList();
+    _normalsTranslucent=new TFloatArrayList();
+    _texTranslucent=new TFloatArrayList();
+    _colorTranslucent=new TFloatArrayList();
+    _quadsOpaque=new TFloatArrayList();
+    _texOpaque=new TFloatArrayList();
+    _colorOpaque=new TFloatArrayList();
+    _quadsBillboard=new TFloatArrayList();
+    _texBillboard=new TFloatArrayList();
+    _colorBillboard=new TFloatArrayList();
+    _texLightTranslucent=new TFloatArrayList();
+    _texLightOpaque=new TFloatArrayList();
+    _texLightBillboard=new TFloatArrayList();
+    for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
+      for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
+        for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+          generateBlockVertices(x,y,z);
+          generateBillboardVertices(x,y,z);
+        }
       }
     }
+    setDirty(false);
+    _statVertexArrayUpdateCount++;
   }
-  setDirty(false);
-  _statVertexArrayUpdateCount++;
 }

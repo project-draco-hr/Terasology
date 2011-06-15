@@ -1,15 +1,17 @@
 {
   try {
     Helper.LOGGER.log(Level.INFO,"Loading world textures...");
-    _textureSun=TextureLoader.getTexture("png",ResourceLoader.getResource("com/github/begla/blockmania/images/sun.png").openStream(),GL_NEAREST);
-    _textureMoon=TextureLoader.getTexture("png",ResourceLoader.getResource("com/github/begla/blockmania/images/moon.png").openStream(),GL_NEAREST);
+    _textureSun=TextureLoader.getTexture("png",ResourceLoader.getResource("DATA/sun.png").openStream(),GL_NEAREST);
+    _textureSun.bind();
+    _textureMoon=TextureLoader.getTexture("png",ResourceLoader.getResource("DATA/moon.png").openStream(),GL_NEAREST);
+    _textureMoon.bind();
     Helper.LOGGER.log(Level.INFO,"Finished loading world textures!");
   }
  catch (  IOException ex) {
     Helper.LOGGER.log(Level.SEVERE,null,ex);
   }
   try {
-    BufferedImage cloudImage=ImageIO.read(ResourceLoader.getResource("com/github/begla/blockmania/images/clouds.png").openStream());
+    BufferedImage cloudImage=ImageIO.read(ResourceLoader.getResource("DATA/clouds.png").openStream());
     _clouds=new boolean[cloudImage.getWidth()][cloudImage.getHeight()];
     for (int x=0; x < cloudImage.getWidth(); x++) {
       for (int y=0; y < cloudImage.getHeight(); y++) {

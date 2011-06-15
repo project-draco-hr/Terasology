@@ -8,7 +8,7 @@
     return;
   }
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
-    byte oldValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
+    byte currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
     if (Block.getBlockForType(c.getBlock(blockPosX,y,blockPosZ)).isRemovable()) {
       c.setBlock(blockPosX,y,blockPosZ,type);
     }
@@ -16,22 +16,19 @@
       c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,true,true);
       c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.SUN);
       byte newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
-      if (newValue > oldValue) {
+      if (newValue > currentValue) {
         c.spreadLight(blockPosX,y,blockPosZ,newValue,Chunk.LIGHT_TYPE.SUN);
       }
- else       if (newValue < oldValue) {
-        c.unspreadLight(blockPosX,y,blockPosZ,oldValue,Chunk.LIGHT_TYPE.SUN);
-      }
       byte luminance=Block.getBlockForType(type).getLuminance();
-      oldValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
-      c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
-      newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
-      if (newValue > oldValue) {
-        c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+      if (luminance > 0) {
+        currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+        c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+        newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+        if (newValue > currentValue) {
+          c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+        }
       }
- else {
-        c.unspreadLight(blockPosX,y,blockPosZ,oldValue,Chunk.LIGHT_TYPE.BLOCK);
-      }
+      c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
       _chunkUpdateManager.queueChunkForUpdate(c,true,false,false);
     }
   }
