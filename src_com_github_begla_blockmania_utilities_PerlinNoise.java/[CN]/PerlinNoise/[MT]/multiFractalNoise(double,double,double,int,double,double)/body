@@ -1,9 +1,9 @@
 {
-  float frequency=1f;
-  float signal=1f;
-  signal=ridge(noise(x,y,z),offset);
-  float result=signal;
-  float weight=1f;
+  double frequency=1f;
+  double signal=1f;
+  signal=noise(x,y,z);
+  double result=signal;
+  double weight=1f;
   for (int i=0; i < octaves; i++) {
     x*=lacunarity;
     y*=lacunarity;
@@ -15,7 +15,7 @@
  else     if (weight < 0.0f) {
       weight=0.0f;
     }
-    signal=ridge(noise(x,y,z),offset);
+    signal=noise(x,y,z);
     signal*=weight;
     result+=signal * Math.pow(frequency,-1f);
     frequency*=lacunarity;
