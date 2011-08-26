@@ -4,7 +4,7 @@
   signal=ridge(noise(x,y,z),offset);
   double result=signal;
   double weight=1f;
-  for (int i=0; i < octaves; i++) {
+  for (int i=1; i <= octaves; i++) {
     x*=lacunarity;
     y*=lacunarity;
     z*=lacunarity;
@@ -17,7 +17,7 @@
     }
     signal=ridge(noise(x,y,z),offset);
     signal*=weight;
-    result+=signal * Math.pow(frequency,-1f);
+    result+=signal * Math.pow(frequency,-0.86461f);
     frequency*=lacunarity;
   }
   return result;

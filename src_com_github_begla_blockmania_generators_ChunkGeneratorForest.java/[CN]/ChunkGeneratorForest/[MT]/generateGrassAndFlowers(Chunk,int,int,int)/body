@@ -3,12 +3,12 @@
     float grassDens=calcGrassDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z));
     if (grassDens > 0.0) {
       double rand=_rand.standNormalDistrDouble();
-      if (rand > -1 && rand < 1) {
+      if (rand >= 0) {
         if (c.canBlockSeeTheSky(x,y + 1,z)) {
           c.setBlock(x,y + 1,z,(byte)0xB);
         }
       }
- else {
+ else       if (rand <= -1) {
         if (c.canBlockSeeTheSky(x,y + 1,z)) {
           c.setBlock(x,y + 1,z,(byte)0xC);
         }
