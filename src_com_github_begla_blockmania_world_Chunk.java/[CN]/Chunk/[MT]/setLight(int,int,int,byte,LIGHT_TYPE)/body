@@ -5,7 +5,7 @@
   if (isFresh()) {
     return;
   }
-  byte[][][] lSource=null;
+  byte[][][] lSource;
   if (type == LIGHT_TYPE.SUN) {
     lSource=_sunlight;
   }
@@ -16,7 +16,6 @@
     return;
   }
   if (Helper.getInstance().checkBounds3D(x,y,z,_sunlight)) {
-    Block b=Block.getBlockForType(getBlock(x,y,z));
     byte oldValue=lSource[x][y][z];
     lSource[x][y][z]=intens;
     if (oldValue != intens) {

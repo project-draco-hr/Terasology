@@ -1,10 +1,11 @@
 {
   long timeStart=System.currentTimeMillis();
-  timeStart=System.currentTimeMillis();
-  ChunkUpdate closestChunkUpdate=null;
+  ChunkUpdate closestChunkUpdate;
+  Collections.sort(_chunkUpdates);
   removeInvisibleChunkUpdates();
   if (!_chunkUpdates.isEmpty()) {
     closestChunkUpdate=_chunkUpdates.removeFirst();
+    if (_displayListUpdates.contains(closestChunkUpdate))     return;
     if (!_parent.isChunkVisible(closestChunkUpdate.getChunk())) {
       return;
     }

@@ -5,39 +5,29 @@
   }
   glEnableClientState(GL_VERTEX_ARRAY);
   glVertexPointer(3,0,vb);
-  if (tb != null || tb2 != null) {
-  }
-  if (tb != null && tb2 != null) {
-    GL13.glClientActiveTexture(GL13.GL_TEXTURE0);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glTexCoordPointer(2,0,tb);
-    GL13.glClientActiveTexture(GL13.GL_TEXTURE1);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glTexCoordPointer(2,0,tb2);
-  }
-  if (cb != null) {
-    glEnableClientState(GL_COLOR_ARRAY);
-    glColorPointer(4,0,cb);
-  }
+  GL13.glClientActiveTexture(GL13.GL_TEXTURE0);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  GL13.glClientActiveTexture(GL13.GL_TEXTURE1);
+  glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2,0,tb2);
+  glEnableClientState(GL_COLOR_ARRAY);
+  glColorPointer(4,0,cb);
   if (nb != null) {
     glEnableClientState(GL_NORMAL_ARRAY);
     glNormalPointer(0,nb);
   }
   glDrawArrays(GL_QUADS,0,vb.capacity() / 3);
-  if (cb != null) {
-    glDisableClientState(GL_COLOR_ARRAY);
-  }
+  glDisableClientState(GL_COLOR_ARRAY);
   if (nb != null) {
     glDisableClientState(GL_NORMAL_ARRAY);
   }
-  if (tb != null && tb2 != null) {
-    GL13.glClientActiveTexture(GL13.GL_TEXTURE0);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glTexCoordPointer(2,0,tb);
-    GL13.glClientActiveTexture(GL13.GL_TEXTURE1);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glTexCoordPointer(2,0,tb2);
-  }
+  GL13.glClientActiveTexture(GL13.GL_TEXTURE0);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2,0,tb);
+  GL13.glClientActiveTexture(GL13.GL_TEXTURE1);
+  glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+  glTexCoordPointer(2,0,tb2);
   glDisableClientState(GL_VERTEX_ARRAY);
   glEndList();
 }
