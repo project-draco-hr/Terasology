@@ -1,13 +1,10 @@
 {
-  if (tick % 10 == 0)   removeInvisibleChunkUpdates();
   long timeStart=System.currentTimeMillis();
   timeStart=System.currentTimeMillis();
   ChunkUpdate closestChunkUpdate=null;
+  removeInvisibleChunkUpdates();
   if (!_chunkUpdates.isEmpty()) {
-    closestChunkUpdate=_chunkUpdates.getFirst();
-  }
-  if (closestChunkUpdate != null) {
-    _chunkUpdates.remove(closestChunkUpdate);
+    closestChunkUpdate=_chunkUpdates.removeFirst();
     if (!_parent.isChunkVisible(closestChunkUpdate.getChunk())) {
       return;
     }
@@ -15,5 +12,4 @@
   }
   _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
   _meanUpdateDuration/=2;
-  tick++;
 }

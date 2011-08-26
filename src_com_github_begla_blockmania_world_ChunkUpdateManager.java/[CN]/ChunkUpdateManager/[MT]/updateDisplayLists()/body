@@ -1,16 +1,18 @@
 {
   for (int i=0; i < Configuration.DL_UPDATES_PER_CYCLE; i++) {
     try {
-      Chunk c=_displayListUpdates.getFirst();
-      if (c != null) {
-        c.generateDisplayLists();
-        _displayListUpdates.remove(c);
-        Chunk[] neighbors=c.loadOrCreateNeighbors();
-        for (        Chunk n : neighbors) {
-          if (n != null) {
-            n.generateDisplayLists();
+      ChunkUpdate cu=_displayListUpdates.getFirst();
+      if (cu != null) {
+        cu.getChunk().generateDisplayLists();
+        if (cu.isUpdateNeighbors()) {
+          Chunk[] neighbors=cu.getChunk().loadOrCreateNeighbors();
+          for (          Chunk n : neighbors) {
+            if (n != null) {
+              n.generateDisplayLists();
+            }
           }
         }
+        _displayListUpdates.remove(cu);
       }
     }
  catch (    Exception e) {

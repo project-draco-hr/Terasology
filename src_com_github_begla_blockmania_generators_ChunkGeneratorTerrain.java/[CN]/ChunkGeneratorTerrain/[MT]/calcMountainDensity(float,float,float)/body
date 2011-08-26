@@ -1,21 +1,20 @@
 {
   float result=0.0f;
-  float turb=(float)_pGen1.noise(x * 0.4,y * 0.4,z * 0.4) * 2f;
+  float turb=(float)_pGen3.multiFractalNoise(x * 0.07,y * 0.07,z * 0.07,6,2.372618) * 32f;
   x+=turb;
   y+=turb;
   z+=turb;
-  x*=0.002;
-  y*=0.004;
-  z*=0.002;
-  result+=_pGen2.noise(x * 24.55,y * 24.55,z * 24.55) * 0.005;
-  result+=_pGen2.noise(x * 23.44,y * 23.44,z * 23.44) * 0.01;
-  result+=_pGen2.noise(x * 22.03,y * 22.03,z * 22.03) * 0.01;
-  result+=_pGen2.noise(x * 20.99,y * 20.99,z * 20.99) * 0.02;
-  result+=_pGen2.noise(x * 18.96,y * 18.96,z * 18.96) * 0.03;
-  result+=_pGen2.noise(x * 16.96,y * 16.96,z * 16.96) * 0.05;
-  result+=_pGen2.noise(x * 14.48,y * 14.48,z * 4.48) * 0.1;
-  result+=_pGen2.noise(x * 12.28,y * 12.28,z * 12.28) * 0.1;
-  result+=_pGen2.noise(x * 9.96,y * 9.96,z * 9.96) * 0.2;
+  x*=0.0004;
+  y*=0.0005;
+  z*=0.0004;
+  result+=_pGen2.noise(x * 76.55,y * 76.55,z * 76.55) * 0.05;
+  result+=_pGen2.noise(x * 75.44,y * 75.44,z * 75.44) * 0.10;
+  result+=_pGen2.noise(x * 70.03,y * 70.03,z * 70.03) * 0.15;
+  result+=_pGen2.noise(x * 60.99,y * 60.99,z * 60.99) * 0.25;
+  result+=_pGen2.noise(x * 50.96,y * 50.96,z * 50.96) * 0.35;
+  result+=_pGen2.noise(x * 40.96,y * 40.96,z * 40.96) * 0.55;
+  result+=_pGen2.noise(x * 24.48,y * 24.48,z * 24.48) * 0.65;
+  result+=_pGen2.noise(x * 12.28,y * 8.28,z * 8.28) * 0.7;
   result+=_pGen2.noise(x * 1.01,y * 1.01,z * 1.01) * 1.00;
   return result;
 }

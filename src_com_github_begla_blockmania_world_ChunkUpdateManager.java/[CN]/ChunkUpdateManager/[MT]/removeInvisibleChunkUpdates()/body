@@ -1,8 +1,14 @@
 {
   FastList<ChunkUpdate> updatesToDelete=new FastList<ChunkUpdate>();
-  for (FastList.Node<ChunkUpdate> n=_chunkUpdates.head(), end=_chunkUpdates.tail(); (n=n.getNext()) != end; ) {
-    if (!_parent.isChunkVisible(n.getValue().getChunk())) {
-      updatesToDelete.add(n.getValue());
+  for (FastList.Node<ChunkUpdate> n=_chunkUpdates.tail(), end=_chunkUpdates.head(); (n=n.getPrevious()) != end; ) {
+    Chunk c=n.getValue().getChunk();
+    if (c != null) {
+      if (!_parent.isChunkVisible(c)) {
+        updatesToDelete.add(n.getValue());
+      }
+ else {
+        break;
+      }
     }
   }
   removeChunkUpdates(updatesToDelete);

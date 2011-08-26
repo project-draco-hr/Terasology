@@ -2,8 +2,7 @@
   if (cu != null) {
     boolean lightCalculated=false;
     cu.getChunk().generate();
-    Chunk[] neighbors=null;
-    neighbors=cu.getChunk().loadOrCreateNeighbors();
+    Chunk[] neighbors=cu.getChunk().loadOrCreateNeighbors();
     for (int i=0; i < neighbors.length; i++) {
       if (neighbors[i] != null) {
         neighbors[i].generate();
@@ -30,7 +29,7 @@
     }
     if (cu.getChunk().isDirty()) {
       cu.getChunk().generateVertexArrays();
-      _displayListUpdates.add(cu.getChunk());
+      _displayListUpdates.add(cu);
       _amountGeneratedChunks++;
     }
   }
