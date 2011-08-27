@@ -1,4 +1,15 @@
 {
+  _player.applyNormalizedModelViewMatrix();
+  glDisable(GL_CULL_FACE);
+  glDisable(GL_DEPTH_TEST);
+  glBegin(GL_QUADS);
+  Primitives.drawSkyBox(getDaylight());
+  glEnd();
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_DEPTH_TEST);
+  glLoadIdentity();
+  _player.applyPlayerModelViewMatrix();
+  _player.render();
   ShaderManager.getInstance().enableShader("chunk");
   int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
   GL20.glUniform1f(daylight,getDaylight());

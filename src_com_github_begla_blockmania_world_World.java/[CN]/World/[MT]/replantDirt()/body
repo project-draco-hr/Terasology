@@ -1,14 +1,18 @@
 {
-  if (Helper.getInstance().getTime() - _latestDirtEvolvement > 100) {
+  if (Helper.getInstance().getTime() - _latestDirtEvolvement > 1000) {
     if (isNighttime()) {
       _latestDirtEvolvement=Helper.getInstance().getTime();
       return;
     }
-    Chunk c=_visibleChunks.get((int)(Math.abs(_rand.randomLong()) % _visibleChunks.size()));
-    if (!c.isFresh() && !c.isDirty() && !c.isLightDirty()) {
-      _generatorGrass.generate(c);
-      _chunkUpdateManager.queueChunkForUpdate(c,false,false,false);
+    for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+      Chunk c=_visibleChunks.valueOf(n);
+      if (c != null) {
+        if (!c.isFresh() && !c.isDirty() && !c.isLightDirty()) {
+          _generatorGrass.generate(c);
+          _chunkUpdateManager.queueChunkForUpdate(c,false,false,false);
+        }
+        _latestDirtEvolvement=Helper.getInstance().getTime();
+      }
     }
-    _latestDirtEvolvement=Helper.getInstance().getTime();
   }
 }

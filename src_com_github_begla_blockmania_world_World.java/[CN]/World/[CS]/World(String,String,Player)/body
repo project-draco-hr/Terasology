@@ -50,7 +50,9 @@ synchronized (_updateThread) {
           }
         }
         _chunkUpdateManager.updateChunk();
-        _visibleChunks=fetchVisibleChunks();
+synchronized (_updateThread) {
+          _visibleChunks=fetchVisibleChunks();
+        }
         updateDaytime();
         replantDirt();
       }

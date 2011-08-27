@@ -1,0 +1,10 @@
+{
+  glMatrixMode(GL11.GL_MODELVIEW);
+  glLoadIdentity();
+  float bobbing1=0.0f;
+  if (Configuration.getSettingBoolean("BOBBING") && !Configuration.getSettingBoolean("GOD_MODE") && _playerIsTouchingGround) {
+    bobbing1=(float)_pGen.noise(_position.x * 2f,_position.z * 2f,0f) * 0.05f;
+  }
+  float newPosY=_position.y + getAABB().getDimensions().y / 1.2f + bobbing1;
+  GLU.gluLookAt(_position.x,newPosY,_position.z,_position.x + _viewingDirection.x,newPosY + _viewingDirection.y,_position.z + _viewingDirection.z,0,1,0);
+}

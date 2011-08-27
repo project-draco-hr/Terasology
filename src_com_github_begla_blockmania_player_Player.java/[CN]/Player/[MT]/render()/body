@@ -1,17 +1,4 @@
 {
-  if (Configuration.getSettingBoolean("BOBBING") && !Configuration.getSettingBoolean("GOD_MODE") && _playerIsTouchingGround) {
-    float bobbing2=(float)_pGen.noise(_position.x * 2f,_position.z * 2f,0f) * 0.75f;
-    float bobbing3=(float)_pGen.noise(_position.x * 1.5f,_position.z * 1.5f,0f) * 0.75f;
-    glRotatef(bobbing2,0f,1f,0f);
-    glRotatef(bobbing3,1f,0f,1f);
-  }
-  glRotatef((float)_pitch,1f,0f,0f);
-  glRotatef((float)_yaw,0f,1f,0f);
-  if (Configuration.getSettingBoolean("BOBBING") && !Configuration.getSettingBoolean("GOD_MODE") && _playerIsTouchingGround) {
-    float bobbing1=(float)_pGen.noise(_position.x * 2f,_position.z * 2f,0f) * 0.05f;
-    glTranslatef(0.0f,bobbing1,0);
-  }
-  glTranslatef(-_position.x,-_position.y - getAABB().getDimensions().y / 1.2f,-_position.z);
   RayBoxIntersection is=calcSelectedBlock();
   if (Configuration.getSettingBoolean("PLACING_BOX")) {
     if (is != null) {

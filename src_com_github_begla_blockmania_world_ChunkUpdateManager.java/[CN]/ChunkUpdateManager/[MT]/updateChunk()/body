@@ -5,11 +5,13 @@
   removeInvisibleChunkUpdates();
   if (!_chunkUpdates.isEmpty()) {
     closestChunkUpdate=_chunkUpdates.removeFirst();
-    if (_displayListUpdates.contains(closestChunkUpdate))     return;
-    if (!_parent.isChunkVisible(closestChunkUpdate.getChunk())) {
-      return;
+    if (closestChunkUpdate != null) {
+      if (_displayListUpdates.contains(closestChunkUpdate))       return;
+      if (!_parent.isChunkVisible(closestChunkUpdate.getChunk())) {
+        return;
+      }
+      processChunkUpdate(closestChunkUpdate);
     }
-    processChunkUpdate(closestChunkUpdate);
   }
   _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
   _meanUpdateDuration/=2;
