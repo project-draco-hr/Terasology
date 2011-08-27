@@ -1,0 +1,16 @@
+{
+  TFloatArrayList l;
+  if (r == RENDER_TYPE.BILLBOARD) {
+    l=mesh.texLightBillboard;
+  }
+ else   if (r == RENDER_TYPE.TRANS) {
+    l=mesh.texLightTranslucent;
+  }
+ else {
+    l=mesh.texLightOpaque;
+  }
+  float sunlight=(float)_chunk.getParent().getLight(_chunk.getBlockWorldPosX(x) + dirX,_chunk.getBlockWorldPosY(y) + dirY,_chunk.getBlockWorldPosZ(z) + dirZ,Chunk.LIGHT_TYPE.SUN) / 15f;
+  float blocklight=(float)_chunk.getParent().getLight(_chunk.getBlockWorldPosX(x) + dirX,_chunk.getBlockWorldPosY(y) + dirY,_chunk.getBlockWorldPosZ(z) + dirZ,Chunk.LIGHT_TYPE.BLOCK) / 15f;
+  l.add(sunlight * dimming);
+  l.add(blocklight * dimming);
+}

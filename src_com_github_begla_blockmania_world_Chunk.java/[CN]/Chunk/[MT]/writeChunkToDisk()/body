@@ -3,7 +3,7 @@
     return false;
   }
   ByteBuffer output=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3 + 1);
-  File f=new File(String.format("%s/%d.bc",_parent.getWorldSavePath(),BlockMath.cantorize((int)_position.x,(int)_position.z)));
+  File f=new File(String.format("%s/%d.bc",getParent().getWorldSavePath(),MathHelper.cantorize((int)_position.x,(int)_position.z)));
   byte flags=0x0;
   if (_lightDirty) {
     flags=Helper.getInstance().setFlag(flags,(short)0);

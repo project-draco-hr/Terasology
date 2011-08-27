@@ -1,0 +1,79 @@
+{
+  float offsetX=_chunk.getPosition().x * Configuration.CHUNK_DIMENSIONS.x;
+  float offsetY=_chunk.getPosition().y * Configuration.CHUNK_DIMENSIONS.y;
+  float offsetZ=_chunk.getPosition().z * Configuration.CHUNK_DIMENSIONS.z;
+  TFloatArrayList color=mesh.colorOpaque;
+  TFloatArrayList normals=mesh.normalsOpaque;
+  TFloatArrayList tex=mesh.texOpaque;
+  TFloatArrayList quads=mesh.quadsOpaque;
+  if (renderType == RENDER_TYPE.TRANS) {
+    color=mesh.colorTranslucent;
+    normals=mesh.normalsTranslucent;
+    tex=mesh.texTranslucent;
+    quads=mesh.quadsTranslucent;
+  }
+  if (norm.z == 1 || norm.x == -1) {
+    tex.add(texOffset.x);
+    tex.add(texOffset.y + 0.0624f);
+    tex.add(texOffset.x + 0.0624f);
+    tex.add(texOffset.y + 0.0624f);
+    tex.add(texOffset.x + 0.0624f);
+    tex.add(texOffset.y);
+    tex.add(texOffset.x);
+    tex.add(texOffset.y);
+  }
+ else {
+    tex.add(texOffset.x);
+    tex.add(texOffset.y);
+    tex.add(texOffset.x + 0.0624f);
+    tex.add(texOffset.y);
+    tex.add(texOffset.x + 0.0624f);
+    tex.add(texOffset.y + 0.0624f);
+    tex.add(texOffset.x);
+    tex.add(texOffset.y + 0.0624f);
+  }
+  color.add(colorOffset.x);
+  color.add(colorOffset.y);
+  color.add(colorOffset.z);
+  color.add(colorOffset.w);
+  normals.add(norm.x);
+  normals.add(norm.y);
+  normals.add(norm.z);
+  addLightTexCoordFor(mesh,x,y,z,(int)norm.x,(int)norm.y,(int)norm.z,renderType,shadowIntensity);
+  quads.add(p1.x + x + offsetX);
+  quads.add(p1.y + y + offsetY);
+  quads.add(p1.z + z + offsetZ);
+  color.add(colorOffset.x);
+  color.add(colorOffset.y);
+  color.add(colorOffset.z);
+  color.add(colorOffset.w);
+  normals.add(norm.x);
+  normals.add(norm.y);
+  normals.add(norm.z);
+  addLightTexCoordFor(mesh,x,y,z,(int)norm.x,(int)norm.y,(int)norm.z,renderType,shadowIntensity);
+  quads.add(p2.x + x + offsetX);
+  quads.add(p2.y + y + offsetY);
+  quads.add(p2.z + z + offsetZ);
+  color.add(colorOffset.x);
+  color.add(colorOffset.y);
+  color.add(colorOffset.z);
+  color.add(colorOffset.w);
+  normals.add(norm.x);
+  normals.add(norm.y);
+  normals.add(norm.z);
+  addLightTexCoordFor(mesh,x,y,z,(int)norm.x,(int)norm.y,(int)norm.z,renderType,shadowIntensity);
+  quads.add(p3.x + x + offsetX);
+  quads.add(p3.y + y + offsetY);
+  quads.add(p3.z + z + offsetZ);
+  color.add(colorOffset.x);
+  color.add(colorOffset.y);
+  color.add(colorOffset.z);
+  color.add(colorOffset.w);
+  normals.add(norm.x);
+  normals.add(norm.y);
+  normals.add(norm.z);
+  addLightTexCoordFor(mesh,x,y,z,(int)norm.x,(int)norm.y,(int)norm.z,renderType,shadowIntensity);
+  quads.add(p4.x + x + offsetX);
+  quads.add(p4.y + y + offsetY);
+  quads.add(p4.z + z + offsetZ);
+}
