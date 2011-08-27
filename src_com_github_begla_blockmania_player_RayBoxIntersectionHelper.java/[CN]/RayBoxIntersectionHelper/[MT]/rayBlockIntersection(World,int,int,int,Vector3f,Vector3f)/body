@@ -2,30 +2,30 @@
   if (Block.getBlockForType(w.getBlock(x,y,z)).isBlockInvisible()) {
     return null;
   }
-  FastList<Intersection> result=new FastList<Intersection>();
+  FastList<RayBoxIntersection> result=new FastList<RayBoxIntersection>();
   Vector3f[] vertices=verticesForBlockAt(x,y,z);
   Vector3f blockPos=VectorPool.getVector(x,y,z);
-  Intersection is=rayFaceIntersection(blockPos,vertices[0],vertices[3],vertices[2],origin,ray);
+  RayBoxIntersection is=rayFaceIntersection(blockPos,vertices[0],vertices[3],vertices[2],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);
   }
-  is=rayFaceIntersection(blockPos,vertices[4],vertices[5],vertices[6],origin,ray);
+  is=rayFaceIntersection(blockPos,vertices[4],vertices[5],vertices[6],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);
   }
-  is=rayFaceIntersection(blockPos,vertices[0],vertices[4],vertices[7],origin,ray);
+  is=rayFaceIntersection(blockPos,vertices[0],vertices[4],vertices[7],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);
   }
-  is=rayFaceIntersection(blockPos,vertices[1],vertices[2],vertices[6],origin,ray);
+  is=rayFaceIntersection(blockPos,vertices[1],vertices[2],vertices[6],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);
   }
-  is=rayFaceIntersection(blockPos,vertices[3],vertices[7],vertices[6],origin,ray);
+  is=rayFaceIntersection(blockPos,vertices[3],vertices[7],vertices[6],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);
   }
-  is=rayFaceIntersection(blockPos,vertices[0],vertices[1],vertices[5],origin,ray);
+  is=rayFaceIntersection(blockPos,vertices[0],vertices[1],vertices[5],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);
   }
