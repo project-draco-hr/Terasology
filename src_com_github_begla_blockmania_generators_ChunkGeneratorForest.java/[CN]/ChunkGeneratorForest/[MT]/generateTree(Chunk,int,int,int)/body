@@ -5,10 +5,10 @@
   if (c.getBlock(x,y,z) == 0x1 && y > 32) {
     float forestDens=calcForestDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z));
     double r=_rand.standNormalDistrDouble();
-    if (forestDens < 0.01) {
-      r+=3f;
+    if (forestDens < 0) {
+      r+=1f;
     }
-    if (r > -0.1 && r < 0.1) {
+    if (r > -0.05 && r < 0.05) {
       double r2=_rand.standNormalDistrDouble();
       if (r2 > -2 && r2 < -1) {
         c.setBlock(x,y + 1,z,(byte)0x0);

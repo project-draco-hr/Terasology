@@ -6,14 +6,5 @@
   _world=new World(title,seed,_player);
   _player.setParent(_world);
   _world.startUpdateThread();
-  Helper.LOGGER.log(Level.INFO,"Waiting for some chunks to pop up...",seed);
-  while (_world.getAmountGeneratedChunks() < 64) {
-    try {
-      Thread.sleep(150);
-    }
- catch (    InterruptedException ex) {
-      Helper.LOGGER.log(Level.SEVERE,null,ex);
-    }
-  }
   _lastLoopTime=Helper.getInstance().getTime();
 }

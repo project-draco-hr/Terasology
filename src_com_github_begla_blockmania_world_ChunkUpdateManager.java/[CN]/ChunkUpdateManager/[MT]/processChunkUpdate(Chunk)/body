@@ -1,0 +1,19 @@
+{
+  if (c != null) {
+    c.generate();
+    Chunk[] neighbors=c.loadOrCreateNeighbors();
+    for (    Chunk neighbor : neighbors) {
+      if (neighbor != null) {
+        neighbor.generate();
+      }
+    }
+    if (c.isLightDirty()) {
+      c.updateLight();
+    }
+    if (c.isDirty()) {
+      c.generateMesh();
+      _displayListUpdates.add(c);
+      _amountGeneratedChunks++;
+    }
+  }
+}
