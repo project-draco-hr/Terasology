@@ -3,17 +3,25 @@
     if (_displayListUpdates.size() > 0) {
       ChunkUpdate cu=_displayListUpdates.getFirst();
       if (cu != null) {
-        cu.getChunk().generateDisplayLists();
+        try {
+          cu.getChunk().generateDisplayLists();
+        }
+ catch (        Exception e) {
+        }
         if (cu.isUpdateNeighbors()) {
           Chunk[] neighbors=cu.getChunk().loadOrCreateNeighbors();
           for (          Chunk n : neighbors) {
             if (n != null) {
-              n.generateDisplayLists();
+              try {
+                n.generateDisplayLists();
+              }
+ catch (              Exception e) {
+              }
             }
           }
         }
-        _displayListUpdates.remove(cu);
       }
+      _displayListUpdates.remove(cu);
     }
   }
 }
