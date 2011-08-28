@@ -1,9 +1,6 @@
 {
-  double nPitch=(_pitch - diff) % 360;
-  if (nPitch < 0) {
-    nPitch+=360;
-  }
-  if ((nPitch > 0 && nPitch < 90) || (nPitch < 360 && nPitch > 270)) {
-    _pitch=nPitch;
-  }
+  double nPitch=(_pitch - diff);
+  if (nPitch > 89)   nPitch=89;
+ else   if (nPitch < -89)   nPitch=-89;
+  _pitch=nPitch;
 }
