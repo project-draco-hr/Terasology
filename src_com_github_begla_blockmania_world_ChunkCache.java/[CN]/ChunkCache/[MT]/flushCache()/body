@@ -1,0 +1,14 @@
+{
+  boolean first=false;
+  while (_chunkCacheList.size() > capacity()) {
+    if (!first) {
+      Collections.sort(_chunkCacheList);
+      first=true;
+    }
+    Chunk chunkToDeltete=_chunkCacheList.removeLast();
+    if (chunkToDeltete != null) {
+      _chunkCache.remove(chunkToDeltete.getChunkId());
+      chunkToDeltete.writeChunkToDisk();
+    }
+  }
+}

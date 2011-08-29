@@ -6,14 +6,6 @@
   if (c != null) {
     return c;
   }
-  if (_chunkCacheList.size() > capacity()) {
-    Collections.sort(_chunkCacheList);
-    Chunk chunkToDeltete=_chunkCacheList.removeLast();
-    if (chunkToDeltete != null) {
-      _chunkCache.remove(chunkToDeltete.getChunkId());
-      chunkToDeltete.writeChunkToDisk();
-    }
-  }
   c=_parent.prepareNewChunk(x,z);
   _chunkCache.put(c.getChunkId(),c);
   _chunkCacheList.add(c);
