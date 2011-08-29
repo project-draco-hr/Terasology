@@ -2,7 +2,11 @@
   boolean first=false;
   while (_chunkCacheList.size() > capacity()) {
     if (!first) {
-      Collections.sort(_chunkCacheList);
+      try {
+        Collections.sort(_chunkCacheList);
+      }
+ catch (      Exception e) {
+      }
       first=true;
     }
     Chunk chunkToDeltete=_chunkCacheList.removeLast();
