@@ -1,0 +1,33 @@
+{
+  _vertexBuffers[id]=createVboId();
+  FloatBuffer vertices=BufferUtils.createFloatBuffer(_vertexElements[id].quads.size() + _vertexElements[id].tex.size() + _vertexElements[id].light.size()+ _vertexElements[id].color.size());
+  _idxBuffer[id]=BufferUtils.createIntBuffer(_vertexElements[id].quads.size());
+  HashMap<Vector3f,Integer> indexLut=new HashMap<Vector3f,Integer>();
+  int tex=0;
+  int color=0;
+  int idxCounter=0;
+  for (int i=0; i < _vertexElements[id].quads.size(); i+=3, tex+=2, color+=4) {
+    Vector3f vertexPos=new Vector3f(_vertexElements[id].quads.get(i),_vertexElements[id].quads.get(i + 1),_vertexElements[id].quads.get(i + 2));
+    if (indexLut.containsKey(vertexPos)) {
+      int index=indexLut.get(vertexPos);
+      _idxBuffer[id].put(index);
+      continue;
+    }
+    vertices.put(vertexPos.x);
+    vertices.put(vertexPos.y);
+    vertices.put(vertexPos.z);
+    vertices.put(_vertexElements[id].tex.get(tex));
+    vertices.put(_vertexElements[id].tex.get(tex + 1));
+    vertices.put(_vertexElements[id].light.get(tex));
+    vertices.put(_vertexElements[id].light.get(tex + 1));
+    vertices.put(_vertexElements[id].color.get(color));
+    vertices.put(_vertexElements[id].color.get(color + 1));
+    vertices.put(_vertexElements[id].color.get(color + 2));
+    vertices.put(_vertexElements[id].color.get(color + 3));
+    indexLut.put(vertexPos,idxCounter);
+    _idxBuffer[id].put(idxCounter++);
+  }
+  _idxBuffer[id].flip();
+  vertices.flip();
+  bufferVboData(_vertexBuffers[id],vertices);
+}

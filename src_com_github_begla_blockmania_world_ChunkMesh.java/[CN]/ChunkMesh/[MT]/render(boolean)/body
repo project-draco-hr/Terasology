@@ -1,15 +1,15 @@
 {
   if (!translucent) {
-    if (_displayListOpaque != -1)     glCallList(_displayListOpaque);
+    renderVbo(0);
   }
  else {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_ALPHA_TEST);
     glAlphaFunc(GL_GREATER,0.5f);
-    if (_displayListTranslucent != -1)     glCallList(_displayListTranslucent);
+    renderVbo(1);
     glDisable(GL_CULL_FACE);
-    if (_displayListBillboard != -1)     glCallList(_displayListBillboard);
+    renderVbo(2);
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
     glDisable(GL_ALPHA_TEST);
