@@ -1,10 +1,9 @@
 {
-synchronized (_updateThread) {
-    for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
-      _visibleChunks.valueOf(n).render(false);
-    }
-    for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
-      _visibleChunks.valueOf(n).render(true);
-    }
+  FastSet<Chunk> visibleChunks=_visibleChunks;
+  for (FastSet.Record n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    visibleChunks.valueOf(n).render(false);
+  }
+  for (FastSet.Record n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    visibleChunks.valueOf(n).render(true);
   }
 }
