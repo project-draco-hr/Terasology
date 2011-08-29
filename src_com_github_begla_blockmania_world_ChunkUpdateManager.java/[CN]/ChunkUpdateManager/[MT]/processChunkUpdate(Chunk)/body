@@ -12,7 +12,9 @@
     }
     if (c.isDirty()) {
       c.generateMesh();
-      _displayListUpdates.add(c);
+synchronized (this) {
+        _displayListUpdates.add(c);
+      }
       _amountGeneratedChunks++;
     }
   }

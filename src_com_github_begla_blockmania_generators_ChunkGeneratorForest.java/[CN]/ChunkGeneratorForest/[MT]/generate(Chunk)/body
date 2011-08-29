@@ -3,7 +3,21 @@
     for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
         generateGrassAndFlowers(c,x,y,z);
-        generateTree(c,x,y,z);
+      }
+    }
+  }
+  FastRandom rand=new FastRandom(c.getChunkId());
+  for (int y=32; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
+    for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x+=4) {
+      for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z+=4) {
+        float forestDens=calcForestDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+        if (forestDens > 0.01) {
+          int randX=x + rand.randomInt() % 12;
+          int randZ=z + rand.randomInt() % 12;
+          if (c.getBlock(randX,y,randZ) == 0x1) {
+            generateTree(c,randX,y,randZ);
+          }
+        }
       }
     }
   }
