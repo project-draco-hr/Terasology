@@ -1,8 +1,4 @@
 {
-  FastSet<Chunk> visibleChunks;
-synchronized (this) {
-    visibleChunks=_visibleChunks;
-  }
   _player.update();
   _chunkUpdateManager.updateDisplayLists();
   _cloudOffset.x+=_windDirection.x;
@@ -19,8 +15,8 @@ synchronized (this) {
     _nextWindUpdateInSeconds=(short)(Math.abs(_rand.randomInt()) % 16 + 32);
     _lastWindUpdate=Helper.getInstance().getTime();
   }
-  for (  Chunk c : visibleChunks) {
+  for (  Chunk c : _visibleChunks) {
     c.update();
   }
-  _chunkUpdateManager.updateVisibleChunks(visibleChunks);
+  _chunkUpdateManager.updateVisibleChunks(_visibleChunks);
 }

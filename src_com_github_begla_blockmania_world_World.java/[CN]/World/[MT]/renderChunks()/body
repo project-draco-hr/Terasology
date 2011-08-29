@@ -1,9 +1,13 @@
 {
-  FastSet<Chunk> visibleChunks=_visibleChunks;
-  for (FastSet.Record n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    visibleChunks.valueOf(n).render(false);
+  _visibleChunks=fetchVisibleChunks();
+  for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    Chunk c=_visibleChunks.valueOf(n);
+    c.render(false);
+    if (Configuration.getSettingBoolean("CHUNK_OUTLINES")) {
+      c.getAABB().render();
+    }
   }
-  for (FastSet.Record n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    visibleChunks.valueOf(n).render(true);
+  for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    _visibleChunks.valueOf(n).render(true);
   }
 }
