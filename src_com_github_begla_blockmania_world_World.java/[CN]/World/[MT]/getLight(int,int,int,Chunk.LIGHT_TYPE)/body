@@ -3,9 +3,10 @@
   int chunkPosZ=calcChunkPosZ(z) % Configuration.getSettingNumeric("V_DIST_Z").intValue();
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
-  Chunk c=_chunkCache.loadChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
   if (c != null) {
     return c.getLight(blockPosX,y,blockPosZ,type);
   }
-  return 15;
+  if (type == Chunk.LIGHT_TYPE.SUN)   return 15;
+ else   return 0;
 }
