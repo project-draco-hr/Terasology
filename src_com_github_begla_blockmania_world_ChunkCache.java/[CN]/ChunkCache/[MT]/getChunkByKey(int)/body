@@ -1,3 +1,7 @@
 {
-  return _chunkCache.get(key);
+  Chunk result;
+synchronized (this) {
+    result=_chunkCache.get(key);
+  }
+  return result;
 }

@@ -2,11 +2,16 @@
   if (x < 0 || z < 0) {
     return null;
   }
-  Chunk c=_chunkCache.get(MathHelper.cantorize(x,z));
+  Chunk c;
+synchronized (this) {
+    c=_chunkCache.get(MathHelper.cantorize(x,z));
+  }
   if (c != null) {
     return c;
   }
   c=_parent.prepareNewChunk(x,z);
-  _chunkCache.put(c.getChunkId(),c);
+synchronized (this) {
+    _chunkCache.put(Integer.valueOf(c.getChunkId()),c);
+  }
   return c;
 }

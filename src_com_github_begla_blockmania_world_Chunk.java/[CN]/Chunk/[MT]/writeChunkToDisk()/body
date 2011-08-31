@@ -2,22 +2,16 @@
   if (_fresh) {
     return false;
   }
-  ByteBuffer output=BufferUtils.createByteBuffer((int)Configuration.CHUNK_DIMENSIONS.x * (int)Configuration.CHUNK_DIMENSIONS.y * (int)Configuration.CHUNK_DIMENSIONS.z* 3 + 1);
-  File f=new File(String.format("%s/%d.bc",getParent().getWorldSavePath(),MathHelper.cantorize((int)_position.x,(int)_position.z)));
+  ByteBuffer output=BufferUtils.createByteBuffer(_blocks.getSize() + _sunlight.getPackedSize() + _light.getPackedSize()+ 1);
+  File f=new File(String.format("%s/%d.bc",getParent().getWorldSavePath(),getChunkId()));
   byte flags=0x0;
   if (_lightDirty) {
     flags=Helper.getInstance().setFlag(flags,(short)0);
   }
   output.put(flags);
-  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
-    for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
-      for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-        output.put(_blocks[x][y][z]);
-        output.put(_sunlight[x][y][z]);
-        output.put(_light[x][y][z]);
-      }
-    }
-  }
+  for (int i=0; i < _blocks.getSize(); i++)   output.put(_blocks.getRawByte(i));
+  for (int i=0; i < _sunlight.getPackedSize(); i++)   output.put(_sunlight.getRawByte(i));
+  for (int i=0; i < _light.getPackedSize(); i++)   output.put(_light.getRawByte(i));
   output.rewind();
   try {
     FileOutputStream oS=new FileOutputStream(f);

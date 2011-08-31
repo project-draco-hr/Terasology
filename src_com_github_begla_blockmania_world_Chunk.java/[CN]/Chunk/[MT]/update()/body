@@ -1,6 +1,8 @@
 {
   if (_newMesh != null) {
     if (_newMesh.isGenerated()) {
+      ChunkMesh oldMesh=_activeMesh;
+      if (oldMesh != null)       oldMesh.dispose();
       _activeMesh=_newMesh;
       _newMesh=null;
     }

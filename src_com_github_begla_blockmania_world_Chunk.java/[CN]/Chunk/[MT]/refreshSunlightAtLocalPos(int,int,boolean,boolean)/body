@@ -4,21 +4,21 @@
     return;
   }
   for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
-    Block b=Block.getBlockForType(_blocks[x][y][z]);
+    Block b=Block.getBlockForType(_blocks.get(x,y,z));
     if ((b.getClass() != BlockAir.class && !b.isBlockBillboard())) {
       covered=true;
       continue;
     }
     if ((b.getClass() == BlockAir.class || b.isBlockBillboard()) && !covered) {
-      byte oldValue=_sunlight[x][y][z];
-      _sunlight[x][y][z]=Configuration.MAX_LIGHT;
-      byte newValue=_sunlight[x][y][z];
+      byte oldValue=_sunlight.get(x,y,z);
+      _sunlight.set(x,y,z,Configuration.MAX_LIGHT);
+      byte newValue=_sunlight.get(x,y,z);
       if (spreadLight && oldValue < newValue) {
         spreadLight(x,y,z,newValue,LIGHT_TYPE.SUN);
       }
     }
  else     if ((b.getClass() == BlockAir.class || b.isBlockBillboard()) && covered) {
-      _sunlight[x][y][z]=0;
+      _sunlight.set(x,y,z,(byte)0);
       if (refreshSunlight) {
         refreshLightAtLocalPos(x,y,z,LIGHT_TYPE.SUN);
       }

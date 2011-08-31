@@ -1,11 +1,13 @@
 {
-  if (Helper.getInstance().checkBounds3D(x,y,z,_sunlight)) {
-    if (type == LIGHT_TYPE.SUN) {
-      return _sunlight[x][y][z];
-    }
+  byte result;
+  if (type == LIGHT_TYPE.SUN) {
+    result=_sunlight.get(x,y,z);
+  }
  else {
-      return _light[x][y][z];
-    }
+    result=_light.get(x,y,z);
+  }
+  if (result >= 0) {
+    return result;
   }
   if (type == Chunk.LIGHT_TYPE.SUN)   return 15;
  else   return 0;

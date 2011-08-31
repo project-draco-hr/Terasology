@@ -2,11 +2,17 @@
   if (_chunkCache.size() <= capacity()) {
     return;
   }
-  FastList<Chunk> cachedChunks=new FastList(_chunkCache.values());
+  FastList<Chunk> cachedChunks;
+synchronized (this) {
+    cachedChunks=new FastList(_chunkCache.values());
+  }
   Collections.sort(cachedChunks);
   while (cachedChunks.size() > capacity()) {
     Chunk chunkToDelete=cachedChunks.removeLast();
-    _chunkCache.remove(chunkToDelete.getChunkId());
+synchronized (this) {
+      _chunkCache.remove(chunkToDelete.getChunkId());
+    }
     if (!Configuration.getSettingBoolean("DISABLE_SAVING"))     chunkToDelete.writeChunkToDisk();
+    chunkToDelete.dispose();
   }
 }

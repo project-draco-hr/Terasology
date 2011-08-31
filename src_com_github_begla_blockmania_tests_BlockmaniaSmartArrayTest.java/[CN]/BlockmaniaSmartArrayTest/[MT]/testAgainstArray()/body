@@ -1,0 +1,20 @@
+{
+  FastRandom rand=new FastRandom();
+  for (int x=0; x < 128; x++) {
+    for (int y=0; y < 128; y++) {
+      for (int z=0; z < 128; z++) {
+        int r=rand.randomInt();
+        r=(r < 0) ? -r : r;
+        _testArray[x][y][z]=(byte)(r % 16);
+        _array.set(x,y,z,_testArray[x][y][z]);
+      }
+    }
+  }
+  for (int x=0; x < 128; x++) {
+    for (int y=0; y < 128; y++) {
+      for (int z=0; z < 128; z++) {
+        assertEquals(_testArray[x][y][z],_array.get(x,y,z));
+      }
+    }
+  }
+}

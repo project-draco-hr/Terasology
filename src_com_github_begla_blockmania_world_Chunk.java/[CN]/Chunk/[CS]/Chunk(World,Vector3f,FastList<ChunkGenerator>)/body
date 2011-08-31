@@ -2,9 +2,9 @@
   this._position=position;
   _chunkID=MathHelper.cantorize((int)_position.x,(int)_position.z);
   _parent=p;
-  _blocks=new byte[(int)Configuration.CHUNK_DIMENSIONS.x][(int)Configuration.CHUNK_DIMENSIONS.y][(int)Configuration.CHUNK_DIMENSIONS.z];
-  _sunlight=new byte[(int)Configuration.CHUNK_DIMENSIONS.x][(int)Configuration.CHUNK_DIMENSIONS.y][(int)Configuration.CHUNK_DIMENSIONS.z];
-  _light=new byte[(int)Configuration.CHUNK_DIMENSIONS.x][(int)Configuration.CHUNK_DIMENSIONS.y][(int)Configuration.CHUNK_DIMENSIONS.z];
+  _blocks=new BlockmaniaArray((int)Configuration.CHUNK_DIMENSIONS.x,(int)Configuration.CHUNK_DIMENSIONS.y,(int)Configuration.CHUNK_DIMENSIONS.z);
+  _sunlight=new BlockmaniaSmartArray((int)Configuration.CHUNK_DIMENSIONS.x,(int)Configuration.CHUNK_DIMENSIONS.y,(int)Configuration.CHUNK_DIMENSIONS.z);
+  _light=new BlockmaniaSmartArray((int)Configuration.CHUNK_DIMENSIONS.x,(int)Configuration.CHUNK_DIMENSIONS.y,(int)Configuration.CHUNK_DIMENSIONS.z);
   _meshGenerator=new ChunkMeshGenerator(this);
   _generators.addAll(g);
   _lightDirty=true;

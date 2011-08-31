@@ -2,7 +2,7 @@
   if (isFresh()) {
     return;
   }
-  byte[][][] lSource;
+  BlockmaniaSmartArray lSource;
   if (type == LIGHT_TYPE.SUN) {
     lSource=_sunlight;
   }
@@ -12,12 +12,10 @@
  else {
     return;
   }
-  if (Helper.getInstance().checkBounds3D(x,y,z,_sunlight)) {
-    byte oldValue=lSource[x][y][z];
-    lSource[x][y][z]=intensity;
-    if (oldValue != intensity) {
-      setDirty(true);
-      markNeighborsDirty(x,z);
-    }
+  byte oldValue=lSource.get(x,y,z);
+  lSource.set(x,y,z,intensity);
+  if (oldValue != intensity) {
+    setDirty(true);
+    markNeighborsDirty(x,z);
   }
 }
