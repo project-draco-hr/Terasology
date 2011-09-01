@@ -1,0 +1,12 @@
+{
+  Vector3f result=new Vector3f();
+  while (true) {
+    result.x=(float)_rand.randomDouble();
+    result.y=(float)_rand.randomDouble();
+    result.z=(float)_rand.randomDouble();
+    if (result.x * result.x + result.y * result.y + result.z * result.z > 1)     continue;
+    if (Vector3f.dot(result,new Vector3f(0,1,0)) < 0)     continue;
+    result.normalise();
+    return result;
+  }
+}
