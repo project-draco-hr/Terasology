@@ -1,0 +1,14 @@
+{
+  ChunkMesh.VertexElements vertexElements=mesh._vertexElements[0];
+  if (renderType == RENDER_TYPE.TRANS) {
+    vertexElements=mesh._vertexElements[1];
+  }
+  if (blockForm == Block.BLOCK_FORM.CACTUS) {
+    generateCactusSide(p1,p2,p3,p4,norm);
+  }
+  addBlockTextureData(vertexElements,texOffset,norm);
+  addBlockVertexData(vertexElements,colorOffset,moveVectorToWorldSpace(x,y,z,p1));
+  addBlockVertexData(vertexElements,colorOffset,moveVectorToWorldSpace(x,y,z,p2));
+  addBlockVertexData(vertexElements,colorOffset,moveVectorToWorldSpace(x,y,z,p3));
+  addBlockVertexData(vertexElements,colorOffset,moveVectorToWorldSpace(x,y,z,p4));
+}
