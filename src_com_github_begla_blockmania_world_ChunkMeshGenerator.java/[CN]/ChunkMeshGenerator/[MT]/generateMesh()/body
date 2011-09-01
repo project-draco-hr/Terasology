@@ -1,5 +1,6 @@
 {
   ChunkMesh mesh=new ChunkMesh();
+  HashMap<Vector3f,Integer> indexMap=new HashMap<Vector3f,Integer>();
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
@@ -8,5 +9,6 @@
       }
     }
   }
+  generateOptimizedBuffers(mesh);
   return mesh;
 }

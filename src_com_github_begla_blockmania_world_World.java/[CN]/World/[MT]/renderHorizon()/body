@@ -1,12 +1,4 @@
 {
-  ShaderManager.getInstance().enableShader("cloud");
-  if (_dlClouds > 0 && isDaytime()) {
-    glPushMatrix();
-    glTranslatef(_player.getPosition().x + _cloudOffset.x,140f,_player.getPosition().z + _cloudOffset.y);
-    glCallList(_dlClouds);
-    glPopMatrix();
-  }
-  ShaderManager.getInstance().enableShader(null);
   glPushMatrix();
   glTranslatef(_player.getPosition().x,Configuration.CHUNK_DIMENSIONS.y * 2.0f,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z + _player.getPosition().z);
   glRotatef(-35,1,0,0);
@@ -24,4 +16,15 @@
   }
   glDisable(GL_BLEND);
   glPopMatrix();
+  glEnable(GL_BLEND);
+  glBlendFunc(GL11.GL_ONE_MINUS_SRC_ALPHA,GL_SRC_ALPHA);
+  ShaderManager.getInstance().enableShader("cloud");
+  if (_dlClouds > 0 && isDaytime()) {
+    glPushMatrix();
+    glTranslatef(_player.getPosition().x + _cloudOffset.x,140f,_player.getPosition().z + _cloudOffset.y);
+    glCallList(_dlClouds);
+    glPopMatrix();
+  }
+  ShaderManager.getInstance().enableShader(null);
+  glDisable(GL_BLEND);
 }

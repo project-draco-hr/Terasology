@@ -1,0 +1,33 @@
+{
+  for (int j=0; j < 3; j++) {
+    mesh._vertexElements[j].vertices=BufferUtils.createFloatBuffer(mesh._vertexElements[j].quads.size() + mesh._vertexElements[j].tex.size() * 2 + mesh._vertexElements[j].color.size());
+    mesh._vertexElements[j].indices=BufferUtils.createIntBuffer(mesh._vertexElements[j].quads.size());
+    HashMap<Vector3f,Integer> indexLut=new HashMap<Vector3f,Integer>(mesh._vertexElements[j].vertices.capacity());
+    int tex=0;
+    int color=0;
+    int idxCounter=0;
+    for (int i=0; i < mesh._vertexElements[j].quads.size(); i+=3, tex+=2, color+=4) {
+      Vector3f vertexPos=VectorPool.getVector(mesh._vertexElements[j].quads.get(i),mesh._vertexElements[j].quads.get(i + 1),mesh._vertexElements[j].quads.get(i + 2));
+      if (indexLut.containsKey(vertexPos)) {
+        int index=indexLut.get(vertexPos);
+        mesh._vertexElements[j].indices.put(index);
+        continue;
+      }
+      mesh._vertexElements[j].vertices.put(vertexPos.x);
+      mesh._vertexElements[j].vertices.put(vertexPos.y);
+      mesh._vertexElements[j].vertices.put(vertexPos.z);
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(tex));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(tex + 1));
+      mesh._vertexElements[j].vertices.put(getLightForVertexPos(vertexPos,Chunk.LIGHT_TYPE.SUN) * getOcclusionValue(vertexPos,Chunk.LIGHT_TYPE.SUN));
+      mesh._vertexElements[j].vertices.put(getLightForVertexPos(vertexPos,Chunk.LIGHT_TYPE.BLOCK) * getOcclusionValue(vertexPos,Chunk.LIGHT_TYPE.BLOCK));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(color));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(color + 1));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(color + 2));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(color + 3));
+      indexLut.put(vertexPos,idxCounter);
+      mesh._vertexElements[j].indices.put(idxCounter++);
+    }
+    mesh._vertexElements[j].vertices.flip();
+    mesh._vertexElements[j].indices.flip();
+  }
+}

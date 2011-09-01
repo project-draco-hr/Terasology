@@ -10,6 +10,7 @@
   triLerpDensityMap(densityMap);
   for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
     for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+      BIOME_TYPE type=CalcBiomeType(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
       int firstBlockHeight=-1;
       for (int y=(int)Configuration.CHUNK_DIMENSIONS.y; y >= 0; y--) {
         if (y == 0) {
@@ -21,20 +22,12 @@
         }
         float dens=densityMap[x][y][z];
         if ((dens >= 0.01f && dens < 0.012f)) {
-          if (firstBlockHeight == -1) {
-            c.setBlock(x,y,z,getBlockTailpiece(getBlockTypeForPosition(y,1.0f),y));
-            if (calcLakeIntensity(x + getOffsetX(c),z + getOffsetZ(c)) < 0.1) {
-              c.setBlock(x,y,z,(byte)0x4);
-            }
-          }
- else {
-            c.setBlock(x,y,z,getBlockTypeForPosition(y,1.0f - ((float)(firstBlockHeight - y) / 16f)));
-          }
           if (firstBlockHeight == -1)           firstBlockHeight=y;
+          GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
         }
  else         if (dens >= 0.012f) {
-          c.setBlock(x,y,z,getBlockTailpiece(getBlockTypeForPosition(y,0.2f),y));
           if (firstBlockHeight == -1)           firstBlockHeight=y;
+          GenerateInnerLayer(x,y,z,c,type);
         }
       }
     }
