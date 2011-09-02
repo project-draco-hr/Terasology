@@ -1,0 +1,50 @@
+{
+  byte bottomBlock=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosY(y - 1),_chunk.getBlockWorldPosZ(z));
+  boolean lowerBottom=Block.getBlockForType(bottomBlock).getBlockForm() == Block.BLOCK_FORM.LOWERED_BOCK || bottomBlock == 0x0;
+  if (norm.x == 1.0f) {
+    p1.y-=0.25;
+    p2.y-=0.25;
+    if (lowerBottom) {
+      p3.y-=0.25;
+      p4.y-=0.25;
+    }
+  }
+ else   if (norm.x == -1.0f) {
+    p3.y-=0.25;
+    p4.y-=0.25;
+    if (lowerBottom) {
+      p1.y-=0.25;
+      p2.y-=0.25;
+    }
+  }
+ else   if (norm.z == 1.0f) {
+    p3.y-=0.25;
+    p4.y-=0.25;
+    if (lowerBottom) {
+      p1.y-=0.25;
+      p2.y-=0.25;
+    }
+  }
+ else   if (norm.z == -1.0f) {
+    p1.y-=0.25;
+    p2.y-=0.25;
+    if (lowerBottom) {
+      p3.y-=0.25;
+      p4.y-=0.25;
+    }
+  }
+ else   if (norm.y == 1.0f) {
+    p1.y-=0.25;
+    p2.y-=0.25;
+    p3.y-=0.25;
+    p4.y-=0.25;
+  }
+ else   if (norm.y == -1.0f) {
+    if (lowerBottom) {
+      p1.y-=0.25;
+      p2.y-=0.25;
+      p3.y-=0.25;
+      p4.y-=0.25;
+    }
+  }
+}

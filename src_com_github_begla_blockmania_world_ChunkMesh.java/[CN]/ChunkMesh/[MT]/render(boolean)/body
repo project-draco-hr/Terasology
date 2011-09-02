@@ -3,15 +3,24 @@
     renderVbo(0);
   }
  else {
+    for (int i=0; i < 2; i++) {
+      if (i == 0) {
+        glColorMask(false,false,false,false);
+      }
+ else {
+        glColorMask(true,true,true,true);
+      }
+      glDisable(GL_CULL_FACE);
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+      renderVbo(1);
+      glDisable(GL_BLEND);
+      glEnable(GL_CULL_FACE);
+    }
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_ALPHA_TEST);
-    glAlphaFunc(GL_GREATER,0.5f);
-    renderVbo(1);
     glDisable(GL_CULL_FACE);
     renderVbo(2);
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
-    glDisable(GL_ALPHA_TEST);
   }
 }

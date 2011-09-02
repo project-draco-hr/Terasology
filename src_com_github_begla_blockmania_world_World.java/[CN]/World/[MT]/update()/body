@@ -12,7 +12,7 @@
   if (Helper.getInstance().getTime() - _lastWindUpdate > _nextWindUpdateInSeconds * 1000) {
     _windDirection.x=(float)_rand.randomDouble();
     _windDirection.y=(float)_rand.randomDouble();
-    _nextWindUpdateInSeconds=(short)(Math.abs(_rand.randomInt()) % 16 + 32);
+    _nextWindUpdateInSeconds=(short)(MathHelper.fastAbs(_rand.randomInt()) % 16 + 32);
     _lastWindUpdate=Helper.getInstance().getTime();
   }
   for (  Chunk c : _visibleChunks) {
