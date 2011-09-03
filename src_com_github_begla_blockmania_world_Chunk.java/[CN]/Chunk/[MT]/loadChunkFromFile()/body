@@ -1,4 +1,7 @@
 {
+  if (Game.getInstance().isSandboxed()) {
+    return false;
+  }
   ByteBuffer input=BufferUtils.createByteBuffer(_blocks.getSize() + _sunlight.getPackedSize() + _light.getPackedSize()+ 1);
   File f=new File(String.format("%s/%d.bc",getParent().getWorldSavePath(),getChunkId()));
   if (!f.exists()) {
@@ -8,20 +11,20 @@
     FileInputStream iS=new FileInputStream(f);
     FileChannel c=iS.getChannel();
     c.read(input);
-    Helper.LOGGER.log(Level.FINE,"Loaded chunk {0} from disk.",this);
+    Game.getInstance().getLogger().log(Level.FINE,"Loaded chunk {0} from disk.",this);
     iS.close();
   }
  catch (  FileNotFoundException ex) {
-    Helper.LOGGER.log(Level.SEVERE,null,ex);
+    Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
     return false;
   }
 catch (  IOException ex) {
-    Helper.LOGGER.log(Level.SEVERE,null,ex);
+    Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
     return false;
   }
   input.rewind();
   byte flags=input.get();
-  _lightDirty=Helper.getInstance().isFlagSet(flags,(short)0);
+  _lightDirty=Helper.isFlagSet(flags,(short)0);
   for (int i=0; i < _blocks.getSize(); i++)   _blocks.setRawByte(i,input.get());
   for (int i=0; i < _sunlight.getPackedSize(); i++)   _sunlight.setRawByte(i,input.get());
   for (int i=0; i < _light.getPackedSize(); i++)   _light.setRawByte(i,input.get());

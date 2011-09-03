@@ -1,0 +1,13 @@
+{
+  long delta=getTime() - _lastLoopTime;
+  _lastLoopTime=getTime();
+  _lastFpsTime+=delta;
+  _fps++;
+  if (_lastFpsTime >= 1000) {
+    _lastFpsTime=0;
+    _meanFps+=_fps;
+    _meanFps/=2;
+    _memoryUsage=(Runtime.getRuntime().maxMemory() - Runtime.getRuntime().freeMemory()) / 1048576;
+    _fps=0;
+  }
+}

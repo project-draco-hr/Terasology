@@ -1,9 +1,11 @@
 {
   loadDefaults();
-  if (Boolean.getBoolean("blockmania.demo")) {
-    loadDemo();
-  }
- else   if (Boolean.getBoolean("blockmania.debugMode")) {
-    loadDebug();
+  if (!Game.getInstance().isSandboxed()) {
+    if (Boolean.getBoolean("blockmania.demo")) {
+      loadDemo();
+    }
+ else     if (Boolean.getBoolean("blockmania.debugMode")) {
+      loadDebug();
+    }
   }
 }

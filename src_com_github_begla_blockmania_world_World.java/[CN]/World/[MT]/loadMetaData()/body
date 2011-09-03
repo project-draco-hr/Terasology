@@ -1,4 +1,7 @@
 {
+  if (Game.getInstance().isSandboxed()) {
+    return false;
+  }
   File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
   try {
     SAXBuilder sxbuild=new SAXBuilder();
@@ -15,10 +18,10 @@
       return true;
     }
  catch (    JDOMException ex) {
-      Helper.LOGGER.log(Level.SEVERE,null,ex);
+      Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
     }
 catch (    IOException ex) {
-      Helper.LOGGER.log(Level.SEVERE,null,ex);
+      Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
     }
   }
  catch (  FileNotFoundException ex) {

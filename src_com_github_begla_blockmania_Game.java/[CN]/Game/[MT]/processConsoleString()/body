@@ -1,0 +1,98 @@
+{
+  boolean success=false;
+  FastList<String> parsingResult=new FastList<String>();
+  String temp="";
+  for (int i=0; i < _consoleInput.length(); i++) {
+    char c=_consoleInput.charAt(i);
+    if (c != ' ') {
+      temp=temp.concat(String.valueOf(c));
+    }
+    if (c == ' ' || i == _consoleInput.length() - 1) {
+      parsingResult.add(temp);
+      temp="";
+    }
+  }
+  try {
+    if (parsingResult.get(0).equals("place")) {
+      if (parsingResult.get(1).equals("tree")) {
+        _player.plantTree(Integer.parseInt(parsingResult.get(2)));
+        success=true;
+      }
+ else       if (parsingResult.get(1).equals("block")) {
+        _player.placeBlock(Byte.parseByte(parsingResult.get(2)));
+        success=true;
+      }
+    }
+ else     if (parsingResult.get(0).equals("set")) {
+      if (parsingResult.get(1).equals("time")) {
+        _world.setTime(Float.parseFloat(parsingResult.get(2)));
+        success=true;
+      }
+ else {
+        Boolean bRes=Configuration.getSettingBoolean(parsingResult.get(1).toUpperCase());
+        if (bRes != null) {
+          Configuration.setSetting(parsingResult.get(1).toUpperCase(),Boolean.parseBoolean(parsingResult.get(2)));
+          success=true;
+        }
+ else {
+          Float fRes=Configuration.getSettingNumeric(parsingResult.get(1).toUpperCase());
+          if (fRes != null) {
+            Configuration.setSetting(parsingResult.get(1).toUpperCase(),Float.parseFloat(parsingResult.get(2)));
+            success=true;
+          }
+        }
+      }
+    }
+ else     if (parsingResult.get(0).equals("respawn")) {
+      _world.resetPlayer();
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("goto")) {
+      int x=Integer.parseInt(parsingResult.get(1));
+      int y=Integer.parseInt(parsingResult.get(2));
+      int z=Integer.parseInt(parsingResult.get(3));
+      _player.setPosition(VectorPool.getVector(x,y,z));
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("exit")) {
+      _saveWorldOnExit=true;
+      _runGame=false;
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("exit!")) {
+      _saveWorldOnExit=false;
+      _runGame=false;
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("info")) {
+      Game.getInstance().getLogger().log(Level.INFO,_player.selectedBlockInformation());
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("load")) {
+      String worldSeed=_rand.randomCharacterString(16);
+      if (parsingResult.size() > 1) {
+        worldSeed=parsingResult.get(1);
+      }
+      initNewWorld(worldSeed,worldSeed);
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("chunk_pos")) {
+      _world.printPlayerChunkPosition();
+      success=true;
+    }
+ else     if (parsingResult.get(0).equals("set_spawn")) {
+      _world.setSpawningPoint();
+      success=true;
+    }
+  }
+ catch (  Exception e) {
+    Game.getInstance().getLogger().log(Level.INFO,e.getMessage());
+  }
+  if (success) {
+    Game.getInstance().getLogger().log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
+  }
+ else {
+    Game.getInstance().getLogger().log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
+  }
+  toggleDebugConsole();
+}

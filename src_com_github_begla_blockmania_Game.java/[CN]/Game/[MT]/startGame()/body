@@ -1,0 +1,26 @@
+{
+  Game.getInstance().getLogger().log(Level.INFO,"Starting Blockmania...");
+  _lastLoopTime=getTime();
+  double nextGameTick=getTime();
+  int loopCounter;
+  resizeViewport();
+  while (_runGame && !Display.isCloseRequested()) {
+    updateStatistics();
+    processKeyboardInput();
+    processMouseInput();
+    loopCounter=0;
+    while (getTime() > nextGameTick && loopCounter < MAX_FRAMESKIP) {
+      if (!_pauseGame) {
+        update();
+      }
+      nextGameTick+=SKIP_TICKS;
+      loopCounter++;
+    }
+    render();
+    Display.update();
+  }
+  if (_saveWorldOnExit) {
+    _world.dispose();
+  }
+  Display.destroy();
+}

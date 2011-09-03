@@ -1,0 +1,10 @@
+{
+  Game.getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
+  if (_world != null) {
+    _world.dispose();
+  }
+  _world=new World(title,seed,_player);
+  _player.setParent(_world);
+  _world.startUpdateThread();
+  _lastLoopTime=getTime();
+}
