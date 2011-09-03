@@ -9,21 +9,13 @@
   lights[5]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),lightType) / 15f;
   lights[6]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),lightType) / 15f;
   lights[7]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),lightType) / 15f;
-  boolean[] blocks=new boolean[8];
-  blocks[0]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f))).isBlockTypeTranslucent();
-  blocks[1]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f))).isBlockTypeTranslucent();
-  blocks[2]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f))).isBlockTypeTranslucent();
-  blocks[3]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f))).isBlockTypeTranslucent();
-  blocks[4]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f))).isBlockTypeTranslucent();
-  blocks[5]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f))).isBlockTypeTranslucent();
-  blocks[6]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f))).isBlockTypeTranslucent();
-  blocks[7]=Block.getBlockForType(_chunk.getParent().getBlock((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f))).isBlockTypeTranslucent();
   int counter=0;
   for (int i=0; i < 8; i++) {
-    if (blocks[i]) {
+    if (lights[i] > 0) {
       result+=lights[i];
       counter++;
     }
   }
+  if (counter == 0)   return 0;
   return result / counter;
 }

@@ -9,9 +9,14 @@
   }
   Collections.sort(dirtyChunks);
   _chunkUpdateAmount=dirtyChunks.size();
-  if (!dirtyChunks.isEmpty()) {
-    Chunk closestChunk=dirtyChunks.getFirst();
-    processChunkUpdate(closestChunk);
+  for (int i=0; i < 32; i++) {
+    if (dirtyChunks.size() > 0) {
+      Chunk closestChunk=dirtyChunks.getFirst();
+      processChunkUpdate(closestChunk);
+    }
+ else {
+      break;
+    }
   }
   _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
   _meanUpdateDuration/=2;

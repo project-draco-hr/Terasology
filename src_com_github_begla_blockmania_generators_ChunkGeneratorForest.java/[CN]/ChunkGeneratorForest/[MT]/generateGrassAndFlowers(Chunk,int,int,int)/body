@@ -3,26 +3,18 @@
     float grassDens=calcGrassDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
     if (grassDens > 0.0) {
       double rand=_rand.standNormalDistrDouble();
-      if (rand > 0) {
-        if (c.canBlockSeeTheSky(x,y + 1,z)) {
-          c.setBlock(x,y + 1,z,(byte)0xB);
-        }
+      if (rand > -0.4 && rand < 0.4) {
+        c.setBlock(x,y + 1,z,(byte)0xB);
       }
- else       if (rand < 0) {
-        if (c.canBlockSeeTheSky(x,y + 1,z)) {
-          c.setBlock(x,y + 1,z,(byte)0xC);
-        }
+ else       if (rand > -0.8 && rand < -0.8) {
+        c.setBlock(x,y + 1,z,(byte)0xC);
       }
       if (_rand.standNormalDistrDouble() < -2) {
         if (_rand.randomBoolean()) {
-          if (c.canBlockSeeTheSky(x,y + 1,z)) {
-            c.setBlock(x,y + 1,z,(byte)0x9);
-          }
+          c.setBlock(x,y + 1,z,(byte)0x9);
         }
  else {
-          if (c.canBlockSeeTheSky(x,y + 1,z)) {
-            c.setBlock(x,y + 1,z,(byte)0xA);
-          }
+          c.setBlock(x,y + 1,z,(byte)0xA);
         }
       }
     }

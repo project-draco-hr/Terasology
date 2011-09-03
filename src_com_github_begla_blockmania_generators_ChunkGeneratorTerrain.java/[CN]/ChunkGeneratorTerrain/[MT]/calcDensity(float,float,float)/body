@@ -1,17 +1,23 @@
 {
-  BIOME_TYPE type=CalcBiomeType((int)x,(int)z);
+  BIOME_TYPE type=calcBiomeType((int)x,(int)z);
   float height=calcTerrainElevation(x,z) + calcTerrainRoughness(x,z);
   height=1.0f + height;
-  float density=calcMountainDensity(x,y,z) * (float)_voronoi.noise(x,y,z,0.002);
+  float density=calcMountainDensity(x,y,z);
   density=height - density;
   float div;
   if (y < 120)   div=(y + 1) * 1.7f;
  else   div=(y + 1) * 2.0f;
   if (type == BIOME_TYPE.DESERT) {
-    div*=1.2;
+    div*=1.4;
   }
- else   if (type == BIOME_TYPE.FOREST) {
-    div/=1.2;
+ else   if (type == BIOME_TYPE.MOUNTAINS) {
+    div*=1.0;
+  }
+ else   if (type == BIOME_TYPE.PLAINS) {
+    div*=1.4;
+  }
+ else   if (type == BIOME_TYPE.SNOW) {
+    div*=1.2;
   }
   return density / div;
 }
