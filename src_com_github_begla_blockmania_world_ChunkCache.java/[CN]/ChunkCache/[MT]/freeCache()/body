@@ -11,6 +11,7 @@ synchronized (this) {
     Chunk chunkToDelete=cachedChunks.removeLast();
 synchronized (this) {
       _chunkCache.remove(chunkToDelete.getChunkId());
+      chunkToDelete.setCached(false);
     }
     chunkToDelete.writeChunkToDisk();
     chunkToDelete.dispose();

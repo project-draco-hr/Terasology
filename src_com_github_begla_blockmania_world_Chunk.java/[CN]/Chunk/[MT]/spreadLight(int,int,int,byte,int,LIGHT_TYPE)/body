@@ -8,37 +8,14 @@
   int blockPosX=getBlockWorldPosX(x);
   int blockPosY=getBlockWorldPosY(y);
   int blockPosZ=getBlockWorldPosZ(z);
-  byte val1=getParent().getLight(blockPosX + 1,blockPosY,blockPosZ,type);
-  byte type1=getParent().getBlock(blockPosX + 1,blockPosY,blockPosZ);
-  byte val2=getParent().getLight(blockPosX - 1,blockPosY,blockPosZ,type);
-  byte type2=getParent().getBlock(blockPosX - 1,blockPosY,blockPosZ);
-  byte val3=getParent().getLight(blockPosX,blockPosY,blockPosZ + 1,type);
-  byte type3=getParent().getBlock(blockPosX,blockPosY,blockPosZ + 1);
-  byte val4=getParent().getLight(blockPosX,blockPosY,blockPosZ - 1,type);
-  byte type4=getParent().getBlock(blockPosX,blockPosY,blockPosZ - 1);
-  byte val5=getParent().getLight(blockPosX,blockPosY + 1,blockPosZ,type);
-  byte type5=getParent().getBlock(blockPosX,blockPosY + 1,blockPosZ);
-  byte val6=getParent().getLight(blockPosX,blockPosY - 1,blockPosZ,type);
-  byte type6=getParent().getBlock(blockPosX,blockPosY - 1,blockPosZ);
   byte newLightValue;
   newLightValue=(byte)(lightValue - depth);
   getParent().setLight(blockPosX,blockPosY,blockPosZ,newLightValue,type);
-  if (val1 < newLightValue - 1 && Block.getBlockForType(type1).isBlockTypeTranslucent()) {
-    getParent().spreadLight(blockPosX + 1,blockPosY,blockPosZ,lightValue,depth + 1,type);
-  }
-  if (val2 < newLightValue - 1 && Block.getBlockForType(type2).isBlockTypeTranslucent()) {
-    getParent().spreadLight(blockPosX - 1,blockPosY,blockPosZ,lightValue,depth + 1,type);
-  }
-  if (val3 < newLightValue - 1 && Block.getBlockForType(type3).isBlockTypeTranslucent()) {
-    getParent().spreadLight(blockPosX,blockPosY,blockPosZ + 1,lightValue,depth + 1,type);
-  }
-  if (val4 < newLightValue - 1 && Block.getBlockForType(type4).isBlockTypeTranslucent()) {
-    getParent().spreadLight(blockPosX,blockPosY,blockPosZ - 1,lightValue,depth + 1,type);
-  }
-  if (val5 < newLightValue - 1 && Block.getBlockForType(type5).isBlockTypeTranslucent()) {
-    getParent().spreadLight(blockPosX,blockPosY + 1,blockPosZ,lightValue,depth + 1,type);
-  }
-  if (val6 < newLightValue - 1 && Block.getBlockForType(type6).isBlockTypeTranslucent()) {
-    getParent().spreadLight(blockPosX,blockPosY - 1,blockPosZ,lightValue,depth + 1,type);
+  for (int i=0; i < 6; i++) {
+    byte neighborValue=getParent().getLight(blockPosX + (int)_directions[i].x,blockPosY + (int)_directions[i].y,blockPosZ + (int)_directions[i].z,type);
+    byte neighborType=getParent().getBlock(blockPosX + (int)_directions[i].x,blockPosY + (int)_directions[i].y,blockPosZ + (int)_directions[i].z);
+    if (neighborValue < newLightValue - 1 && Block.getBlockForType(neighborType).isBlockTypeTranslucent()) {
+      getParent().spreadLight(blockPosX + (int)_directions[i].x,blockPosY + (int)_directions[i].y,blockPosZ + (int)_directions[i].z,lightValue,depth + 1,type);
+    }
   }
 }
