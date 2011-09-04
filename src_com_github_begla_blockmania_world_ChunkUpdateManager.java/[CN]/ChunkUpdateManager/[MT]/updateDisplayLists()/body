@@ -1,10 +1,6 @@
 {
-  for (int i=0; i < Configuration.DL_UPDATES_PER_CYCLE; i++) {
-    if (_displayListUpdates.size() > 0) {
-      Chunk c=_displayListUpdates.removeFirst();
-      if (c != null) {
-        c.generateVBOs();
-      }
-    }
+  if (!_displayListUpdates.isEmpty()) {
+    Chunk c=_displayListUpdates.removeFirst();
+    c.generateVBOs();
   }
 }

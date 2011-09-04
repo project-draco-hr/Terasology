@@ -1,5 +1,4 @@
 {
-  long timeStart=System.currentTimeMillis();
   FastList<Chunk> dirtyChunks=new FastList<Chunk>(_parent.getVisibleChunks());
   for (int i=dirtyChunks.size() - 1; i >= 0; i--) {
     Chunk c=dirtyChunks.get(i);
@@ -9,14 +8,10 @@
   }
   Collections.sort(dirtyChunks);
   _chunkUpdateAmount=dirtyChunks.size();
-  for (int i=0; i < 32; i++) {
-    if (dirtyChunks.size() > 0) {
-      Chunk closestChunk=dirtyChunks.getFirst();
-      processChunkUpdate(closestChunk);
-    }
- else {
-      break;
-    }
+  long timeStart=System.currentTimeMillis();
+  if (dirtyChunks.size() > 0) {
+    Chunk closestChunk=dirtyChunks.removeFirst();
+    processChunkUpdate(closestChunk);
   }
   _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
   _meanUpdateDuration/=2;
