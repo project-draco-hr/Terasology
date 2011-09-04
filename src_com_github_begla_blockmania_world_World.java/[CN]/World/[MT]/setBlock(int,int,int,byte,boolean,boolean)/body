@@ -15,19 +15,24 @@
     if (update) {
       c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,true,true);
       byte newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
-      if (newValue > currentValue) {
-        c.spreadLight(blockPosX,y,blockPosZ,newValue,Chunk.LIGHT_TYPE.SUN);
-      }
       byte luminance=Block.getBlockForType(type).getLuminance();
       if (luminance > 0) {
         currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
         c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
         newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
-        if (newValue > currentValue) {
-          c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
-        }
+      }
+ else {
+        currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+        c.setLight(blockPosX,y,blockPosZ,(byte)0x0,Chunk.LIGHT_TYPE.BLOCK);
+        newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
       }
       c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
+      if (newValue > currentValue) {
+        c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+      }
+ else       if (newValue < currentValue) {
+        c.unspreadLight(blockPosX,y,blockPosZ,currentValue,Chunk.LIGHT_TYPE.BLOCK);
+      }
     }
   }
 }
