@@ -9,13 +9,13 @@
       covered=true;
     }
     byte oldValue=_sunlight.get(x,y,z);
-    byte newValue=0x0;
+    byte newValue;
     if (!covered) {
       if (b.getClass().equals(BlockAir.class) || b.isBlockBillboard())       _sunlight.set(x,y,z,Configuration.MAX_LIGHT);
  else       _sunlight.set(x,y,z,(byte)0x0);
       newValue=_sunlight.get(x,y,z);
     }
- else     if (covered) {
+ else {
       _sunlight.set(x,y,z,(byte)0);
       if (refreshSunlight) {
         refreshLightAtLocalPos(x,y,z,LIGHT_TYPE.SUN);

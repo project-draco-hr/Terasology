@@ -1,15 +1,10 @@
 {
-  boolean replantDirt=false;
-  if (Game.getInstance().getTime() - _latestDirtEvolvement > Configuration.getSettingNumeric("REPLANT_DIRT_TIME") && Configuration.getSettingBoolean("REPLANT_DIRT")) {
-    replantDirt=true;
-  }
   FastSet<Chunk> visibleChunks=new FastSet<Chunk>();
   for (int x=-(Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x < (Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x++) {
     for (int z=-(Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z < (Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z++) {
       Chunk c=_chunkCache.loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
       if (c != null) {
-        if (_player.getViewFrustum().Intersects(c.getAABB())) {
-          if (replantDirt)           replantDirt(c);
+        if (c.isChunkInFrustum()) {
           visibleChunks.add(c);
         }
       }

@@ -1,4 +1,6 @@
 {
+  ShaderManager.getInstance().enableShader("chunk");
+  TextureManager.getInstance().bindTexture("terrain");
   _visibleChunks=fetchVisibleChunks();
   for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
     Chunk c=_visibleChunks.valueOf(n);
@@ -8,6 +10,15 @@
     }
   }
   for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    _visibleChunks.valueOf(n).render(true);
+    for (int i=0; i < 2; i++) {
+      if (i == 0) {
+        glColorMask(false,false,false,false);
+      }
+ else {
+        glColorMask(true,true,true,true);
+      }
+      _visibleChunks.valueOf(n).render(true);
+    }
   }
+  ShaderManager.getInstance().enableShader(null);
 }

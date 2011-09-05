@@ -1,0 +1,19 @@
+{
+  glPushMatrix();
+  glTranslatef(_player.getPosition().x,Configuration.CHUNK_DIMENSIONS.y * 2.0f,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z + _player.getPosition().z);
+  glRotatef(-35,1,0,0);
+  glColor4f(1f,1f,1f,1.0f);
+  glEnable(GL_TEXTURE_2D);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_ONE,GL_ONE);
+  if (isDaytime()) {
+    TextureManager.getInstance().bindTexture("sun");
+  }
+ else {
+    TextureManager.getInstance().bindTexture("moon");
+  }
+  glCallList(_dlSunMoon);
+  glDisable(GL_BLEND);
+  glDisable(GL_TEXTURE_2D);
+  glPopMatrix();
+}

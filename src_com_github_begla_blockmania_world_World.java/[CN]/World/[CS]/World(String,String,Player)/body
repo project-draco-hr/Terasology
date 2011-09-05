@@ -25,17 +25,16 @@
       }
     }
   }
-  _generatorTerrain=new ChunkGeneratorTerrain(_seed);
-  _generatorForest=new ChunkGeneratorForest(_seed);
-  _generatorResources=new ChunkGeneratorResources(_seed);
-  _generatorTree=new ObjectGeneratorTree(this,_seed);
-  _generatorPineTree=new ObjectGeneratorPineTree(this,_seed);
-  _generatorFirTree=new ObjectGeneratorFirTree(this,_seed);
-  _generatorGrass=new ChunkGeneratorFlora(_seed);
-  _generatorCactus=new ObjectGeneratorCactus(this,_seed);
+  _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(_seed));
+  _chunkGenerators.put("forest",new ChunkGeneratorForest(_seed));
+  _chunkGenerators.put("resources",new ChunkGeneratorResources(_seed));
+  _objectGenerators.put("tree",new ObjectGeneratorTree(this,_seed));
+  _objectGenerators.put("pineTree",new ObjectGeneratorPineTree(this,_seed));
+  _objectGenerators.put("firTree",new ObjectGeneratorFirTree(this,_seed));
+  _objectGenerators.put("cactus",new ObjectGeneratorCactus(this,_seed));
   _rand=new FastRandom(seed.hashCode());
   resetPlayer();
-  _visibleChunks=fetchVisibleChunks();
+  _visibleChunks=new FastSet();
   _updateThread=new Thread(new Runnable(){
     public void run(){
       while (true) {
@@ -52,7 +51,7 @@ synchronized (_updateThread) {
             }
           }
         }
-        _chunkUpdateManager.updateChunk();
+        _chunkUpdateManager.processChunkUpdates();
         updateDaytime();
       }
     }

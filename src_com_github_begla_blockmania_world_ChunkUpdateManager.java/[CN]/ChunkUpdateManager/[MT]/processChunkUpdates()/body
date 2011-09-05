@@ -1,0 +1,18 @@
+{
+  long timeStart=System.currentTimeMillis();
+  FastList<Chunk> dirtyChunks=new FastList<Chunk>(_parent.getVisibleChunks());
+  for (int i=dirtyChunks.size() - 1; i >= 0; i--) {
+    Chunk c=dirtyChunks.get(i);
+    if (!(c.isDirty() || c.isFresh() || c.isLightDirty())) {
+      dirtyChunks.remove(i);
+    }
+  }
+  if (!dirtyChunks.isEmpty()) {
+    Collections.sort(dirtyChunks);
+    Chunk closestChunk=dirtyChunks.getFirst();
+    processChunkUpdate(closestChunk);
+  }
+  _chunkUpdateAmount=dirtyChunks.size();
+  _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
+  _meanUpdateDuration/=2;
+}

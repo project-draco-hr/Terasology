@@ -1,8 +1,7 @@
 {
   FastList<Vector3f> brightSpots=new FastList<Vector3f>();
   unspreadLight(x,y,z,lightValue,0,type,brightSpots);
-  for (int i=0; i < brightSpots.size(); i++) {
-    Vector3f pos=brightSpots.get(i);
+  for (  Vector3f pos : brightSpots) {
     getParent().spreadLight((int)pos.x,(int)pos.y,(int)pos.z,_parent.getLight((int)pos.x,(int)pos.y,(int)pos.z,type),0,type);
   }
 }

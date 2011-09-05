@@ -7,7 +7,6 @@
   glEnd();
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
-  glLoadIdentity();
   _player.applyPlayerModelViewMatrix();
   _player.render();
   ShaderManager.getInstance().enableShader("chunk");
@@ -18,5 +17,6 @@
   GL20.glUniform1f(daylight,getDaylight());
   ShaderManager.getInstance().enableShader(null);
   renderChunks();
-  renderHorizon();
+  renderSunMoon();
+  renderClouds();
 }

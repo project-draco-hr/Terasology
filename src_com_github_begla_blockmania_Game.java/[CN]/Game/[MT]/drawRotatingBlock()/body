@@ -1,0 +1,20 @@
+{
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  gluPerspective(25f,(float)Display.getDisplayMode().getWidth() / (float)Display.getDisplayMode().getHeight(),0.1f,32f);
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  glEnable(GL11.GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glAlphaFunc(GL_GREATER,0.1f);
+  glDisable(GL_DEPTH_TEST);
+  gluLookAt(0,0,-25,8f,4.5f,0,0,1,0);
+  glRotatef(_cubeRotation % 360,0,1,1);
+  Block.getBlockForType(_player.getSelectedBlockType()).renderBlock(true);
+  glEnable(GL_DEPTH_TEST);
+  glDisable(GL11.GL_BLEND);
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+}
