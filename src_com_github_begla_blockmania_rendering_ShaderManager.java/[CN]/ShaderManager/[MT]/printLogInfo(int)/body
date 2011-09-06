@@ -1,6 +1,15 @@
 {
-  String output=GL20.glGetShaderInfoLog(obj,1024);
-  if (output.length() > 0) {
-    Game.getInstance().getLogger().log(Level.INFO,"{0}",output);
+  IntBuffer intBuffer=BufferUtils.createIntBuffer(1);
+  ARBShaderObjects.glGetObjectParameterARB(obj,ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB,intBuffer);
+  int length=intBuffer.get();
+  if (length <= 1) {
+    return;
   }
+  ByteBuffer infoBuffer=ByteBuffer.allocateDirect(length);
+  intBuffer.flip();
+  GL20.glGetShaderInfoLog(obj,intBuffer,infoBuffer);
+  int actualLength=intBuffer.get();
+  byte[] infoBytes=new byte[actualLength];
+  infoBuffer.get(infoBytes);
+  Game.getInstance().getLogger().log(Level.INFO,"{0}",new String(infoBytes));
 }
