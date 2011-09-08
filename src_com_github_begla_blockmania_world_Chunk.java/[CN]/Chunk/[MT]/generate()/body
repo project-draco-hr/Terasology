@@ -9,7 +9,7 @@
     for (FastList.Node<ChunkGenerator> n=_generators.head(), end=_generators.tail(); (n=n.getNext()) != end; ) {
       n.getValue().generate(this);
     }
-    updateSunlight();
+    generateSunlight();
     _fresh=false;
     Game.getInstance().getLogger().log(Level.FINEST,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
     return true;

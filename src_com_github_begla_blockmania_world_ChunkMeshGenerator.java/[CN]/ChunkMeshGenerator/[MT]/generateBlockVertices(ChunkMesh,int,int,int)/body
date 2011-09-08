@@ -27,6 +27,10 @@
   }
   Block.BLOCK_FORM blockForm=Block.getBlockForType(block).getBlockForm();
   if (blockForm == Block.BLOCK_FORM.LOWERED_BOCK) {
+    blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosY(y + 1),_chunk.getBlockWorldPosZ(z));
+    if (Block.getBlockForType(blockToCheck).getBlockForm() != Block.BLOCK_FORM.LOWERED_BOCK) {
+      drawTop=true;
+    }
     blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosY(y - 1),_chunk.getBlockWorldPosZ(z - 1));
     drawFront=isSideVisibleForBlockTypes(blockToCheck,block) || drawFront;
     blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosY(y - 1),_chunk.getBlockWorldPosZ(z + 1));
