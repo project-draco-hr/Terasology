@@ -2,19 +2,27 @@
   boolean result=false;
   FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
   for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
-    byte blockType1=_parent.getBlockAtPosition(VectorPool.getVector(n.getValue().x,n.getValue().y,n.getValue().z));
-    if (!Block.getBlockForType(blockType1).isPenetrable()) {
-      if (getAABB().overlaps(Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z))) {
+    byte blockType=_parent.getBlockAtPosition(VectorPool.getVector(n.getValue().x,n.getValue().y,n.getValue().z));
+    AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
+    if (!Block.getBlockForType(blockType).isPenetrable()) {
+      if (getAABB().overlaps(blockAABB)) {
         result=true;
-        Vector3f normal=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z).closestNormalToPoint(origin);
-        Vector3f slideVector=Vector3f.cross(normal,VectorPool.getVector(0,1,0),null);
         Vector3f direction=VectorPool.getVector(_position.x,0f,_position.z);
         direction.x-=origin.x;
         direction.z-=origin.z;
+        Vector3f blockPoi=blockAABB.closestPointOnAABBToPoint(origin);
+        Vector3f playerPoi=generateAABBForPosition(origin).closestPointOnAABBToPoint(blockPoi);
+        Vector3f planeNormal=blockAABB.normalForPlaneClosestToOrigin(blockPoi,origin,true,false,true);
+        Vector3f slideVector=VectorPool.getVector(planeNormal.z,0,-planeNormal.x);
+        Vector3f pushBack=VectorPool.getVector();
+        Vector3f.sub(blockPoi,playerPoi,pushBack);
         float length=Vector3f.dot(slideVector,direction);
-        _position.z=origin.z + length * slideVector.z;
-        _position.x=origin.x + length * slideVector.x;
-        VectorPool.putVector(normal);
+        Vector3f newPosition=VectorPool.getVector();
+        newPosition.z=origin.z + pushBack.z * 0.2f + length * slideVector.z;
+        newPosition.x=origin.x + pushBack.x * 0.2f + length * slideVector.x;
+        newPosition.y=origin.y;
+        _position.set(newPosition);
+        VectorPool.putVector(newPosition);
         VectorPool.putVector(slideVector);
         VectorPool.putVector(direction);
       }

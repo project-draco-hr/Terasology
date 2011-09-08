@@ -1,7 +1,11 @@
 {
-  _movement.x-=_wSpeed * Math.sin(Math.toRadians(_yaw)) * Math.cos(Math.toRadians(_pitch));
-  if (Configuration.getSettingBoolean("GOD_MODE")) {
+  if (!Configuration.getSettingBoolean("GOD_MODE")) {
+    _movement.x-=_wSpeed * Math.sin(Math.toRadians(_yaw));
+    _movement.z+=_wSpeed * Math.cos(Math.toRadians(_yaw));
+  }
+ else {
+    _movement.x-=_wSpeed * Math.sin(Math.toRadians(_yaw)) * Math.cos(Math.toRadians(_pitch));
+    _movement.z+=_wSpeed * Math.cos(Math.toRadians(_yaw)) * Math.cos(Math.toRadians(_pitch));
     _movement.y+=_wSpeed * Math.sin(Math.toRadians(_pitch));
   }
-  _movement.z+=_wSpeed * Math.cos(Math.toRadians(_yaw)) * Math.cos(Math.toRadians(_pitch));
 }

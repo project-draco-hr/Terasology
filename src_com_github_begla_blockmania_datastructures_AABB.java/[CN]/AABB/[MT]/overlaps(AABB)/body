@@ -1,4 +1,6 @@
 {
-  Vector3f t=Vector3f.sub(aabb2.getPosition(),getPosition(),null);
-  return MathHelper.fastAbs(t.x) <= (getDimensions().x + aabb2.getDimensions().x) && MathHelper.fastAbs(t.y) <= (getDimensions().y + aabb2.getDimensions().y) && MathHelper.fastAbs(t.z) <= (getDimensions().z + aabb2.getDimensions().z);
+  if (maxX() < aabb2.minX() || minX() > aabb2.maxX())   return false;
+  if (maxY() < aabb2.minY() || minY() > aabb2.maxY())   return false;
+  if (maxZ() < aabb2.minZ() || minZ() > aabb2.maxZ())   return false;
+  return true;
 }

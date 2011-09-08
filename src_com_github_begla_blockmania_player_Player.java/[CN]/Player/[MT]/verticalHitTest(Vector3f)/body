@@ -1,22 +1,13 @@
 {
-  boolean result=false;
   FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
-  Vector3f dir=Vector3f.sub(origin,_position,null);
-  if (dir.length() > 0) {
-    dir.normalise();
-  }
- else {
-    return false;
-  }
   for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
     byte blockType1=_parent.getBlockAtPosition(VectorPool.getVector(n.getValue().x,n.getValue().y,n.getValue().z));
-    if (!Block.getBlockForType(blockType1).isPenetrable()) {
-      while (getAABB().overlaps(Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z))) {
-        result=true;
-        _position.y+=dir.y * 0.0001;
-        _gravity=0f;
-      }
-    }
+    AABB playerAABB=getAABB();
+    if (Block.getBlockForType(blockType1).isPenetrable() || !playerAABB.overlaps(Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z)))     continue;
+    float direction=origin.y - _position.y;
+    if (direction >= 0)     _position.y=n.getValue().y + 0.50001f + playerAABB.getDimensions().y;
+ else     _position.y=n.getValue().y - 0.50001f - playerAABB.getDimensions().y;
+    return true;
   }
-  return result;
+  return false;
 }

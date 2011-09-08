@@ -1,6 +1,5 @@
 {
-  Vector3f oldPosition=VectorPool.getVector();
-  oldPosition.set(_position);
+  Vector3f oldPosition=VectorPool.getVector(_position);
   if (Configuration.getSettingBoolean("DEMO_FLIGHT") && Configuration.getSettingBoolean("GOD_MODE")) {
     _position.z+=Configuration.getSettingNumeric("WALKING_SPEED");
     int maxHeight=_parent.maxHeightAt((int)_position.x,(int)_position.z + 8) + 16;
@@ -37,8 +36,8 @@
   getPosition().y+=_acc.y;
   getPosition().y+=_gravity;
   if (!Configuration.getSettingBoolean("GOD_MODE")) {
-    boolean vHit=verticalHitTest(oldPosition);
-    if (vHit) {
+    if (verticalHitTest(oldPosition)) {
+      _gravity=0;
       if (_jump) {
         _jump=false;
         _gravity=Configuration.getSettingNumeric("JUMP_INTENSITY");

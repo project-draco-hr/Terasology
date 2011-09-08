@@ -1,12 +1,14 @@
 {
-  Vector3f[] result=new Vector3f[8];
-  result[0]=VectorPool.getVector(_position.x + _dimensions.x,_position.y - _dimensions.y,_position.z + _dimensions.z);
-  result[1]=VectorPool.getVector(_position.x + _dimensions.x,_position.y + _dimensions.y,_position.z + _dimensions.z);
-  result[2]=VectorPool.getVector(_position.x - _dimensions.x,_position.y + _dimensions.y,_position.z + _dimensions.z);
-  result[3]=VectorPool.getVector(_position.x - _dimensions.x,_position.y - _dimensions.y,_position.z + _dimensions.z);
-  result[4]=VectorPool.getVector(_position.x + _dimensions.x,_position.y - _dimensions.y,_position.z - _dimensions.z);
-  result[5]=VectorPool.getVector(_position.x + _dimensions.x,_position.y + _dimensions.y,_position.z - _dimensions.z);
-  result[6]=VectorPool.getVector(_position.x - _dimensions.x,_position.y + _dimensions.y,_position.z - _dimensions.z);
-  result[7]=VectorPool.getVector(_position.x - _dimensions.x,_position.y - _dimensions.y,_position.z - _dimensions.z);
-  return result;
+  if (_vertices == null) {
+    _vertices=new Vector3f[8];
+    _vertices[0]=VectorPool.getVector((float)minX(),(float)minY(),(float)maxZ());
+    _vertices[1]=VectorPool.getVector((float)maxX(),(float)minY(),(float)maxZ());
+    _vertices[2]=VectorPool.getVector((float)maxX(),(float)maxY(),(float)maxZ());
+    _vertices[3]=VectorPool.getVector((float)minX(),(float)maxY(),(float)maxZ());
+    _vertices[4]=VectorPool.getVector((float)minX(),(float)minY(),(float)minZ());
+    _vertices[5]=VectorPool.getVector((float)maxX(),(float)minY(),(float)minZ());
+    _vertices[6]=VectorPool.getVector((float)maxX(),(float)maxY(),(float)minZ());
+    _vertices[7]=VectorPool.getVector((float)minX(),(float)maxY(),(float)minZ());
+  }
+  return _vertices;
 }

@@ -6,8 +6,8 @@
       float bobbing=(float)(_pGen.noise(_position.x * 0.5f,0f,_position.z * 0.5f));
       glRotatef(bobbing * Configuration.BOBBING_ANGLE,0,0,1);
     }
-    float newPosY=_position.y + getAABB().getDimensions().y;
-    GLU.gluLookAt(_position.x,newPosY,_position.z,_position.x + _viewingDirection.x,newPosY + _viewingDirection.y,_position.z + _viewingDirection.z,0,1,0);
+    Vector3f eyePosition=calcEyePosition();
+    GLU.gluLookAt(eyePosition.x,eyePosition.y,eyePosition.z,eyePosition.x + _viewingDirection.x,eyePosition.y + _viewingDirection.y,eyePosition.z + _viewingDirection.z,0,1,0);
   }
  else {
     GLU.gluLookAt(_position.x,_position.y,_position.z,_position.x,40f,_position.z + 128f,0,1,0);
