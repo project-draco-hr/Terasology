@@ -1,5 +1,6 @@
 {
   ShaderManager.getInstance().enableShader("chunk");
+  glEnable(GL_TEXTURE_2D);
   TextureManager.getInstance().bindTexture("terrain");
   _visibleChunks=fetchVisibleChunks();
   for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
@@ -20,5 +21,6 @@
       _visibleChunks.valueOf(n).render(true);
     }
   }
+  glDisable(GL_TEXTURE_2D);
   ShaderManager.getInstance().enableShader(null);
 }

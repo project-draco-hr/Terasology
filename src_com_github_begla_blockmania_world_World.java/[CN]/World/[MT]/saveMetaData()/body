@@ -2,6 +2,10 @@
   if (Game.getInstance().isSandboxed()) {
     return false;
   }
+  File dir=new File(getWorldSavePath());
+  if (!dir.exists()) {
+    dir.mkdirs();
+  }
   File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
   try {
     f.createNewFile();

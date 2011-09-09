@@ -17,14 +17,7 @@
   this._player=p;
   this._title=title;
   this._seed=seed;
-  if (!loadMetaData()) {
-    if (!Game.getInstance().isSandboxed()) {
-      File dir=new File(getWorldSavePath());
-      if (!dir.exists()) {
-        dir.mkdirs();
-      }
-    }
-  }
+  loadMetaData();
   _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(_seed));
   _chunkGenerators.put("forest",new ChunkGeneratorForest(_seed));
   _chunkGenerators.put("resources",new ChunkGeneratorResources(_seed));

@@ -7,10 +7,8 @@
   glPushMatrix();
   glLoadIdentity();
   glDisable(GL_DEPTH_TEST);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   if (Configuration.getSettingBoolean("CROSSHAIR")) {
-    glColor3f(1f,1f,1f);
+    glColor4f(1f,1f,1f,1f);
     glLineWidth(2f);
     glBegin(GL_LINES);
     glVertex2d(Display.getDisplayMode().getWidth() / 2f - 8f,Display.getDisplayMode().getHeight() / 2f);
@@ -19,6 +17,8 @@
     glVertex2d(Display.getDisplayMode().getWidth() / 2f,Display.getDisplayMode().getHeight() / 2f + 8f);
     glEnd();
   }
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   if (Configuration.getSettingBoolean("DEBUG")) {
     _font1.drawString(4,4,String.format("%s (fps: %.2f, mem usage: %.2f MB)",Configuration.GAME_TITLE,_meanFps,_memoryUsage));
     _font1.drawString(4,22,String.format("%s",_player));
