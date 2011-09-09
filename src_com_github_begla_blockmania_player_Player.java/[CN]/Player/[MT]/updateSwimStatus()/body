@@ -1,0 +1,20 @@
+{
+  FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(_position);
+  boolean swimming=false, headUnderWater=false;
+  for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
+    byte blockType=_parent.getBlockAtPosition(VectorPool.getVector(n.getValue().x,n.getValue().y,n.getValue().z));
+    AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
+    if (Block.getBlockForType(blockType).getClass().equals(BlockWater.class) && getAABB().overlaps(blockAABB)) {
+      swimming=true;
+    }
+    Vector3f eyePos=calcEyePosition();
+    eyePos.x+=_viewingDirection.x * 0.1;
+    eyePos.y+=_viewingDirection.y * 0.1;
+    eyePos.z+=_viewingDirection.z * 0.1;
+    if (Block.getBlockForType(blockType).getClass().equals(BlockWater.class) && blockAABB.contains(eyePos)) {
+      headUnderWater=true;
+    }
+  }
+  _playerHeadUnderWater=headUnderWater;
+  _playerIsSwimming=swimming;
+}

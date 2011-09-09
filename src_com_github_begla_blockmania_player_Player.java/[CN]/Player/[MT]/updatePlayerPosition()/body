@@ -17,8 +17,8 @@
   if (MathHelper.fastAbs(_acc.z) > 0f) {
     _acc.z+=-1f * _acc.z * Configuration.getSettingNumeric("FRICTION");
   }
-  if (MathHelper.fastAbs(_acc.x) > _wSpeed || MathHelper.fastAbs(_acc.z) > _wSpeed || MathHelper.fastAbs(_acc.z) > _wSpeed) {
-    double max=Math.max(Math.max(MathHelper.fastAbs(_acc.x),MathHelper.fastAbs(_acc.z)),_acc.y);
+  if (MathHelper.fastAbs(_acc.x) > _wSpeed || MathHelper.fastAbs(_acc.z) > _wSpeed || MathHelper.fastAbs(_acc.y) > _wSpeed) {
+    double max=Math.max(Math.max(MathHelper.fastAbs(_acc.x),MathHelper.fastAbs(_acc.z)),MathHelper.fastAbs(_acc.y));
     double div=max / _wSpeed;
     _acc.x/=div;
     _acc.z/=div;
@@ -27,11 +27,17 @@
   _acc.x+=_movement.x;
   _acc.y+=_movement.y;
   _acc.z+=_movement.z;
-  if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY") && !Configuration.getSettingBoolean("GOD_MODE")) {
+  if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY") && !Configuration.getSettingBoolean("GOD_MODE") && !_playerIsSwimming) {
     _gravity-=Configuration.getSettingNumeric("GRAVITY");
-    if (_gravity < -Configuration.getSettingNumeric("MAX_GRAVITY")) {
-      _gravity=-Configuration.getSettingNumeric("MAX_GRAVITY");
-    }
+  }
+  if (_gravity < -Configuration.getSettingNumeric("MAX_GRAVITY") && !Configuration.getSettingBoolean("GOD_MODE") && !_playerIsSwimming) {
+    _gravity=-Configuration.getSettingNumeric("MAX_GRAVITY");
+  }
+  if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY_SWIMMING") && !Configuration.getSettingBoolean("GOD_MODE") && _playerIsSwimming) {
+    _gravity-=Configuration.getSettingNumeric("GRAVITY_SWIMMING");
+  }
+  if (_gravity < -Configuration.getSettingNumeric("MAX_GRAVITY_SWIMMING") && !Configuration.getSettingBoolean("GOD_MODE") && _playerIsSwimming) {
+    _gravity=-Configuration.getSettingNumeric("MAX_GRAVITY_SWIMMING");
   }
   getPosition().y+=_acc.y;
   getPosition().y+=_gravity;
