@@ -7,7 +7,7 @@ synchronized (this) {
     cachedChunks=new FastList<Chunk>(_chunkCache.values());
   }
   Collections.sort(cachedChunks);
-  while (cachedChunks.size() > capacity()) {
+  for (int i=0; i < 32 && _chunkCache.size() > capacity(); i++) {
     Chunk chunkToDelete=cachedChunks.removeLast();
 synchronized (this) {
       _chunkCache.remove(chunkToDelete.getChunkId());
