@@ -1,0 +1,18 @@
+{
+  RayBlockIntersection.Intersection is=calcSelectedBlock();
+  if (Configuration.getSettingBoolean("PLACING_BOX")) {
+    if (is != null) {
+      if (Block.getBlockForType(_parent.getBlockAtPosition(is.getBlockPosition())).shouldRenderBoundingBox()) {
+        Block.AABBForBlockAt(is.getBlockPosition()).render();
+      }
+    }
+  }
+  if (Configuration.getSettingBoolean("DEBUG_COLLISION")) {
+    getAABB().render();
+    FastList<BlockPosition> blocks=gatherAdjacentBlockPositions(_position);
+    for (    BlockPosition p : blocks) {
+      AABB blockAABB=Block.AABBForBlockAt(p.x,p.y,p.z);
+      blockAABB.render();
+    }
+  }
+}

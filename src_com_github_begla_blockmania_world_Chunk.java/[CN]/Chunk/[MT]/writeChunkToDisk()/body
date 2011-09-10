@@ -7,7 +7,10 @@
   }
   File dir=new File(_parent.getWorldSavePath());
   if (!dir.exists()) {
-    dir.mkdirs();
+    if (!dir.mkdirs()) {
+      Game.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
+      return false;
+    }
   }
   ByteBuffer output=BufferUtils.createByteBuffer(_blocks.getSize() + _sunlight.getPackedSize() + _light.getPackedSize()+ 1);
   File f=new File(String.format("%s/%d.bc",getParent().getWorldSavePath(),getChunkId()));

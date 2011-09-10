@@ -3,8 +3,12 @@
   for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
     for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
       for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
-        generateBlockVertices(mesh,x,y,z);
-        generateBillboardVertices(mesh,x,y,z);
+        byte blockType=_chunk.getBlock(x,y,z);
+        Block block=Block.getBlockForType(blockType);
+        if (block.isBlockInvisible())         continue;
+        Block.BLOCK_FORM blockForm=block.getBlockForm();
+        if (blockForm == Block.BLOCK_FORM.LOWERED_BOCK || blockForm == Block.BLOCK_FORM.CACTUS || blockForm == Block.BLOCK_FORM.NORMAL)         generateBlockVertices(mesh,x,y,z);
+ else         if (blockForm == Block.BLOCK_FORM.BILLBOARD)         generateBillboardVertices(mesh,x,y,z);
       }
     }
   }

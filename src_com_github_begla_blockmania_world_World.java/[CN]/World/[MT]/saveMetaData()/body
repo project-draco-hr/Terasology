@@ -4,7 +4,10 @@
   }
   File dir=new File(getWorldSavePath());
   if (!dir.exists()) {
-    dir.mkdirs();
+    if (!dir.mkdirs()) {
+      Game.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
+      return false;
+    }
   }
   File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
   try {
