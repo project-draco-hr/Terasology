@@ -21,9 +21,9 @@
       mesh._vertexElements[j].vertices.put(vertexPos.z);
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex + 1));
-      float occlusionValue=getOcclusionValue(vertexPos);
-      mesh._vertexElements[j].vertices.put(getLightForVertexPos(vertexPos,Chunk.LIGHT_TYPE.SUN) * occlusionValue);
-      mesh._vertexElements[j].vertices.put(getLightForVertexPos(vertexPos,Chunk.LIGHT_TYPE.BLOCK) * occlusionValue);
+      double occlusionValue=getOcclusionValue(vertexPos);
+      mesh._vertexElements[j].vertices.put((float)(getLightForVertexPos(vertexPos,Chunk.LIGHT_TYPE.SUN) * occlusionValue));
+      mesh._vertexElements[j].vertices.put((float)(getLightForVertexPos(vertexPos,Chunk.LIGHT_TYPE.BLOCK) * occlusionValue));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 1));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 2));

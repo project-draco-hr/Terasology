@@ -1,0 +1,15 @@
+{
+  double result=0.0;
+  double x1, y1, z1;
+  x1=x * 0.0006;
+  y1=y * 0.001;
+  z1=z * 0.0006;
+  double freq[]={1.432,8.4281,12.371,16.463819,19.62819,26.3672891,28.47381,29.47381,30.47381};
+  double amp[]={1.0,1.0,1.2,1.4,1.8,2.0,2.2,2.4,2.6};
+  double ampSum=0.0;
+  for (int i=0; i < freq.length; i++) {
+    result+=_pGen5.noise(x1 * freq[i],y1 * freq[i],z1 * freq[i]) * amp[i];
+    ampSum+=amp[i];
+  }
+  return result / ampSum;
+}

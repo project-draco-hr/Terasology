@@ -16,10 +16,10 @@
         Vector3f slideVector=VectorPool.getVector(planeNormal.z,0,-planeNormal.x);
         Vector3f pushBack=VectorPool.getVector();
         Vector3f.sub(blockPoi,playerPoi,pushBack);
-        float length=Vector3f.dot(slideVector,direction);
+        double length=Vector3f.dot(slideVector,direction);
         Vector3f newPosition=VectorPool.getVector();
-        newPosition.z=origin.z + pushBack.z * 0.2f + length * slideVector.z;
-        newPosition.x=origin.x + pushBack.x * 0.2f + length * slideVector.x;
+        newPosition.z=(float)(origin.z + pushBack.z * 0.2 + length * slideVector.z);
+        newPosition.x=(float)(origin.x + pushBack.x * 0.2 + length * slideVector.x);
         newPosition.y=origin.y;
         _position.set(newPosition);
         VectorPool.putVector(newPosition);

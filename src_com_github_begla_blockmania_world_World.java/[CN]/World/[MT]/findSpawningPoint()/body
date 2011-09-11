@@ -1,7 +1,9 @@
 {
-  for (int xz=1024; ; xz++) {
-    if (((ChunkGeneratorTerrain)getChunkGenerator("terrain")).calcDensity(xz,26,xz) >= 0.012f) {
-      return VectorPool.getVector(xz,26,xz);
+  for (; ; ) {
+    int randX=(int)(_rand.randomDouble() * 16000f);
+    int randZ=(int)(_rand.randomDouble() * 16000f);
+    if (((ChunkGeneratorTerrain)getChunkGenerator("terrain")).calcDensity(randX,26,randZ) >= 0.01f) {
+      return VectorPool.getVector(randX,26,randZ);
     }
   }
 }

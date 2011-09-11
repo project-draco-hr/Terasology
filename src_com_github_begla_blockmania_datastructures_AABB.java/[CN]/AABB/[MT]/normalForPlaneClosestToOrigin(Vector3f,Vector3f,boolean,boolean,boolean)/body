@@ -6,10 +6,10 @@
   if (pointOnAABB.x == maxX() && testX)   normals.add(VectorPool.getVector(1,0,0));
   if (pointOnAABB.y == minY() && testY)   normals.add(VectorPool.getVector(0,-1,0));
   if (pointOnAABB.y == maxY() && testY)   normals.add(VectorPool.getVector(0,1,0));
-  float minDistance=Float.MAX_VALUE;
+  double minDistance=Double.MAX_VALUE;
   Vector3f closestNormal=VectorPool.getVector();
   for (  Vector3f v : normals) {
-    float distance=Vector3f.sub(centerPointForNormal(v),origin,null).length();
+    double distance=Vector3f.sub(centerPointForNormal(v),origin,null).length();
     if (distance < minDistance) {
       minDistance=distance;
       closestNormal=v;

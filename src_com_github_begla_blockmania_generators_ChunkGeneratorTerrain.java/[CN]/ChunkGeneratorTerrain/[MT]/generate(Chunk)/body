@@ -1,5 +1,5 @@
 {
-  float[][][] densityMap=new float[(int)Configuration.CHUNK_DIMENSIONS.x + 1][(int)Configuration.CHUNK_DIMENSIONS.y + 1][(int)Configuration.CHUNK_DIMENSIONS.z + 1];
+  double[][][] densityMap=new double[(int)Configuration.CHUNK_DIMENSIONS.x + 1][(int)Configuration.CHUNK_DIMENSIONS.y + 1][(int)Configuration.CHUNK_DIMENSIONS.z + 1];
   for (int x=0; x <= Configuration.CHUNK_DIMENSIONS.x; x+=SAMPLE_RATE_3D_HOR) {
     for (int z=0; z <= Configuration.CHUNK_DIMENSIONS.z; z+=SAMPLE_RATE_3D_HOR) {
       for (int y=0; y <= Configuration.CHUNK_DIMENSIONS.y; y+=SAMPLE_RATE_3D_VERT) {
@@ -17,21 +17,24 @@
           c.setBlock(x,y,z,(byte)0x8);
           break;
         }
-        if (y < 30 && y > 0) {
+        if (y < 32 && y > 0) {
           c.setBlock(x,y,z,(byte)0x4);
           if (y == 29) {
             if (type == BIOME_TYPE.SNOW)             c.setBlock(x,y,z,(byte)0x11);
           }
         }
-        float dens=densityMap[x][y][z];
-        if ((dens >= 0.01f && dens < 0.012f)) {
+        double dens=densityMap[x][y][z];
+        if ((dens >= 0.008 && dens < 0.02)) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
           GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
+          continue;
         }
- else         if (dens >= 0.012f) {
+ else         if (dens >= 0.02) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
-          GenerateInnerLayer(x,y,z,c,type);
+          if (calcCaveDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z)) < 0.0)           GenerateInnerLayer(x,y,z,c,type);
+          continue;
         }
+        firstBlockHeight=-1;
       }
     }
   }

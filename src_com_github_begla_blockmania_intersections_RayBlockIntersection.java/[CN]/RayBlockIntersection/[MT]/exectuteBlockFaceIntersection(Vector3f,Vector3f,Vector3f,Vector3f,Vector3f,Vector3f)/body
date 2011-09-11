@@ -7,8 +7,8 @@
   Vector3f.cross(a,b,norm);
   VectorPool.putVector(a);
   VectorPool.putVector(b);
-  float d=-(norm.x * v0.x + norm.y * v0.y + norm.z * v0.z);
-  float t=-(norm.x * origin.x + norm.y * origin.y + norm.z * origin.z + d) / (Vector3f.dot(ray,norm));
+  double d=-(norm.x * v0.x + norm.y * v0.y + norm.z * v0.z);
+  double t=-(norm.x * origin.x + norm.y * origin.y + norm.z * origin.z + d) / (Vector3f.dot(ray,norm));
   if (t < 0)   return null;
   Vector3f intersectPoint=VectorPool.getVector(ray.x * t,ray.y * t,ray.z * t);
   Vector3f.add(intersectPoint,origin,intersectPoint);

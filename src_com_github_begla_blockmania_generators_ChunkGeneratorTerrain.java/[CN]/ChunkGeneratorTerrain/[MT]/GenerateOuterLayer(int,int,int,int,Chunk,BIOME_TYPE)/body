@@ -1,5 +1,5 @@
 {
-  float heightPercentage=(float)(firstBlockHeight - y) / Configuration.CHUNK_DIMENSIONS.y;
+  double heightPercentage=(firstBlockHeight - y) / Configuration.CHUNK_DIMENSIONS.y;
 switch (type) {
 case PLAINS:
 case MOUNTAINS:
@@ -7,22 +7,22 @@ case MOUNTAINS:
       c.setBlock(x,y,z,(byte)0x7);
       break;
     }
-  if (heightPercentage == 0f && y > 32) {
+  if (heightPercentage == 0 && y > 32) {
     c.setBlock(x,y,z,(byte)0x1);
   }
- else   if (heightPercentage > 0.2) {
+ else   if (heightPercentage > 0.02) {
     c.setBlock(x,y,z,(byte)0x3);
   }
  else {
     c.setBlock(x,y,z,(byte)0x2);
   }
-generateRiver(c,x,y,z,heightPercentage,type);
+if (type == BIOME_TYPE.PLAINS) generateRiver(c,x,y,z,heightPercentage,type);
 break;
 case SNOW:
-if (heightPercentage == 0.0f && y > 32) {
+if (heightPercentage == 0.0 && y > 32) {
 c.setBlock(x,y,z,(byte)0x17);
 }
- else if (heightPercentage > 0.2) {
+ else if (heightPercentage > 0.02) {
 c.setBlock(x,y,z,(byte)0x3);
 }
  else {
