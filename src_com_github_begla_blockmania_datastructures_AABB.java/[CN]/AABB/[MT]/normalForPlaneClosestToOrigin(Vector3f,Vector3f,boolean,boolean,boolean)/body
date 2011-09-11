@@ -1,13 +1,13 @@
 {
   FastList<Vector3f> normals=new FastList<Vector3f>();
-  if (pointOnAABB.z == minZ() && testZ)   normals.add(VectorPool.getVector(0,0,-1));
-  if (pointOnAABB.z == maxZ() && testZ)   normals.add(VectorPool.getVector(0,0,1));
-  if (pointOnAABB.x == minX() && testX)   normals.add(VectorPool.getVector(-1,0,0));
-  if (pointOnAABB.x == maxX() && testX)   normals.add(VectorPool.getVector(1,0,0));
-  if (pointOnAABB.y == minY() && testY)   normals.add(VectorPool.getVector(0,-1,0));
-  if (pointOnAABB.y == maxY() && testY)   normals.add(VectorPool.getVector(0,1,0));
+  if (pointOnAABB.z == minZ() && testZ)   normals.add(new Vector3f(0,0,-1));
+  if (pointOnAABB.z == maxZ() && testZ)   normals.add(new Vector3f(0,0,1));
+  if (pointOnAABB.x == minX() && testX)   normals.add(new Vector3f(-1,0,0));
+  if (pointOnAABB.x == maxX() && testX)   normals.add(new Vector3f(1,0,0));
+  if (pointOnAABB.y == minY() && testY)   normals.add(new Vector3f(0,-1,0));
+  if (pointOnAABB.y == maxY() && testY)   normals.add(new Vector3f(0,1,0));
   double minDistance=Double.MAX_VALUE;
-  Vector3f closestNormal=VectorPool.getVector();
+  Vector3f closestNormal=new Vector3f();
   for (  Vector3f v : normals) {
     double distance=Vector3f.sub(centerPointForNormal(v),origin,null).length();
     if (distance < minDistance) {

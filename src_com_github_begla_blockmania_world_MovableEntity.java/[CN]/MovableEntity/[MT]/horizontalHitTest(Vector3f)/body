@@ -1,0 +1,29 @@
+{
+  boolean result=false;
+  FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
+  for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
+    byte blockType=_parent.getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
+    AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
+    if (!Block.getBlockForType(blockType).isPenetrable()) {
+      if (getAABB().overlaps(blockAABB)) {
+        result=true;
+        Vector3f direction=new Vector3f(getPosition().x,0f,getPosition().z);
+        direction.x-=origin.x;
+        direction.z-=origin.z;
+        Vector3f blockPoi=blockAABB.closestPointOnAABBToPoint(origin);
+        Vector3f entityPoi=generateAABBForPosition(origin).closestPointOnAABBToPoint(blockPoi);
+        Vector3f planeNormal=blockAABB.normalForPlaneClosestToOrigin(blockPoi,origin,true,false,true);
+        Vector3f slideVector=new Vector3f(planeNormal.z,0,-planeNormal.x);
+        Vector3f pushBack=new Vector3f();
+        Vector3f.sub(blockPoi,entityPoi,pushBack);
+        double length=Vector3f.dot(slideVector,direction);
+        Vector3f newPosition=new Vector3f();
+        newPosition.z=(float)(origin.z + pushBack.z * 0.2 + length * slideVector.z);
+        newPosition.x=(float)(origin.x + pushBack.x * 0.2 + length * slideVector.x);
+        newPosition.y=origin.y;
+        getPosition().set(newPosition);
+      }
+    }
+  }
+  return result;
+}

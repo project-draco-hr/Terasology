@@ -1,0 +1,10 @@
+{
+  if (Configuration.getSettingBoolean("DEBUG_COLLISION")) {
+    getAABB().render();
+    FastList<BlockPosition> blocks=gatherAdjacentBlockPositions(getPosition());
+    for (    BlockPosition p : blocks) {
+      AABB blockAABB=Block.AABBForBlockAt(p.x,p.y,p.z);
+      blockAABB.render();
+    }
+  }
+}

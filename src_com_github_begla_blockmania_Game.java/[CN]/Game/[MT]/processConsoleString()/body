@@ -51,7 +51,7 @@
       int x=Integer.parseInt(parsingResult.get(1));
       int y=Integer.parseInt(parsingResult.get(2));
       int z=Integer.parseInt(parsingResult.get(3));
-      _player.setPosition(VectorPool.getVector(x,y,z));
+      _player.setPosition(new Vector3f(x,y,z));
       success=true;
     }
  else     if (parsingResult.get(0).equals("exit")) {
@@ -73,7 +73,7 @@
       if (parsingResult.size() > 1) {
         worldSeed=parsingResult.get(1);
       }
-      initNewWorld(worldSeed,worldSeed);
+      initNewWorldAndPlayer(worldSeed,worldSeed);
       success=true;
     }
  else     if (parsingResult.get(0).equals("chunk_pos")) {

@@ -1,12 +1,7 @@
 {
-  double dx=Mouse.getDX();
-  double dy=Mouse.getDY();
-  yaw(dx * Configuration.MOUSE_SENS);
-  pitch(dy * Configuration.MOUSE_SENS);
-  updateSwimStatus();
-  processMovement();
-  updatePlayerPosition();
-  _viewingDirection.set((float)(Math.sin(Math.toRadians(_yaw)) * Math.cos(Math.toRadians(_pitch))),(float)-Math.sin(Math.toRadians(_pitch)),(float)(-Math.cos(Math.toRadians(_pitch)) * Math.cos(Math.toRadians(_yaw))));
-  _viewingDirection.normalise();
-  _movement.set(0,0,0);
+  _godMode=Configuration.getSettingBoolean("GOD_MODE");
+  _walkingSpeed=Configuration.getSettingNumeric("WALKING_SPEED");
+  _runningFactor=Configuration.getSettingNumeric("RUNNING_FACTOR");
+  _jumpIntensity=Configuration.getSettingNumeric("JUMP_INTENSITY");
+  super.update();
 }
