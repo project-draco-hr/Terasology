@@ -8,30 +8,34 @@
     return;
   }
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
-    byte currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
+    byte oldBlock=c.getBlock(blockPosX,y,blockPosZ);
+    byte newBlock=oldBlock;
     if (Block.getBlockForType(c.getBlock(blockPosX,y,blockPosZ)).isRemovable()) {
       c.setBlock(blockPosX,y,blockPosZ,type);
+      newBlock=type;
     }
-    if (update) {
+ else {
+      return;
+    }
+    if (updateLight) {
       c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,true,true);
-      byte newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.SUN);
-      byte luminance=Block.getBlockForType(type).getLuminance();
-      if (luminance > 0) {
-        currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+      byte blockLightPrev=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+      byte blockLightCurrent=blockLightPrev;
+      if (oldBlock == 0x0 && newBlock != 0x0) {
+        byte luminance=Block.getBlockForType(type).getLuminance();
         c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
-        newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+        blockLightCurrent=luminance;
       }
  else {
-        currentValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
         c.setLight(blockPosX,y,blockPosZ,(byte)0x0,Chunk.LIGHT_TYPE.BLOCK);
-        newValue=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
+        c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
+        blockLightCurrent=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
       }
-      c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
-      if (newValue > currentValue) {
-        c.spreadLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
+      if (blockLightCurrent > blockLightPrev) {
+        c.spreadLight(blockPosX,y,blockPosZ,blockLightCurrent,Chunk.LIGHT_TYPE.BLOCK);
       }
- else       if (newValue < currentValue) {
-        c.unspreadLight(blockPosX,y,blockPosZ,currentValue,Chunk.LIGHT_TYPE.BLOCK);
+ else       if (blockLightCurrent < blockLightPrev) {
+        c.unspreadLight(blockPosX,y,blockPosZ,blockLightPrev,Chunk.LIGHT_TYPE.BLOCK);
       }
     }
   }
