@@ -24,14 +24,14 @@
           }
         }
         double dens=densityMap[x][y][z];
-        if ((dens >= 0.008 && dens < 0.02)) {
+        if ((dens >= 0.008 && dens < 0.01)) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
           GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
           continue;
         }
- else         if (dens >= 0.02) {
+ else         if (dens >= 0.01) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
-          if (calcCaveDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z)) < 0.0)           GenerateInnerLayer(x,y,z,c,type);
+          if (calcCaveDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z)) > -0.2)           GenerateInnerLayer(x,y,z,c,type);
           continue;
         }
         firstBlockHeight=-1;
