@@ -4,6 +4,11 @@ synchronized (_updateThread) {
     _updateThreadAlive=false;
     _updateThread.notify();
   }
+  try {
+    _updateThread.join();
+  }
+ catch (  InterruptedException e) {
+  }
   saveMetaData();
-  _chunkCache.writeAllChunksToDisk();
+  _chunkCache.saveAndDisposeAllChunks();
 }

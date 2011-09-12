@@ -1,0 +1,9 @@
+{
+  for (FastMap.Entry<Integer,Chunk> e=_chunkCache.head(), end=_chunkCache.tail(); (e=e.getNext()) != end; ) {
+    e.getValue().setCached(false);
+    e.getValue().writeChunkToDisk();
+    e.getValue().disposeChunk();
+  }
+  disposeUnusedChunks();
+  _chunkCache.clear();
+}

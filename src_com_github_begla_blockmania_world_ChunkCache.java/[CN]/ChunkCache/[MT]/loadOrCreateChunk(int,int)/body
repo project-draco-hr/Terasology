@@ -1,15 +1,11 @@
 {
   Chunk c;
-synchronized (this) {
-    c=_chunkCache.get(Integer.valueOf(MathHelper.cantorize(x,z)));
-  }
+  c=_chunkCache.get(Integer.valueOf(MathHelper.cantorize(x,z)));
   if (c != null) {
     return c;
   }
   c=_parent.prepareNewChunk(x,z);
-synchronized (this) {
-    _chunkCache.put(c.getChunkId(),c);
-    c.setCached(true);
-  }
+  _chunkCache.put(c.getChunkId(),c);
+  c.setCached(true);
   return c;
 }

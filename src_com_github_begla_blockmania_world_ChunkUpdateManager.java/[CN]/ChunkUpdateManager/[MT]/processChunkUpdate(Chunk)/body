@@ -1,13 +1,10 @@
 {
   if (c != null) {
-    if (!c.isDirty() && !c.isFresh() && !c.isLightDirty()) {
-      return;
-    }
     c.generate();
     Chunk[] neighbors=c.loadOrCreateNeighbors();
-    for (    Chunk neighbor : neighbors) {
-      if (neighbor != null) {
-        neighbor.generate();
+    for (int i=0; i < neighbors.length; i++) {
+      if (neighbors[i] != null) {
+        neighbors[i].generate();
       }
     }
     if (c.isLightDirty()) {

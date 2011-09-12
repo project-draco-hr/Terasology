@@ -22,7 +22,7 @@
   _objectGenerators.put("firTree",new ObjectGeneratorFirTree(this,_seed));
   _objectGenerators.put("cactus",new ObjectGeneratorCactus(this,_seed));
   _rand=new FastRandom(seed.hashCode());
-  _visibleChunks=new FastSet();
+  _visibleChunks=new FastList<Chunk>();
   _updateThread=new Thread(new Runnable(){
     public void run(){
       while (true) {
@@ -40,7 +40,7 @@ synchronized (_updateThread) {
           }
         }
         _chunkUpdateManager.processChunkUpdates();
-        updateDaytime();
+        _chunkCache.freeCacheSpace();
       }
     }
   }

@@ -1,10 +1,9 @@
 {
+  updateDaytime();
   _player.update();
   _chunkUpdateManager.updateDisplayLists();
   updateClouds();
-  for (  Chunk c : _visibleChunks) {
-    c.update();
-  }
+  for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; )   _visibleChunks.valueOf(n).update();
   updateEntities();
-  _chunkCache.freeCache();
+  _chunkCache.disposeUnusedChunks();
 }
