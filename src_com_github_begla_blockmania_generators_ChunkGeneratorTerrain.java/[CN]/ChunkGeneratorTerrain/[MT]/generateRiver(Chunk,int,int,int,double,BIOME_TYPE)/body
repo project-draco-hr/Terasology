@@ -1,10 +1,10 @@
 {
   if (y <= 32)   return;
-  double lakeIntens=calcLakeIntensity(x + getOffsetX(c),z + getOffsetZ(c));
-  if (lakeIntens < 0.15 && heightPercentage < 0.015) {
+  double lakeIntens=calcLakeIntensity(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+  if (lakeIntens < 0.2 && heightPercentage < 0.015) {
     c.setBlock(x,y,z,(byte)0x0);
   }
- else   if (lakeIntens < 0.15 && heightPercentage >= 0.015 && heightPercentage < 0.05) {
+ else   if (lakeIntens < 0.2 && heightPercentage >= 0.015 && heightPercentage < 0.05) {
     if (type == BIOME_TYPE.SNOW) {
       c.setBlock(x,y,z,(byte)0x11);
     }

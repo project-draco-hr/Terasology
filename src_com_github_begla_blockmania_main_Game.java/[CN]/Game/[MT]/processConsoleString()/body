@@ -64,20 +64,12 @@
       _runGame=false;
       success=true;
     }
- else     if (parsingResult.get(0).equals("info")) {
-      Game.getInstance().getLogger().log(Level.INFO,_player.selectedBlockInformation());
-      success=true;
-    }
  else     if (parsingResult.get(0).equals("load")) {
       String worldSeed=_rand.randomCharacterString(16);
       if (parsingResult.size() > 1) {
         worldSeed=parsingResult.get(1);
       }
       initNewWorldAndPlayer(worldSeed,worldSeed);
-      success=true;
-    }
- else     if (parsingResult.get(0).equals("chunk_pos")) {
-      _world.printPlayerChunkPosition();
       success=true;
     }
  else     if (parsingResult.get(0).equals("set_spawn")) {

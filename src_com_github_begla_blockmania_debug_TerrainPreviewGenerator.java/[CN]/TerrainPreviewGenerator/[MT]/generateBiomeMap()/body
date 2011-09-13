@@ -1,0 +1,32 @@
+{
+  BufferedImage image=new BufferedImage(1024,1024,BufferedImage.TYPE_INT_RGB);
+  Graphics2D g=image.createGraphics();
+  for (int x=-512; x < 512; x++) {
+    for (int y=-512; y < 512; y++) {
+      BIOME_TYPE n=calcBiomeType(x * zoomOut,y * zoomOut);
+      Color color=Color.BLACK;
+switch (n) {
+case PLAINS:
+        color=Color.BLUE;
+      break;
+case MOUNTAINS:
+    color=Color.RED;
+  break;
+case SNOW:
+color=Color.WHITE;
+break;
+case DESERT:
+color=Color.YELLOW;
+break;
+}
+g.setColor(color);
+g.fillRect(x + 512,y + 512,1,1);
+}
+}
+try {
+ImageIO.write(image,"png",new File("BiomeMap.png"));
+}
+ catch (IOException e) {
+e.printStackTrace();
+}
+}

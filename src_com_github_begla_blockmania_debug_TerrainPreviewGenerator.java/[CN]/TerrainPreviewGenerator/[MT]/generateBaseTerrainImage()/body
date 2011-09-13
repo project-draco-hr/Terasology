@@ -1,0 +1,20 @@
+{
+  BufferedImage image=new BufferedImage(1024,1024,BufferedImage.TYPE_INT_RGB);
+  Graphics2D g=image.createGraphics();
+  for (int x=-512; x < 512; x++) {
+    for (int y=-512; y < 512; y++) {
+      double n=calcBaseTerrain(x * zoomOut,y * zoomOut);
+      int color=(int)(n * 255.0);
+      color=(color > 255) ? 255 : color;
+      color=(color < 0) ? 0 : color;
+      g.setColor(new Color(color,color,color));
+      g.fillRect(x + 512,y + 512,1,1);
+    }
+  }
+  try {
+    ImageIO.write(image,"png",new File("BaseTerrain.png"));
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+}

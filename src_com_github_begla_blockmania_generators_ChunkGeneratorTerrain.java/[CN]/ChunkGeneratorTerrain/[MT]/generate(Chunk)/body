@@ -2,8 +2,9 @@
   double[][][] densityMap=new double[(int)Configuration.CHUNK_DIMENSIONS.x + 1][(int)Configuration.CHUNK_DIMENSIONS.y + 1][(int)Configuration.CHUNK_DIMENSIONS.z + 1];
   for (int x=0; x <= Configuration.CHUNK_DIMENSIONS.x; x+=SAMPLE_RATE_3D_HOR) {
     for (int z=0; z <= Configuration.CHUNK_DIMENSIONS.z; z+=SAMPLE_RATE_3D_HOR) {
+      BIOME_TYPE type=calcBiomeType(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
       for (int y=0; y <= Configuration.CHUNK_DIMENSIONS.y; y+=SAMPLE_RATE_3D_VERT) {
-        densityMap[x][y][z]=calcDensity(x + getOffsetX(c),y + getOffsetY(c),z + getOffsetZ(c));
+        densityMap[x][y][z]=calcDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z),type);
       }
     }
   }
@@ -31,7 +32,7 @@
         }
  else         if (dens >= 0.01) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
-          if (calcCaveDensity(c.getBlockWorldPosX(x),c.getBlockWorldPosY(y),c.getBlockWorldPosZ(z)) > -0.2)           GenerateInnerLayer(x,y,z,c,type);
+          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6)           GenerateInnerLayer(x,y,z,c,type);
           continue;
         }
         firstBlockHeight=-1;

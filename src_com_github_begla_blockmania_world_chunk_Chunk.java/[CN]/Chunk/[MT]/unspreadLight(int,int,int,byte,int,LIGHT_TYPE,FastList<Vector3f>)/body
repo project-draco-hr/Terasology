@@ -1,16 +1,15 @@
 {
   int blockPosX=getBlockWorldPosX(x);
-  int blockPosY=getBlockWorldPosY(y);
   int blockPosZ=getBlockWorldPosZ(z);
-  getParent().setLight(blockPosX,blockPosY,blockPosZ,(byte)0x0,type);
+  getParent().setLight(blockPosX,y,blockPosZ,(byte)0x0,type);
   for (int i=0; i < 6; i++) {
-    byte neighborValue=getParent().getLight(blockPosX + (int)_lightDirections[i].x,blockPosY + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,type);
-    byte neighborType=getParent().getBlock(blockPosX + (int)_lightDirections[i].x,blockPosY + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z);
+    byte neighborValue=getParent().getLight(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,type);
+    byte neighborType=getParent().getBlock(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z);
     if (neighborValue < lightValue && neighborValue > 0 && Block.getBlockForType(neighborType).isBlockTypeTranslucent()) {
-      getParent().unspreadLight(blockPosX + (int)_lightDirections[i].x,blockPosY + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,(byte)(lightValue - 1),depth + 1,type,brightSpots);
+      getParent().unspreadLight(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,(byte)(lightValue - 1),depth + 1,type,brightSpots);
     }
  else     if (neighborValue >= lightValue) {
-      brightSpots.add(new Vector3f(blockPosX + (int)_lightDirections[i].x,blockPosY + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z));
+      brightSpots.add(new Vector3f(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z));
     }
   }
 }
