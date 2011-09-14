@@ -1,12 +1,20 @@
 {
   ChunkMesh.VertexElements vertexElements=mesh._vertexElements[0];
-  if (renderType == RENDER_TYPE.TRANS) {
+switch (renderType) {
+case BILLBOARD_AND_TRANSLUCENT:
     vertexElements=mesh._vertexElements[1];
-  }
+  break;
+case WATER:
+vertexElements=mesh._vertexElements[3];
+break;
+case LAVA:
+vertexElements=mesh._vertexElements[4];
+break;
+}
 switch (blockForm) {
 case CACTUS:
-    generateCactusSide(p1,p2,p3,p4,norm);
-  break;
+generateCactusSide(p1,p2,p3,p4,norm);
+break;
 case LOWERED_BOCK:
 generateLoweredBlock(x,y,z,p1,p2,p3,p4,norm);
 break;

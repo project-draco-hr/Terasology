@@ -2,6 +2,8 @@
   glEnable(GL_BLEND);
   GL11.glBlendFunc(770,771);
   ShaderManager.getInstance().enableShader("cloud");
+  int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("cloud"),"daylight");
+  GL20.glUniform1f(daylight,(float)_parent.getDaylight());
   for (int i=0; i < 2; i++) {
     if (i == 0) {
       glColorMask(false,false,false,false);

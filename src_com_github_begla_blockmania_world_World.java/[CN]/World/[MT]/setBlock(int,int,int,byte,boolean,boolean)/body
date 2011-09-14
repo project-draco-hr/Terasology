@@ -5,7 +5,7 @@
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
   Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
   if (c == null) {
-    return;
+    return false;
   }
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
     byte oldBlock=c.getBlock(blockPosX,y,blockPosZ);
@@ -15,7 +15,7 @@
       newBlock=type;
     }
  else {
-      return;
+      return false;
     }
     if (updateLight) {
       c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,true,true);
@@ -39,4 +39,5 @@
       }
     }
   }
+  return true;
 }
