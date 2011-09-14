@@ -2,7 +2,7 @@
   ShaderManager.getInstance().enableShader("chunk");
   glEnable(GL_TEXTURE_2D);
   TextureManager.getInstance().bindTexture("terrain");
-  _visibleChunks=fetchVisibleChunks();
+  updateVisibleChunks();
   for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
     Chunk c=_visibleChunks.valueOf(n);
     c.render(false);
