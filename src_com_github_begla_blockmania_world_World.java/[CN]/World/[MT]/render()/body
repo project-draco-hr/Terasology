@@ -11,8 +11,8 @@
     glEnable(GL_DEPTH_TEST);
   }
   _player.applyPlayerModelViewMatrix();
-  renderSunMoon();
-  if (!_player.isHeadUnderWater())   renderClouds();
+  _sunMoon.render();
+  if (!_player.isHeadUnderWater())   _clouds.render();
   _player.render();
   ShaderManager.getInstance().enableShader("chunk");
   int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
