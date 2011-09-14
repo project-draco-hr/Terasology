@@ -1,5 +1,5 @@
 {
-  if (Game.getInstance().isSandboxed()) {
+  if (Blockmania.getInstance().isSandboxed()) {
     return false;
   }
   ByteBuffer input=BufferUtils.createByteBuffer(_blocks.getSize() + _sunlight.getPackedSize() + _light.getPackedSize()+ 1);
@@ -11,15 +11,15 @@
     FileInputStream iS=new FileInputStream(f);
     FileChannel c=iS.getChannel();
     c.read(input);
-    Game.getInstance().getLogger().log(Level.FINE,"Loaded chunk {0} from disk.",this);
+    Blockmania.getInstance().getLogger().log(Level.FINE,"Loaded chunk {0} from disk.",this);
     iS.close();
   }
  catch (  FileNotFoundException ex) {
-    Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
     return false;
   }
 catch (  IOException ex) {
-    Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
     return false;
   }
   input.rewind();

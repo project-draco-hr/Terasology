@@ -1,0 +1,27 @@
+{
+  Blockmania.getInstance().addLogFileHandler("blockmania.log",Level.SEVERE);
+  Blockmania.getInstance().getLogger().log(Level.INFO,"Welcome to {0}!",Configuration.GAME_TITLE);
+  try {
+    loadNativeLibs();
+  }
+ catch (  Exception e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,"Couldn't link static libraries. Sorry: " + e);
+  }
+  Blockmania blockmania=null;
+  try {
+    blockmania=Blockmania.getInstance();
+    blockmania.initDisplay();
+    blockmania.initControls();
+    blockmania.initGame();
+    blockmania.startGame();
+  }
+ catch (  Exception ex) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,ex.toString(),ex);
+  }
+ finally {
+    if (blockmania != null) {
+      blockmania.destroy();
+    }
+  }
+  System.exit(0);
+}

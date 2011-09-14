@@ -2,13 +2,13 @@
   if (_fresh) {
     return false;
   }
-  if (Game.getInstance().isSandboxed()) {
+  if (Blockmania.getInstance().isSandboxed()) {
     return false;
   }
   File dir=new File(_parent.getWorldSavePath());
   if (!dir.exists()) {
     if (!dir.mkdirs()) {
-      Game.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
+      Blockmania.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
       return false;
     }
   }
@@ -27,15 +27,15 @@
     FileOutputStream oS=new FileOutputStream(f);
     FileChannel c=oS.getChannel();
     c.write(output);
-    Game.getInstance().getLogger().log(Level.FINE,"Wrote chunk {0} to disk.",this);
+    Blockmania.getInstance().getLogger().log(Level.FINE,"Wrote chunk {0} to disk.",this);
     oS.close();
   }
  catch (  FileNotFoundException ex) {
-    Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
     return false;
   }
 catch (  IOException ex) {
-    Game.getInstance().getLogger().log(Level.SEVERE,null,ex);
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
     return false;
   }
   return true;

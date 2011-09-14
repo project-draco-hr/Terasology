@@ -3,9 +3,9 @@
   if (distanceToPlayer > 5 && distanceToPlayer < 32) {
     _movementTarget.set(_parent.getPlayer().getPosition());
   }
-  if (Game.getInstance().getTime() - _lastChangeOfDirectionAt > 5000 || distanceToPlayer <= 5) {
+  if (Blockmania.getInstance().getTime() - _lastChangeOfDirectionAt > 5000 || distanceToPlayer <= 5) {
     _movementTarget.set((float)(getPosition().x + _rand.randomDouble() * 500),getPosition().y,(float)(getPosition().z + _rand.randomDouble() * 500));
-    _lastChangeOfDirectionAt=Game.getInstance().getTime();
+    _lastChangeOfDirectionAt=Blockmania.getInstance().getTime();
   }
   lookAt(_movementTarget);
   walkForward();
