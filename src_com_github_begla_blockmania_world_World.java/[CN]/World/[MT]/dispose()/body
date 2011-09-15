@@ -1,5 +1,5 @@
 {
-  Blockmania.getInstance().getLogger().log(Level.INFO,"Disposing world {0} and saving all chunks.",_title);
+  Blockmania.getInstance().getLogger().log(Level.INFO,"Disposing world {0} and saving all chunks.",getTitle());
 synchronized (_updateThread) {
     _updateThreadAlive=false;
     _updateThread.notify();
@@ -10,5 +10,5 @@ synchronized (_updateThread) {
  catch (  InterruptedException e) {
   }
   saveMetaData();
-  _chunkCache.saveAndDisposeAllChunks();
+  getChunkCache().saveAndDisposeAllChunks();
 }

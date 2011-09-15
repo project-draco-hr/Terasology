@@ -1,20 +1,8 @@
 {
-  if (_player == null)   return;
-  if (!_player.isHeadUnderWater()) {
-    _player.applyNormalizedModelViewMatrix();
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-    glBegin(GL_QUADS);
-    Primitives.drawSkyBox(getDaylight());
-    glEnd();
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-  }
+  _skysphere.render();
   _player.applyPlayerModelViewMatrix();
-  _sunMoon.render();
   if (!_player.isHeadUnderWater())   _clouds.render();
   _player.render();
-  renderEntities();
   renderChunks();
   renderParticleEmitters();
 }

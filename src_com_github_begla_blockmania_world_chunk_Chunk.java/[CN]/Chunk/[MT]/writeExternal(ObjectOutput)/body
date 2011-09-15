@@ -1,0 +1,10 @@
+{
+  byte flags=0x0;
+  if (_lightDirty) {
+    flags=Helper.setFlag(flags,(short)0);
+  }
+  out.writeByte(flags);
+  for (int i=0; i < _blocks.getSize(); i++)   out.writeByte(_blocks.getRawByte(i));
+  for (int i=0; i < _sunlight.getPackedSize(); i++)   out.writeByte(_sunlight.getRawByte(i));
+  for (int i=0; i < _light.getPackedSize(); i++)   out.writeByte(_light.getRawByte(i));
+}

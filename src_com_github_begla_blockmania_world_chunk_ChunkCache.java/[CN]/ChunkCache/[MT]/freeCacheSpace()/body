@@ -8,7 +8,7 @@
     Chunk chunkToDelete=cachedChunks.removeLast();
     _chunkCache.remove(chunkToDelete.getChunkId());
     chunkToDelete.setCached(false);
-    chunkToDelete.writeChunkToDisk();
-    _disposableChunks.add(chunkToDelete);
+    writeChunkToDisk(chunkToDelete);
+    chunkToDelete.freeBuffers();
   }
 }

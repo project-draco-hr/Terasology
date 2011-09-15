@@ -1,6 +1,6 @@
 {
   glEnable(GL_BLEND);
-  GL11.glBlendFunc(770,771);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   ShaderManager.getInstance().enableShader("cloud");
   int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("cloud"),"daylight");
   GL20.glUniform1f(daylight,(float)_parent.getDaylight());
@@ -11,12 +11,10 @@
  else {
       glColorMask(true,true,true,true);
     }
-    if (_dlClouds > 0 && _parent.isDaytime()) {
-      glPushMatrix();
-      glTranslatef(_parent.getPlayer().getPosition().x + _cloudOffset.x,140f,_parent.getPlayer().getPosition().z + _cloudOffset.y);
-      glCallList(_dlClouds);
-      glPopMatrix();
-    }
+    glPushMatrix();
+    glTranslatef(_parent.getPlayer().getPosition().x + _cloudOffset.x,190f,_parent.getPlayer().getPosition().z + _cloudOffset.y);
+    glCallList(_dlClouds);
+    glPopMatrix();
   }
   ShaderManager.getInstance().enableShader(null);
   glDisable(GL_BLEND);

@@ -1,10 +1,13 @@
 {
-  Chunk c;
-  c=_chunkCache.get(Integer.valueOf(MathHelper.cantorize(x,z)));
+  int chunkId=Chunk.idForPosition(new Vector3f(x,0,z));
+  Chunk c=_chunkCache.get(chunkId);
   if (c != null) {
     return c;
   }
-  c=_parent.prepareNewChunk(x,z);
+  c=loadChunkFromDisk(chunkId);
+  if (c == null) {
+    c=new Chunk(_parent,new Vector3f(x,0,z));
+  }
   _chunkCache.put(c.getChunkId(),c);
   c.setCached(true);
   return c;

@@ -2,9 +2,9 @@
   _visibleChunks.clear();
   for (int x=-(Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x < (Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x++) {
     for (int z=-(Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z < (Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z++) {
-      Chunk c=_chunkCache.loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
+      Chunk c=getChunkCache().loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
       if (c != null) {
-        if (c.isChunkInFrustum()) {
+        if (getPlayer().getViewFrustum().intersects(c.getAABB())) {
           _visibleChunks.add(c);
         }
       }

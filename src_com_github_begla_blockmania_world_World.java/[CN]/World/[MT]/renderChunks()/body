@@ -15,7 +15,7 @@
     TextureManager.getInstance().bindTexture("terrain");
     c.render(ChunkMesh.RENDER_TYPE.OPAQUE);
     GL20.glUniform1i(animationType,1);
-    GL20.glUniform1f(animationOffset,((float)(_textureAnimationTick % 16)) * (1.0f / 16f));
+    GL20.glUniform1f(animationOffset,((float)(_tick % 16)) * (1.0f / 16f));
     TextureManager.getInstance().bindTexture("custom_lava_still");
     _visibleChunks.valueOf(n).render(ChunkMesh.RENDER_TYPE.LAVA);
     if (Configuration.getSettingBoolean("CHUNK_OUTLINES")) {
@@ -36,7 +36,7 @@
  else {
         glColorMask(true,true,true,true);
       }
-      GL20.glUniform1f(animationOffset,((float)(_textureAnimationTick / 2 % 12)) * (1.0f / 16f));
+      GL20.glUniform1f(animationOffset,((float)(_tick / 2 % 12)) * (1.0f / 16f));
       TextureManager.getInstance().bindTexture("custom_water_still");
       _visibleChunks.valueOf(n).render(ChunkMesh.RENDER_TYPE.WATER);
     }
