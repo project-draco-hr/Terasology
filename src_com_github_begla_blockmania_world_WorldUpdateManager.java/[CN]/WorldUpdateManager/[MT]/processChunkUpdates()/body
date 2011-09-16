@@ -1,6 +1,6 @@
 {
   long timeStart=System.currentTimeMillis();
-  FastList<Chunk> dirtyChunks=new FastList<Chunk>(_parent.getVisibleChunks());
+  final FastList<Chunk> dirtyChunks=new FastList<Chunk>(_parent.getVisibleChunks());
   for (int i=dirtyChunks.size() - 1; i >= 0; i--) {
     Chunk c=dirtyChunks.get(i);
     if (c == null) {
@@ -11,10 +11,33 @@
       dirtyChunks.remove(i);
     }
   }
-  if (!dirtyChunks.isEmpty()) {
-    Collections.sort(dirtyChunks);
-    Chunk closestChunk=dirtyChunks.getFirst();
-    processChunkUpdate(closestChunk);
+  Collections.sort(dirtyChunks);
+  if (dirtyChunks.isEmpty()) {
+    return;
+  }
+  final Chunk chunkToProcess=dirtyChunks.removeFirst();
+  if (!_currentlyProcessedChunks.contains(chunkToProcess)) {
+    _currentlyProcessedChunks.add(chunkToProcess);
+    Thread t=new Thread(){
+      @Override public void run(){
+synchronized (_currentlyProcessedChunks) {
+          if (_currentlyProcessedChunks.size() > Runtime.getRuntime().availableProcessors() / 2) {
+            try {
+              _currentlyProcessedChunks.wait();
+            }
+ catch (            InterruptedException e) {
+            }
+          }
+        }
+        processChunkUpdate(chunkToProcess);
+synchronized (_currentlyProcessedChunks) {
+          _currentlyProcessedChunks.remove(chunkToProcess);
+          _currentlyProcessedChunks.notify();
+        }
+      }
+    }
+;
+    t.start();
   }
   _chunkUpdateAmount=dirtyChunks.size();
   _meanUpdateDuration+=System.currentTimeMillis() - timeStart;
