@@ -1,0 +1,14 @@
+{
+  if (prevChunkPosX != calcPlayerChunkOffsetX() || prevChunkPosZ != calcPlayerChunkOffsetZ()) {
+    prevChunkPosX=calcPlayerChunkOffsetX();
+    prevChunkPosZ=calcPlayerChunkOffsetZ();
+    FastList<Chunk> newChunksInProximity=new FastList<Chunk>();
+    for (int x=-(Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x < (Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x++) {
+      for (int z=-(Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z < (Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z++) {
+        Chunk c=getChunkCache().loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
+        newChunksInProximity.add(c);
+      }
+    }
+    _chunksInProximity=newChunksInProximity;
+  }
+}

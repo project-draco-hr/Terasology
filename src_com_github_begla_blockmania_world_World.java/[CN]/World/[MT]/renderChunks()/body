@@ -7,28 +7,31 @@
   GL20.glUniform1f(daylight,(float)getDaylight());
   GL20.glUniform1i(animationType,0);
   GL20.glUniform1i(swimmimg,_player.isHeadUnderWater() ? 1 : 0);
+  FastList<Chunk> visibleChunks=fetchVisibleChunks();
   glEnable(GL_TEXTURE_2D);
-  for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    Chunk c=_visibleChunks.valueOf(n);
+  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    Chunk c=n.getValue();
     GL20.glUniform1i(animationType,0);
     TextureManager.getInstance().bindTexture("terrain");
     c.render(ChunkMesh.RENDER_TYPE.OPAQUE);
     GL20.glUniform1i(animationType,1);
     GL20.glUniform1f(animationOffset,((float)(_tick % 16)) * (1.0f / 16f));
     TextureManager.getInstance().bindTexture("custom_lava_still");
-    _visibleChunks.valueOf(n).render(ChunkMesh.RENDER_TYPE.LAVA);
+    visibleChunks.valueOf(n).render(ChunkMesh.RENDER_TYPE.LAVA);
     if (Configuration.getSettingBoolean("CHUNK_OUTLINES")) {
       c.getAABB().render();
     }
   }
   GL20.glUniform1i(animationType,0);
   TextureManager.getInstance().bindTexture("terrain");
-  for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    _visibleChunks.valueOf(n).render(ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT);
+  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    Chunk c=n.getValue();
+    c.render(ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT);
   }
   GL20.glUniform1i(animationType,1);
   for (int i=0; i < 2; i++) {
-    for (FastSet.Record n=_visibleChunks.head(), end=_visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
+      Chunk c=n.getValue();
       if (i == 0) {
         glColorMask(false,false,false,false);
       }
@@ -37,7 +40,7 @@
       }
       GL20.glUniform1f(animationOffset,((float)(_tick / 2 % 12)) * (1.0f / 16f));
       TextureManager.getInstance().bindTexture("custom_water_still");
-      _visibleChunks.valueOf(n).render(ChunkMesh.RENDER_TYPE.WATER);
+      c.render(ChunkMesh.RENDER_TYPE.WATER);
     }
   }
   ShaderManager.getInstance().enableShader(null);

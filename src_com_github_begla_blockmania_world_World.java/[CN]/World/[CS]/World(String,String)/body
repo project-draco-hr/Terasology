@@ -1,7 +1,6 @@
 {
   super(title,seed);
   _clouds=new Clouds(this);
-  _sunMoon=new SunMoon(this);
   _skysphere=new Skysphere(this);
   _worldUpdateManager=new WorldUpdateManager(this);
   _updateThread=new Thread(new Runnable(){
@@ -20,7 +19,7 @@ synchronized (_updateThread) {
             }
           }
         }
-        updateVisibleChunks();
+        updateChunksInProximity();
         _worldUpdateManager.processChunkUpdates();
         _chunkCache.freeCacheSpace();
       }
