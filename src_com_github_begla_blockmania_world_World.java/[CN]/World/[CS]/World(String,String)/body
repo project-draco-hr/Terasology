@@ -20,7 +20,9 @@ synchronized (_updateThread) {
             }
           }
         }
+        updateVisibleChunks();
         _worldUpdateManager.processChunkUpdates();
+        _chunkCache.freeCacheSpace();
       }
     }
   }

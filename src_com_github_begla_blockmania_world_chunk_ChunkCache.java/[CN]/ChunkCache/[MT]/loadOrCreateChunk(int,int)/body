@@ -1,14 +1,15 @@
 {
-  int chunkId=Chunk.idForPosition(new Vector3f(x,0,z));
+  int chunkId=MathHelper.cantorize(MathHelper.mapToPositive(x),MathHelper.mapToPositive(z));
   Chunk c=_chunkCache.get(chunkId);
   if (c != null) {
     return c;
   }
-  c=loadChunkFromDisk(chunkId);
+  Vector3f chunkPos=new Vector3f(x,0,z);
+  c=loadChunkFromDisk(chunkPos);
   if (c == null) {
-    c=new Chunk(_parent,new Vector3f(x,0,z));
+    c=new Chunk(_parent,chunkPos);
   }
-  _chunkCache.put(c.getChunkId(),c);
+  _chunkCache.put(chunkId,c);
   c.setCached(true);
   return c;
 }

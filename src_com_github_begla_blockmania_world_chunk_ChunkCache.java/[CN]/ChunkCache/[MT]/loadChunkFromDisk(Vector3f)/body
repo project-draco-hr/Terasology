@@ -1,11 +1,10 @@
 {
-  File f=new File((String.format("%s/%d.bc",_parent.getWorldSavePath(),id)));
+  File f=new File(_parent.getWorldSavePath() + "/" + Chunk.getChunkSavePathForPosition(chunkPos)+ "/"+ Chunk.getChunkFileNameForPosition(chunkPos));
   if (!f.exists())   return null;
   try {
     FileInputStream fileIn=new FileInputStream(f);
     ObjectInputStream in=new ObjectInputStream(fileIn);
     Chunk result=(Chunk)in.readObject();
-    result.setPosition(new Vector3f(Chunk.posXForId(id),0,Chunk.posZForId(id)));
     result.setParent(_parent);
     in.close();
     fileIn.close();

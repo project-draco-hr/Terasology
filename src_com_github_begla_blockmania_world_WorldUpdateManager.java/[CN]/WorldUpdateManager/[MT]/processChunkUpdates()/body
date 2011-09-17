@@ -7,21 +7,21 @@
       dirtyChunks.remove(i);
       continue;
     }
-    if (!(c.isDirty() || c.isFresh() || c.isLightDirty())) {
+    if (!(c.isDirty() || c.isFresh() || c.isLightDirty()) || !_parent.getPlayer().getViewFrustum().intersects(c.getAABB())) {
       dirtyChunks.remove(i);
     }
   }
-  Collections.sort(dirtyChunks);
   if (dirtyChunks.isEmpty()) {
     return;
   }
-  final Chunk chunkToProcess=dirtyChunks.removeFirst();
+  Collections.sort(dirtyChunks);
+  final Chunk chunkToProcess=dirtyChunks.getFirst();
   if (!_currentlyProcessedChunks.contains(chunkToProcess)) {
     _currentlyProcessedChunks.add(chunkToProcess);
     Thread t=new Thread(){
       @Override public void run(){
+        while (_threadCount > Runtime.getRuntime().availableProcessors()) {
 synchronized (_currentlyProcessedChunks) {
-          if (_currentlyProcessedChunks.size() > Runtime.getRuntime().availableProcessors() / 2) {
             try {
               _currentlyProcessedChunks.wait();
             }
@@ -29,9 +29,15 @@ synchronized (_currentlyProcessedChunks) {
             }
           }
         }
-        processChunkUpdate(chunkToProcess);
 synchronized (_currentlyProcessedChunks) {
-          _currentlyProcessedChunks.remove(chunkToProcess);
+          _threadCount++;
+        }
+        processChunkUpdate(chunkToProcess);
+        _currentlyProcessedChunks.remove(chunkToProcess);
+synchronized (_currentlyProcessedChunks) {
+          _threadCount--;
+        }
+synchronized (_currentlyProcessedChunks) {
           _currentlyProcessedChunks.notify();
         }
       }

@@ -1,6 +1,6 @@
 {
-  while (!_vboUpdates.isEmpty()) {
-    Chunk c=_vboUpdates.removeFirst();
-    c.generateVBOs();
+  while (_vboUpdates.size() > 0) {
+    Chunk c=_vboUpdates.poll();
+    if (c != null)     c.generateVBOs();
   }
 }

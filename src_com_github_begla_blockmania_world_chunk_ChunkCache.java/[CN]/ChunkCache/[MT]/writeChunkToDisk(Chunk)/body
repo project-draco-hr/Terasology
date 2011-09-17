@@ -3,14 +3,14 @@
   if (c.isFresh()) {
     return;
   }
-  File dir=new File(_parent.getWorldSavePath());
-  if (!dir.exists()) {
-    if (!dir.mkdirs()) {
+  File dirPath=new File(_parent.getWorldSavePath() + "/" + c.getChunkSavePath());
+  if (!dirPath.exists()) {
+    if (!dirPath.mkdirs()) {
       Blockmania.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
       return;
     }
   }
-  File f=new File((String.format("%s/%d.bc",_parent.getWorldSavePath(),c.getChunkId())));
+  File f=new File(_parent.getWorldSavePath() + "/" + c.getChunkSavePath()+ "/"+ c.getChunkFileName());
   try {
     FileOutputStream fileOut=new FileOutputStream(f);
     ObjectOutputStream out=new ObjectOutputStream(fileOut);

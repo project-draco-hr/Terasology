@@ -4,11 +4,10 @@
   }
   FastList<Chunk> cachedChunks=new FastList<Chunk>(_chunkCache.values());
   Collections.sort(cachedChunks);
-  while (_chunkCache.size() > capacity()) {
-    Chunk chunkToDelete=cachedChunks.removeLast();
-    _chunkCache.remove(chunkToDelete.getChunkId());
+  if (_chunkCache.size() > capacity()) {
+    Chunk chunkToDelete=cachedChunks.getLast();
     chunkToDelete.setCached(false);
     writeChunkToDisk(chunkToDelete);
-    chunkToDelete.freeBuffers();
+    _chunkCache.values().remove(chunkToDelete);
   }
 }
