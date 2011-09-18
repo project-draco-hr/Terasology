@@ -15,7 +15,10 @@
     blockmania.initGame();
     blockmania.startGame();
   }
- catch (  Exception e) {
+ catch (  LWJGLException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
+  }
+catch (  SlickException e) {
     Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
   }
  finally {
