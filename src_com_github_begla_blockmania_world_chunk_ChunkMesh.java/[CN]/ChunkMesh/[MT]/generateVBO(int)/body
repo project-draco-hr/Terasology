@@ -1,7 +1,12 @@
 {
-  _vertexBuffers[id]=VBOManager.getInstance().getVboId();
-  _idxBuffers[id]=VBOManager.getInstance().getVboId();
-  _idxBufferCount[id]=_vertexElements[id].indices.limit();
-  VBOManager.getInstance().bufferVboElementData(_idxBuffers[id],_vertexElements[id].indices,GL15.GL_STATIC_DRAW);
-  VBOManager.getInstance().bufferVboData(_vertexBuffers[id],_vertexElements[id].vertices,GL15.GL_STATIC_DRAW);
+synchronized (this) {
+    if (_disposed) {
+      return;
+    }
+    _vertexBuffers[id]=VBOManager.getInstance().getVboId();
+    _idxBuffers[id]=VBOManager.getInstance().getVboId();
+    _idxBufferCount[id]=_vertexElements[id].indices.limit();
+    VBOManager.getInstance().bufferVboElementData(_idxBuffers[id],_vertexElements[id].indices,GL15.GL_STATIC_DRAW);
+    VBOManager.getInstance().bufferVboData(_vertexBuffers[id],_vertexElements[id].vertices,GL15.GL_STATIC_DRAW);
+  }
 }
