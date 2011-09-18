@@ -5,6 +5,7 @@
   _player.update();
   _worldUpdateManager.updateVBOs();
   _clouds.update();
-  for (FastList.Node<Chunk> n=_chunksInProximity.head(), end=_chunksInProximity.tail(); (n=n.getNext()) != end; )   n.getValue().update();
+  FastList<Chunk> visibleChunks=fetchVisibleChunks();
+  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; )   n.getValue().update();
   updateParticleEmitters();
 }

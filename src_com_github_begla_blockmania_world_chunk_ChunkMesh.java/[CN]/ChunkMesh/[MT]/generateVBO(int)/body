@@ -1,7 +1,7 @@
 {
-  _vertexBuffers[id]=VBOHelper.getInstance().createVboId();
-  _idxBuffers[id]=VBOHelper.getInstance().createVboId();
+  _vertexBuffers[id]=VBOManager.getInstance().getVboId();
+  _idxBuffers[id]=VBOManager.getInstance().getVboId();
   _idxBufferCount[id]=_vertexElements[id].indices.limit();
-  VBOHelper.getInstance().bufferVboElementData(_idxBuffers[id],_vertexElements[id].indices,ARBVertexBufferObject.GL_STATIC_DRAW_ARB);
-  VBOHelper.getInstance().bufferVboData(_vertexBuffers[id],_vertexElements[id].vertices,ARBVertexBufferObject.GL_STATIC_DRAW_ARB);
+  VBOManager.getInstance().bufferVboElementData(_idxBuffers[id],_vertexElements[id].indices,GL15.GL_STATIC_DRAW);
+  VBOManager.getInstance().bufferVboData(_vertexBuffers[id],_vertexElements[id].vertices,GL15.GL_STATIC_DRAW);
 }

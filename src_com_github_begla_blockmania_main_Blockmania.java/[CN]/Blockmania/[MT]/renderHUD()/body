@@ -20,13 +20,13 @@
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   if (Configuration.getSettingBoolean("DEBUG")) {
-    _font1.drawString(4,4,String.format("%s (fps: %.2f, mem usage: %.2f MB)",Configuration.GAME_TITLE,_meanFps,_memoryUsage));
-    _font1.drawString(4,22,String.format("%s",_player));
-    _font1.drawString(4,38,String.format("%s",_world));
-    _font1.drawString(4,54,String.format("total vus: %s",Chunk.getVertexArrayUpdateCount()));
+    FontManager.getInstance().getFont("default").drawString(4,4,String.format("%s (fps: %.2f, mem usage: %.2f MB)",Configuration.GAME_TITLE,_meanFps,_memoryUsage));
+    FontManager.getInstance().getFont("default").drawString(4,22,String.format("%s",_player));
+    FontManager.getInstance().getFont("default").drawString(4,38,String.format("%s",_world));
+    FontManager.getInstance().getFont("default").drawString(4,54,String.format("total vus: %s",Chunk.getVertexArrayUpdateCount()));
   }
   if (_pauseGame) {
-    _font1.drawString(4,Display.getDisplayMode().getHeight() - 16 - 4,String.format("%s_",_consoleInput),Color.red);
+    FontManager.getInstance().getFont("default").drawString(4,Display.getDisplayMode().getHeight() - 16 - 4,String.format("%s_",_consoleInput));
   }
   glDisable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
