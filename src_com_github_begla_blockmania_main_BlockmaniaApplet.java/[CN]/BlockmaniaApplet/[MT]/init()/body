@@ -10,6 +10,11 @@
     @Override public void removeNotify(){
       super.removeNotify();
       _blockmania.stopGame();
+      try {
+        _gameThread.join();
+      }
+ catch (      InterruptedException e) {
+      }
     }
   }
 ;
