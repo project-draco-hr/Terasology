@@ -1,12 +1,13 @@
 {
-  double temp=calcTemperature(x,z);
-  if (temp >= 60) {
+  double temp=calcTemperatureAtGlobalPosition(x,z);
+  double humidity=calcHumidityAtGlobalPosition(x,z);
+  if (temp >= 0.6 && humidity < 0.3) {
     return BIOME_TYPE.DESERT;
   }
- else   if (temp >= 32) {
+  if (temp >= 0.30 && temp < 0.6 && humidity < 0.4) {
     return BIOME_TYPE.MOUNTAINS;
   }
- else   if (temp < 8) {
+  if (temp < 0.3 && humidity < 0.4) {
     return BIOME_TYPE.SNOW;
   }
   return BIOME_TYPE.PLAINS;
