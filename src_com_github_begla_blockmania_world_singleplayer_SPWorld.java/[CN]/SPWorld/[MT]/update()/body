@@ -1,0 +1,11 @@
+{
+  updateDaylight();
+  updateTicks();
+  _skysphere.update();
+  _player.update();
+  _worldUpdateManager.updateVBOs();
+  _clouds.update();
+  FastList<Chunk> visibleChunks=fetchVisibleChunks();
+  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; )   n.getValue().update();
+  _blockParticleEmitter.update();
+}

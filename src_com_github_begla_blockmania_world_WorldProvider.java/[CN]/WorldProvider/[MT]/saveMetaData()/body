@@ -11,12 +11,14 @@
   }
   File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
   try {
-    f.createNewFile();
+    if (!f.createNewFile()) {
+      return false;
+    }
   }
  catch (  IOException ex) {
-    Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
+    return false;
   }
-  Element root=new Element("World");
+  Element root=new Element("SPWorld");
   Document doc=new Document(root);
   root.setAttribute("seed",_seed);
   root.setAttribute("title",_title);
@@ -30,16 +32,10 @@
   FileOutputStream output;
   try {
     output=new FileOutputStream(f);
-    try {
-      outputter.output(doc,output);
-    }
- catch (    IOException ex) {
-      Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
-    }
+    outputter.output(doc,output);
     return true;
   }
- catch (  FileNotFoundException ex) {
-    Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
+ catch (  Exception e) {
+    return false;
   }
-  return false;
 }

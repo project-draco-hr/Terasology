@@ -4,9 +4,5 @@
   int blockPosX=calcBlockPosX(x,chunkPosX);
   int blockPosZ=calcBlockPosZ(z,chunkPosZ);
   Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
-  if (c != null) {
-    return c.getLight(blockPosX,y,blockPosZ,type);
-  }
-  if (type == Chunk.LIGHT_TYPE.SUN)   return 15;
- else   return 0;
+  return c.getLight(blockPosX,y,blockPosZ,type);
 }

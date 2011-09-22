@@ -7,25 +7,16 @@
   try {
     SAXBuilder builder=new SAXBuilder();
     InputSource is=new InputSource(new FileInputStream(f));
-    Document doc;
-    try {
-      doc=builder.build(is);
-      Element root=doc.getRootElement();
-      Element spawningPoint=root.getChild("SpawningPoint");
-      _seed=root.getAttribute("seed").getValue();
-      _title=root.getAttributeValue("title");
-      setTime(Double.parseDouble(root.getAttributeValue("time")));
-      _spawningPoint=new Vector3f(Float.parseFloat(spawningPoint.getAttributeValue("x")),Float.parseFloat(spawningPoint.getAttributeValue("y")),Float.parseFloat(spawningPoint.getAttributeValue("z")));
-      return true;
-    }
- catch (    JDOMException ex) {
-      Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
-    }
-catch (    IOException ex) {
-      Blockmania.getInstance().getLogger().log(Level.SEVERE,null,ex);
-    }
+    Document doc=builder.build(is);
+    Element root=doc.getRootElement();
+    Element spawningPoint=root.getChild("SpawningPoint");
+    _seed=root.getAttribute("seed").getValue();
+    _title=root.getAttributeValue("title");
+    setTime(Double.parseDouble(root.getAttributeValue("time")));
+    _spawningPoint=new Vector3f(Float.parseFloat(spawningPoint.getAttributeValue("x")),Float.parseFloat(spawningPoint.getAttributeValue("y")),Float.parseFloat(spawningPoint.getAttributeValue("z")));
+    return true;
   }
- catch (  FileNotFoundException ex) {
+ catch (  Exception e) {
+    return false;
   }
-  return false;
 }
