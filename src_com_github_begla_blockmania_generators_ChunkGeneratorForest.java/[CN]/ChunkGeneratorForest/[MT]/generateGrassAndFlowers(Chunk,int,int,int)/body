@@ -5,10 +5,13 @@
     BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
 switch (biome) {
 case PLAINS:
-      grassProb=0.7;
+      grassProb=0.4;
     break;
 case MOUNTAINS:
   grassProb=0.9;
+break;
+case FOREST:
+grassProb=0.6;
 break;
 }
 if (grassRand > grassProb) {
@@ -21,10 +24,10 @@ c.setBlock(x,y + 1,z,(byte)0xC);
 }
 if (_rand.standNormalDistrDouble() < -2) {
 if (_rand.randomBoolean()) {
-  c.setBlock(x,y + 1,z,(byte)0x9);
+c.setBlock(x,y + 1,z,(byte)0x9);
 }
  else {
-  c.setBlock(x,y + 1,z,(byte)0xA);
+c.setBlock(x,y + 1,z,(byte)0xA);
 }
 }
 }
