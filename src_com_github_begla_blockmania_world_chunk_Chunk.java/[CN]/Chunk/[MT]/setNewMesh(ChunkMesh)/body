@@ -1,0 +1,10 @@
+{
+synchronized (this) {
+    if (_disposed)     return;
+    ChunkMesh oldNewMesh=_newMesh;
+    _newMesh=newMesh;
+    if (oldNewMesh != null) {
+      oldNewMesh.dispose();
+    }
+  }
+}

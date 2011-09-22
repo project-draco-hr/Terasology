@@ -1,6 +1,7 @@
 {
   double heightPercentage=(firstBlockHeight - y) / Configuration.CHUNK_DIMENSIONS.y;
 switch (type) {
+case FOREST:
 case PLAINS:
 case MOUNTAINS:
     if (y >= 26 && y <= 32) {
@@ -15,7 +16,7 @@ case MOUNTAINS:
  else {
       c.setBlock(x,y,z,(byte)0x2);
     }
-  if (type == BIOME_TYPE.PLAINS)   generateRiver(c,x,y,z,heightPercentage,type);
+  if (type == BIOME_TYPE.PLAINS || type == BIOME_TYPE.FOREST)   generateRiver(c,x,y,z,heightPercentage,type);
 break;
 case SNOW:
 if (heightPercentage == 0.0 && y > 32) {
