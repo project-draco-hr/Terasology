@@ -1,10 +1,5 @@
 {
   if (!isCached() || _fresh)   return;
-  if (_newMesh != null) {
-    _newMesh.freeBuffers();
-    _newMesh=null;
-  }
-  _newMesh=_meshGenerator.generateMesh();
+  setNewMesh(_meshGenerator.generateMesh());
   setDirty(false);
-  _statVertexArrayUpdateCount++;
 }
