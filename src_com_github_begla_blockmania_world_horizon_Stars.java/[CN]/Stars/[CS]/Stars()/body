@@ -1,0 +1,15 @@
+{
+  _random=new Random();
+  _stars_position=new float[_num_stars][3];
+  float pi2=6.28f;
+  float pi=3.14f;
+  float fi=0.0f;
+  float te=0.0f;
+  for (int i=0; i < _num_stars; i++) {
+    fi=(float)(pi2 * Math.abs(Math.random() - 0.5f));
+    te=(float)(pi * Math.abs(Math.random()));
+    _stars_position[i][0]=_radius * (float)(Math.sin(te) * Math.cos(fi)) - (float)(10 * Math.random());
+    _stars_position[i][1]=_radius * (float)(Math.sin(te) * Math.sin(fi)) + (float)(10 * Math.random());
+    _stars_position[i][2]=_radius * (float)(Math.cos(te)) + (float)(10 * Math.random());
+  }
+}
