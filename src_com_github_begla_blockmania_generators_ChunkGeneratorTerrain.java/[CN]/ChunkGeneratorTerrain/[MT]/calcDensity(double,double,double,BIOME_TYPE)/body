@@ -4,26 +4,24 @@
   double amp=1.0;
   if (type == BIOME_TYPE.DESERT) {
     freqY*=1.0;
-    amp*=1.1;
+    amp*=0.3;
   }
  else   if (type == BIOME_TYPE.PLAINS) {
     freqY*=1.0;
-    amp*=0.6;
+    amp*=0.1;
   }
  else   if (type == BIOME_TYPE.MOUNTAINS) {
-    freqY*=0.75;
-    amp*=4.0;
+    freqY*=1.0;
+    amp*=1.0;
   }
  else   if (type == BIOME_TYPE.SNOW) {
-    freqY*=1.2;
-    amp*=1.2;
+    freqY*=1.0;
+    amp*=0.3;
   }
  else   if (type == BIOME_TYPE.FOREST) {
-    freqY*=1.1;
-    amp*=1.1;
+    freqY*=1.0;
+    amp*=0.2;
   }
   double density=calcMountainDensity(x,y * freqY,z) * amp;
-  double divHeight=(y + 1) * 1.75;
-  if (y > 248)   divHeight*=2.0;
-  return (height - density) / divHeight;
+  return -y + ((height * 64.0 + 32.0) - density * 128.0);
 }

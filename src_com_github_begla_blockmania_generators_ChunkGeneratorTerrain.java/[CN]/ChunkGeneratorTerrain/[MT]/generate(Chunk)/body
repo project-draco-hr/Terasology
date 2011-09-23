@@ -25,12 +25,12 @@
           }
         }
         double dens=densityMap[x][y][z];
-        if ((dens >= 0.008 && dens < 0.01)) {
+        if ((dens >= 0 && dens < 64)) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
           GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
           continue;
         }
- else         if (dens >= 0.01) {
+ else         if (dens >= 64) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
           if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6)           GenerateInnerLayer(x,y,z,c,type);
           continue;
