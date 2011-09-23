@@ -7,5 +7,6 @@
   _clouds.update();
   FastList<Chunk> visibleChunks=fetchVisibleChunks();
   for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; )   n.getValue().update();
+  _worldUpdateManager.queueChunkUpdates(visibleChunks);
   _blockParticleEmitter.update();
 }

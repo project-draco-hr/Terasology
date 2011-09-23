@@ -1,0 +1,17 @@
+{
+  final Chunk chunkToProcess=c;
+  if (!_currentlyProcessedChunks.contains(chunkToProcess) && _currentlyProcessedChunks.size() < MAX_THREADS) {
+    _currentlyProcessedChunks.add(chunkToProcess);
+    Runnable r=new Runnable(){
+      public void run(){
+        long timeStart=System.currentTimeMillis();
+        processChunkUpdate(chunkToProcess);
+        _currentlyProcessedChunks.remove(chunkToProcess);
+        _averageUpdateDuration+=System.currentTimeMillis() - timeStart;
+        _averageUpdateDuration/=2;
+      }
+    }
+;
+    _threadPool.execute(r);
+  }
+}
