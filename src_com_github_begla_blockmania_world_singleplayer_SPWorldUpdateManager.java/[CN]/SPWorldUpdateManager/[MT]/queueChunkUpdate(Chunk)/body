@@ -4,14 +4,16 @@
     _currentlyProcessedChunks.add(chunkToProcess);
     Runnable r=new Runnable(){
       public void run(){
-        long timeStart=System.currentTimeMillis();
+        long timeStart=Blockmania.getInstance().getTime();
         processChunkUpdate(chunkToProcess);
         _currentlyProcessedChunks.remove(chunkToProcess);
-        _averageUpdateDuration+=System.currentTimeMillis() - timeStart;
+        _averageUpdateDuration+=Blockmania.getInstance().getTime() - timeStart;
         _averageUpdateDuration/=2;
       }
     }
 ;
     _threadPool.execute(r);
+    return true;
   }
+  return false;
 }

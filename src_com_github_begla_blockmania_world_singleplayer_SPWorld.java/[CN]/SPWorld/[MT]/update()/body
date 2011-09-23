@@ -6,7 +6,11 @@
   _worldUpdateManager.updateVBOs();
   _clouds.update();
   FastList<Chunk> visibleChunks=fetchVisibleChunks();
-  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; )   n.getValue().update();
-  _worldUpdateManager.queueChunkUpdates(visibleChunks);
+  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
+    n.getValue().update();
+    if (n.getValue().isDirty() || n.getValue().isFresh() || n.getValue().isLightDirty()) {
+      _worldUpdateManager.queueChunkUpdate(n.getValue());
+    }
+  }
   _blockParticleEmitter.update();
 }
