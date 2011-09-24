@@ -1,4 +1,5 @@
 {
+  freeCacheSpace();
   int chunkId=MathHelper.cantorize(MathHelper.mapToPositive(x),MathHelper.mapToPositive(z));
   Chunk c=_chunkCache.get(chunkId);
   if (c != null) {
@@ -11,5 +12,6 @@
   }
   _chunkCache.put(chunkId,c);
   c.setCached(true);
+  if (_chunkCache.size() > capacity())   freeCacheSpace();
   return c;
 }

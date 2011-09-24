@@ -3,14 +3,15 @@
   updateTicks();
   _skysphere.update();
   _player.update();
-  _worldUpdateManager.updateVBOs();
   _clouds.update();
+  updateChunksInProximity();
   FastList<Chunk> visibleChunks=fetchVisibleChunks();
   for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    n.getValue().update();
-    if (n.getValue().isDirty() || n.getValue().isFresh() || n.getValue().isLightDirty()) {
+    if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
       _worldUpdateManager.queueChunkUpdate(n.getValue());
     }
+    n.getValue().update();
   }
   _blockParticleEmitter.update();
+  _worldUpdateManager.updateVBOs();
 }
