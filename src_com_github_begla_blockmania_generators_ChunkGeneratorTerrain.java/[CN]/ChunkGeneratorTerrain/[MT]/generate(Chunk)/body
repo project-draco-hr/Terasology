@@ -27,7 +27,7 @@
         double dens=densityMap[x][y][z];
         if ((dens >= 0 && dens < 64)) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
-          GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
+          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6)           GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
           continue;
         }
  else         if (dens >= 64) {

@@ -1,0 +1,19 @@
+{
+  final Chunk chunkToProcess=c;
+  if (!_currentlyProcessedChunks.contains(chunkToProcess) && _currentlyProcessedChunks.size() < MAX_THREADS) {
+    _currentlyProcessedChunks.add(chunkToProcess);
+    Runnable r=new Runnable(){
+      public void run(){
+        long timeStart=Blockmania.getInstance().getTime();
+        if (chunkToProcess.processChunk())         _vboUpdates.add(chunkToProcess);
+        _currentlyProcessedChunks.remove(chunkToProcess);
+        _averageUpdateDuration+=Blockmania.getInstance().getTime() - timeStart;
+        _averageUpdateDuration/=2;
+      }
+    }
+;
+    _threadPool.execute(r);
+    return true;
+  }
+  return false;
+}
