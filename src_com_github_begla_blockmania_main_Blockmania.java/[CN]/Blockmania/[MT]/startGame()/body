@@ -3,13 +3,12 @@
   _lastLoopTime=getTime();
   double nextGameTick=getTime();
   int loopCounter;
-  resizeViewport();
   while (_runGame && !Display.isCloseRequested()) {
     updateStatistics();
     processKeyboardInput();
     processMouseInput();
     loopCounter=0;
-    while (getTime() > nextGameTick && loopCounter < Configuration.FRAME_SKIP_MAX_FRAMES) {
+    while (getTime() > nextGameTick && loopCounter < FRAME_SKIP_MAX_FRAMES) {
       if (!_pauseGame) {
         update();
       }

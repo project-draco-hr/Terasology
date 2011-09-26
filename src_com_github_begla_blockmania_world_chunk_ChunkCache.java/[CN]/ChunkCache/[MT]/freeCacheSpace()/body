@@ -1,14 +1,20 @@
 {
-  if (_chunkCache.size() <= capacity()) {
-    return;
+  if (_running)   return;
+  _running=true;
+  Runnable r=new Runnable(){
+    public void run(){
+      FastList<Chunk> cachedChunks=new FastList<Chunk>(_chunkCache.values());
+      Collections.sort(cachedChunks);
+      while (cachedChunks.size() >= capacity()) {
+        Chunk chunkToDelete=cachedChunks.removeLast();
+        chunkToDelete.setCached(false);
+        writeChunkToDisk(chunkToDelete);
+        _chunkCache.values().remove(chunkToDelete);
+        chunkToDelete.dispose();
+      }
+      _running=false;
+    }
   }
-  FastList<Chunk> cachedChunks=new FastList<Chunk>(_chunkCache.values());
-  Collections.sort(cachedChunks);
-  if (_chunkCache.size() > capacity()) {
-    Chunk chunkToDelete=cachedChunks.getLast();
-    chunkToDelete.setCached(false);
-    writeChunkToDisk(chunkToDelete);
-    _chunkCache.values().remove(chunkToDelete);
-    chunkToDelete.dispose();
-  }
+;
+  _threadPool.submit(r);
 }

@@ -1,22 +1,27 @@
 {
   double height=calcBaseTerrain(x,z);
-  double density=calcMountainDensity(x,y,z);
-  double divHeight=(y + 1) * 1.2;
-  if (y > 100)   divHeight*=2.0;
+  double freqY=1.0;
+  double amp=1.0;
   if (type == BIOME_TYPE.DESERT) {
-    divHeight*=1.3;
+    freqY*=1.0;
+    amp*=0.3;
   }
  else   if (type == BIOME_TYPE.PLAINS) {
-    divHeight*=1.6;
+    freqY*=1.0;
+    amp*=0.2;
   }
  else   if (type == BIOME_TYPE.MOUNTAINS) {
-    divHeight*=1.0;
+    freqY*=1.0;
+    amp*=0.75;
   }
  else   if (type == BIOME_TYPE.SNOW) {
-    divHeight*=1.2;
+    freqY*=1.0;
+    amp*=0.4;
   }
  else   if (type == BIOME_TYPE.FOREST) {
-    divHeight*=1.5;
+    freqY*=1.0;
+    amp*=0.4;
   }
-  return (height + density) / divHeight;
+  double density=calcMountainDensity(x,y * freqY,z) * amp;
+  return -y + ((height * 64.0 + 32.0) + density * 128.0);
 }

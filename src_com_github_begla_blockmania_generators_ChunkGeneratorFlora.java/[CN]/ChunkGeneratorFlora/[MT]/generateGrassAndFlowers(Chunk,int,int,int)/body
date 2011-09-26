@@ -1,0 +1,38 @@
+{
+  if (c.getBlock(x,y,z) == 0x1) {
+    double grassRand=(_rand.randomDouble() + 1.0) / 2.0;
+    double grassProb=1.0;
+    BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+switch (biome) {
+case PLAINS:
+      grassProb=0.7;
+    break;
+case MOUNTAINS:
+  grassProb=0.8;
+break;
+case FOREST:
+grassProb=0.8;
+break;
+}
+if (grassRand > grassProb) {
+double rand=_rand.standNormalDistrDouble();
+if (rand > -0.4 && rand < 0.4) {
+c.setBlock(x,y + 1,z,(byte)0xB);
+}
+ else if (rand > -0.6 && rand < 0.6) {
+c.setBlock(x,y + 1,z,(byte)0x24);
+}
+ else {
+c.setBlock(x,y + 1,z,(byte)0xC);
+}
+if (_rand.standNormalDistrDouble() < -2) {
+if (_rand.randomBoolean()) {
+c.setBlock(x,y + 1,z,(byte)0x9);
+}
+ else {
+c.setBlock(x,y + 1,z,(byte)0xA);
+}
+}
+}
+}
+}

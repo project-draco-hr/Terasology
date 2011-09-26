@@ -1,0 +1,8 @@
+{
+  int chunkPosX=calcChunkPosX(x);
+  int chunkPosZ=calcChunkPosZ(z);
+  int blockPosX=calcBlockPosX(x,chunkPosX);
+  int blockPosZ=calcBlockPosZ(z,chunkPosZ);
+  Chunk c=_chunkCache.loadOrCreateChunk(calcChunkPosX(x),calcChunkPosZ(z));
+  c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,spreadLight,refreshSunlight);
+}

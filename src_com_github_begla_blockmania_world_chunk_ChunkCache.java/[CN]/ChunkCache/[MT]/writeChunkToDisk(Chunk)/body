@@ -1,5 +1,7 @@
 {
-  if (Blockmania.getInstance().isSandboxed())   return;
+  if (Configuration.getSettingBoolean("SANDBOXED") || !Configuration.getSettingBoolean("SAVE_CHUNKS")) {
+    return;
+  }
   if (c.isFresh()) {
     return;
   }
