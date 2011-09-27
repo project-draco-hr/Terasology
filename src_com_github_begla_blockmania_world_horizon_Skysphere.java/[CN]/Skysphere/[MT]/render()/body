@@ -3,7 +3,7 @@
   _parent.getPlayer().applyNormalizedModelViewMatrix();
   glDisable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
-  _sunPosAngle=5.3f * (float)_parent.getTime() - 1.4f;
+  _sunPosAngle=(float)Math.toRadians(360.0 * _parent.getTime() - 90.0);
   Vector4f sunNormalise=new Vector4f(0.0f,(float)Math.cos(_sunPosAngle),(float)Math.sin(_sunPosAngle),1.0f);
   sunNormalise=sunNormalise.normalise(null);
   _zenithColor=getAllWeatherZenith(sunNormalise.y);
@@ -14,9 +14,7 @@
   GL20.glUniform1f(turbidity,_turbidity);
   int zenith=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("sky"),"zenith");
   GL20.glUniform3f(zenith,_zenithColor.x,_zenithColor.y,_zenithColor.z);
-  glPushMatrix();
-  _sphere.draw(22,80,80);
-  glPopMatrix();
+  drawSphere();
   ShaderManager.getInstance().enableShader(null);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);

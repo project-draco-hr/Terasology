@@ -1,0 +1,12 @@
+{
+  if (_displayListSphere == -1) {
+    _displayListSphere=glGenLists(1);
+    Sphere sphere=new Sphere();
+    glNewList(_displayListSphere,GL11.GL_COMPILE);
+    glPushMatrix();
+    sphere.draw(16,8,8);
+    glPopMatrix();
+    glEndList();
+  }
+  glCallList(_displayListSphere);
+}
