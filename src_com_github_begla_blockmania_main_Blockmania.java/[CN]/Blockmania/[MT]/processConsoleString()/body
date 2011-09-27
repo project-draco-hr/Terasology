@@ -15,11 +15,11 @@
   try {
     if (parsingResult.get(0).equals("place")) {
       if (parsingResult.get(1).equals("tree")) {
-        _player.plantTree(Integer.parseInt(parsingResult.get(2)));
+        _world.getPlayer().plantTree(Integer.parseInt(parsingResult.get(2)));
         success=true;
       }
  else       if (parsingResult.get(1).equals("block")) {
-        _player.placeBlock(Byte.parseByte(parsingResult.get(2)));
+        _world.getPlayer().placeBlock(Byte.parseByte(parsingResult.get(2)));
         success=true;
       }
     }
@@ -51,7 +51,7 @@
       int x=Integer.parseInt(parsingResult.get(1));
       int y=Integer.parseInt(parsingResult.get(2));
       int z=Integer.parseInt(parsingResult.get(3));
-      _player.setPosition(new Vector3f(x,y,z));
+      _world.getPlayer().setPosition(new Vector3f(x,y,z));
       success=true;
     }
  else     if (parsingResult.get(0).equals("exit")) {

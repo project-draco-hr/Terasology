@@ -1,12 +1,12 @@
 {
   ShaderManager.getInstance().enableShader("chunk");
   int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
-  int swimmimg=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"swimming");
+  int swimming=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"swimming");
   int animationOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"animationOffset");
   int animated=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"animated");
   GL20.glUniform1f(daylight,(float)getDaylight());
   GL20.glUniform1i(animated,0);
-  GL20.glUniform1i(swimmimg,_player.isHeadUnderWater() ? 1 : 0);
+  GL20.glUniform1i(swimming,_player.isHeadUnderWater() ? 1 : 0);
   FastList<Chunk> visibleChunks=fetchVisibleChunks();
   glEnable(GL_TEXTURE_2D);
   for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
@@ -29,6 +29,8 @@
     c.render(ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT);
   }
   GL20.glUniform1i(animated,1);
+  GL20.glUniform1f(animationOffset,((float)(_tick / 2 % 12)) * (1.0f / 16f));
+  TextureManager.getInstance().bindTexture("custom_water_still");
   for (int i=0; i < 2; i++) {
     for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
       Chunk c=n.getValue();
@@ -38,8 +40,6 @@
  else {
         glColorMask(true,true,true,true);
       }
-      GL20.glUniform1f(animationOffset,((float)(_tick / 2 % 12)) * (1.0f / 16f));
-      TextureManager.getInstance().bindTexture("custom_water_still");
       c.render(ChunkMesh.RENDER_TYPE.WATER);
     }
   }
