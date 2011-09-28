@@ -63,6 +63,7 @@
   oldPosition.set(getPosition());
   getPosition().x+=_velocity.x;
   getPosition().z+=_velocity.z;
+  _stepCounter+=Math.max(Math.abs(_velocity.x),Math.abs(_velocity.z));
   if (!_godMode) {
     if (horizontalHitTest(oldPosition)) {
       handleHorizontalCollision();
