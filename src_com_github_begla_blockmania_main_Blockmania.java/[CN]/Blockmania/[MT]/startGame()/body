@@ -21,5 +21,11 @@
   if (_saveWorldOnExit) {
     _world.dispose();
   }
+  _threadPool.shutdown();
+  try {
+    _threadPool.awaitTermination(Long.MAX_VALUE,TimeUnit.NANOSECONDS);
+  }
+ catch (  InterruptedException e) {
+  }
   Display.destroy();
 }
