@@ -3,12 +3,8 @@
     glPushMatrix();
     glTranslatef(_position.x,_position.y,_position.z);
     applyOrientation();
-    if (_displayList == -1) {
-      glGenLists(_displayList);
-      renderParticle();
-      glEndList();
-    }
-    glCallList(_displayList);
+    glScalef(_size,_size,_size);
+    renderParticle();
     glPopMatrix();
   }
 }
