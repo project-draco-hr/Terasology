@@ -1,7 +1,8 @@
 {
-  byte block=_chunk.getBlock(x,y,z);
-  Vector4f colorBillboardOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-  Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.FRONT).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.FRONT).y,0);
+  byte blockId=_chunk.getBlock(x,y,z);
+  Block block=BlockManager.getInstance().getBlock(blockId);
+  Vector4f colorBillboardOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+  Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.FRONT).x,block.getTextureOffsetFor(Block.SIDE.FRONT).y,0);
   Vector3f p1=new Vector3f(-0.5f,-0.5f,0.5f);
   Vector3f p2=new Vector3f(0.5f,-0.5f,-0.5f);
   Vector3f p3=new Vector3f(0.5f,0.5f,-0.5f);
@@ -11,8 +12,8 @@
   addBlockVertexData(mesh._vertexElements[2],colorBillboardOffset,moveVectorToWorldSpace(x,y,z,p3));
   addBlockVertexData(mesh._vertexElements[2],colorBillboardOffset,moveVectorToWorldSpace(x,y,z,p4));
   addBlockTextureData(mesh._vertexElements[2],texOffset,new Vector3f(0,0,1));
-  colorBillboardOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-  texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BACK).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BACK).y,0);
+  colorBillboardOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+  texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.BACK).x,block.getTextureOffsetFor(Block.SIDE.BACK).y,0);
   p1=new Vector3f(-0.5f,-0.5f,-0.5f);
   p2=new Vector3f(0.5f,-0.5f,0.5f);
   p3=new Vector3f(0.5f,0.5f,0.5f);

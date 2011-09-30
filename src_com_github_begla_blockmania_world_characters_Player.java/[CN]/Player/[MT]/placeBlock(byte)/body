@@ -2,8 +2,8 @@
   if (getParent() != null) {
     RayBlockIntersection.Intersection is=calcSelectedBlock();
     if (is != null) {
-      Block centerBlock=Block.getBlockForType(getParent().getBlock((int)is.getBlockPosition().x,(int)is.getBlockPosition().y,(int)is.getBlockPosition().z));
-      if (!centerBlock.playerCanAttachBlocks()) {
+      Block centerBlock=BlockManager.getInstance().getBlock(getParent().getBlock((int)is.getBlockPosition().x,(int)is.getBlockPosition().y,(int)is.getBlockPosition().z));
+      if (!centerBlock.allowsBlockAttachment()) {
         return;
       }
       Vector3f blockPos=is.calcAdjacentBlockPos();

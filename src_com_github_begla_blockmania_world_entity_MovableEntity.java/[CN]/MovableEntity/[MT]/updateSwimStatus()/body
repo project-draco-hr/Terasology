@@ -4,12 +4,12 @@
   for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
     byte blockType=_parent.getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
     AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
-    if (Block.getBlockForType(blockType).getClass().equals(BlockWater.class) && getAABB().overlaps(blockAABB)) {
+    if (BlockManager.getInstance().getBlock(blockType).isLiquid() && getAABB().overlaps(blockAABB)) {
       swimming=true;
     }
     Vector3f eyePos=calcEyePosition();
     eyePos.y+=0.25;
-    if (Block.getBlockForType(blockType).getClass().equals(BlockWater.class) && blockAABB.contains(eyePos)) {
+    if (BlockManager.getInstance().getBlock(blockType).isLiquid() && blockAABB.contains(eyePos)) {
       headUnderWater=true;
     }
   }

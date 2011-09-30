@@ -27,8 +27,8 @@ break;
 if (rand > prob) {
 int randX=x + _worldProvider.getRandom().randomInt() % 12 + 6;
 int randZ=z + _worldProvider.getRandom().randomInt() % 12 + 6;
-if (temperature > 0.55 && humidity < 0.33 && (c.getBlock(randX,y,randZ) == 0x1 || c.getBlock(randX,y,randZ) == 0x17 || c.getBlock(randX,y,randZ) == 0x7)) c.getParent().getObjectGenerator("cactus").generate(c.getBlockWorldPosX(randX),y + 1,c.getBlockWorldPosZ(randZ),false);
- else if (c.getBlock(randX,y,randZ) == 0x1 || c.getBlock(randX,y,randZ) == 0x17) generateTree(c,randX,y,randZ);
+if (temperature > 0.55 && humidity < 0.33 && (c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Grass").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Snow").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Sand").getId())) c.getParent().getObjectGenerator("cactus").generate(c.getBlockWorldPosX(randX),y + 1,c.getBlockWorldPosZ(randZ),false);
+ else if (c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Grass").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Snow").getId()) generateTree(c,randX,y,randZ);
 }
 }
 }

@@ -4,7 +4,7 @@
     for (int y=-3; y <= 3; y++) {
       for (int z=-3; z <= 3; z++) {
         byte blockType=_parent.getBlock((int)(getPosition().x + x),(int)(getPosition().y + y),(int)(getPosition().z + z));
-        if (Block.getBlockForType(blockType).letSelectionRayThrough()) {
+        if (BlockManager.getInstance().getBlock(blockType).letsSelectionRayThrough()) {
           continue;
         }
         FastList<RayBlockIntersection.Intersection> iss=RayBlockIntersection.executeIntersection(_parent,(int)getPosition().x + x,(int)getPosition().y + y,(int)getPosition().z + z,calcEyePosition(),_viewingDirection);

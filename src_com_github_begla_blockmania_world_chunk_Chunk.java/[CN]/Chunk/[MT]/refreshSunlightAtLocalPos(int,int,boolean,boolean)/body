@@ -1,7 +1,8 @@
 {
   boolean covered=false;
   for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
-    Block b=Block.getBlockForType(_blocks.get(x,y,z));
+    byte blockId=_blocks.get(x,y,z);
+    Block b=BlockManager.getInstance().getBlock(blockId);
     if ((!b.isBlockInvisible() && b.getBlockForm() != Block.BLOCK_FORM.BILLBOARD) && !covered) {
       covered=true;
     }

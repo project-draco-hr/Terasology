@@ -6,10 +6,10 @@
       double biomeHumidity=_chunk.getParent().getHumidityAt(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosZ(z));
       for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
         byte blockType=_chunk.getBlock(x,y,z);
-        Block block=Block.getBlockForType(blockType);
+        Block block=BlockManager.getInstance().getBlock(blockType);
         if (block.isBlockInvisible())         continue;
         Block.BLOCK_FORM blockForm=block.getBlockForm();
-        if (blockForm == Block.BLOCK_FORM.LOWERED_BOCK || blockForm == Block.BLOCK_FORM.CACTUS || blockForm == Block.BLOCK_FORM.NORMAL)         generateBlockVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
+        if (blockForm == Block.BLOCK_FORM.LOWERED_BOCK || blockForm == Block.BLOCK_FORM.CACTUS || blockForm == Block.BLOCK_FORM.DEFAULT)         generateBlockVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
  else         if (blockForm == Block.BLOCK_FORM.BILLBOARD)         generateBillboardVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
       }
     }

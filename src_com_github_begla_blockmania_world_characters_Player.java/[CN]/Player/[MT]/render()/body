@@ -2,7 +2,7 @@
   RayBlockIntersection.Intersection is=calcSelectedBlock();
   if (Configuration.getSettingBoolean("PLACING_BOX")) {
     if (is != null) {
-      if (Block.getBlockForType(_parent.getBlockAtPosition(is.getBlockPosition())).shouldRenderBoundingBox()) {
+      if (BlockManager.getInstance().getBlock(_parent.getBlockAtPosition(is.getBlockPosition())).shouldRenderBoundingBox()) {
         Block.AABBForBlockAt(is.getBlockPosition()).render();
       }
     }

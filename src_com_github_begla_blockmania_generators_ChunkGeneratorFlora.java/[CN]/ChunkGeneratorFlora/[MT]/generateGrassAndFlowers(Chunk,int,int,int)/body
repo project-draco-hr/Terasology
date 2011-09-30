@@ -1,5 +1,5 @@
 {
-  if (c.getBlock(x,y,z) == 0x1 && c.getBlock(x,y + 1,z) == 0x0) {
+  if (c.getBlock(x,y,z) == BlockManager.getInstance().getBlock("Grass").getId() && c.getBlock(x,y + 1,z) == 0x0) {
     double grassRand=(_worldProvider.getRandom().randomDouble() + 1.0) / 2.0;
     double grassProb=1.0;
     BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
@@ -17,20 +17,20 @@ break;
 if (grassRand > grassProb) {
 double rand=_worldProvider.getRandom().standNormalDistrDouble();
 if (rand > -0.4 && rand < 0.4) {
-c.setBlock(x,y + 1,z,(byte)0xB);
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("High grass").getId());
 }
  else if (rand > -0.6 && rand < 0.6) {
-c.setBlock(x,y + 1,z,(byte)0x24);
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Medium high grass").getId());
 }
  else {
-c.setBlock(x,y + 1,z,(byte)0xC);
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Large high grass").getId());
 }
 if (_worldProvider.getRandom().standNormalDistrDouble() < -2) {
 if (_worldProvider.getRandom().randomBoolean()) {
-c.setBlock(x,y + 1,z,(byte)0x9);
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Red flower").getId());
 }
  else {
-c.setBlock(x,y + 1,z,(byte)0xA);
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Yellow flower").getId());
 }
 }
 }
