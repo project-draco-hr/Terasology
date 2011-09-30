@@ -12,8 +12,10 @@
   lightValueBlock=lightValueBlock / 15.0;
   float lightValue=(float)Math.max(lightValueSun,lightValueBlock) * _lightOffset;
   int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"light");
-  int texOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"texOffset");
+  int texOffsetX=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"texOffsetX");
+  int texOffsetY=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"texOffsetY");
   GL20.glUniform1f(light,lightValue);
-  GL20.glUniform1f(texOffset,_texOffset);
+  GL20.glUniform1f(texOffsetX,_texOffsetX);
+  GL20.glUniform1f(texOffsetY,_texOffsetY);
   glCallList(_displayLists[_blockType]);
 }
