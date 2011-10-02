@@ -1,6 +1,6 @@
 {
   final Chunk chunkToProcess=c;
-  if (!_currentlyProcessedChunks.contains(chunkToProcess) && _currentlyProcessedChunks.size() < 4) {
+  if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < Configuration.MAX_THREADS || c.distanceToPlayer() < 8.0)) {
     _currentlyProcessedChunks.add(chunkToProcess);
     Runnable r=new Runnable(){
       public void run(){
