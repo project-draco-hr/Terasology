@@ -1,0 +1,13 @@
+{
+  String command=consoleString.substring(7).trim();
+  Blockmania.getInstance().getLogger().log(Level.INFO,"Groovy console about to execute command: " + command);
+  GroovyShell shell=new GroovyShell(_bind);
+  try {
+    shell.evaluate(command);
+    return true;
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+    return false;
+  }
+}

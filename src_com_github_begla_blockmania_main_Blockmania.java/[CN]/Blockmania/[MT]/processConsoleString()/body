@@ -13,9 +13,11 @@
     }
   }
   try {
-    if (parsingResult.get(0).equals("place")) {
+    if (parsingResult.get(0).equals("groovy")) {
+      success=_groovyManager.runGroovyShell(_consoleInput.toString());
+    }
+ else     if (parsingResult.get(0).equals("place")) {
       if (parsingResult.get(1).equals("block")) {
-        _world.getPlayer().placeBlock(Byte.parseByte(parsingResult.get(2)));
         success=true;
       }
     }
