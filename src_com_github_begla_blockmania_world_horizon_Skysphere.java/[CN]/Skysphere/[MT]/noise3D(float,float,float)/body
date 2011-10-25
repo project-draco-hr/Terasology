@@ -1,0 +1,16 @@
+{
+  int ip=(int)Math.floor(x);
+  int jp=(int)Math.floor(y);
+  int kp=(int)Math.floor(z);
+  Vector3f sum=new Vector3f();
+  Vector3f tVector=new Vector3f();
+  for (int i=ip; i <= ip + 1; i++) {
+    for (int j=jp; j <= jp + 1; j++) {
+      for (int k=kp; k <= kp + 1; k++) {
+        tVector=omega(i,j,k,new Vector3f(x - i,y - j,z - k));
+        Vector3f.add(sum,tVector,sum);
+      }
+    }
+  }
+  return sum;
+}
