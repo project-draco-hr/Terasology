@@ -1,0 +1,9 @@
+{
+  for (int i=_worldTimeEvents.size() - 1; i >= 0; i--) {
+    WorldTimeEvent event=_worldTimeEvents.get(i);
+    if (Math.abs(getTime() % 1.0 - event.getExecutionTime()) < 0.001) {
+      event.Execute();
+    }
+    if (!event.repeatingEvent)     _worldTimeEvents.remove(i);
+  }
+}
