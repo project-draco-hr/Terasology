@@ -4,21 +4,13 @@
   float dz=(float)_noiseMatrixSize / (float)depth;
   Vector3f tempVector=new Vector3f();
   _noisePermutations=new Vector3f[512];
-  FastRandom rand=new FastRandom(42);
   int j=0;
   int i=0;
   for (i=0; i < 512; i++) {
     _noisePermutations[i]=new Vector3f();
-    j=rand.randomInt() % 256;
-    j=(j < 0) ? -j : j;
-    _noisePermutations[i].x=j;
-    j=rand.randomInt() % 256;
-    j=(j < 0) ? -j : j;
-    _noisePermutations[i].y=j;
-    j=rand.randomInt() % 256;
-    j=(j < 0) ? -j : j;
-    _noisePermutations[i].z=j;
-    System.out.println("Test array [" + i + "] "+ _noisePermutations[i]);
+    _noisePermutations[i].x=rnd();
+    _noisePermutations[i].y=rnd();
+    _noisePermutations[i].z=rnd();
   }
   ByteBuffer image=BufferUtils.createByteBuffer(width * height * depth* 3);
   for (i=0; i < width; i++) {

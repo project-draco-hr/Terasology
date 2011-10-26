@@ -2,14 +2,6 @@
   x&=_noiseMatrixSize - 1;
   y&=_noiseMatrixSize - 1;
   z&=_noiseMatrixSize - 1;
-  if (_counter <= 256) {
-    System.out.println("Test coord " + x + " "+ y+ " "+ z);
-    System.out.println("Test index " + (z * _noiseMatrixSize * _noiseMatrixSize + y * _noiseMatrixSize + x));
-    System.out.println("Test value " + (_noisePermutations[z * _noiseMatrixSize * _noiseMatrixSize + y * _noiseMatrixSize + x]));
-    if ((z * _noiseMatrixSize * _noiseMatrixSize + y * _noiseMatrixSize + x) > 511) {
-      System.out.println("Out");
-    }
-    _counter++;
-  }
-  return _noisePermutations[z * _noiseMatrixSize * _noiseMatrixSize + y * _noiseMatrixSize + x];
+  Vector3f temp=new Vector3f(_noisePermutations[z * _noiseMatrixSize * _noiseMatrixSize + y * _noiseMatrixSize + x]);
+  return temp;
 }
