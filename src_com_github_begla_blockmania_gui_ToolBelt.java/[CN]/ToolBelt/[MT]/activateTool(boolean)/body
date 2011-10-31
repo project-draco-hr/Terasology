@@ -1,0 +1,27 @@
+{
+  Byte toolIndex=_toolBinding.get(new Byte(_selectedTool));
+  String mouse=leftMouse ? "Left" : "Right";
+  Blockmania.getInstance().getLogger().log(Level.INFO,mouse + " button tool activation happened for slot " + _selectedTool+ ", which is tool "+ toolIndex);
+  if (toolIndex == null) {
+    Blockmania.getInstance().getLogger().log(Level.WARNING,mouse + " button tool activation happened for an 'empty slot' " + toolIndex);
+    return;
+  }
+  if (toolIndex >= 51) {
+    System.out.println("Nothing yet");
+  }
+ else {
+switch (toolIndex) {
+case 1:
+      if (leftMouse) {
+        _player.placeBlock(_player.getSelectedBlockType());
+      }
+ else {
+        _player.removeBlock();
+      }
+    break;
+default :
+  Blockmania.getInstance().getLogger().log(Level.WARNING,"Tool activation happened for an unrecognized tool: " + toolIndex);
+break;
+}
+}
+}
