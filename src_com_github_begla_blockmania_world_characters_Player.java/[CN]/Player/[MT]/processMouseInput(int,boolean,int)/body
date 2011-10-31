@@ -1,0 +1,12 @@
+{
+  if (button == 0 && state) {
+    _toolBelt.activateTool(true);
+  }
+ else   if (button == 1 && state) {
+    _toolBelt.activateTool(false);
+  }
+ else   if (wheelMoved != 0) {
+    Blockmania.getInstance().getLogger().log(Level.INFO,"Mouse wheel moved " + wheelMoved + " for button "+ button+ ", state "+ state);
+    _toolBelt.rollSelectedTool((byte)(wheelMoved / 120));
+  }
+}
