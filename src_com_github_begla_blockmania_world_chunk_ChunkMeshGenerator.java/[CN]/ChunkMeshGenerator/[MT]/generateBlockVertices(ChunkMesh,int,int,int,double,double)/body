@@ -1,37 +1,38 @@
 {
-  byte block=_chunk.getBlock(x,y,z);
+  byte blockId=_chunk.getBlock(x,y,z);
+  Block block=BlockManager.getInstance().getBlock(blockId);
   ChunkMesh.RENDER_TYPE renderType=ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT;
-  if (!Block.getBlockForType(block).isBlockTypeTranslucent())   renderType=ChunkMesh.RENDER_TYPE.OPAQUE;
-  if (Block.getBlockForType(block).getClass().equals(BlockWater.class))   renderType=ChunkMesh.RENDER_TYPE.WATER;
-  if (Block.getBlockForType(block).getClass().equals(BlockLava.class))   renderType=ChunkMesh.RENDER_TYPE.LAVA;
+  if (!block.isBlockTypeTranslucent())   renderType=ChunkMesh.RENDER_TYPE.OPAQUE;
+  if (block.getTitle().equals("Water"))   renderType=ChunkMesh.RENDER_TYPE.WATER;
+  if (block.getTitle().equals("Lava"))   renderType=ChunkMesh.RENDER_TYPE.LAVA;
   boolean drawFront, drawBack, drawLeft, drawRight, drawTop, drawBottom;
-  byte blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y + 1,_chunk.getBlockWorldPosZ(z));
-  drawTop=isSideVisibleForBlockTypes(blockToCheck,block);
-  blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y,_chunk.getBlockWorldPosZ(z - 1));
-  drawFront=isSideVisibleForBlockTypes(blockToCheck,block);
-  blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y,_chunk.getBlockWorldPosZ(z + 1));
-  drawBack=isSideVisibleForBlockTypes(blockToCheck,block);
-  blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x - 1),y,_chunk.getBlockWorldPosZ(z));
-  drawLeft=isSideVisibleForBlockTypes(blockToCheck,block);
-  blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x + 1),y,_chunk.getBlockWorldPosZ(z));
-  drawRight=isSideVisibleForBlockTypes(blockToCheck,block);
+  byte blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y + 1,_chunk.getBlockWorldPosZ(z));
+  drawTop=isSideVisibleForBlockTypes(blockToCheckId,blockId);
+  blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y,_chunk.getBlockWorldPosZ(z - 1));
+  drawFront=isSideVisibleForBlockTypes(blockToCheckId,blockId);
+  blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y,_chunk.getBlockWorldPosZ(z + 1));
+  drawBack=isSideVisibleForBlockTypes(blockToCheckId,blockId);
+  blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x - 1),y,_chunk.getBlockWorldPosZ(z));
+  drawLeft=isSideVisibleForBlockTypes(blockToCheckId,blockId);
+  blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x + 1),y,_chunk.getBlockWorldPosZ(z));
+  drawRight=isSideVisibleForBlockTypes(blockToCheckId,blockId);
   if (y > 0) {
-    blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z));
-    drawBottom=isSideVisibleForBlockTypes(blockToCheck,block);
+    blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z));
+    drawBottom=isSideVisibleForBlockTypes(blockToCheckId,blockId);
   }
  else {
     drawBottom=false;
   }
-  Block.BLOCK_FORM blockForm=Block.getBlockForType(block).getBlockForm();
+  Block.BLOCK_FORM blockForm=block.getBlockForm();
   if (blockForm == Block.BLOCK_FORM.LOWERED_BOCK) {
-    blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z - 1));
-    drawFront=isSideVisibleForBlockTypes(blockToCheck,block) || drawFront;
-    blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z + 1));
-    drawBack=isSideVisibleForBlockTypes(blockToCheck,block) || drawBack;
-    blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x - 1),y - 1,_chunk.getBlockWorldPosZ(z));
-    drawLeft=isSideVisibleForBlockTypes(blockToCheck,block) || drawLeft;
-    blockToCheck=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x + 1),y - 1,_chunk.getBlockWorldPosZ(z));
-    drawRight=isSideVisibleForBlockTypes(blockToCheck,block) || drawRight;
+    blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z - 1));
+    drawFront=isSideVisibleForBlockTypes(blockToCheckId,blockId) || drawFront;
+    blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z + 1));
+    drawBack=isSideVisibleForBlockTypes(blockToCheckId,blockId) || drawBack;
+    blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x - 1),y - 1,_chunk.getBlockWorldPosZ(z));
+    drawLeft=isSideVisibleForBlockTypes(blockToCheckId,blockId) || drawLeft;
+    blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x + 1),y - 1,_chunk.getBlockWorldPosZ(z));
+    drawRight=isSideVisibleForBlockTypes(blockToCheckId,blockId) || drawRight;
   }
   if (drawTop) {
     Vector3f p1=new Vector3f(-0.5f,0.5f,0.5f);
@@ -39,8 +40,8 @@
     Vector3f p3=new Vector3f(0.5f,0.5f,-0.5f);
     Vector3f p4=new Vector3f(-0.5f,0.5f,-0.5f);
     Vector3f norm=new Vector3f(0,1,0);
-    Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-    Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.TOP).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.TOP).y,0f);
+    Vector4f colorOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+    Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.TOP).x,block.getTextureOffsetFor(Block.SIDE.TOP).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
   if (drawFront) {
@@ -49,8 +50,8 @@
     Vector3f p3=new Vector3f(0.5f,-0.5f,-0.5f);
     Vector3f p4=new Vector3f(-0.5f,-0.5f,-0.5f);
     Vector3f norm=new Vector3f(0,0,-1);
-    Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-    Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.FRONT).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.FRONT).y,0f);
+    Vector4f colorOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+    Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.FRONT).x,block.getTextureOffsetFor(Block.SIDE.FRONT).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
   if (drawBack) {
@@ -59,8 +60,8 @@
     Vector3f p3=new Vector3f(0.5f,0.5f,0.5f);
     Vector3f p4=new Vector3f(-0.5f,0.5f,0.5f);
     Vector3f norm=new Vector3f(0,0,1);
-    Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-    Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BACK).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BACK).y,0f);
+    Vector4f colorOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+    Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.BACK).x,block.getTextureOffsetFor(Block.SIDE.BACK).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
   if (drawLeft) {
@@ -69,8 +70,8 @@
     Vector3f p3=new Vector3f(-0.5f,0.5f,0.5f);
     Vector3f p4=new Vector3f(-0.5f,0.5f,-0.5f);
     Vector3f norm=new Vector3f(-1,0,0);
-    Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-    Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.LEFT).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.LEFT).y,0f);
+    Vector4f colorOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+    Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.LEFT).x,block.getTextureOffsetFor(Block.SIDE.LEFT).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
   if (drawRight) {
@@ -79,8 +80,8 @@
     Vector3f p3=new Vector3f(0.5f,-0.5f,0.5f);
     Vector3f p4=new Vector3f(0.5f,-0.5f,-0.5f);
     Vector3f norm=new Vector3f(1,0,0);
-    Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-    Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.RIGHT).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.RIGHT).y,0f);
+    Vector4f colorOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+    Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.RIGHT).x,block.getTextureOffsetFor(Block.SIDE.RIGHT).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
   if (drawBottom) {
@@ -89,8 +90,8 @@
     Vector3f p3=new Vector3f(0.5f,-0.5f,0.5f);
     Vector3f p4=new Vector3f(-0.5f,-0.5f,0.5f);
     Vector3f norm=new Vector3f(0,-1,0);
-    Vector4f colorOffset=Block.getBlockForType(block).getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
-    Vector3f texOffset=new Vector3f(Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BOTTOM).x,Block.getBlockForType(block).getTextureOffsetFor(Block.SIDE.BOTTOM).y,0f);
+    Vector4f colorOffset=block.getColorOffsetFor(Block.SIDE.FRONT,temp,hum);
+    Vector3f texOffset=new Vector3f(block.getTextureOffsetFor(Block.SIDE.BOTTOM).x,block.getTextureOffsetFor(Block.SIDE.BOTTOM).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
 }

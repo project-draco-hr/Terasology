@@ -3,27 +3,23 @@
     throw new IllegalArgumentException("No title provided.");
   }
  else   if (title.isEmpty()) {
-    throw new IllegalArgumentException("No title provided.");
+    throw new IllegalArgumentException("Empty title provided.");
   }
   if (seed == null) {
     throw new IllegalArgumentException("No seed provided.");
   }
  else   if (seed.isEmpty()) {
-    throw new IllegalArgumentException("No seed provided.");
+    throw new IllegalArgumentException("Empty seed provided.");
   }
   _title=title;
   _seed=seed;
   _random=new FastRandom(seed.hashCode());
-  setTime(0.01);
   loadMetaData();
-  _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(_seed));
-  _chunkGenerators.put("forest",new ChunkGeneratorFlora(_seed));
-  _chunkGenerators.put("resources",new ChunkGeneratorResources(_seed));
-  _objectGenerators.put("tree",new ObjectGeneratorTree(this,_seed));
-  _objectGenerators.put("pineTree",new ObjectGeneratorPineTree(this,_seed));
-  _objectGenerators.put("firTree",new ObjectGeneratorFirTree(this,_seed));
-  _objectGenerators.put("cactus",new ObjectGeneratorCactus(this,_seed));
-  if (_spawningPoint == null) {
-    _spawningPoint=findNewSpawningPoint();
-  }
+  _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(this));
+  _chunkGenerators.put("forest",new ChunkGeneratorFlora(this));
+  _chunkGenerators.put("resources",new ChunkGeneratorResources(this));
+  _objectGenerators.put("tree",new ObjectGeneratorTree(this));
+  _objectGenerators.put("pineTree",new ObjectGeneratorPineTree(this));
+  _objectGenerators.put("firTree",new ObjectGeneratorFirTree(this));
+  _objectGenerators.put("cactus",new ObjectGeneratorCactus(this));
 }

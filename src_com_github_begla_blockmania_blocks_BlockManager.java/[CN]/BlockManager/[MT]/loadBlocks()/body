@@ -1,0 +1,18 @@
+{
+  try {
+    SAXBuilder builder=new SAXBuilder();
+    InputSource is=new InputSource(ResourceLoader.getResource("com/github/begla/blockmania/data/blocks/blocks.xml").openStream());
+    Document doc=builder.build(is);
+    Element root=doc.getRootElement();
+    List<Element> content=root.getChildren();
+    for (    Element e : content) {
+      Block b=new Block(e);
+      _blocksById.put(b.getId(),b);
+      _blocksByTitle.put(b.getTitle(),b);
+    }
+    return true;
+  }
+ catch (  Exception e) {
+    return false;
+  }
+}

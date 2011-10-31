@@ -1,13 +1,11 @@
 {
   _timerTicksPerSecond=Sys.getTimerResolution();
+  _hud=new HUD();
   ShaderManager.getInstance();
   VBOManager.getInstance();
   FontManager.getInstance();
-  glEnable(GL_CULL_FACE);
-  glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LEQUAL);
-  GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST);
-  glShadeModel(GL11.GL_SMOOTH);
+  resizeViewport();
+  setupOpenGL();
   String worldSeed=Configuration.DEFAULT_SEED;
   if (worldSeed.length() == 0) {
     worldSeed=_rand.randomCharacterString(16);

@@ -1,0 +1,10 @@
+{
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_DEPTH_TEST);
+  glDepthFunc(GL_LEQUAL);
+  double minDist=Math.min(Configuration.getSettingNumeric("V_DIST_X") * Configuration.CHUNK_DIMENSIONS.x,Configuration.getSettingNumeric("V_DIST_Z") * Configuration.CHUNK_DIMENSIONS.z) / 2.0;
+  glFogf(GL_FOG_START,(float)(minDist * 0.5));
+  glFogf(GL_FOG_END,(float)minDist);
+  GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST);
+  glShadeModel(GL11.GL_SMOOTH);
+}

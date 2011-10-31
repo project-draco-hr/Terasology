@@ -4,7 +4,7 @@
   for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
     byte blockType=_parent.getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
     AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
-    if (!Block.getBlockForType(blockType).isPenetrable()) {
+    if (!BlockManager.getInstance().getBlock(blockType).isPenetrable()) {
       if (getAABB().overlaps(blockAABB)) {
         result=true;
         Vector3f direction=new Vector3f(getPosition().x,0f,getPosition().z);

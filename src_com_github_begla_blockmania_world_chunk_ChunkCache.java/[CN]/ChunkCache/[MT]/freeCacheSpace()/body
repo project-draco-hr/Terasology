@@ -1,13 +1,12 @@
 {
-  if (_running)   return;
+  if (_running || _chunkCache.size() <= capacity())   return;
   _running=true;
   Runnable r=new Runnable(){
     public void run(){
       FastList<Chunk> cachedChunks=new FastList<Chunk>(_chunkCache.values());
       Collections.sort(cachedChunks);
-      while (cachedChunks.size() >= capacity()) {
+      while (cachedChunks.size() > capacity()) {
         Chunk chunkToDelete=cachedChunks.removeLast();
-        chunkToDelete.setCached(false);
         writeChunkToDisk(chunkToDelete);
         _chunkCache.values().remove(chunkToDelete);
         chunkToDelete.dispose();
@@ -16,5 +15,5 @@
     }
   }
 ;
-  _threadPool.submit(r);
+  Blockmania.getInstance().getThreadPool().submit(r);
 }

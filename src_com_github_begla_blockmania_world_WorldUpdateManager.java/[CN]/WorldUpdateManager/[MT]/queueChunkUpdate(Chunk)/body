@@ -1,6 +1,6 @@
 {
   final Chunk chunkToProcess=c;
-  if (!_currentlyProcessedChunks.contains(chunkToProcess) && _currentlyProcessedChunks.size() < MAX_THREADS) {
+  if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < Configuration.MAX_THREADS - 1 || c.distanceToPlayer() < 8.0)) {
     _currentlyProcessedChunks.add(chunkToProcess);
     Runnable r=new Runnable(){
       public void run(){
@@ -12,7 +12,7 @@
       }
     }
 ;
-    _threadPool.execute(r);
+    Blockmania.getInstance().getThreadPool().execute(r);
     return true;
   }
   return false;

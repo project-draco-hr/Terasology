@@ -4,6 +4,9 @@
     if (key == Keyboard.KEY_ESCAPE && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
       toggleDebugConsole();
     }
+    if (key == Keyboard.KEY_F3 && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+      Configuration.setSetting("DEBUG",!Configuration.getSettingBoolean("DEBUG"));
+    }
     if (_pauseGame) {
       if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
         if (key == Keyboard.KEY_BACK) {
@@ -23,7 +26,7 @@
       }
     }
  else {
-      _player.processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+      _world.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
     }
   }
 }

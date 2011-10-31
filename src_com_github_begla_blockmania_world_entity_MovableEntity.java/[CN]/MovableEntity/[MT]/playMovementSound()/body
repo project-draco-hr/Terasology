@@ -1,10 +1,10 @@
 {
   if (_godMode)   return;
-  if ((Math.abs(_velocity.x) > 0.01 || Math.abs(_velocity.z) > 0.01) && _touchingGround) {
+  if ((MathHelper.fastAbs(_velocity.x) > 0.01 || MathHelper.fastAbs(_velocity.z) > 0.01) && _touchingGround) {
     if (_currentFootstepSound == null) {
       Vector3f playerDirection=directionOfOrigin();
-      _currentFootstepSound=_footstepSounds[Math.abs(_rand.randomInt()) % 5];
-      _currentFootstepSound.playAsSoundEffect(0.7f + (float)Math.abs(_rand.randomDouble()) * 0.3f,0.2f + (float)Math.abs(_rand.randomDouble()) * 0.3f,false,playerDirection.x,playerDirection.y,playerDirection.z);
+      _currentFootstepSound=_footstepSounds[MathHelper.fastAbs(_parent.getRandom().randomInt()) % 5];
+      _currentFootstepSound.playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getRandom().randomDouble()) * 0.3f,0.05f + (float)MathHelper.fastAbs(_parent.getRandom().randomDouble()) * 0.1f,false,playerDirection.x,playerDirection.y,playerDirection.z);
     }
  else {
       if (!_currentFootstepSound.isPlaying()) {

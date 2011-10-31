@@ -4,7 +4,7 @@
       for (int z=0; z < (int)Configuration.CHUNK_DIMENSIONS.z; z++) {
         for (int y=0; y < (int)Configuration.CHUNK_DIMENSIONS.y; y++) {
           byte lightValue=getLight(x,y,z,LIGHT_TYPE.SUN);
-          if (lightValue > 0 && Block.getBlockForType(getBlock(x,y,z)).isBlockTypeTranslucent()) {
+          if (lightValue > 0 && BlockManager.getInstance().getBlock(getBlock(x,y,z)).isBlockTypeTranslucent()) {
             spreadLight(x,y,z,lightValue,LIGHT_TYPE.SUN);
           }
         }

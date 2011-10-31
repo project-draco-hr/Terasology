@@ -6,12 +6,12 @@
       byte currentBlockType=getParent().getBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z);
       getParent().setBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,(byte)0x0,true,true);
       byte upperBlockType=getParent().getBlock((int)blockPos.x,(int)blockPos.y + 1,(int)blockPos.z);
-      if (Block.getBlockForType(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
+      if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
         getParent().setBlock((int)blockPos.x,(int)blockPos.y + 1,(int)blockPos.z,(byte)0x0,true,true);
       }
       _parent.getBlockParticleEmitter().setOrigin(blockPos);
-      _parent.getBlockParticleEmitter().emitParticles(128,currentBlockType);
-      AudioManager.getInstance().getAudio("PlaceRemoveBlock").playAsSoundEffect(0.6f + (float)Math.abs(_rand.randomDouble()) * 0.4f,0.7f + (float)Math.abs(_rand.randomDouble()) * 0.3f,false);
+      _parent.getBlockParticleEmitter().emitParticles(256,currentBlockType);
+      AudioManager.getInstance().getAudio("PlaceRemoveBlock").playAsSoundEffect(0.6f + (float)MathHelper.fastAbs(_parent.getRandom().randomDouble()) * 0.2f,0.5f + (float)MathHelper.fastAbs(_parent.getRandom().randomDouble()) * 0.3f,false);
     }
   }
 }

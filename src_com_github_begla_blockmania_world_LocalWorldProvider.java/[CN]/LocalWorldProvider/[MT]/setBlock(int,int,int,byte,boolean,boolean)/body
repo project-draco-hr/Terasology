@@ -10,7 +10,7 @@
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
     byte oldBlock=c.getBlock(blockPosX,y,blockPosZ);
     byte newBlock;
-    if (Block.getBlockForType(c.getBlock(blockPosX,y,blockPosZ)).isRemovable()) {
+    if (BlockManager.getInstance().getBlock(c.getBlock(blockPosX,y,blockPosZ)).isDestructible()) {
       c.setBlock(blockPosX,y,blockPosZ,type);
       newBlock=type;
     }
@@ -22,7 +22,7 @@
       byte blockLightPrev=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
       byte blockLightCurrent;
       if (oldBlock == 0x0 && newBlock != 0x0) {
-        byte luminance=Block.getBlockForType(type).getLuminance();
+        byte luminance=BlockManager.getInstance().getBlock(type).getLuminance();
         c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
         blockLightCurrent=luminance;
       }

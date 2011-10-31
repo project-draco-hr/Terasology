@@ -15,24 +15,26 @@
       int firstBlockHeight=-1;
       for (int y=(int)Configuration.CHUNK_DIMENSIONS.y; y >= 0; y--) {
         if (y == 0) {
-          c.setBlock(x,y,z,(byte)0x8);
+          c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Hard stone").getId());
           break;
         }
         if (y <= 32 && y > 0) {
-          c.setBlock(x,y,z,(byte)0x4);
+          c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Water").getId());
           if (y == 32) {
-            if (type == BIOME_TYPE.SNOW)             c.setBlock(x,y,z,(byte)0x11);
+            if (type == BIOME_TYPE.SNOW)             c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Ice").getId());
           }
         }
         double dens=densityMap[x][y][z];
         if ((dens >= 0 && dens < 64)) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
           if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6)           GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
+ else           c.setBlock(x,y,z,(byte)0x0);
           continue;
         }
  else         if (dens >= 64) {
           if (firstBlockHeight == -1)           firstBlockHeight=y;
-          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6)           GenerateInnerLayer(x,y,z,c,type);
+          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.2)           GenerateInnerLayer(x,y,z,c,type);
+ else           c.setBlock(x,y,z,(byte)0x0);
           continue;
         }
         firstBlockHeight=-1;

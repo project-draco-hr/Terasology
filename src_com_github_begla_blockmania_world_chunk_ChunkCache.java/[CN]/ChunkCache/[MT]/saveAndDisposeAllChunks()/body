@@ -1,7 +1,13 @@
 {
-  for (  Chunk c : _chunkCache.values()) {
-    c.setCached(false);
-    writeChunkToDisk(c);
+  Runnable r=new Runnable(){
+    public void run(){
+      for (      Chunk c : _chunkCache.values()) {
+        writeChunkToDisk(c);
+        c.dispose();
+      }
+      _chunkCache.clear();
+    }
   }
-  _chunkCache.clear();
+;
+  Blockmania.getInstance().getThreadPool().submit(r);
 }

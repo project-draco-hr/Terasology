@@ -1,4 +1,8 @@
 {
-  if (!canMove())   return;
+  if (!canMoveVertically()) {
+    _velocity.x+=(_velocity.y / 2) * _initialVelocity.x;
+    _velocity.z+=(_velocity.y / 2) * _initialVelocity.z;
+    _velocity.y=0;
+  }
   Vector3f.add(_position,_velocity,_position);
 }
