@@ -1,9 +1,10 @@
 {
-  updateDaylight();
+  _worldProvider.getRenderingOrigin().set(_player.getPosition());
   updateTick();
+  updateDaylight();
   _skysphere.update();
-  _player.update();
   _clouds.update();
+  _player.update();
   updateChunksInProximity();
   FastList<Chunk> visibleChunks=fetchVisibleChunks();
   for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
@@ -14,6 +15,6 @@
   }
   _blockParticleEmitter.update();
   _worldUpdateManager.updateVBOs();
-  _chunkCache.freeCacheSpace();
+  _worldProvider.getChunkProvider().freeUnusedSpace();
   _worldTimeEventManager.fireWorldTimeEvents();
 }
