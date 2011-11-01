@@ -5,7 +5,7 @@
   for (int i=0; i < 6; i++) {
     byte neighborValue=getParent().getLight(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,type);
     byte neighborType=getParent().getBlock(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z);
-    if (neighborValue < lightValue && neighborValue > 0 && BlockManager.getInstance().getBlock(neighborType).isBlockTypeTranslucent()) {
+    if (neighborValue < lightValue && neighborValue > 0 && BlockManager.getInstance().getBlock(neighborType).isTranslucent()) {
       getParent().unspreadLight(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,(byte)(lightValue - 1),depth + 1,type,brightSpots);
     }
  else     if (neighborValue >= lightValue) {
