@@ -9,12 +9,12 @@
   FastList<Chunk> visibleChunks=fetchVisibleChunks();
   for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
     if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
-      _worldUpdateManager.queueChunkUpdate(n.getValue());
+      _chunkUpdateManager.queueChunkUpdate(n.getValue());
     }
     n.getValue().update();
   }
   _blockParticleEmitter.update();
-  _worldUpdateManager.updateVBOs();
+  _chunkUpdateManager.updateVBOs();
   _worldProvider.getChunkProvider().freeUnusedSpace();
   _worldTimeEventManager.fireWorldTimeEvents();
 }
