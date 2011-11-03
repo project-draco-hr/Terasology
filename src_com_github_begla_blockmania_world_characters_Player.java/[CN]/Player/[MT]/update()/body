@@ -1,8 +1,8 @@
 {
-  updateCameras();
   _godMode=Configuration.getSettingBoolean("GOD_MODE");
-  _walkingSpeed=Configuration.getSettingNumeric("WALKING_SPEED");
+  _walkingSpeed=Configuration.getSettingNumeric("WALKING_SPEED") + Math.abs(calcBobbingOffset((float)Math.PI / 2f,0.005f,2.0f));
   _runningFactor=Configuration.getSettingNumeric("RUNNING_FACTOR");
   _jumpIntensity=Configuration.getSettingNumeric("JUMP_INTENSITY");
+  updateCameras();
   super.update();
 }

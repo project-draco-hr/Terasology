@@ -1,10 +1,12 @@
 {
   _firstPersonCamera.getPosition().set(calcEyePosition());
   if (!(Configuration.getSettingBoolean("GOD_MODE"))) {
-    _firstPersonCamera.setBobbingOffsetFactor(Math.sin(_stepCounter * 2.0) * 0.025);
+    _firstPersonCamera.setBobbingRotationOffsetFactor(calcBobbingOffset(0.0f,0.01f,2.0f));
+    _firstPersonCamera.setBobbingVerticalOffsetFactor(calcBobbingOffset((float)Math.PI / 4f,0.025f,2.75f));
   }
  else {
-    _firstPersonCamera.setBobbingOffsetFactor(0);
+    _firstPersonCamera.setBobbingRotationOffsetFactor(0.0);
+    _firstPersonCamera.setBobbingVerticalOffsetFactor(0.0);
   }
   if (!(Configuration.getSettingBoolean("DEMO_FLIGHT") && Configuration.getSettingBoolean("GOD_MODE"))) {
     _firstPersonCamera.getViewingDirection().set(getViewingDirection());
