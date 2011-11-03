@@ -2,8 +2,8 @@
   RayBlockIntersection.Intersection is=calcSelectedBlock();
   if (Configuration.getSettingBoolean("PLACING_BOX")) {
     if (is != null) {
-      if (BlockManager.getInstance().getBlock(_parent.getWorldProvider().getBlockAtPosition(is.getBlockPosition())).shouldRenderBoundingBox()) {
-        Block.AABBForBlockAt(is.getBlockPosition()).render();
+      if (BlockManager.getInstance().getBlock(_parent.getWorldProvider().getBlockAtPosition(is.getBlockPosition().toVector3f())).shouldRenderBoundingBox()) {
+        Block.AABBForBlockAt(is.getBlockPosition().toVector3f()).render();
       }
     }
   }

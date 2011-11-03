@@ -2,14 +2,14 @@
   if (getParent() != null) {
     RayBlockIntersection.Intersection is=calcSelectedBlock();
     if (is != null) {
-      Vector3f blockPos=is.getBlockPosition();
-      byte currentBlockType=getParent().getWorldProvider().getBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z);
-      getParent().getWorldProvider().setBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,(byte)0x0,true,true);
-      byte upperBlockType=getParent().getWorldProvider().getBlock((int)blockPos.x,(int)blockPos.y + 1,(int)blockPos.z);
+      BlockPosition blockPos=is.getBlockPosition();
+      byte currentBlockType=getParent().getWorldProvider().getBlock(blockPos.x,blockPos.y,blockPos.z);
+      getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y,blockPos.z,(byte)0x0,true,true);
+      byte upperBlockType=getParent().getWorldProvider().getBlock(blockPos.x,blockPos.y + 1,blockPos.z);
       if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
-        getParent().getWorldProvider().setBlock((int)blockPos.x,(int)blockPos.y + 1,(int)blockPos.z,(byte)0x0,true,true);
+        getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y + 1,blockPos.z,(byte)0x0,true,true);
       }
-      _parent.getBlockParticleEmitter().setOrigin(blockPos);
+      _parent.getBlockParticleEmitter().setOrigin(blockPos.toVector3f());
       _parent.getBlockParticleEmitter().emitParticles(256,currentBlockType);
       AudioManager.getInstance().getAudio("PlaceRemoveBlock").playAsSoundEffect(0.6f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.5f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
     }
