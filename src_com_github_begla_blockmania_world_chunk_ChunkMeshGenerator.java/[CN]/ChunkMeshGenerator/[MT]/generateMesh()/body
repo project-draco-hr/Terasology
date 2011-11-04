@@ -1,10 +1,10 @@
 {
   ChunkMesh mesh=new ChunkMesh();
-  for (int x=0; x < Configuration.CHUNK_DIMENSIONS.x; x++) {
-    for (int z=0; z < Configuration.CHUNK_DIMENSIONS.z; z++) {
+  for (int x=0; x < Chunk.getChunkDimensionX(); x++) {
+    for (int z=0; z < Chunk.getChunkDimensionZ(); z++) {
       double biomeTemp=_chunk.getParent().getTemperatureAt(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosZ(z));
       double biomeHumidity=_chunk.getParent().getHumidityAt(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosZ(z));
-      for (int y=0; y < Configuration.CHUNK_DIMENSIONS.y; y++) {
+      for (int y=0; y < Chunk.getChunkDimensionY(); y++) {
         byte blockType=_chunk.getBlock(x,y,z);
         Block block=BlockManager.getInstance().getBlock(blockType);
         if (block.isBlockInvisible())         continue;

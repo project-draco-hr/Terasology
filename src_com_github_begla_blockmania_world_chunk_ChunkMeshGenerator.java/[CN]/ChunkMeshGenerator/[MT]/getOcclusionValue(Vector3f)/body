@@ -8,10 +8,10 @@
   for (int i=0; i < 4; i++) {
     Block b=BlockManager.getInstance().getBlock(blocks[i]);
     if (b.isCastingShadows() && b.getBlockForm() != Block.BLOCK_FORM.BILLBOARD) {
-      result-=Configuration.OCCLUSION_AMOUNT_DEFAULT;
+      result-=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Lighting.occlusionIntensDefault");
     }
  else     if (b.isCastingShadows() && b.getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
-      result-=Configuration.OCCLUSION_AMOUNT_BILLBOARDS;
+      result-=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Lighting.occlusionIntensBillboards");
     }
   }
   return result;

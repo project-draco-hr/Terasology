@@ -1,6 +1,6 @@
 {
   RayBlockIntersection.Intersection is=calcSelectedBlock();
-  if (Configuration.getSettingBoolean("PLACING_BOX")) {
+  if ((Boolean)BlockmaniaConfiguration.getInstance().getConfig().get("HUD.placingBox")) {
     if (is != null) {
       if (BlockManager.getInstance().getBlock(_parent.getWorldProvider().getBlockAtPosition(is.getBlockPosition().toVector3f())).shouldRenderBoundingBox()) {
         Block.AABBForBlockAt(is.getBlockPosition().toVector3f()).render();

@@ -1,13 +1,14 @@
 {
   double time=_worldProvider.getTime() % 1;
-  if (time < Configuration.SUN_RISE_SET_DURATION && time > 0.0f) {
-    _daylight=time / Configuration.SUN_RISE_SET_DURATION;
+  double sunRiseSetDuration=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.sunRiseSetDuration");
+  if (time < sunRiseSetDuration && time > 0.0f) {
+    _daylight=time / sunRiseSetDuration;
   }
- else   if (time >= Configuration.SUN_RISE_SET_DURATION && time <= 0.5f) {
+ else   if (time >= sunRiseSetDuration && time <= 0.5f) {
     _daylight=1.0f;
   }
-  if (time > 0.5 - Configuration.SUN_RISE_SET_DURATION && time < 0.5f) {
-    _daylight=(0.5f - time) / Configuration.SUN_RISE_SET_DURATION;
+  if (time > 0.5 - sunRiseSetDuration && time < 0.5f) {
+    _daylight=(0.5f - time) / sunRiseSetDuration;
   }
  else   if (time >= 0.5 && time <= 1.0f) {
     _daylight=0.0f;

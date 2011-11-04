@@ -1,0 +1,18 @@
+{
+  boolean success=false;
+  try {
+    success=_parent.getGroovyManager().runGroovyShell(_consoleInput.toString());
+  }
+ catch (  Exception e) {
+    Blockmania.getInstance().getLogger().log(Level.INFO,e.getMessage());
+  }
+  if (success) {
+    Blockmania.getInstance().initOpenGLParams();
+    Blockmania.getInstance().getLogger().log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
+    addToRingBuffer();
+    resetDebugConsole();
+  }
+ else {
+    Blockmania.getInstance().getLogger().log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
+  }
+}

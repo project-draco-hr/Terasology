@@ -1,0 +1,8 @@
+{
+  if (_ringBuffer.isEmpty())   return;
+  _ringBufferPos+=dir;
+  if (_ringBufferPos < 0)   _ringBufferPos=_ringBuffer.size() - 1;
+ else   if (_ringBufferPos > _ringBuffer.size() - 1)   _ringBufferPos=0;
+  _consoleInput.setLength(0);
+  _consoleInput.append(_ringBuffer.get(_ringBufferPos));
+}
