@@ -21,12 +21,11 @@
       mesh._vertexElements[j].vertices.put(vertexPos.z);
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex + 1));
-      double occlusionValue=calcOcclusionValue(vertexPos);
-      Double[] result=new Double[2];
-      calcLightForVertexPos(vertexPos,result);
+      Double[] result=new Double[3];
+      calcLightingValuesForVertexPos(vertexPos,result);
       mesh._vertexElements[j].vertices.put(result[0].floatValue());
       mesh._vertexElements[j].vertices.put(result[1].floatValue());
-      mesh._vertexElements[j].vertices.put((float)occlusionValue);
+      mesh._vertexElements[j].vertices.put(result[2].floatValue());
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 1));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 2));
