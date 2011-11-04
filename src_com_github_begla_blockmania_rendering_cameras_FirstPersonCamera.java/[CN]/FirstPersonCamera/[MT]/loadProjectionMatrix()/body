@@ -1,6 +1,8 @@
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective((Float)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.fov"),(Float)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.aspectRatio"),0.1f,1024f);
+  float fov=((Double)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.fov")).floatValue();
+  float aspectRatio=((Double)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.aspectRatio")).floatValue();
+  gluPerspective(fov,aspectRatio,0.1f,1024f);
   glMatrixMode(GL11.GL_MODELVIEW);
 }

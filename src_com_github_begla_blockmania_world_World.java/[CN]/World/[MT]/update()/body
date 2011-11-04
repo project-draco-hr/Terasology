@@ -6,12 +6,14 @@
   _clouds.update();
   _player.update();
   updateChunksInProximity();
-  FastList<Chunk> visibleChunks=fetchVisibleChunks();
-  for (FastList.Node<Chunk> n=visibleChunks.head(), end=visibleChunks.tail(); (n=n.getNext()) != end; ) {
-    if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
-      _chunkUpdateManager.queueChunkUpdate(n.getValue());
+  for (FastList.Node<Chunk> n=_chunksInProximity.head(), end=_chunksInProximity.tail(); (n=n.getNext()) != end; ) {
+    if (n.getValue().isVisible()) {
+      if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
+        _chunkUpdateManager.queueChunkUpdate(n.getValue());
+        continue;
+      }
+      n.getValue().update();
     }
-    n.getValue().update();
   }
   _blockParticleEmitter.update();
   _chunkUpdateManager.updateVBOs();

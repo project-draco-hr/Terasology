@@ -5,4 +5,5 @@
   int blockPosZ=MathHelper.calcBlockPosZ(z,chunkPosZ);
   Chunk c=getChunkProvider().loadOrCreateChunk(MathHelper.calcChunkPosX(x),MathHelper.calcChunkPosZ(z));
   c.setLight(blockPosX,y,blockPosZ,intensity,type);
+  notifyObserversLightChanged(c,new BlockPosition(blockPosX,y,blockPosZ));
 }

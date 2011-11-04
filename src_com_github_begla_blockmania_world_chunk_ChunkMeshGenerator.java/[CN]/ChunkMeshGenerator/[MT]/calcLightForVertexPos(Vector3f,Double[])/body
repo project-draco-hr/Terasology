@@ -1,0 +1,38 @@
+{
+  double[] lights=new double[8];
+  double[] blockLights=new double[8];
+  lights[0]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[1]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[2]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[3]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[4]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[5]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[6]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[7]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  blockLights[0]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[1]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[2]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[3]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[4]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[5]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[6]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[7]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  double resultLight=0;
+  double resultBlockLight=0;
+  int counterLight=0;
+  int counterBlockLight=0;
+  for (int i=0; i < 8; i++) {
+    if (lights[i] > 0) {
+      resultLight+=lights[i];
+      counterLight++;
+    }
+    if (lights[i] > 0) {
+      resultBlockLight+=blockLights[i];
+      counterBlockLight++;
+    }
+  }
+  if (counterLight == 0)   output[0]=new Double(0);
+ else   output[0]=new Double(resultLight / counterLight) / 15f;
+  if (counterBlockLight == 0)   output[1]=new Double(0);
+ else   output[1]=new Double(resultBlockLight / counterBlockLight) / 15f;
+}
