@@ -10,18 +10,12 @@
     System.out.println("Nothing yet");
   }
  else {
-switch (toolIndex) {
-case 1:
-      if (leftMouse) {
-        _player.placeBlock(_player.getSelectedBlockType());
-      }
+    if (_toolStore.containsKey(toolIndex)) {
+      if (leftMouse)       _toolStore.get(toolIndex).executeLeftClickAction();
+ else       _toolStore.get(toolIndex).executeRightClickAction();
+    }
  else {
-        _player.removeBlock();
-      }
-    break;
-default :
-  Blockmania.getInstance().getLogger().log(Level.WARNING,"Tool activation happened for an unrecognized tool: " + toolIndex);
-break;
-}
-}
+      Blockmania.getInstance().getLogger().log(Level.WARNING,"Tool activation happened for an unrecognized tool: " + toolIndex);
+    }
+  }
 }

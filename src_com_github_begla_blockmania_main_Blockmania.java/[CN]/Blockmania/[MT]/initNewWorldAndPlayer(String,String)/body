@@ -3,6 +3,12 @@
   if (_world != null) {
     _world.dispose();
   }
+  if (seed == null) {
+    seed=_rand.randomCharacterString(16);
+  }
+ else   if (seed.isEmpty()) {
+    seed=_rand.randomCharacterString(16);
+  }
   _world=new World(title,seed);
   _world.setPlayer(new Player(_world));
   _lastLoopTime=getTime();

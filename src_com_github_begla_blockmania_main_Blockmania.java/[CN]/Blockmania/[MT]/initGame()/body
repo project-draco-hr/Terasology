@@ -1,12 +1,12 @@
 {
   _timerTicksPerSecond=Sys.getTimerResolution();
-  _hud=new HUD();
+  _hud=new HUD(this);
   ShaderManager.getInstance();
   VBOManager.getInstance();
   FontManager.getInstance();
   resizeViewport();
-  setupOpenGL();
-  String worldSeed=Configuration.DEFAULT_SEED;
+  initOpenGLParams();
+  String worldSeed=(String)BlockmaniaConfiguration.getInstance().getConfig().get("World.defaultSeed");
   if (worldSeed.length() == 0) {
     worldSeed=_rand.randomCharacterString(16);
   }

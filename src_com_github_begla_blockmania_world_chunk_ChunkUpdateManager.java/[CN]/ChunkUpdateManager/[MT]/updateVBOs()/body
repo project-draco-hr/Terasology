@@ -1,0 +1,7 @@
+{
+  final int vboUpdatesPerFrame=(Integer)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.vboUpdatesPerFrame");
+  for (int i=0; i < vboUpdatesPerFrame && _vboUpdates.size() > 0; i++) {
+    Chunk c=_vboUpdates.poll();
+    if (c != null)     c.generateVBOs();
+  }
+}

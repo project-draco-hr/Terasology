@@ -1,6 +1,8 @@
 {
-  super(title,seed);
+  _worldProvider=new LocalWorldProvider(title,seed);
   _clouds=new Clouds(this);
   _skysphere=new Skysphere(this);
-  _worldUpdateManager=new WorldUpdateManager();
+  _chunkUpdateManager=new ChunkUpdateManager();
+  _worldTimeEventManager=new WorldTimeEventManager(_worldProvider);
+  createMusicTimeEvents();
 }

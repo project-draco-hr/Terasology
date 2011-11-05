@@ -2,7 +2,7 @@
   FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(getPosition());
   boolean swimming=false, headUnderWater=false;
   for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
-    byte blockType=_parent.getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
+    byte blockType=_parent.getWorldProvider().getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
     AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
     if (BlockManager.getInstance().getBlock(blockType).isLiquid() && getAABB().overlaps(blockAABB)) {
       swimming=true;

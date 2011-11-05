@@ -1,0 +1,12 @@
+{
+  try {
+    ConfigObject config=new ConfigSlurper().parse(ResourceLoader.getResource("com/github/begla/blockmania/data/config/Config.groovy").toURI().toURL());
+    _config=config.flatten();
+  }
+ catch (  MalformedURLException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+  }
+catch (  URISyntaxException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+  }
+}

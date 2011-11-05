@@ -1,8 +1,9 @@
 {
   double dx=Mouse.getDX();
   double dy=Mouse.getDY();
-  yaw(dx * Configuration.MOUSE_SENS);
-  pitch(dy * Configuration.MOUSE_SENS);
+  double mouseSens=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Controls.mouseSens");
+  yaw(dx * mouseSens);
+  pitch(dy * mouseSens);
   if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
     walkForward();
   }
@@ -15,10 +16,5 @@
   if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
     strafeRight();
   }
-  if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && _touchingGround) {
-    _running=true;
-  }
- else {
-    _running=false;
-  }
+  _running=Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && _touchingGround;
 }

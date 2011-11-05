@@ -1,11 +1,11 @@
 {
-  if (Configuration.FULLSCREEN) {
+  if ((Boolean)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.fullscreen")) {
     Display.setDisplayMode(Display.getDesktopDisplayMode());
     Display.setFullscreen(true);
   }
  else {
-    Display.setDisplayMode(Configuration.DISPLAY_MODE);
+    Display.setDisplayMode((DisplayMode)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.displayMode"));
   }
-  Display.setTitle(Configuration.GAME_TITLE);
-  Display.create(Configuration.PIXEL_FORMAT);
+  Display.setTitle((String)BlockmaniaConfiguration.getInstance().getConfig().get("System.gameTitle"));
+  Display.create((PixelFormat)BlockmaniaConfiguration.getInstance().getConfig().get("Graphics.pixelFormat"));
 }
