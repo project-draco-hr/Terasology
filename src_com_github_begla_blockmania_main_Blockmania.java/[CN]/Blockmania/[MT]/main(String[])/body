@@ -13,8 +13,6 @@
     blockmania.initDisplay();
     blockmania.initControls();
     blockmania.initGame();
-    blockmania.initGroovy();
-    blockmania.startGame();
   }
  catch (  LWJGLException e) {
     Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
@@ -22,10 +20,6 @@
 catch (  SlickException e) {
     Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
   }
- finally {
-    if (blockmania != null) {
-      blockmania.destroy();
-    }
-  }
+  if (blockmania != null)   blockmania.startGame();
   System.exit(0);
 }
