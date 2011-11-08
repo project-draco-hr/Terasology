@@ -1,5 +1,9 @@
 {
+  if (_player != null) {
+    _player.unregisterObserver(_chunkUpdateManager);
+  }
   _player=p;
+  _player.registerObserver(_chunkUpdateManager);
   _player.setSpawningPoint(_worldProvider.nextSpawningPoint());
   _player.reset();
   _player.respawn();

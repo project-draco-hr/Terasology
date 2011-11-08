@@ -9,14 +9,13 @@
   for (FastList.Node<Chunk> n=_chunksInProximity.head(), end=_chunksInProximity.tail(); (n=n.getNext()) != end; ) {
     if (n.getValue().isVisible()) {
       if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
-        _chunkUpdateManager.queueChunkUpdate(n.getValue());
+        _chunkUpdateManager.queueChunkUpdate(n.getValue(),false);
         continue;
       }
       n.getValue().update();
     }
   }
   _blockParticleEmitter.update();
-  _chunkUpdateManager.updateVBOs();
   _worldProvider.getChunkProvider().freeUnusedSpace();
   _worldTimeEventManager.fireWorldTimeEvents();
   super.update();

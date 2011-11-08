@@ -1,12 +1,12 @@
 {
   Vector4f color=new Vector4f(1.0f,1.0f,1.0f,1.0f);
-  if (_colorSource == COLOR_SOURCE.COLOR_LUT)   color.set(colorForTemperatureAndHumidity(temperature,humidity));
- else   if (_colorSource == COLOR_SOURCE.FOLIAGE_LUT) {
+  if (getColorSource() == COLOR_SOURCE.COLOR_LUT)   color.set(colorForTemperatureAndHumidity(temperature,humidity));
+ else   if (getColorSource() == COLOR_SOURCE.FOLIAGE_LUT) {
     color.set(foliageColorForTemperatureAndHumidity(temperature,humidity));
   }
-  color.x*=_colorOffset[side.ordinal()].x;
-  color.y*=_colorOffset[side.ordinal()].y;
-  color.z*=_colorOffset[side.ordinal()].z;
-  color.w*=_colorOffset[side.ordinal()].w;
+  color.x*=getColorOffset()[side.ordinal()].x;
+  color.y*=getColorOffset()[side.ordinal()].y;
+  color.z*=getColorOffset()[side.ordinal()].z;
+  color.w*=getColorOffset()[side.ordinal()].w;
   return color;
 }

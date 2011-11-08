@@ -38,11 +38,11 @@
     }
     if (i < 4) {
       Block b=BlockManager.getInstance().getBlock(blocks[i]);
-      if (b.isCastingShadows() && b.getBlockForm() != Block.BLOCK_FORM.BILLBOARD) {
-        resultAmbientOcclusion-=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Lighting.occlusionIntensDefault");
+      if (b.isCastsShadows() && b.getBlockForm() != Block.BLOCK_FORM.BILLBOARD) {
+        resultAmbientOcclusion-=OCCLUSION_INTENS_DEFAULT;
       }
- else       if (b.isCastingShadows() && b.getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
-        resultAmbientOcclusion-=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Lighting.occlusionIntensBillboards");
+ else       if (b.isCastsShadows() && b.getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
+        resultAmbientOcclusion-=OCCLUSION_INTENS_BILLBOARDS;
       }
     }
   }

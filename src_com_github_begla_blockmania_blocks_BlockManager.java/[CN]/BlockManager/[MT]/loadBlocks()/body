@@ -1,18 +1,16 @@
 {
   try {
-    SAXBuilder builder=new SAXBuilder();
-    InputSource is=new InputSource(ResourceLoader.getResource("com/github/begla/blockmania/data/blocks/blocks.xml").openStream());
-    Document doc=builder.build(is);
-    Element root=doc.getRootElement();
-    List<Element> content=root.getChildren();
-    for (    Element e : content) {
-      Block b=new Block(e);
-      _blocksById.put(b.getId(),b);
-      _blocksByTitle.put(b.getTitle(),b);
-    }
-    return true;
+    GroovyScriptEngine scriptEngine=new GroovyScriptEngine(blockScriptPath);
+    scriptEngine.run("Default.groovy",_binding);
   }
- catch (  Exception e) {
-    return false;
+ catch (  IOException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+    e.printStackTrace();
+  }
+catch (  ResourceException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+  }
+catch (  ScriptException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
   }
 }
