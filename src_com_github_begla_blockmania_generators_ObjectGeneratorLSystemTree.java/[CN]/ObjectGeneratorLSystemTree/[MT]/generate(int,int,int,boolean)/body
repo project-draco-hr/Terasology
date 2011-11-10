@@ -25,14 +25,14 @@
 switch (c) {
 case 'G':
 case 'F':
-      _worldProvider.setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z,BlockManager.getInstance().getBlock("Tree trunk").getId(),update,true);
+      _generatorManager.getParent().setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z,BlockManager.getInstance().getBlock("Tree trunk").getId(),update,true);
     if (_stackOrientation.size() > 2 && _generateLeafBlocks) {
       int size=1;
       for (int x=-size; x <= size; x++) {
         for (int y=-size; y <= size; y++) {
           for (int z=-size; z <= size; z++) {
             if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size)             continue;
-            if (_worldProvider.getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0)             _worldProvider.setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z,_leafType,update,false);
+            if (_generatorManager.getParent().getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0)             _generatorManager.getParent().setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z,_leafType,update,false);
           }
         }
       }

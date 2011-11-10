@@ -1,9 +1,9 @@
 {
   if (_fresh) {
     long timeStart=System.currentTimeMillis();
-    _parent.getChunkGenerator("terrain").generate(this);
-    _parent.getChunkGenerator("resources").generate(this);
-    _parent.getChunkGenerator("forest").generate(this);
+    _parent.getGeneratorManager().getChunkGenerator("terrain").generate(this);
+    _parent.getGeneratorManager().getChunkGenerator("resources").generate(this);
+    _parent.getGeneratorManager().getChunkGenerator("forest").generate(this);
     generateSunlight();
     _fresh=false;
     Blockmania.getInstance().getLogger().log(Level.FINEST,"Chunk ({1}) generated ({0}s).",new Object[]{(System.currentTimeMillis() - timeStart) / 1000d,this});
