@@ -1,47 +1,43 @@
 {
-  String axiom="F";
+  String axiom=new String(_initialAxiom);
   Stack<Vector4f> _stackPosition=new Stack<Vector4f>();
   Stack<Matrix4f> _stackOrientation=new Stack<Matrix4f>();
-  for (int i=0; i < ITERATIONS; i++) {
+  for (int i=0; i < _iterations; i++) {
     String temp="";
     for (int j=0; j < axiom.length(); j++) {
       char c=axiom.charAt(j);
+      for (      String a : _ruleSet.keySet()) {
+        if (a.charAt(0) == c) {
+          temp+=_ruleSet.get(a);
+          continue;
+        }
+      }
+      temp+=c;
+    }
+    axiom=temp;
+  }
+  Vector4f position=new Vector4f(0,0,0,1);
+  Matrix4f rotation=new Matrix4f();
+  rotation.rotate((float)Math.PI / 2,new Vector3f(0,0,1));
+  beforeExecution();
+  for (int i=0; i < axiom.length(); i++) {
+    char c=axiom.charAt(i);
 switch (c) {
-case 'F':
-        temp+="GG[+F][**+F][//+F]";
-      continue;
-case 'G':
-    temp+="GG";
-  continue;
-}
-temp+=c;
-}
-axiom=temp;
-}
-Vector4f position=new Vector4f(0,0,0,1);
-Matrix4f rotation=new Matrix4f();
-rotation.rotate((float)Math.PI / 2,new Vector3f(0,0,1));
-for (int i=0; i < axiom.length(); i++) {
-char c=axiom.charAt(i);
-switch (c) {
 case 'G':
 case 'F':
-byte blockType;
-blockType=BlockManager.getInstance().getBlock("Tree trunk").getId();
-_worldProvider.setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z,blockType,update,false);
-blockType=BlockManager.getInstance().getBlock("Dark leaf").getId();
-if (_stackOrientation.size() > 0) {
-int size=1;
-for (int x=-size; x <= size; x++) {
-for (int y=-size; y <= size; y++) {
-for (int z=-size; z <= size; z++) {
-if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size) continue;
-if (_worldProvider.getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0) _worldProvider.setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z,blockType,update,false);
-}
-}
-}
-}
-Vector4f dir=new Vector4f(1,0,0,1);
+      _worldProvider.setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z,BlockManager.getInstance().getBlock("Tree trunk").getId(),update,false);
+    if (_stackOrientation.size() > 0 && _generateLeafBlocks) {
+      int size=1;
+      for (int x=-size; x <= size; x++) {
+        for (int y=-size; y <= size; y++) {
+          for (int z=-size; z <= size; z++) {
+            if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size)             continue;
+            if (_worldProvider.getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0)             _worldProvider.setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z,_leafType,update,false);
+          }
+        }
+      }
+    }
+  Vector4f dir=new Vector4f(1,0,0,1);
 Matrix4f.transform(rotation,dir,dir);
 position.x+=dir.x;
 position.y+=dir.y;
@@ -56,22 +52,22 @@ rotation=_stackOrientation.pop();
 position=_stackPosition.pop();
 break;
 case '+':
-rotation.rotate((float)(Math.PI / 3),new Vector3f(0,0,1));
+rotation.rotate((float)Math.toRadians(_angleInDegree),new Vector3f(0,0,1));
 break;
 case '-':
-rotation.rotate((float)-(Math.PI / 3),new Vector3f(0,0,1));
+rotation.rotate((float)Math.toRadians(_angleInDegree),new Vector3f(0,0,1));
 break;
 case '&':
-rotation.rotate((float)(Math.PI / 3),new Vector3f(0,1,0));
+rotation.rotate((float)Math.toRadians(_angleInDegree),new Vector3f(0,1,0));
 break;
 case '^':
-rotation.rotate((float)-(Math.PI / 3),new Vector3f(0,1,0));
+rotation.rotate((float)Math.toRadians(_angleInDegree),new Vector3f(0,1,0));
 break;
 case '*':
-rotation.rotate((float)(Math.PI / 3),new Vector3f(1,0,0));
+rotation.rotate((float)Math.toRadians(_angleInDegree),new Vector3f(1,0,0));
 break;
 case '/':
-rotation.rotate((float)-(Math.PI / 3),new Vector3f(1,0,0));
+rotation.rotate((float)Math.toRadians(_angleInDegree),new Vector3f(1,0,0));
 break;
 }
 }

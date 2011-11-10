@@ -18,8 +18,14 @@
   _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(this));
   _chunkGenerators.put("forest",new ChunkGeneratorFlora(this));
   _chunkGenerators.put("resources",new ChunkGeneratorResources(this));
-  _objectGenerators.put("tree",new ObjectGeneratorTree(this));
-  _objectGenerators.put("pineTree",new ObjectGeneratorPineTree(this));
-  _objectGenerators.put("firTree",new ObjectGeneratorFirTree(this));
+  HashMap<String,String> rules=new HashMap<String,String>();
+  rules.put("A","[&FFFA]////[&FFFA]////[&FFFA]");
+  ObjectGeneratorLSystemTree t1=new ObjectGeneratorLSystemTree(this,"FFFFFFA",rules);
+  _objectGenerators.put("lindenTree1",t1);
+  rules=new HashMap<String,String>();
+  rules.put("A","[&FFA]/////[&FFA]////[&FFA]");
+  ObjectGeneratorLSystemTree t2=new ObjectGeneratorLSystemTree(this,"FFFFFFFFA",rules);
+  t2.setLeafType(BlockManager.getInstance().getBlock("Dark leaf").getId());
+  _objectGenerators.put("lindenTree2",t2);
   _objectGenerators.put("cactus",new ObjectGeneratorCactus(this));
 }
