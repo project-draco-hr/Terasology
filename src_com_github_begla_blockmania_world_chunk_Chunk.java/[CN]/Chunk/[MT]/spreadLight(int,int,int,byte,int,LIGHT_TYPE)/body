@@ -8,10 +8,10 @@
   newLightValue=(byte)(lightValue - depth);
   getParent().setLight(blockPosX,y,blockPosZ,newLightValue,type);
   for (int i=0; i < 6; i++) {
-    byte neighborValue=getParent().getLight(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,type);
-    byte neighborType=getParent().getBlock(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z);
+    byte neighborValue=getParent().getLight(blockPosX + (int)LIGHT_DIRECTIONS[i].x,y + (int)LIGHT_DIRECTIONS[i].y,blockPosZ + (int)LIGHT_DIRECTIONS[i].z,type);
+    byte neighborType=getParent().getBlock(blockPosX + (int)LIGHT_DIRECTIONS[i].x,y + (int)LIGHT_DIRECTIONS[i].y,blockPosZ + (int)LIGHT_DIRECTIONS[i].z);
     if (neighborValue < newLightValue - 1 && BlockManager.getInstance().getBlock(neighborType).isTranslucent()) {
-      getParent().spreadLight(blockPosX + (int)_lightDirections[i].x,y + (int)_lightDirections[i].y,blockPosZ + (int)_lightDirections[i].z,lightValue,depth + 1,type);
+      getParent().spreadLight(blockPosX + (int)LIGHT_DIRECTIONS[i].x,y + (int)LIGHT_DIRECTIONS[i].y,blockPosZ + (int)LIGHT_DIRECTIONS[i].z,lightValue,depth + 1,type);
     }
   }
 }
