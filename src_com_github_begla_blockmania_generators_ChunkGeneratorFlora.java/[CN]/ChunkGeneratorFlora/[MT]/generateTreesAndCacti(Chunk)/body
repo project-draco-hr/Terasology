@@ -9,19 +9,19 @@
         double temperature=calcTemperatureAtGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
 switch (biome) {
 case PLAINS:
-          prob=0.95;
+          prob=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Plains.treeDensity");
         break;
 case MOUNTAINS:
-      prob=0.9;
+      prob=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Mountains.treeDensity");
     break;
-case SNOW:
-  prob=0.85;
-break;
 case FOREST:
-prob=0.8;
+  prob=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Forest.treeDensity");
+break;
+case SNOW:
+prob=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Snow.treeDensity");
 break;
 case DESERT:
-prob=0.98;
+prob=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Desert.treeDensity");
 break;
 }
 if (rand > prob) {

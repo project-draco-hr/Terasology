@@ -5,13 +5,19 @@
     BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
 switch (biome) {
 case PLAINS:
-      grassProb=0.7;
+      grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Plains.grassDensity");
     break;
 case MOUNTAINS:
-  grassProb=0.8;
+  grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Mountains.grassDensity");
 break;
 case FOREST:
-grassProb=0.8;
+grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Forest.grassDensity");
+break;
+case SNOW:
+grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Snow.grassDensity");
+break;
+case DESERT:
+grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Desert.grassDensity");
 break;
 }
 if (grassRand > grassProb) {
