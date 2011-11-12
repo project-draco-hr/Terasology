@@ -1,0 +1,12 @@
+{
+  for (int y=32; y < Chunk.getChunkDimensionY(); y++) {
+    for (int x=0; x < Chunk.getChunkDimensionX(); x+=4) {
+      for (int z=0; z < Chunk.getChunkDimensionZ(); z+=4) {
+        BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+        int randX=x + c.getRandom().randomInt() % 12 + 6;
+        int randZ=z + c.getRandom().randomInt() % 12 + 6;
+        if (c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Grass").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Snow").getId())         generateTree(c,biome,randX,y,randZ);
+      }
+    }
+  }
+}

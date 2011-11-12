@@ -1,6 +1,6 @@
 {
   Vector3f oldPosition=new Vector3f(getPosition());
-  double friction=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Player.friction");
+  double friction=(Double)ConfigurationManager.getInstance().getConfig().get("Player.friction");
   if (MathHelper.fastAbs(_velocity.y) > 0f) {
     _velocity.y+=-1f * _velocity.y * friction;
   }
@@ -20,10 +20,10 @@
   _velocity.x+=_movementDirection.x;
   _velocity.y+=_movementDirection.y;
   _velocity.z+=_movementDirection.z;
-  double maxGravity=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Player.maxGravity");
-  double maxGravitySwimming=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Player.maxGravitySwimming");
-  double gravitySwimming=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Player.gravitySwimming");
-  double gravity=(Double)BlockmaniaConfiguration.getInstance().getConfig().get("Player.gravity");
+  double maxGravity=(Double)ConfigurationManager.getInstance().getConfig().get("Player.maxGravity");
+  double maxGravitySwimming=(Double)ConfigurationManager.getInstance().getConfig().get("Player.maxGravitySwimming");
+  double gravitySwimming=(Double)ConfigurationManager.getInstance().getConfig().get("Player.gravitySwimming");
+  double gravity=(Double)ConfigurationManager.getInstance().getConfig().get("Player.gravity");
   if (_gravity > -maxGravity && !_godMode && !_isSwimming) {
     _gravity-=gravity;
   }

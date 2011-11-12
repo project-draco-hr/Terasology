@@ -1,27 +1,27 @@
 {
   if (c.getBlock(x,y,z) == BlockManager.getInstance().getBlock("Grass").getId() && c.getBlock(x,y + 1,z) == 0x0) {
-    double grassRand=(_parent.getParent().getRandom().randomDouble() + 1.0) / 2.0;
+    double grassRand=(c.getRandom().randomDouble() + 1.0) / 2.0;
     double grassProb=1.0;
     BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
 switch (biome) {
 case PLAINS:
-      grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Plains.grassDensity");
+      grassProb=1.0 - (Double)ConfigurationManager.getInstance().getConfig().get("World.Biomes.Plains.grassDensity");
     break;
 case MOUNTAINS:
-  grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Mountains.grassDensity");
+  grassProb=1.0 - (Double)ConfigurationManager.getInstance().getConfig().get("World.Biomes.Mountains.grassDensity");
 break;
 case FOREST:
-grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Forest.grassDensity");
+grassProb=1.0 - (Double)ConfigurationManager.getInstance().getConfig().get("World.Biomes.Forest.grassDensity");
 break;
 case SNOW:
-grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Snow.grassDensity");
+grassProb=1.0 - (Double)ConfigurationManager.getInstance().getConfig().get("World.Biomes.Snow.grassDensity");
 break;
 case DESERT:
-grassProb=1.0 - (Double)BlockmaniaConfiguration.getInstance().getConfig().get("World.Biomes.Desert.grassDensity");
+grassProb=1.0 - (Double)ConfigurationManager.getInstance().getConfig().get("World.Biomes.Desert.grassDensity");
 break;
 }
 if (grassRand > grassProb) {
-double rand=_parent.getParent().getRandom().standNormalDistrDouble();
+double rand=c.getRandom().standNormalDistrDouble();
 if (rand > -0.4 && rand < 0.4) {
 c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("High grass").getId());
 }
@@ -31,8 +31,8 @@ c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Medium high grass").ge
  else {
 c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Large high grass").getId());
 }
-if (_parent.getParent().getRandom().standNormalDistrDouble() < -2) {
-if (_parent.getParent().getRandom().randomBoolean()) {
+if (c.getRandom().standNormalDistrDouble() < -2) {
+if (c.getRandom().randomBoolean()) {
 c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("Red flower").getId());
 }
  else {
