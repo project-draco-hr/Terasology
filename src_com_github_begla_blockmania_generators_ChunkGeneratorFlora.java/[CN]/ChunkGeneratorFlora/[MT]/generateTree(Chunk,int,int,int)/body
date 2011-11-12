@@ -1,6 +1,10 @@
 {
   if (!c.canBlockSeeTheSky(x,y + 1,z))   return;
-  double r2=_parent.getParent().getRandom().standNormalDistrDouble();
-  if (r2 > -1 && r2 < 1)   _parent.getObjectGenerator("lindenTree1").generate(c.getBlockWorldPosX(x),y + 1,c.getBlockWorldPosZ(z),false);
- else   _parent.getObjectGenerator("lindenTree2").generate(c.getBlockWorldPosX(x),y + 1,c.getBlockWorldPosZ(z),false);
+  int randomGeneratorId=1;
+  if (_parent.getTreeGenerators().size() > 2) {
+    randomGeneratorId=1 + Math.abs(_parent.getParent().getRandom().randomInt()) % (_parent.getTreeGenerators().size() - 1);
+  }
+  double rand=Math.abs(_parent.getParent().getRandom().randomDouble());
+  TreeGenerator treeGen=_parent.getTreeGenerators().get(randomGeneratorId);
+  if (rand < treeGen.getGenProbability())   treeGen.generate(c.getBlockWorldPosX(x),y + 1,c.getBlockWorldPosZ(z),false);
 }

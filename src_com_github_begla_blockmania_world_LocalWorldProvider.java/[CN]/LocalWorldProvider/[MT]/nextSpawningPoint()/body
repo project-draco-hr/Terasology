@@ -2,7 +2,7 @@
   for (; ; ) {
     int randX=(int)(_random.randomDouble() * 16000f);
     int randZ=(int)(_random.randomDouble() * 16000f);
-    double dens=((ChunkGeneratorTerrain)getGeneratorManager().getChunkGenerator("terrain")).calcDensity(randX,64,randZ,ChunkGeneratorTerrain.BIOME_TYPE.FOREST);
+    double dens=((ChunkGeneratorTerrain)getGeneratorManager().getChunkGenerators().get(0)).calcDensity(randX,64,randZ,ChunkGeneratorTerrain.BIOME_TYPE.FOREST);
     if (dens >= 0.0 && dens < 64.0)     return new Vector3f(randX,32,randZ);
   }
 }

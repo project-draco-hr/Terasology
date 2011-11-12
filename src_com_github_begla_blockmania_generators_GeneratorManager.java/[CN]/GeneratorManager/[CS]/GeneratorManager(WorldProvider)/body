@@ -1,17 +1,10 @@
 {
   _parent=parent;
-  _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(this));
-  _chunkGenerators.put("forest",new ChunkGeneratorFlora(this));
-  _chunkGenerators.put("resources",new ChunkGeneratorResources(this));
-  HashMap<String,String> rules=new HashMap<String,String>();
-  rules.put("A","[&FFFA]////[&FFFA]////[&FFFA]");
-  ObjectGeneratorLSystemTree t1=new ObjectGeneratorLSystemTree(this,"FFFFFFA",rules);
-  _objectGenerators.put("lindenTree1",t1);
-  rules=new HashMap<String,String>();
-  rules.put("A","[&FFA]////[&FFA]////[&FFA]//[&FFFFFFB]");
-  rules.put("B","[&FFFFB][&FFB]////[&FFB]////[&FFB]");
-  ObjectGeneratorLSystemTree t2=new ObjectGeneratorLSystemTree(this,"FFFFFFFFA",rules);
-  t2.setLeafType(BlockManager.getInstance().getBlock("Dark leaf").getId());
-  _objectGenerators.put("lindenTree2",t2);
-  _objectGenerators.put("cactus",new ObjectGeneratorCactus(this));
+  _chunkGenerators.add(new ChunkGeneratorTerrain(this));
+  _chunkGenerators.add(new ChunkGeneratorFlora(this));
+  _chunkGenerators.add(new ChunkGeneratorResources(this));
+  _treeGenerators.add(new TreeGeneratorCactus(this));
+  _binding=new Binding();
+  _binding.setVariable("generatorManager",this);
+  loadTrees();
 }
