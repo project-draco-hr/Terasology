@@ -7,10 +7,8 @@
   resizeViewport();
   resetOpenGLParameters();
   String worldSeed=(String)ConfigurationManager.getInstance().getConfig().get("World.defaultSeed");
-  if (worldSeed.length() == 0) {
-    worldSeed=_rand.randomCharacterString(16);
-  }
-  initNewWorldAndPlayer("World1",worldSeed);
+  if (worldSeed.isEmpty())   worldSeed=null;
+  initWorld("World1",worldSeed);
   _mobManager=new MobManager();
   initGroovy();
 }

@@ -1,25 +1,25 @@
 {
   initDefaultLogger();
-  Blockmania.getInstance().getLogger().log(Level.INFO,"Welcome to {0}!",ConfigurationManager.getInstance().getConfig().get("System.gameTitle"));
+  getInstance().getLogger().log(Level.INFO,"Welcome to {0}!",ConfigurationManager.getInstance().getConfig().get("System.gameTitle"));
   try {
     loadNativeLibs();
   }
  catch (  Exception e) {
-    Blockmania.getInstance().getLogger().log(Level.SEVERE,"Couldn't link static libraries. Sorry. " + e.toString(),e);
+    getInstance().getLogger().log(Level.SEVERE,"Couldn't link static libraries. Sorry. " + e.toString(),e);
   }
   Blockmania blockmania=null;
   try {
-    blockmania=Blockmania.getInstance();
+    blockmania=getInstance();
     blockmania.initDisplay();
     blockmania.initControls();
     blockmania.initGame();
     blockmania.initGroovy();
   }
  catch (  LWJGLException e) {
-    Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
+    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
   }
 catch (  SlickException e) {
-    Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
+    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
   }
   if (blockmania != null)   blockmania.startGame();
   System.exit(0);
