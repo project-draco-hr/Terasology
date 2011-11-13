@@ -3,10 +3,7 @@
   glDisable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
   glEnable(GL13.GL_TEXTURE_CUBE_MAP);
-  glEnable(GL12.GL_TEXTURE_3D);
   GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP,textureId.get(0));
-  GL11.glBindTexture(GL12.GL_TEXTURE_3D,textureCloudsId.get(0));
-  GL11.glTexParameteri(GL12.GL_TEXTURE_3D,EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,8);
   _sunPosAngle=(float)Math.toRadians(360.0 * _parent.getWorldProvider().getTime() - 90.0);
   Vector4f sunNormalise=new Vector4f(0.0f,(float)Math.cos(_sunPosAngle),(float)Math.sin(_sunPosAngle),1.0f);
   sunNormalise=sunNormalise.normalise(null);
@@ -24,7 +21,6 @@
   GL20.glUniform3f(zenith,_zenithColor.x,_zenithColor.y,_zenithColor.z);
   drawSphere();
   ShaderManager.getInstance().enableShader(null);
-  glDisable(GL12.GL_TEXTURE_3D);
   glDisable(GL13.GL_TEXTURE_CUBE_MAP);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
