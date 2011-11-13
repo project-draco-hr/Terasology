@@ -3,8 +3,10 @@
     prevChunkPosX=calcPlayerChunkOffsetX();
     prevChunkPosZ=calcPlayerChunkOffsetZ();
     FastList<Chunk> newChunksInProximity=new FastList<Chunk>();
-    for (int x=-(Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x < (Configuration.getSettingNumeric("V_DIST_X").intValue() / 2); x++) {
-      for (int z=-(Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z < (Configuration.getSettingNumeric("V_DIST_Z").intValue() / 2); z++) {
+    int viewingDistanceX=(Integer)ConfigurationManager.getInstance().getConfig().get("Graphics.viewingDistanceX");
+    int viewingDistanceZ=(Integer)ConfigurationManager.getInstance().getConfig().get("Graphics.viewingDistanceZ");
+    for (int x=-(viewingDistanceX / 2); x < (viewingDistanceX / 2); x++) {
+      for (int z=-(viewingDistanceZ / 2); z < (viewingDistanceZ / 2); z++) {
         Chunk c=_worldProvider.getChunkProvider().loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
         newChunksInProximity.add(c);
       }

@@ -1,0 +1,20 @@
+{
+  final Chunk chunkToProcess=c;
+  final int maxThreads=(Integer)ConfigurationManager.getInstance().getConfig().get("System.maxThreads");
+  if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < maxThreads || force)) {
+    _currentlyProcessedChunks.add(chunkToProcess);
+    Runnable r=new Runnable(){
+      public void run(){
+        long timeStart=Blockmania.getInstance().getTime();
+        chunkToProcess.processChunk();
+        _currentlyProcessedChunks.remove(chunkToProcess);
+        _averageUpdateDuration+=Blockmania.getInstance().getTime() - timeStart;
+        _averageUpdateDuration/=2;
+      }
+    }
+;
+    Blockmania.getInstance().getThreadPool().execute(r);
+    return true;
+  }
+  return false;
+}

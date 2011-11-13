@@ -1,0 +1,11 @@
+{
+  ConfigObject config=null;
+  try {
+    if (environment != null)     config=new ConfigSlurper(environment).parse(new File(DEFAULT_CONFIG_PATH).toURI().toURL());
+ else     config=new ConfigSlurper().parse(new File(DEFAULT_CONFIG_PATH).toURI().toURL());
+  }
+ catch (  IOException e) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+  }
+  if (config != null)   _config=config.flatten();
+}

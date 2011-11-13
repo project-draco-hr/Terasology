@@ -1,14 +1,16 @@
 {
   _timerTicksPerSecond=Sys.getTimerResolution();
-  _hud=new HUD();
   ShaderManager.getInstance();
   VBOManager.getInstance();
   FontManager.getInstance();
+  BlockManager.getInstance();
   resizeViewport();
-  setupOpenGL();
-  String worldSeed=Configuration.DEFAULT_SEED;
+  resetOpenGLParameters();
+  String worldSeed=(String)ConfigurationManager.getInstance().getConfig().get("World.defaultSeed");
   if (worldSeed.length() == 0) {
     worldSeed=_rand.randomCharacterString(16);
   }
   initNewWorldAndPlayer("World1",worldSeed);
+  _mobManager=new MobManager();
+  initGroovy();
 }

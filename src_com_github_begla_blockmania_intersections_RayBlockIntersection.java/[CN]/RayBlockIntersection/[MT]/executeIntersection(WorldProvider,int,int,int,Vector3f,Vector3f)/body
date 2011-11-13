@@ -1,10 +1,10 @@
 {
-  if (BlockManager.getInstance().getBlock(w.getBlock(x,y,z)).isBlockInvisible()) {
+  if (BlockManager.getInstance().getBlock(w.getBlock(x,y,z)).isInvisible()) {
     return null;
   }
   FastList<Intersection> result=new FastList<Intersection>();
   Vector3f[] vertices=Block.AABBForBlockAt(x,y,z).getVertices();
-  Vector3f blockPos=new Vector3f(x,y,z);
+  BlockPosition blockPos=new BlockPosition(x,y,z);
   Intersection is=executeBlockFaceIntersection(blockPos,vertices[0],vertices[1],vertices[3],rayOrigin,rayDirection);
   if (is != null) {
     result.add(is);

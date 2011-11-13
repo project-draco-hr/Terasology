@@ -1,32 +1,17 @@
 {
   while (Keyboard.next()) {
     int key=Keyboard.getEventKey();
-    if (key == Keyboard.KEY_ESCAPE && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
-      toggleDebugConsole();
-    }
-    if (key == Keyboard.KEY_F3 && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
-      Configuration.setSetting("DEBUG",!Configuration.getSettingBoolean("DEBUG"));
-    }
-    if (_pauseGame) {
-      if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
-        if (key == Keyboard.KEY_BACK) {
-          int length=_consoleInput.length() - 1;
-          if (length < 0) {
-            length=0;
-          }
-          _consoleInput.setLength(length);
-        }
- else         if (key == Keyboard.KEY_RETURN) {
-          processConsoleString();
-        }
-        char c=Keyboard.getEventCharacter();
-        if (c >= 'a' && c < 'z' + 1 || c >= '0' && c < '9' + 1 || c >= 'A' && c < 'A' + 1 || c == ' ' || c == '_' || c == '.' || c == '!' || c == '-') {
-          _consoleInput.append(c);
-        }
+    if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+      if (key == Keyboard.KEY_ESCAPE && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+        togglePauseGame();
+      }
+      if (key == Keyboard.KEY_F3 && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+        ConfigurationManager.getInstance().getConfig().put("System.Debug.debug",!(Boolean)ConfigurationManager.getInstance().getConfig().get("System.Debug.debug"));
+      }
+      if (isGamePaused()) {
+        _console.processKeyboardInput(key);
       }
     }
- else {
-      _world.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
-    }
+    if (!isGamePaused())     _world.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
   }
 }

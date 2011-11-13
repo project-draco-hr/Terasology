@@ -1,13 +1,14 @@
 {
   Vector3f oldPosition=new Vector3f(getPosition());
+  double friction=(Double)ConfigurationManager.getInstance().getConfig().get("Player.friction");
   if (MathHelper.fastAbs(_velocity.y) > 0f) {
-    _velocity.y+=-1f * _velocity.y * Configuration.getSettingNumeric("FRICTION");
+    _velocity.y+=-1f * _velocity.y * friction;
   }
   if (MathHelper.fastAbs(_velocity.x) > 0f) {
-    _velocity.x+=-1f * _velocity.x * Configuration.getSettingNumeric("FRICTION");
+    _velocity.x+=-1f * _velocity.x * friction;
   }
   if (MathHelper.fastAbs(_velocity.z) > 0f) {
-    _velocity.z+=-1f * _velocity.z * Configuration.getSettingNumeric("FRICTION");
+    _velocity.z+=-1f * _velocity.z * friction;
   }
   if (MathHelper.fastAbs(_velocity.x) > _activeWalkingSpeed || MathHelper.fastAbs(_velocity.z) > _activeWalkingSpeed || MathHelper.fastAbs(_velocity.y) > _activeWalkingSpeed) {
     double max=Math.max(Math.max(MathHelper.fastAbs(_velocity.x),MathHelper.fastAbs(_velocity.z)),MathHelper.fastAbs(_velocity.y));
@@ -19,17 +20,21 @@
   _velocity.x+=_movementDirection.x;
   _velocity.y+=_movementDirection.y;
   _velocity.z+=_movementDirection.z;
-  if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY") && !_godMode && !_isSwimming) {
-    _gravity-=Configuration.getSettingNumeric("GRAVITY");
+  double maxGravity=(Double)ConfigurationManager.getInstance().getConfig().get("Player.maxGravity");
+  double maxGravitySwimming=(Double)ConfigurationManager.getInstance().getConfig().get("Player.maxGravitySwimming");
+  double gravitySwimming=(Double)ConfigurationManager.getInstance().getConfig().get("Player.gravitySwimming");
+  double gravity=(Double)ConfigurationManager.getInstance().getConfig().get("Player.gravity");
+  if (_gravity > -maxGravity && !_godMode && !_isSwimming) {
+    _gravity-=gravity;
   }
-  if (_gravity < -Configuration.getSettingNumeric("MAX_GRAVITY") && !_godMode && !_isSwimming) {
-    _gravity=-Configuration.getSettingNumeric("MAX_GRAVITY");
+  if (_gravity < -maxGravity && !_godMode && !_isSwimming) {
+    _gravity=-maxGravity;
   }
-  if (_gravity > -Configuration.getSettingNumeric("MAX_GRAVITY_SWIMMING") && !_godMode && _isSwimming) {
-    _gravity-=Configuration.getSettingNumeric("GRAVITY_SWIMMING");
+  if (_gravity > -maxGravitySwimming && !_godMode && _isSwimming) {
+    _gravity-=gravitySwimming;
   }
-  if (_gravity < -Configuration.getSettingNumeric("MAX_GRAVITY_SWIMMING") && !_godMode && _isSwimming) {
-    _gravity=-Configuration.getSettingNumeric("MAX_GRAVITY_SWIMMING");
+  if (_gravity < -maxGravitySwimming && !_godMode && _isSwimming) {
+    _gravity=-maxGravitySwimming;
   }
   getPosition().y+=_velocity.y;
   getPosition().y+=_gravity;

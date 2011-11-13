@@ -1,25 +1,20 @@
 {
-  if (title == null) {
-    throw new IllegalArgumentException("No title provided.");
-  }
- else   if (title.isEmpty()) {
-    throw new IllegalArgumentException("Empty title provided.");
-  }
   if (seed == null) {
     throw new IllegalArgumentException("No seed provided.");
   }
  else   if (seed.isEmpty()) {
     throw new IllegalArgumentException("Empty seed provided.");
   }
+  if (title == null) {
+    title=seed;
+  }
+ else   if (title.isEmpty()) {
+    title=seed;
+  }
   _title=title;
   _seed=seed;
   _random=new FastRandom(seed.hashCode());
   loadMetaData();
-  _chunkGenerators.put("terrain",new ChunkGeneratorTerrain(this));
-  _chunkGenerators.put("forest",new ChunkGeneratorFlora(this));
-  _chunkGenerators.put("resources",new ChunkGeneratorResources(this));
-  _objectGenerators.put("tree",new ObjectGeneratorTree(this));
-  _objectGenerators.put("pineTree",new ObjectGeneratorPineTree(this));
-  _objectGenerators.put("firTree",new ObjectGeneratorFirTree(this));
-  _objectGenerators.put("cactus",new ObjectGeneratorCactus(this));
+  _generatorManager=new GeneratorManager(this);
+  _chunkProvider=new LocalChunkCache(this);
 }

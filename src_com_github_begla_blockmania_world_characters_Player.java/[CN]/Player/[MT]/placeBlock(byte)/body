@@ -2,16 +2,19 @@
   if (getParent() != null) {
     RayBlockIntersection.Intersection is=calcSelectedBlock();
     if (is != null) {
-      Block centerBlock=BlockManager.getInstance().getBlock(getParent().getWorldProvider().getBlock((int)is.getBlockPosition().x,(int)is.getBlockPosition().y,(int)is.getBlockPosition().z));
-      if (!centerBlock.allowsBlockAttachment()) {
+      Block centerBlock=BlockManager.getInstance().getBlock(getParent().getWorldProvider().getBlock(is.getBlockPosition().x,is.getBlockPosition().y,is.getBlockPosition().z));
+      if (!centerBlock.isAllowBlockAttachment()) {
         return;
       }
-      Vector3f blockPos=is.calcAdjacentBlockPos();
-      if (Block.AABBForBlockAt((int)blockPos.x,(int)blockPos.y,(int)blockPos.z).overlaps(getAABB())) {
+      BlockPosition blockPos=is.calcAdjacentBlockPos();
+      if (Block.AABBForBlockAt(blockPos.x,blockPos.y,blockPos.z).overlaps(getAABB())) {
         return;
       }
-      getParent().getWorldProvider().setBlock((int)blockPos.x,(int)blockPos.y,(int)blockPos.z,type,true,false);
-      AudioManager.getInstance().getAudio("PlaceRemoveBlock").playAsSoundEffect(0.8f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
+      getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y,blockPos.z,type,true,false);
+      AudioManager.getInstance().getAudio("PlaceBlock").playAsSoundEffect(0.8f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
+      int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
+      int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
+      notifyObserversBlockChanged(_parent.getWorldProvider().getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);
     }
   }
 }

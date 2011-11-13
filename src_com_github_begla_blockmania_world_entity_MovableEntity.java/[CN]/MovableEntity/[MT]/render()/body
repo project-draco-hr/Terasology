@@ -1,5 +1,5 @@
 {
-  if (Configuration.getSettingBoolean("DEBUG_COLLISION")) {
+  if ((Boolean)ConfigurationManager.getInstance().getConfig().get("System.Debug.debugCollision")) {
     getAABB().render();
     FastList<BlockPosition> blocks=gatherAdjacentBlockPositions(getPosition());
     for (FastList.Node<BlockPosition> n=blocks.head(), end=blocks.tail(); (n=n.getNext()) != end; ) {

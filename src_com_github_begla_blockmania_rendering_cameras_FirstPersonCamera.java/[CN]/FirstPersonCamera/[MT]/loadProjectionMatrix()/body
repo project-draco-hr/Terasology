@@ -1,6 +1,8 @@
 {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(Configuration.getSettingNumeric("FOV").floatValue(),(float)Configuration.ASPECT_RATIO,0.1f,1024f);
+  float fov=((Double)ConfigurationManager.getInstance().getConfig().get("Graphics.fov")).floatValue();
+  float aspectRatio=((Double)ConfigurationManager.getInstance().getConfig().get("Graphics.aspectRatio")).floatValue();
+  gluPerspective(fov,aspectRatio,0.1f,1024f);
   glMatrixMode(GL11.GL_MODELVIEW);
 }

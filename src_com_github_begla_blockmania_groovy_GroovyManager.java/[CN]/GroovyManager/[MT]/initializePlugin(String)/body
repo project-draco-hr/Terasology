@@ -1,0 +1,25 @@
+{
+  GroovyScriptEngine gse=null;
+  try {
+    gse=new GroovyScriptEngine(_pluginsPath);
+  }
+ catch (  IOException ioe) {
+    Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to initialize plugin (IOException): " + pluginName + ", reason: "+ ioe.toString(),ioe);
+    ioe.printStackTrace();
+  }
+  if (gse != null) {
+    try {
+      _bind.setVariable("blockmania",Blockmania.getInstance());
+      _bind.setVariable("configuration",ConfigurationManager.getInstance());
+      gse.run(pluginName,_bind);
+    }
+ catch (    ResourceException re) {
+      Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to execute plugin (ResourceException): " + pluginName + ", reason: "+ re.toString(),re);
+      re.printStackTrace();
+    }
+catch (    ScriptException se) {
+      Blockmania.getInstance().getLogger().log(Level.SEVERE,"Failed to execute plugin (ScriptException): " + pluginName + ", reason: "+ se.toString(),se);
+      se.printStackTrace();
+    }
+  }
+}

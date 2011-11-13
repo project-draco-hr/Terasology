@@ -1,8 +1,11 @@
 {
+  Block b=BlockManager.getInstance().getBlock(_parent.getActiveWorld().getPlayer().getSelectedBlockType());
+  if (b == null)   return;
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
-  gluPerspective(25f,(float)Configuration.ASPECT_RATIO,0.1f,32f);
+  float aspectRatio=((Double)ConfigurationManager.getInstance().getConfig().get("Graphics.aspectRatio")).floatValue();
+  gluPerspective(25f,aspectRatio,0.1f,32f);
   glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
@@ -12,7 +15,7 @@
   glDisable(GL_DEPTH_TEST);
   gluLookAt(0,0,-25,8f,4.5f,0,0,1,0);
   glRotated(_cubeRotation % 360,0,1,1);
-  BlockManager.getInstance().getBlock(Blockmania.getInstance().getActiveWorld().getPlayer().getSelectedBlockType()).render();
+  b.render();
   glEnable(GL_DEPTH_TEST);
   glDisable(GL11.GL_BLEND);
   glPopMatrix();

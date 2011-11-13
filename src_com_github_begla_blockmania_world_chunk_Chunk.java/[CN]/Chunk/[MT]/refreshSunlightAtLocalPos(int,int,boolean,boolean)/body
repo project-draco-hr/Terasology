@@ -1,15 +1,15 @@
 {
   boolean covered=false;
-  for (int y=(int)Configuration.CHUNK_DIMENSIONS.y - 1; y >= 0; y--) {
+  for (int y=getChunkDimensionY() - 1; y >= 0; y--) {
     byte blockId=_blocks.get(x,y,z);
     Block b=BlockManager.getInstance().getBlock(blockId);
-    if ((!b.isBlockInvisible() && b.getBlockForm() != Block.BLOCK_FORM.BILLBOARD) && !covered) {
+    if ((!b.isInvisible() && b.getBlockForm() != Block.BLOCK_FORM.BILLBOARD) && !covered) {
       covered=true;
     }
     byte oldValue=_sunlight.get(x,y,z);
     byte newValue;
     if (!covered) {
-      if (b.isBlockInvisible() || b.getBlockForm() == Block.BLOCK_FORM.BILLBOARD)       _sunlight.set(x,y,z,Configuration.MAX_LIGHT);
+      if (b.isInvisible() || b.getBlockForm() == Block.BLOCK_FORM.BILLBOARD)       _sunlight.set(x,y,z,(byte)15);
  else       _sunlight.set(x,y,z,(byte)0x0);
       newValue=_sunlight.get(x,y,z);
     }
