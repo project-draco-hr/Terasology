@@ -1,15 +1,14 @@
 {
-  if (!_fresh) {
-    for (int x=0; x < getChunkDimensionX(); x++) {
-      for (int z=0; z < getChunkDimensionZ(); z++) {
-        for (int y=0; y < getChunkDimensionY(); y++) {
-          byte lightValue=getLight(x,y,z,LIGHT_TYPE.SUN);
-          if (lightValue > 0 && BlockManager.getInstance().getBlock(getBlock(x,y,z)).isTranslucent()) {
-            spreadLight(x,y,z,lightValue,LIGHT_TYPE.SUN);
-          }
+  if (_fresh)   return;
+  for (int x=0; x < getChunkDimensionX(); x++) {
+    for (int z=0; z < getChunkDimensionZ(); z++) {
+      for (int y=0; y < getChunkDimensionY(); y++) {
+        byte lightValue=getLight(x,y,z,LIGHT_TYPE.SUN);
+        if (lightValue > 0 && BlockManager.getInstance().getBlock(getBlock(x,y,z)).isTranslucent()) {
+          spreadLight(x,y,z,lightValue,LIGHT_TYPE.SUN);
         }
       }
     }
-    setLightDirty(false);
   }
+  setLightDirty(false);
 }

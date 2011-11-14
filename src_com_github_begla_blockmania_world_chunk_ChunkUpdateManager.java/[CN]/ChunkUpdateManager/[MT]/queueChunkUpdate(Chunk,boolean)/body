@@ -1,7 +1,6 @@
 {
   final Chunk chunkToProcess=c;
-  final int maxThreads=(Integer)ConfigurationManager.getInstance().getConfig().get("System.maxThreads");
-  if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < maxThreads || force)) {
+  if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < MAX_THREADS || force)) {
     _currentlyProcessedChunks.add(chunkToProcess);
     Runnable r=new Runnable(){
       public void run(){
