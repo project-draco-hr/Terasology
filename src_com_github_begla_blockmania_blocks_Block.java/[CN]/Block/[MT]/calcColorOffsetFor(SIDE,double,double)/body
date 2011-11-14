@@ -1,8 +1,8 @@
 {
   Vector4f color=new Vector4f(1.0f,1.0f,1.0f,1.0f);
-  if (getColorSource() == COLOR_SOURCE.COLOR_LUT)   color.set(colorForTemperatureAndHumidity(temperature,humidity));
+  if (getColorSource() == COLOR_SOURCE.COLOR_LUT)   color.set(calcColorForTemperatureAndHumidity(temperature,humidity));
  else   if (getColorSource() == COLOR_SOURCE.FOLIAGE_LUT) {
-    color.set(foliageColorForTemperatureAndHumidity(temperature,humidity));
+    color.set(calcFoliageColorForTemperatureAndHumidity(temperature,humidity));
   }
   color.x*=_colorOffset[side.ordinal()].x;
   color.y*=_colorOffset[side.ordinal()].y;

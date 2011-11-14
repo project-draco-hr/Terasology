@@ -3,7 +3,11 @@
   if ((Boolean)ConfigurationManager.getInstance().getConfig().get("HUD.placingBox")) {
     if (is != null) {
       if (BlockManager.getInstance().getBlock(_parent.getWorldProvider().getBlockAtPosition(is.getBlockPosition().toVector3f())).isRenderBoundingBox()) {
-        Block.AABBForBlockAt(is.getBlockPosition().toVector3f()).render();
+        Vector3f v=is.getBlockPosition().toVector3f();
+        v.x-=_parent.getWorldProvider().getRenderingReferencePoint().x;
+        v.y-=_parent.getWorldProvider().getRenderingReferencePoint().y;
+        v.z-=_parent.getWorldProvider().getRenderingReferencePoint().z;
+        Block.AABBForBlockAt(v).render();
       }
     }
   }

@@ -1,8 +1,8 @@
 {
   for (  BlockPosition gp : _gridPositions) {
     GL11.glPushMatrix();
-    GL11.glTranslatef(gp.x,gp.y,gp.z);
-    _displayAABB.render();
+    GL11.glTranslatef(gp.x - Blockmania.getInstance().getActiveWorldProvider().getRenderingReferencePoint().x,gp.y - Blockmania.getInstance().getActiveWorldProvider().getRenderingReferencePoint().y,gp.z - Blockmania.getInstance().getActiveWorldProvider().getRenderingReferencePoint().z);
+    GL11.glCallList(_blockDisplayList);
     GL11.glPopMatrix();
   }
 }

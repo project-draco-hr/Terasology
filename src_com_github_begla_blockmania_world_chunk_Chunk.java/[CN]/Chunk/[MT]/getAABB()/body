@@ -1,8 +1,5 @@
 {
-  if (_aabb == null) {
-    Vector3f dimensions=new Vector3f(getChunkDimensionX() / 2,getChunkDimensionY() / 2,getChunkDimensionZ() / 2);
-    Vector3f position=new Vector3f(getChunkWorldPosX() + dimensions.getX(),dimensions.getY(),getChunkWorldPosZ() + dimensions.getZ());
-    _aabb=new AABB(position,dimensions);
-  }
-  return _aabb;
+  Vector3f dimensions=new Vector3f(getChunkDimensionX() / 2,getChunkDimensionY() / 2,getChunkDimensionZ() / 2);
+  Vector3f position=new Vector3f(getChunkWorldPosX() + dimensions.getX() + _offset.x,dimensions.getY() + _offset.y,getChunkWorldPosZ() + dimensions.getZ() + _offset.z);
+  return new AABB(position,dimensions);
 }

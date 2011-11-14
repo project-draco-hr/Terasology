@@ -2,26 +2,27 @@
   double[] lights=new double[8];
   double[] blockLights=new double[8];
   byte[] blocks=new byte[8];
-  blocks[0]=_chunk.getParent().getBlock((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f));
-  blocks[1]=_chunk.getParent().getBlock((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f));
-  blocks[2]=_chunk.getParent().getBlock((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f));
-  blocks[3]=_chunk.getParent().getBlock((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f));
-  lights[0]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[1]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[2]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[3]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[4]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[5]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[6]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
-  lights[7]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
-  blockLights[0]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[1]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[2]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[3]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y + 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[4]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[5]=_chunk.getParent().getLight((int)(vertexPos.x + 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[6]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
-  blockLights[7]=_chunk.getParent().getLight((int)(vertexPos.x - 0.5f),(int)(vertexPos.y - 0.5f),(int)(vertexPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  Vector3f vertexWorldPos=moveVectorFromChunkSpaceToWorldSpace(vertexPos);
+  blocks[0]=_chunk.getParent().getBlock((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z + 0.5f));
+  blocks[1]=_chunk.getParent().getBlock((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z - 0.5f));
+  blocks[2]=_chunk.getParent().getBlock((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z - 0.5f));
+  blocks[3]=_chunk.getParent().getBlock((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z + 0.5f));
+  lights[0]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[1]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[2]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[3]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[4]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[5]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[6]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.SUN);
+  lights[7]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.SUN);
+  blockLights[0]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[1]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[2]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[3]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y + 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[4]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[5]=_chunk.getParent().getLight((int)(vertexWorldPos.x + 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[6]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z - 0.5f),Chunk.LIGHT_TYPE.BLOCK);
+  blockLights[7]=_chunk.getParent().getLight((int)(vertexWorldPos.x - 0.5f),(int)(vertexWorldPos.y - 0.5f),(int)(vertexWorldPos.z + 0.5f),Chunk.LIGHT_TYPE.BLOCK);
   double resultAmbientOcclusion=1.0;
   double resultLight=0;
   double resultBlockLight=0;
@@ -46,9 +47,9 @@
       }
     }
   }
-  if (counterLight == 0)   output[0]=new Double(0);
- else   output[0]=new Double(resultLight / counterLight) / 15f;
-  if (counterBlockLight == 0)   output[1]=new Double(0);
- else   output[1]=new Double(resultBlockLight / counterBlockLight) / 15f;
-  output[2]=new Double(resultAmbientOcclusion);
+  if (counterLight == 0)   output[0]=(double)0;
+ else   output[0]=resultLight / counterLight / 15f;
+  if (counterBlockLight == 0)   output[1]=(double)0;
+ else   output[1]=resultBlockLight / counterBlockLight / 15f;
+  output[2]=resultAmbientOcclusion;
 }

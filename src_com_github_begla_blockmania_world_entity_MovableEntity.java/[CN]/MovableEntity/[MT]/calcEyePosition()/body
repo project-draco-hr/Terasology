@@ -1,6 +1,4 @@
 {
-  AABB aabb=getAABB();
-  Vector3f eyePosition=new Vector3f(aabb.getPosition());
-  eyePosition.y+=aabb.getDimensions().y - 0.2;
-  return eyePosition;
+  Vector3f eyePosition=new Vector3f(getPosition());
+  return Vector3f.add(eyePosition,calcEyeOffset(),eyePosition);
 }
