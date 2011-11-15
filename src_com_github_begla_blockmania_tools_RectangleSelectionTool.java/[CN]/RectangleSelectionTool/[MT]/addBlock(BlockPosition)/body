@@ -1,9 +1,9 @@
 {
   if (_selectedBlocks.size() >= 2) {
     _selectedBlocks.clear();
-    _blockGrid.clear();
+    Blockmania.getInstance().getActiveWorld().getBlockGrid().clear();
   }
-  _blockGrid.addGridPosition(blockPosition);
+  Blockmania.getInstance().getActiveWorld().getBlockGrid().addGridPosition(blockPosition);
   _selectedBlocks.add(blockPosition);
   if (_selectedBlocks.size() == 2)   generateRectangle();
   Blockmania.getInstance().getLogger().log(Level.INFO,"Added vertex block vertex at: " + blockPosition);
