@@ -1,6 +1,6 @@
 {
   final Chunk chunkToProcess=c;
-  if ((Blockmania.getInstance().getTime() - _lastChunkUpdate < UPDATE_GAP)) {
+  if ((Blockmania.getInstance().getTime() - _lastChunkUpdate < UPDATE_GAP) && !force) {
     return false;
   }
   _lastChunkUpdate=Blockmania.getInstance().getTime();
@@ -9,6 +9,12 @@
     Runnable r=new Runnable(){
       public void run(){
         long timeStart=Blockmania.getInstance().getTime();
+        if (force) {
+          Chunk[] cs=chunkToProcess.loadOrCreateNeighbors();
+          for (          Chunk c : cs) {
+            c.processChunk();
+          }
+        }
         chunkToProcess.processChunk();
         _currentlyProcessedChunks.remove(chunkToProcess);
         _averageUpdateDuration+=Blockmania.getInstance().getTime() - timeStart;
