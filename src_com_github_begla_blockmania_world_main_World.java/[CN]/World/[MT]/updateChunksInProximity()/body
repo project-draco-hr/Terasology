@@ -1,4 +1,8 @@
 {
+  if ((Blockmania.getInstance().getTime() - _lastChunkUpdate < UPDATE_GAP)) {
+    return false;
+  }
+  _lastChunkUpdate=Blockmania.getInstance().getTime();
   if (prevChunkPosX != calcPlayerChunkOffsetX() || prevChunkPosZ != calcPlayerChunkOffsetZ()) {
     prevChunkPosX=calcPlayerChunkOffsetX();
     prevChunkPosZ=calcPlayerChunkOffsetZ();
