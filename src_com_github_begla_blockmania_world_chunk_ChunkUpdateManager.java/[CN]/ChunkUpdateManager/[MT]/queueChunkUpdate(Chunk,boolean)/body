@@ -1,5 +1,9 @@
 {
   final Chunk chunkToProcess=c;
+  if ((Blockmania.getInstance().getTime() - _lastChunkUpdate < UPDATE_GAP)) {
+    return false;
+  }
+  _lastChunkUpdate=Blockmania.getInstance().getTime();
   if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < MAX_THREADS || force)) {
     _currentlyProcessedChunks.add(chunkToProcess);
     Runnable r=new Runnable(){
