@@ -3,17 +3,18 @@
   updateTick();
   _skysphere.update();
   _player.update();
+  _mobManager.updateAll();
   updateChunksInProximity();
   for (FastList.Node<Chunk> n=_chunksInProximity.head(), end=_chunksInProximity.tail(); (n=n.getNext()) != end; ) {
     if (n.getValue().isVisible()) {
       if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
-        _chunkUpdateManager.queueChunkUpdate(n.getValue(),false);
+        _chunkUpdateManager.queueChunkUpdate(n.getValue(),ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
         continue;
       }
       n.getValue().update();
     }
   }
   _blockParticleEmitter.update();
-  _worldProvider.getChunkProvider().freeUnusedSpace();
+  _worldProvider.getChunkProvider().flushCache();
   _worldTimeEventManager.fireWorldTimeEvents();
 }

@@ -1,5 +1,4 @@
 {
-  initDefaultLogger();
   getInstance().getLogger().log(Level.INFO,"Welcome to {0}!",ConfigurationManager.getInstance().getConfig().get("System.gameTitle"));
   try {
     loadNativeLibs();
@@ -16,11 +15,13 @@
     blockmania.initGroovy();
   }
  catch (  LWJGLException e) {
-    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
+    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm so sorry: " + e.toString(),e);
+    System.exit(0);
   }
 catch (  SlickException e) {
-    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm sorry. " + e.toString(),e);
+    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm so sorry: " + e.toString(),e);
+    System.exit(0);
   }
-  if (blockmania != null)   blockmania.startGame();
+  blockmania.startGame();
   System.exit(0);
 }

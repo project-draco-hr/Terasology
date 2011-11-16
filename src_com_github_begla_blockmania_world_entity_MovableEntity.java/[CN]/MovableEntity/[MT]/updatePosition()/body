@@ -47,8 +47,8 @@
           _jump=false;
           _gravity=_jumpIntensity;
         }
-        if (_touchingGround == false) {
-          Vector3f playerDirection=directionOfOrigin();
+        if (!_touchingGround) {
+          Vector3f playerDirection=directionOfReferencePoint();
           _footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5].playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,0.2f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false,playerDirection.x,playerDirection.y,playerDirection.z);
           _touchingGround=true;
         }
