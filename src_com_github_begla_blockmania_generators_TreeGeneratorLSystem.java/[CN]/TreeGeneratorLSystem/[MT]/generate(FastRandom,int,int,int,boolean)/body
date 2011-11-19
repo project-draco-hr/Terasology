@@ -5,14 +5,9 @@
   for (int i=0; i < _iterations; i++) {
     String temp="";
     for (int j=0; j < axiom.length(); j++) {
-      char c=axiom.charAt(j);
-      for (      String a : _ruleSet.keySet()) {
-        if (a.charAt(0) == c) {
-          temp+=_ruleSet.get(a);
-          continue;
-        }
-      }
-      temp+=c;
+      String c=String.valueOf(axiom.charAt(j));
+      if (_ruleSet.containsKey(c))       temp+=_ruleSet.get(c);
+ else       temp+=c;
     }
     axiom=temp;
   }
