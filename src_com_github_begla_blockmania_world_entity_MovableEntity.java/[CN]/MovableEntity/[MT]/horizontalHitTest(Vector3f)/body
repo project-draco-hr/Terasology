@@ -15,8 +15,8 @@
         Vector3f planeNormal=blockAABB.normalForPlaneClosestToOrigin(blockPoi,origin,true,false,true);
         Vector3f slideVector=new Vector3f(planeNormal.z,0,-planeNormal.x);
         Vector3f pushBack=new Vector3f();
-        Vector3f.sub(blockPoi,entityPoi,pushBack);
-        double length=Vector3f.dot(slideVector,direction);
+        pushBack.sub(blockPoi,entityPoi);
+        double length=slideVector.dot(direction);
         Vector3f newPosition=new Vector3f();
         newPosition.z=(float)(origin.z + pushBack.z * 0.2 + length * slideVector.z);
         newPosition.x=(float)(origin.x + pushBack.x * 0.2 + length * slideVector.x);
