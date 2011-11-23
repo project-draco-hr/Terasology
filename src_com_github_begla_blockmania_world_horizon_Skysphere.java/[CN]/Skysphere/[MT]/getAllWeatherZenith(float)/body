@@ -10,7 +10,7 @@
   float chi=(4.0f / 9.0f - _turbidity / 120.0f) * (PI - 2.0f * thetaSun);
   Vector4f theta=new Vector4f(1,thetaSun,(float)Math.pow(thetaSun,2),(float)Math.pow(thetaSun,3));
   float Y=(4.0453f * _turbidity - 4.9710f) * (float)Math.tan(chi) - 0.2155f * _turbidity + 2.4192f;
-  float x=t2 * Vector4f.dot(cx1,theta) + _turbidity * Vector4f.dot(cx2,theta) + Vector4f.dot(cx3,theta);
-  float y=t2 * Vector4f.dot(cy1,theta) + _turbidity * Vector4f.dot(cy2,theta) + Vector4f.dot(cy3,theta);
+  float x=t2 * cx1.dot(theta) + _turbidity * cx2.dot(theta) + cx3.dot(theta);
+  float y=t2 * cy1.dot(theta) + _turbidity * cy2.dot(theta) + cy3.dot(theta);
   return new Vector3f(Y,x,y);
 }

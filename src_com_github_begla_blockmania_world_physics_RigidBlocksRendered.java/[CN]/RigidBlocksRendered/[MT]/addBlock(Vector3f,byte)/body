@@ -1,0 +1,11 @@
+{
+  Matrix3f rot=new Matrix3f();
+  rot.setIdentity();
+  DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,position,1.0f)));
+  Vector3f fallInertia=new Vector3f();
+  _blockShape.calculateLocalInertia(1,fallInertia);
+  RigidBodyConstructionInfo blockCI=new RigidBodyConstructionInfo(1,blockMotionState,_blockShape,fallInertia);
+  BlockRigidBody block=new BlockRigidBody(blockCI,type);
+  _discreteDynamicsWorld.addRigidBody(block);
+  _blocks.add(block);
+}

@@ -19,6 +19,10 @@
       c.getAABB().render();
     }
   }
+  _mobManager.renderAll();
+  ShaderManager.getInstance().enableShader("block");
+  _rigidBlocksRenderer.render();
+  ShaderManager.getInstance().enableShader("chunk");
   GL20.glUniform1i(animated,1);
   TextureManager.getInstance().bindTexture("custom_lava_still");
   GL20.glUniform1f(animationOffset,((float)(_tick / 32 % 16)) * (1.0f / 16f));
