@@ -16,11 +16,12 @@
           byte currentBlockType=getParent().getWorldProvider().getBlock((int)target.x,(int)target.y,(int)target.z);
           if (currentBlockType != 0x0) {
             getParent().getWorldProvider().setBlock((int)target.x,(int)target.y,(int)target.z,(byte)0x0,true,true);
-            if (BlockManager.getInstance().getBlock(currentBlockType).getBlockForm() == Block.BLOCK_FORM.DEFAULT)             _parent.getRigidBlocksRenderer().addBlock(target,currentBlockType);
+            if (!BlockManager.getInstance().getBlock(currentBlockType).isTranslucent())             _parent.getRigidBlocksRenderer().addBlock(target,currentBlockType);
           }
         }
       }
       _parent.getRigidBlocksRenderer().explode();
+      AudioManager.getInstance().getAudio("RemoveBlock").playAsSoundEffect(0.8f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
     }
   }
 }

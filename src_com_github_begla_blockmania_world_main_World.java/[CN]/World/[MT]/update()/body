@@ -4,7 +4,7 @@
   _skysphere.update();
   _player.update();
   _mobManager.updateAll();
-  _rigidBlocksRenderer.resetChunks();
+  _bulletPhysicsRenderer.resetChunks();
   updateChunksInProximity();
   for (int i=0; i < 16 && i < _chunksInProximity.size(); i++) {
     if (_chunksInProximity.get(i).getActiveChunkMesh() != null) {
@@ -13,11 +13,11 @@
         position.x*=Chunk.getChunkDimensionX();
         position.y*=Chunk.getChunkDimensionY();
         position.z*=Chunk.getChunkDimensionZ();
-        _rigidBlocksRenderer.addStaticChunk(position,_chunksInProximity.get(i).getActiveChunkMesh()._bulletMeshShape);
+        _bulletPhysicsRenderer.addStaticChunk(position,_chunksInProximity.get(i).getActiveChunkMesh()._bulletMeshShape);
       }
     }
   }
-  _rigidBlocksRenderer.update();
+  _bulletPhysicsRenderer.update();
   for (FastList.Node<Chunk> n=_chunksInProximity.head(), end=_chunksInProximity.tail(); (n=n.getNext()) != end; ) {
     if (n.getValue().isVisible()) {
       if (n.getValue().isDirty() || n.getValue().isLightDirty()) {

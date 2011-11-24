@@ -1,7 +1,8 @@
 {
   double x1, y1, z1;
   x1=x * 0.008;
-  y1=y * 0.008;
+  y1=y * 0.0035;
   z1=z * 0.008;
-  return MathHelper.fastAbs(_pGen5.fBm(x1,y1,z1,9,2.163721,0.7));
+  double result=_pGen5.fBm(x1 + _pGen1.noise(x1,y1,z1) * 0.4,y1,z1 + _pGen1.noise(x1,y1,z1) * 0.4,9,2.03782819,0.838181);
+  return result > 0 ? result : 0;
 }
