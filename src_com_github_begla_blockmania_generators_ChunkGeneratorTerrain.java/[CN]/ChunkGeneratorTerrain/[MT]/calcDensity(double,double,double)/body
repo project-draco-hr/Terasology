@@ -1,0 +1,10 @@
+{
+  double height=calcBaseTerrain(x,z);
+  double temp=calcTemperatureAtGlobalPosition(x,y);
+  double hum=calcHumidityAtGlobalPosition(x,y);
+  double dT=Math.abs(temp - 0.5);
+  double dH=Math.abs(hum - 0.4);
+  double mIntens=MathHelper.clamp(1.0 - (dT + dH) * 5.0) + 0.1;
+  double density=calcMountainDensity(x,y,z) * mIntens;
+  return -y + ((height * 64.0 + 16.0) + density * 128.0);
+}
