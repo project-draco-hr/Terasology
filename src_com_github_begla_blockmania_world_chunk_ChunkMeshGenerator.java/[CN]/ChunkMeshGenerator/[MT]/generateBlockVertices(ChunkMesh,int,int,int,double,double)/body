@@ -33,6 +33,8 @@
     drawLeft=isSideVisibleForBlockTypes(blockToCheckId,blockId) || drawLeft;
     blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x + 1),y - 1,_chunk.getBlockWorldPosZ(z));
     drawRight=isSideVisibleForBlockTypes(blockToCheckId,blockId) || drawRight;
+    blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y + 1,_chunk.getBlockWorldPosZ(z));
+    drawTop=(BlockManager.getInstance().getBlock(blockToCheckId).getBlockForm() != Block.BLOCK_FORM.LOWERED_BLOCK) || drawTop;
   }
   if (drawTop) {
     Vector3f p1=new Vector3f(-0.5f,0.5f,0.5f);
