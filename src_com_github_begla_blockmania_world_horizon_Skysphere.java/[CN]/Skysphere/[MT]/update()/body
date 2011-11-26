@@ -1,3 +1,12 @@
 {
-  _turbidity=6.0f + (float)_parent.getActiveHumidity() * (float)_parent.getActiveTemperature();
+  if (_cloudByteBuffer == null && Blockmania.getInstance().getTime() - _lastCloudUpdate >= CLOUD_UPDATE_INTERVAL) {
+    _lastCloudUpdate=Blockmania.getInstance().getTime();
+    Blockmania.getInstance().getThreadPool().execute(new Runnable(){
+      public void run(){
+        generateNewClouds();
+      }
+    }
+);
+  }
+  _turbidity=6.0f + ((float)_parent.getActiveHumidity() * (float)_parent.getActiveTemperature()) * 6.0f;
 }
