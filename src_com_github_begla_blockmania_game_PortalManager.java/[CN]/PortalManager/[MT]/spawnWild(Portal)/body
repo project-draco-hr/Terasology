@@ -1,9 +1,11 @@
 {
-  if (_parent.getMobManager().getActiveMobAmount() > 32)   return false;
+  if (_parent.getMobManager().getActiveMobAmount() > 128)   return false;
   boolean spawn=_random.randomBoolean() && _random.randomBoolean();
   if (spawn) {
     GelatinousCube s=new GelatinousCube(_parent);
-    s.setSpawningPoint(new Vector3f(p.getBlockLocation().x,p.getBlockLocation().y + 1,p.getBlockLocation().z));
+    Vector3f randomOffset=new Vector3f((float)_parent.getWorldProvider().getRandom().randomDouble(),0,(float)_parent.getWorldProvider().getRandom().randomDouble());
+    randomOffset.scale(64);
+    s.setSpawningPoint(new Vector3f(p.getBlockLocation().x + randomOffset.x,p.getBlockLocation().y + 1,p.getBlockLocation().z + randomOffset.z));
     s.respawn();
     Blockmania.getInstance().getLogger().log(Level.INFO,"Spawning wild slime at " + s.getSpawningPoint());
     _parent.getMobManager().addMob(s);
