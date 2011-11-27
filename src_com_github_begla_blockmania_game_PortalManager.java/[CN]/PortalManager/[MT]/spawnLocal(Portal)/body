@@ -1,0 +1,11 @@
+{
+  boolean spawn=_random.randomBoolean() && _random.randomBoolean();
+  if (spawn) {
+    Slime s=new Slime(Blockmania.getInstance().getActiveWorld());
+    s.setSpawningPoint(new Vector3f(p.getBlockLocation().x,p.getBlockLocation().y - 1,p.getBlockLocation().z));
+    s.respawn();
+    Blockmania.getInstance().getLogger().log(Level.INFO,"Spawning local slime at " + s.getSpawningPoint());
+    Blockmania.getInstance().getActiveWorld().getMobManager().addMob(s);
+  }
+  return spawn;
+}
