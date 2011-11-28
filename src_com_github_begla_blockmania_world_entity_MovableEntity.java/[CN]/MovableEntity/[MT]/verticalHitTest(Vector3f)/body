@@ -1,12 +1,13 @@
 {
-  FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
-  for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
-    byte blockType1=_parent.getWorldProvider().getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
+  ArrayList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
+  for (int i=0; i < blockPositions.size(); i++) {
+    BlockPosition p=blockPositions.get(i);
+    byte blockType1=_parent.getWorldProvider().getBlockAtPosition(new Vector3f(p.x,p.y,p.z));
     AABB entityAABB=getAABB();
-    if (BlockManager.getInstance().getBlock(blockType1).isPenetrable() || !entityAABB.overlaps(Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z)))     continue;
+    if (BlockManager.getInstance().getBlock(blockType1).isPenetrable() || !entityAABB.overlaps(Block.AABBForBlockAt(p.x,p.y,p.z)))     continue;
     double direction=origin.y - getPosition().y;
-    if (direction >= 0)     getPosition().y=n.getValue().y + 0.50001f + entityAABB.getDimensions().y;
- else     getPosition().y=n.getValue().y - 0.50001f - entityAABB.getDimensions().y;
+    if (direction >= 0)     getPosition().y=p.y + 0.50001f + entityAABB.getDimensions().y;
+ else     getPosition().y=p.y - 0.50001f - entityAABB.getDimensions().y;
     return true;
   }
   return false;

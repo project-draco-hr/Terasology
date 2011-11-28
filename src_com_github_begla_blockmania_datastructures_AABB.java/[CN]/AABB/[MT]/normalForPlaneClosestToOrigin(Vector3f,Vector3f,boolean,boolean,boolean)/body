@@ -1,5 +1,5 @@
 {
-  FastList<Vector3f> normals=new FastList<Vector3f>();
+  ArrayList<Vector3f> normals=new ArrayList<Vector3f>();
   if (pointOnAABB.z == minZ() && testZ)   normals.add(new Vector3f(0,0,-1));
   if (pointOnAABB.z == maxZ() && testZ)   normals.add(new Vector3f(0,0,1));
   if (pointOnAABB.x == minX() && testX)   normals.add(new Vector3f(-1,0,0));
@@ -8,13 +8,14 @@
   if (pointOnAABB.y == maxY() && testY)   normals.add(new Vector3f(0,1,0));
   double minDistance=Double.MAX_VALUE;
   Vector3f closestNormal=new Vector3f();
-  for (FastList.Node<Vector3f> n=normals.head(), end=normals.tail(); (n=n.getNext()) != end; ) {
-    Vector3f diff=new Vector3f(centerPointForNormal(n.getValue()));
+  for (int i=0; i < normals.size(); i++) {
+    Vector3f n=normals.get(i);
+    Vector3f diff=new Vector3f(centerPointForNormal(n));
     diff.sub(origin);
     float distance=diff.length();
     if (distance < minDistance) {
       minDistance=distance;
-      closestNormal=n.getValue();
+      closestNormal=n;
     }
   }
   return closestNormal;

@@ -9,12 +9,12 @@
   createFragShader("block_frag.glsl","block");
   createVertexShader("gelatinousCube_vert.glsl","gelatinousCube");
   createFragShader("gelatinousCube_frag.glsl","gelatinousCube");
-  for (FastMap.Entry<String,Integer> e=_fragmentShader.head(), end=_fragmentShader.tail(); (e=e.getNext()) != end; ) {
+  for (  String s : _fragmentShader.keySet()) {
     int shaderProgram=GL20.glCreateProgram();
-    GL20.glAttachShader(shaderProgram,_fragmentShader.get(e.getKey()));
-    GL20.glAttachShader(shaderProgram,_vertexShader.get(e.getKey()));
+    GL20.glAttachShader(shaderProgram,_fragmentShader.get(s));
+    GL20.glAttachShader(shaderProgram,_vertexShader.get(s));
     GL20.glLinkProgram(shaderProgram);
     GL20.glValidateProgram(shaderProgram);
-    _shaderPrograms.put(e.getKey(),shaderProgram);
+    _shaderPrograms.put(s,shaderProgram);
   }
 }

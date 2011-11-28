@@ -6,6 +6,7 @@
   _mobManager.updateAll();
   _bulletPhysicsRenderer.resetChunks();
   updateChunksInProximity();
+  updateVisibleChunks();
   for (int i=0; i < 16 && i < _chunksInProximity.size(); i++) {
     if (_chunksInProximity.get(i).getActiveChunkMesh() != null) {
       if (_chunksInProximity.get(i).getActiveChunkMesh()._bulletMeshShape != null) {
@@ -18,13 +19,16 @@
     }
   }
   _bulletPhysicsRenderer.update();
-  for (FastList.Node<Chunk> n=_chunksInProximity.head(), end=_chunksInProximity.tail(); (n=n.getNext()) != end; ) {
-    if (n.getValue().isVisible()) {
-      if (n.getValue().isDirty() || n.getValue().isLightDirty()) {
-        _chunkUpdateManager.queueChunkUpdate(n.getValue(),ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
-        continue;
+  for (int i=0; i < _chunksInProximity.size(); i++) {
+    Chunk c=_chunksInProximity.get(i);
+    if (c.isVisible()) {
+      if (c.isDirty() || c.isLightDirty()) {
+        if (_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
+          continue;
+        }
+        break;
       }
-      n.getValue().update();
+      c.update();
     }
   }
   _blockParticleEmitter.update();

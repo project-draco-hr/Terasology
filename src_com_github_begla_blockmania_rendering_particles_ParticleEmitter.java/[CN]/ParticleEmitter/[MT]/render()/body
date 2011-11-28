@@ -3,8 +3,9 @@
   glEnable(GL_TEXTURE_2D);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  for (FastList.Node<Particle> n=_particles.head(), end=_particles.tail(); (n=n.getNext()) != end; ) {
-    n.getValue().render();
+  for (int i=0; i < _particles.size(); i++) {
+    Particle p=_particles.get(i);
+    p.render();
   }
   glDisable(GL_BLEND);
   glDisable(GL11.GL_TEXTURE_2D);

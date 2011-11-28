@@ -1,9 +1,10 @@
 {
   boolean result=false;
-  FastList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
-  for (FastList.Node<BlockPosition> n=blockPositions.head(), end=blockPositions.tail(); (n=n.getNext()) != end; ) {
-    byte blockType=_parent.getWorldProvider().getBlockAtPosition(new Vector3f(n.getValue().x,n.getValue().y,n.getValue().z));
-    AABB blockAABB=Block.AABBForBlockAt(n.getValue().x,n.getValue().y,n.getValue().z);
+  ArrayList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(origin);
+  for (int i=0; i < blockPositions.size(); i++) {
+    BlockPosition p=blockPositions.get(i);
+    byte blockType=_parent.getWorldProvider().getBlockAtPosition(new Vector3f(p.x,p.y,p.z));
+    AABB blockAABB=Block.AABBForBlockAt(p.x,p.y,p.z);
     if (!BlockManager.getInstance().getBlock(blockType).isPenetrable()) {
       if (getAABB().overlaps(blockAABB)) {
         result=true;

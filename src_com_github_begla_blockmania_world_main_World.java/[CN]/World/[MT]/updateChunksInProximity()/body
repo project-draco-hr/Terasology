@@ -3,21 +3,15 @@
     return false;
   }
   _lastChunkUpdate=Blockmania.getInstance().getTime();
-  if (prevChunkPosX != calcPlayerChunkOffsetX() || prevChunkPosZ != calcPlayerChunkOffsetZ()) {
-    prevChunkPosX=calcPlayerChunkOffsetX();
-    prevChunkPosZ=calcPlayerChunkOffsetZ();
-    FastList<Chunk> newChunksInProximity=new FastList<Chunk>();
-    int viewingDistanceX=(Integer)ConfigurationManager.getInstance().getConfig().get("Graphics.viewingDistanceX");
-    int viewingDistanceZ=(Integer)ConfigurationManager.getInstance().getConfig().get("Graphics.viewingDistanceZ");
-    for (int x=-(viewingDistanceX / 2); x < (viewingDistanceX / 2); x++) {
-      for (int z=-(viewingDistanceZ / 2); z < (viewingDistanceZ / 2); z++) {
-        Chunk c=_worldProvider.getChunkProvider().loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
-        newChunksInProximity.add(c);
-      }
+  _chunksInProximity.clear();
+  int viewingDistanceX=(Integer)ConfigurationManager.getInstance().getConfig().get("Graphics.viewingDistanceX");
+  int viewingDistanceZ=(Integer)ConfigurationManager.getInstance().getConfig().get("Graphics.viewingDistanceZ");
+  for (int x=-(viewingDistanceX / 2); x < (viewingDistanceX / 2); x++) {
+    for (int z=-(viewingDistanceZ / 2); z < (viewingDistanceZ / 2); z++) {
+      Chunk c=_worldProvider.getChunkProvider().loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
+      _chunksInProximity.add(c);
     }
-    Collections.sort(newChunksInProximity);
-    _chunksInProximity=newChunksInProximity;
-    return true;
   }
-  return false;
+  Collections.sort(_chunksInProximity);
+  return true;
 }
