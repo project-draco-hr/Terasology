@@ -1,26 +1,8 @@
 {
   final Chunk chunkToProcess=chunk;
-  if ((Blockmania.getInstance().getTime() - _lastChunkUpdate < UPDATE_GAP) && type == UPDATE_TYPE.DEFAULT) {
-    return false;
-  }
-  _lastChunkUpdate=Blockmania.getInstance().getTime();
   if (!_currentlyProcessedChunks.contains(chunkToProcess) && (_currentlyProcessedChunks.size() < MAX_THREADS || type != UPDATE_TYPE.DEFAULT)) {
-    boolean processed=false;
-    if (type == UPDATE_TYPE.PLAYER_PLACED) {
-      processed=true;
-      executeChunkUpdate(chunk);
-      Chunk[] cs=chunkToProcess.loadOrCreateNeighbors();
-      for (      Chunk nc : cs) {
-        executeChunkUpdate(nc);
-      }
-    }
- else     if (type == UPDATE_TYPE.PLAYER_REMOVED) {
-      Chunk[] cs=chunkToProcess.loadOrCreateNeighbors();
-      for (      Chunk nc : cs) {
-        executeChunkUpdate(nc);
-      }
-    }
-    if (!processed)     executeChunkUpdate(chunk);
+    if (type != UPDATE_TYPE.DEFAULT)     chunk.processChunk();
+ else     executeChunkUpdate(chunk);
     return true;
   }
   return false;
