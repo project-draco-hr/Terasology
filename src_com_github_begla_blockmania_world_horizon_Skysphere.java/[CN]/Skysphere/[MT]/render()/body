@@ -20,9 +20,10 @@
   int zenith=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("sky"),"zenith");
   GL20.glUniform3f(zenith,_zenithColor.x,_zenithColor.y,_zenithColor.z);
   drawSphere();
-  ShaderManager.getInstance().enableShader(null);
   glDisable(GL13.GL_TEXTURE_CUBE_MAP);
+  ShaderManager.getInstance().enableShader("clouds");
   drawClouds();
+  ShaderManager.getInstance().enableShader(null);
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
 }
