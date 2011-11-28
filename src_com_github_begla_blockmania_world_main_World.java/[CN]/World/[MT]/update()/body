@@ -19,6 +19,7 @@
     }
   }
   _bulletPhysicsRenderer.update();
+  int updateCounter=0;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
     if (c.isVisible()) {
@@ -26,9 +27,14 @@
         if (_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
           continue;
         }
-        break;
+        continue;
       }
-      c.update();
+      if (updateCounter < MAX_CHUNK_UPDATES_PER_ITERATION) {
+        if (c.generateVBOs()) {
+          updateCounter++;
+        }
+        c.update();
+      }
     }
   }
   _blockParticleEmitter.update();
