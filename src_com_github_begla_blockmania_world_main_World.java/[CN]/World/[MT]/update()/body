@@ -40,4 +40,8 @@
   _blockParticleEmitter.update();
   _worldProvider.getChunkProvider().flushCache();
   _worldTimeEventManager.fireWorldTimeEvents();
+  if (Blockmania.getInstance().getTime() - _lastSimulationStep > 1000) {
+    _worldProvider.simulate();
+    _lastSimulationStep=Blockmania.getInstance().getTime();
+  }
 }

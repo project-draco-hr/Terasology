@@ -4,10 +4,10 @@
     if (is != null) {
       BlockPosition blockPos=is.getBlockPosition();
       byte currentBlockType=getParent().getWorldProvider().getBlock(blockPos.x,blockPos.y,blockPos.z);
-      getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y,blockPos.z,(byte)0x0,true,true);
+      getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y,blockPos.z,(byte)0x0,true,false,true);
       byte upperBlockType=getParent().getWorldProvider().getBlock(blockPos.x,blockPos.y + 1,blockPos.z);
       if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
-        getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y + 1,blockPos.z,(byte)0x0,true,true);
+        getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y + 1,blockPos.z,(byte)0x0,true,false,true);
       }
       _parent.getBlockParticleEmitter().setOrigin(blockPos.toVector3f());
       _parent.getBlockParticleEmitter().emitParticles(128,currentBlockType);
