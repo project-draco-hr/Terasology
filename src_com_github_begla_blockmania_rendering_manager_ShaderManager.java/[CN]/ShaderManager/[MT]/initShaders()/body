@@ -1,16 +1,18 @@
 {
-  createVertexShader("sky_vert.glsl","sky");
-  createFragShader("sky_frag.glsl","sky");
-  createVertexShader("chunk_vert.glsl","chunk");
-  createFragShader("chunk_frag.glsl","chunk");
-  createVertexShader("particle_vert.glsl","particle");
-  createFragShader("particle_frag.glsl","particle");
-  createVertexShader("block_vert.glsl","block");
-  createFragShader("block_frag.glsl","block");
-  createVertexShader("gelatinousCube_vert.glsl","gelatinousCube");
-  createFragShader("gelatinousCube_frag.glsl","gelatinousCube");
-  createVertexShader("clouds_vert.glsl","clouds");
-  createFragShader("clouds_frag.glsl","clouds");
+  _preProcessorPreamble+=((Boolean)ConfigurationManager.getInstance().getConfig().get("Graphics.animatedWaterAndGrass")) ? "#define ANIMATED_WATER_AND_GRASS \n" : "";
+  _preProcessorPreamble+="#define GAMMA " + ConfigurationManager.getInstance().getConfig().get("Graphics.gamma").toString() + "\n";
+  createShader("sky_vert.glsl","sky",GL20.GL_VERTEX_SHADER);
+  createShader("sky_frag.glsl","sky",GL20.GL_FRAGMENT_SHADER);
+  createShader("chunk_vert.glsl","chunk",GL20.GL_VERTEX_SHADER);
+  createShader("chunk_frag.glsl","chunk",GL20.GL_FRAGMENT_SHADER);
+  createShader("particle_vert.glsl","particle",GL20.GL_VERTEX_SHADER);
+  createShader("particle_frag.glsl","particle",GL20.GL_FRAGMENT_SHADER);
+  createShader("block_vert.glsl","block",GL20.GL_VERTEX_SHADER);
+  createShader("block_frag.glsl","block",GL20.GL_FRAGMENT_SHADER);
+  createShader("gelatinousCube_vert.glsl","gelatinousCube",GL20.GL_VERTEX_SHADER);
+  createShader("gelatinousCube_frag.glsl","gelatinousCube",GL20.GL_FRAGMENT_SHADER);
+  createShader("clouds_vert.glsl","clouds",GL20.GL_VERTEX_SHADER);
+  createShader("clouds_frag.glsl","clouds",GL20.GL_FRAGMENT_SHADER);
   for (  String s : _fragmentShader.keySet()) {
     int shaderProgram=GL20.glCreateProgram();
     GL20.glAttachShader(shaderProgram,_fragmentShader.get(s));

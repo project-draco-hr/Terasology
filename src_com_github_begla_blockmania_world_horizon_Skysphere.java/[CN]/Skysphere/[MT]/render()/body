@@ -22,6 +22,8 @@
   drawSphere();
   glDisable(GL13.GL_TEXTURE_CUBE_MAP);
   ShaderManager.getInstance().enableShader("clouds");
+  int lightClouds=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("clouds"),"light");
+  GL20.glUniform1f(lightClouds,getDaylight());
   drawClouds();
   ShaderManager.getInstance().enableShader(null);
   glEnable(GL_CULL_FACE);
