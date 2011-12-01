@@ -2,9 +2,7 @@
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
   glDepthFunc(GL_LEQUAL);
-  double minDist=VIEWING_DISTANCES[_activeViewingDistance] * 8.0f;
-  glFogf(GL_FOG_START,(float)(minDist * 0.8));
+  double minDist=(VIEWING_DISTANCES[_activeViewingDistance] / 2) * 16.0f;
+  glFogf(GL_FOG_START,(float)(minDist * 0.01));
   glFogf(GL_FOG_END,(float)minDist);
-  GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT,GL11.GL_NICEST);
-  glShadeModel(GL11.GL_SMOOTH);
 }

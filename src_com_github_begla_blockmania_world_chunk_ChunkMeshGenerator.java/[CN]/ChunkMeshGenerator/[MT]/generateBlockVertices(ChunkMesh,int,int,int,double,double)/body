@@ -3,8 +3,7 @@
   Block block=BlockManager.getInstance().getBlock(blockId);
   ChunkMesh.RENDER_TYPE renderType=ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT;
   if (!block.isTranslucent())   renderType=ChunkMesh.RENDER_TYPE.OPAQUE;
-  if (block.getTitle().equals("Water"))   renderType=ChunkMesh.RENDER_TYPE.WATER;
-  if (block.getTitle().equals("Lava"))   renderType=ChunkMesh.RENDER_TYPE.LAVA;
+  if (block.getTitle().equals("Water") || block.getTitle().equals("Ice"))   renderType=ChunkMesh.RENDER_TYPE.WATER_AND_ICE;
   boolean drawFront, drawBack, drawLeft, drawRight, drawTop, drawBottom;
   byte blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y + 1,_chunk.getBlockWorldPosZ(z));
   drawTop=isSideVisibleForBlockTypes(blockToCheckId,blockId);

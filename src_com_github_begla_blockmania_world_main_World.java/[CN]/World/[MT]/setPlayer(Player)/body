@@ -6,7 +6,9 @@
   _player=p;
   _player.registerObserver(_chunkUpdateManager);
   _player.registerObserver(_bulletPhysicsRenderer);
+  _worldProvider.setRenderingReferencePoint(_player.getPosition());
   _player.setSpawningPoint(_worldProvider.nextSpawningPoint());
   _player.reset();
   _player.respawn();
+  updateChunksInProximity(true);
 }

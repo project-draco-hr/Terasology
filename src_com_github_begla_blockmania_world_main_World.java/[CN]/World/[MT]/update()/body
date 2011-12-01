@@ -1,12 +1,11 @@
 {
-  _worldProvider.getRenderingReferencePoint().set(_player.getPosition());
   updateTick();
   _skysphere.update();
   _player.update();
   _mobManager.updateAll();
-  _bulletPhysicsRenderer.resetChunks();
-  updateChunksInProximity();
+  updateChunksInProximity(false);
   updateVisibleChunks();
+  _bulletPhysicsRenderer.resetChunks();
   for (int i=0; i < 16 && i < _chunksInProximity.size(); i++) {
     if (_chunksInProximity.get(i).getActiveChunkMesh() != null) {
       if (_chunksInProximity.get(i).getActiveChunkMesh()._bulletMeshShape != null) {
@@ -22,8 +21,5 @@
   _blockParticleEmitter.update();
   _worldProvider.getChunkProvider().flushCache();
   _worldTimeEventManager.fireWorldTimeEvents();
-  if (Blockmania.getInstance().getTime() - _lastSimulationStep > 1000) {
-    _worldProvider.simulate();
-    _lastSimulationStep=Blockmania.getInstance().getTime();
-  }
+  _worldProvider.simulate();
 }
