@@ -1,14 +1,12 @@
 {
   ChunkGeneratorTerrain tGen=((ChunkGeneratorTerrain)getGeneratorManager().getChunkGenerators().get(0));
+  FastRandom nRandom=new FastRandom(Blockmania.getInstance().getTime());
   for (; ; ) {
-    int randX=(int)(_random.randomDouble() * 32000f);
-    int randZ=(int)(_random.randomDouble() * 32000f);
-    ChunkGeneratorTerrain.BIOME_TYPE type=tGen.calcBiomeTypeForGlobalPosition(randX,randZ);
-    if (type == ChunkGeneratorTerrain.BIOME_TYPE.FOREST) {
-      for (int y=Chunk.getChunkDimensionY() - 1; y >= 32; y--) {
-        double dens=tGen.calcDensity(randX,y,randZ);
-        if (dens >= 0 && dens < 16)         return new Vector3f(randX,y,randZ);
-      }
+    int randX=(int)(nRandom.randomDouble() * 128f);
+    int randZ=(int)(nRandom.randomDouble() * 128f);
+    for (int y=Chunk.getChunkDimensionY() - 1; y >= 32; y--) {
+      double dens=tGen.calcDensity(randX + SPAWN_ORIGIN.x,y,randZ + SPAWN_ORIGIN.y);
+      if (dens >= 0)       return new Vector3f(randX + SPAWN_ORIGIN.x,y,randZ + SPAWN_ORIGIN.y);
     }
   }
 }
