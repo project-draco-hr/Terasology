@@ -2,10 +2,14 @@
   if (_player != null) {
     _player.unregisterObserver(_chunkUpdateManager);
     _player.unregisterObserver(_bulletPhysicsRenderer);
+    _player.unregisterObserver(_liquidSimulator);
+    _player.unregisterObserver(_growthSimulator);
   }
   _player=p;
   _player.registerObserver(_chunkUpdateManager);
   _player.registerObserver(_bulletPhysicsRenderer);
+  _player.registerObserver(_liquidSimulator);
+  _player.registerObserver(_growthSimulator);
   _worldProvider.setRenderingReferencePoint(_player.getPosition());
   _player.setSpawningPoint(_worldProvider.nextSpawningPoint());
   _player.reset();
