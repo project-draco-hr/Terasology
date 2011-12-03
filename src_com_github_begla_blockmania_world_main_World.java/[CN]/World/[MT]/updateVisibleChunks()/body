@@ -1,6 +1,7 @@
 {
   _visibleChunks.clear();
   _bulletPhysicsRenderer.resetChunks();
+  _visibleTriangles=0;
   int updateCounter=0;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
@@ -16,6 +17,9 @@
     if (isChunkVisible(c)) {
       c.setVisible(true);
       _visibleChunks.add(c);
+      if (c.getActiveChunkMesh() != null) {
+        _visibleTriangles+=c.getActiveChunkMesh().countTriangles();
+      }
       if (c.isDirty() || c.isLightDirty()) {
         if (_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
           continue;
