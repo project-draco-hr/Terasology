@@ -23,9 +23,10 @@
       if (c.isDirty() || c.isLightDirty()) {
         if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT))         continue;
       }
-      if (updateCounter < MAX_CHUNK_UPDATES_PER_ITERATION) {
+      if (Blockmania.getInstance().getTime() - _lastVboUpdate > VBO_UPDATE_GAP) {
         if (c.generateVBOs()) {
           updateCounter++;
+          _lastVboUpdate=Blockmania.getInstance().getTime();
         }
         c.update();
       }
