@@ -1,12 +1,32 @@
 {
-  ChunkMesh.VertexElements vertexElements=mesh._vertexElements[0];
+  int vertexElementsId=0;
 switch (renderType) {
 case BILLBOARD_AND_TRANSLUCENT:
-    vertexElements=mesh._vertexElements[1];
+    vertexElementsId=7;
   break;
 case WATER_AND_ICE:
-vertexElements=mesh._vertexElements[3];
+vertexElementsId=8;
 break;
+}
+if (vertexElementsId == 0) {
+if (norm.x == 1 && norm.y == 0 && norm.z == 0) {
+vertexElementsId=0;
+}
+ else if (norm.x == -1 && norm.y == 0 && norm.z == 0) {
+vertexElementsId=1;
+}
+ else if (norm.x == 0 && norm.y == 0 && norm.z == 1) {
+vertexElementsId=2;
+}
+ else if (norm.x == 0 && norm.y == 0 && norm.z == -1) {
+vertexElementsId=3;
+}
+ else if (norm.x == 0 && norm.y == 1 && norm.z == 0) {
+vertexElementsId=4;
+}
+ else if (norm.x == 0 && norm.y == -1 && norm.z == 0) {
+vertexElementsId=5;
+}
 }
 switch (blockForm) {
 case CACTUS:
@@ -16,9 +36,9 @@ case LOWERED_BLOCK:
 generateLoweredBlock(x,y,z,p1,p2,p3,p4,norm);
 break;
 }
-addBlockTextureData(vertexElements,texOffset,norm);
-addBlockVertexData(vertexElements,colorOffset,moveVectorToChunkSpace(x,y,z,p1));
-addBlockVertexData(vertexElements,colorOffset,moveVectorToChunkSpace(x,y,z,p2));
-addBlockVertexData(vertexElements,colorOffset,moveVectorToChunkSpace(x,y,z,p3));
-addBlockVertexData(vertexElements,colorOffset,moveVectorToChunkSpace(x,y,z,p4));
+addBlockTextureData(mesh._vertexElements[vertexElementsId],texOffset,norm);
+addBlockVertexData(mesh._vertexElements[vertexElementsId],colorOffset,moveVectorToChunkSpace(x,y,z,p1));
+addBlockVertexData(mesh._vertexElements[vertexElementsId],colorOffset,moveVectorToChunkSpace(x,y,z,p2));
+addBlockVertexData(mesh._vertexElements[vertexElementsId],colorOffset,moveVectorToChunkSpace(x,y,z,p3));
+addBlockVertexData(mesh._vertexElements[vertexElementsId],colorOffset,moveVectorToChunkSpace(x,y,z,p4));
 }

@@ -21,10 +21,7 @@
         _visibleTriangles+=c.getActiveChunkMesh().countTriangles();
       }
       if (c.isDirty() || c.isLightDirty()) {
-        if (_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
-          continue;
-        }
-        continue;
+        if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT))         continue;
       }
       if (updateCounter < MAX_CHUNK_UPDATES_PER_ITERATION) {
         if (c.generateVBOs()) {
