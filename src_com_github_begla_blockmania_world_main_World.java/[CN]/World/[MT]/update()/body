@@ -5,18 +5,6 @@
   _mobManager.updateAll();
   updateChunksInProximity(false);
   updateVisibleChunks();
-  _bulletPhysicsRenderer.resetChunks();
-  for (int i=0; i < 16 && i < _chunksInProximity.size(); i++) {
-    if (_chunksInProximity.get(i).getActiveChunkMesh() != null) {
-      if (_chunksInProximity.get(i).getActiveChunkMesh()._bulletMeshShape != null) {
-        Vector3f position=new Vector3f(_chunksInProximity.get(i).getPosition());
-        position.x*=Chunk.getChunkDimensionX();
-        position.y*=Chunk.getChunkDimensionY();
-        position.z*=Chunk.getChunkDimensionZ();
-        _bulletPhysicsRenderer.addStaticChunk(position,_chunksInProximity.get(i).getActiveChunkMesh()._bulletMeshShape);
-      }
-    }
-  }
   _bulletPhysicsRenderer.update();
   _blockParticleEmitter.update();
   _worldProvider.getChunkProvider().flushCache();

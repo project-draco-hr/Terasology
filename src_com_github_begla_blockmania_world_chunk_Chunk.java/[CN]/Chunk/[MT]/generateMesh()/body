@@ -1,5 +1,7 @@
 {
   if (isFresh() || isLightDirty())   return;
-  setNewMesh(_meshGenerator.generateMesh());
+  double distance=distanceToPlayer();
+  boolean createPhysicsMesh=distance < 64.0;
+  setNewMesh(_meshGenerator.generateMesh(createPhysicsMesh));
   setDirty(false);
 }
