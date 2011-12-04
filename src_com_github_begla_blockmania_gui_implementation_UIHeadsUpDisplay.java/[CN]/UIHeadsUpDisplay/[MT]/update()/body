@@ -1,0 +1,17 @@
+{
+  super.update();
+  _console.setVisible(Blockmania.getInstance().isGamePaused());
+  _crosshair.setVisible((Boolean)ConfigurationManager.getInstance().getConfig().get("HUD.crosshair"));
+  _crosshair.setPosition(new Vector2f(Display.getDisplayMode().getWidth() / 2,Display.getDisplayMode().getHeight() / 2));
+  boolean enableDebug=(Boolean)ConfigurationManager.getInstance().getConfig().get("System.Debug.debug");
+  _debugLine1.setVisible(enableDebug);
+  _debugLine2.setVisible(enableDebug);
+  _debugLine3.setVisible(enableDebug);
+  _debugLine4.setVisible(enableDebug);
+  double memoryUsage=((double)Runtime.getRuntime().totalMemory() - (double)Runtime.getRuntime().freeMemory()) / 1048576.0;
+  _debugLine1.setText(String.format("%s (fps: %.2f, mem usage: %.2f MB, total mem: %.2f, max mem: %.2f)",ConfigurationManager.getInstance().getConfig().get("System.gameTitle"),Blockmania.getInstance().getAverageFps(),memoryUsage,Runtime.getRuntime().totalMemory() / 1048576.0,Runtime.getRuntime().maxMemory() / 1048576.0));
+  _debugLine2.setText(String.format("%s",Blockmania.getInstance().getActiveWorld().getPlayer()));
+  _debugLine3.setText(String.format("%s",Blockmania.getInstance().getActiveWorld()));
+  _debugLine4.setText(String.format("total vus: %s | active threads: %s",ChunkMeshGenerator.getVertexArrayUpdateCount(),Blockmania.getInstance().getThreadPool().getActiveCount()));
+  _cubeRotation+=0.5;
+}

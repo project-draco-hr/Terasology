@@ -1,0 +1,25 @@
+{
+  Block b=BlockManager.getInstance().getBlock(Blockmania.getInstance().getActiveWorld().getPlayer().getSelectedBlockType());
+  if (b == null)   return;
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  float aspectRatio=((Double)ConfigurationManager.getInstance().getConfig().get("Graphics.aspectRatio")).floatValue();
+  gluPerspective(25f,aspectRatio,0.1f,32f);
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  glLoadIdentity();
+  glEnable(GL11.GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glAlphaFunc(GL_GREATER,0.1f);
+  glDisable(GL_DEPTH_TEST);
+  gluLookAt(0,0,-25,8f,4.5f,0,0,1,0);
+  glRotated(_cubeRotation % 360,0,1,1);
+  b.render();
+  glEnable(GL_DEPTH_TEST);
+  glDisable(GL11.GL_BLEND);
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+}
