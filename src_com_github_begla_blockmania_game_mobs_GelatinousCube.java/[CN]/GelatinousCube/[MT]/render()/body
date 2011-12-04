@@ -3,9 +3,6 @@
   glPushMatrix();
   glTranslatef(getPosition().x - _parent.getWorldProvider().getRenderingReferencePoint().x,getPosition().y - _parent.getWorldProvider().getRenderingReferencePoint().y,getPosition().z - _parent.getWorldProvider().getRenderingReferencePoint().z);
   glRotatef((float)_yaw,0f,1f,0f);
-  glEnable(GL_TEXTURE_2D);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   TextureManager.getInstance().bindTexture("slime");
   ShaderManager.getInstance().enableShader("gelatinousCube");
   int tick=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("gelatinousCube"),"tick");
@@ -17,13 +14,13 @@
   if (_displayListOuterBody == -1 || _displayListInnerBody == -1) {
     generateDisplayList();
   }
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glPushMatrix();
   glScalef(_randomSize,_randomSize,_randomSize);
   glCallList(_displayListInnerBody);
   glCallList(_displayListOuterBody);
   glPopMatrix();
-  glDisable(GL11.GL_TEXTURE_2D);
-  glDisable(GL_BLEND);
   ShaderManager.getInstance().enableShader(null);
   glPopMatrix();
 }
