@@ -2,7 +2,6 @@
   _visibleChunks.clear();
   _bulletPhysicsRenderer.resetChunks();
   _visibleTriangles=0;
-  int updateCounter=0;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
     if (c.getActiveChunkMesh() != null) {
@@ -25,7 +24,6 @@
       }
       if (Blockmania.getInstance().getTime() - _lastVboUpdate > VBO_UPDATE_GAP) {
         if (c.generateVBOs()) {
-          updateCounter++;
           _lastVboUpdate=Blockmania.getInstance().getTime();
         }
         c.update();
