@@ -2,6 +2,8 @@
   while (Mouse.next()) {
     int button=Mouse.getEventButton();
     int wheelMoved=Mouse.getEventDWheel();
-    _world.getPlayer().processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+    if (!isGamePaused())     _world.getPlayer().processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+    _hud.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+    _pauseMenu.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
   }
 }

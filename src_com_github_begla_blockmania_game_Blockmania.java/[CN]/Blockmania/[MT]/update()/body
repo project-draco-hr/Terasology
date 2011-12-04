@@ -1,6 +1,10 @@
 {
-  if (!_pauseGame) {
+  if (!_pauseGame && !_hud.getDebugConsole().isVisible() && !_pauseMenu.isVisible()) {
     if (_world != null)     _world.update();
+    Mouse.setGrabbed(true);
+  }
+ else {
+    Mouse.setGrabbed(false);
   }
   updateUserInterface();
 }

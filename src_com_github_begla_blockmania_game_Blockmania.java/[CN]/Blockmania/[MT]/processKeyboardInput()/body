@@ -3,9 +3,9 @@
     int key=Keyboard.getEventKey();
     if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
       if (key == Keyboard.KEY_ESCAPE && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
-        exit();
+        togglePauseMenu();
       }
-      if (key == Keyboard.KEY_TAB && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+      if (key == Keyboard.KEY_P && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
         togglePauseGame();
       }
       if (key == Keyboard.KEY_F3 && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
@@ -15,6 +15,7 @@
         toggleViewingDistance();
       }
       _hud.processKeyboardInput(key);
+      _pauseMenu.processKeyboardInput(key);
     }
     if (!isGamePaused())     _world.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
   }

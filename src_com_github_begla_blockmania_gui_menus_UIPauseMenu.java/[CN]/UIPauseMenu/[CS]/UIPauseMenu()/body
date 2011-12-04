@@ -1,0 +1,44 @@
+{
+  _title=new UIGraphicsElement("blockmania");
+  _title.setVisible(true);
+  _title.setSize(new Vector2f(512f,128f));
+  _version=new UIText((String)ConfigurationManager.getInstance().getConfig().get("System.gameTitle"));
+  _version.setVisible(true);
+  _exitButton=new UIButton(new Vector2f(256f,32f));
+  _exitButton.getLabel().setText("Exit Blockmania");
+  _exitButton.setVisible(true);
+  _exitButton.addClickListener(new UIClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Blockmania.getInstance().exit();
+    }
+  }
+);
+  _newWorldButton=new UIButton(new Vector2f(256f,32f));
+  _newWorldButton.getLabel().setText("Create New World");
+  _newWorldButton.setVisible(true);
+  _newWorldButton.addClickListener(new UIClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Blockmania.getInstance().initWorld();
+      setVisible(false);
+    }
+  }
+);
+  _respawnButton=new UIButton(new Vector2f(256f,32f));
+  _respawnButton.getLabel().setText("Respawn");
+  _respawnButton.setVisible(true);
+  _respawnButton.addClickListener(new UIClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Blockmania.getInstance().getActiveWorld().getPlayer().respawn();
+      setVisible(false);
+    }
+  }
+);
+  _overlay=new UITransparentOverlay();
+  _overlay.setVisible(true);
+  addDisplayElement(_overlay);
+  addDisplayElement(_title);
+  addDisplayElement(_version);
+  addDisplayElement(_exitButton);
+  addDisplayElement(_newWorldButton);
+  addDisplayElement(_respawnButton);
+}
