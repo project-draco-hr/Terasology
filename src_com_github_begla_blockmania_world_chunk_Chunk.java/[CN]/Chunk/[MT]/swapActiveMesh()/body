@@ -1,13 +1,13 @@
 {
 synchronized (this) {
     if (_disposed)     return false;
-    if (_newMesh != null) {
-      if (_newMesh.isDisposed() || !_newMesh.isGenerated())       return false;
-      ChunkMesh newMesh=_newMesh;
-      _newMesh=null;
-      ChunkMesh oldActiveMesh=_activeMesh;
-      _activeMesh=newMesh;
-      if (oldActiveMesh != null)       oldActiveMesh.dispose();
+    if (_newMeshes != null) {
+      if (_newMeshes[0].isDisposed() || !_newMeshes[0].isGenerated())       return false;
+      ChunkMesh[] newMesh=_newMeshes;
+      _newMeshes=null;
+      ChunkMesh[] oldActiveMesh=_activeMeshes;
+      _activeMeshes=newMesh;
+      if (oldActiveMesh != null)       for (int i=0; i < oldActiveMesh.length; i++)       oldActiveMesh[i].dispose();
       return true;
     }
   }

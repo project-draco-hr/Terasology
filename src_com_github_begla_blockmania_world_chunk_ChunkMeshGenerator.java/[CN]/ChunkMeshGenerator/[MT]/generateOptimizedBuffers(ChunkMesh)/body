@@ -1,0 +1,37 @@
+{
+  for (int j=0; j < mesh._vertexElements.length; j++) {
+    mesh._vertexElements[j].vertices=BufferUtils.createFloatBuffer(mesh._vertexElements[j].quads.size() * 2 + mesh._vertexElements[j].tex.size() + mesh._vertexElements[j].color.size());
+    mesh._vertexElements[j].indices=BufferUtils.createIntBuffer(mesh._vertexElements[j].quads.size());
+    int cTex=0;
+    int cColor=0;
+    int cIndex=0;
+    for (int i=0; i < mesh._vertexElements[j].quads.size(); i+=3, cTex+=2, cColor+=4) {
+      if (i % 4 == 0) {
+        mesh._vertexElements[j].indices.put(cIndex);
+        mesh._vertexElements[j].indices.put(cIndex + 1);
+        mesh._vertexElements[j].indices.put(cIndex + 2);
+        mesh._vertexElements[j].indices.put(cIndex + 2);
+        mesh._vertexElements[j].indices.put(cIndex + 3);
+        mesh._vertexElements[j].indices.put(cIndex);
+        cIndex+=4;
+      }
+      Vector3f vertexPos=new Vector3f(mesh._vertexElements[j].quads.get(i),mesh._vertexElements[j].quads.get(i + 1),mesh._vertexElements[j].quads.get(i + 2));
+      mesh._vertexElements[j].vertices.put(vertexPos.x);
+      mesh._vertexElements[j].vertices.put(vertexPos.y);
+      mesh._vertexElements[j].vertices.put(vertexPos.z);
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex + 1));
+      Double[] result=new Double[3];
+      calcLightingValuesForVertexPos(vertexPos,result);
+      mesh._vertexElements[j].vertices.put(result[0].floatValue());
+      mesh._vertexElements[j].vertices.put(result[1].floatValue());
+      mesh._vertexElements[j].vertices.put(result[2].floatValue());
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 1));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 2));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 3));
+    }
+    mesh._vertexElements[j].vertices.flip();
+    mesh._vertexElements[j].indices.flip();
+  }
+}

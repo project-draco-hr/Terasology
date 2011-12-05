@@ -1,0 +1,10 @@
+{
+synchronized (this) {
+    if (_disposed)     return;
+    ChunkMesh[] oldNewMesh=_newMeshes;
+    _newMeshes=newMesh;
+    if (oldNewMesh != null) {
+      for (int i=0; i < oldNewMesh.length; i++)       oldNewMesh[i].dispose();
+    }
+  }
+}
