@@ -1,30 +1,14 @@
 {
-  boolean updateOcclusionQueries=false;
-  int result=GL15.glGetQueryObjectui(_testQuery,GL15.GL_QUERY_RESULT_AVAILABLE);
-  if (result == GL11.GL_TRUE) {
-    updateOcclusionQueries=true;
-    _testQuery=0;
-  }
   _visibleChunks.clear();
-  _bulletPhysicsRenderer.resetChunks();
-  _visibleTriangles=0;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
     if (isChunkVisible(c)) {
-      if (updateOcclusionQueries) {
-        c.applyOcclusionQueries();
-      }
       _visibleChunks.add(c);
       c.setCulled(false);
       if (c.isDirty() || c.isLightDirty()) {
         if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT))         continue;
       }
-      if (Blockmania.getInstance().getTime() - _lastVboUpdate > VBO_UPDATE_GAP) {
-        if (c.generateVBOs()) {
-          _lastVboUpdate=Blockmania.getInstance().getTime();
-        }
-        c.update();
-      }
+      c.update();
       continue;
     }
     c.setCulled(true);

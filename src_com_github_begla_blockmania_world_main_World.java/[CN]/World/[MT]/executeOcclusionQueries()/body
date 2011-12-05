@@ -1,0 +1,15 @@
+{
+  GL11.glColorMask(false,false,false,false);
+  GL11.glDepthMask(false);
+  for (int i=0; i < _visibleChunks.size(); i++) {
+    Chunk c=_visibleChunks.get(i);
+    if (i > 8) {
+      c.executeOcclusionQuery();
+    }
+ else {
+      c._occlusionCulled=new boolean[Chunk.VERTICAL_SEGMENTS];
+    }
+  }
+  GL11.glColorMask(true,true,true,true);
+  GL11.glDepthMask(true);
+}

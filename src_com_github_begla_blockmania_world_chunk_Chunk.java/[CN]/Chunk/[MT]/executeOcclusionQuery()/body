@@ -1,0 +1,14 @@
+{
+  AABB[] subChunksAABBs=getSubChunkAABBs();
+  if (!_waitingForResult) {
+    for (int j=0; j < VERTICAL_SEGMENTS; j++) {
+      if (_queries[j] == 0) {
+        _queries[j]=GL15.glGenQueries();
+      }
+      GL15.glBeginQuery(GL15.GL_SAMPLES_PASSED,_queries[j]);
+      subChunksAABBs[j].renderSolid();
+      GL15.glEndQuery(GL15.GL_SAMPLES_PASSED);
+    }
+    _waitingForResult=true;
+  }
+}
