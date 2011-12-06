@@ -5,6 +5,7 @@
   double dT=Math.abs(temp - 0.5);
   double dH=Math.abs(hum - 0.4);
   double mIntens=MathHelper.clamp(1.0 - (dT + dH) * 5.0) + 0.3;
-  double density=calcMountainDensity(x,y,z) * mIntens * height;
-  return -y + (((height * 80.0) + 16.0) + density * 1024.0);
+  double densityMountains=calcMountainDensity(x,y,z) * mIntens * height;
+  double densityHills=(calcHillDensity(x,y,z) * height);
+  return -y + (((height * 80.0) + 16.0) + densityMountains * 512.0 + densityHills * 256);
 }
