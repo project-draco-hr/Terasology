@@ -14,7 +14,7 @@
       AudioManager.getInstance().getAudio("RemoveBlock").playAsSoundEffect(0.6f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.5f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
       if (createPhysBlock && !BlockManager.getInstance().getBlock(currentBlockType).isTranslucent()) {
         Vector3f pos=blockPos.toVector3f();
-        _parent.getRigidBlocksRenderer().addBlock(pos,currentBlockType);
+        _parent.getBulletPhysicsRenderer().addBlock(pos,currentBlockType);
       }
       int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
       int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);

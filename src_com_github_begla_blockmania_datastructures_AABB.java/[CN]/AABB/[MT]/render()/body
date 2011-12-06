@@ -1,45 +1,11 @@
 {
-  double offset=0.01;
+  glLineWidth(RENDER_LINE_WIDTH);
   glPushMatrix();
   Vector3f rp=Blockmania.getInstance().getActiveWorldProvider().getRenderingReferencePoint();
   glTranslatef(getPosition().x - rp.x,getPosition().y - rp.y,getPosition().z - rp.z);
-  glLineWidth(6f);
-  glColor4f(0.0f,0.0f,0.0f,1.0f);
-  glBegin(GL_LINE_LOOP);
-  glVertex3d(-_dimensions.x - offset,-_dimensions.y - offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,-_dimensions.y - offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,+_dimensions.y + offset,-_dimensions.z - offset);
-  glVertex3d(-_dimensions.x - offset,+_dimensions.y + offset,-_dimensions.z - offset);
-  glEnd();
-  glBegin(GL_LINE_LOOP);
-  glVertex3d(-_dimensions.x - offset,-_dimensions.y - offset,+_dimensions.z + offset);
-  glVertex3d(+_dimensions.x + offset,-_dimensions.y - offset,+_dimensions.z + offset);
-  glVertex3d(+_dimensions.x + offset,+_dimensions.y + offset,+_dimensions.z + offset);
-  glVertex3d(-_dimensions.x - offset,+_dimensions.y + offset,+_dimensions.z + offset);
-  glEnd();
-  glBegin(GL_LINE_LOOP);
-  glVertex3d(-_dimensions.x - offset,-_dimensions.y - offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,-_dimensions.y - offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,-_dimensions.y - offset,+_dimensions.z + offset);
-  glVertex3d(-_dimensions.x - offset,-_dimensions.y - offset,+_dimensions.z + offset);
-  glEnd();
-  glBegin(GL_LINE_LOOP);
-  glVertex3d(-_dimensions.x - offset,+_dimensions.y + offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,+_dimensions.y + offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,+_dimensions.y + offset,+_dimensions.z + offset);
-  glVertex3d(-_dimensions.x - offset,+_dimensions.y + offset,+_dimensions.z + offset);
-  glEnd();
-  glBegin(GL_LINE_LOOP);
-  glVertex3d(-_dimensions.x - offset,-_dimensions.y - offset,-_dimensions.z - offset);
-  glVertex3d(-_dimensions.x - offset,-_dimensions.y - offset,+_dimensions.z + offset);
-  glVertex3d(-_dimensions.x - offset,+_dimensions.y + offset,+_dimensions.z + offset);
-  glVertex3d(-_dimensions.x - offset,+_dimensions.y + offset,-_dimensions.z - offset);
-  glEnd();
-  glBegin(GL_LINE_LOOP);
-  glVertex3d(+_dimensions.x + offset,-_dimensions.y - offset,-_dimensions.z - offset);
-  glVertex3d(+_dimensions.x + offset,-_dimensions.y - offset,+_dimensions.z + offset);
-  glVertex3d(+_dimensions.x + offset,+_dimensions.y + offset,+_dimensions.z + offset);
-  glVertex3d(+_dimensions.x + offset,+_dimensions.y + offset,-_dimensions.z - offset);
-  glEnd();
+  if (_displayListWire == -1) {
+    generateDisplayListWire();
+  }
+  glCallList(_displayListWire);
   glPopMatrix();
 }

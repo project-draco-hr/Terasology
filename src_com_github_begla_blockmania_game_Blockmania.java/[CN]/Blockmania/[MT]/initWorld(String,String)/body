@@ -1,9 +1,9 @@
 {
   final FastRandom random=new FastRandom();
   getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  if (_world != null) {
-    _world.dispose();
-    _world=null;
+  if (_worldRenderer != null) {
+    _worldRenderer.dispose();
+    _worldRenderer=null;
   }
   if (seed == null) {
     seed=random.randomCharacterString(16);
@@ -11,9 +11,9 @@
  else   if (seed.isEmpty()) {
     seed=random.randomCharacterString(16);
   }
-  _world=new World(title,seed);
-  _world.setPlayer(new Player(_world));
-  _world.initPortal();
-  _world.setViewingDistance(VIEWING_DISTANCES[_activeViewingDistance]);
+  _worldRenderer=new WorldRenderer(title,seed);
+  _worldRenderer.setPlayer(new Player(_worldRenderer));
+  _worldRenderer.initPortal();
+  _worldRenderer.setViewingDistance(VIEWING_DISTANCES[_activeViewingDistance]);
   simulateWorld(4000);
 }

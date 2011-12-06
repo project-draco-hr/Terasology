@@ -1,0 +1,20 @@
+{
+  ChunkMesh mesh=new ChunkMesh();
+  for (int x=0; x < Chunk.CHUNK_DIMENSION_X; x++) {
+    for (int z=0; z < Chunk.CHUNK_DIMENSION_Z; z++) {
+      double biomeTemp=_chunk.getParent().getTemperatureAt(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosZ(z));
+      double biomeHumidity=_chunk.getParent().getHumidityAt(_chunk.getBlockWorldPosX(x),_chunk.getBlockWorldPosZ(z));
+      for (int y=verticalOffset; y < verticalOffset + meshHeight; y++) {
+        byte blockType=_chunk.getBlock(x,y,z);
+        Block block=BlockManager.getInstance().getBlock(blockType);
+        if (block.isInvisible())         continue;
+        Block.BLOCK_FORM blockForm=block.getBlockForm();
+        if (blockForm != Block.BLOCK_FORM.BILLBOARD)         generateBlockVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
+ else         generateBillboardVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
+      }
+    }
+  }
+  generateOptimizedBuffers(mesh);
+  _statVertexArrayUpdateCount++;
+  return mesh;
+}

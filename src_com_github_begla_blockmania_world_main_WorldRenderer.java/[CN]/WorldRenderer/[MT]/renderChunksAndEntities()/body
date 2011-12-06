@@ -1,0 +1,87 @@
+{
+  ShaderManager.getInstance().enableShader("chunk");
+  GL13.glActiveTexture(GL13.GL_TEXTURE1);
+  TextureManager.getInstance().bindTexture("custom_lava_still");
+  GL13.glActiveTexture(GL13.GL_TEXTURE2);
+  TextureManager.getInstance().bindTexture("custom_water_still");
+  GL13.glActiveTexture(GL13.GL_TEXTURE0);
+  TextureManager.getInstance().bindTexture("terrain");
+  int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
+  int swimming=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"swimming");
+  int lavaTexture=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureLava");
+  int waterTexture=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureWater");
+  int textureAtlas=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureAtlas");
+  GL20.glUniform1i(lavaTexture,1);
+  GL20.glUniform1i(waterTexture,2);
+  GL20.glUniform1i(textureAtlas,0);
+  int tick=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"tick");
+  GL20.glUniform1f(tick,_tick);
+  GL20.glUniform1f(daylight,getDaylight());
+  GL20.glUniform1i(swimming,_player.isHeadUnderWater() ? 1 : 0);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  _statOcclusionCulled=0;
+  _statSubMeshCulled=0;
+  _statEmpty=0;
+  _statVisibleTriangles=0;
+  for (int i=0; i < _visibleChunks.size(); i++) {
+    Chunk c=_visibleChunks.get(i);
+    c.applyOcclusionQueries();
+    if (i > 8 && OCCLUSION_CULLING_ENABLED) {
+      c.executeOcclusionQuery();
+    }
+ else {
+      c.resetOcclusionCulled();
+    }
+    GL11.glPushMatrix();
+    GL11.glTranslatef(c.getPosition().x * Chunk.CHUNK_DIMENSION_X - _worldProvider.getRenderingReferencePoint().x,c.getPosition().y * Chunk.CHUNK_DIMENSION_Y - _worldProvider.getRenderingReferencePoint().y,c.getPosition().z * Chunk.CHUNK_DIMENSION_Z - _worldProvider.getRenderingReferencePoint().z);
+    for (int j=0; j < Chunk.VERTICAL_SEGMENTS; j++) {
+      if (!c.isSubMeshOcclusionCulled(j)) {
+        if (isAABBVisible(c.getSubMeshAABB(j))) {
+          _statEmpty+=c.render(ChunkMesh.RENDER_TYPE.OPAQUE,j) ? 0 : 1;
+          c.render(ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT,j);
+          c.setSubMeshCulled(j,false);
+        }
+ else {
+          c.setSubMeshCulled(j,true);
+          _statSubMeshCulled++;
+        }
+      }
+ else {
+        _statOcclusionCulled++;
+      }
+    }
+    glPopMatrix();
+    if (BOUNDING_BOXES_ENABLED) {
+      c.renderAABBs(false);
+    }
+  }
+  _mobManager.renderAll();
+  ShaderManager.getInstance().enableShader("chunk");
+  TextureManager.getInstance().bindTexture("terrain");
+  for (int j=0; j < 2; j++) {
+    for (int i=0; i < _visibleChunks.size(); i++) {
+      Chunk c=_visibleChunks.get(i);
+      if (j == 0) {
+        glColorMask(false,false,false,false);
+      }
+ else {
+        glColorMask(true,true,true,true);
+      }
+      GL11.glPushMatrix();
+      GL11.glTranslatef(c.getPosition().x * Chunk.CHUNK_DIMENSION_X - _worldProvider.getRenderingReferencePoint().x,c.getPosition().y * Chunk.CHUNK_DIMENSION_Y - _worldProvider.getRenderingReferencePoint().y,c.getPosition().z * Chunk.CHUNK_DIMENSION_Z - _worldProvider.getRenderingReferencePoint().z);
+      for (int k=0; k < Chunk.VERTICAL_SEGMENTS; k++) {
+        if (!c.isSubMeshOcclusionCulled(k)) {
+          if (!c.isSubMeshCulled(k)) {
+            c.render(ChunkMesh.RENDER_TYPE.WATER_AND_ICE,k);
+          }
+        }
+      }
+      glPopMatrix();
+    }
+  }
+  glDisable(GL_BLEND);
+  ShaderManager.getInstance().enableShader("block");
+  _bulletPhysicsRenderer.render();
+  ShaderManager.getInstance().enableShader(null);
+}

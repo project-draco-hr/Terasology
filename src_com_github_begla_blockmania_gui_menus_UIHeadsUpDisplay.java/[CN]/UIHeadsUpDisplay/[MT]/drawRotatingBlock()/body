@@ -1,6 +1,8 @@
 {
   Block b=BlockManager.getInstance().getBlock(Blockmania.getInstance().getActiveWorld().getPlayer().getSelectedBlockType());
   if (b == null)   return;
+  glEnable(GL_TEXTURE_2D);
+  TextureManager.getInstance().bindTexture("terrain");
   glMatrixMode(GL_PROJECTION);
   glPushMatrix();
   glLoadIdentity();
@@ -22,4 +24,5 @@
   glMatrixMode(GL_PROJECTION);
   glPopMatrix();
   glMatrixMode(GL_MODELVIEW);
+  glDisable(GL_TEXTURE_2D);
 }
