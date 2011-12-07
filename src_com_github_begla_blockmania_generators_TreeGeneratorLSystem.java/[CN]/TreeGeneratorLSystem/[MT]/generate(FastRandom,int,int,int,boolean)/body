@@ -6,7 +6,8 @@
     String temp="";
     for (int j=0; j < axiom.length(); j++) {
       String c=String.valueOf(axiom.charAt(j));
-      if (_ruleSet.containsKey(c))       temp+=_ruleSet.get(c);
+      double rValue=(rand.randomDouble() + 1.0) / 2.0;
+      if (_ruleSet.containsKey(c) && _probabilities.get(c) > (1.0 - rValue))       temp+=_ruleSet.get(c);
  else       temp+=c;
     }
     axiom=temp;
@@ -15,7 +16,6 @@
   Matrix4f rotation=new Matrix4f();
   rotation.setIdentity();
   rotation.setRotation(new AxisAngle4f(new Vector3f(0,0,1),(float)Math.PI / 2));
-  beforeExecution(rand);
   for (int i=0; i < axiom.length(); i++) {
     char c=axiom.charAt(i);
     Matrix4f tempRotation=new Matrix4f();

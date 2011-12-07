@@ -1,6 +1,7 @@
 {
   _visibleChunks.clear();
   _bulletPhysicsRenderer.resetChunks();
+  boolean noMoreUpdates=false;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
     for (int j=0; j < Chunk.VERTICAL_SEGMENTS; j++) {
@@ -16,8 +17,11 @@
     }
     if (isChunkVisible(c)) {
       _visibleChunks.add(c);
-      if (c.isDirty() || c.isLightDirty()) {
-        if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT))         continue;
+      if ((c.isDirty() || c.isLightDirty()) && !noMoreUpdates) {
+        if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
+          noMoreUpdates=true;
+          continue;
+        }
       }
       c.update();
     }
