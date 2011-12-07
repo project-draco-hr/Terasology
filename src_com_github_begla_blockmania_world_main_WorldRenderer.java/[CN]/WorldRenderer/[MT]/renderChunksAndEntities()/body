@@ -109,5 +109,9 @@
   ShaderManager.getInstance().enableShader("block");
   _bulletPhysicsRenderer.render();
   ShaderManager.getInstance().enableShader(null);
-  _occlusionQueryToggle=!_occlusionQueryToggle;
+  long now=Blockmania.getInstance().getTime();
+  if (now - _occlusionLastUpdate > OCCLUSION_CULLING_GAP) {
+    _occlusionQueryToggle=!_occlusionQueryToggle;
+    _occlusionLastUpdate=now;
+  }
 }
