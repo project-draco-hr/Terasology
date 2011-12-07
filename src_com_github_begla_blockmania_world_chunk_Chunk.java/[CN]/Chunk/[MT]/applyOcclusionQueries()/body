@@ -4,12 +4,7 @@
       int result=GL15.glGetQueryObjectui(_queries[i],GL15.GL_QUERY_RESULT_AVAILABLE);
       if (result != 0) {
         result=GL15.glGetQueryObjectui(_queries[i],GL15.GL_QUERY_RESULT);
-        if (result > 0) {
-          _occlusionCulled[i]=false;
-        }
- else {
-          _occlusionCulled[i]=true;
-        }
+        _occlusionCulled[i]=result <= 0;
         GL15.glDeleteQueries(_queries[i]);
         _queries[i]=0;
       }

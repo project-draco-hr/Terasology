@@ -7,7 +7,7 @@
   _sunPosAngle=(float)Math.toRadians(360.0 * _parent.getWorldProvider().getTime() - 90.0);
   Vector4f sunNormalise=new Vector4f(0.0f,(float)Math.cos(_sunPosAngle),(float)Math.sin(_sunPosAngle),1.0f);
   sunNormalise.normalize();
-  _zenithColor=getAllWeatherZenith(sunNormalise.y);
+  Vector3f _zenithColor=getAllWeatherZenith(sunNormalise.y);
   ShaderManager.getInstance().enableShader("sky");
   int sunPos=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("sky"),"sunPos");
   GL20.glUniform4f(sunPos,0.0f,(float)Math.cos(_sunPosAngle),(float)Math.sin(_sunPosAngle),1.0f);

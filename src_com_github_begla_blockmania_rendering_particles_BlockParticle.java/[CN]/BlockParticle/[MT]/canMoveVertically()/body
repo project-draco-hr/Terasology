@@ -1,7 +1,4 @@
 {
   BlockParticleEmitter pE=(BlockParticleEmitter)getParent();
-  if (pE.getParent().getWorldProvider().getBlockAtPosition(new Vector3f(_position.x,_position.y + 2 * ((_velocity.y >= 0) ? _size : -_size),_position.z)) != 0x0) {
-    return false;
-  }
-  return true;
+  return pE.getParent().getWorldProvider().getBlockAtPosition(new Vector3f(_position.x,_position.y + 2 * ((_velocity.y >= 0) ? _size : -_size),_position.z)) == 0x0;
 }
