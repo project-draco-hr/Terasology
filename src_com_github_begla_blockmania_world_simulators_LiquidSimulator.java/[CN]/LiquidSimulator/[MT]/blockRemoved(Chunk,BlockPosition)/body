@@ -1,2 +1,8 @@
 {
+  for (int i=0; i < 6; i++) {
+    BlockPosition nBp=new BlockPosition(pos.x + (int)NEIGHBORS6[i].x,pos.y + (int)NEIGHBORS6[i].y,pos.z + (int)NEIGHBORS6[i].z);
+    if (BlockManager.getInstance().getBlock(_parent.getBlock(nBp.x,nBp.y,nBp.z)).isLiquid()) {
+      addActiveBlock(nBp);
+    }
+  }
 }
