@@ -1,11 +1,15 @@
 {
-  if (_parent.getParent().getRandom().randomDouble() > 0.75) {
+  if (_parent.getParent().getRandom().randomDouble() > 0.95) {
+    LiquidSimulator liquidSimulator=new LiquidSimulator(_parent.getParent());
     for (int y=Chunk.CHUNK_DIMENSION_Y - 1; y >= 0; y--) {
       String title=BlockManager.getInstance().getBlock(c.getBlock(8,y,8)).getTitle();
       if (title.equals("Grass") || title.equals("Snow") || title.equals("Stone")) {
         if (_parent.getParent().getRandom().randomDouble() > 0.75)         c.setBlock(8,y,8,BlockManager.getInstance().getBlock("Lava").getId());
  else         c.setBlock(8,y,8,BlockManager.getInstance().getBlock("Water").getId());
-        _parent.getParent().getLiquidSimulator().addActiveBlock(new BlockPosition(c.getBlockWorldPosX(8),y,c.getBlockWorldPosZ(8)));
+        liquidSimulator.addActiveBlock(new BlockPosition(c.getBlockWorldPosX(8),y,c.getBlockWorldPosZ(8)));
+        for (int i=0; i < 256; i++) {
+          liquidSimulator.simulate(true);
+        }
         return;
       }
     }
