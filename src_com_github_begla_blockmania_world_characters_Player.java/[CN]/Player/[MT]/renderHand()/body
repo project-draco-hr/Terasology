@@ -1,0 +1,32 @@
+{
+  glEnable(GL11.GL_TEXTURE_2D);
+  TextureManager.getInstance().bindTexture("char");
+  glPushMatrix();
+  glTranslatef(0.5f,-0.5f + (float)calcBobbingOffset((float)Math.PI / 8f,0.05f,2.5f),-1.0f);
+  glRotatef(-45f,1.0f,0.0f,0.0f);
+  glRotatef(30f,0.0f,1.0f,0.0f);
+  glScalef(0.25f,0.5f,0.25f);
+  GL11.glColor4f(1.0f,1.0f,1.0f,1.0f);
+  GL11.glBegin(GL11.GL_QUADS);
+  GL11.glNormal3f(-1,0,0);
+  GL11.glTexCoord2f(40.0f * 0.015625f,20.0f * 0.03125f);
+  GL11.glVertex3f(-0.5f,-0.5f,-0.5f);
+  GL11.glTexCoord2f(44.0f * 0.015625f,20.0f * 0.03125f);
+  GL11.glVertex3f(-0.5f,-0.5f,0.5f);
+  GL11.glTexCoord2f(44.0f * 0.015625f,1.0f);
+  GL11.glVertex3f(-0.5f,0.5f,0.5f);
+  GL11.glTexCoord2f(40.0f * 0.015625f,1.0f);
+  GL11.glVertex3f(-0.5f,0.5f,-0.5f);
+  GL11.glNormal3f(0,0,-1);
+  GL11.glTexCoord2f(44.0f * 0.015625f,20.0f * 0.03125f);
+  GL11.glVertex3f(-0.5f,-0.5f,0.5f);
+  GL11.glTexCoord2f(48.0f * 0.015625f,20.0f * 0.03125f);
+  GL11.glVertex3f(0.5f,-0.5f,0.5f);
+  GL11.glTexCoord2f(48.0f * 0.015625f,1.0f);
+  GL11.glVertex3f(0.5f,0.5f,0.5f);
+  GL11.glTexCoord2f(44.0f * 0.015625f,1.0f);
+  GL11.glVertex3f(-0.5f,0.5f,0.5f);
+  GL11.glEnd();
+  glPopMatrix();
+  glDisable(GL11.GL_TEXTURE_2D);
+}
