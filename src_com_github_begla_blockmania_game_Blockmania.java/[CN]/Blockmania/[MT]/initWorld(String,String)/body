@@ -1,6 +1,5 @@
 {
   final FastRandom random=new FastRandom();
-  getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   if (_worldRenderer != null) {
     _worldRenderer.dispose();
     _worldRenderer=null;
@@ -11,6 +10,7 @@
  else   if (seed.isEmpty()) {
     seed=random.randomCharacterString(16);
   }
+  getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   _worldRenderer=new WorldRenderer(title,seed);
   _worldRenderer.setPlayer(new Player(_worldRenderer));
   _worldRenderer.initPortal();
