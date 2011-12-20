@@ -12,6 +12,7 @@
       }
       getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y,blockPos.z,type,true,false);
       AudioManager.getInstance().getAudio("PlaceBlock").playAsSoundEffect(0.8f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
+      poke();
       int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
       int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
       notifyObserversBlockPlaced(_parent.getWorldProvider().getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);

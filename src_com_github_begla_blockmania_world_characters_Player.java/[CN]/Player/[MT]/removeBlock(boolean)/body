@@ -12,6 +12,7 @@
       _parent.getBlockParticleEmitter().setOrigin(blockPos.toVector3f());
       _parent.getBlockParticleEmitter().emitParticles(256,currentBlockType);
       AudioManager.getInstance().getAudio("RemoveBlock").playAsSoundEffect(0.6f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.5f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
+      poke();
       if (createPhysBlock && !BlockManager.getInstance().getBlock(currentBlockType).isTranslucent()) {
         Vector3f pos=blockPos.toVector3f();
         _parent.getBulletPhysicsRenderer().addBlock(pos,currentBlockType);
