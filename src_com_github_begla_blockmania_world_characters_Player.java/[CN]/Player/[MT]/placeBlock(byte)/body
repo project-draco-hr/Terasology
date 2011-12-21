@@ -1,18 +1,16 @@
 {
   if (getParent() != null) {
-    RayBlockIntersection.Intersection is=calcSelectedBlock();
-    if (is != null) {
-      Block centerBlock=BlockManager.getInstance().getBlock(getParent().getWorldProvider().getBlock(is.getBlockPosition().x,is.getBlockPosition().y,is.getBlockPosition().z));
+    if (_selectedBlock != null) {
+      Block centerBlock=BlockManager.getInstance().getBlock(getParent().getWorldProvider().getBlock(_selectedBlock.getBlockPosition().x,_selectedBlock.getBlockPosition().y,_selectedBlock.getBlockPosition().z));
       if (!centerBlock.isAllowBlockAttachment()) {
         return;
       }
-      BlockPosition blockPos=is.calcAdjacentBlockPos();
+      BlockPosition blockPos=_selectedBlock.calcAdjacentBlockPos();
       if (Block.AABBForBlockAt(blockPos.x,blockPos.y,blockPos.z).overlaps(getAABB())) {
         return;
       }
       getParent().getWorldProvider().setBlock(blockPos.x,blockPos.y,blockPos.z,type,true,false);
       AudioManager.getInstance().getAudio("PlaceBlock").playAsSoundEffect(0.8f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false);
-      poke();
       int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
       int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
       notifyObserversBlockPlaced(_parent.getWorldProvider().getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);
