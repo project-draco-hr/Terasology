@@ -1,10 +1,19 @@
 {
   if (!_pauseGame && !_hud.getDebugConsole().isVisible() && !_pauseMenu.isVisible()) {
-    if (_worldRenderer != null)     _worldRenderer.update();
+    if (_activeWorldRenderer != null)     _activeWorldRenderer.update();
     if (!Mouse.isGrabbed())     Mouse.setGrabbed(true);
   }
  else {
     if (Mouse.isGrabbed())     Mouse.setGrabbed(false);
+  }
+  if (_activeWorldRenderer != null) {
+    if (_activeWorldRenderer.getPlayer().isDead()) {
+      _statusScreen.setVisible(true);
+      _statusScreen.updateStatus("Sorry. You've died. :-(");
+    }
+ else {
+      _statusScreen.setVisible(false);
+    }
   }
   updateUserInterface();
 }

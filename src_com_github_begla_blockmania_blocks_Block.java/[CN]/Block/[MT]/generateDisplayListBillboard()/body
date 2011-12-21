@@ -1,0 +1,25 @@
+{
+  int id=glGenLists(1);
+  glNewList(id,GL11.GL_COMPILE);
+  glBegin(GL_QUADS);
+  GL11.glColor3f(1.0f,1.0f,1.0f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.LEFT).x,calcTextureOffsetFor(SIDE.LEFT).y + 0.0624f);
+  GL11.glVertex3f(0f,-0.5f,-0.5f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.LEFT).x + 0.0624f,calcTextureOffsetFor(SIDE.LEFT).y + 0.0624f);
+  GL11.glVertex3f(0f,-0.5f,0.5f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.LEFT).x + 0.0624f,calcTextureOffsetFor(SIDE.LEFT).y);
+  GL11.glVertex3f(0f,0.5f,0.5f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.LEFT).x,calcTextureOffsetFor(SIDE.LEFT).y);
+  GL11.glVertex3f(0f,0.5f,-0.5f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.BACK).x,calcTextureOffsetFor(SIDE.BACK).y + 0.0624f);
+  GL11.glVertex3f(-0.5f,-0.5f,0f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.BACK).x + 0.0624f,calcTextureOffsetFor(SIDE.BACK).y + 0.0624f);
+  GL11.glVertex3f(0.5f,-0.5f,0f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.BACK).x + 0.0624f,calcTextureOffsetFor(SIDE.BACK).y);
+  GL11.glVertex3f(0.5f,0.5f,0f);
+  GL11.glTexCoord2f(calcTextureOffsetFor(SIDE.BACK).x,calcTextureOffsetFor(SIDE.BACK).y);
+  GL11.glVertex3f(-0.5f,0.5f,0f);
+  GL11.glEnd();
+  glEndList();
+  return id;
+}

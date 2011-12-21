@@ -1,5 +1,13 @@
 {
   if (isInvisible())   return;
-  if (_displayList == -1)   _displayList=generateDisplayList();
-  glCallList(_displayList);
+  if (_displayListBlock == -1)   _displayListBlock=generateDisplayList();
+  if (_displayListBillboard == -1)   _displayListBillboard=generateDisplayListBillboard();
+  if (getBlockForm() != BLOCK_FORM.BILLBOARD) {
+    glCallList(_displayListBlock);
+  }
+ else {
+    glDisable(GL11.GL_CULL_FACE);
+    glCallList(_displayListBillboard);
+    glEnable(GL11.GL_CULL_FACE);
+  }
 }

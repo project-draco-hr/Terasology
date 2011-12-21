@@ -2,7 +2,6 @@
   _godMode=GOD_MODE;
   _walkingSpeed=WALKING_SPEED - Math.abs(calcBobbingOffset((float)Math.PI / 2f,0.01f,2.5f));
   processInteractions(-1);
-  _selectedBlock=calcSelectedBlock();
   if (_handMovementAnimationOffset > 0) {
     _handMovementAnimationOffset-=0.04;
   }
@@ -11,4 +10,13 @@
   }
   super.update();
   updateCameras();
+  _selectedBlock=calcSelectedBlock();
+  if (isDead() && _timeOfDeath == -1) {
+    _timeOfDeath=Blockmania.getInstance().getTime();
+  }
+ else   if (isDead() && Blockmania.getInstance().getTime() - _timeOfDeath > 1000) {
+    revive();
+    respawn();
+    _timeOfDeath=-1;
+  }
 }

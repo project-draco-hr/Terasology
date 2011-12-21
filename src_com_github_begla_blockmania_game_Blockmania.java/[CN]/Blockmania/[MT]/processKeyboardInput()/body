@@ -14,6 +14,6 @@
       _hud.processKeyboardInput(key);
       _pauseMenu.processKeyboardInput(key);
     }
-    if (!isGamePaused())     _worldRenderer.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+    if (!_pauseGame && !_hud.getDebugConsole().isVisible() && !_pauseMenu.isVisible())     _activeWorldRenderer.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
   }
 }

@@ -1,17 +1,17 @@
 {
   long timeBefore=getTime();
-  _loadingScreen.setVisible(true);
+  _statusScreen.setVisible(true);
   _hud.setVisible(false);
   float diff=0;
   for (; diff < duration; ) {
-    _loadingScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(diff / duration) * 100f));
+    _statusScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(diff / duration) * 100f));
     renderUserInterface();
     updateUserInterface();
-    getActiveWorld().standaloneGenerateChunks();
+    getActiveWorldRenderer().standaloneGenerateChunks();
     Display.update();
     diff=getTime() - timeBefore;
   }
   _lastLoopTime=getTime();
-  _loadingScreen.setVisible(false);
+  _statusScreen.setVisible(false);
   _hud.setVisible(true);
 }
