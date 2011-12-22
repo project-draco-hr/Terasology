@@ -3,11 +3,11 @@
   _lastLoopTime=getTime();
   double nextGameTick=getTime();
   int loopCounter;
-  BlockmaniaProfiler.begin("GAME LOOP");
   while (_runGame && !Display.isCloseRequested()) {
     updateFPS();
     processKeyboardInput();
     processMouseInput();
+    BlockmaniaProfiler.begin();
     loopCounter=0;
     while (getTime() > nextGameTick && loopCounter < FRAME_SKIP_MAX_FRAMES) {
       update();
@@ -16,6 +16,8 @@
     }
     render();
     Display.update();
+    if (FPS_LIMIT > 0)     Display.sync(FPS_LIMIT);
+    BlockmaniaProfiler.end();
   }
   if (_saveWorldOnExit) {
     _activeWorldRenderer.dispose();
@@ -27,6 +29,5 @@
  catch (  InterruptedException e) {
     getLogger().log(Level.SEVERE,e.toString(),e);
   }
-  BlockmaniaProfiler.end();
   destroy();
 }

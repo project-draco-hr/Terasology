@@ -1,8 +1,8 @@
 {
-  if (_activeBlocks.isEmpty())   return;
+  if (_activeBlocks.isEmpty())   return false;
   BlockPosition pos=_activeBlocks.iterator().next();
   _activeBlocks.remove(pos);
-  if (!_parent.canBlockSeeTheSky(pos.x,pos.y,pos.z))   return;
+  if (!_parent.canBlockSeeTheSky(pos.x,pos.y,pos.z))   return false;
   ChunkGeneratorTerrain.BIOME_TYPE biome=_parent.getActiveBiome(pos.x,pos.z);
   if (biome != ChunkGeneratorTerrain.BIOME_TYPE.SNOW) {
     byte bLeft=_parent.getBlock(pos.x - 1,pos.y,pos.z);
@@ -25,4 +25,5 @@
       addActiveBlock(new BlockPosition(pos.x,pos.y,pos.z - 1));
     }
   }
+  return true;
 }

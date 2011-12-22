@@ -17,7 +17,9 @@
     if (set) {
       liquidSimulator.addActiveBlock(new BlockPosition(c.getBlockWorldPosX(8),y,c.getBlockWorldPosZ(8)));
       for (int i=0; i < 256; i++) {
-        liquidSimulator.simulate(true);
+        if (!liquidSimulator.simulate(true)) {
+          break;
+        }
       }
     }
     if (lavaGenerated)     return;

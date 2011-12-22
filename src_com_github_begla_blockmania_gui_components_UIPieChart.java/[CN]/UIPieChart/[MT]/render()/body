@@ -1,0 +1,27 @@
+{
+  super.render();
+  if (_data.size() == 0)   return;
+  ArrayList<String> sortedKeys=new ArrayList<String>(_data.keySet());
+  Collections.sort(sortedKeys);
+  glPushMatrix();
+  glTranslatef(getSize().x / 2,getSize().y / 2,0.0f);
+  GL11.glBegin(GL11.GL_TRIANGLE_FAN);
+  GL11.glColor3f(1.0f,1.0f,1.0f);
+  GL11.glVertex3f(0f,0f,0f);
+  double stepSize=(Math.PI * 2.0) / SEGMENTS;
+  int segment=0;
+  double prevValueSum=0.0f;
+  String newText="";
+  for (int i=0; i <= SEGMENTS; i++) {
+    double value=_data.get(sortedKeys.get(segment));
+    if (((double)i / SEGMENTS) >= value + prevValueSum) {
+      segment++;
+      prevValueSum+=value;
+      Vector3f segmentColor=new Vector3f((segment * 0.1f) % 1.0f,(segment * 0.2f) % 1.0f,(segment * 0.4f) % 1.0f);
+      glColor3f(segmentColor.x,segmentColor.y,segmentColor.z);
+    }
+    GL11.glVertex2f((float)Math.sin(stepSize * i) * (getSize().x / 2),(float)Math.cos(stepSize * i) * (getSize().x / 2));
+  }
+  GL11.glEnd();
+  glPopMatrix();
+}

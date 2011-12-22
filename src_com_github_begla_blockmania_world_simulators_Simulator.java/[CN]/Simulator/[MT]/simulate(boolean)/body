@@ -1,7 +1,11 @@
 {
   long currentTime=Blockmania.getInstance().getTime();
+  boolean simulated=false;
   if (currentTime > _lastUpdate + _updateInterval || force) {
-    executeSimulation();
+    if (executeSimulation()) {
+      simulated=true;
+    }
     _lastUpdate=currentTime;
   }
+  return simulated;
 }
