@@ -2,11 +2,11 @@
   getPosition().x=in.readInt();
   getPosition().z=in.readInt();
   byte flags=in.readByte();
-  _lightDirty=Helper.isFlagSet(flags,(short)0);
+  setLightDirty(Helper.isFlagSet(flags,(short)0));
   for (int i=0; i < _blocks.size(); i++)   _blocks.setRawByte(i,in.readByte());
   for (int i=0; i < _sunlight.sizePacked(); i++)   _sunlight.setRawByte(i,in.readByte());
   for (int i=0; i < _light.sizePacked(); i++)   _light.setRawByte(i,in.readByte());
   for (int i=0; i < _states.sizePacked(); i++)   _states.setRawByte(i,in.readByte());
-  _fresh=false;
-  _dirty=true;
+  setFresh(false);
+  setDirty(true);
 }

@@ -1,0 +1,12 @@
+{
+  if (_checkpointDurations.containsKey(label)) {
+    double value=_checkpointDurations.get(label);
+    value=(value + (System.nanoTime() - _prevTime)) / 2.0;
+    _checkpointDurations.put(label,value);
+  }
+ else {
+    double value=(System.nanoTime() - _prevTime);
+    _checkpointDurations.put(label,value);
+  }
+  _prevTime=System.nanoTime();
+}

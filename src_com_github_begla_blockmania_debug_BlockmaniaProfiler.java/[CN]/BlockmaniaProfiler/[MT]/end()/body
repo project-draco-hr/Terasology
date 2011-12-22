@@ -1,0 +1,10 @@
+{
+  double sum=0.0;
+  for (  Double value : _checkpointDurations.values())   sum+=value;
+  for (  String label : _checkpointDurations.keySet()) {
+    System.out.println(label + " : " + _checkpointDurations.get(label)+ " ns ("+ String.format("%.5f",(_checkpointDurations.get(label) / sum) * 100.0)+ "%)");
+  }
+  System.out.println("===================");
+  System.out.println("END PROFILING :: " + _title);
+  System.out.println("===================");
+}

@@ -3,6 +3,7 @@
   _lastLoopTime=getTime();
   double nextGameTick=getTime();
   int loopCounter;
+  BlockmaniaProfiler.begin("GAME LOOP");
   while (_runGame && !Display.isCloseRequested()) {
     updateFPS();
     processKeyboardInput();
@@ -26,5 +27,6 @@
  catch (  InterruptedException e) {
     getLogger().log(Level.SEVERE,e.toString(),e);
   }
+  BlockmaniaProfiler.end();
   destroy();
 }

@@ -1,10 +1,10 @@
 {
-  if (_fresh) {
+  if (isFresh()) {
+    setFresh(false);
     for (    ChunkGenerator gen : _parent.getGeneratorManager().getChunkGenerators()) {
       gen.generate(this);
     }
     generateSunlight();
-    _fresh=false;
     return true;
   }
   return false;
