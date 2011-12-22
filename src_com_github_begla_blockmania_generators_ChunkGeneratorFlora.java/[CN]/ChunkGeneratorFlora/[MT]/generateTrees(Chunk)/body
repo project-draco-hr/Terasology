@@ -7,9 +7,9 @@
         int randZ=z + c.getRandom().randomInt() % 12 + 6;
         if (c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Grass").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Snow").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Sand").getId()) {
           double rand=Math.abs(c.getRandom().randomDouble());
-          int randomGeneratorId=0;
+          int randomGeneratorId;
           int size=_parent.getTreeGenerators(biome).size();
-          if (size > 1) {
+          if (size > 0) {
             randomGeneratorId=Math.abs(c.getRandom().randomInt()) % size;
             TreeGenerator treeGen=_parent.getTreeGenerator(biome,randomGeneratorId);
             if (rand < treeGen.getGenProbability()) {
