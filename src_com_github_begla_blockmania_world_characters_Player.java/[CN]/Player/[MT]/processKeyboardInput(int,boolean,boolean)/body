@@ -6,7 +6,9 @@ case Keyboard.KEY_UP:
     }
   break;
 case Keyboard.KEY_K:
-damage(9999);
+if (!repeatEvent && state) {
+  damage(9999);
+}
 break;
 case Keyboard.KEY_DOWN:
 if (!repeatEvent && state) {
@@ -16,6 +18,10 @@ break;
 case Keyboard.KEY_SPACE:
 if (!repeatEvent && state) {
 jump();
+if (Blockmania.getInstance().getTime() - _lastTimeSpacePressed < 400) {
+_godMode=!_godMode;
+}
+_lastTimeSpacePressed=Blockmania.getInstance().getTime();
 }
 break;
 case Keyboard.KEY_1:

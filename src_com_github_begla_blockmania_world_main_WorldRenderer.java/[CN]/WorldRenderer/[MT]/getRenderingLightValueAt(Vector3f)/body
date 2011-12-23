@@ -1,0 +1,7 @@
+{
+  double lightValueSun=((double)_worldProvider.getLightAtPosition(pos,Chunk.LIGHT_TYPE.SUN));
+  lightValueSun=(lightValueSun / 15.0) * getDaylight();
+  double lightValueBlock=_worldProvider.getLightAtPosition(pos,Chunk.LIGHT_TYPE.BLOCK);
+  lightValueBlock=lightValueBlock / 15.0;
+  return (float)Math.max(lightValueSun,lightValueBlock);
+}

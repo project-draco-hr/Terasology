@@ -3,6 +3,17 @@
   if (b == null)   return;
   glEnable(GL_TEXTURE_2D);
   TextureManager.getInstance().bindTexture("terrain");
+  ShaderManager.getInstance().enableShader("block");
+  int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
+  GL20.glUniform1f(light,_parent.getRenderingLightValueAt(getPosition()));
+  FloatBuffer colorBuffer=BufferUtils.createFloatBuffer(3);
+  Vector4f color=b.calcColorOffsetFor(Block.SIDE.FRONT,_parent.getActiveTemperature(),_parent.getActiveHumidity());
+  colorBuffer.put(color.x);
+  colorBuffer.put(color.y);
+  colorBuffer.put(color.z);
+  colorBuffer.flip();
+  int colorOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"colorOffset");
+  GL20.glUniform3(colorOffset,colorBuffer);
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glAlphaFunc(GL_GREATER,0.1f);
@@ -15,4 +26,5 @@
   glPopMatrix();
   glDisable(GL11.GL_BLEND);
   glDisable(GL_TEXTURE_2D);
+  ShaderManager.getInstance().enableShader(null);
 }

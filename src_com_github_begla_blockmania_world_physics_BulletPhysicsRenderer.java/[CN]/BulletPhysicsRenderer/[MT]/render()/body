@@ -10,7 +10,7 @@
     mBuffer.flip();
     GL11.glTranslatef(-_parent.getPlayer().getPosition().x,-_parent.getPlayer().getPosition().y,-_parent.getPlayer().getPosition().z);
     GL11.glMultMatrix(mBuffer);
-    float lightValue=calcLightValueForTransform(t);
+    float lightValue=_parent.getRenderingLightValueAt(t.origin);
     int lightRef=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
     GL20.glUniform1f(lightRef,lightValue);
     BlockManager.getInstance().getBlock(b.getType()).render();
