@@ -1,3 +1,7 @@
 {
-  _player.placeBlock(_player.getSelectedBlockType());
+  if (_player.getActiveBlock() != null) {
+    if (_player.placeBlock(_player.getActiveBlock().getId())) {
+      _player.getInventory().removeOneItemInSlot(_player.getToolbar().getSelectedSlot());
+    }
+  }
 }

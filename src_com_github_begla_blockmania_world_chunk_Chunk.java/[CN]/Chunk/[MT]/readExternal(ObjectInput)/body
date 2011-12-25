@@ -3,10 +3,9 @@
   getPosition().z=in.readInt();
   byte flags=in.readByte();
   setLightDirty(Helper.isFlagSet(flags,(short)0));
+  setFresh(Helper.isFlagSet(flags,(short)1));
   for (int i=0; i < _blocks.size(); i++)   _blocks.setRawByte(i,in.readByte());
   for (int i=0; i < _sunlight.sizePacked(); i++)   _sunlight.setRawByte(i,in.readByte());
   for (int i=0; i < _light.sizePacked(); i++)   _light.setRawByte(i,in.readByte());
   for (int i=0; i < _states.sizePacked(); i++)   _states.setRawByte(i,in.readByte());
-  setFresh(false);
-  setDirty(true);
 }

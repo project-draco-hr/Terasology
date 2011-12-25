@@ -10,13 +10,8 @@
   if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
     byte oldBlock=c.getBlock(blockPosX,y,blockPosZ);
     byte newBlock;
-    if (BlockManager.getInstance().getBlock(c.getBlock(blockPosX,y,blockPosZ)).isDestructible()) {
-      c.setBlock(blockPosX,y,blockPosZ,type);
-      newBlock=type;
-    }
- else {
-      return false;
-    }
+    c.setBlock(blockPosX,y,blockPosZ,type);
+    newBlock=type;
     if (updateLight) {
       c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,true,true);
       byte blockLightPrev=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
