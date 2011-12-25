@@ -1,0 +1,77 @@
+{
+  Vector3d oldPosition=new Vector3d(getPosition());
+  double friction=(Double)ConfigurationManager.getInstance().getConfig().get("Player.friction");
+  if (MathHelper.fastAbs(_velocity.y) > 0f) {
+    _velocity.y+=-1f * _velocity.y * friction;
+  }
+  if (MathHelper.fastAbs(_velocity.x) > 0f) {
+    _velocity.x+=-1f * _velocity.x * friction;
+  }
+  if (MathHelper.fastAbs(_velocity.z) > 0f) {
+    _velocity.z+=-1f * _velocity.z * friction;
+  }
+  if (MathHelper.fastAbs(_velocity.x) > _activeWalkingSpeed || MathHelper.fastAbs(_velocity.z) > _activeWalkingSpeed || MathHelper.fastAbs(_velocity.y) > _activeWalkingSpeed) {
+    double max=Math.max(Math.max(MathHelper.fastAbs(_velocity.x),MathHelper.fastAbs(_velocity.z)),MathHelper.fastAbs(_velocity.y));
+    double div=max / _activeWalkingSpeed;
+    _velocity.x/=div;
+    _velocity.z/=div;
+    _velocity.y/=div;
+  }
+  _velocity.x+=_movementDirection.x;
+  _velocity.y+=_movementDirection.y;
+  _velocity.z+=_movementDirection.z;
+  double maxGravity=(Double)ConfigurationManager.getInstance().getConfig().get("Player.maxGravity");
+  double maxGravitySwimming=(Double)ConfigurationManager.getInstance().getConfig().get("Player.maxGravitySwimming");
+  double gravitySwimming=(Double)ConfigurationManager.getInstance().getConfig().get("Player.gravitySwimming");
+  double gravity=(Double)ConfigurationManager.getInstance().getConfig().get("Player.gravity");
+  if (_gravity > -maxGravity && !_godMode && !_isSwimming) {
+    _gravity-=gravity;
+  }
+  if (_gravity < -maxGravity && !_godMode && !_isSwimming) {
+    _gravity=-maxGravity;
+  }
+  if (_gravity > -maxGravitySwimming && !_godMode && _isSwimming) {
+    _gravity-=gravitySwimming;
+  }
+  if (_gravity < -maxGravitySwimming && !_godMode && _isSwimming) {
+    _gravity=-maxGravitySwimming;
+  }
+  getPosition().y+=_velocity.y;
+  getPosition().y+=_gravity;
+  if (!_godMode) {
+    if (verticalHitTest(oldPosition)) {
+      handleVerticalCollision();
+      double oldGravity=_gravity;
+      _gravity=0;
+      if (oldGravity <= 0) {
+        if (_jump) {
+          _jump=false;
+          _gravity=_jumpIntensity;
+        }
+        if (!_touchingGround) {
+          Vector3d playerDirection=directionOfReferencePoint();
+          _footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5].playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,0.2f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false,(float)playerDirection.x,(float)playerDirection.y,(float)playerDirection.z);
+          _touchingGround=true;
+        }
+      }
+ else {
+        _touchingGround=false;
+      }
+    }
+ else {
+      _touchingGround=false;
+    }
+  }
+ else {
+    _gravity=0f;
+  }
+  oldPosition.set(getPosition());
+  getPosition().x+=_velocity.x;
+  getPosition().z+=_velocity.z;
+  _stepCounter+=Math.max(MathHelper.fastAbs(_velocity.x),MathHelper.fastAbs(_velocity.z));
+  if (!_godMode) {
+    if (horizontalHitTest(oldPosition)) {
+      handleHorizontalCollision();
+    }
+  }
+}

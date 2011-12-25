@@ -1,0 +1,19 @@
+{
+  ArrayList<BlockPosition> blockPositions=gatherAdjacentBlockPositions(getPosition());
+  boolean swimming=false, headUnderWater=false;
+  for (int i=0; i < blockPositions.size(); i++) {
+    BlockPosition p=blockPositions.get(i);
+    byte blockType=_parent.getWorldProvider().getBlockAtPosition(new Vector3d(p.x,p.y,p.z));
+    AABB blockAABB=Block.AABBForBlockAt(p.x,p.y,p.z);
+    if (BlockManager.getInstance().getBlock(blockType).isLiquid() && getAABB().overlaps(blockAABB)) {
+      swimming=true;
+    }
+    Vector3d eyePos=calcEyePosition();
+    eyePos.y+=0.25;
+    if (BlockManager.getInstance().getBlock(blockType).isLiquid() && blockAABB.contains(eyePos)) {
+      headUnderWater=true;
+    }
+  }
+  _headUnderWater=headUnderWater;
+  _isSwimming=swimming;
+}

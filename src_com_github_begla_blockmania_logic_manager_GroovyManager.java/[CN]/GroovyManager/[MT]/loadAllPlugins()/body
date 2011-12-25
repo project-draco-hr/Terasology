@@ -1,0 +1,14 @@
+{
+  File pluginDir=new File("groovy/plugins");
+  File[] plugins=pluginDir.listFiles(new FileFilter(){
+    public boolean accept(    File file){
+      return file.getName().contains(".groovy");
+    }
+  }
+);
+  if (plugins != null) {
+    for (    File p : plugins) {
+      initializePlugin(p.getName());
+    }
+  }
+}

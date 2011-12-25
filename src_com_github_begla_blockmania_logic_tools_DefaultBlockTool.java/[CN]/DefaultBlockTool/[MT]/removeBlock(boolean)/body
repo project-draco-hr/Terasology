@@ -1,0 +1,48 @@
+{
+  WorldProvider worldProvider=_player.getParent().getWorldProvider();
+  WorldRenderer worldRenderer=_player.getParent();
+  RayBlockIntersection.Intersection selectedBlock=_player.getSelectedBlock();
+  if (selectedBlock != null) {
+    BlockPosition blockPos=selectedBlock.getBlockPosition();
+    byte currentBlockType=worldProvider.getBlock(blockPos.x,blockPos.y,blockPos.z);
+    Block block=BlockManager.getInstance().getBlock(currentBlockType);
+    if (block.isDestructible()) {
+      if (_player.getExtractedBlock() != null) {
+        if (_player.getExtractedBlock().equals(_player.getSelectedBlock())) {
+          _player.setExtractionCounter((byte)(_player.getExtractionCounter() + 1));
+        }
+ else {
+          _player.resetExtraction();
+          _player.setExtractionCounter((byte)1);
+        }
+      }
+ else {
+        _player.setExtractedBlock(_player.getSelectedBlock());
+        _player.setExtractionCounter((byte)1);
+      }
+      if (_player.getExtractionCounter() >= block.getHardness()) {
+        worldProvider.setBlock(blockPos.x,blockPos.y,blockPos.z,(byte)0x0,true,true);
+        byte upperBlockType=worldProvider.getBlock(blockPos.x,blockPos.y + 1,blockPos.z);
+        if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
+          worldProvider.setBlock(blockPos.x,blockPos.y + 1,blockPos.z,(byte)0x0,true,true);
+        }
+        worldRenderer.getBlockParticleEmitter().setOrigin(blockPos.toVector3d());
+        worldRenderer.getBlockParticleEmitter().emitParticles(256,currentBlockType);
+        AudioManager.getInstance().playVaryingSound("RemoveBlock",0.6f,0.5f);
+        if (createPhysBlock && !BlockManager.getInstance().getBlock(currentBlockType).isTranslucent()) {
+          Vector3d pos=blockPos.toVector3d();
+          worldRenderer.getBulletPhysicsRenderer().addBlock(new Vector3f(pos),currentBlockType);
+        }
+        int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
+        int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
+        _player.notifyObserversBlockRemoved(worldProvider.getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);
+        _player.resetExtraction();
+        return currentBlockType;
+      }
+    }
+    AudioManager.getInstance().playVaryingSound("Dig",0.6f,0.5f);
+    worldRenderer.getBlockParticleEmitter().setOrigin(blockPos.toVector3d());
+    worldRenderer.getBlockParticleEmitter().emitParticles(64,currentBlockType);
+  }
+  return 0;
+}

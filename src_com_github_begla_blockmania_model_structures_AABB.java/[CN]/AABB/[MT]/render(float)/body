@@ -1,0 +1,11 @@
+{
+  glLineWidth(lineThickness);
+  glPushMatrix();
+  Vector3d rp=Blockmania.getInstance().getActiveWorldProvider().getRenderingReferencePoint();
+  glTranslated(getPosition().x - rp.x,getPosition().y - rp.y,getPosition().z - rp.z);
+  if (_displayListWire == -1) {
+    generateDisplayListWire();
+  }
+  glCallList(_displayListWire);
+  glPopMatrix();
+}

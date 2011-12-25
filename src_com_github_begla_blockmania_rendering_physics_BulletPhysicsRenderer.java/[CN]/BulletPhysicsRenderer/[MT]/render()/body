@@ -1,0 +1,19 @@
+{
+  for (  BlockRigidBody b : _blocks) {
+    Transform t=new Transform();
+    b.getMotionState().getWorldTransform(t);
+    GL11.glPushMatrix();
+    FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
+    float[] mFloat=new float[16];
+    t.getOpenGLMatrix(mFloat);
+    mBuffer.put(mFloat);
+    mBuffer.flip();
+    GL11.glTranslated(-_parent.getPlayer().getPosition().x,-_parent.getPlayer().getPosition().y,-_parent.getPlayer().getPosition().z);
+    GL11.glMultMatrix(mBuffer);
+    float lightValue=_parent.getRenderingLightValueAt(new Vector3d(t.origin));
+    int lightRef=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
+    GL20.glUniform1f(lightRef,lightValue);
+    BlockManager.getInstance().getBlock(b.getType()).render();
+    GL11.glPopMatrix();
+  }
+}

@@ -1,0 +1,13 @@
+{
+  double distanceToPlayer=distanceSquaredTo(_parent.getPlayer().getPosition());
+  if (distanceToPlayer > 5 && distanceToPlayer < 32) {
+    _movementTarget.set(_parent.getPlayer().getPosition());
+  }
+  if (Blockmania.getInstance().getTime() - _lastChangeOfDirectionAt > 5000 || distanceToPlayer <= 5) {
+    _movementTarget.set(getPosition().x + _parent.getWorldProvider().getRandom().randomDouble() * 500,getPosition().y,getPosition().z + _parent.getWorldProvider().getRandom().randomDouble() * 500);
+    _lastChangeOfDirectionAt=Blockmania.getInstance().getTime();
+  }
+  lookAt(_movementTarget);
+  walkForward();
+  if (_parent.getWorldProvider().getRandom().randomDouble() < -0.94)   jump();
+}
