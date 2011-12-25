@@ -1,0 +1,30 @@
+{
+  Block activeBlock=BlockManager.getInstance().getBlock(_blockId);
+  glEnable(GL_TEXTURE_2D);
+  TextureManager.getInstance().bindTexture("terrain");
+  ShaderManager.getInstance().enableShader("block");
+  int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
+  GL20.glUniform1f(light,Blockmania.getInstance().getActiveWorldRenderer().getRenderingLightValue());
+  FloatBuffer colorBuffer=BufferUtils.createFloatBuffer(3);
+  Vector4f color=activeBlock.calcColorOffsetFor(Block.SIDE.FRONT,Blockmania.getInstance().getActiveWorldRenderer().getActiveTemperature(),Blockmania.getInstance().getActiveWorldRenderer().getActiveTemperature());
+  colorBuffer.put(color.x);
+  colorBuffer.put(color.y);
+  colorBuffer.put(color.z);
+  colorBuffer.flip();
+  int colorOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"colorOffset");
+  GL20.glUniform3(colorOffset,colorBuffer);
+  glEnable(GL11.GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glAlphaFunc(GL_GREATER,0.1f);
+  glPushMatrix();
+  glTranslatef(1.0f,-1.3f + (float)getParent().calcBobbingOffset((float)Math.PI / 8f,0.05f,2.5f) - getParent().getHandMovementAnimationOffset() * 0.5f,-1.5f - getParent().getHandMovementAnimationOffset() * 0.5f);
+  glRotatef(-25f - getParent().getHandMovementAnimationOffset() * 64.0f,1.0f,0.0f,0.0f);
+  glRotatef(35f,0.0f,1.0f,0.0f);
+  glTranslatef(0f,0.25f,0f);
+  activeBlock.render();
+  glPopMatrix();
+  glDisable(GL11.GL_BLEND);
+  glDisable(GL_TEXTURE_2D);
+  ShaderManager.getInstance().enableShader(null);
+  return true;
+}

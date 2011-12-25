@@ -1,0 +1,12 @@
+{
+  RayBlockIntersection.Intersection is=_player.getSelectedBlock();
+  if (BlueprintItem.class.isInstance(_player.getActiveItem())) {
+    BlueprintItem bpItem=(BlueprintItem)_player.getActiveItem();
+    if (bpItem.getBlueprint() == null) {
+      addBlock(is.getBlockPosition());
+    }
+ else {
+      bpItem.getBlueprint().build(_player.getParent().getWorldProvider(),is.getBlockPosition());
+    }
+  }
+}

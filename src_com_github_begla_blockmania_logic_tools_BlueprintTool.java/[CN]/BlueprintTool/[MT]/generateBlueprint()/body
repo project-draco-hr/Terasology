@@ -1,0 +1,24 @@
+{
+  if (_selectedBlocks.size() < 2)   return;
+  int maxX=Math.max(_selectedBlocks.get(0).x,_selectedBlocks.get(1).x);
+  int minX=Math.min(_selectedBlocks.get(0).x,_selectedBlocks.get(1).x);
+  int maxY=Math.max(_selectedBlocks.get(0).y,_selectedBlocks.get(1).y);
+  int minY=Math.min(_selectedBlocks.get(0).y,_selectedBlocks.get(1).y);
+  int maxZ=Math.max(_selectedBlocks.get(0).z,_selectedBlocks.get(1).z);
+  int minZ=Math.min(_selectedBlocks.get(0).z,_selectedBlocks.get(1).z);
+  for (int x=minX; x <= maxX; x++) {
+    for (int y=minY; y <= maxY; y++) {
+      for (int z=minZ; z <= maxZ; z++) {
+        if (_player.getParent().getWorldProvider().getBlock(x,y,z) != 0x0) {
+          BlockPosition bp=new BlockPosition(x,y,z);
+          _selectedBlocks.add(bp);
+          Blockmania.getInstance().getActiveWorldRenderer().getBlockGrid().addGridPosition(bp);
+        }
+      }
+    }
+  }
+  if (BlueprintItem.class.isInstance(_player.getActiveItem())) {
+    BlueprintItem bpItem=(BlueprintItem)_player.getActiveItem();
+    bpItem.setBlueprint(BlueprintManager.getInstance().generateBlueprint(_player.getParent().getWorldProvider(),_selectedBlocks));
+  }
+}
