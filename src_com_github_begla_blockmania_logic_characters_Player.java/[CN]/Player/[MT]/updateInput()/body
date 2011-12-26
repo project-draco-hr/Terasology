@@ -1,0 +1,25 @@
+{
+  if (isDead())   return;
+  processInteractions(-1);
+  _movementDirection.set(0,0,0);
+  double dx=Mouse.getDX();
+  double dy=Mouse.getDY();
+  yaw(dx * MOUSE_SENS);
+  pitch(dy * MOUSE_SENS);
+  if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+    walkForward();
+  }
+  if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+    walkBackwards();
+  }
+  if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+    strafeLeft();
+  }
+  if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+    strafeRight();
+  }
+  if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+    moveUp();
+  }
+  _running=Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && (_touchingGround || _godMode);
+}

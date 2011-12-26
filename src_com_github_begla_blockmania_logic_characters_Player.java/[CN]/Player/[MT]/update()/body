@@ -1,15 +1,17 @@
 {
-  if (_godMode) {
-    _activeCamera.extendFov(10);
-  }
+  _walkingSpeed=WALKING_SPEED;
+  if (_activeCamera != null) {
+    _activeCamera.update();
+    if (_godMode) {
+      _activeCamera.extendFov(10);
+    }
  else {
-    _activeCamera.resetFov();
+      _activeCamera.resetFov();
+    }
   }
-  _walkingSpeed=WALKING_SPEED - Math.abs(calcBobbingOffset((float)Math.PI / 2f,0.01f,2.5f));
   if (_godMode) {
     _walkingSpeed*=1.5;
   }
-  processInteractions(-1);
   if (_handMovementAnimationOffset > 0) {
     _handMovementAnimationOffset-=0.04;
   }
@@ -17,7 +19,6 @@
     _handMovementAnimationOffset=0;
   }
   super.update();
-  updateCameras();
   _selectedBlock=calcSelectedBlock();
   if (isDead() && _timeOfDeath == -1) {
     _timeOfDeath=Blockmania.getInstance().getTime();

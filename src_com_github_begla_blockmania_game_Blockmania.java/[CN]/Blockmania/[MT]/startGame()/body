@@ -1,23 +1,31 @@
 {
   getInstance().getLogger().log(Level.INFO,"Starting Blockmania...");
-  _lastLoopTime=getTime();
-  double nextGameTick=getTime();
-  int loopCounter;
   while (_runGame && !Display.isCloseRequested()) {
-    updateFPS();
-    processKeyboardInput();
-    processMouseInput();
+    if (!Display.isActive()) {
+      try {
+        Thread.sleep(500);
+      }
+ catch (      InterruptedException e) {
+        getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+      }
+      continue;
+    }
     BlockmaniaProfiler.begin();
-    loopCounter=0;
-    while (getTime() > nextGameTick && loopCounter < FRAME_SKIP_MAX_FRAMES) {
+    long startTime=getTime();
+    while (_timeAccumulator >= SKIP_TICKS) {
       update();
-      nextGameTick+=SKIP_TICKS;
-      loopCounter++;
+      _timeAccumulator-=SKIP_TICKS;
     }
     render();
     Display.update();
-    if (FPS_LIMIT > 0)     Display.sync(FPS_LIMIT);
+    processKeyboardInput();
+    processMouseInput();
+    if (!screenHasFocus())     getActiveWorldRenderer().getPlayer().updateInput();
+    Display.sync(60);
     BlockmaniaProfiler.end();
+    updateFps();
+    _timeAccumulator+=getTime() - startTime;
+    if (Display.wasResized())     resizeViewport();
   }
   if (_saveWorldOnExit) {
     _activeWorldRenderer.dispose();

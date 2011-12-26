@@ -2,8 +2,11 @@
   while (Mouse.next()) {
     int button=Mouse.getEventButton();
     int wheelMoved=Mouse.getEventDWheel();
-    if (!_pauseGame && !_hud.getDebugConsole().isVisible() && !_pauseMenu.isVisible())     _activeWorldRenderer.getPlayer().processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
-    _hud.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
-    _pauseMenu.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+    for (    UIDisplayElement screen : _guiScreens) {
+      if (screenCanFocus(screen)) {
+        screen.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+      }
+    }
+    if (!screenHasFocus())     _activeWorldRenderer.getPlayer().processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
   }
 }
