@@ -1,11 +1,17 @@
 {
   long currentTime=Blockmania.getInstance().getTime();
-  boolean simulated=false;
-  if (currentTime > _lastUpdate + _updateInterval || force) {
-    if (executeSimulation()) {
-      simulated=true;
+  if ((currentTime > _lastUpdate + _updateInterval || force) && !_running) {
+    _running=true;
+    Runnable r=new Runnable(){
+      public void run(){
+        executeSimulation();
+        _running=false;
+      }
     }
+;
+    Blockmania.getInstance().getThreadPool().execute(r);
     _lastUpdate=currentTime;
+    return true;
   }
-  return simulated;
+  return false;
 }

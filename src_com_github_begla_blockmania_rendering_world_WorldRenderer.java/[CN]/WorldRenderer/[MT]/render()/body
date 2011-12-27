@@ -1,19 +1,13 @@
 {
   _player.getActiveCamera().lookThroughNormalized();
   _skysphere.render();
-  BlockmaniaProfiler.log("Render skysphere");
   _player.getActiveCamera().lookThrough();
   updateChunksInProximity(false);
   updateVisibleChunks();
-  BlockmaniaProfiler.log("Chunk list updates");
   _player.render();
-  BlockmaniaProfiler.log("Render player");
   renderChunksAndEntities();
-  BlockmaniaProfiler.log("Render chunks and entities");
   _blockParticleEmitter.render();
-  BlockmaniaProfiler.log("Render particles");
   _blockGrid.render();
-  BlockmaniaProfiler.log("Render block grid");
   _player.renderExtractionOverlay();
   glPushMatrix();
   glLoadIdentity();
@@ -21,5 +15,4 @@
   _player.renderFirstPersonViewElements();
   glEnable(GL11.GL_DEPTH_TEST);
   glPopMatrix();
-  BlockmaniaProfiler.log("Render player first person view");
 }

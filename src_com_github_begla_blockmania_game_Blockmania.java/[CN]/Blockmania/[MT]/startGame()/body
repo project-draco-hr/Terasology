@@ -11,7 +11,6 @@
       Display.processMessages();
       continue;
     }
-    BlockmaniaProfiler.begin();
     long startTime=getTime();
     while (_timeAccumulator >= SKIP_TICKS) {
       update();
@@ -23,7 +22,6 @@
     processMouseInput();
     if (!screenHasFocus())     getActiveWorldRenderer().getPlayer().updateInput();
     Display.sync(60);
-    BlockmaniaProfiler.end();
     updateFps();
     _timeAccumulator+=getTime() - startTime;
     if (Display.wasResized())     resizeViewport();

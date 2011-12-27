@@ -1,20 +1,12 @@
 {
   updateTick();
   _skysphere.update();
-  BlockmaniaProfiler.log("Update skysphere");
   _player.update();
-  BlockmaniaProfiler.log("Update player");
   _mobManager.updateAll();
-  BlockmaniaProfiler.log("Update mobs");
   _bulletPhysicsRenderer.update();
-  BlockmaniaProfiler.log("Update physics");
   _blockParticleEmitter.update();
-  BlockmaniaProfiler.log("Update particles");
   _worldProvider.getChunkProvider().flushCache();
-  BlockmaniaProfiler.log("Flush cache");
   _worldTimeEventManager.fireWorldTimeEvents();
-  BlockmaniaProfiler.log("Time events");
   _worldProvider.getLiquidSimulator().simulate(false);
   _worldProvider.getGrowthSimulator().simulate(false);
-  BlockmaniaProfiler.log("Simulation");
 }
