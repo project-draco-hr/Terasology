@@ -17,27 +17,14 @@
   glRotatef(35f,0.0f,1.0f,0.0f);
   glTranslatef(0f,0.25f,0f);
   glScalef(0.3f,0.6f,0.3f);
-  GL11.glColor4f(1.0f,1.0f,1.0f,1.0f);
-  GL11.glBegin(GL11.GL_QUADS);
-  GL11.glNormal3f(-1,0,0);
-  GL11.glTexCoord2f(40.0f * 0.015625f,20.0f * 0.03125f);
-  GL11.glVertex3f(-0.5f,-0.5f,-0.5f);
-  GL11.glTexCoord2f(44.0f * 0.015625f,20.0f * 0.03125f);
-  GL11.glVertex3f(-0.5f,-0.5f,0.5f);
-  GL11.glTexCoord2f(44.0f * 0.015625f,1.0f);
-  GL11.glVertex3f(-0.5f,0.5f,0.5f);
-  GL11.glTexCoord2f(40.0f * 0.015625f,1.0f);
-  GL11.glVertex3f(-0.5f,0.5f,-0.5f);
-  GL11.glNormal3f(0,0,-1);
-  GL11.glTexCoord2f(44.0f * 0.015625f,20.0f * 0.03125f);
-  GL11.glVertex3f(-0.5f,-0.5f,0.5f);
-  GL11.glTexCoord2f(48.0f * 0.015625f,20.0f * 0.03125f);
-  GL11.glVertex3f(0.5f,-0.5f,0.5f);
-  GL11.glTexCoord2f(48.0f * 0.015625f,1.0f);
-  GL11.glVertex3f(0.5f,0.5f,0.5f);
-  GL11.glTexCoord2f(44.0f * 0.015625f,1.0f);
-  GL11.glVertex3f(-0.5f,0.5f,0.5f);
-  GL11.glEnd();
+  if (_handMesh == null) {
+    Vector2f texPos=new Vector2f(40.0f * 0.015625f,32.0f * 0.03125f);
+    Vector2f texWidth=new Vector2f(4.0f * 0.015625f,-12.0f * 0.03125f);
+    BlockVertexCollection.addBlockMesh(new Vector4f(1,1,1,1),texPos,texWidth,1.0f,1.0f,0.5f,0.0f,0.0f,0.0f);
+    _handMesh=BlockTessellator.getInstance().generateBlockMesh();
+    BlockTessellator.getInstance().resetAll();
+  }
+  _handMesh.render();
   glPopMatrix();
   glDisable(GL11.GL_TEXTURE_2D);
   ShaderManager.getInstance().enableShader(null);

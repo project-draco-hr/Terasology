@@ -1,5 +1,5 @@
 {
-  BlockmaniaTexture texture=new BlockmaniaTexture();
+  Texture texture=new Texture();
   texture.id=glGenTextures();
   glBindTexture(GL11.GL_TEXTURE_2D,texture.id);
   glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
@@ -14,7 +14,7 @@
     GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,GL_NEAREST_MIPMAP_NEAREST);
     GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,GL_NEAREST_MIPMAP_NEAREST);
     for (int i=0; i < mipMapPaths.length; i++) {
-      BlockmaniaTexture t=new BlockmaniaTexture();
+      Texture t=new Texture();
       readTexture(mipMapPaths[i],t);
       GL11.glTexImage2D(GL11.GL_TEXTURE_2D,i + 1,GL11.GL_RGBA,t.width,t.height,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,t.data);
     }

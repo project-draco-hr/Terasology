@@ -9,7 +9,11 @@
     if (block.isDestructible()) {
       if (_player.getExtractedBlock() != null) {
         if (_player.getExtractedBlock().equals(_player.getSelectedBlock())) {
-          _player.setExtractionCounter((byte)(_player.getExtractionCounter() + 1));
+          int amount=1;
+          if (_player.getActiveItem() != null) {
+            amount=_player.getActiveItem().getExtractionAmountForBlock(block);
+          }
+          _player.setExtractionCounter((byte)(_player.getExtractionCounter() + amount));
         }
  else {
           _player.resetExtraction();

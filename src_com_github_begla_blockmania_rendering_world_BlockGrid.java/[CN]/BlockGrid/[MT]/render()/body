@@ -1,0 +1,20 @@
+{
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  for (int i=0; i < 2; i++) {
+    if (i == 0) {
+      glColorMask(false,false,false,false);
+    }
+ else {
+      glColorMask(true,true,true,true);
+    }
+    for (    BlockPosition gp : _gridPositions) {
+      GL11.glPushMatrix();
+      Vector3d r=_parent.getWorldProvider().getRenderingReferencePoint();
+      GL11.glTranslated(gp.x - r.x,gp.y - r.y,gp.z - r.z);
+      _blockMesh.render();
+      GL11.glPopMatrix();
+    }
+  }
+  glDisable(GL11.GL_BLEND);
+}

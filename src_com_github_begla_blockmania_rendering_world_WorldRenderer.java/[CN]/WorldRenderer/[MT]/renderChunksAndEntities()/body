@@ -10,6 +10,7 @@
   TextureManager.getInstance().bindTexture("terrain");
   int daylight=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"daylight");
   int swimming=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"swimming");
+  int carryingTorch=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"carryingTorch");
   int wavingCoordinates=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"wavingCoordinates");
   GL20.glUniform1(wavingCoordinates,BlockManager.getInstance().calcCoordinatesForWavingBlocks());
   int lavaCoordinate=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"lavaCoordinate");
@@ -31,6 +32,7 @@
   GL20.glUniform1f(tick,_tick);
   GL20.glUniform1f(daylight,(float)getDaylight());
   GL20.glUniform1i(swimming,playerIsSwimming ? 1 : 0);
+  GL20.glUniform1i(carryingTorch,_player.isCarryingTorch() ? 1 : 0);
   int occlusionDistanceOffset=(int)(_visibleChunks.size() * OCCLUSION_CULLING_DISTANCE_OFFSET);
   _statOcclusionCulled=0;
   _statSubMeshCulled=0;

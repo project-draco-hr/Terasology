@@ -1,5 +1,6 @@
 {
   for (  BlockRigidBody b : _blocks) {
+    Block block=BlockManager.getInstance().getBlock(b.getType());
     Transform t=new Transform();
     b.getMotionState().getWorldTransform(t);
     GL11.glPushMatrix();
@@ -13,6 +14,14 @@
     float lightValue=_parent.getRenderingLightValueAt(new Vector3d(t.origin));
     int lightRef=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
     GL20.glUniform1f(lightRef,lightValue);
+    FloatBuffer colorBuffer=BufferUtils.createFloatBuffer(3);
+    Vector4f color=block.calcColorOffsetFor(Block.SIDE.FRONT,Blockmania.getInstance().getActiveWorldRenderer().getActiveTemperature(),Blockmania.getInstance().getActiveWorldRenderer().getActiveTemperature());
+    colorBuffer.put(color.x);
+    colorBuffer.put(color.y);
+    colorBuffer.put(color.z);
+    colorBuffer.flip();
+    int colorOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"colorOffset");
+    GL20.glUniform3(colorOffset,colorBuffer);
     BlockManager.getInstance().getBlock(b.getType()).render();
     GL11.glPopMatrix();
   }

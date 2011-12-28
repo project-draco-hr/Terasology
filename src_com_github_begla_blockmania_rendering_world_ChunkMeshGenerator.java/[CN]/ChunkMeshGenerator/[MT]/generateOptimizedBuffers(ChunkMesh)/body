@@ -11,7 +11,7 @@
     indexMesh.indexType=ScalarType.INTEGER;
   }
   for (int j=0; j < mesh._vertexElements.length; j++) {
-    mesh._vertexElements[j].vertices=BufferUtils.createFloatBuffer(mesh._vertexElements[j].quads.size() * 2 + mesh._vertexElements[j].tex.size() + mesh._vertexElements[j].color.size());
+    mesh._vertexElements[j].vertices=BufferUtils.createFloatBuffer(mesh._vertexElements[j].quads.size() * 2 + mesh._vertexElements[j].tex.size() + mesh._vertexElements[j].color.size() + mesh._vertexElements[j].normals.size());
     mesh._vertexElements[j].indices=BufferUtils.createIntBuffer(mesh._vertexElements[j].quads.size());
     int cTex=0;
     int cColor=0;
@@ -54,6 +54,9 @@
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 1));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 2));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].color.get(cColor + 3));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].normals.get(i));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].normals.get(i + 1));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].normals.get(i + 2));
     }
     mesh._vertexElements[j].vertices.flip();
     mesh._vertexElements[j].indices.flip();
@@ -63,6 +66,6 @@
     indexMesh.triangleIndexBase.flip();
     indexMesh.vertexBase.flip();
     vertexArray.addIndexedMesh(indexMesh);
-    mesh._bulletMeshShape=new BvhTriangleMeshShape(vertexArray,false);
+    mesh._bulletMeshShape=new BvhTriangleMeshShape(vertexArray,true);
   }
 }

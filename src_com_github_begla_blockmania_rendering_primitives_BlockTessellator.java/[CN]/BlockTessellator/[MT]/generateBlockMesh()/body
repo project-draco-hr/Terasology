@@ -1,0 +1,11 @@
+{
+  BlockMesh blockMesh=new BlockMesh();
+  blockMesh.vboVertexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  blockMesh.vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  FloatBuffer vertices=createCombinedBuffer();
+  IntBuffer indices=createIndexBuffer();
+  blockMesh.vertexCount=indices.capacity();
+  VertexBufferObjectManager.getInstance().bufferVboData(blockMesh.vboVertexBuffer,vertices,GL15.GL_STATIC_DRAW);
+  VertexBufferObjectManager.getInstance().bufferVboElementData(blockMesh.vboIndexBuffer,indices,GL15.GL_STATIC_DRAW);
+  return blockMesh;
+}

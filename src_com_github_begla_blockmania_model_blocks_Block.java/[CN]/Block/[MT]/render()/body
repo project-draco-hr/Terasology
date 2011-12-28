@@ -1,13 +1,22 @@
 {
   if (isInvisible())   return;
-  if (_displayListBlock == -1)   _displayListBlock=generateDisplayList();
-  if (_displayListBillboard == -1)   _displayListBillboard=generateDisplayListBillboard();
+  if (_mesh == null) {
+    if (getBlockForm() == BLOCK_FORM.BILLBOARD) {
+      BlockVertexCollection.addTexturedBillboard(this,1.0f,1.0f);
+      _mesh=BlockTessellator.getInstance().generateBlockMesh();
+    }
+ else {
+      BlockVertexCollection.addTexturedBlock(this,1.0f,1.0f,0.5f);
+      _mesh=BlockTessellator.getInstance().generateBlockMesh();
+    }
+    BlockTessellator.getInstance().resetAll();
+  }
   if (getBlockForm() != BLOCK_FORM.BILLBOARD) {
-    glCallList(_displayListBlock);
+    _mesh.render();
   }
  else {
     glDisable(GL11.GL_CULL_FACE);
-    glCallList(_displayListBillboard);
+    _mesh.render();
     glEnable(GL11.GL_CULL_FACE);
   }
 }
