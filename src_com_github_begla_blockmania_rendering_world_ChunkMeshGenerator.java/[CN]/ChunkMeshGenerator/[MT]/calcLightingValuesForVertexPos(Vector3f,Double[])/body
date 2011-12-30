@@ -23,7 +23,6 @@
   blockLights[5]=_chunk.getParent().getLightAtPosition(new Vector3d((vertexWorldPos.x + 0.1f),(vertexWorldPos.y - 0.1f),(vertexWorldPos.z - 0.1f)),Chunk.LIGHT_TYPE.BLOCK);
   blockLights[6]=_chunk.getParent().getLightAtPosition(new Vector3d((vertexWorldPos.x - 0.1f),(vertexWorldPos.y - 0.1f),(vertexWorldPos.z - 0.1f)),Chunk.LIGHT_TYPE.BLOCK);
   blockLights[7]=_chunk.getParent().getLightAtPosition(new Vector3d((vertexWorldPos.x - 0.1f),(vertexWorldPos.y - 0.1f),(vertexWorldPos.z + 0.1f)),Chunk.LIGHT_TYPE.BLOCK);
-  double resultAmbientOcclusion=1.0;
   double resultLight=0;
   double resultBlockLight=0;
   int counterLight=0;
@@ -49,7 +48,7 @@
       }
     }
   }
-  resultAmbientOcclusion=(Math.pow(0.70,occCounter) + Math.pow(0.92,occCounterBillboard)) / 2.0;
+  double resultAmbientOcclusion=(Math.pow(0.70,occCounter) + Math.pow(0.92,occCounterBillboard)) / 2.0;
   if (counterLight == 0)   output[0]=(double)0;
  else   output[0]=resultLight / counterLight / 15f;
   if (counterBlockLight == 0)   output[1]=(double)0;

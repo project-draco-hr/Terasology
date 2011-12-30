@@ -3,10 +3,12 @@
   _skysphere.update();
   _player.update();
   _mobManager.updateAll();
-  _bulletPhysicsRenderer.update();
   _blockParticleEmitter.update();
   _worldProvider.getChunkProvider().flushCache();
   _worldTimeEventManager.fireWorldTimeEvents();
   _worldProvider.getLiquidSimulator().simulate(false);
   _worldProvider.getGrowthSimulator().simulate(false);
+  updateChunksInProximity(false);
+  updateVisibleChunks();
+  BulletPhysicsRenderer.getInstance().update();
 }

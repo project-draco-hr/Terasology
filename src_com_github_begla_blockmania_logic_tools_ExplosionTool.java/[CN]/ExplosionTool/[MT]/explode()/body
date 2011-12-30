@@ -1,6 +1,5 @@
 {
   WorldProvider worldProvider=_player.getParent().getWorldProvider();
-  WorldRenderer worldRenderer=_player.getParent();
   if (_player.getSelectedBlock() != null) {
     BlockPosition blockPos=_player.getSelectedBlock().getBlockPosition();
     Vector3d origin=blockPos.toVector3d();
@@ -16,7 +15,7 @@
         byte currentBlockType=worldProvider.getBlock((int)target.x,(int)target.y,(int)target.z);
         if (currentBlockType != 0x0) {
           worldProvider.setBlock((int)target.x,(int)target.y,(int)target.z,(byte)0x0,true,true);
-          if (!BlockManager.getInstance().getBlock(currentBlockType).isTranslucent() && counter % 4 == 0)           worldRenderer.getBulletPhysicsRenderer().addBlock(new Vector3f(target),currentBlockType);
+          if (!BlockManager.getInstance().getBlock(currentBlockType).isTranslucent() && counter % 4 == 0)           BulletPhysicsRenderer.getInstance().addBlock(new Vector3f(target),currentBlockType);
           counter++;
         }
       }

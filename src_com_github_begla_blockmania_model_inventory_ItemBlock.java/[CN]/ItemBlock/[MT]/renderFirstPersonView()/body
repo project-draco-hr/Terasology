@@ -1,6 +1,5 @@
 {
   Block activeBlock=BlockManager.getInstance().getBlock(_blockId);
-  glEnable(GL_TEXTURE_2D);
   TextureManager.getInstance().bindTexture("terrain");
   ShaderManager.getInstance().enableShader("block");
   int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
@@ -24,7 +23,6 @@
   activeBlock.render();
   glPopMatrix();
   glDisable(GL11.GL_BLEND);
-  glDisable(GL_TEXTURE_2D);
   ShaderManager.getInstance().enableShader(null);
   return true;
 }

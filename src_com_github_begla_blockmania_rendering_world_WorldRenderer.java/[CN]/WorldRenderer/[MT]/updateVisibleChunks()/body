@@ -1,21 +1,9 @@
 {
   _visibleChunks.clear();
-  _bulletPhysicsRenderer.resetChunks();
   _statDirty=0;
   boolean noMoreUpdates=false;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
-    for (int j=0; j < Chunk.VERTICAL_SEGMENTS; j++) {
-      if (c.isReadyForRendering()) {
-        if (c.getActiveSubMesh(j)._bulletMeshShape != null) {
-          Vector3d position=new Vector3d(c.getPosition());
-          position.x*=Chunk.CHUNK_DIMENSION_X;
-          position.y*=Chunk.CHUNK_DIMENSION_Y;
-          position.z*=Chunk.CHUNK_DIMENSION_Z;
-          _bulletPhysicsRenderer.addStaticChunk(new Vector3f(position),c.getActiveSubMesh(j)._bulletMeshShape);
-        }
-      }
-    }
     if (isChunkVisible(c)) {
       _visibleChunks.add(c);
       c.update();

@@ -38,6 +38,8 @@
   _statSubMeshCulled=0;
   _statEmpty=0;
   _statVisibleTriangles=0;
+  BulletPhysicsRenderer.getInstance().render();
+  ShaderManager.getInstance().enableShader("chunk");
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
     if (OCCLUSION_CULLING_ENABLED) {
@@ -131,8 +133,6 @@
     glDisable(GL_BLEND);
   }
   glEnable(GL11.GL_CULL_FACE);
-  ShaderManager.getInstance().enableShader("block");
-  _bulletPhysicsRenderer.render();
   ShaderManager.getInstance().enableShader(null);
   long now=Blockmania.getInstance().getTime();
   if (now - _occlusionLastUpdate > OCCLUSION_CULLING_GAP) {

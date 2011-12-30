@@ -7,7 +7,12 @@ synchronized (this) {
       _newMeshes=null;
       ChunkMesh[] oldActiveMesh=_activeMeshes;
       _activeMeshes=newMesh;
-      if (oldActiveMesh != null)       for (int i=0; i < oldActiveMesh.length; i++)       oldActiveMesh[i].dispose();
+      _rigidBody=null;
+      if (oldActiveMesh != null) {
+        for (int i=0; i < oldActiveMesh.length; i++) {
+          oldActiveMesh[i].dispose();
+        }
+      }
       return true;
     }
   }
