@@ -21,6 +21,7 @@
   GL20.glUniform3f(zenith,(float)_zenithColor.x,(float)_zenithColor.y,(float)_zenithColor.z);
   drawSphere();
   glDisable(GL13.GL_TEXTURE_CUBE_MAP);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   ShaderManager.getInstance().enableShader("clouds");
   int lightClouds=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("clouds"),"light");
   GL20.glUniform1f(lightClouds,(float)getDaylight());
