@@ -16,7 +16,7 @@
   Matrix4f rotation=new Matrix4f();
   rotation.setIdentity();
   rotation.setRotation(new AxisAngle4f(new Vector3f(0,0,1),(float)Math.PI / 2.0f));
-  int angleOffset=rand.randomInt() % 16;
+  int angleOffset=rand.randomInt() % MAX_ANGLE_OFFSET;
   for (int i=0; i < axiom.length(); i++) {
     char c=axiom.charAt(i);
     Matrix4f tempRotation=new Matrix4f();
@@ -24,19 +24,25 @@
 switch (c) {
 case 'G':
 case 'F':
-      _generatorManager.getParent().setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z,_barkType,update,true);
-    if (_stackOrientation.size() > 1) {
-      int size=1;
-      for (int x=-size; x <= size; x++) {
-        for (int y=-size; y <= size; y++) {
-          for (int z=-size; z <= size; z++) {
-            if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size)             continue;
-            if (_generatorManager.getParent().getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0)             _generatorManager.getParent().setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z,_leafType,update,true);
-          }
-        }
-      }
+      _generatorManager.getParent().setBlock(posX + (int)position.x + 1,posY + (int)position.y,posZ + (int)position.z,_barkType,update,true);
+    _generatorManager.getParent().setBlock(posX + (int)position.x - 1,posY + (int)position.y,posZ + (int)position.z,_barkType,update,true);
+  _generatorManager.getParent().setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z + 1,_barkType,update,true);
+_generatorManager.getParent().setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z - 1,_barkType,update,true);
+if (_stackOrientation.size() > 1) {
+int size=1;
+for (int x=-size; x <= size; x++) {
+  for (int y=-size; y <= size; y++) {
+    for (int z=-size; z <= size; z++) {
+      if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size)       continue;
+      if (_generatorManager.getParent().getBlock(posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0)       _generatorManager.getParent().setBlock(posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z,_leafType,update,true);
+      if (_generatorManager.getParent().getBlock(posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z) == 0x0)       _generatorManager.getParent().setBlock(posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z,_leafType,update,true);
+      if (_generatorManager.getParent().getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1) == 0x0)       _generatorManager.getParent().setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1,_leafType,update,true);
+      if (_generatorManager.getParent().getBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1) == 0x0)       _generatorManager.getParent().setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1,_leafType,update,true);
     }
-  Vector3f dir=new Vector3f(1,0,0);
+  }
+}
+}
+Vector3f dir=new Vector3f(1,0,0);
 rotation.transform(dir);
 position.add(dir);
 break;
