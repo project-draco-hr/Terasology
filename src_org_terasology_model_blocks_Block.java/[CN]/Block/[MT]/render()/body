@@ -1,0 +1,22 @@
+{
+  if (isInvisible())   return;
+  if (_mesh == null) {
+    if (getBlockForm() == BLOCK_FORM.BILLBOARD) {
+      MeshCollection.addBillboardMesh(this,1.0f,1.0f);
+      _mesh=Tessellator.getInstance().generateMesh();
+    }
+ else {
+      MeshCollection.addBlockMesh(this,1.0f,1.0f,0.9f);
+      _mesh=Tessellator.getInstance().generateMesh();
+    }
+    Tessellator.getInstance().resetAll();
+  }
+  if (getBlockForm() != BLOCK_FORM.BILLBOARD) {
+    _mesh.render();
+  }
+ else {
+    glDisable(GL11.GL_CULL_FACE);
+    _mesh.render();
+    glEnable(GL11.GL_CULL_FACE);
+  }
+}

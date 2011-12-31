@@ -1,0 +1,13 @@
+{
+  Runnable r=new Runnable(){
+    public void run(){
+      for (      Chunk c : _chunkCache.values()) {
+        writeChunkToDisk(c);
+        c.dispose();
+      }
+      _chunkCache.clear();
+    }
+  }
+;
+  Terasology.getInstance().getThreadPool().submit(r);
+}

@@ -1,0 +1,17 @@
+{
+  long currentTime=Terasology.getInstance().getTime();
+  if ((currentTime > _lastUpdate + _updateInterval || force) && !_running) {
+    _running=true;
+    Runnable r=new Runnable(){
+      public void run(){
+        executeSimulation();
+        _running=false;
+      }
+    }
+;
+    Terasology.getInstance().getThreadPool().execute(r);
+    _lastUpdate=currentTime;
+    return true;
+  }
+  return false;
+}

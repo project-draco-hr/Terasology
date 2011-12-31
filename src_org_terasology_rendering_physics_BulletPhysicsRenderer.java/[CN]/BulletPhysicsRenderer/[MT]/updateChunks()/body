@@ -1,0 +1,29 @@
+{
+  ArrayList<Chunk> chunks=Terasology.getInstance().getActiveWorldRenderer().getChunksInProximity();
+  HashSet<RigidBody> newBodies=new HashSet<RigidBody>();
+  for (int i=0; i < 16 && i < chunks.size(); i++) {
+    final Chunk chunk=chunks.get(i);
+    if (chunk != null) {
+      Runnable r=new Runnable(){
+        public void run(){
+          chunk.updateRigidBody();
+        }
+      }
+;
+      Terasology.getInstance().getThreadPool().execute(r);
+      RigidBody c=chunk.getRigidBody();
+      if (c != null) {
+        newBodies.add(c);
+        if (!_chunks.contains(c)) {
+          _discreteDynamicsWorld.addRigidBody(c);
+        }
+      }
+    }
+  }
+  for (  RigidBody body : _chunks) {
+    if (!newBodies.contains(body)) {
+      _discreteDynamicsWorld.removeRigidBody(body);
+    }
+  }
+  _chunks=newBodies;
+}

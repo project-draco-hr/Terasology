@@ -1,0 +1,19 @@
+{
+  boolean success=false;
+  try {
+    success=Terasology.getInstance().getGroovyManager().runGroovyShell(_consoleInput.toString());
+  }
+ catch (  Exception e) {
+    Terasology.getInstance().getLogger().log(Level.INFO,e.getMessage());
+  }
+  if (success) {
+    Terasology.getInstance().resetOpenGLParameters();
+    Terasology.getInstance().getLogger().log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
+    addToRingBuffer();
+    resetDebugConsole();
+    setVisible(false);
+  }
+ else {
+    Terasology.getInstance().getLogger().log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
+  }
+}

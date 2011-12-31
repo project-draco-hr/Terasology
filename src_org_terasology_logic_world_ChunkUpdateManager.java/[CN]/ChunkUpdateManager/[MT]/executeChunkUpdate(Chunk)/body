@@ -1,0 +1,11 @@
+{
+  _currentlyProcessedChunks.add(c);
+  Runnable r=new Runnable(){
+    public void run(){
+      c.processChunk();
+      _currentlyProcessedChunks.remove(c);
+    }
+  }
+;
+  Terasology.getInstance().getThreadPool().execute(r);
+}

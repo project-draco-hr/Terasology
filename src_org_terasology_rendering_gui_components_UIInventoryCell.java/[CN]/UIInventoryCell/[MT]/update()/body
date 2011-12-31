@@ -1,0 +1,13 @@
+{
+  setPosition(new Vector2f(16f + (getSize().x - 3f) * (_id % 9),208f + ((getSize().y - 3f) * (_id / 9))));
+  Inventory inventory=Terasology.getInstance().getActiveWorldRenderer().getPlayer().getInventory();
+  processMouseInput();
+  Item item=inventory.getItemInSlot(_id);
+  if (item != null) {
+    getLabel().setVisible(true);
+    getLabel().setText(Integer.toString(item.getAmount()));
+  }
+ else {
+    getLabel().setVisible(false);
+  }
+}

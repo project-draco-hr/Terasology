@@ -1,0 +1,15 @@
+{
+  _selectionRectangle.renderTransformed();
+  glEnable(GL11.GL_DEPTH_TEST);
+  Toolbar toolbar=Terasology.getInstance().getActiveWorldRenderer().getPlayer().getToolbar();
+  Item item=toolbar.getItemInSlot(_id);
+  if (item != null) {
+    glPushMatrix();
+    glTranslatef(20f,20f,0f);
+    item.renderIcon();
+    glPopMatrix();
+    glDisable(GL11.GL_CULL_FACE);
+  }
+  glDisable(GL11.GL_DEPTH_TEST);
+  _label.renderTransformed();
+}

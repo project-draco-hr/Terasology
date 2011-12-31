@@ -1,0 +1,29 @@
+{
+  if (_extractionCounter <= 0 || _extractedBlock == null)   return;
+  Block block=BlockManager.getInstance().getBlock(_parent.getWorldProvider().getBlockAtPosition(_extractedBlock.getBlockPosition().toVector3d()));
+  glEnable(GL_TEXTURE_2D);
+  TextureManager.getInstance().bindTexture("effects");
+  glEnable(GL11.GL_BLEND);
+  glBlendFunc(GL_DST_COLOR,GL_ZERO);
+  glPushMatrix();
+  glTranslated(_extractedBlock.getBlockPosition().x - getPosition().x,_extractedBlock.getBlockPosition().y - getPosition().y,_extractedBlock.getBlockPosition().z - getPosition().z);
+  float offset=Math.round(((float)_extractionCounter / block.getHardness()) * 10.0f) * 0.0625f;
+  if (_overlayMesh == null) {
+    Vector2f texPos=new Vector2f(0.0f,0.0f);
+    Vector2f texWidth=new Vector2f(0.0624f,0.0624f);
+    MeshCollection.addBlockMesh(new Vector4f(1,1,1,1),texPos,texWidth,1.001f,1.0f,1.0f,0.0f,0.0f,0.0f);
+    _overlayMesh=Tessellator.getInstance().generateMesh();
+    Tessellator.getInstance().resetAll();
+  }
+  glMatrixMode(GL_TEXTURE);
+  glPushMatrix();
+  glTranslatef(offset,0f,0f);
+  glMatrixMode(GL_MODELVIEW);
+  _overlayMesh.render();
+  glPopMatrix();
+  glMatrixMode(GL_TEXTURE);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  glDisable(GL11.GL_BLEND);
+  glDisable(GL_TEXTURE_2D);
+}

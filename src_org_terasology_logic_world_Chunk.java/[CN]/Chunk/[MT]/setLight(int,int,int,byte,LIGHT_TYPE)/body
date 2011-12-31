@@ -1,0 +1,18 @@
+{
+  TeraSmartArray lSource;
+  if (type == LIGHT_TYPE.SUN) {
+    lSource=_sunlight;
+  }
+ else   if (type == LIGHT_TYPE.BLOCK) {
+    lSource=_light;
+  }
+ else {
+    return;
+  }
+  byte oldValue=lSource.get(x,y,z);
+  lSource.set(x,y,z,intensity);
+  if (oldValue != intensity) {
+    setDirty(true);
+    markNeighborsDirty(x,z);
+  }
+}

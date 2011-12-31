@@ -1,0 +1,18 @@
+{
+  if (_mesh == null)   return;
+  TextureManager.getInstance().bindTexture(_textureName);
+  glEnable(GL11.GL_TEXTURE_2D);
+  glMatrixMode(GL_TEXTURE);
+  glPushMatrix();
+  glTranslatef(_textureOrigin.x,_textureOrigin.y,0.0f);
+  glScalef(_textureSize.x,_textureSize.y,1.0f);
+  glMatrixMode(GL11.GL_MODELVIEW);
+  glPushMatrix();
+  glScalef(getSize().x,getSize().y,1.0f);
+  _mesh.render();
+  glPopMatrix();
+  glMatrixMode(GL_TEXTURE);
+  glPopMatrix();
+  glMatrixMode(GL11.GL_MODELVIEW);
+  glDisable(GL11.GL_TEXTURE_2D);
+}

@@ -1,0 +1,25 @@
+{
+  File dir=new File(getWorldSavePath());
+  if (!dir.exists()) {
+    if (!dir.mkdirs()) {
+      Terasology.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
+      return false;
+    }
+  }
+  File f=new File(String.format("%s/Metadata.xml",getWorldSavePath()));
+  Element root=new Element("World");
+  Document doc=new Document(root);
+  root.setAttribute("seed",_seed);
+  root.setAttribute("title",_title);
+  root.setAttribute("time",Double.toString(getTime()));
+  XMLOutputter outputter=new XMLOutputter();
+  FileOutputStream output;
+  try {
+    output=new FileOutputStream(f);
+    outputter.output(doc,output);
+    return true;
+  }
+ catch (  Exception e) {
+    return false;
+  }
+}

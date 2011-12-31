@@ -1,0 +1,10 @@
+{
+  glPushMatrix();
+  Vector3d rp=Terasology.getInstance().getActiveWorldProvider().getRenderingReferencePoint();
+  glTranslated(getPosition().x - rp.x,getPosition().y - rp.y,getPosition().z - rp.z);
+  if (_displayListSolid == -1) {
+    generateDisplayListSolid();
+  }
+  glCallList(_displayListSolid);
+  glPopMatrix();
+}
