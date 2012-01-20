@@ -1,0 +1,22 @@
+{
+  _gameThread=new Thread(){
+    @Override public void run(){
+      try {
+        ConfigurationManager config=ConfigurationManager.getInstance();
+        Display.setParent(null);
+        Display.setDisplayMode(new org.lwjgl.opengl.DisplayMode(1280,720));
+        Display.setTitle((String)config.getConfig().get("System.title"));
+        Display.create();
+        _blockmania=Blockmania.getInstance();
+        _blockmania.initControls();
+        _blockmania.initGame();
+        _blockmania.startGame();
+      }
+ catch (      Exception e) {
+        Blockmania.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+      }
+    }
+  }
+;
+  _gameThread.start();
+}
