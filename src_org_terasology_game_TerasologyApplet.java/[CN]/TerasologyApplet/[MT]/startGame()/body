@@ -1,0 +1,22 @@
+{
+  _gameThread=new Thread(){
+    @Override public void run(){
+      try {
+        ConfigurationManager config=ConfigurationManager.getInstance();
+        Display.setParent(null);
+        Display.setDisplayMode(new org.lwjgl.opengl.DisplayMode(1280,720));
+        Display.setTitle((String)config.getConfig().get("System.title"));
+        Display.create();
+        _terasology=Terasology.getInstance();
+        _terasology.initControls();
+        _terasology.initGame();
+        _terasology.startGame();
+      }
+ catch (      Exception e) {
+        Terasology.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+      }
+    }
+  }
+;
+  _gameThread.start();
+}
