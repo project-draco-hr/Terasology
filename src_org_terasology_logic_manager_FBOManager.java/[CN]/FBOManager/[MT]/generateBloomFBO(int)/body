@@ -1,0 +1,12 @@
+{
+  ShaderManager.getInstance().enableShader("blur");
+  FBOManager.getInstance().getFBO("sceneBloom" + id).bind();
+  glViewport(0,0,1024,1024);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  if (id == 0)   FBOManager.getInstance().getFBO("sceneHighPass").bindTexture();
+ else   FBOManager.getInstance().getFBO("sceneBloom" + (id - 1)).bindTexture();
+  renderFullQuad();
+  FBOManager.getInstance().getFBO("sceneBloom" + id).unbind();
+  ShaderManager.getInstance().enableShader(null);
+  glViewport(0,0,Display.getWidth(),Display.getHeight());
+}

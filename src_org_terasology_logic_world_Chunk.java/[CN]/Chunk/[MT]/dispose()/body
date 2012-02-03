@@ -1,10 +1,10 @@
 {
-synchronized (this) {
-    if (_disposed)     return;
-    if (_activeMeshes != null)     for (int i=0; i < _activeMeshes.length; i++)     _activeMeshes[i].dispose();
-    if (_newMeshes != null) {
-      for (int i=0; i < _newMeshes.length; i++)       _newMeshes[i].dispose();
-    }
-    _disposed=true;
+  _lock.lock();
+  if (_disposed)   return;
+  if (_activeMeshes != null)   for (int i=0; i < _activeMeshes.length; i++)   _activeMeshes[i].dispose();
+  if (_newMeshes != null) {
+    for (int i=0; i < _newMeshes.length; i++)     _newMeshes[i].dispose();
   }
+  _disposed=true;
+  _lock.unlock();
 }

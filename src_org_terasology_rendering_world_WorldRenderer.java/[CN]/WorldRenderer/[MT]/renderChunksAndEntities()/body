@@ -34,7 +34,10 @@
   GL20.glUniform1i(swimming,playerIsSwimming ? 1 : 0);
   GL20.glUniform1i(carryingTorch,_player.isCarryingTorch() ? 1 : 0);
   ShaderManager.getInstance().enableShader(null);
+  PerformanceMonitor.startActivity("BulletPhysicsRenderer");
   BulletPhysicsRenderer.getInstance().render();
+  PerformanceMonitor.endActivity();
+  ShaderManager.getInstance().enableShader("chunk");
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
     c.render(ChunkMesh.RENDER_TYPE.OPAQUE);

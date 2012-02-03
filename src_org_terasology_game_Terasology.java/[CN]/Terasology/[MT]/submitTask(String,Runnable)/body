@@ -1,0 +1,15 @@
+{
+  _threadPool.execute(new Runnable(){
+    public void run(){
+      Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+      PerformanceMonitor.startThread(name);
+      try {
+        task.run();
+      }
+  finally {
+        PerformanceMonitor.endThread(name);
+      }
+    }
+  }
+);
+}

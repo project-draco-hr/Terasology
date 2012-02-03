@@ -2,11 +2,13 @@
   generateDownsampledFBOs();
   updateExposure();
   generateHighPassFBO();
-  generateBloomFBO();
+  generateBloomFBO(0);
+  generateBloomFBO(1);
+  generateBloomFBO(2);
   ShaderManager.getInstance().enableShader("fbo");
   FBOManager.FBO scene=FBOManager.getInstance().getFBO("scene");
   GL13.glActiveTexture(GL13.GL_TEXTURE1);
-  FBOManager.getInstance().getFBO("sceneBloom").bindTexture();
+  FBOManager.getInstance().getFBO("sceneBloom2").bindTexture();
   GL13.glActiveTexture(GL13.GL_TEXTURE0);
   scene.bindTexture();
   int texScene=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("fbo"),"texScene");

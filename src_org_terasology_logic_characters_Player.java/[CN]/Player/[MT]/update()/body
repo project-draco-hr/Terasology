@@ -1,5 +1,6 @@
 {
   _walkingSpeed=WALKING_SPEED;
+  PerformanceMonitor.startActivity("Player Camera");
   if (_activeCamera != null) {
     _activeCamera.update();
     if (_godMode) {
@@ -9,6 +10,7 @@
       _activeCamera.resetFov();
     }
   }
+  PerformanceMonitor.endActivity();
   if (_godMode) {
     _walkingSpeed*=1.5;
   }
@@ -19,7 +21,10 @@
     _handMovementAnimationOffset=0;
   }
   super.update();
+  PerformanceMonitor.startActivity("Player Select Block");
   _selectedBlock=calcSelectedBlock();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Player Death Check");
   if (isDead() && _timeOfDeath == -1) {
     _timeOfDeath=Terasology.getInstance().getTime();
   }
@@ -28,4 +33,5 @@
     respawn();
     _timeOfDeath=-1;
   }
+  PerformanceMonitor.endActivity();
 }

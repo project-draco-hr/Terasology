@@ -5,17 +5,15 @@
     public void run(){
       ArrayList<Chunk> cachedChunks=new ArrayList<Chunk>(_chunkCache.values());
       Collections.sort(cachedChunks);
-synchronized (_chunkCache) {
-        while (cachedChunks.size() > CACHE_SIZE) {
-          Chunk chunkToDelete=cachedChunks.remove(cachedChunks.size() - 1);
-          writeChunkToDisk(chunkToDelete);
-          _chunkCache.values().remove(chunkToDelete);
-          chunkToDelete.dispose();
-        }
+      while (cachedChunks.size() > CACHE_SIZE) {
+        Chunk chunkToDelete=cachedChunks.remove(cachedChunks.size() - 1);
+        writeChunkToDisk(chunkToDelete);
+        _chunkCache.values().remove(chunkToDelete);
+        chunkToDelete.dispose();
       }
       _running=false;
     }
   }
 ;
-  Terasology.getInstance().getThreadPool().execute(r);
+  Terasology.getInstance().submitTask("Flush Chunk Cache",r);
 }
