@@ -30,4 +30,21 @@
     _metricData.remove(0);
   }
   _currentData=new TObjectLongHashMap<String>();
+  _runningThreads.forEachEntry(new TObjectIntProcedure<String>(){
+    public boolean execute(    String s,    int i){
+      _lastRunningThreads.adjustOrPutValue(s,i,i);
+      return true;
+    }
+  }
+);
+  TObjectIntMap<String> temp=_runningThreads;
+  temp.clear();
+  _runningThreads=_stoppedThreads;
+  _stoppedThreads=temp;
+  _lastRunningThreads.retainEntries(new TObjectIntProcedure<String>(){
+    public boolean execute(    String s,    int i){
+      return i > 0;
+    }
+  }
+);
 }

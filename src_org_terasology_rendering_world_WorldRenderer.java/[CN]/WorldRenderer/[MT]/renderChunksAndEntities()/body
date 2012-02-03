@@ -38,7 +38,9 @@
   _statSubMeshCulled=0;
   _statEmpty=0;
   _statVisibleTriangles=0;
+  PerformanceMonitor.startActivity("BulletPhysicsRenderer");
   BulletPhysicsRenderer.getInstance().render();
+  PerformanceMonitor.endActivity();
   ShaderManager.getInstance().enableShader("chunk");
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
