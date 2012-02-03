@@ -1,6 +1,7 @@
 {
+  if (_running)   return false;
   long currentTime=Terasology.getInstance().getTime();
-  if ((currentTime > _lastUpdate + _updateInterval || force) && !_running) {
+  if ((currentTime > _lastUpdate + _updateInterval || force)) {
     _running=true;
     Runnable r=new Runnable(){
       public void run(){

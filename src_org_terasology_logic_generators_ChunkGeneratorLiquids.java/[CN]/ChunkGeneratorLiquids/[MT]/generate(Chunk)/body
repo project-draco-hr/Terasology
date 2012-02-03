@@ -15,7 +15,9 @@
       lavaGenerated=true;
     }
     if (set) {
-      _parent.getParent().getLiquidSimulator().addActiveBlock(blockWorldPos);
+      LiquidSimulator sim=new LiquidSimulator(_parent.getParent());
+      sim.addActiveBlock(blockWorldPos);
+      sim.simulateAll();
     }
     if (lavaGenerated)     return;
   }

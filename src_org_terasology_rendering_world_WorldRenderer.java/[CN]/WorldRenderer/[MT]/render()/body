@@ -1,4 +1,7 @@
 {
+  FBOManager.FBO scene=FBOManager.getInstance().getFBO("scene");
+  scene.bind();
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _player.getActiveCamera().lookThroughNormalized();
   _skysphere.render();
   _player.getActiveCamera().lookThrough();
@@ -13,4 +16,6 @@
   glClear(GL_DEPTH_BUFFER_BIT);
   _player.renderFirstPersonViewElements();
   glPopMatrix();
+  scene.unbind();
+  FBOManager.getInstance().renderScene();
 }
