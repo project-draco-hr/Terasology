@@ -1,0 +1,25 @@
+{
+  super.update();
+  if (!_currentMode.visible) {
+    _headerLine.setVisible(false);
+    for (    UIText line : _metricLines) {
+      line.setVisible(false);
+    }
+  }
+ else {
+    _headerLine.setVisible(true);
+    _headerLine.setText(_currentMode.displayText);
+    TObjectDoubleMap<String> metrics=_currentMode.getMetrics();
+    final List<String> activities=new ArrayList<String>();
+    final List<Double> values=new ArrayList<Double>();
+    sortMetrics(metrics,activities,values);
+    for (int i=0; i < METRIC_LINES && i < activities.size(); ++i) {
+      UIText line=_metricLines.get(i);
+      line.setVisible(true);
+      line.setText(String.format("%s: %.2fms",activities.get(i),values.get(i)));
+    }
+    for (int i=activities.size(); i < METRIC_LINES; ++i) {
+      _metricLines.get(i).setVisible(false);
+    }
+  }
+}
