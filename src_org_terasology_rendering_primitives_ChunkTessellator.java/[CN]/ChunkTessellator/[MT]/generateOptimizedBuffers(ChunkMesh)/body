@@ -16,7 +16,7 @@
     int cTex=0;
     int cColor=0;
     int cIndex=0;
-    for (int i=0; i < mesh._vertexElements[j].quads.size(); i+=3, cTex+=2, cColor+=4) {
+    for (int i=0; i < mesh._vertexElements[j].quads.size(); i+=3, cTex+=3, cColor+=4) {
       if (i % 4 == 0) {
         mesh._vertexElements[j].indices.put(cIndex);
         mesh._vertexElements[j].indices.put(cIndex + 1);
@@ -45,6 +45,7 @@
       }
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex));
       mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex + 1));
+      mesh._vertexElements[j].vertices.put(mesh._vertexElements[j].tex.get(cTex + 2));
       Double[] result=new Double[3];
       calcLightingValuesForVertexPos(vertexPos,result);
       mesh._vertexElements[j].vertices.put(result[0].floatValue());

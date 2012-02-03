@@ -17,12 +17,11 @@
       _timeAccumulator-=SKIP_TICKS;
     }
     render();
+    updateFps();
     Display.update();
     processKeyboardInput();
     processMouseInput();
     if (!screenHasFocus())     getActiveWorldRenderer().getPlayer().updateInput();
-    Display.sync(60);
-    updateFps();
     _timeAccumulator+=getTime() - startTime;
     if (Display.wasResized())     resizeViewport();
   }

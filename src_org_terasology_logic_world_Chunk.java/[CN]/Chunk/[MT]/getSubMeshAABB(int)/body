@@ -1,12 +1,12 @@
 {
-  if (_subChunkAABB == null) {
-    _subChunkAABB=new AABB[VERTICAL_SEGMENTS];
+  if (_subMeshAABB == null) {
+    _subMeshAABB=new AABB[VERTICAL_SEGMENTS];
     int heightHalf=CHUNK_DIMENSION_Y / VERTICAL_SEGMENTS / 2;
-    for (int i=0; i < _subChunkAABB.length; i++) {
-      Vector3d dimensions=new Vector3d(8,CHUNK_DIMENSION_Y / VERTICAL_SEGMENTS / 2,8);
+    for (int i=0; i < _subMeshAABB.length; i++) {
+      Vector3d dimensions=new Vector3d(8,heightHalf,8);
       Vector3d position=new Vector3d(getChunkWorldPosX() + dimensions.x - 0.5f,(i * heightHalf * 2) + dimensions.y - 0.5f,getChunkWorldPosZ() + dimensions.z - 0.5f);
-      _subChunkAABB[i]=new AABB(position,dimensions);
+      _subMeshAABB[i]=new AABB(position,dimensions);
     }
   }
-  return _subChunkAABB[subMesh];
+  return _subMeshAABB[subMesh];
 }

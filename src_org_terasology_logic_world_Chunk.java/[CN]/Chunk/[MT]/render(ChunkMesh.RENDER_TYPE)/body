@@ -1,0 +1,22 @@
+{
+  if (isReadyForRendering()) {
+    GL11.glPushMatrix();
+    GL11.glTranslated(getPosition().x * Chunk.CHUNK_DIMENSION_X - getParent().getRenderingReferencePoint().x,getPosition().y * Chunk.CHUNK_DIMENSION_Y - getParent().getRenderingReferencePoint().y,getPosition().z * Chunk.CHUNK_DIMENSION_Z - getParent().getRenderingReferencePoint().z);
+    for (int i=0; i < VERTICAL_SEGMENTS; i++) {
+      if (!isSubMeshEmpty(i)) {
+        if (WorldRenderer.BOUNDING_BOXES_ENABLED) {
+          getSubMeshAABB(i).renderLocally(2f);
+          _statRenderedTriangles+=12;
+        }
+        ShaderManager.getInstance().enableShader("chunk");
+        _activeMeshes[i].render(type);
+        _statRenderedTriangles+=_activeMeshes[i].triangleCount();
+        ShaderManager.getInstance().enableShader(null);
+      }
+    }
+    GL11.glPopMatrix();
+  }
+ else {
+    _statChunkNotReady++;
+  }
+}
