@@ -1,14 +1,21 @@
 {
-  if (_disposed)   return;
-  for (int i=0; i < _vertexBuffers.length; i++) {
-    int id=_vertexBuffers[i];
-    VertexBufferObjectManager.getInstance().putVboId(id);
-    _vertexBuffers[i]=0;
-    id=_idxBuffers[i];
-    VertexBufferObjectManager.getInstance().putVboId(id);
-    _idxBuffers[i]=0;
+  _lock.lock();
+  try {
+    if (!_disposed) {
+      for (int i=0; i < _vertexBuffers.length; i++) {
+        int id=_vertexBuffers[i];
+        VertexBufferObjectManager.getInstance().putVboId(id);
+        _vertexBuffers[i]=0;
+        id=_idxBuffers[i];
+        VertexBufferObjectManager.getInstance().putVboId(id);
+        _idxBuffers[i]=0;
+      }
+      _disposed=true;
+      _vertexElements=null;
+      _indexedMesh=null;
+    }
   }
-  _disposed=true;
-  _vertexElements=null;
-  _indexedMesh=null;
+  finally {
+    _lock.unlock();
+  }
 }

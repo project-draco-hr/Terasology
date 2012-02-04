@@ -1,13 +1,20 @@
 {
-  for (int i=0; i < 4; i++) {
+  Vector3f[] positionOffsets=new Vector3f[]{new Vector3f(1,1,-1),new Vector3f(1,-1,-1),new Vector3f(-1,1,-1),new Vector3f(-1,-1,-1),new Vector3f(1,1,1),new Vector3f(1,-1,1),new Vector3f(-1,1,1),new Vector3f(-1,-1,1)};
+  for (int i=0; i < 8; i++) {
     Matrix3f rot=new Matrix3f();
     rot.setIdentity();
-    DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,position,1.0f)));
+    Vector3f pos=new Vector3f(position);
+    positionOffsets[i].scale(0.25f);
+    pos.add(positionOffsets[i]);
+    DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,pos,1.0f)));
     Vector3f fallInertia=new Vector3f();
-    _blockShape.calculateLocalInertia(10f,fallInertia);
-    RigidBodyConstructionInfo blockCI=new RigidBodyConstructionInfo(25f,blockMotionState,_blockShape,fallInertia);
+    _blockShape.calculateLocalInertia(8f,fallInertia);
+    RigidBodyConstructionInfo blockCI=new RigidBodyConstructionInfo(8f,blockMotionState,_blockShape,fallInertia);
+    blockCI.restitution=0.0f;
     BlockRigidBody block=new BlockRigidBody(blockCI,type);
     _discreteDynamicsWorld.addRigidBody(block);
+    FastRandom rand=Terasology.getInstance().getActiveWorldProvider().getRandom();
+    block.applyCentralForce(new Vector3f(rand.randomInt() % 10000 + 1000,rand.randomInt() % 10000 + 1000,rand.randomInt() % 10000 + 256));
     _blocks.add(block);
   }
 }
