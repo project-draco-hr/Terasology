@@ -1,4 +1,8 @@
 {
-  for (int i=_vertexBufferObjectPool.size() - 1; i >= 0; i--)   GL15.glDeleteBuffers(_vertexBufferObjectPool.removeAt(i));
-  return createVbos(1).get(0);
+  if (_vertexBufferObjectPool.size() > 0) {
+    int id=_vertexBufferObjectPool.get(_vertexBufferObjectPool.size() - 1);
+    _vertexBufferObjectPool.remove(_vertexBufferObjectPool.size() - 1);
+    return id;
+  }
+ else   return createVbos(1).get(0);
 }
