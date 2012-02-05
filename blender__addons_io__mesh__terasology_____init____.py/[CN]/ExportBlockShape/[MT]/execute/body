@@ -1,0 +1,6 @@
+def execute(self, context):
+    filepath = self.filepath
+    filepath = bpy.path.ensure_ext(filepath, self.filename_ext)
+    from . import export_block_shape
+    keywords = self.as_keywords(ignore=('filter_glob', 'check_existing'))
+    return export_block_shape.save(self, context, **keywords)

@@ -10,7 +10,7 @@
   _currentData.forEachEntry(new TObjectLongProcedure<String>(){
     public boolean execute(    String s,    long v){
       _runningTotals.adjustOrPutValue(s,v,v);
-      double time=v * timeFactor;
+      double time=v * _timeFactor;
       double prev=_spikeData.get(s);
       if (time > prev) {
         _spikeData.put(s,time);
