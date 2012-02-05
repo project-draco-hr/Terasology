@@ -1,4 +1,5 @@
 {
+  boolean debugEnabled=(Boolean)ConfigurationManager.getInstance().getConfig().get("System.Debug.debug");
   while (Keyboard.next()) {
     int key=Keyboard.getEventKey();
     if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
@@ -9,10 +10,18 @@
         toggleInventory();
       }
       if (key == Keyboard.KEY_F3 && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
-        ConfigurationManager.getInstance().getConfig().put("System.Debug.debug",!(Boolean)ConfigurationManager.getInstance().getConfig().get("System.Debug.debug"));
+        ConfigurationManager.getInstance().getConfig().put("System.Debug.debug",debugEnabled=!(debugEnabled));
       }
       if (key == Keyboard.KEY_F && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
         toggleViewingDistance();
+      }
+      if (debugEnabled) {
+        if (key == Keyboard.KEY_UP && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+          getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.005);
+        }
+        if (key == Keyboard.KEY_DOWN && !Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+          getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.005);
+        }
       }
       for (      UIDisplayElement screen : _guiScreens) {
         if (screenCanFocus(screen)) {
