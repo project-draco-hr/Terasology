@@ -1,9 +1,10 @@
 {
-  ByteBuffer pixels=BufferUtils.createByteBuffer(4);
-  PostProcessingRenderer.getInstance().getFBO("scene1").bindTexture();
-  glGetTexImage(GL11.GL_TEXTURE_2D,0,GL_RGBA,GL11.GL_UNSIGNED_BYTE,pixels);
-  PostProcessingRenderer.getInstance().getFBO("scene1").unbindTexture();
-  float lum=0.2126f * ((pixels.get(0) & 0xff) / 255f) + 0.7152f * ((pixels.get(1) & 0xff) / 255f) + 0.0722f * ((pixels.get(2) & 0xff) / 255f);
+  FloatBuffer pixels=BufferUtils.createFloatBuffer(4);
+  FBO scene=PostProcessingRenderer.getInstance().getFBO("scene1");
+  scene.bindTexture();
+  glGetTexImage(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,GL11.GL_FLOAT,pixels);
+  scene.unbindTexture();
+  float lum=0.2126f * pixels.get(0) + 0.7152f * pixels.get(1) + 0.0722f * pixels.get(2);
   _exposure=(float)MathHelper.lerp(_exposure,0.5f / lum,0.01);
   if (_exposure > 4.0f)   _exposure=4.0f;
 }
