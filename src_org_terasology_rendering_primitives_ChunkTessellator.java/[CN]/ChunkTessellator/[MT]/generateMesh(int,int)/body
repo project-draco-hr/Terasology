@@ -1,4 +1,5 @@
 {
+  PerformanceMonitor.startActivity("GenerateMesh");
   ChunkMesh mesh=new ChunkMesh();
   for (int x=0; x < Chunk.CHUNK_DIMENSION_X; x++) {
     for (int z=0; z < Chunk.CHUNK_DIMENSION_Z; z++) {
@@ -16,5 +17,6 @@
   }
   generateOptimizedBuffers(mesh);
   _statVertexArrayUpdateCount++;
+  PerformanceMonitor.endActivity();
   return mesh;
 }
