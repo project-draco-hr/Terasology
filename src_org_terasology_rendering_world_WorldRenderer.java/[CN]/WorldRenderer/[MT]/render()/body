@@ -1,5 +1,5 @@
 {
-  FBOManager.FBO scene=FBOManager.getInstance().getFBO("scene");
+  PostProcessingRenderer.FBO scene=PostProcessingRenderer.getInstance().getFBO("scene");
   scene.bind();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   PerformanceMonitor.startActivity("Render-Sky");
@@ -21,11 +21,11 @@
   PerformanceMonitor.startActivity("Render-Extraction Overlay");
   _player.renderExtractionOverlay();
   PerformanceMonitor.endActivity();
+  scene.unbind();
+  PostProcessingRenderer.getInstance().renderScene();
   glPushMatrix();
   glLoadIdentity();
   glClear(GL_DEPTH_BUFFER_BIT);
   _player.renderFirstPersonViewElements();
   glPopMatrix();
-  scene.unbind();
-  FBOManager.getInstance().renderScene();
 }

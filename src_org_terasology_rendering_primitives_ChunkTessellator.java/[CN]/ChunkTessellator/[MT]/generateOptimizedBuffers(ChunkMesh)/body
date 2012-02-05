@@ -1,15 +1,13 @@
 {
   mesh._indexedMesh=null;
-  if (GENERATE_PHYSICS_MESHES) {
-    mesh._indexedMesh=new IndexedMesh();
-    mesh._indexedMesh.vertexBase=BufferUtils.createByteBuffer(mesh._vertexElements[0].quads.size() * 4);
-    mesh._indexedMesh.triangleIndexBase=BufferUtils.createByteBuffer(mesh._vertexElements[0].quads.size() * 4);
-    mesh._indexedMesh.triangleIndexStride=12;
-    mesh._indexedMesh.vertexStride=12;
-    mesh._indexedMesh.numVertices=mesh._vertexElements[0].quads.size() / 3;
-    mesh._indexedMesh.numTriangles=mesh._vertexElements[0].quads.size() / 6;
-    mesh._indexedMesh.indexType=ScalarType.INTEGER;
-  }
+  mesh._indexedMesh=new IndexedMesh();
+  mesh._indexedMesh.vertexBase=BufferUtils.createByteBuffer(mesh._vertexElements[0].quads.size() * 4);
+  mesh._indexedMesh.triangleIndexBase=BufferUtils.createByteBuffer(mesh._vertexElements[0].quads.size() * 4);
+  mesh._indexedMesh.triangleIndexStride=12;
+  mesh._indexedMesh.vertexStride=12;
+  mesh._indexedMesh.numVertices=mesh._vertexElements[0].quads.size() / 3;
+  mesh._indexedMesh.numTriangles=mesh._vertexElements[0].quads.size() / 6;
+  mesh._indexedMesh.indexType=ScalarType.INTEGER;
   for (int j=0; j < mesh._vertexElements.length; j++) {
     mesh._vertexElements[j].vertices=BufferUtils.createFloatBuffer(mesh._vertexElements[j].quads.size() * 2 + mesh._vertexElements[j].tex.size() + mesh._vertexElements[j].color.size() + mesh._vertexElements[j].normals.size());
     mesh._vertexElements[j].indices=BufferUtils.createIntBuffer(mesh._vertexElements[j].quads.size());
@@ -24,7 +22,7 @@
         mesh._vertexElements[j].indices.put(cIndex + 2);
         mesh._vertexElements[j].indices.put(cIndex + 3);
         mesh._vertexElements[j].indices.put(cIndex);
-        if (j == 0 && GENERATE_PHYSICS_MESHES) {
+        if (j == 0) {
           mesh._indexedMesh.triangleIndexBase.putInt(cIndex);
           mesh._indexedMesh.triangleIndexBase.putInt(cIndex + 1);
           mesh._indexedMesh.triangleIndexBase.putInt(cIndex + 2);
@@ -38,7 +36,7 @@
       mesh._vertexElements[j].vertices.put(vertexPos.x);
       mesh._vertexElements[j].vertices.put(vertexPos.y);
       mesh._vertexElements[j].vertices.put(vertexPos.z);
-      if (j == 0 && GENERATE_PHYSICS_MESHES) {
+      if (j == 0) {
         mesh._indexedMesh.vertexBase.putFloat(vertexPos.x);
         mesh._indexedMesh.vertexBase.putFloat(vertexPos.y);
         mesh._indexedMesh.vertexBase.putFloat(vertexPos.z);

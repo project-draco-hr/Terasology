@@ -1,0 +1,11 @@
+{
+  ShaderManager.getInstance().enableShader("highp");
+  PostProcessingRenderer.getInstance().getFBO("sceneHighPass").bind();
+  glViewport(0,0,1024,1024);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
+  renderFullQuad();
+  PostProcessingRenderer.getInstance().getFBO("sceneHighPass").unbind();
+  ShaderManager.getInstance().enableShader(null);
+  glViewport(0,0,Display.getWidth(),Display.getHeight());
+}
