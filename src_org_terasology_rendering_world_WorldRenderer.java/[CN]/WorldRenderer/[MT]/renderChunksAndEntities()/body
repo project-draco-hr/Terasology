@@ -38,18 +38,27 @@
   BulletPhysicsRenderer.getInstance().render();
   PerformanceMonitor.endActivity();
   ShaderManager.getInstance().enableShader("chunk");
+  PerformanceMonitor.startActivity("Chunk-Opaque");
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
     c.render(ChunkMesh.RENDER_TYPE.OPAQUE);
   }
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Chunk-Billboard");
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
     c.render(ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT);
   }
+  ShaderManager.getInstance().enableShader(null);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render Mobs");
   _mobManager.renderAll();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Chunk-WaterIce");
   TextureManager.getInstance().bindTexture("terrain");
+  ShaderManager.getInstance().enableShader("chunk");
   if (playerIsSwimming) {
     glDisable(GL11.GL_CULL_FACE);
   }
@@ -66,7 +75,7 @@
     }
   }
   glDisable(GL_BLEND);
-  if (playerIsSwimming) {
-    glEnable(GL11.GL_CULL_FACE);
-  }
+  glEnable(GL11.GL_CULL_FACE);
+  ShaderManager.getInstance().enableShader(null);
+  PerformanceMonitor.endActivity();
 }

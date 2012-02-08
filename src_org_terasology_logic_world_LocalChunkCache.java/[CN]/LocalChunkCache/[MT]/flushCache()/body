@@ -5,7 +5,7 @@
     public void run(){
       ArrayList<Chunk> cachedChunks=new ArrayList<Chunk>(_chunkCache.values());
       Collections.sort(cachedChunks);
-      while (cachedChunks.size() > CACHE_SIZE) {
+      if (cachedChunks.size() > CACHE_SIZE) {
         Chunk chunkToDelete=cachedChunks.remove(cachedChunks.size() - 1);
         writeChunkToDisk(chunkToDelete);
         _chunkCache.values().remove(chunkToDelete);
