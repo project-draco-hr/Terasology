@@ -1,4 +1,5 @@
 {
+  if (Thread.currentThread() != _mainThread || _activityStack.empty())   return;
   Activity oldActivity=_activityStack.pop();
   long time=Sys.getTime();
   long total=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + time - oldActivity.resumeTime : time - oldActivity.startTime;

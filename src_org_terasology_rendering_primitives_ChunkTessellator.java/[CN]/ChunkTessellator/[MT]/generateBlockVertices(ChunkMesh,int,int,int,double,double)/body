@@ -1,4 +1,5 @@
 {
+  PerformanceMonitor.startActivity("GenerateBlock");
   byte blockId=_chunk.getBlock(x,y,z);
   Block block=BlockManager.getInstance().getBlock(blockId);
   ChunkMesh.RENDER_TYPE renderType=ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT;
@@ -95,4 +96,5 @@
     Vector3f texOffset=new Vector3f(block.calcTextureOffsetFor(Block.SIDE.BOTTOM).x,block.calcTextureOffsetFor(Block.SIDE.BOTTOM).y,0f);
     generateVerticesForBlockSide(mesh,x,y,z,p1,p2,p3,p4,norm,colorOffset,texOffset,renderType,blockForm);
   }
+  PerformanceMonitor.endActivity();
 }
