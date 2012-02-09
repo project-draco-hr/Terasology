@@ -5,6 +5,11 @@
   ChunkMesh.RENDER_TYPE renderType=ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT;
   if (!block.isTranslucent())   renderType=ChunkMesh.RENDER_TYPE.OPAQUE;
   if (block.getTitle().equals("Water") || block.getTitle().equals("Ice"))   renderType=ChunkMesh.RENDER_TYPE.WATER_AND_ICE;
+  Block.BLOCK_FORM blockForm=block.getBlockForm();
+  if (block.getCenterMesh() != null) {
+    Vector4f colorOffset=block.calcColorOffsetFor(Block.SIDE.TOP,temp,hum);
+    generateVerticesForBlockSide(mesh,x,y,z,colorOffset,block.getCenterMesh(),renderType,blockForm);
+  }
   boolean drawFront, drawBack, drawLeft, drawRight, drawTop, drawBottom;
   byte blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y + 1,_chunk.getBlockWorldPosZ(z));
   drawTop=isSideVisibleForBlockTypes(blockToCheckId,blockId,Block.SIDE.TOP);
@@ -23,7 +28,6 @@
  else {
     drawBottom=false;
   }
-  Block.BLOCK_FORM blockForm=block.getBlockForm();
   if (blockForm == Block.BLOCK_FORM.LOWERED_BLOCK) {
     blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z - 1));
     drawFront=isSideVisibleForBlockTypes(blockToCheckId,blockId,Block.SIDE.FRONT) || drawFront;
