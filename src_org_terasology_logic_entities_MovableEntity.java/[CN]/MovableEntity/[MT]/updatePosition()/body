@@ -50,7 +50,9 @@
         }
         if (!_touchingGround) {
           Vector3d playerDirection=directionOfPlayer();
-          _footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5].playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,0.2f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false,(float)playerDirection.x,(float)playerDirection.y,(float)playerDirection.z);
+          if (!_noSound) {
+            _footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5].playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,0.2f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false,(float)playerDirection.x,(float)playerDirection.y,(float)playerDirection.z);
+          }
           _touchingGround=true;
         }
       }
