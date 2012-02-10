@@ -41,7 +41,7 @@
   PerformanceMonitor.startActivity("Chunk-Opaque");
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
-    c.render(ChunkMesh.RENDER_TYPE.OPAQUE);
+    c.render(ChunkMesh.RENDER_PHASE.OPAQUE);
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Chunk-Billboard");
@@ -49,7 +49,7 @@
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
-    c.render(ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT);
+    c.render(ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT);
   }
   ShaderManager.getInstance().enableShader(null);
   PerformanceMonitor.endActivity();
@@ -71,7 +71,7 @@
     }
     for (int i=0; i < _visibleChunks.size(); i++) {
       Chunk c=_visibleChunks.get(i);
-      c.render(ChunkMesh.RENDER_TYPE.WATER_AND_ICE);
+      c.render(ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
     }
   }
   glDisable(GL_BLEND);
