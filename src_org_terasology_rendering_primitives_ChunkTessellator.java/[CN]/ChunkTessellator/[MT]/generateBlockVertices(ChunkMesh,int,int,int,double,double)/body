@@ -1,5 +1,4 @@
 {
-  PerformanceMonitor.startActivity("GenerateBlock");
   byte blockId=_chunk.getBlock(x,y,z);
   Block block=BlockManager.getInstance().getBlock(blockId);
   ChunkMesh.RENDER_TYPE renderType=ChunkMesh.RENDER_TYPE.BILLBOARD_AND_TRANSLUCENT;
@@ -27,6 +26,16 @@
     }
     byte blockToCheckId=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y + 1,_chunk.getBlockWorldPosZ(z));
     drawDir[Block.SIDE.TOP.ordinal()]|=(BlockManager.getInstance().getBlock(blockToCheckId).getBlockForm() != Block.BLOCK_FORM.LOWERED_BLOCK);
+    byte bottomBlock=_chunk.getParent().getBlock(_chunk.getBlockWorldPosX(x),y - 1,_chunk.getBlockWorldPosZ(z));
+    if (BlockManager.getInstance().getBlock(bottomBlock).getBlockForm() == Block.BLOCK_FORM.LOWERED_BLOCK || bottomBlock == 0x0) {
+      for (      Block.SIDE dir : Block.SIDE.values()) {
+        if (drawDir[dir.ordinal()]) {
+          Vector4f colorOffset=block.calcColorOffsetFor(dir,temp,hum);
+          generateVerticesForBlockSide(mesh,x,y,z,colorOffset,block.getLoweredSideMesh(dir),renderType,blockForm);
+        }
+      }
+      return;
+    }
   }
   for (  Block.SIDE dir : Block.SIDE.values()) {
     if (drawDir[dir.ordinal()]) {
@@ -34,5 +43,4 @@
       generateVerticesForBlockSide(mesh,x,y,z,colorOffset,block.getSideMesh(dir),renderType,blockForm);
     }
   }
-  PerformanceMonitor.endActivity();
 }
