@@ -1,19 +1,11 @@
 {
   if (!_FBOs.containsKey("scene")) {
     createFBO("scene",Display.getWidth(),Display.getHeight(),true,true);
-    if (EFFECTS_ENABLED) {
-      createFBO("sceneBlur0",Display.getWidth(),Display.getHeight(),false,false);
-      createFBO("sceneBlur1",Display.getWidth(),Display.getHeight(),false,false);
-    }
   }
  else {
     FBO scene=getFBO("scene");
     if (scene._width != Display.getWidth() || scene._height != Display.getHeight()) {
       createFBO("scene",Display.getWidth(),Display.getHeight(),true,true);
-      if (EFFECTS_ENABLED) {
-        createFBO("sceneBlur0",Display.getWidth(),Display.getHeight(),false,false);
-        createFBO("sceneBlur1",Display.getWidth(),Display.getHeight(),false,false);
-      }
     }
   }
 }
