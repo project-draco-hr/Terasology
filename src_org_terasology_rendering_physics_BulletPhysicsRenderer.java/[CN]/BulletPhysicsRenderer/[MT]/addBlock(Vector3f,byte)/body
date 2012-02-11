@@ -1,11 +1,10 @@
 {
-  Vector3f[] positionOffsets=new Vector3f[]{new Vector3f(1,1,-1),new Vector3f(1,-1,-1),new Vector3f(-1,1,-1),new Vector3f(-1,-1,-1),new Vector3f(1,1,1),new Vector3f(1,-1,1),new Vector3f(-1,1,1),new Vector3f(-1,-1,1)};
   for (int i=0; i < 8; i++) {
     Matrix3f rot=new Matrix3f();
     rot.setIdentity();
     Vector3f pos=new Vector3f(position);
-    positionOffsets[i].scale(0.25f);
-    pos.add(positionOffsets[i]);
+    _positionOffsets[i].scale(0.25f);
+    pos.add(_positionOffsets[i]);
     DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,pos,1.0f)));
     Vector3f fallInertia=new Vector3f();
     _blockShape.calculateLocalInertia(100f,fallInertia);

@@ -1,10 +1,10 @@
 {
   _movementDirection.set(0,0,0);
   double distanceToPlayer=distanceSquaredTo(_parent.getPlayer().getPosition());
-  if (distanceToPlayer > 5 && distanceToPlayer < 32) {
+  if (distanceToPlayer > 6 && distanceToPlayer < 16) {
     _movementTarget.set(_parent.getPlayer().getPosition());
   }
-  if (Terasology.getInstance().getTime() - _lastChangeOfDirectionAt > 12000 || distanceToPlayer <= 5) {
+  if (Terasology.getInstance().getTime() - _lastChangeOfDirectionAt > 12000) {
     _movementTarget.set(getPosition().x + _parent.getWorldProvider().getRandom().randomDouble() * 500,getPosition().y,getPosition().z + _parent.getWorldProvider().getRandom().randomDouble() * 500);
     _lastChangeOfDirectionAt=Terasology.getInstance().getTime();
   }
