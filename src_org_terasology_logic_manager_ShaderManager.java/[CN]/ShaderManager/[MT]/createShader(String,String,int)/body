@@ -14,19 +14,11 @@
   if (shaders.get(title) == 0) {
     return 0;
   }
-  String fragCode=_preProcessorPreamble + "\n";
-  String line;
-  try {
-    BufferedReader reader=new BufferedReader(new InputStreamReader(ResourceLoader.getResource("org/terasology/data/shaders/" + filename).openStream()));
-    while ((line=reader.readLine()) != null) {
-      fragCode+=line + "\n";
-    }
-  }
- catch (  Exception e) {
-    Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed to read shader.");
-    return 0;
-  }
-  GL20.glShaderSource(shaders.get(title),fragCode);
+  String code=_preProcessorPreamble + "\n";
+  if (type == GL20.GL_FRAGMENT_SHADER)   code+=_includedFunctionsFragment + "\n";
+ else   code+=_includedFunctionsVertex + "\n";
+  code+=readShader(filename);
+  GL20.glShaderSource(shaders.get(title),code);
   GL20.glCompileShader(shaders.get(title));
   printLogInfo(shaders.get(title));
   return shaders.get(title);
