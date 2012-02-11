@@ -1,16 +1,8 @@
 {
-  IntBuffer indices=BufferUtils.createIntBuffer(((_vertices.size() / 3) / 4) * 6);
-  int idx=0;
-  for (int i=0; i < _vertices.size(); i+=3) {
-    if (i % 4 == 0) {
-      indices.put(idx);
-      indices.put(idx + 1);
-      indices.put(idx + 2);
-      indices.put(idx + 2);
-      indices.put(idx + 3);
-      indices.put(idx);
-      idx+=4;
-    }
+  IntBuffer indices=BufferUtils.createIntBuffer(_indices.size());
+  TIntIterator iterator=_indices.iterator();
+  while (iterator.hasNext()) {
+    indices.put(iterator.next());
   }
   indices.flip();
   return indices;

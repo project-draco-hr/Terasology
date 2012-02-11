@@ -15,6 +15,9 @@
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glAlphaFunc(GL_GREATER,0.1f);
+  if (activeBlock.isTranslucent()) {
+    glEnable(GL11.GL_ALPHA_TEST);
+  }
   glPushMatrix();
   glTranslatef(1.0f,-1.3f + (float)getParent().calcBobbingOffset((float)Math.PI / 8f,0.05f,2.5f) - getParent().getHandMovementAnimationOffset() * 0.5f,-1.5f - getParent().getHandMovementAnimationOffset() * 0.5f);
   glRotatef(-25f - getParent().getHandMovementAnimationOffset() * 64.0f,1.0f,0.0f,0.0f);
@@ -22,6 +25,9 @@
   glTranslatef(0f,0.25f,0f);
   activeBlock.render();
   glPopMatrix();
+  if (activeBlock.isTranslucent()) {
+    glDisable(GL11.GL_ALPHA_TEST);
+  }
   glDisable(GL11.GL_BLEND);
   ShaderManager.getInstance().enableShader(null);
   return true;
