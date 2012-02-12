@@ -4,9 +4,10 @@
  else   if (getColorSource() == COLOR_SOURCE.FOLIAGE_LUT) {
     color.set(calcFoliageColorForTemperatureAndHumidity(temperature,humidity));
   }
-  color.x*=_colorOffset[side.ordinal()].x;
-  color.y*=_colorOffset[side.ordinal()].y;
-  color.z*=_colorOffset[side.ordinal()].z;
-  color.w*=_colorOffset[side.ordinal()].w;
+  Vector4f colorOffset=_colorOffset.get(side);
+  color.x*=colorOffset.x;
+  color.y*=colorOffset.y;
+  color.z*=colorOffset.z;
+  color.w*=colorOffset.w;
   return color;
 }
