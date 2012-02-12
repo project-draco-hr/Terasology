@@ -1,3 +1,9 @@
 {
-  return MathHelper.clamp(Math.cos(_sunPosAngle));
+  double angle=Math.toDegrees(Math.cos(_sunPosAngle));
+  if (angle <= 0)   return 0.0;
+  double daylight=1.0;
+  if (angle < 16.0) {
+    daylight=1.0 - MathHelper.clamp((16.0 - angle) / 16.0);
+  }
+  return daylight;
 }
