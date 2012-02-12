@@ -10,11 +10,7 @@
     if (Block.AABBForBlockAt(blockPos.x,blockPos.y,blockPos.z).overlaps(_player.getAABB())) {
       return false;
     }
-    worldProvider.setBlock(blockPos.x,blockPos.y,blockPos.z,type,true,true);
-    AudioManager.getInstance().playVaryingSound("PlaceBlock",0.6f,0.5f);
-    int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
-    int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
-    _player.notifyObserversBlockPlaced(worldProvider.getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);
+    placeBlock(blockPos,type,true);
     return true;
   }
   return false;
