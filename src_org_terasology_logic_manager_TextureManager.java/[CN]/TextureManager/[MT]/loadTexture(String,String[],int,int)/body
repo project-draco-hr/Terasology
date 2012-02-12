@@ -2,10 +2,10 @@
   Texture texture=new Texture();
   texture.id=glGenTextures();
   glBindTexture(GL11.GL_TEXTURE_2D,texture.id);
-  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP);
-  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP);
-  GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-  GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,addressingMode);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,addressingMode);
+  GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,interpolationMode);
+  GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,interpolationMode);
   readTexture(path,texture);
   GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT,4);
   GL11.glTexImage2D(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,texture.width,texture.height,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,texture.data);
