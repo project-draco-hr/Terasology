@@ -1,8 +1,10 @@
 {
   withTitle("Untitled block");
-  for (int i=0; i < 6; i++) {
-    withTextureAtlasPos(Side.values()[i],new Vector2f(0.0f,0.0f));
-    withColorOffset(Side.values()[i],new Vector4f(1.0f,1.0f,1.0f,1.0f));
+  _internals=new SharedBlockInternals();
+  for (  Side side : Side.values()) {
+    withTextureAtlasPos(side,new Vector2f(0.0f,0.0f));
+    withColorOffset(side,new Vector4f(1.0f,1.0f,1.0f,1.0f));
+    withFullSide(side,false);
   }
   withPenetrable(false);
   withAllowBlockAttachment(true);
