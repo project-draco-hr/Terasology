@@ -1,0 +1,25 @@
+{
+  IWorldProvider worldProvider=_player.getParent().getWorldProvider();
+  RayBlockIntersection.Intersection selectedBlock=_player.getSelectedBlock();
+  if (selectedBlock != null) {
+    BlockPosition centerPos=selectedBlock.getBlockPosition();
+    Block centerBlock=BlockManager.getInstance().getBlock(worldProvider.getBlock(centerPos.x,centerPos.y,centerPos.z));
+    if (!centerBlock.isAllowBlockAttachment()) {
+      return false;
+    }
+    BlockPosition blockPos=selectedBlock.calcAdjacentBlockPos();
+    if (Block.AABBForBlockAt(blockPos.x,blockPos.y,blockPos.z).overlaps(_player.getAABB())) {
+      return false;
+    }
+    Side attachmentSide=Side.inDirection(centerPos.x - blockPos.x,centerPos.y - blockPos.y,centerPos.z - blockPos.z);
+    Vector3d attachDir=new Vector3d(centerPos.x - blockPos.x,centerPos.y - blockPos.y,centerPos.z - blockPos.z);
+    Vector3d rawDirection=new Vector3d(_player.getViewingDirection());
+    double dot=rawDirection.dot(attachDir);
+    rawDirection.sub(new Vector3d(dot * attachDir.x,dot * attachDir.y,dot * attachDir.z));
+    Side direction=Side.inDirection(rawDirection.x,rawDirection.y,rawDirection.z);
+    placeBlock(blockPos,type.getBlockIdFor(attachmentSide,direction),true);
+    AudioManager.getInstance().playVaryingSound("PlaceBlock",0.6f,0.5f);
+    return true;
+  }
+  return false;
+}
