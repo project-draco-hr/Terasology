@@ -1,0 +1,13 @@
+{
+  Player player=Terasology.getInstance().getActiveWorldRenderer().getPlayer();
+  BlockGroup group=BlockManager.getInstance().getBlockGroup(title);
+  if (group == null) {
+    Block block=BlockManager.getInstance().getBlock(title);
+    if (block != null) {
+      group=block.getBlockGroup();
+    }
+  }
+  if (group != null) {
+    player.getInventory().storeItemInFreeSlot(new ItemBlock(player,group,quantity));
+  }
+}
