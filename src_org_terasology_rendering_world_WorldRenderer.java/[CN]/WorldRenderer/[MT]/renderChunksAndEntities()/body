@@ -1,4 +1,6 @@
 {
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
   ShaderManager.getInstance().enableShader("chunk");
   GL13.glActiveTexture(GL13.GL_TEXTURE1);
   TextureManager.getInstance().bindTexture("custom_lava_still");
@@ -23,8 +25,6 @@
   PerformanceMonitor.endActivity();
   ShaderManager.getInstance().enableShader("chunk");
   PerformanceMonitor.startActivity("Chunk-Opaque");
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
     c.render(ChunkMesh.RENDER_PHASE.OPAQUE);
@@ -33,16 +33,12 @@
   glDisable(GL_LIGHTING);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Chunk-Billboard");
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   for (int i=0; i < _visibleChunks.size(); i++) {
     Chunk c=_visibleChunks.get(i);
     c.render(ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT);
   }
-  glDisable(GL_LIGHT0);
-  glDisable(GL_LIGHTING);
   ShaderManager.getInstance().enableShader(null);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Mobs");
@@ -54,8 +50,6 @@
   if (playerIsSwimming) {
     glDisable(GL11.GL_CULL_FACE);
   }
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
   for (int j=0; j < 2; j++) {
     if (j == 0) {
       glColorMask(false,false,false,false);
@@ -68,10 +62,10 @@
       c.render(ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
     }
   }
-  glDisable(GL_LIGHT0);
-  glDisable(GL_LIGHTING);
   glDisable(GL_BLEND);
   glEnable(GL11.GL_CULL_FACE);
   ShaderManager.getInstance().enableShader(null);
+  glDisable(GL_LIGHT0);
+  glDisable(GL_LIGHTING);
   PerformanceMonitor.endActivity();
 }
