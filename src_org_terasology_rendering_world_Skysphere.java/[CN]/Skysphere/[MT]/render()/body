@@ -5,9 +5,10 @@
   glEnable(GL13.GL_TEXTURE_CUBE_MAP);
   GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP,_textureIds.get(0));
   _sunPosAngle=(float)Math.toRadians(360.0 * _parent.getWorldProvider().getTime() - 90.0);
-  Vector4f sunNormalise=new Vector4f(0.0f,(float)Math.cos(_sunPosAngle),(float)Math.sin(_sunPosAngle),1.0f);
+  Vector4d sunNormalise=new Vector4d(0.0f,Math.cos(_sunPosAngle),Math.sin(_sunPosAngle),1.0);
   sunNormalise.normalize();
-  Vector3d _zenithColor=getAllWeatherZenith(sunNormalise.y);
+  Vector3d zenithColor=new Vector3d();
+  if (sunNormalise.y > 0.0)   zenithColor=getAllWeatherZenith((float)sunNormalise.y);
   ShaderManager.getInstance().enableShader("sky");
   int sunPos=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("sky"),"sunPos");
   GL20.glUniform4f(sunPos,0.0f,(float)Math.cos(_sunPosAngle),(float)Math.sin(_sunPosAngle),1.0f);
@@ -18,7 +19,7 @@
   int turbidity=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("sky"),"turbidity");
   GL20.glUniform1f(turbidity,(float)_turbidity);
   int zenith=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("sky"),"zenith");
-  GL20.glUniform3f(zenith,(float)_zenithColor.x,(float)_zenithColor.y,(float)_zenithColor.z);
+  GL20.glUniform3f(zenith,(float)zenithColor.x,(float)zenithColor.y,(float)zenithColor.z);
   drawSphere();
   glDisable(GL13.GL_TEXTURE_CUBE_MAP);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
