@@ -1,5 +1,6 @@
 {
   getInstance().getLogger().log(Level.INFO,"Starting Terasology...");
+  IGameMode mode=null;
   while (_runGame && !Display.isCloseRequested()) {
     if (!Display.isActive()) {
       try {
@@ -11,11 +12,8 @@
       Display.processMessages();
       continue;
     }
-    long startTime=getTime();
-    while (_timeAccumulator >= SKIP_TICKS) {
-      update();
-      _timeAccumulator-=SKIP_TICKS;
-    }
+    mode=getGameMode();
+    mode.update();
     render();
     Display.update();
     processKeyboardInput();
@@ -23,7 +21,6 @@
     if (!screenHasFocus())     getActiveWorldRenderer().getPlayer().updateInput();
     Display.sync(60);
     updateFps();
-    _timeAccumulator+=getTime() - startTime;
     if (Display.wasResized())     resizeViewport();
   }
   if (_saveWorldOnExit) {

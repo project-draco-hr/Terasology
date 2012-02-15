@@ -1,0 +1,17 @@
+{
+  IGameMode mode=_gameModes.get(_state);
+  if (mode != null) {
+    return mode;
+  }
+switch (_state) {
+case runGame:
+    mode=new ModePlayGame();
+  break;
+case undefined:
+getLogger().log(Level.SEVERE,"Undefined game state - unable to run");
+break;
+}
+_gameModes.put(_state,mode);
+mode.init();
+return mode;
+}
