@@ -25,7 +25,7 @@
         _player.setExtractionCounter((byte)1);
       }
       if (_player.getExtractionCounter() >= block.getHardness()) {
-        worldProvider.setBlock(blockPos.x,blockPos.y,blockPos.z,(byte)0x0,true,true);
+        placeBlock(blockPos,(byte)0x0,true);
         byte upperBlockType=worldProvider.getBlock(blockPos.x,blockPos.y + 1,blockPos.z);
         if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
           worldProvider.setBlock(blockPos.x,blockPos.y + 1,blockPos.z,(byte)0x0,true,true);
@@ -37,9 +37,6 @@
           Vector3d pos=blockPos.toVector3d();
           BulletPhysicsRenderer.getInstance().addBlock(new Vector3f(pos),currentBlockType);
         }
-        int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
-        int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
-        _player.notifyObserversBlockRemoved(worldProvider.getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);
         _player.resetExtraction();
         return currentBlockType;
       }

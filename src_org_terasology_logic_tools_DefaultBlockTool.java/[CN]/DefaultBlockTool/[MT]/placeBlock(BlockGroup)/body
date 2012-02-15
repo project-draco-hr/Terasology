@@ -19,11 +19,8 @@
     Side direction=Side.inDirection(rawDirection.x,rawDirection.y,rawDirection.z);
     byte blockId=type.getBlockIdFor(attachmentSide,direction);
     if (blockId == 0)     return false;
-    worldProvider.setBlock(blockPos.x,blockPos.y,blockPos.z,blockId,true,true);
+    placeBlock(blockPos,blockId,true);
     AudioManager.getInstance().playVaryingSound("PlaceBlock",0.6f,0.5f);
-    int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
-    int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
-    _player.notifyObserversBlockPlaced(worldProvider.getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos);
     return true;
   }
   return false;

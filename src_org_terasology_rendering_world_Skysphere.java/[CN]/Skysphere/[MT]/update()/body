@@ -8,4 +8,8 @@
     }
 );
   }
+  FloatBuffer buffer=BufferUtils.createFloatBuffer(4);
+  buffer.put(0.0f).put((float)Math.cos(_sunPosAngle)).put((float)Math.sin(_sunPosAngle)).put(1.0f);
+  buffer.flip();
+  glLight(GL_LIGHT0,GL11.GL_POSITION,buffer);
 }

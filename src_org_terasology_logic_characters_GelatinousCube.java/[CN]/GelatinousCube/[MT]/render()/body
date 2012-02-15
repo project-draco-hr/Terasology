@@ -6,12 +6,9 @@
   glRotatef((float)_yaw,0f,1f,0f);
   TextureManager.getInstance().bindTexture("slime");
   ShaderManager.getInstance().enableShader("gelatinousCube");
-  int tick=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("gelatinousCube"),"tick");
-  GL20.glUniform1f(tick,_parent.getTick());
-  int cOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("gelatinousCube"),"colorOffset");
-  GL20.glUniform4f(cOffset,COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].z,1.0f);
-  int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("gelatinousCube"),"light");
-  GL20.glUniform1f(light,_parent.getRenderingLightValueAt(getPosition()));
+  ShaderParameters params=ShaderManager.getInstance().getShaderParameters("gelatinousCube");
+  params.setFloat4("colorOffset",COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].z,1.0f);
+  params.setFloat("light",_parent.getRenderingLightValueAt(getPosition()));
   _mesh.render();
   ShaderManager.getInstance().enableShader(null);
   glPopMatrix();

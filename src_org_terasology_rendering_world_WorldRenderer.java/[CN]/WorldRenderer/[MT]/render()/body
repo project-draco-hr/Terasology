@@ -3,10 +3,8 @@
   scene.bind();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   PerformanceMonitor.startActivity("Render-Sky");
-  if (!_player.isHeadUnderWater()) {
-    _player.getActiveCamera().lookThroughNormalized();
-    _skysphere.render();
-  }
+  _player.getActiveCamera().lookThroughNormalized();
+  _skysphere.render();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render-World");
   _player.getActiveCamera().lookThrough();

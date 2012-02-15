@@ -1,14 +1,18 @@
 {
   _movementDirection.set(0,0,0);
   double distanceToPlayer=distanceSquaredTo(_parent.getPlayer().getPosition());
-  if (distanceToPlayer > 5 && distanceToPlayer < 32) {
+  if (distanceToPlayer > 6 && distanceToPlayer < 16) {
     _movementTarget.set(_parent.getPlayer().getPosition());
+    _followingPlayer=true;
   }
-  if (Terasology.getInstance().getTime() - _lastChangeOfDirectionAt > 5000 || distanceToPlayer <= 5) {
-    _movementTarget.set(getPosition().x + _parent.getWorldProvider().getRandom().randomDouble() * 500,getPosition().y,getPosition().z + _parent.getWorldProvider().getRandom().randomDouble() * 500);
-    _lastChangeOfDirectionAt=Terasology.getInstance().getTime();
+ else {
+    if (Terasology.getInstance().getTime() - _lastChangeOfDirectionAt > 12000 || _followingPlayer) {
+      _movementTarget.set(getPosition().x + _parent.getWorldProvider().getRandom().randomDouble() * 500,getPosition().y,getPosition().z + _parent.getWorldProvider().getRandom().randomDouble() * 500);
+      _lastChangeOfDirectionAt=Terasology.getInstance().getTime();
+      _followingPlayer=false;
+      _walkingSpeed=((_parent.getWorldProvider().getRandom().randomDouble() + 1.0) / 2.0) * 0.05;
+    }
   }
   lookAt(_movementTarget);
   walkForward();
-  if (_parent.getWorldProvider().getRandom().randomDouble() < -0.94)   jump();
 }

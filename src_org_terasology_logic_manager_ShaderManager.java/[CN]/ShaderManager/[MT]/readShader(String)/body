@@ -1,0 +1,15 @@
+{
+  String line, code="";
+  try {
+    BufferedReader reader=new BufferedReader(new InputStreamReader(ResourceLoader.getResource("org/terasology/data/shaders/" + filename).openStream()));
+    while ((line=reader.readLine()) != null) {
+      code+=line + "\n";
+    }
+  }
+ catch (  Exception e) {
+    Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed to read shader.");
+  }
+ finally {
+    return code;
+  }
+}
