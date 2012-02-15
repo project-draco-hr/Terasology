@@ -1,6 +1,5 @@
 {
-  Block block=getClass().newInstance();
-  block._internals=_internals;
+  Block block=clone();
   Quat4f rotation=new Quat4f();
   rotation.set(new AxisAngle4f(new Vector3f(0,-1,0),(float)(0.5f * Math.PI * steps)));
   if (_centerMesh != null) {
@@ -15,9 +14,15 @@
     if (sideMesh != null) {
       block._sideMesh.put(rotatedSide,sideMesh.rotate(rotation));
     }
+ else {
+      block._sideMesh.put(rotatedSide,null);
+    }
     BlockMeshPart loweredSideMesh=_loweredSideMesh.get(side);
     if (loweredSideMesh != null) {
       block._loweredSideMesh.put(rotatedSide,loweredSideMesh.rotate(rotation));
+    }
+ else {
+      block._loweredSideMesh.put(rotatedSide,null);
     }
   }
   return block;

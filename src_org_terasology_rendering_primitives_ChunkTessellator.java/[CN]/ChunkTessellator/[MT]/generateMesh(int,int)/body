@@ -8,7 +8,7 @@
       for (int y=verticalOffset; y < verticalOffset + meshHeight; y++) {
         byte blockType=_chunk.getBlock(x,y,z);
         Block block=BlockManager.getInstance().getBlock(blockType);
-        if (block.isInvisible())         continue;
+        if (block == null || block.isInvisible())         continue;
         generateBlockVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
       }
     }
