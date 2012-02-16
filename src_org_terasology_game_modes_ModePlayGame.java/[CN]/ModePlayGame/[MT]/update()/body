@@ -2,27 +2,27 @@
   Terasology gameInst=Terasology.getInstance();
   long startTime=gameInst.getTime();
   while (_timeAccumulator >= SKIP_TICKS) {
-    update();
+    if (_activeWorldRenderer != null && shouldUpdateWorld())     _activeWorldRenderer.update();
+    if (screenHasFocus() || !shouldUpdateWorld()) {
+      if (Mouse.isGrabbed()) {
+        Mouse.setGrabbed(false);
+        Mouse.setCursorPosition(Display.getWidth() / 2,Display.getHeight() / 2);
+      }
+    }
+ else {
+      if (!Mouse.isGrabbed())       Mouse.setGrabbed(true);
+    }
+    if (_activeWorldRenderer != null) {
+      if (_activeWorldRenderer.getPlayer().isDead()) {
+        _statusScreen.setVisible(true);
+        _statusScreen.updateStatus("Sorry. You've died. :-(");
+      }
+ else {
+        _statusScreen.setVisible(false);
+      }
+    }
+    updateUserInterface();
     _timeAccumulator-=SKIP_TICKS;
   }
   _timeAccumulator+=gameInst.getTime() - startTime;
-  if (_activeWorldRenderer != null && gameInst.shouldUpdateWorld())   _activeWorldRenderer.update();
-  if (screenHasFocus() || !shouldUpdateWorld()) {
-    if (Mouse.isGrabbed()) {
-      Mouse.setGrabbed(false);
-      Mouse.setCursorPosition(Display.getWidth() / 2,Display.getHeight() / 2);
-    }
-  }
- else {
-    if (!Mouse.isGrabbed())     Mouse.setGrabbed(true);
-  }
-  if (_activeWorldRenderer != null) {
-    if (_activeWorldRenderer.getPlayer().isDead()) {
-      _statusScreen.setVisible(true);
-      _statusScreen.updateStatus("Sorry. You've died. :-(");
-    }
- else {
-      _statusScreen.setVisible(false);
-    }
-  }
 }

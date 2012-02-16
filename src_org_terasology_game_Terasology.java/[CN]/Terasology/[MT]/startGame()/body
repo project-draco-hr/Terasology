@@ -13,12 +13,16 @@
       continue;
     }
     mode=getGameMode();
+    if (mode == null) {
+      _runGame=false;
+      break;
+    }
     mode.update();
-    render();
+    mode.render();
     Display.update();
-    processKeyboardInput();
-    processMouseInput();
-    if (!screenHasFocus())     getActiveWorldRenderer().getPlayer().updateInput();
+    mode.processKeyboardInput();
+    mode.processMouseInput();
+    mode.updatePlayerInput();
     Display.sync(60);
     updateFps();
     if (Display.wasResized())     resizeViewport();

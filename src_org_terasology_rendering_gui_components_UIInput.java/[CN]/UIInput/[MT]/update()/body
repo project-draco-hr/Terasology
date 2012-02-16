@@ -1,0 +1,26 @@
+{
+  _defaultTexture.setSize(getSize());
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  if (intersects(mousePos)) {
+    if (!_clickSoundPlayed) {
+      AudioManager.getInstance().getAudio("PlaceBlock").playAsSoundEffect(1.0f,0.5f,false);
+      _clickSoundPlayed=true;
+    }
+    if (_mouseUp) {
+      _mouseUp=false;
+      clicked();
+    }
+    if (_mouseDown) {
+      _defaultTexture.getTextureOrigin().set(0f,60f / 512f);
+    }
+ else {
+      _defaultTexture.getTextureOrigin().set(0f,30f / 512f);
+    }
+  }
+ else {
+    _clickSoundPlayed=false;
+    _mouseUp=false;
+    _mouseDown=false;
+    _defaultTexture.getTextureOrigin().set(0f,0f);
+  }
+}
