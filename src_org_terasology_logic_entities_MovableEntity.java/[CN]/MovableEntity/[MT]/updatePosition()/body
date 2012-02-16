@@ -45,14 +45,12 @@
       _gravity=0;
       if (oldGravity <= 0) {
         if (_jump) {
+          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
           _jump=false;
           _gravity=_jumpIntensity;
         }
-        if (!_touchingGround) {
-          Vector3d playerDirection=directionOfPlayer();
-          if (!_noSound) {
-            _footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5].playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,0.2f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,false,(float)playerDirection.x,(float)playerDirection.y,(float)playerDirection.z);
-          }
+ else         if (!_touchingGround) {
+          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
           _touchingGround=true;
         }
       }
