@@ -25,5 +25,10 @@
       block._loweredSideMesh.put(rotatedSide,null);
     }
   }
+  List<AABB> newAABBs=new ArrayList<AABB>(_colliders.size());
+  for (  AABB collider : _colliders) {
+    newAABBs.add(rotateClockwiseAABB(collider,steps));
+  }
+  block._colliders=newAABBs;
   return block;
 }
