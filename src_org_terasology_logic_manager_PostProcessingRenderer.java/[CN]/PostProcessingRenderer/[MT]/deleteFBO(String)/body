@@ -1,0 +1,9 @@
+{
+  if (_FBOs.containsKey(title)) {
+    FBO fbo=_FBOs.get(title);
+    EXTFramebufferObject.glDeleteFramebuffersEXT(fbo._fboId);
+    EXTFramebufferObject.glDeleteRenderbuffersEXT(fbo._depthRboId);
+    GL11.glDeleteTextures(fbo._depthTextureId);
+    GL11.glDeleteTextures(fbo._textureId);
+  }
+}

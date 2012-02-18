@@ -1,0 +1,14 @@
+{
+  ShaderManager.getInstance().enableShader("blur");
+  int radius=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("blur"),"radius");
+  GL20.glUniform1f(radius,16.0f);
+  PostProcessingRenderer.getInstance().getFBO("sceneBloom" + id).bind();
+  glViewport(0,0,1024,1024);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  if (id == 0)   PostProcessingRenderer.getInstance().getFBO("sceneHighPass").bindTexture();
+ else   PostProcessingRenderer.getInstance().getFBO("sceneBloom" + (id - 1)).bindTexture();
+  renderFullQuad();
+  PostProcessingRenderer.getInstance().getFBO("sceneBloom" + id).unbind();
+  ShaderManager.getInstance().enableShader(null);
+  glViewport(0,0,Display.getWidth(),Display.getHeight());
+}

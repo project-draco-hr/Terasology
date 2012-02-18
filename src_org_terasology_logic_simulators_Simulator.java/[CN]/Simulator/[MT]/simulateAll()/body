@@ -1,0 +1,15 @@
+{
+  if (_running)   return;
+  _running=true;
+  Runnable r=new Runnable(){
+    public void run(){
+      int counter=0;
+      while (executeSimulation() && counter < 1024) {
+        counter++;
+      }
+      _running=false;
+    }
+  }
+;
+  Terasology.getInstance().submitTask(_name + "Complete",r);
+}

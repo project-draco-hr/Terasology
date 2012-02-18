@@ -10,8 +10,8 @@
     }
     for (    BlockPosition gp : _gridPositions) {
       GL11.glPushMatrix();
-      Vector3d r=_parent.getWorldProvider().getRenderingReferencePoint();
-      GL11.glTranslated(gp.x - r.x,gp.y - r.y,gp.z - r.z);
+      Vector3d playerPosition=Terasology.getInstance().getActivePlayer().getPosition();
+      GL11.glTranslated(gp.x - playerPosition.x,gp.y - playerPosition.y,gp.z - playerPosition.z);
       _mesh.render();
       GL11.glPopMatrix();
     }

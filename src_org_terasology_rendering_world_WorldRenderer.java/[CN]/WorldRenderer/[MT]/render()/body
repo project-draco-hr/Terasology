@@ -1,12 +1,26 @@
 {
+  PostProcessingRenderer.getInstance().beginRenderScene();
+  PerformanceMonitor.startActivity("Render-Sky");
   _player.getActiveCamera().lookThroughNormalized();
   _skysphere.render();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render-World");
   _player.getActiveCamera().lookThrough();
   _player.render();
+  Chunk.resetStats();
   renderChunksAndEntities();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render-Particles");
   _blockParticleEmitter.render();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render-Grid");
   _blockGrid.render();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render-Extraction Overlay");
   _player.renderExtractionOverlay();
+  PerformanceMonitor.endActivity();
+  PostProcessingRenderer.getInstance().endRenderScene();
+  PostProcessingRenderer.getInstance().renderScene();
   glPushMatrix();
   glLoadIdentity();
   glClear(GL_DEPTH_BUFFER_BIT);

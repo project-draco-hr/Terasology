@@ -1,0 +1,16 @@
+{
+  BoxShape shape=_blockShape;
+  if (size == BLOCK_SIZE.HALF_SIZE)   shape=_blockShapeHalf;
+ else   if (size == BLOCK_SIZE.QUARTER_SIZE)   shape=_blockShapeQuarter;
+  Matrix3f rot=new Matrix3f();
+  rot.setIdentity();
+  DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,position,1.0f)));
+  Vector3f fallInertia=new Vector3f();
+  shape.calculateLocalInertia(mass,fallInertia);
+  RigidBodyConstructionInfo blockCI=new RigidBodyConstructionInfo(mass,blockMotionState,shape,fallInertia);
+  BlockRigidBody block=new BlockRigidBody(blockCI,type);
+  _discreteDynamicsWorld.addRigidBody(block);
+  _blocks.add(block);
+  block.applyImpulse(impulse,new Vector3f(0.0f,0.0f,0.0f));
+  return block;
+}

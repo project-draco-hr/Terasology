@@ -3,12 +3,17 @@
   _hud=new UIHeadsUpDisplay();
   _hud.setVisible(true);
   _pauseMenu=new UIPauseMenu();
+  _loadingScreen=new UILoadingScreen();
   _statusScreen=new UIStatusScreen();
   _inventoryScreen=new UIInventoryScreen();
+  _metrics=new UIMetrics();
+  _metrics.setVisible(true);
+  _guiScreens.add(_metrics);
   _guiScreens.add(_hud);
   _guiScreens.add(_pauseMenu);
-  _guiScreens.add(_statusScreen);
+  _guiScreens.add(_loadingScreen);
   _guiScreens.add(_inventoryScreen);
+  _guiScreens.add(_statusScreen);
   String worldSeed=(String)ConfigurationManager.getInstance().getConfig().get("World.defaultSeed");
   if (worldSeed.isEmpty()) {
     worldSeed=null;

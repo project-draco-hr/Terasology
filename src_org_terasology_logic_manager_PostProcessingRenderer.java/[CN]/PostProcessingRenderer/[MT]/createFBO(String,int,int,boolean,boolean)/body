@@ -1,0 +1,38 @@
+{
+  deleteFBO(title);
+  FBO fbo=new FBO();
+  fbo._width=width;
+  fbo._height=height;
+  fbo._textureId=GL11.glGenTextures();
+  GL11.glBindTexture(GL11.GL_TEXTURE_2D,fbo._textureId);
+  GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,GL11.GL_LINEAR);
+  GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,GL11.GL_LINEAR);
+  GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_S,GL12.GL_CLAMP_TO_EDGE);
+  GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL12.GL_CLAMP_TO_EDGE);
+  if (hdr)   GL11.glTexImage2D(GL11.GL_TEXTURE_2D,0,ARBTextureFloat.GL_RGBA16F_ARB,width,height,0,GL11.GL_RGBA,ARBHalfFloatPixel.GL_HALF_FLOAT_ARB,(java.nio.ByteBuffer)null);
+ else   GL11.glTexImage2D(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,width,height,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,(java.nio.ByteBuffer)null);
+  if (depth) {
+    fbo._depthTextureId=GL11.glGenTextures();
+    GL11.glBindTexture(GL11.GL_TEXTURE_2D,fbo._depthTextureId);
+    GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,GL11.GL_NEAREST);
+    GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,GL11.GL_NEAREST);
+    GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_S,GL12.GL_CLAMP_TO_EDGE);
+    GL11.glTexParameterf(GL11.GL_TEXTURE_2D,GL11.GL_TEXTURE_WRAP_T,GL12.GL_CLAMP_TO_EDGE);
+    GL11.glTexImage2D(GL11.GL_TEXTURE_2D,0,GL14.GL_DEPTH_COMPONENT24,width,height,0,GL11.GL_DEPTH_COMPONENT,GL11.GL_FLOAT,(java.nio.ByteBuffer)null);
+    fbo._depthRboId=EXTFramebufferObject.glGenRenderbuffersEXT();
+    EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT,fbo._depthRboId);
+    EXTFramebufferObject.glRenderbufferStorageEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT,GL14.GL_DEPTH_COMPONENT24,width,height);
+    EXTFramebufferObject.glBindRenderbufferEXT(EXTFramebufferObject.GL_RENDERBUFFER_EXT,0);
+  }
+  GL11.glBindTexture(GL11.GL_TEXTURE_2D,0);
+  fbo._fboId=EXTFramebufferObject.glGenFramebuffersEXT();
+  EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,fbo._fboId);
+  EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT,GL11.GL_TEXTURE_2D,fbo._textureId,0);
+  if (depth) {
+    EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,EXTFramebufferObject.GL_RENDERBUFFER_EXT,fbo._depthRboId);
+    EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,GL11.GL_TEXTURE_2D,fbo._depthTextureId,0);
+  }
+  EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,0);
+  _FBOs.put(title,fbo);
+  return fbo;
+}

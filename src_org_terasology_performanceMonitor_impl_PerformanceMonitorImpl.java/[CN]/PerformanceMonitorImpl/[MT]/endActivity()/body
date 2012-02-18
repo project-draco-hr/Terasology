@@ -1,0 +1,11 @@
+{
+  if (Thread.currentThread() != _mainThread || _activityStack.empty())   return;
+  Activity oldActivity=_activityStack.pop();
+  long time=Sys.getTime();
+  long total=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + time - oldActivity.resumeTime : time - oldActivity.startTime;
+  _currentData.adjustOrPutValue(oldActivity.name,total,total);
+  if (!_activityStack.isEmpty()) {
+    Activity currentActivity=_activityStack.peek();
+    currentActivity.resumeTime=time;
+  }
+}

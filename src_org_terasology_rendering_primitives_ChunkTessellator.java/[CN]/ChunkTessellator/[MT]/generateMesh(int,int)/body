@@ -1,4 +1,5 @@
 {
+  PerformanceMonitor.startActivity("GenerateMesh");
   ChunkMesh mesh=new ChunkMesh();
   for (int x=0; x < Chunk.CHUNK_DIMENSION_X; x++) {
     for (int z=0; z < Chunk.CHUNK_DIMENSION_Z; z++) {
@@ -7,14 +8,13 @@
       for (int y=verticalOffset; y < verticalOffset + meshHeight; y++) {
         byte blockType=_chunk.getBlock(x,y,z);
         Block block=BlockManager.getInstance().getBlock(blockType);
-        if (block.isInvisible())         continue;
-        Block.BLOCK_FORM blockForm=block.getBlockForm();
-        if (blockForm != Block.BLOCK_FORM.BILLBOARD)         generateBlockVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
- else         generateBillboardVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
+        if (block == null || block.isInvisible())         continue;
+        generateBlockVertices(mesh,x,y,z,biomeTemp,biomeHumidity);
       }
     }
   }
   generateOptimizedBuffers(mesh);
   _statVertexArrayUpdateCount++;
+  PerformanceMonitor.endActivity();
   return mesh;
 }

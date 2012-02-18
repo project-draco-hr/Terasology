@@ -1,0 +1,16 @@
+{
+  _name=name;
+  for (  Side side : Side.values()) {
+    Block block=blocks.get(side);
+    if (block != null) {
+      _blocks.put(side,block);
+      block.withBlockGroup(this);
+    }
+  }
+  if (_blocks.containsKey(Side.BOTTOM)) {
+    _archetype=_blocks.get(Side.BOTTOM);
+  }
+ else {
+    _archetype=_blocks.get(Side.FRONT);
+  }
+}

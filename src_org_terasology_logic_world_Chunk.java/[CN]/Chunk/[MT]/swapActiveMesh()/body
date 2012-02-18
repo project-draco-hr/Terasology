@@ -1,19 +1,26 @@
 {
-synchronized (this) {
-    if (_disposed)     return false;
-    if (_newMeshes != null) {
-      if (_newMeshes[0].isDisposed() || !_newMeshes[0].isGenerated())       return false;
-      ChunkMesh[] newMesh=_newMeshes;
-      _newMeshes=null;
-      ChunkMesh[] oldActiveMesh=_activeMeshes;
-      _activeMeshes=newMesh;
-      _rigidBody=null;
-      if (oldActiveMesh != null) {
-        for (int i=0; i < oldActiveMesh.length; i++) {
-          oldActiveMesh[i].dispose();
+  if (_lock.tryLock()) {
+    try {
+      if (!_disposed) {
+        if (_newMeshes != null) {
+          if (!_newMeshes[0].isDisposed() && _newMeshes[0].isGenerated()) {
+            ChunkMesh[] newMesh=_newMeshes;
+            _newMeshes=null;
+            ChunkMesh[] oldActiveMesh=_activeMeshes;
+            _activeMeshes=newMesh;
+            _rigidBody=null;
+            if (oldActiveMesh != null) {
+              for (int i=0; i < oldActiveMesh.length; i++) {
+                oldActiveMesh[i].dispose();
+              }
+            }
+            return true;
+          }
         }
       }
-      return true;
+    }
+  finally {
+      _lock.unlock();
     }
   }
   return false;

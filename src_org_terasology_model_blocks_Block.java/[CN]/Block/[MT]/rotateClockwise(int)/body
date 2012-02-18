@@ -1,0 +1,34 @@
+{
+  Block block=clone();
+  Quat4f rotation=new Quat4f();
+  rotation.set(new AxisAngle4f(new Vector3f(0,-1,0),(float)(0.5f * Math.PI * steps)));
+  if (_centerMesh != null) {
+    block._centerMesh=_centerMesh.rotate(rotation);
+  }
+  for (  Side side : Side.values()) {
+    Side rotatedSide=side.rotateClockwise(steps);
+    block._fullSide.put(rotatedSide,_fullSide.get(side));
+    block._colorOffset.put(rotatedSide,_colorOffset.get(side));
+    block._textureAtlasPos.put(rotatedSide,_textureAtlasPos.get(side));
+    BlockMeshPart sideMesh=_sideMesh.get(side);
+    if (sideMesh != null) {
+      block._sideMesh.put(rotatedSide,sideMesh.rotate(rotation));
+    }
+ else {
+      block._sideMesh.put(rotatedSide,null);
+    }
+    BlockMeshPart loweredSideMesh=_loweredSideMesh.get(side);
+    if (loweredSideMesh != null) {
+      block._loweredSideMesh.put(rotatedSide,loweredSideMesh.rotate(rotation));
+    }
+ else {
+      block._loweredSideMesh.put(rotatedSide,null);
+    }
+  }
+  List<AABB> newAABBs=new ArrayList<AABB>(_colliders.size());
+  for (  AABB collider : _colliders) {
+    newAABBs.add(rotateClockwiseAABB(collider,steps));
+  }
+  block._colliders=newAABBs;
+  return block;
+}

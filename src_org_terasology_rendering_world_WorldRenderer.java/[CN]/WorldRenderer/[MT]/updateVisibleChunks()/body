@@ -1,18 +1,21 @@
 {
   _visibleChunks.clear();
-  _statDirty=0;
+  _statDirtyChunks=0;
   boolean noMoreUpdates=false;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
     if (isChunkVisible(c)) {
       _visibleChunks.add(c);
       c.update();
-      if (c.isDirty())       _statDirty++;
+      if (c.isDirty())       _statDirtyChunks++;
       if ((c.isDirty() || c.isLightDirty() || c.isFresh()) && !noMoreUpdates) {
         if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
           noMoreUpdates=true;
         }
       }
+    }
+ else     if (i > MAX_CHUNK_VERTEX_BUFFER_OBJECTS) {
+      c.clearMeshes();
     }
   }
 }

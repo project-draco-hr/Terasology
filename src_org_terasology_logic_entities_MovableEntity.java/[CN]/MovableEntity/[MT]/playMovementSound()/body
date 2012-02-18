@@ -1,14 +1,14 @@
 {
   if (_godMode)   return;
+  if (_noSound)   return;
   if ((MathHelper.fastAbs(_velocity.x) > 0.01 || MathHelper.fastAbs(_velocity.z) > 0.01) && _touchingGround) {
     if (_currentFootstepSound == null) {
-      Vector3d playerDirection=directionOfReferencePoint();
       _currentFootstepSound=_footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5];
-      _currentFootstepSound.playAsSoundEffect(0.7f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.3f,0.2f + (float)MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomDouble()) * 0.2f,false,(float)playerDirection.x,(float)playerDirection.y,(float)playerDirection.z);
+      AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_currentFootstepSound);
     }
  else {
       long timeDiff=Terasology.getInstance().getTime() - _lastFootStepSoundPlayed;
-      if (!_currentFootstepSound.isPlaying() && timeDiff > 400 / (_activeWalkingSpeed / _walkingSpeed)) {
+      if (timeDiff > 400 / (_activeWalkingSpeed / _walkingSpeed)) {
         _lastFootStepSoundPlayed=Terasology.getInstance().getTime();
         _currentFootstepSound=null;
       }

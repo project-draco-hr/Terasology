@@ -1,8 +1,8 @@
 {
   if (isAlive()) {
     glPushMatrix();
-    Vector3d r=getParent().getParent().getWorldProvider().getRenderingReferencePoint();
-    glTranslated(_position.x - r.x,_position.y - r.y,_position.z - r.z);
+    Vector3d playerPosition=Terasology.getInstance().getActivePlayer().getPosition();
+    glTranslated(_position.x - playerPosition.x,_position.y - playerPosition.y,_position.z - playerPosition.z);
     applyOrientation();
     glScalef(_size,_size,_size);
     renderParticle();

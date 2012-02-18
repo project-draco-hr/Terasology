@@ -1,0 +1,6 @@
+{
+  Block cBlock=BlockManager.getInstance().getBlock(currentBlock);
+  if (cBlock.getSideMesh(side) == null)   return false;
+  Block bCheck=BlockManager.getInstance().getBlock(blockToCheck);
+  return bCheck == null || cBlock == null || bCheck.getId() == 0x0 || !bCheck.isBlockingSide(side.reverse()) || !cBlock.isTranslucent() && bCheck.isTranslucent() || (bCheck.getBlockForm() == Block.BLOCK_FORM.LOWERED_BLOCK && cBlock.getBlockForm() != Block.BLOCK_FORM.LOWERED_BLOCK);
+}

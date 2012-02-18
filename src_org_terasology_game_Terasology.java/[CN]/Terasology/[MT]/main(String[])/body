@@ -10,12 +10,18 @@
   Terasology terasology=null;
   try {
     terasology=getInstance();
+    terasology.initOpenAL();
     terasology.initDisplay();
+    terasology.checkOpenGL();
     terasology.initControls();
     terasology.initGame();
     terasology.initGroovy();
   }
  catch (  LWJGLException e) {
+    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm so sorry: " + e.toString(),e);
+    System.exit(0);
+  }
+catch (  Exception e) {
     getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm so sorry: " + e.toString(),e);
     System.exit(0);
   }

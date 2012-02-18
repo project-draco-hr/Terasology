@@ -1,0 +1,21 @@
+{
+  Block clone=null;
+  try {
+    clone=(Block)super.clone();
+    clone._group=null;
+    clone._sideMesh=new EnumMap<Side,BlockMeshPart>(Side.class);
+    clone._sideMesh.putAll(_sideMesh);
+    clone._fullSide=new EnumBooleanMap<Side>(Side.class);
+    clone._fullSide.putAll(_fullSide);
+    clone._loweredSideMesh=new EnumMap<Side,BlockMeshPart>(Side.class);
+    clone._loweredSideMesh.putAll(_loweredSideMesh);
+    clone._colorOffset=new EnumMap<Side,Vector4f>(Side.class);
+    clone._colorOffset.putAll(_colorOffset);
+    clone._textureAtlasPos=new EnumMap<Side,Vector2f>(Side.class);
+    clone._textureAtlasPos.putAll(_textureAtlasPos);
+  }
+ catch (  CloneNotSupportedException e) {
+    logger.log(Level.SEVERE,"Failed to clone block");
+  }
+  return clone;
+}

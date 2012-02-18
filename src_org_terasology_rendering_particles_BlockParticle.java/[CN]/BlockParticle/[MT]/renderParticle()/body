@@ -5,20 +5,11 @@
     drawParticle();
     glEndList();
   }
-  float lightValue=_parent.getParent().getRenderingLightValueAt(_position);
-  FloatBuffer colorBuffer=BufferUtils.createFloatBuffer(3);
-  Vector4f color=BlockManager.getInstance().getBlock(_blockType).calcColorOffsetFor(Block.SIDE.FRONT,_parent.getParent().getActiveTemperature(),_parent.getParent().getActiveHumidity());
-  colorBuffer.put(color.x);
-  colorBuffer.put(color.y);
-  colorBuffer.put(color.z);
-  colorBuffer.flip();
-  int colorOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"colorOffset");
-  int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"light");
-  int texOffsetX=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"texOffsetX");
-  int texOffsetY=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("particle"),"texOffsetY");
-  GL20.glUniform1f(light,lightValue * _lightOffset);
-  GL20.glUniform1f(texOffsetX,_texOffsetX);
-  GL20.glUniform1f(texOffsetY,_texOffsetY);
-  GL20.glUniform3(colorOffset,colorBuffer);
+  ShaderParameters params=ShaderManager.getInstance().getShaderParameters("particle");
+  Vector4f color=BlockManager.getInstance().getBlock(_blockType).calcColorOffsetFor(Side.FRONT,_parent.getParent().getActiveTemperature(),_parent.getParent().getActiveHumidity());
+  params.setFloat3("colorOffset",color.x,color.y,color.z);
+  params.setFloat("texOffsetX",_texOffsetX);
+  params.setFloat("texOffsetY",_texOffsetY);
+  params.setFloat("light",_parent.getParent().getRenderingLightValueAt(_position));
   glCallList(_displayLists[_blockType]);
 }

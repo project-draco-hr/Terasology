@@ -1,0 +1,11 @@
+{
+  if (Thread.currentThread() != _mainThread)   return;
+  Activity newActivity=new Activity();
+  newActivity.name=activity;
+  newActivity.startTime=Sys.getTime();
+  if (!_activityStack.isEmpty()) {
+    Activity currentActivity=_activityStack.peek();
+    currentActivity.ownTime+=newActivity.startTime - ((currentActivity.resumeTime > 0) ? currentActivity.resumeTime : currentActivity.startTime);
+  }
+  _activityStack.push(newActivity);
+}
