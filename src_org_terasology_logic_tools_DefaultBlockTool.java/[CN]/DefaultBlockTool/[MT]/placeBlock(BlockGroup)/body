@@ -8,7 +8,8 @@
       return false;
     }
     BlockPosition blockPos=selectedBlock.calcAdjacentBlockPos();
-    if (Block.AABBForBlockAt(blockPos.x,blockPos.y,blockPos.z).overlaps(_player.getAABB())) {
+    Block adjBlock=BlockManager.getInstance().getBlock(worldProvider.getBlock(blockPos.x,blockPos.y,blockPos.z));
+    if (adjBlock != null && !adjBlock.isInvisible() && adjBlock.isRenderBoundingBox()) {
       return false;
     }
     Side attachmentSide=Side.inDirection(centerPos.x - blockPos.x,centerPos.y - blockPos.y,centerPos.z - blockPos.z);
@@ -17,9 +18,16 @@
     double dot=rawDirection.dot(attachDir);
     rawDirection.sub(new Vector3d(dot * attachDir.x,dot * attachDir.y,dot * attachDir.z));
     Side direction=Side.inDirection(rawDirection.x,rawDirection.y,rawDirection.z);
-    byte blockId=type.getBlockIdFor(attachmentSide,direction);
-    if (blockId == 0)     return false;
-    placeBlock(blockPos,blockId,true);
+    Block block=type.getBlockFor(attachmentSide,direction);
+    if (block == null)     return false;
+    if (!block.isPenetrable()) {
+      for (      AABB blockAABB : block.getColliders(blockPos.x,blockPos.y,blockPos.z)) {
+        if (blockAABB.overlaps(_player.getAABB())) {
+          return false;
+        }
+      }
+    }
+    placeBlock(blockPos,block.getId(),true);
     AudioManager.getInstance().playVaryingSound("PlaceBlock",0.6f,0.5f);
     return true;
   }
