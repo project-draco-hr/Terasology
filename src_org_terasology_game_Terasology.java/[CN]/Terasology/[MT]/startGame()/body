@@ -17,6 +17,7 @@
       _runGame=false;
       break;
     }
+    long startTime=getTime();
     mode.update();
     mode.render();
     Display.update();
@@ -25,6 +26,7 @@
     mode.updatePlayerInput();
     Display.sync(60);
     updateFps();
+    mode.updateTimeAccumulator(getTime(),startTime);
     if (Display.wasResized())     resizeViewport();
   }
   if (_saveWorldOnExit) {

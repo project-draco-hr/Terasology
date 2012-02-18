@@ -1,6 +1,5 @@
 {
   Terasology gameInst=Terasology.getInstance();
-  long startTime=gameInst.getTime();
   while (_timeAccumulator >= SKIP_TICKS) {
     if (_activeWorldRenderer != null && shouldUpdateWorld())     _activeWorldRenderer.update();
     if (screenHasFocus() || !shouldUpdateWorld()) {
@@ -24,5 +23,4 @@
     updateUserInterface();
     _timeAccumulator-=SKIP_TICKS;
   }
-  _timeAccumulator+=gameInst.getTime() - startTime;
 }
