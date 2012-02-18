@@ -9,7 +9,7 @@
     }
     BlockPosition blockPos=selectedBlock.calcAdjacentBlockPos();
     Block adjBlock=BlockManager.getInstance().getBlock(worldProvider.getBlock(blockPos.x,blockPos.y,blockPos.z));
-    if (adjBlock != null && !adjBlock.isInvisible() && adjBlock.isRenderBoundingBox()) {
+    if (adjBlock != null && !adjBlock.isInvisible() && !adjBlock.isSelectionRayThrough()) {
       return false;
     }
     Side attachmentSide=Side.inDirection(centerPos.x - blockPos.x,centerPos.y - blockPos.y,centerPos.z - blockPos.z);
