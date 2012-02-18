@@ -3,9 +3,6 @@ def writeMeshPart(name, obj, fw, scene, apply_modifiers):
     def roundVec3d(v):
         return (round(v[0], 6), round(v[1], 6), round(v[2], 6))
 
-    def convertVec3d(v):
-        return ((- v[0]), v[2], v[1])
-
     def roundVec2d(v):
         return (round(v[0], 6), round(v[1], 6))
     if (not obj):
@@ -68,8 +65,11 @@ def writeMeshPart(name, obj, fw, scene, apply_modifiers):
         fw(']')
         firstFace = False
     fw('\n\t\t]\n')
-    if (('full' in obj) or ('full' in obj.data)):
-        fw('\t\tfullSide = true\n')
+    if ('teraFullSide' in obj):
+        if obj.teraFullSide:
+            fw('\t\tfullSide = true\n')
+        else:
+            fw('\t\tfullSide = false\n')
     else:
         fw('\t\tfullSide = false\n')
     fw('\t}\n')

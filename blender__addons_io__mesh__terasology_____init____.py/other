@@ -1,8 +1,12 @@
 "\nName: 'TerasologyBlockShapeExport'\nBlender: 260\nGroup: 'Export'\nTooltip: 'Export a Terasology Block Shape'\n"
-bl_info = {'name': 'Terasology Block Shape Export', 'description': 'Exporter for producing Terasology Block Shape files', 'author': 'Immortius', 'version': (1, 0), 'blender': (2, 6, 0), 'location': 'File > Import-Export', 'category': 'Import-Export', }
+bl_info = {'name': 'Terasology Block Shape Export', 'description': 'Exporter for producing Terasology Block Shape files', 'author': 'Immortius', 'version': (1, 1), 'blender': (2, 6, 0), 'location': 'File > Import-Export', 'category': 'Import-Export', }
 import bpy
 import os
 import bpy_extras.io_utils
 from bpy.props import StringProperty, BoolProperty
+bpy.types.Object.teraFullSide = BoolProperty(name='Full Side', description='Is this side of the block complete', default=False)
+bpy.types.Object.teraAABB = BoolProperty(name='Is AABB Collider', description='Is this object used to describe an AABB collider', default=False)
+bpy.types.Scene.teraAuthor = StringProperty(name='Author', description='Is this side of the block complete', default='')
+bpy.types.Scene.teraAutoCollider = BoolProperty(name='Auto-generate Collider', description='Automatically generate an AABB collider that encapulates the block', default=False)
 if (__name__ == '__main__'):
     register()
