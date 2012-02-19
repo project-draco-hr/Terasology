@@ -10,31 +10,13 @@
     }
     ShaderProgram shaderPost=ShaderManager.getInstance().getShaderProgram("post");
     shaderPost.enable();
-    PostProcessingRenderer.FBO scene=PostProcessingRenderer.getInstance().getFBO("scene");
-    GL13.glActiveTexture(GL13.GL_TEXTURE1);
-    PostProcessingRenderer.getInstance().getFBO("sceneBloom1").bindTexture();
-    GL13.glActiveTexture(GL13.GL_TEXTURE2);
-    scene.bindDepthTexture();
-    GL13.glActiveTexture(GL13.GL_TEXTURE3);
-    PostProcessingRenderer.getInstance().getFBO("sceneBlur1").bindTexture();
-    GL13.glActiveTexture(GL13.GL_TEXTURE0);
-    PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
-    shaderPost.setInt("texScene",0);
-    shaderPost.setInt("texBloom",1);
-    shaderPost.setInt("texDepth",2);
-    shaderPost.setInt("texBlur",3);
-    shaderPost.setFloat("exposure",_exposure);
     renderFullQuad();
-    scene.unbindTexture();
-    ShaderManager.getInstance().enableShader(null);
   }
  else {
     PostProcessingRenderer.FBO scene=PostProcessingRenderer.getInstance().getFBO("scene");
+    ShaderManager.getInstance().enableDefaultTextured();
     scene.bindTexture();
-    glEnable(GL11.GL_TEXTURE_2D);
     renderFullQuad();
-    glDisable(GL11.GL_TEXTURE_2D);
-    scene.unbindTexture();
   }
   createOrUpdateFullscreenFbos();
 }

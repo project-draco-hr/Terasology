@@ -3,7 +3,6 @@
   TextureManager.getInstance().bindTexture("terrain");
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
   shader.enable();
-  shader.setFloat("light",Terasology.getInstance().getActiveWorldRenderer().getRenderingLightValue());
   FloatBuffer colorBuffer=BufferUtils.createFloatBuffer(3);
   Vector4f color=activeBlock.calcColorOffsetFor(Side.FRONT,Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature(),Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature());
   colorBuffer.put(color.x);
@@ -29,6 +28,5 @@
     glDisable(GL11.GL_ALPHA_TEST);
   }
   glDisable(GL11.GL_BLEND);
-  ShaderManager.getInstance().enableShader(null);
   return true;
 }
