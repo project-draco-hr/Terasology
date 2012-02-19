@@ -1,14 +1,14 @@
 {
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("down");
   shader.enable();
-  for (int i=10; i >= 0; i--) {
+  for (int i=5; i >= 0; i--) {
     int sizePrev=(int)java.lang.Math.pow(2,i + 1);
     int size=(int)java.lang.Math.pow(2,i);
     shader.setFloat("size",size);
     PostProcessingRenderer.getInstance().getFBO("scene" + size).bind();
     glViewport(0,0,size,size);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (i == 10)     PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
+    if (i == 5)     PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
  else     PostProcessingRenderer.getInstance().getFBO("scene" + sizePrev).bindTexture();
     renderFullQuad();
     PostProcessingRenderer.getInstance().getFBO("scene" + size).unbind();
