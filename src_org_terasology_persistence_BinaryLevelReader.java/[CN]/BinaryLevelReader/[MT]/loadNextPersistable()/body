@@ -1,0 +1,56 @@
+{
+  nextPersistable=null;
+  while (nextPersistable == null) {
+    short persistableId=input.readShort();
+    if (persistableId == PersistenceManager.END_OF_SECTION) {
+      return;
+    }
+    Class<? extends Persistable> persistableClass=persistableTypeLookup.get(persistableId);
+    if (persistableClass == null) {
+      while (true) {
+        short typeId=input.readShort();
+        if (typeId == PersistenceManager.END_OF_SECTION)         break;
+        TypeInfo info=typeLookup.get(typeId);
+        if (info == null) {
+          throw new IOException("Unexpected type: " + typeId);
+        }
+        input.readUTF();
+        try {
+          info.read(input,this);
+        }
+ catch (        Exception e) {
+          throw new IOException("Error reading data",e);
+        }
+      }
+    }
+ else {
+      propStack.add(new HashMap<String,Object>());
+      while (true) {
+        short typeId=input.readShort();
+        if (typeId == PersistenceManager.END_OF_SECTION)         break;
+        TypeInfo info=typeLookup.get(typeId);
+        if (info == null) {
+          throw new IOException("Unexpected type: " + typeId);
+        }
+        String propName=input.readUTF();
+        try {
+          properties().put(propName,info.read(input,this));
+        }
+ catch (        Exception e) {
+          throw new IOException("Error reading data",e);
+        }
+      }
+      try {
+        nextPersistable=persistableClass.newInstance();
+        nextPersistable.retrieve(this);
+      }
+ catch (      InstantiationException e) {
+        throw new IOException("Could not read persistable " + persistableClass.getName(),e);
+      }
+catch (      IllegalAccessException e) {
+        throw new IOException("Could not read persistable " + persistableClass.getName(),e);
+      }
+      propStack.remove(propStack.size() - 1);
+    }
+  }
+}

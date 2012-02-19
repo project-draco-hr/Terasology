@@ -1,0 +1,11 @@
+{
+  output.writeShort(PersistenceManager.END_OF_SECTION);
+  try {
+    output.flush();
+    output.close();
+  }
+ catch (  IOException ex) {
+    logger.log(Level.SEVERE,"Error writing data",ex);
+    errored=true;
+  }
+}
