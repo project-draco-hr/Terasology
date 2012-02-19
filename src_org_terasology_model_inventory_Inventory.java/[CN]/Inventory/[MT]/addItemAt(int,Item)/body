@@ -1,0 +1,15 @@
+{
+  if (slot < 0 || slot >= size())   return false;
+  if (_items[slot] == null) {
+    _items[slot]=item;
+    _counts[slot]++;
+    return true;
+  }
+ else {
+    if (_items[slot].equals(item) && _counts[slot] < item.getStackSize()) {
+      _counts[slot]++;
+      return true;
+    }
+  }
+  return false;
+}
