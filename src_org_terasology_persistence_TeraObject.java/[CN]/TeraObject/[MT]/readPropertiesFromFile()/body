@@ -1,0 +1,9 @@
+{
+  try {
+    return new ConfigSlurper().parse(_file.toURI().toURL());
+  }
+ catch (  MalformedURLException e) {
+    Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed reading config object. Sorry.",e);
+  }
+  return new ConfigObject();
+}

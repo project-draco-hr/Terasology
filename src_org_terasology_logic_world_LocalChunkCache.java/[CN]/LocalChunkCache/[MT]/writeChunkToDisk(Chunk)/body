@@ -2,14 +2,14 @@
   if (!SAVE_CHUNKS) {
     return;
   }
-  File dirPath=new File(_parent.getWorldSavePath() + "/" + c.getChunkSavePath());
+  File dirPath=new File(_parent.getObjectSavePath() + "/" + c.getChunkSavePath());
   if (!dirPath.exists()) {
     if (!dirPath.mkdirs()) {
       Terasology.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
       return;
     }
   }
-  File f=new File(_parent.getWorldSavePath() + "/" + c.getChunkSavePath()+ "/"+ c.getChunkFileName());
+  File f=new File(_parent.getObjectSavePath() + "/" + c.getChunkSavePath()+ "/"+ c.getChunkFileName());
   try {
     FileOutputStream fileOut=new FileOutputStream(f);
     ObjectOutputStream out=new ObjectOutputStream(fileOut);

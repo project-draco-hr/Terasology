@@ -1,0 +1,11 @@
+{
+  try {
+    if (!_path.exists())     _path.mkdirs();
+    FileWriter writer=new FileWriter(_file);
+    co.writeTo(writer);
+    writer.close();
+  }
+ catch (  IOException e) {
+    Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed writing config object. Sorry.",e);
+  }
+}
