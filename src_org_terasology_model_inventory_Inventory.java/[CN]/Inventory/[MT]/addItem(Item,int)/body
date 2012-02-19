@@ -1,6 +1,8 @@
 {
-  int slot=findFirstFreeSlot(item);
-  boolean result=addItemAt(slot,item);
-  _counts[slot]=_counts[slot] + count - 1;
-  return result;
+  Cubbyhole free=getFreeCubby(item);
+  Cubbyhole overflow=free.insert(item,count);
+  if (overflow != null) {
+    free=getFreeCubby(item);
+    free.insert(item,overflow.getItemCount());
+  }
 }
