@@ -1,7 +1,8 @@
 {
   glEnable(GL_LIGHTING);
   glEnable(GL_LIGHT0);
-  ShaderManager.getInstance().enableShader("chunk");
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("chunk");
+  shader.enable();
   GL13.glActiveTexture(GL13.GL_TEXTURE1);
   TextureManager.getInstance().bindTexture("custom_lava_still");
   GL13.glActiveTexture(GL13.GL_TEXTURE2);
@@ -10,14 +11,10 @@
   TextureManager.getInstance().bindTexture("effects");
   GL13.glActiveTexture(GL13.GL_TEXTURE0);
   TextureManager.getInstance().bindTexture("terrain");
-  int lavaTexture=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureLava");
-  int textureWaterNormal=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureWaterNormal");
-  int textureAtlas=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureAtlas");
-  int textureEffects=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("chunk"),"textureEffects");
-  GL20.glUniform1i(lavaTexture,1);
-  GL20.glUniform1i(textureWaterNormal,2);
-  GL20.glUniform1i(textureEffects,3);
-  GL20.glUniform1i(textureAtlas,0);
+  shader.setInt("textureLava",1);
+  shader.setInt("textureWaterNormal",2);
+  shader.setInt("textureEffects",3);
+  shader.setInt("textureAtlas",0);
   boolean playerIsSwimming=_player.isHeadUnderWater();
   ShaderManager.getInstance().enableShader(null);
   PerformanceMonitor.startActivity("BulletPhysicsRenderer");
@@ -44,7 +41,7 @@
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Chunk-WaterIce");
   TextureManager.getInstance().bindTexture("terrain");
-  ShaderManager.getInstance().enableShader("chunk");
+  shader.enable();
   if (playerIsSwimming) {
     glDisable(GL11.GL_CULL_FACE);
   }

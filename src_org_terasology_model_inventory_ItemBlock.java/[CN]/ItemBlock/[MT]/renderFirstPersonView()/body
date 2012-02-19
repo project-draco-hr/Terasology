@@ -1,16 +1,16 @@
 {
   Block activeBlock=_blockGroup.getArchetypeBlock();
   TextureManager.getInstance().bindTexture("terrain");
-  ShaderManager.getInstance().enableShader("block");
-  int light=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"light");
-  GL20.glUniform1f(light,Terasology.getInstance().getActiveWorldRenderer().getRenderingLightValue());
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
+  shader.enable();
+  shader.setFloat("light",Terasology.getInstance().getActiveWorldRenderer().getRenderingLightValue());
   FloatBuffer colorBuffer=BufferUtils.createFloatBuffer(3);
   Vector4f color=activeBlock.calcColorOffsetFor(Side.FRONT,Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature(),Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature());
   colorBuffer.put(color.x);
   colorBuffer.put(color.y);
   colorBuffer.put(color.z);
   colorBuffer.flip();
-  int colorOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("block"),"colorOffset");
+  int colorOffset=GL20.glGetUniformLocation(ShaderManager.getInstance().getShaderProgram("block").getShaderId(),"colorOffset");
   GL20.glUniform3(colorOffset,colorBuffer);
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);

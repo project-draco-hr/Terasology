@@ -1,0 +1,24 @@
+{
+  int shaderId=GL20.glCreateShader(type);
+  String code=_preProcessorPreamble + "\n";
+  if (type == GL20.GL_FRAGMENT_SHADER)   code+=_includedFunctionsFragment + "\n";
+ else   code+=_includedFunctionsVertex + "\n";
+  String filename=_title;
+  if (type == GL20.GL_FRAGMENT_SHADER) {
+    filename+="_frag.glsl";
+  }
+ else   if (type == GL20.GL_VERTEX_SHADER) {
+    filename+="_vert.glsl";
+  }
+  Terasology.getInstance().getLogger().log(Level.INFO,"Loading shader {0} ({1}, type = {2})",new String[]{_title,filename,String.valueOf(type)});
+  code+=readShader(filename);
+  if (type == GL20.GL_FRAGMENT_SHADER) {
+    _fragmentProgram=shaderId;
+  }
+ else   if (type == GL20.GL_VERTEX_SHADER) {
+    _vertexProgram=shaderId;
+  }
+  GL20.glShaderSource(shaderId,code);
+  GL20.glCompileShader(shaderId);
+  printLogInfo(shaderId);
+}

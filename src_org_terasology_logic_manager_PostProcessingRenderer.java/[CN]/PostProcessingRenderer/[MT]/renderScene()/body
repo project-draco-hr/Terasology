@@ -8,7 +8,8 @@
       generateBloom(i);
       generateBlur(i);
     }
-    ShaderManager.getInstance().enableShader("post");
+    ShaderProgram shaderPost=ShaderManager.getInstance().getShaderProgram("post");
+    shaderPost.enable();
     PostProcessingRenderer.FBO scene=PostProcessingRenderer.getInstance().getFBO("scene");
     GL13.glActiveTexture(GL13.GL_TEXTURE1);
     PostProcessingRenderer.getInstance().getFBO("sceneBloom1").bindTexture();
@@ -18,16 +19,11 @@
     PostProcessingRenderer.getInstance().getFBO("sceneBlur1").bindTexture();
     GL13.glActiveTexture(GL13.GL_TEXTURE0);
     PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
-    int texScene=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("post"),"texScene");
-    GL20.glUniform1i(texScene,0);
-    int texBloom=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("post"),"texBloom");
-    GL20.glUniform1i(texBloom,1);
-    int texDepth=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("post"),"texDepth");
-    GL20.glUniform1i(texDepth,2);
-    int texBlur=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("post"),"texBlur");
-    GL20.glUniform1i(texBlur,3);
-    int expos=GL20.glGetUniformLocation(ShaderManager.getInstance().getShader("post"),"exposure");
-    GL20.glUniform1f(expos,_exposure);
+    shaderPost.setInt("texScene",0);
+    shaderPost.setInt("texBloom",1);
+    shaderPost.setInt("texDepth",2);
+    shaderPost.setInt("texBlur",3);
+    shaderPost.setFloat("exposure",_exposure);
     renderFullQuad();
     scene.unbindTexture();
     ShaderManager.getInstance().enableShader(null);

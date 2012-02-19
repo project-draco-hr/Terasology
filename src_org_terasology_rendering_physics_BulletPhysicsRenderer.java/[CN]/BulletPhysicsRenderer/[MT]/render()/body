@@ -1,8 +1,8 @@
 {
   _discreteDynamicsWorld.stepSimulation(1.0f / 60f,7);
   TextureManager.getInstance().bindTexture("terrain");
-  ShaderManager.getInstance().enableShader("block");
-  ShaderParameters params=ShaderManager.getInstance().getShaderParameters("block");
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
+  shader.enable();
   FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
   float[] mFloat=new float[16];
   GL11.glPushMatrix();
@@ -19,7 +19,7 @@
     if (b.getCollisionShape() == _blockShapeHalf)     GL11.glScalef(0.5f,0.5f,0.5f);
  else     if (b.getCollisionShape() == _blockShapeQuarter)     GL11.glScalef(0.25f,0.25f,0.25f);
     float lightValue=Terasology.getInstance().getActiveWorldRenderer().getRenderingLightValueAt(new Vector3d(t.origin));
-    params.setFloat("light",lightValue);
+    shader.setFloat("light",lightValue);
     BlockManager.getInstance().getBlock(b.getType()).render();
     GL11.glPopMatrix();
   }

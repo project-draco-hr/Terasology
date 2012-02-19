@@ -3,10 +3,6 @@
     GL20.glUseProgram(0);
     return;
   }
-  int shader=getShader(s);
-  GL20.glUseProgram(shader);
-  ShaderParameters param=_shaderParameters.get(s);
-  if (param != null) {
-    param.applyParameters();
-  }
+  ShaderProgram program=getShaderProgram(s);
+  program.enable();
 }
