@@ -8,19 +8,25 @@
     }
     if (_mouseUp) {
       _mouseUp=false;
-      clicked();
     }
     if (_mouseDown) {
-      _defaultTexture.getTextureOrigin().set(0f,60f / 512f);
-    }
- else {
-      _defaultTexture.getTextureOrigin().set(0f,30f / 512f);
+      clicked();
     }
   }
  else {
+    if (_mouseDown) {
+      _focused=false;
+    }
     _clickSoundPlayed=false;
     _mouseUp=false;
     _mouseDown=false;
-    _defaultTexture.getTextureOrigin().set(0f,0f);
+    _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
   }
+  if (_focused) {
+    _defaultTexture.getTextureOrigin().set(0f,120f / 512f);
+  }
+ else {
+    _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
+  }
+  _inputText.setText(_inputValue.toString());
 }
