@@ -1,22 +1,23 @@
 {
   if (_focused) {
     Vector2f cursorPosition=new Vector2f();
-    System.out.println(_cursorPosition);
     if (key == Keyboard.KEY_BACK) {
       _cursorPosition--;
       if (_cursorPosition < 0) {
         _cursorPosition=0;
       }
       if (_inputValue.length() > 0) {
+        _prevInputValue=_inputValue.toString();
         _inputValue.deleteCharAt((_cursorPosition));
       }
       float textPosition=_inputText.getPosition().x;
+      int subPosition=getChangePosition(0);
       if (textPosition < 0) {
-        if (textPosition + 8f > 0 && textPosition + 8f < _padding.x) {
-          _inputText.setPosition(new Vector2f(_padding.x,_inputText.getPosition().y));
+        if (textPosition + subPosition > 0 && textPosition + subPosition < _padding.x) {
+          _inputText.setPosition(new Vector2f(_padding.x + textPosition,_inputText.getPosition().y));
         }
  else {
-          _inputText.setPosition(new Vector2f(textPosition + 8f,_inputText.getPosition().y));
+          _inputText.setPosition(new Vector2f(textPosition + subPosition,_inputText.getPosition().y));
         }
       }
       cursorPosition=new Vector2f(_padding.x / 2 + _inputText.getTextWidth() / 2,(_textCursor.getPosition().y));
@@ -27,7 +28,7 @@
         _cursorPosition=0;
       }
  else {
-        cursorPosition=new Vector2f(_textCursor.getPosition().x - 8f,(_textCursor.getPosition().y));
+        cursorPosition=new Vector2f(_padding.x + (_inputText.getTextWidth() - getChangePosition(_cursorPosition)) / 2,(_textCursor.getPosition().y));
       }
     }
  else     if (key == Keyboard.KEY_RIGHT) {
@@ -36,16 +37,17 @@
         _cursorPosition=_inputValue.length() - 1;
       }
  else {
-        cursorPosition=new Vector2f(_textCursor.getPosition().x + 8f,(_textCursor.getPosition().y));
+        cursorPosition=new Vector2f(_padding.x + (_inputText.getTextWidth() - getChangePosition(_cursorPosition)) / 2,(_textCursor.getPosition().y));
       }
     }
  else {
       char c=Keyboard.getEventCharacter();
       if (c >= 'a' && c < 'z' + 1 || c >= '0' && c < '9' + 1 || c >= 'A' && c < 'Z' + 1 || c == ' ' || c == '_' || c == '.' || c == ',' || c == '!' || c == '-' || c == '(' || c == ')' || c == '"' || c == '\'' || c == ';' || c == '+') {
+        _prevInputValue=_inputValue.toString();
         _inputValue.insert(_cursorPosition,c);
         _cursorPosition++;
       }
-      cursorPosition=new Vector2f(_padding.x / 2 + _inputText.getTextWidth() / 2,(_textCursor.getPosition().y));
+      cursorPosition=new Vector2f(_padding.x + _inputText.getTextWidth() / 2,(_textCursor.getPosition().y));
     }
     _inputText.setText(_inputValue.toString());
     _textCursor.setPosition(new Vector2f(cursorPosition));
