@@ -1,8 +1,8 @@
 {
   IWorldProvider worldProvider=_player.getParent().getWorldProvider();
   worldProvider.setBlock(blockPos.x,blockPos.y,blockPos.z,type,true,true);
-  int chunkPosX=MathHelper.calcChunkPosX(blockPos.x);
-  int chunkPosZ=MathHelper.calcChunkPosZ(blockPos.z);
+  int chunkPosX=TeraMath.calcChunkPosX(blockPos.x);
+  int chunkPosZ=TeraMath.calcChunkPosZ(blockPos.z);
   if (type == 0) {
     _player.notifyObserversBlockRemoved(worldProvider.getChunkProvider().loadOrCreateChunk(chunkPosX,chunkPosZ),blockPos,update);
   }

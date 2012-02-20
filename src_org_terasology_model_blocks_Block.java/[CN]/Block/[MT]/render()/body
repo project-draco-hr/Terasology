@@ -1,27 +1,3 @@
 {
-  if (isInvisible())   return;
-  if (_mesh == null) {
-    Tessellator tessellator=new Tessellator();
-    tessellator.setColor(new Vector4f(1,1,1,1));
-    if (_centerMesh != null) {
-      tessellator.addMeshPart(_centerMesh);
-    }
-    for (    Side dir : Side.values()) {
-      BlockMeshPart part=_sideMesh.get(dir);
-      if (part != null) {
-        float lightLevel=DIRECTION_LIT_LEVEL.get(dir);
-        tessellator.setColor(new Vector4f(lightLevel,lightLevel,lightLevel,lightLevel));
-        tessellator.addMeshPart(part);
-      }
-    }
-    _mesh=tessellator.generateMesh();
-  }
-  if (getBlockForm() != BLOCK_FORM.BILLBOARD) {
-    _mesh.render();
-  }
- else {
-    glDisable(GL11.GL_CULL_FACE);
-    _mesh.render();
-    glEnable(GL11.GL_CULL_FACE);
-  }
+  renderWithLightValue(1.0f);
 }

@@ -1,7 +1,7 @@
 {
-  ShaderManager.getInstance().enableShader("block");
-  ShaderParameters params=ShaderManager.getInstance().getShaderParameters("block");
-  params.setInt("textured",0);
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
+  shader.enable();
+  shader.setInt("textured",0);
   glPushMatrix();
   glTranslatef(1.0f,-1.3f + (float)getParent().calcBobbingOffset((float)Math.PI / 8f,0.05f,2.5f) - getParent().getHandMovementAnimationOffset() * 0.5f,-1.5f - getParent().getHandMovementAnimationOffset() * 0.5f);
   glRotatef(-getParent().getHandMovementAnimationOffset() * 64.0f,1.0f,0.0f,0.0f);
@@ -11,6 +11,5 @@
   if (_itemMesh == null)   _itemMesh=MeshFactory.getInstance().generateItemMesh(_iconX,_iconY);
   _itemMesh.render();
   glPopMatrix();
-  ShaderManager.getInstance().enableShader(null);
   return true;
 }

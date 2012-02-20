@@ -20,7 +20,9 @@
   _player.renderExtractionOverlay();
   PerformanceMonitor.endActivity();
   PostProcessingRenderer.getInstance().endRenderScene();
+  PerformanceMonitor.startActivity("Post-Processing");
   PostProcessingRenderer.getInstance().renderScene();
+  PerformanceMonitor.endActivity();
   glPushMatrix();
   glLoadIdentity();
   glClear(GL_DEPTH_BUFFER_BIT);

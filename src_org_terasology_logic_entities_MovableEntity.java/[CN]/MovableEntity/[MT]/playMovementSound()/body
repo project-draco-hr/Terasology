@@ -1,9 +1,9 @@
 {
   if (_godMode)   return;
   if (_noSound)   return;
-  if ((MathHelper.fastAbs(_velocity.x) > 0.01 || MathHelper.fastAbs(_velocity.z) > 0.01) && _touchingGround) {
+  if ((TeraMath.fastAbs(_velocity.x) > 0.01 || TeraMath.fastAbs(_velocity.z) > 0.01) && _touchingGround) {
     if (_currentFootstepSound == null) {
-      _currentFootstepSound=_footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5];
+      _currentFootstepSound=_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5];
       AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_currentFootstepSound);
     }
  else {

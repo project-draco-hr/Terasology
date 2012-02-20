@@ -5,10 +5,10 @@
   float temp=(float)calcTemperatureAtGlobalPosition(x,z);
   float humidity=(float)calcHumidityAtGlobalPosition(x,z);
   Vector2f distanceToMountainBiome=new Vector2f(temp - 0.25f,humidity - 0.35f);
-  double mIntens=MathHelper.clamp(1.0 - distanceToMountainBiome.length() * 3.0);
+  double mIntens=TeraMath.clamp(1.0 - distanceToMountainBiome.length() * 3.0);
   double densityMountains=calcMountainDensity(x,y,z) * mIntens;
   double densityHills=calcHillDensity(x,y,z) * (1.0 - mIntens);
   int plateauArea=(int)(Chunk.CHUNK_DIMENSION_Y * 0.10);
-  double flatten=MathHelper.clamp(((Chunk.CHUNK_DIMENSION_Y - 16) - y) / plateauArea);
-  return -y + (((32.0 + height * 32.0) * MathHelper.clamp(river + 0.25) * MathHelper.clamp(ocean + 0.25)) + densityMountains * 1024.0 + densityHills * 128.0) * flatten;
+  double flatten=TeraMath.clamp(((Chunk.CHUNK_DIMENSION_Y - 16) - y) / plateauArea);
+  return -y + (((32.0 + height * 32.0) * TeraMath.clamp(river + 0.25) * TeraMath.clamp(ocean + 0.25)) + densityMountains * 1024.0 + densityHills * 128.0) * flatten;
 }

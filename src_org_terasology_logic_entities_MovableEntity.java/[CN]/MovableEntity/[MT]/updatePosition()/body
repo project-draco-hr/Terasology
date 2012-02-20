@@ -1,17 +1,17 @@
 {
   Vector3d oldPosition=new Vector3d(getPosition());
   double friction=(Double)ConfigurationManager.getInstance().getConfig().get("Player.friction");
-  if (MathHelper.fastAbs(_velocity.y) > 0f) {
+  if (TeraMath.fastAbs(_velocity.y) > 0f) {
     _velocity.y+=-1f * _velocity.y * friction;
   }
-  if (MathHelper.fastAbs(_velocity.x) > 0f) {
+  if (TeraMath.fastAbs(_velocity.x) > 0f) {
     _velocity.x+=-1f * _velocity.x * friction;
   }
-  if (MathHelper.fastAbs(_velocity.z) > 0f) {
+  if (TeraMath.fastAbs(_velocity.z) > 0f) {
     _velocity.z+=-1f * _velocity.z * friction;
   }
-  if (MathHelper.fastAbs(_velocity.x) > _activeWalkingSpeed || MathHelper.fastAbs(_velocity.z) > _activeWalkingSpeed || MathHelper.fastAbs(_velocity.y) > _activeWalkingSpeed) {
-    double max=Math.max(Math.max(MathHelper.fastAbs(_velocity.x),MathHelper.fastAbs(_velocity.z)),MathHelper.fastAbs(_velocity.y));
+  if (TeraMath.fastAbs(_velocity.x) > _activeWalkingSpeed || TeraMath.fastAbs(_velocity.z) > _activeWalkingSpeed || TeraMath.fastAbs(_velocity.y) > _activeWalkingSpeed) {
+    double max=java.lang.Math.max(java.lang.Math.max(TeraMath.fastAbs(_velocity.x),TeraMath.fastAbs(_velocity.z)),TeraMath.fastAbs(_velocity.y));
     double div=max / _activeWalkingSpeed;
     _velocity.x/=div;
     _velocity.z/=div;
@@ -45,12 +45,12 @@
       _gravity=0;
       if (oldGravity <= 0) {
         if (_jump) {
-          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
           _jump=false;
           _gravity=_jumpIntensity;
         }
  else         if (!_touchingGround) {
-          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[MathHelper.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
           _touchingGround=true;
         }
       }
@@ -68,7 +68,7 @@
   oldPosition.set(getPosition());
   getPosition().x+=_velocity.x;
   getPosition().z+=_velocity.z;
-  _stepCounter+=Math.max(MathHelper.fastAbs(_velocity.x),MathHelper.fastAbs(_velocity.z));
+  _stepCounter+=java.lang.Math.max(TeraMath.fastAbs(_velocity.x),TeraMath.fastAbs(_velocity.z));
   if (!_godMode) {
     if (horizontalHitTest(oldPosition)) {
       handleHorizontalCollision();
