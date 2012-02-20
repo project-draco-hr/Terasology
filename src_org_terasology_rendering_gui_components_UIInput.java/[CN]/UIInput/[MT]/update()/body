@@ -23,10 +23,19 @@
     _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
   }
   if (_focused) {
+    if (!_textCursor.isVisible()) {
+      _textCursor.setVisible(true);
+    }
     _defaultTexture.getTextureOrigin().set(0f,120f / 512f);
   }
  else {
+    if (_textCursor.isVisible()) {
+      _textCursor.setVisible(false);
+    }
     _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
   }
-  _inputText.setText(_inputValue.toString());
+  float textWidthWhithPos=_inputText.getTextWidth() + _inputText.getPosition().x + getPosition().x;
+  if (textWidthWhithPos > (getPosition().x + getSize().x)) {
+    _inputText.setPosition(new Vector2f((_inputText.getPosition().x - 8f),_inputText.getPosition().y));
+  }
 }

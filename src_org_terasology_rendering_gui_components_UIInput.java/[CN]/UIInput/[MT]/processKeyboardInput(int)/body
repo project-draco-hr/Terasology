@@ -1,4 +1,9 @@
 {
+  System.out.println(_inputText.getPosition().x);
+  System.out.println(getPosition().x);
+  System.out.println(_inputText.getTextWidth());
+  System.out.println(getSize().x);
+  System.out.println("==========================");
   if (_focused) {
     if (key == Keyboard.KEY_BACK) {
       int length=_inputValue.length() - 1;
@@ -6,10 +11,23 @@
         length=0;
       }
       _inputValue.setLength(length);
+      float textPosition=_inputText.getPosition().x;
+      if (textPosition < 0) {
+        if (textPosition + 8f > 0 && textPosition + 8f < _padding.x) {
+          _inputText.setPosition(new Vector2f(_padding.x,_inputText.getPosition().y));
+        }
+ else {
+          _inputText.setPosition(new Vector2f(textPosition + 8f,_inputText.getPosition().y));
+        }
+      }
     }
  else {
       char c=Keyboard.getEventCharacter();
-      _inputValue.append(c);
+      if (c >= 'a' && c < 'z' + 1 || c >= '0' && c < '9' + 1 || c >= 'A' && c < 'Z' + 1 || c == ' ' || c == '_' || c == '.' || c == ',' || c == '!' || c == '-' || c == '(' || c == ')' || c == '"' || c == '\'' || c == ';' || c == '+') {
+        _inputValue.append(c);
+      }
     }
+    _inputText.setText(_inputValue.toString());
+    _textCursor.setPosition(new Vector2f(_padding.x / 2 + _inputText.getTextWidth() / 2,(_textCursor.getPosition().y)));
   }
 }
