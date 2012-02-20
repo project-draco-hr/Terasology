@@ -1,6 +1,7 @@
 {
   BoxShape shape=_blockShape;
   Block block=BlockManager.getInstance().getBlock(type);
+  if (block.isTranslucent())   return null;
   if (size == BLOCK_SIZE.HALF_SIZE)   shape=_blockShapeHalf;
  else   if (size == BLOCK_SIZE.QUARTER_SIZE)   shape=_blockShapeQuarter;
   Matrix3f rot=new Matrix3f();
@@ -14,7 +15,6 @@
   rigidBlock.setAngularFactor(0.5f);
   rigidBlock.setFriction(0.5f);
   _discreteDynamicsWorld.addRigidBody(rigidBlock);
-  _blocks.add(rigidBlock);
   rigidBlock.applyImpulse(impulse,new Vector3f(0.0f,0.0f,0.0f));
   return rigidBlock;
 }
