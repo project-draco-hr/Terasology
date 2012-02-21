@@ -1,0 +1,12 @@
+{
+  int newCount=_count + count;
+  if (item.getStackSize() >= newCount) {
+    _count+=count;
+    return null;
+  }
+ else {
+    _count=item.getStackSize();
+    int overflow=newCount - item.getStackSize();
+    return new Cubbyhole(item,overflow);
+  }
+}

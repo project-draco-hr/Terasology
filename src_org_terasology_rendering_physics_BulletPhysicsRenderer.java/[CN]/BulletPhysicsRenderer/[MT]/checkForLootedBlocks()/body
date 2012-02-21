@@ -1,0 +1,29 @@
+{
+  Player player=Terasology.getInstance().getActivePlayer();
+  for (int i=_lootableBlocks.size() - 1; i >= 0; i--) {
+    BlockRigidBody b=_lootableBlocks.get(i);
+    if (b.distanceToPlayer() < 8.0f && !b._picked) {
+      b._picked=true;
+    }
+    if (b._picked) {
+      if (b.distanceToPlayer() > 1.0) {
+        Transform t=new Transform();
+        b.getMotionState().getWorldTransform(t);
+        Matrix4f tMatrix=new Matrix4f();
+        t.getMatrix(tMatrix);
+        Vector3f blockPlayer=new Vector3f();
+        tMatrix.get(blockPlayer);
+        blockPlayer.sub(new Vector3f(player.getPosition()));
+        blockPlayer.normalize();
+        blockPlayer.scale(-16000f);
+        b.applyCentralImpulse(blockPlayer);
+      }
+ else {
+        Block block=BlockManager.getInstance().getBlock(b.getType());
+        player.getInventory().addItem(new ItemBlock(block.getBlockGroup()),1);
+        _lootableBlocks.remove(i);
+        _discreteDynamicsWorld.removeRigidBody(b);
+      }
+    }
+  }
+}
