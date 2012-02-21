@@ -1,0 +1,13 @@
+{
+  if (!setWorldSettingInternal(USER_SETTINGS)) {
+    if (!setWorldSettingInternal(DEFAULT_USER_SETTINGS)) {
+      Set<String> keys=_userConfigMap.keySet();
+      for (      String s : keys) {
+        if (setUserSettingInternal(s)) {
+          return;
+        }
+      }
+      throw new RuntimeException("Could not load any world setting.");
+    }
+  }
+}

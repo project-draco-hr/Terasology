@@ -1,0 +1,23 @@
+{
+  File folder=new File(CONFIG_BASE_PATH + CONFIG_PRESET_PATH);
+  File[] listOfFiles=folder.listFiles();
+  ConfigObject config;
+  for (  File file : listOfFiles) {
+    try {
+      if (file.getName().endsWith(WORLD_FILE_EXT)) {
+        config=new ConfigSlurper().parse(file.toURI().toURL());
+        _worldConfigMap.put(file.getName(),config);
+      }
+ else       if (file.getName().endsWith(USER_FILE_EXT)) {
+        config=new ConfigSlurper().parse(file.toURI().toURL());
+        _userConfigMap.put(file.getName(),config);
+      }
+ else {
+        Terasology.getInstance().getLogger().log(Level.INFO,"Encountered unknown file " + file.getName() + ". File will be ignored.");
+      }
+    }
+ catch (    MalformedURLException e) {
+      Terasology.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  ConfigObject config;
+  File file;
+  try {
+    file=new File(CONFIG_BASE_PATH + CONFIG_PRESET_PATH + WORLD_SETTINGS+ WORLD_FILE_EXT);
+    if (file.exists()) {
+      config=new ConfigSlurper().parse(file.toURI().toURL());
+      _worldConfigMap.put(file.getName(),config);
+    }
+  }
+ catch (  MalformedURLException e) {
+    Terasology.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+  }
+  try {
+    file=new File(CONFIG_BASE_PATH + CONFIG_PRESET_PATH + USER_SETTINGS+ USER_FILE_EXT);
+    if (file.exists()) {
+      config=new ConfigSlurper().parse(file.toURI().toURL());
+      _userConfigMap.put(file.getName(),config);
+    }
+  }
+ catch (  MalformedURLException e) {
+    Terasology.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+  }
+}
