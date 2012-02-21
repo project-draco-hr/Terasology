@@ -22,7 +22,7 @@
     _mouseDown=false;
     _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
   }
-  if (_focused) {
+  if (isFocused()) {
     if (!_textCursor.isVisible()) {
       _textCursor.setVisible(true);
     }
@@ -34,8 +34,5 @@
     }
     _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
   }
-  float textWidthWhithPos=_inputText.getTextWidth() + _inputText.getPosition().x + getPosition().x;
-  if (textWidthWhithPos > (getPosition().x + getSize().x)) {
-    _inputText.setPosition(new Vector2f((_inputText.getPosition().x + getChangePosition(0)),_inputText.getPosition().y));
-  }
+  updateTextShift();
 }
