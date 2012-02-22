@@ -1,6 +1,6 @@
 {
   getInstance().getLogger().log(Level.INFO,"Starting Terasology...");
-  IGameMode mode=null;
+  IGameMode mode;
   PerformanceMonitor.startActivity("Other");
   while (_runGame && !Display.isCloseRequested()) {
     if (!Display.isActive()) {
@@ -40,7 +40,7 @@
     if (Display.wasResized())     resizeViewport();
   }
   if (_saveWorldOnExit) {
-    getGameMode().getActiveWorldRenderer().dispose();
+    if (getActiveWorldRenderer() != null)     getGameMode().getActiveWorldRenderer().dispose();
   }
   _threadPool.shutdown();
   try {
