@@ -1,0 +1,38 @@
+{
+  _defaultTexture.setSize(getSize());
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  if (intersects(mousePos)) {
+    if (!_clickSoundPlayed) {
+      AudioManager.getInstance().getAudio("PlaceBlock").playAsSoundEffect(1.0f,0.5f,false);
+      _clickSoundPlayed=true;
+    }
+    if (_mouseUp) {
+      _mouseUp=false;
+    }
+    if (_mouseDown) {
+      clicked(mousePos);
+    }
+  }
+ else {
+    if (_mouseDown) {
+      _focused=false;
+    }
+    _clickSoundPlayed=false;
+    _mouseUp=false;
+    _mouseDown=false;
+    _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
+  }
+  if (isFocused()) {
+    if (!_textCursor.isVisible()) {
+      _textCursor.setVisible(true);
+    }
+    _defaultTexture.getTextureOrigin().set(0f,120f / 512f);
+  }
+ else {
+    if (_textCursor.isVisible()) {
+      _textCursor.setVisible(false);
+    }
+    _defaultTexture.getTextureOrigin().set(0f,90f / 512f);
+  }
+  updateTextShift();
+}
