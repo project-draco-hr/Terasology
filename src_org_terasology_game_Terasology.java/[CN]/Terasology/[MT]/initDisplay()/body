@@ -1,12 +1,12 @@
 {
-  if ((Boolean)ConfigurationManager.getInstance().getConfig().get("Graphics.fullscreen")) {
+  if ((Boolean)SettingsManager.getInstance().getUserSetting("Game.Graphics.fullscreen")) {
     Display.setDisplayMode(Display.getDesktopDisplayMode());
     Display.setFullscreen(true);
   }
  else {
-    Display.setDisplayMode((DisplayMode)ConfigurationManager.getInstance().getConfig().get("Graphics.displayMode"));
+    Display.setDisplayMode((DisplayMode)SettingsManager.getInstance().getUserSetting("Game.Graphics.displayMode"));
   }
   Display.setResizable(true);
-  Display.setTitle("Terasology" + " | " + ConfigurationManager.getInstance().getConfig().get("System.versionTag"));
-  Display.create((PixelFormat)ConfigurationManager.getInstance().getConfig().get("Graphics.pixelFormat"));
+  Display.setTitle("Terasology" + " | " + "Pre Alpha");
+  Display.create((PixelFormat)SettingsManager.getInstance().getUserSetting("Game.Graphics.pixelFormat"));
 }

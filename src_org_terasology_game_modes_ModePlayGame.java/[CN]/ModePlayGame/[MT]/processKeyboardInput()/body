@@ -1,5 +1,5 @@
 {
-  boolean debugEnabled=(Boolean)ConfigurationManager.getInstance().getConfig().get("System.Debug.debug");
+  boolean debugEnabled=(Boolean)SettingsManager.getInstance().getWorldSetting("World.Debug.debug");
   while (Keyboard.next()) {
     int key=Keyboard.getEventKey();
     if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
@@ -10,7 +10,7 @@
         toggleInventory();
       }
       if (key == Keyboard.KEY_F3) {
-        ConfigurationManager.getInstance().getConfig().put("System.Debug.debug",debugEnabled=!(debugEnabled));
+        SettingsManager.getInstance().setWorldSetting("World.Debug.debug",debugEnabled=!(debugEnabled));
       }
       if (key == Keyboard.KEY_F) {
         toggleViewingDistance();
