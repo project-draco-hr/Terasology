@@ -1,0 +1,34 @@
+{
+  _title=new UIGraphicsElement("terasology");
+  _title.setVisible(true);
+  _title.setSize(new Vector2f(512f,128f));
+  _version=new UIText("Pre Alpha");
+  _version.setVisible(true);
+  _exitButton=new UIButton(new Vector2f(256f,32f));
+  _exitButton.getLabel().setText("Exit Terasology");
+  _exitButton.setVisible(true);
+  _exitButton.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Terasology.getInstance().exit();
+    }
+  }
+);
+  _startButton=new UIButton(new Vector2f(256f,32f));
+  _startButton.getLabel().setText("Start the game");
+  _startButton.setVisible(true);
+  _startButton.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      setVisible(false);
+      Terasology.getInstance().setGameMode(Terasology.GameMode.runGame);
+    }
+  }
+);
+  _overlay=new UITransparentOverlay();
+  _overlay.setVisible(true);
+  addDisplayElement(_overlay);
+  addDisplayElement(_title);
+  addDisplayElement(_version);
+  addDisplayElement(_exitButton);
+  addDisplayElement(_startButton);
+  update();
+}

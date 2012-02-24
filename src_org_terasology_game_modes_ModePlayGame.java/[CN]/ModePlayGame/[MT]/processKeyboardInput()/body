@@ -1,0 +1,40 @@
+{
+  boolean debugEnabled=(Boolean)SettingsManager.getInstance().getWorldSetting("World.Debug.debug");
+  while (Keyboard.next()) {
+    int key=Keyboard.getEventKey();
+    if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+      if (key == Keyboard.KEY_ESCAPE) {
+        togglePauseMenu();
+      }
+      if (key == Keyboard.KEY_I) {
+        toggleInventory();
+      }
+      if (key == Keyboard.KEY_F3) {
+        SettingsManager.getInstance().setWorldSetting("World.Debug.debug",debugEnabled=!(debugEnabled));
+      }
+      if (key == Keyboard.KEY_F) {
+        toggleViewingDistance();
+      }
+      for (      UIDisplayElement screen : _guiScreens) {
+        if (screenCanFocus(screen)) {
+          screen.processKeyboardInput(key);
+        }
+      }
+    }
+    if (debugEnabled) {
+      if (key == Keyboard.KEY_UP && Keyboard.getEventKeyState()) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.005);
+      }
+      if (key == Keyboard.KEY_DOWN && Keyboard.getEventKeyState()) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.005);
+      }
+      if (key == Keyboard.KEY_RIGHT && Keyboard.getEventKeyState()) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.02);
+      }
+      if (key == Keyboard.KEY_LEFT && Keyboard.getEventKeyState()) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.02);
+      }
+    }
+    if (!screenHasFocus())     _activeWorldRenderer.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+  }
+}

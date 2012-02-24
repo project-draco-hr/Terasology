@@ -2,7 +2,7 @@
   _title=new UIGraphicsElement("terasology");
   _title.setVisible(true);
   _title.setSize(new Vector2f(512f,128f));
-  _version=new UIText((String)ConfigurationManager.getInstance().getConfig().get("System.versionTag"));
+  _version=new UIText("Pre Alpha");
   _version.setVisible(true);
   _exitButton=new UIButton(new Vector2f(256f,32f));
   _exitButton.getLabel().setText("Exit Terasology");
@@ -10,16 +10,6 @@
   _exitButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       Terasology.getInstance().exit();
-    }
-  }
-);
-  _newWorldButton=new UIButton(new Vector2f(256f,32f));
-  _newWorldButton.getLabel().setText("Create New World");
-  _newWorldButton.setVisible(true);
-  _newWorldButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      setVisible(false);
-      Terasology.getInstance().initWorld();
     }
   }
 );
@@ -39,7 +29,6 @@
   addDisplayElement(_title);
   addDisplayElement(_version);
   addDisplayElement(_exitButton);
-  addDisplayElement(_newWorldButton);
   addDisplayElement(_respawnButton);
   update();
 }
