@@ -1,0 +1,18 @@
+{
+  output.writeChar('T');
+  output.writeChar('E');
+  output.writeChar('R');
+  output.writeChar('A');
+  output.writeInt(0x1);
+  output.writeShort(typeMap.size());
+  for (  TypeInfo info : typeMap.values()) {
+    output.writeShort(info.getId());
+    output.writeByte(info.size());
+    output.writeUTF(info.getTypeName());
+  }
+  output.writeShort(persistableIdMap.size());
+  for (  Map.Entry<Class<? extends Persistable>,Short> item : persistableIdMap.entrySet()) {
+    output.writeShort(item.getValue());
+    output.writeUTF(item.getKey().getName());
+  }
+}
