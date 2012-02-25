@@ -1,0 +1,19 @@
+{
+  if (value != null) {
+    try {
+      TypeInfo info=typeMap.get(value.getClass());
+      if (info == null) {
+        throw new IOException("Unsupported type : " + value.getClass());
+      }
+ else {
+        output.writeShort(info.getId());
+        output.writeUTF(name);
+        info.write(output,value,this);
+      }
+    }
+ catch (    Exception ex) {
+      logger.log(Level.SEVERE,"Error writing data",ex);
+      errored=true;
+    }
+  }
+}
