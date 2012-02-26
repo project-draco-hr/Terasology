@@ -3,14 +3,13 @@
   if (EFFECTS_ENABLED) {
     generateDownsampledScene();
     updateExposure();
-    generateHighPass();
-    for (int i=0; i < 2; i++) {
+    generateTonemappedScene();
+    for (int i=0; i < 3; i++) {
       generateBloom(i);
       generateBlur(i);
     }
-    ShaderProgram shaderPost=ShaderManager.getInstance().getShaderProgram("post");
-    shaderPost.enable();
-    renderFullQuad();
+    generateHighPass();
+    renderFinalScene();
   }
  else {
     PostProcessingRenderer.FBO scene=PostProcessingRenderer.getInstance().getFBO("scene");

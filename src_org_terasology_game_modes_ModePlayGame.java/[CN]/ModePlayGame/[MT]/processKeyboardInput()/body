@@ -15,6 +15,9 @@
       if (key == Keyboard.KEY_F) {
         toggleViewingDistance();
       }
+      if (key == Keyboard.KEY_F12) {
+        Terasology.getInstance().getActiveWorldRenderer().printScreen();
+      }
       for (      UIDisplayElement screen : _guiScreens) {
         if (screenCanFocus(screen)) {
           screen.processKeyboardInput(key);
@@ -33,6 +36,9 @@
       }
       if (key == Keyboard.KEY_LEFT && Keyboard.getEventKeyState()) {
         getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.02);
+      }
+      if (key == Keyboard.KEY_R && Keyboard.getEventKeyState()) {
+        getActiveWorldRenderer().setWireframe(!getActiveWorldRenderer().isWireframe());
       }
     }
     if (!screenHasFocus())     _activeWorldRenderer.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
