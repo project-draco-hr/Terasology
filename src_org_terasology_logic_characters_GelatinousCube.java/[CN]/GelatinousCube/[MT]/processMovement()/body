@@ -6,9 +6,9 @@
     _followingPlayer=true;
   }
  else {
-    if (Terasology.getInstance().getTime() - _lastChangeOfDirectionAt > 12000 || _followingPlayer) {
+    if (Terasology.getInstance().getTimeInMs() - _lastChangeOfDirectionAt > 12000 || _followingPlayer) {
       _movementTarget.set(getPosition().x + _parent.getWorldProvider().getRandom().randomDouble() * 500,getPosition().y,getPosition().z + _parent.getWorldProvider().getRandom().randomDouble() * 500);
-      _lastChangeOfDirectionAt=Terasology.getInstance().getTime();
+      _lastChangeOfDirectionAt=Terasology.getInstance().getTimeInMs();
       _followingPlayer=false;
       _walkingSpeed=((_parent.getWorldProvider().getRandom().randomDouble() + 1.0) / 2.0) * 0.05;
     }
