@@ -1,11 +1,11 @@
 {
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("blur");
   shader.enable();
-  shader.setFloat("radius",2.0f);
+  shader.setFloat("radius",3.0f);
   PostProcessingRenderer.getInstance().getFBO("sceneBlur" + id).bind();
   glViewport(0,0,1024,1024);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  if (id == 0)   PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
+  if (id == 0)   PostProcessingRenderer.getInstance().getFBO("sceneTonemapped").bindTexture();
  else   PostProcessingRenderer.getInstance().getFBO("sceneBlur" + (id - 1)).bindTexture();
   renderFullQuad();
   PostProcessingRenderer.getInstance().getFBO("sceneBlur" + id).unbind();
