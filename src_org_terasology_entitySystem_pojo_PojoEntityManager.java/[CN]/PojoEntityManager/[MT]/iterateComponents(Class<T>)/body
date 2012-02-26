@@ -1,0 +1,12 @@
+{
+  TLongObjectIterator<T> iterator=store.componentIterator(componentClass);
+  if (iterator != null) {
+    List<Map.Entry<EntityRef,T>> list=new ArrayList<Map.Entry<EntityRef,T>>();
+    while (iterator.hasNext()) {
+      iterator.advance();
+      list.add(new EntityEntry<T>(new PojoEntityRef(this,iterator.key()),iterator.value()));
+    }
+    return list;
+  }
+  return NullIterator.newInstance();
+}

@@ -1,0 +1,7 @@
+{
+  EventSystem eventSystem=mock(EventSystem.class);
+  entityManager.setEventSystem(eventSystem);
+  EntityRef entity1=entityManager.createEntity();
+  StringComponent comp=entity1.addComponent(new StringComponent());
+  verify(eventSystem).send(entity1,AddComponentEvent.newInstance(),comp);
+}
