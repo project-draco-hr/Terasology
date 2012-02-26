@@ -1,30 +1,6 @@
 {
-  getInstance().initDefaultLogger();
-  getInstance().getLogger().log(Level.INFO,"Welcome to Terasology | {0}!","Pre Alpha");
-  try {
-    loadNativeLibs();
-  }
- catch (  Exception e) {
-    getInstance().getLogger().log(Level.SEVERE,"Couldn't link static libraries. Sorry. " + e.toString(),e);
-  }
-  Terasology terasology=null;
-  try {
-    terasology=getInstance();
-    terasology.initOpenAL();
-    terasology.initDisplay();
-    terasology.checkOpenGL();
-    terasology.initControls();
-    terasology.initGame();
-    terasology.initGroovy();
-  }
- catch (  LWJGLException e) {
-    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm so sorry: " + e.toString(),e);
-    System.exit(0);
-  }
-catch (  Exception e) {
-    getInstance().getLogger().log(Level.SEVERE,"Failed to start game. I'm so sorry: " + e.toString(),e);
-    System.exit(0);
-  }
-  terasology.startGame();
+  _instance.init();
+  _instance.run();
+  _instance.shutdown();
   System.exit(0);
 }

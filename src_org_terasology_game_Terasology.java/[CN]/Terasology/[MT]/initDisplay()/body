@@ -1,12 +1,18 @@
 {
-  if ((Boolean)SettingsManager.getInstance().getUserSetting("Game.Graphics.fullscreen")) {
-    Display.setDisplayMode(Display.getDesktopDisplayMode());
-    Display.setFullscreen(true);
-  }
+  try {
+    if ((Boolean)SettingsManager.getInstance().getUserSetting("Game.Graphics.fullscreen")) {
+      Display.setDisplayMode(Display.getDesktopDisplayMode());
+      Display.setFullscreen(true);
+    }
  else {
-    Display.setDisplayMode((DisplayMode)SettingsManager.getInstance().getUserSetting("Game.Graphics.displayMode"));
-    Display.setResizable(true);
+      Display.setDisplayMode((DisplayMode)SettingsManager.getInstance().getUserSetting("Game.Graphics.displayMode"));
+      Display.setResizable(true);
+    }
+    Display.setTitle("Terasology" + " | " + "Pre Alpha");
+    Display.create((PixelFormat)SettingsManager.getInstance().getUserSetting("Game.Graphics.pixelFormat"));
   }
-  Display.setTitle("Terasology" + " | " + "Pre Alpha");
-  Display.create((PixelFormat)SettingsManager.getInstance().getUserSetting("Game.Graphics.pixelFormat"));
+ catch (  LWJGLException e) {
+    _logger.log(Level.SEVERE,"Can not initialize graphics device.",e);
+    System.exit(1);
+  }
 }

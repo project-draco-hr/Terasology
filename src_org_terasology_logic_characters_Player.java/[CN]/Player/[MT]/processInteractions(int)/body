@@ -1,17 +1,17 @@
 {
-  if (Terasology.getInstance().getTime() - _lastInteraction < 200) {
+  if (Terasology.getInstance().getTimeInMs() - _lastInteraction < 200) {
     return;
   }
   ITool activeTool=getActiveTool();
   if (activeTool != null) {
     if (Mouse.isButtonDown(0) || button == 0) {
       activeTool.executeLeftClickAction();
-      _lastInteraction=Terasology.getInstance().getTime();
+      _lastInteraction=Terasology.getInstance().getTimeInMs();
       poke();
     }
  else     if (Mouse.isButtonDown(1) || button == 1) {
       activeTool.executeRightClickAction();
-      _lastInteraction=Terasology.getInstance().getTime();
+      _lastInteraction=Terasology.getInstance().getTimeInMs();
       poke();
     }
   }
