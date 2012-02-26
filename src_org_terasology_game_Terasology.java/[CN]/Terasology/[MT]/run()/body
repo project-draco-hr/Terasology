@@ -1,7 +1,6 @@
 {
-  getInstance().getLogger().log(Level.INFO,"Starting Terasology...");
-  IGameMode mode=null;
   PerformanceMonitor.startActivity("Other");
+  IGameMode mode=null;
   while (_runGame && !Display.isCloseRequested()) {
     if (!Display.isActive()) {
       try {
@@ -25,7 +24,7 @@
       mode.activate();
     }
     PerformanceMonitor.startActivity("Main Update");
-    long startTime=getTime();
+    long startTime=getTimeInMs();
     mode.update();
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Render");
@@ -41,18 +40,7 @@
     PerformanceMonitor.endActivity();
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");
-    mode.updateTimeAccumulator(getTime(),startTime);
+    mode.updateTimeAccumulator(getTimeInMs(),startTime);
     if (Display.wasResized())     resizeViewport();
   }
-  if (_saveWorldOnExit) {
-    if (getActiveWorldRenderer() != null)     getGameMode().getActiveWorldRenderer().dispose();
-  }
-  _threadPool.shutdown();
-  try {
-    _threadPool.awaitTermination(Long.MAX_VALUE,TimeUnit.NANOSECONDS);
-  }
- catch (  InterruptedException e) {
-    getLogger().log(Level.SEVERE,e.toString(),e);
-  }
-  destroy();
 }
