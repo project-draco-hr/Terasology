@@ -1,0 +1,12 @@
+{
+  if (prefabTable.containsKey(name)) {
+    throw new IllegalArgumentException("Prefab name already in use: " + name);
+  }
+  Map<Class<? extends Component>,Component> map=prefabTable.get(oldName);
+  if (map == null) {
+    throw new IllegalArgumentException("No prefab exists with name: " + oldName);
+  }
+  prefabTable.put(name,map);
+  prefabTable.remove(oldName);
+  return new PojoPrefabRef(this,name,map);
+}

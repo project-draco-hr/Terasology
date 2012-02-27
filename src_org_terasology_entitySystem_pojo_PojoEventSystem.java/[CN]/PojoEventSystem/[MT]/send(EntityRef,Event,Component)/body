@@ -2,7 +2,9 @@
   Multimap<Class<? extends Component>,EventHandlerInfo> handlers=componentSpecificHandlers.get(event.getClass());
   if (handlers != null) {
     for (    EventHandlerInfo eventHandler : handlers.get(component.getClass())) {
-      eventHandler.invoke(entity,component,event);
+      if (eventHandler.isValidFor(entity)) {
+        eventHandler.invoke(entity,event);
+      }
     }
   }
 }
