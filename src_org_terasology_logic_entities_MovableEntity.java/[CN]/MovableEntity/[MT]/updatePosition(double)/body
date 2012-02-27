@@ -1,0 +1,73 @@
+{
+  Vector3d oldPosition=new Vector3d(getPosition());
+  double timePassedInSeconds=(delta / 1000d);
+  if (TeraMath.fastAbs(_movementVelocity.y) > 0f) {
+    _movementVelocity.y+=-1f * _movementVelocity.y * GROUND_FRICTION* timePassedInSeconds;
+  }
+  if (TeraMath.fastAbs(_movementVelocity.x) > 0f) {
+    _movementVelocity.x+=-1f * _movementVelocity.x * GROUND_FRICTION* timePassedInSeconds;
+  }
+  if (TeraMath.fastAbs(_movementVelocity.z) > 0f) {
+    _movementVelocity.z+=-1f * _movementVelocity.z * GROUND_FRICTION* timePassedInSeconds;
+  }
+  if (TeraMath.fastAbs(_movementVelocity.x) > _activeMovementAcc || TeraMath.fastAbs(_movementVelocity.z) > _activeMovementAcc || TeraMath.fastAbs(_movementVelocity.y) > _activeMovementAcc) {
+    double max=java.lang.Math.max(java.lang.Math.max(TeraMath.fastAbs(_movementVelocity.x),TeraMath.fastAbs(_movementVelocity.z)),TeraMath.fastAbs(_movementVelocity.y));
+    double div=max / _activeMovementAcc;
+    _movementVelocity.x/=div;
+    _movementVelocity.z/=div;
+    _movementVelocity.y/=div;
+  }
+  if (_movementDirection.length() > 0.0)   _movementDirection.normalize();
+  _movementVelocity.x+=_movementDirection.x * _activeMovementAcc;
+  _movementVelocity.y+=_movementDirection.y * _activeMovementAcc;
+  _movementVelocity.z+=_movementDirection.z * _activeMovementAcc;
+  if (_earthVelocity > -MAX_ACC && !_godMode && !_isSwimming) {
+    _earthVelocity-=EARTH_ACC * timePassedInSeconds;
+  }
+  if (_earthVelocity < -MAX_ACC && !_godMode && !_isSwimming) {
+    _earthVelocity=-MAX_ACC;
+  }
+  if (_earthVelocity > -MAX_EARTH_ACC_WATER && !_godMode && _isSwimming) {
+    _earthVelocity-=EARTH_ACC_WATER * timePassedInSeconds;
+  }
+  if (_earthVelocity < -MAX_EARTH_ACC_WATER && !_godMode && _isSwimming) {
+    _earthVelocity=-MAX_EARTH_ACC_WATER;
+  }
+  getPosition().y+=(_movementVelocity.y + _earthVelocity) * timePassedInSeconds;
+  if (!_godMode) {
+    if (verticalHitTest(oldPosition)) {
+      handleVerticalCollision();
+      double oldEarthVelocity=_earthVelocity;
+      _earthVelocity=0;
+      if (oldEarthVelocity <= 0) {
+        if (_jump) {
+          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          _jump=false;
+          _earthVelocity=JUMP_INTENSITY;
+        }
+ else         if (!_touchingGround) {
+          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          _touchingGround=true;
+        }
+      }
+ else {
+        _touchingGround=false;
+      }
+    }
+ else {
+      _touchingGround=false;
+    }
+  }
+ else {
+    _earthVelocity=0f;
+  }
+  oldPosition.set(getPosition());
+  getPosition().x+=_movementVelocity.x * timePassedInSeconds;
+  getPosition().z+=_movementVelocity.z * timePassedInSeconds;
+  _stepCounter+=java.lang.Math.max(TeraMath.fastAbs(_movementVelocity.x * timePassedInSeconds),TeraMath.fastAbs(_movementVelocity.z * timePassedInSeconds));
+  if (!_godMode) {
+    if (horizontalHitTest(oldPosition)) {
+      handleHorizontalCollision();
+    }
+  }
+}

@@ -25,7 +25,7 @@
       mode.activate();
     }
     PerformanceMonitor.startActivity("Main Update");
-    mode.update();
+    mode.update(_timer.getDelta());
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Render");
     mode.render();
@@ -39,7 +39,6 @@
     PerformanceMonitor.endActivity();
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");
-    mode.updateTimeAccumulator(_timer.getDelta());
     if (Display.wasResized())     resizeViewport();
   }
 }

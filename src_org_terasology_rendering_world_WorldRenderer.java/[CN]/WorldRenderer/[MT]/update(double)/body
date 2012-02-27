@@ -1,0 +1,35 @@
+{
+  PerformanceMonitor.startActivity("Update Tick");
+  updateTick();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Update Close Chunks");
+  updateChunksInProximity(false);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Skysphere");
+  _skysphere.update(delta);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Player");
+  _player.update(delta);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Mob Manager");
+  _mobManager.update(delta);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Block Particle Emitter");
+  _blockParticleEmitter.update(delta);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Flush World Cache");
+  _worldProvider.getChunkProvider().flushCache();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Fire Events");
+  _worldTimeEventManager.fireWorldTimeEvents();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Liquid");
+  _worldProvider.getLiquidSimulator().simulate(false);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Growth");
+  _worldProvider.getGrowthSimulator().simulate(false);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Physics Renderer");
+  _bulletRenderer.update(delta);
+  PerformanceMonitor.endActivity();
+}
