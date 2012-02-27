@@ -1,0 +1,14 @@
+{
+  if (!eos) {
+    int index=syncState.buffer(4096);
+    if (index < 0) {
+      eos=true;
+      return;
+    }
+    int bytes=in.read(syncState.data,index,4096);
+    syncState.wrote(bytes);
+    if (bytes == 0) {
+      eos=true;
+    }
+  }
+}

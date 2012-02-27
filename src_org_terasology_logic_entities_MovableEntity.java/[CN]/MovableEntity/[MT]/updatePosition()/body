@@ -45,12 +45,12 @@
       _gravity=0;
       if (oldGravity <= 0) {
         if (_jump) {
-          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          playRandomFootstep();
           _jump=false;
           _gravity=_jumpIntensity;
         }
  else         if (!_touchingGround) {
-          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          playRandomFootstep();
           _touchingGround=true;
         }
       }

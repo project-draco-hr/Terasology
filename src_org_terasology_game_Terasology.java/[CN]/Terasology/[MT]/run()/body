@@ -37,6 +37,9 @@
     mode.processMouseInput();
     mode.updatePlayerInput();
     PerformanceMonitor.endActivity();
+    PerformanceMonitor.startActivity("Audio");
+    AudioManager.getInstance().update();
+    PerformanceMonitor.endActivity();
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");
     mode.updateTimeAccumulator(_timer.getDelta());

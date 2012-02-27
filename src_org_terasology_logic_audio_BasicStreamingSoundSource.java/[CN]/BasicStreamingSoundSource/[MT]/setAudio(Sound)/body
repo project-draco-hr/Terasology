@@ -1,0 +1,18 @@
+{
+  if (sound == null || sound.equals(this.audio)) {
+    return this;
+  }
+  if (sound instanceof AbstractStreamingSound) {
+    AbstractStreamingSound asa=(AbstractStreamingSound)sound;
+    this.audio=asa;
+    int[] buffers=asa.getBuffers();
+    for (    int buffer : buffers) {
+      asa.updateBuffer(buffer);
+    }
+    AL10.alSourceQueueBuffers(this.getSourceId(),(IntBuffer)BufferUtils.createIntBuffer(buffers.length).put(buffers).flip());
+  }
+ else {
+    throw new IllegalArgumentException("Unsupported sound object!");
+  }
+  return this;
+}

@@ -1,0 +1,19 @@
+{
+  for (  File child : file.listFiles()) {
+    if (child.isDirectory()) {
+      this.scanFiles(child,basePath);
+    }
+ else     if (child.isFile()) {
+      String key=child.getAbsolutePath().replace(File.separatorChar,'/');
+      if (basePath != null) {
+        key=key.substring(basePath.length() + 1);
+      }
+      try {
+        this.addAsset(key,child.toURI().toURL());
+      }
+ catch (      MalformedURLException e) {
+        logger.warning("Failed to load asset " + key + " - "+ e.getMessage());
+      }
+    }
+  }
+}

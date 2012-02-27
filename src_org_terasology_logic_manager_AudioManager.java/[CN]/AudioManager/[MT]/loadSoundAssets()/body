@@ -1,0 +1,16 @@
+{
+  for (  String sound : AssetManager.list("sounds")) {
+    logger.info("Loading sound " + sound);
+    try {
+      String name=sound.substring(sound.lastIndexOf('/') + 1);
+      if (!name.endsWith(".ogg")) {
+        continue;
+      }
+      name=name.substring(0,name.lastIndexOf("."));
+      this._audio.put(name.toLowerCase(),createAudio(name,getSoundAssetStream(sound)));
+    }
+ catch (    IOException e) {
+      logger.info("Failed to load sound asset '" + sound + "'");
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  if (!fade) {
+    return;
+  }
+  float delta=(this.srcGain - this.targetGain) / 10;
+  this.setGain(this.srcGain - delta);
+  if (this.getGain() == this.targetGain) {
+    if (this.targetGain == 0.0f) {
+      this.stop();
+    }
+    fade=false;
+  }
+}

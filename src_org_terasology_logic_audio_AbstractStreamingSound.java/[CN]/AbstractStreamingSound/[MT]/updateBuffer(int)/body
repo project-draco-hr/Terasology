@@ -1,0 +1,10 @@
+{
+  ByteBuffer bufferData=this.fetchData();
+  if (bufferData == null || bufferData.limit() == 0) {
+    return false;
+  }
+  AL10.alBufferData(buffer,this.getChannels() == 1 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16,bufferData,this.getSamplingRate());
+  OpenALException.checkState("Uploading buffer data");
+  this.lastUpdatedBuffer=buffer;
+  return true;
+}

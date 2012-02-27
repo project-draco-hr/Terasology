@@ -1,0 +1,18 @@
+{
+  if (eos) {
+    return -1;
+  }
+  int bytesRead=0;
+  while (!eos && (len > 0)) {
+    fillConvbuffer();
+    if (!eos) {
+      int bytesToCopy=Math.min(len,convbufferSize - convbufferOff);
+      System.arraycopy(convbuffer,convbufferOff,b,off,bytesToCopy);
+      convbufferOff+=bytesToCopy;
+      bytesRead+=bytesToCopy;
+      len-=bytesToCopy;
+      off+=bytesToCopy;
+    }
+  }
+  return bytesRead;
+}
