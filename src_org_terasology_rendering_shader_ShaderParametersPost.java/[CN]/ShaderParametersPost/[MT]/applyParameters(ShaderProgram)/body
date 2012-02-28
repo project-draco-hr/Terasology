@@ -1,0 +1,20 @@
+{
+  Terasology tera=Terasology.getInstance();
+  PostProcessingRenderer.FBO scene=PostProcessingRenderer.getInstance().getFBO("scene");
+  GL13.glActiveTexture(GL13.GL_TEXTURE1);
+  PostProcessingRenderer.getInstance().getFBO("sceneBloom2").bindTexture();
+  GL13.glActiveTexture(GL13.GL_TEXTURE2);
+  PostProcessingRenderer.getInstance().getFBO("sceneBlur2").bindTexture();
+  GL13.glActiveTexture(GL13.GL_TEXTURE3);
+  TextureManager.getInstance().bindTexture("vignette");
+  GL13.glActiveTexture(GL13.GL_TEXTURE4);
+  scene.bindDepthTexture();
+  GL13.glActiveTexture(GL13.GL_TEXTURE0);
+  PostProcessingRenderer.getInstance().getFBO("sceneTonemapped").bindTexture();
+  program.setInt("texScene",0);
+  program.setInt("texBloom",1);
+  program.setInt("texBlur",2);
+  program.setInt("texVignette",3);
+  program.setInt("texDepth",4);
+  if (tera.getActivePlayer() != null)   program.setInt("swimming",tera.getActivePlayer().isHeadUnderWater() ? 1 : 0);
+}

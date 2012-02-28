@@ -34,7 +34,7 @@
         worldRenderer.getBlockParticleEmitter().emitParticles(256,currentBlockType);
         AudioManager.getInstance().playVaryingSound("RemoveBlock",0.6f,0.5f);
         Vector3d pos=blockPos.toVector3d();
-        BulletPhysicsRenderer.getInstance().addLootableBlocks(new Vector3f(pos),block);
+        _player.getParent().getBulletRenderer().addLootableBlocks(new Vector3f(pos),block);
         _player.resetExtraction();
         return block;
       }

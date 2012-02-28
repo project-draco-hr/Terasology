@@ -26,9 +26,9 @@
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Player Death Check");
   if (isDead() && _timeOfDeath == -1) {
-    _timeOfDeath=Terasology.getInstance().getTime();
+    _timeOfDeath=Terasology.getInstance().getTimeInMs();
   }
- else   if (isDead() && Terasology.getInstance().getTime() - _timeOfDeath > 1000) {
+ else   if (isDead() && Terasology.getInstance().getTimeInMs() - _timeOfDeath > 1000) {
     revive();
     respawn();
     _timeOfDeath=-1;

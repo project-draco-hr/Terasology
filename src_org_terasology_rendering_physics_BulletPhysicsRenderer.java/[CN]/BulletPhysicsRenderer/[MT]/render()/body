@@ -1,9 +1,9 @@
 {
+  Player player=_parent.getPlayer();
   _discreteDynamicsWorld.stepSimulation(1.0f / 60f,7);
   FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
   float[] mFloat=new float[16];
   GL11.glPushMatrix();
-  Player player=Terasology.getInstance().getActiveWorldRenderer().getPlayer();
   GL11.glTranslated(-player.getPosition().x,-player.getPosition().y,-player.getPosition().z);
   List<CollisionObject> collisionObjects=_discreteDynamicsWorld.getCollisionObjectArray();
   for (  CollisionObject co : collisionObjects) {
