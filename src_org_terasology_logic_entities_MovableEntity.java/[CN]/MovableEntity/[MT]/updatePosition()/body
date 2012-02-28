@@ -1,6 +1,6 @@
 {
   Vector3d oldPosition=new Vector3d(getPosition());
-  double friction=(Double)SettingsManager.getInstance().getWorldSetting("World.Physics.friction");
+  double friction=Config.getInstance().getFriction();
   if (TeraMath.fastAbs(_velocity.y) > 0f) {
     _velocity.y+=-1f * _velocity.y * friction;
   }
@@ -20,10 +20,10 @@
   _velocity.x+=_movementDirection.x;
   _velocity.y+=_movementDirection.y;
   _velocity.z+=_movementDirection.z;
-  double maxGravity=(Double)SettingsManager.getInstance().getWorldSetting("World.Physics.maxGravity");
-  double maxGravitySwimming=(Double)SettingsManager.getInstance().getWorldSetting("World.Physics.maxGravitySwimming");
-  double gravitySwimming=(Double)SettingsManager.getInstance().getWorldSetting("World.Physics.gravitySwimming");
-  double gravity=(Double)SettingsManager.getInstance().getWorldSetting("World.Physics.gravity");
+  double maxGravity=Config.getInstance().getMaxGravity();
+  double maxGravitySwimming=Config.getInstance().getMaxGravitySwimming();
+  double gravitySwimming=Config.getInstance().getGravitySwimming();
+  double gravity=Config.getInstance().getGravity();
   if (_gravity > -maxGravity && !_godMode && !_isSwimming) {
     _gravity-=gravity;
   }
