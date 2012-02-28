@@ -1,13 +1,19 @@
 {
-  final Field usrPathsField=ClassLoader.class.getDeclaredField("usr_paths");
-  usrPathsField.setAccessible(true);
-  final String[] paths=(String[])usrPathsField.get(null);
-  for (  String path : paths) {
-    if (path.equals(s)) {
-      return;
+  try {
+    final Field usrPathsField=ClassLoader.class.getDeclaredField("usr_paths");
+    usrPathsField.setAccessible(true);
+    final String[] paths=(String[])usrPathsField.get(null);
+    for (    String path : paths) {
+      if (path.equals(s)) {
+        return;
+      }
     }
+    final String[] newPaths=Arrays.copyOf(paths,paths.length + 1);
+    newPaths[newPaths.length - 1]=s;
+    usrPathsField.set(null,newPaths);
   }
-  final String[] newPaths=Arrays.copyOf(paths,paths.length + 1);
-  newPaths[newPaths.length - 1]=s;
-  usrPathsField.set(null,newPaths);
+ catch (  Exception e) {
+    _logger.log(Level.SEVERE,"Couldn't link static libraries. " + e.toString(),e);
+    System.exit(1);
+  }
 }

@@ -14,16 +14,15 @@
   }
 );
   _startButton=new UIButton(new Vector2f(256f,32f));
-  _startButton.getLabel().setText("Start the game");
+  _startButton.getLabel().setText("Play Terasology");
   _startButton.setVisible(true);
   _startButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      setVisible(false);
       Terasology.getInstance().setGameMode(Terasology.GameMode.runGame);
     }
   }
 );
-  _overlay=new UITransparentOverlay();
+  _overlay=new UIImageOverlay("menuBackground");
   _overlay.setVisible(true);
   addDisplayElement(_overlay);
   addDisplayElement(_title);
