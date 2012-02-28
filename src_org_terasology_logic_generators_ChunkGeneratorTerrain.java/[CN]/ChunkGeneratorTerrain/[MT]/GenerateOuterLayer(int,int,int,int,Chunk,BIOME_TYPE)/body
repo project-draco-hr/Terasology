@@ -7,10 +7,13 @@ case MOUNTAINS:
     if (y >= 28 && y <= 34) {
       c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Sand").getId());
     }
- else     if (depth == 0 && y > 32) {
+ else     if (depth == 0 && y > 32 && y < 128) {
       c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Grass").getId());
     }
- else     if (depth > 8) {
+ else     if (depth == 0 && y >= 128) {
+      c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Snow").getId());
+    }
+ else     if (depth > 32) {
       c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Stone").getId());
     }
  else {
@@ -21,7 +24,7 @@ case SNOW:
 if (depth == 0.0 && y > 32) {
   c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Snow").getId());
 }
- else if (depth > 8) {
+ else if (depth > 32) {
   c.setBlock(x,y,z,BlockManager.getInstance().getBlock("Stone").getId());
 }
  else {
