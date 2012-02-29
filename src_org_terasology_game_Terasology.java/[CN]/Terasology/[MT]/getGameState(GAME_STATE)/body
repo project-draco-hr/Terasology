@@ -1,0 +1,20 @@
+{
+  IGameState state=_gameStates.get(s);
+  if (state != null) {
+    return state;
+  }
+switch (_state) {
+case SINGLE_PLAYER:
+    state=new StateSinglePlayer();
+  break;
+case MAIN_MENU:
+state=new StateMainMenu();
+break;
+case UNDEFINED:
+getLogger().log(Level.SEVERE,"Undefined game state. Can not run!");
+return null;
+}
+state.init();
+_gameStates.put(_state,state);
+return state;
+}

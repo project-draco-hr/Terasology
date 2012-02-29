@@ -1,0 +1,12 @@
+{
+  while (Mouse.next()) {
+    int button=Mouse.getEventButton();
+    int wheelMoved=Mouse.getEventDWheel();
+    for (    UIDisplayElement screen : _guiScreens) {
+      if (screenCanFocus(screen)) {
+        screen.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+      }
+    }
+    if (!screenHasFocus())     _worldRenderer.getPlayer().processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+  }
+}
