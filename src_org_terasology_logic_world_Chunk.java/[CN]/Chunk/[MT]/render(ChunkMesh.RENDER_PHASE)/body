@@ -7,7 +7,7 @@
     GL11.glTranslated(getPosition().x * Chunk.CHUNK_DIMENSION_X - playerPosition.x,getPosition().y * Chunk.CHUNK_DIMENSION_Y - playerPosition.y,getPosition().z * Chunk.CHUNK_DIMENSION_Z - playerPosition.z);
     for (int i=0; i < VERTICAL_SEGMENTS; i++) {
       if (!isSubMeshEmpty(i)) {
-        if (WorldRenderer.BOUNDING_BOXES_ENABLED) {
+        if (Config.getInstance().isRenderChunkBoundingBoxes()) {
           getSubMeshAABB(i).renderLocally(2f);
           _statRenderedTriangles+=12;
         }
