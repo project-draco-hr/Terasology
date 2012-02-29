@@ -1,0 +1,24 @@
+{
+  _overlay=new UIImageOverlay("menuBackground");
+  _overlay.setVisible(true);
+  _list=new UIList(new Vector2f(512f,256f));
+  _list.setVisible(true);
+  Object[] worlds=Terasology.getInstance().getListWolds();
+  for (  Object worldName : worlds) {
+    _list.addItem(worldName.toString(),worldName.toString());
+  }
+  _goToBack=new UIButton(new Vector2f(256f,32f));
+  _goToBack.getLabel().setText("Go to back");
+  _goToBack.setVisible(true);
+  _goToBack.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Terasology.getInstance().getGameMode().deactivateScreen("select_world");
+      Terasology.getInstance().getGameMode().activateScreen("main_menu");
+    }
+  }
+);
+  addDisplayElement(_overlay);
+  addDisplayElement(_list);
+  addDisplayElement(_goToBack);
+  update();
+}

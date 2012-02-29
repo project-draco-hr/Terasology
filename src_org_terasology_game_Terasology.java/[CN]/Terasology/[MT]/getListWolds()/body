@@ -1,0 +1,22 @@
+{
+  String path=getWorldSavePath("");
+  File f=new File(path);
+  ArrayList<String> worldsNames=new ArrayList<String>();
+  if (!f.exists()) {
+    return null;
+  }
+  for (  File file : f.listFiles(new FileFilter(){
+    public boolean accept(    File file){
+      if (file.isDirectory()) {
+        return true;
+      }
+ else {
+        return false;
+      }
+    }
+  }
+)) {
+    worldsNames.add(file.getName());
+  }
+  return worldsNames.toArray();
+}
