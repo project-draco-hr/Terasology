@@ -1,26 +1,56 @@
 {
+  queueRenderer();
   PostProcessingRenderer.getInstance().beginRenderScene();
-  PerformanceMonitor.startActivity("Render-Sky");
+  PerformanceMonitor.startActivity("Render Sky");
   _player.getActiveCamera().lookThroughNormalized();
   _skysphere.render();
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render-World");
+  PerformanceMonitor.startActivity("Render World");
   _player.getActiveCamera().lookThrough();
   _player.render();
   Chunk.resetStats();
-  renderChunksAndEntities();
+  glEnable(GL_LIGHT0);
+  boolean headUnderWater=_player.isHeadUnderWater();
+  if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+  PerformanceMonitor.startActivity("RenderOpaque");
+  while (_renderQueueOpaque.size() > 0)   _renderQueueOpaque.poll().render();
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render-Particles");
-  _blockParticleEmitter.render();
+  PerformanceMonitor.startActivity("Render ChunkOpaque");
+  while (_renderQueueChunksOpaque.size() > 0)   _renderQueueChunksOpaque.poll().render(ChunkMesh.RENDER_PHASE.OPAQUE);
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render-Grid");
-  _blockGrid.render();
+  PerformanceMonitor.startActivity("Render ChunkTransparent");
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  while (_renderQueueChunksSortedBillboards.size() > 0)   _renderQueueChunksSortedBillboards.poll().render(ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT);
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render-Extraction Overlay");
+  PerformanceMonitor.startActivity("Render Transparent");
+  while (_renderQueueTransparent.size() > 0)   _renderQueueTransparent.poll().render();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity(" Render ChunkWaterIce");
+  if (headUnderWater) {
+    glDisable(GL11.GL_CULL_FACE);
+  }
+  while (_renderQueueChunksSortedWater.size() > 0) {
+    Chunk c=_renderQueueChunksSortedWater.poll();
+    for (int j=0; j < 2; j++) {
+      if (j == 0) {
+        glColorMask(false,false,false,false);
+        c.render(ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
+      }
+ else {
+        glColorMask(true,true,true,true);
+        c.render(ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
+      }
+    }
+  }
   _player.renderExtractionOverlay();
+  glDisable(GL_BLEND);
+  if (headUnderWater)   glEnable(GL11.GL_CULL_FACE);
+  if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+  glDisable(GL_LIGHT0);
   PerformanceMonitor.endActivity();
   PostProcessingRenderer.getInstance().endRenderScene();
-  PerformanceMonitor.startActivity("Post-Processing");
+  PerformanceMonitor.startActivity("Render Post-Processing");
   PostProcessingRenderer.getInstance().renderScene();
   PerformanceMonitor.endActivity();
   _player.renderFirstPersonViewElements();
