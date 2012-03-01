@@ -7,26 +7,18 @@
   _exitButton=new UIButton(new Vector2f(256f,32f));
   _exitButton.getLabel().setText("Exit Terasology");
   _exitButton.setVisible(true);
-  _exitButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      Terasology.getInstance().exit();
-    }
-  }
-);
+  _configButton=new UIButton(new Vector2f(256f,32f));
+  _configButton.getLabel().setText("Settings");
+  _configButton.setVisible(true);
   _startButton=new UIButton(new Vector2f(256f,32f));
   _startButton.getLabel().setText("Play Terasology");
   _startButton.setVisible(true);
-  _startButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
-    }
-  }
-);
   _overlay=new UIImageOverlay("menuBackground");
   _overlay.setVisible(true);
   addDisplayElement(_overlay);
   addDisplayElement(_title);
   addDisplayElement(_version);
+  addDisplayElement(_configButton);
   addDisplayElement(_exitButton);
   addDisplayElement(_startButton);
   update();

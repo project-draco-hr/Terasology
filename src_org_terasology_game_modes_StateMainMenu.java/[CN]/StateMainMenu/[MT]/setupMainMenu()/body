@@ -1,0 +1,23 @@
+{
+  _mainMenu=new UIMainMenu();
+  _mainMenu.setVisible(true);
+  _mainMenu.getStartButton().addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
+    }
+  }
+);
+  _mainMenu.getExitButton().addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      Terasology.getInstance().exit();
+    }
+  }
+);
+  _mainMenu.getConfigButton().addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      _mainMenu.setVisible(false);
+      _configMenu.setVisible(true);
+    }
+  }
+);
+}
