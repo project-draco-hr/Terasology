@@ -1,19 +1,18 @@
 {
-  int buffersProcessed=AL10.alGetSourcei(this.getSourceId(),AL10.AL_BUFFERS_PROCESSED);
+  System.out.println("Source " + this.sourceId + " state "+ _playing+ " / "+ alGetSourcei(this.sourceId,AL_SOURCE_STATE));
+  int buffersProcessed=alGetSourcei(this.getSourceId(),AL_BUFFERS_PROCESSED);
   while (buffersProcessed-- > 0) {
-    int buffer=AL10.alSourceUnqueueBuffers(this.getSourceId());
+    int buffer=alSourceUnqueueBuffers(this.getSourceId());
+    OpenALException.checkState("Buffer unqueue");
+    System.out.println("Updating buffer " + buffer + " for "+ this.audio.getName()+ " source "+ this.sourceId);
     if (((AbstractStreamingSound)audio).updateBuffer(buffer)) {
-      AL10.alSourceQueueBuffers(this.getSourceId(),buffer);
+      alSourceQueueBuffers(this.getSourceId(),buffer);
+      OpenALException.checkState("Buffer refill");
     }
  else {
       _playing=false;
       continue;
     }
-    OpenALException.checkState("Buffer refill");
-  }
-  int state=AL10.alGetSourcei(getSourceId(),AL10.AL_SOURCE_STATE);
-  if (_playing && state != AL10.AL_PLAYING) {
-    AL10.alSourcePlay(this.getSourceId());
   }
   super.update();
 }

@@ -1,6 +1,9 @@
 {
+  if (this.audio != null) {
+    this.audio.reset();
+  }
+  alSourceStop(this.getSourceId());
   alSourceRewind(this.getSourceId());
-  AL10.alSourceStop(this.getSourceId());
   OpenALException.checkState("Stop playback");
   _playing=false;
   return this;
