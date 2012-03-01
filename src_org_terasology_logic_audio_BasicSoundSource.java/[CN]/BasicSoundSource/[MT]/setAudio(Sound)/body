@@ -1,11 +1,9 @@
 {
-  if (sound == null || sound.equals(this.audio)) {
-    return this;
-  }
   boolean playing=isPlaying();
   if (playing) {
     this.stop();
   }
+  this.reset();
   if (sound instanceof AbstractSound) {
     this.audio=(AbstractSound)sound;
     AL10.alSourcei(this.getSourceId(),AL10.AL_BUFFER,this.audio.getBufferId());
