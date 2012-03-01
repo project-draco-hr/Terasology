@@ -1,0 +1,47 @@
+{
+  boolean debugEnabled=Config.getInstance().isDebug();
+  boolean screenHasFocus=screenHasFocus();
+  while (Keyboard.next()) {
+    int key=Keyboard.getEventKey();
+    if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
+      if (key == Keyboard.KEY_ESCAPE) {
+        togglePauseMenu();
+      }
+      if (key == Keyboard.KEY_I) {
+        toggleInventory();
+      }
+      if (key == Keyboard.KEY_F3) {
+        Config.getInstance().setDebug(!Config.getInstance().isDebug());
+      }
+      if (key == Keyboard.KEY_F && !screenHasFocus) {
+        toggleViewingDistance();
+      }
+      if (key == Keyboard.KEY_F12) {
+        Terasology.getInstance().getActiveWorldRenderer().printScreen();
+      }
+      for (      UIDisplayElement screen : _guiScreens) {
+        if (screenCanFocus(screen)) {
+          screen.processKeyboardInput(key);
+        }
+      }
+    }
+    if (debugEnabled && !screenHasFocus() && Keyboard.getEventKeyState()) {
+      if (key == Keyboard.KEY_UP) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.005);
+      }
+      if (key == Keyboard.KEY_DOWN) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.005);
+      }
+      if (key == Keyboard.KEY_RIGHT) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.02);
+      }
+      if (key == Keyboard.KEY_LEFT) {
+        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.02);
+      }
+      if (key == Keyboard.KEY_R && !Keyboard.isRepeatEvent()) {
+        getWorldRenderer().setWireframe(!getWorldRenderer().isWireframe());
+      }
+    }
+    if (!screenHasFocus())     _worldRenderer.getPlayer().processKeyboardInput(key,Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+  }
+}

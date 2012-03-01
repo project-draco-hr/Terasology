@@ -1,0 +1,16 @@
+{
+  if (_blocks.isEmpty()) {
+    return -1;
+  }
+  int zMax=Integer.MIN_VALUE;
+  int zMin=Integer.MAX_VALUE;
+  for (  BlockPosition pos : _blocks.keySet()) {
+    if (pos.z > zMax) {
+      zMax=pos.z;
+    }
+    if (pos.z < zMin) {
+      zMin=pos.z;
+    }
+  }
+  return Math.abs(zMax) - Math.abs(zMin) + 1;
+}
