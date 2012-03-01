@@ -1,0 +1,22 @@
+{
+  if (_worldRenderer != null && shouldUpdateWorld())   _worldRenderer.update(delta);
+  if (!screenHasFocus())   getWorldRenderer().getPlayer().updateInput();
+  if (screenHasFocus() || !shouldUpdateWorld()) {
+    if (Mouse.isGrabbed()) {
+      Mouse.setGrabbed(false);
+      Mouse.setCursorPosition(Display.getWidth() / 2,Display.getHeight() / 2);
+    }
+  }
+ else {
+    if (!Mouse.isGrabbed())     Mouse.setGrabbed(true);
+  }
+  if (_worldRenderer != null) {
+    if (_worldRenderer.getPlayer().isDead()) {
+      _statusScreen.setVisible(true);
+      _statusScreen.updateStatus("Sorry! Seems like you have died. :-(");
+    }
+ else {
+      _statusScreen.setVisible(false);
+    }
+  }
+}
