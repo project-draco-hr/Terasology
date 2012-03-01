@@ -1,0 +1,16 @@
+{
+  if (_blocks.isEmpty()) {
+    return -1;
+  }
+  int yMax=Integer.MIN_VALUE;
+  int yMin=Integer.MAX_VALUE;
+  for (  BlockPosition pos : _blocks.keySet()) {
+    if (pos.y > yMax) {
+      yMax=pos.y;
+    }
+    if (pos.y < yMin) {
+      yMin=pos.y;
+    }
+  }
+  return Math.abs(yMax) - Math.abs(yMin) + 1;
+}
