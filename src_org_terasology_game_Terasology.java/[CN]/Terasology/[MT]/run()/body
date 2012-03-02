@@ -1,6 +1,6 @@
 {
   PerformanceMonitor.startActivity("Other");
-  IGameMode mode=null;
+  IGameState state=null;
   while (_runGame && !Display.isCloseRequested()) {
     _timer.tick();
     if (!Display.isActive()) {
@@ -14,35 +14,33 @@
       Display.processMessages();
       PerformanceMonitor.endActivity();
     }
-    IGameMode prevMode=mode;
-    mode=getGameMode();
-    if (mode == null) {
-      _runGame=false;
+    IGameState prevState=state;
+    state=getCurrentGameState();
+    if (state == null) {
+      exit();
       break;
     }
-    if (mode != prevMode) {
-      if (prevMode != null)       prevMode.deactivate();
-      mode.activate();
+    if (state != prevState) {
+      if (prevState != null)       prevState.deactivate();
+      state.activate();
     }
     PerformanceMonitor.startActivity("Main Update");
-    mode.update();
+    state.update(_timer.getDelta());
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Render");
-    mode.render();
+    state.render();
     Display.update();
     Display.sync(60);
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Input");
-    mode.processKeyboardInput();
-    mode.processMouseInput();
-    mode.updatePlayerInput();
+    state.processKeyboardInput();
+    state.processMouseInput();
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Audio");
     AudioManager.getInstance().update();
     PerformanceMonitor.endActivity();
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");
-    mode.updateTimeAccumulator(_timer.getDelta());
     if (Display.wasResized())     resizeViewport();
   }
 }

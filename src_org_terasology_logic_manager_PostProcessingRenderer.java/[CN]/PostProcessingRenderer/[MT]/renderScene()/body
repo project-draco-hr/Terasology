@@ -1,6 +1,7 @@
 {
   if (!_extensionsAvailable)   return;
-  if (EFFECTS_ENABLED) {
+  createOrUpdateFullscreenFbos();
+  if (Config.getInstance().isEnablePostProcessingEffects()) {
     generateDownsampledScene();
     updateExposure();
     generateTonemappedScene();
@@ -17,5 +18,4 @@
     scene.bindTexture();
     renderFullQuad();
   }
-  createOrUpdateFullscreenFbos();
 }
