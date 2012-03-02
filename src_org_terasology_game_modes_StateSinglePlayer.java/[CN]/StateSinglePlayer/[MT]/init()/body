@@ -15,4 +15,10 @@
   _guiScreens.add(_inventoryScreen);
   _guiScreens.add(_statusScreen);
   _entityManager=new PojoEntityManager();
+  _entityManager.setEventSystem(new PojoEventSystem(_entityManager));
+  _charMoveSys=new CharacterMovementSystem();
+  _charMoveSys.setEntityManager(_entityManager);
+  _ranHopSys=new SimpleAISystem();
+  _ranHopSys.setEntityManager(_entityManager);
+  _entityManager.getEventSystem().registerEventHandler(_ranHopSys);
 }

@@ -11,9 +11,12 @@
     seed=random.randomCharacterString(16);
   }
   Terasology.getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  _activeWorldRenderer=new WorldRenderer(title,seed,_entityManager);
+  _worldRenderer=new WorldRenderer(title,seed,_entityManager);
   _worldRenderer.setPlayer(new Player(_worldRenderer));
   _worldRenderer.initPortal();
   _worldRenderer.setViewingDistance(VIEWING_DISTANCES[_activeViewingDistance]);
   simulateWorld(4000);
+  _charMoveSys.setWorldProvider(_worldRenderer.getWorldProvider());
+  _ranHopSys.setWorldRenderer(_worldRenderer);
+  _ranHopSys.setRandom(_worldRenderer.getWorldProvider().getRandom());
 }

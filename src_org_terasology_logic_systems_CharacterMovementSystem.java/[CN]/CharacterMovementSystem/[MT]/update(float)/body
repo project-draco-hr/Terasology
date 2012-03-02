@@ -1,0 +1,9 @@
+{
+  float deltaSeconds=(delta / 1000f);
+  for (  EntityRef entity : entityManager.iteratorEntities(CharacterMovementComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
+    CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
+    updatePosition(deltaSeconds,entity,location,collision,movementComp);
+  }
+}

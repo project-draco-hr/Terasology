@@ -1,0 +1,48 @@
+{
+  Vector3f desiredVelocity=new Vector3f(movementComp.drive);
+  float maxSpeed=movementComp.isSwimming ? movementComp.maxWaterSpeed : movementComp.maxGroundSpeed;
+  if (movementComp.isRunning) {
+    maxSpeed*=movementComp.runFactor;
+  }
+  desiredVelocity.scale(maxSpeed);
+  movementComp.velocity.x+=Math.signum(desiredVelocity.x - movementComp.velocity.x) * Math.min(GroundFriction * delta,TeraMath.fastAbs(desiredVelocity.x - movementComp.velocity.x));
+  movementComp.velocity.z+=Math.signum(desiredVelocity.z - movementComp.velocity.z) * Math.min(GroundFriction * delta,TeraMath.fastAbs(desiredVelocity.z - movementComp.velocity.z));
+  if (movementComp.isSwimming) {
+    movementComp.velocity.y+=Math.signum(desiredVelocity.y - movementComp.velocity.y) * Math.min(GroundFriction * delta,TeraMath.fastAbs(desiredVelocity.y - movementComp.velocity.y));
+    movementComp.velocity.y=Math.max(-movementComp.maxWaterSpeed,(movementComp.velocity.y - UnderwaterGravity * delta));
+  }
+ else {
+    movementComp.velocity.y=Math.max(-TerminalVelocity,(float)(movementComp.velocity.y - Gravity * delta));
+  }
+  Vector3f worldPos=LocationHelper.localToWorldPos(location);
+  Vector3f oldPos=new Vector3f(worldPos);
+  worldPos.y+=movementComp.velocity.y * delta;
+  if (verticalHitTest(worldPos,oldPos,collision)) {
+    movementComp.velocity.y=0;
+    if (movementComp.jump) {
+      movementComp.jump=false;
+      movementComp.isGrounded=false;
+      movementComp.velocity.y+=movementComp.jumpSpeed;
+    }
+ else     if (!movementComp.isGrounded) {
+      movementComp.isGrounded=true;
+    }
+  }
+ else {
+    movementComp.isGrounded=false;
+  }
+  oldPos.set(worldPos);
+  worldPos.x+=movementComp.velocity.x * delta;
+  worldPos.z+=movementComp.velocity.z * delta;
+  if (horizontalHitTest(worldPos,oldPos,collision)) {
+    entityManager.getEventSystem().send(entity,new HorizontalCollisionEvent());
+  }
+  movementComp.velocity.x=(worldPos.x - oldPos.x) / delta;
+  movementComp.velocity.z=(worldPos.z - oldPos.z) / delta;
+  location.position.set(LocationHelper.worldToLocalPos(location,worldPos));
+  if (movementComp.faceMovementDirection) {
+    float yaw=(float)Math.atan2(movementComp.velocity.x,movementComp.velocity.z);
+    AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
+    location.rotation.set(axisAngle);
+  }
+}

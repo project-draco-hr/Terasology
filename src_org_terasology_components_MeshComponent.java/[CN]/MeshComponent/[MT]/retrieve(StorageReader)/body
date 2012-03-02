@@ -1,4 +1,9 @@
 {
-  mesh=reader.readString("mesh");
+  try {
+    renderType=RenderType.valueOf(reader.readString("renderType"));
+  }
+ catch (  IllegalArgumentException e) {
+    renderType=RenderType.GelatinousCube;
+  }
   color=reader.read("color",Color4f.class,color);
 }
