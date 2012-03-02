@@ -6,7 +6,7 @@
     byte blockType1=_parent.getWorldProvider().getBlockAtPosition(new Vector3d(p.x,p.y,p.z));
     AABB entityAABB=getAABB();
     Block block=BlockManager.getInstance().getBlock(blockType1);
-    if (block.isPenetrable())     continue;
+    if (block == null || block.isPenetrable())     continue;
     for (    AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
       if (!entityAABB.overlaps(blockAABB))       continue;
       double direction=origin.y - getPosition().y;
