@@ -1,0 +1,9 @@
+{
+  if (velocity == null || this.velocity.equals(velocity)) {
+    return this;
+  }
+  this.velocity.set(velocity);
+  AL10.alSource3f(this.getSourceId(),AL10.AL_VELOCITY,(float)velocity.x,(float)velocity.y,(float)velocity.z);
+  OpenALException.checkState("Setting sound source velocity");
+  return this;
+}

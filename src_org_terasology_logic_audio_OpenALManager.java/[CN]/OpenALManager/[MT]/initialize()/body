@@ -1,0 +1,14 @@
+{
+  logger.info("Initializing OpenAL audio manager");
+  try {
+    AL.create();
+  }
+ catch (  LWJGLException e) {
+    throw new RuntimeException(e);
+  }
+  AL10.alGetError();
+  AL10.alDistanceModel(AL10.AL_INVERSE_DISTANCE);
+  this._pools.put("sfx",new BasicSoundPool(30));
+  this._pools.put("music",new BasicStreamingSoundPool(2));
+  this.loadAssets();
+}

@@ -32,14 +32,14 @@
         }
         worldRenderer.getBlockParticleEmitter().setOrigin(blockPos.toVector3d());
         worldRenderer.getBlockParticleEmitter().emitParticles(256,currentBlockType);
-        AudioManager.getInstance().playVaryingSound("RemoveBlock",0.6f,0.5f);
+        AudioManager.play("RemoveBlock",0.6f);
         Vector3d pos=blockPos.toVector3d();
         _player.getParent().getBulletRenderer().addLootableBlocks(new Vector3f(pos),block);
         _player.resetExtraction();
         return block;
       }
     }
-    AudioManager.getInstance().playVaryingSound("Dig",0.6f,0.5f);
+    AudioManager.play("Dig",1.0f);
     worldRenderer.getBlockParticleEmitter().setOrigin(blockPos.toVector3d());
     worldRenderer.getBlockParticleEmitter().emitParticles(64,currentBlockType);
   }

@@ -41,12 +41,12 @@
       _earthVelocity=0;
       if (oldEarthVelocity <= 0) {
         if (_jump) {
-          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          playRandomFootstep();
           _jump=false;
           _earthVelocity=JUMP_INTENSITY;
         }
  else         if (!_touchingGround) {
-          AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5]);
+          playRandomFootstep();
           _touchingGround=true;
         }
       }

@@ -1,0 +1,16 @@
+{
+  Player player=Terasology.getInstance().getActivePlayer();
+  if (player != null) {
+    Vector3d velocity=player.getVelocity();
+    Vector3d orientation=player.getViewingDirection();
+    AL10.alListener3f(AL10.AL_VELOCITY,(float)velocity.x,(float)velocity.y,(float)velocity.z);
+    OpenALException.checkState("Setting listener velocity");
+    FloatBuffer listenerOri=BufferUtils.createFloatBuffer(6).put(new float[]{(float)orientation.x,(float)orientation.y,(float)orientation.z,0.0f,1.0f,0.0f});
+    listenerOri.flip();
+    AL10.alListener(AL10.AL_ORIENTATION,listenerOri);
+    OpenALException.checkState("Setting listener orientation");
+  }
+  for (  SoundPool pool : _pools.values()) {
+    pool.update();
+  }
+}
