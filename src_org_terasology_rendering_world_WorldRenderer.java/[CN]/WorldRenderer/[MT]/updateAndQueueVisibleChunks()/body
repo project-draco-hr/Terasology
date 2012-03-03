@@ -2,7 +2,6 @@
   _statDirtyChunks=0;
   _statVisibleChunks=0;
   _statIgnoredPhases=0;
-  boolean noMoreUpdates=false;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
     if (isChunkVisible(c)) {
@@ -13,12 +12,11 @@
       if (c.triangleCount(ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0)       _renderQueueChunksSortedBillboards.add(c);
  else       _statIgnoredPhases++;
       c.update();
-      if (c.isDirty())       _statDirtyChunks++;
-      if ((c.isDirty() || c.isLightDirty() || c.isFresh()) && !noMoreUpdates) {
-        if (!_chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT)) {
-          noMoreUpdates=true;
-        }
+      if (c.isDirty() || c.isLightDirty() || c.isFresh()) {
+        _statDirtyChunks++;
+        _chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
       }
+      _statVisibleChunks++;
     }
  else     if (i > Config.getInstance().getMaxChunkVBOs()) {
       c.clearMeshes();
