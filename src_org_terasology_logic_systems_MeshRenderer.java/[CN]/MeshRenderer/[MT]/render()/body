@@ -2,20 +2,27 @@
   WorldRenderer worldRenderer=Terasology.getInstance().getActiveWorldRenderer();
   if (worldRenderer == null)   return;
   Vector3d playerPosition=Terasology.getInstance().getActivePlayer().getPosition();
-  for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,LocationComponent.class)) {
+  for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
+    AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
     LocationComponent location=entity.getComponent(LocationComponent.class);
     MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-    glPushMatrix();
-    glTranslated(location.position.x - playerPosition.x,location.position.y - playerPosition.y,location.position.z - playerPosition.z);
-    AxisAngle4f rot=new AxisAngle4f();
-    rot.set(location.rotation);
-    glRotatef(TeraMath.RAD_TO_DEG * rot.angle,rot.x,rot.y,rot.z);
-    glScalef(location.scale,location.scale,location.scale);
-    ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
-    shader.enable();
-    shader.setFloat4("colorOffset",meshComp.color.x,meshComp.color.y,meshComp.color.z,meshComp.color.w);
-    shader.setFloat("light",worldRenderer.getRenderingLightValueAt(new Vector3d(location.position)));
-    mesh.render();
-    glPopMatrix();
+    Vector3f worldPos=LocationHelper.localToWorldPos(location);
+    Vector3d extents=new Vector3d(collision.extents);
+    extents.scale(LocationHelper.totalScale(location));
+    AABB aabb=new AABB(new Vector3d(worldPos),new Vector3d(collision.extents));
+    if (worldRenderer.isAABBVisible(aabb)) {
+      glPushMatrix();
+      glTranslated(location.position.x - playerPosition.x,location.position.y - playerPosition.y,location.position.z - playerPosition.z);
+      AxisAngle4f rot=new AxisAngle4f();
+      rot.set(location.rotation);
+      glRotatef(TeraMath.RAD_TO_DEG * rot.angle,rot.x,rot.y,rot.z);
+      glScalef(location.scale,location.scale,location.scale);
+      ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
+      shader.enable();
+      shader.setFloat4("colorOffset",meshComp.color.x,meshComp.color.y,meshComp.color.z,meshComp.color.w);
+      shader.setFloat("light",worldRenderer.getRenderingLightValueAt(new Vector3d(location.position)));
+      mesh.render();
+      glPopMatrix();
+    }
   }
 }
