@@ -1,0 +1,9 @@
+{
+  Player player=Terasology.getInstance().getActivePlayer();
+  if (player == null) {
+    return false;
+  }
+  Vector3d soundPosition=new Vector3d(soundSource);
+  soundPosition.sub(player.getPosition());
+  return soundPosition.lengthSquared() < MAX_DISTANCE_SQUARED;
+}
