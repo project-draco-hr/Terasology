@@ -2,8 +2,7 @@
   if (_godMode)   return;
   if ((TeraMath.fastAbs(_movementVelocity.x) > 0.01 || TeraMath.fastAbs(_movementVelocity.z) > 0.01) && _touchingGround) {
     if (_currentFootstepSound == null) {
-      _currentFootstepSound=_footstepSounds[TeraMath.fastAbs(_parent.getWorldProvider().getRandom().randomInt()) % 5];
-      AudioManager.getInstance().playVaryingPositionedSound(calcEntityPositionRelativeToPlayer(),_currentFootstepSound);
+      playFootstep(_currentFootstepSound=_footstepSounds[_parent.getWorldProvider().getRandom().randomIntAbs(_footstepSounds.length)]);
     }
  else {
       long timeDiff=Terasology.getInstance().getTimeInMs() - _lastFootStepSoundPlayed;

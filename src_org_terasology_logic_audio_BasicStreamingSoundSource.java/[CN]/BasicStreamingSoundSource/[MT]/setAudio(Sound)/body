@@ -1,0 +1,25 @@
+{
+  boolean playing=this.isPlaying();
+  if (playing) {
+    alSourceStop(this.sourceId);
+    alSourceRewind(this.sourceId);
+  }
+  if (sound instanceof AbstractStreamingSound) {
+    alSourcei(this.getSourceId(),AL_BUFFER,0);
+    AbstractStreamingSound asa=(AbstractStreamingSound)sound;
+    this.audio=asa;
+    asa.reset();
+    int[] buffers=asa.getBuffers();
+    for (    int buffer : buffers) {
+      asa.updateBuffer(buffer);
+    }
+    alSourceQueueBuffers(this.getSourceId(),(IntBuffer)BufferUtils.createIntBuffer(buffers.length).put(buffers).flip());
+  }
+ else {
+    throw new IllegalArgumentException("Unsupported sound object!");
+  }
+  if (playing) {
+    this.play();
+  }
+  return this;
+}

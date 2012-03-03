@@ -1,0 +1,14 @@
+{
+  Sound sound=_audio.get(name.toLowerCase());
+  if (sound == null) {
+    try {
+      logger.info("Loading sound 'music/" + name + ".ogg'");
+      sound=this.createStreamingAudio(name,getSoundAsset("music/" + name + ".ogg"));
+      _audio.put(name.toLowerCase(),sound);
+    }
+ catch (    IOException e) {
+      throw new RuntimeException("Failed to load sound " + name + " - "+ e.getMessage(),e);
+    }
+  }
+  return sound;
+}
