@@ -1,0 +1,12 @@
+{
+  result.set(position);
+  while (location != null && location.parent != null) {
+    location=location.parent.getComponent(LocationComponent.class);
+    if (location != null) {
+      result.scale(location.scale);
+      result=QuaternionUtil.quatRotate(location.rotation,result,result);
+      result.add(location.position);
+    }
+  }
+  return result;
+}

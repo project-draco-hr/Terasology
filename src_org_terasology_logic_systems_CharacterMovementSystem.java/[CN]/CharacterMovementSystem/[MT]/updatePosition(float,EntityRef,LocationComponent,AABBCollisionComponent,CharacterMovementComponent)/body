@@ -17,7 +17,9 @@
   Vector3f worldPos=LocationHelper.localToWorldPos(location);
   Vector3f oldPos=new Vector3f(worldPos);
   worldPos.y+=movementComp.velocity.y * delta;
-  if (verticalHitTest(worldPos,oldPos,collision)) {
+  Vector3f extents=new Vector3f(collision.extents);
+  extents.scale(LocationHelper.totalScale(location));
+  if (verticalHitTest(worldPos,oldPos,extents)) {
     movementComp.velocity.y=0;
     if (movementComp.jump) {
       movementComp.jump=false;
@@ -34,11 +36,19 @@
   oldPos.set(worldPos);
   worldPos.x+=movementComp.velocity.x * delta;
   worldPos.z+=movementComp.velocity.z * delta;
-  if (horizontalHitTest(worldPos,oldPos,collision)) {
-    entityManager.getEventSystem().send(entity,new HorizontalCollisionEvent());
+  if (horizontalHitTest(worldPos,oldPos,extents)) {
+    entity.send(new HorizontalCollisionEvent());
   }
   movementComp.velocity.x=(worldPos.x - oldPos.x) / delta;
   movementComp.velocity.z=(worldPos.z - oldPos.z) / delta;
+  Vector3f dist=new Vector3f(worldPos.x - oldPos.x,0,worldPos.z - oldPos.z);
+  if (movementComp.isGrounded) {
+    movementComp.footstepDelta+=dist.length();
+    if (movementComp.footstepDelta > movementComp.distanceBetweenFootsteps) {
+      movementComp.footstepDelta-=movementComp.distanceBetweenFootsteps;
+      entity.send(new FootstepEvent());
+    }
+  }
   location.position.set(LocationHelper.worldToLocalPos(location,worldPos));
   if (movementComp.faceMovementDirection) {
     float yaw=(float)Math.atan2(movementComp.velocity.x,movementComp.velocity.z);

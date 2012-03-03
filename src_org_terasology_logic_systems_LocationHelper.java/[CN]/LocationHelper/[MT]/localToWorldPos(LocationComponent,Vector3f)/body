@@ -1,13 +1,3 @@
 {
-  Vector3f result=new Vector3f(position);
-  while (location != null && location.parent != null) {
-    location=location.parent.getComponent(LocationComponent.class);
-    if (location != null) {
-      Quat4f inverse=new Quat4f();
-      QuaternionUtil.inverse(inverse,location.rotation);
-      result=QuaternionUtil.quatRotate(inverse,result,new Vector3f());
-      result.add(location.position);
-    }
-  }
-  return result;
+  return localToWorldPos(location,position,new Vector3f());
 }

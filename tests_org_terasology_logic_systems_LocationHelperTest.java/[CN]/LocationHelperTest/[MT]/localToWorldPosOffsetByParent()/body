@@ -1,0 +1,8 @@
+{
+  LocationComponent parent=giveParent(loc);
+  loc.position.set(1,2,3);
+  parent.position.set(2,3,4);
+  Vector3f expected=new Vector3f();
+  expected.add(loc.position,parent.position);
+  assertEquals(expected,LocationHelper.localToWorldPos(loc));
+}
