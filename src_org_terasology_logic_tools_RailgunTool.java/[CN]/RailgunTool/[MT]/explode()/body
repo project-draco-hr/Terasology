@@ -5,7 +5,7 @@
   for (int s=4; s <= 10000; s+=30) {
     origin.add(dir);
     for (int i=0; i < 64; i++) {
-      Vector3d direction=new Vector3d((float)worldProvider.getRandom().randomDouble(),(float)worldProvider.getRandom().randomDouble(),(float)worldProvider.getRandom().randomDouble());
+      Vector3d direction=new Vector3d((float)_random.randomDouble(),(float)_random.randomDouble(),(float)_random.randomDouble());
       direction.normalize();
       Vector3f impulse=new Vector3f(direction);
       impulse.scale(800000);
@@ -23,7 +23,5 @@
         }
       }
     }
-    AudioManager.play("Explode" + (worldProvider.getRandom().randomIntAbs(5) + 1));
-    _player.poke();
   }
 }

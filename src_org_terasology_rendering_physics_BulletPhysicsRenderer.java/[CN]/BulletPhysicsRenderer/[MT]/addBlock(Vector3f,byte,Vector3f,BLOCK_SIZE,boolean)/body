@@ -1,4 +1,5 @@
 {
+  if (temporary && _blocks.size() > MAX_TEMP_BLOCKS)   return null;
   BoxShape shape=_blockShape;
   Block block=BlockManager.getInstance().getBlock(type);
   if (block.isTranslucent())   return null;
@@ -14,7 +15,8 @@
   rigidBlock.setRestitution(0.0f);
   rigidBlock.setAngularFactor(0.5f);
   rigidBlock.setFriction(0.5f);
-  _discreteDynamicsWorld.addRigidBody(rigidBlock);
+  rigidBlock._temporary=temporary;
   rigidBlock.applyImpulse(impulse,new Vector3f(0.0f,0.0f,0.0f));
+  _insertionQueue.add(rigidBlock);
   return rigidBlock;
 }
