@@ -1,5 +1,7 @@
 {
   try {
+    filename=Helper.fixSavePath(new File(filename)).getAbsolutePath();
+    Terasology.getInstance().getLogger().log(Level.INFO,"Using config file: " + filename);
     FileOutputStream fos=new FileOutputStream(filename);
     OutputStreamWriter osw=new OutputStreamWriter(fos);
     TextFormat.print(_setting.build(),osw);
