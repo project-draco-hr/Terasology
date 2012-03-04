@@ -1,0 +1,14 @@
+{
+  PrefabPersister persister=PersisterFactory.createPrefabPersister();
+  StringWriter writer=new StringWriter();
+  persister.savePrefab(writer,prefab);
+  String firstPass=writer.getBuffer().toString();
+  manager.removePrefab(prefab.getName());
+  StringReader reader=new StringReader(writer.getBuffer().toString());
+  Prefab deserializedPrefab=persister.loadPrefab(reader,manager);
+  writer=new StringWriter();
+  persister.savePrefab(writer,deserializedPrefab);
+  String secondPass=writer.getBuffer().toString();
+  assertEquals(firstPass,secondPass);
+  assertEquals(prefab,deserializedPrefab);
+}
