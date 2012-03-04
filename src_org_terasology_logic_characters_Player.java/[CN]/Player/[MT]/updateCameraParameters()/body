@@ -1,5 +1,7 @@
 {
-  _firstPersonCamera.getPosition().set(calcEyeOffset());
+  Vector3d cameraPosition=new Vector3d();
+  cameraPosition.add(getPosition(),calcEyeOffset());
+  _firstPersonCamera.getPosition().set(cameraPosition);
   if (CAMERA_BOBBING) {
     _firstPersonCamera.setBobbingRotationOffsetFactor(calcBobbingOffset(0.0f,0.01f,2.5f));
     _firstPersonCamera.setBobbingVerticalOffsetFactor(calcBobbingOffset((float)java.lang.Math.PI / 4f,0.025f,1.25f));

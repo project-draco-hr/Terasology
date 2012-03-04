@@ -1,0 +1,11 @@
+{
+  Vector3d cameraPosition=new Vector3d(_player.getSpawningPoint());
+  cameraPosition.y+=32;
+  cameraPosition.x+=Math.sin(getTick() * 0.0005f) * 32f;
+  cameraPosition.z+=Math.cos(getTick() * 0.0005f) * 32f;
+  Vector3d cameraDirection=new Vector3d();
+  cameraDirection.sub(_player.getSpawningPoint(),cameraPosition);
+  cameraDirection.normalize();
+  _spawnCamera.getPosition().set(cameraPosition);
+  _spawnCamera.getViewingDirection().set(cameraDirection);
+}

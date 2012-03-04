@@ -5,8 +5,9 @@
   TextureManager.getInstance().bindTexture("effects");
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_DST_COLOR,GL_ZERO);
+  Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
   glPushMatrix();
-  glTranslated(_extractedBlock.getBlockPosition().x - getPosition().x,_extractedBlock.getBlockPosition().y - getPosition().y,_extractedBlock.getBlockPosition().z - getPosition().z);
+  glTranslated(_extractedBlock.getBlockPosition().x - cameraPosition.x,_extractedBlock.getBlockPosition().y - cameraPosition.y,_extractedBlock.getBlockPosition().z - cameraPosition.z);
   float offset=java.lang.Math.round(((float)_extractionCounter / block.getHardness()) * 10.0f) * 0.0625f;
   if (_overlayMesh == null) {
     Vector2f texPos=new Vector2f(0.0f,0.0f);
