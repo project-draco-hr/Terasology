@@ -1,0 +1,11 @@
+{
+  try {
+    FileOutputStream fos=new FileOutputStream(filename);
+    OutputStreamWriter osw=new OutputStreamWriter(fos);
+    TextFormat.print(_setting.build(),osw);
+    osw.close();
+  }
+ catch (  Exception e) {
+    Terasology.getInstance().getLogger().log(Level.WARNING,"Could not write " + filename,e);
+  }
+}

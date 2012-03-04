@@ -1,2 +1,15 @@
 {
+  Configuration.Setting.Builder setting=Configuration.Setting.newBuilder();
+  try {
+    FileInputStream fis=new FileInputStream(filename);
+    InputStreamReader isr=new InputStreamReader(fis);
+    TextFormat.merge(isr,setting);
+    isr.close();
+  }
+ catch (  Exception e) {
+    Terasology.getInstance().getLogger().log(Level.WARNING,"Could not write " + filename,e);
+    return false;
+  }
+  _setting=setting;
+  return true;
 }
