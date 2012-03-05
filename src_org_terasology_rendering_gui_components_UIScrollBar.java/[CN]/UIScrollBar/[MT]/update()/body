@@ -1,5 +1,46 @@
 {
-  _scroll.setSize(new Vector2f(98f,15f));
+  float newScrollSize=_containerHeight * _step;
+  if (newScrollSize != getSize().y) {
+    _scroll.getPosition().y+=newScrollSize - getSize().y;
+    setSize(new Vector2f(15f,newScrollSize));
+  }
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  if (intersects(mousePos)) {
+    if (_mouseDown) {
+      _moveable=true;
+    }
+    if (_mouseUp) {
+      _moveable=false;
+      _mouseDown=false;
+      _prevMousePos=null;
+    }
+  }
+ else {
+    if (!_mouseDown || !_moveable) {
+      _prevMousePos=null;
+      _mouseDown=false;
+      _mouseUp=false;
+      _moveable=false;
+      _scrollShift=0.0f;
+    }
+  }
+  if (_moveable) {
+    if (_prevMousePos == null) {
+      _prevMousePos=mousePos;
+    }
+ else {
+      float tempPos=getPosition().y + mousePos.y - _prevMousePos.y;
+      if (_max > (tempPos + getSize().y) && _min < tempPos) {
+        _scrollShift=(mousePos.y - _prevMousePos.y) * _step;
+        getPosition().y=tempPos;
+        _prevMousePos=mousePos;
+      }
+ else {
+        _scrollShift=0.0f;
+      }
+    }
+  }
+  _scroll.setSize(new Vector2f(getSize().y,15f));
   _scroll.getTextureOrigin().set(0f,155f / 512f);
   _scroll.update();
 }
