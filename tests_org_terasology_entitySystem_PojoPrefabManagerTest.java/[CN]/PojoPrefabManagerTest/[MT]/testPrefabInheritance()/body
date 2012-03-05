@@ -1,0 +1,10 @@
+{
+  Prefab parentPrefab=prefabManager.createPrefab("parentPrefab");
+  LocationComponent testComponent=new LocationComponent();
+  parentPrefab.setComponent(testComponent);
+  Prefab prefab=prefabManager.createPrefab(PrefabName);
+  prefab.addParent(parentPrefab);
+  assertEquals(testComponent,prefab.getComponent(testComponent.getClass()));
+  prefab.getComponent(testComponent.getClass()).position.set(1,1,1);
+  assertNotSame(testComponent,prefab.getComponent(testComponent.getClass()));
+}
