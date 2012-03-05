@@ -2,15 +2,15 @@
   queueRenderer();
   PostProcessingRenderer.getInstance().beginRenderScene();
   PerformanceMonitor.startActivity("Render Sky");
-  _player.getActiveCamera().lookThroughNormalized();
+  getActiveCamera().lookThroughNormalized();
   _skysphere.render();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render World");
-  _player.getActiveCamera().lookThrough();
+  getActiveCamera().lookThrough();
   _player.render();
-  Chunk.resetStats();
   glEnable(GL_LIGHT0);
-  boolean headUnderWater=_player.isHeadUnderWater();
+  boolean headUnderWater=false;
+  if (_cameraMode == CAMERA_MODE.PLAYER)   headUnderWater=_player.isHeadUnderWater();
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("RenderOpaque");
   while (_renderQueueOpaque.size() > 0)   _renderQueueOpaque.poll().render();
@@ -54,5 +54,5 @@
   PerformanceMonitor.startActivity("Render Post-Processing");
   PostProcessingRenderer.getInstance().renderScene();
   PerformanceMonitor.endActivity();
-  _player.renderFirstPersonViewElements();
+  if (_cameraMode == CAMERA_MODE.PLAYER)   _player.renderFirstPersonViewElements();
 }

@@ -1,6 +1,10 @@
 {
+  PerformanceMonitor.startActivity("Cameras");
+  animateSpawnCamera(delta);
+  _spawnCamera.update(delta);
+  PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Tick");
-  updateTick();
+  updateTick(delta);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Close Chunks");
   updateChunksInProximity(false);

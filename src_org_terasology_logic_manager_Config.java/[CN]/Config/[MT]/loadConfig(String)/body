@@ -1,2 +1,17 @@
 {
+  filename=Helper.fixSavePath(new File(filename)).getAbsolutePath();
+  Terasology.getInstance().getLogger().log(Level.INFO,"Using config file: " + filename);
+  Configuration.Setting.Builder setting=Configuration.Setting.newBuilder();
+  try {
+    FileInputStream fis=new FileInputStream(filename);
+    InputStreamReader isr=new InputStreamReader(fis);
+    TextFormat.merge(isr,setting);
+    isr.close();
+  }
+ catch (  Exception e) {
+    Terasology.getInstance().getLogger().log(Level.WARNING,"Could not load config file, that's OK if this is the first execution. " + filename);
+    return false;
+  }
+  _setting=setting;
+  return true;
 }

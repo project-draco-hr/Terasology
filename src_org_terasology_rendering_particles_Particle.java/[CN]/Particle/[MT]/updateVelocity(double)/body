@@ -1,0 +1,11 @@
+{
+  int dirX=(_velocity.x - _targetVelocity.x) >= 0 ? -1 : 1;
+  int dirY=(_velocity.y - _targetVelocity.y) >= 0 ? -1 : 1;
+  int dirZ=(_velocity.z - _targetVelocity.z) >= 0 ? -1 : 1;
+  if (Math.abs(_velocity.x - _targetVelocity.x) > 0.000001)   _velocity.x+=dirX * _velDecFactor.x * delta;
+ else   _velocity.x=_targetVelocity.x;
+  if (Math.abs(_velocity.y - _targetVelocity.y) > 0.000001)   _velocity.y+=dirY * _velDecFactor.y * delta;
+ else   _velocity.y=_targetVelocity.y;
+  if (Math.abs(_velocity.z - _targetVelocity.z) > 0.000001)   _velocity.z+=dirZ * _velDecFactor.z * delta;
+ else   _velocity.z=_targetVelocity.z;
+}

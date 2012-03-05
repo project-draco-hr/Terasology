@@ -1,0 +1,9 @@
+{
+  glMatrixMode(GL11.GL_MODELVIEW);
+  glLoadIdentity();
+  Vector3d right=new Vector3d();
+  right.cross(_viewingDirection,_up);
+  right.scale(_bobbingRotationOffsetFactor);
+  GLU.gluLookAt(0f,0f,0f,(float)_viewingDirection.x,(float)_viewingDirection.y,(float)_viewingDirection.z,(float)_up.x + (float)right.x,(float)_up.y + (float)right.y,(float)_up.z + (float)right.z);
+  _viewFrustum.updateFrustum();
+}
