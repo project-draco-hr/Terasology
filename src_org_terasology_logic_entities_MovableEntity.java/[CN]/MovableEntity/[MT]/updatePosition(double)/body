@@ -27,10 +27,7 @@
   if (_earthVelocity < -MAX_ACC && !_godMode && !_isSwimming) {
     _earthVelocity=-MAX_ACC;
   }
-  if (_earthVelocity > -MAX_EARTH_ACC_WATER && !_godMode && _isSwimming) {
-    _earthVelocity-=EARTH_ACC_WATER * timePassedInSeconds;
-  }
-  if (_earthVelocity < -MAX_EARTH_ACC_WATER && !_godMode && _isSwimming) {
+  if (!_godMode && _isSwimming) {
     _earthVelocity=-MAX_EARTH_ACC_WATER;
   }
   getPosition().y+=(_movementVelocity.y + _earthVelocity) * timePassedInSeconds;

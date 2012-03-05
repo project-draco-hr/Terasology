@@ -1,3 +1,9 @@
 {
-  _activeBlocks.add(bp);
+  try {
+    _lock.lock();
+    _activeBlocks.add(bp);
+  }
+  finally {
+    _lock.unlock();
+  }
 }

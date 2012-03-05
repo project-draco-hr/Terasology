@@ -1,3 +1,9 @@
 {
-  _activeBlocks.clear();
+  try {
+    _lock.lock();
+    _activeBlocks.clear();
+  }
+  finally {
+    _lock.unlock();
+  }
 }
