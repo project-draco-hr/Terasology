@@ -1,0 +1,21 @@
+{
+  JsonObject object=new JsonObject();
+{
+    object.addProperty("name",src.getName());
+    JsonArray parents=new JsonArray();
+{
+      for (      Prefab parent : src.getParents()) {
+        parents.add(new JsonPrimitive(parent.getName()));
+      }
+    }
+    object.add("parents",parents);
+    JsonObject components=new JsonObject();
+{
+      for (      Component component : src.listOwnComponents()) {
+        components.add(component.getName(),gson.toJsonTree(component,Component.class));
+      }
+    }
+    object.add("components",components);
+  }
+  return object;
+}
