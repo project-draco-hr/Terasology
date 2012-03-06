@@ -1,5 +1,5 @@
 {
-  if (!_scrollBar.isMoveable()) {
+  if (!_scrollBar.isScrolled()) {
     _contentHeight=0.0f;
     for (    UIDisplayElement displayElement : getDisplayElements()) {
       if (displayElement.canMove()) {
@@ -7,13 +7,6 @@
       }
     }
     _scrollBar.setStep(_contentHeight,getSize().y);
-  }
- else {
-    for (    UIDisplayElement displayElement : getDisplayElements()) {
-      if (displayElement.canMove()) {
-        displayElement.getPosition().y-=_scrollBar.getScrollShift();
-      }
-    }
   }
   super.update();
 }

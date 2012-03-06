@@ -1,0 +1,15 @@
+{
+  if (_max < (getPosition().y + mousePos.y - _prevMousePos.y + getSize().y)) {
+    mousePos.y=_max - getSize().y + _prevMousePos.y - getPosition().y;
+  }
+ else   if (_min > (getPosition().y + mousePos.y - _prevMousePos.y)) {
+    mousePos.y=_min + _prevMousePos.y - getPosition().y;
+  }
+  float tempPos=getPosition().y + mousePos.y - _prevMousePos.y;
+  _scrollShift=(mousePos.y - _prevMousePos.y) * _step;
+  getPosition().y=tempPos;
+  _prevMousePos=mousePos;
+  for (int i=0; i < _scrollListeners.size(); i++) {
+    _scrollListeners.get(i).scrolled(this);
+  }
+}

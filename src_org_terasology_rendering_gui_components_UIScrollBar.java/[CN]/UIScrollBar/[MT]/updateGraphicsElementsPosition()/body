@@ -1,0 +1,14 @@
+{
+  float newScrollSize=_containerHeight * _step;
+  float newBodyScrollSize=newScrollSize - _scrollGraphicsElements.get(0).getSize().x * 2;
+  if (newScrollSize != getSize().y) {
+    setSize(new Vector2f(15f,newScrollSize));
+    _scrollGraphicsElements.get(0).getPosition().y+=newScrollSize - getSize().y;
+    _scrollGraphicsElements.get(1).getPosition().y+=newScrollSize - getSize().y + _scrollGraphicsElements.get(0).getSize().x;
+    _scrollGraphicsElements.get(1).setSize(new Vector2f(newBodyScrollSize,15f));
+    _scrollGraphicsElements.get(2).getPosition().y+=newScrollSize - getSize().y + _scrollGraphicsElements.get(1).getSize().x - 1f;
+  }
+  _scrollGraphicsElements.get(0).getTextureOrigin().set(0f,155f / 512f);
+  _scrollGraphicsElements.get(1).getTextureOrigin().set(7f / 512f,155f / 512f);
+  _scrollGraphicsElements.get(2).getTextureOrigin().set(0f,155f / 512f);
+}

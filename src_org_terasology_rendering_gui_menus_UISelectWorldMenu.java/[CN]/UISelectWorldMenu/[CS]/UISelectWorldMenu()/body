@@ -1,23 +1,18 @@
 {
   _overlay=new UIImageOverlay("menuBackground");
-  _overlay.setVisible(true);
+  _overlay.setVisible(false);
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
   Object[] worlds=Terasology.getInstance().getListWolds();
   for (  Object worldName : worlds) {
     _list.addItem(worldName.toString(),worldName.toString());
   }
-  _list.addItem("TestItem1","text");
-  _list.addItem("TestItem2","text");
-  _list.addItem("TestItem3","text");
-  _list.addItem("TestItem4","text");
-  _list.addItem("TestItem5","text");
-  _list.addItem("TestItem5","text");
-  _list.addItem("TestItem5","text");
-  _list.addItem("TestItem5","text");
   _goToBack=new UIButton(new Vector2f(256f,32f));
   _goToBack.getLabel().setText("Go to back");
   _goToBack.setVisible(true);
+  _addToList=new UIButton(new Vector2f(256f,32f));
+  _addToList.getLabel().setText("Add element");
+  _addToList.setVisible(true);
   _goToBack.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       Terasology.getInstance().getGameMode().deactivateScreen("select_world");
@@ -25,8 +20,24 @@
     }
   }
 );
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
+  _addToList.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      _list.addItem("Add world " + _list.size(),"Add world " + _list.size());
+    }
+  }
+);
   addDisplayElement(_overlay);
   addDisplayElement(_list);
   addDisplayElement(_goToBack);
+  addDisplayElement(_addToList);
   update();
 }

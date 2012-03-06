@@ -1,11 +1,16 @@
 {
-  _scroll=new UIGraphicsElement("gui_menu");
-  _scroll.setVisible(true);
+  for (int i=0; i < 3; i++) {
+    _scrollGraphicsElements.add(new UIGraphicsElement("gui_menu"));
+    _scrollGraphicsElements.get(i).setVisible(true);
+    addDisplayElement(_scrollGraphicsElements.get(i));
+  }
 switch (_scrollType) {
 case vertical:
-    setVerticalOptions(size);
-  break;
+    setSize(new Vector2f(15f,size.y));
+  setVerticalOptions(size);
+break;
 case horizontal:
+setSize(new Vector2f(size.x,15f));
 setHorizontalPositions();
 break;
 }

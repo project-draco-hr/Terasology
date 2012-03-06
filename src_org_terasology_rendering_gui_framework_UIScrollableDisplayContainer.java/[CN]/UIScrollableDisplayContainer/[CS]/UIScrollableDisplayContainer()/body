@@ -3,4 +3,14 @@
   _scrollBar=new UIScrollBar(getSize());
   _scrollBar.setVisible(true);
   addDisplayElement(_scrollBar);
+  _scrollBar.addScrollListener(new IScrollListener(){
+    public void scrolled(    UIDisplayElement element){
+      for (      UIDisplayElement displayElement : getDisplayElements()) {
+        if (displayElement.canMove()) {
+          displayElement.getPosition().y-=_scrollBar.getScrollShift();
+        }
+      }
+    }
+  }
+);
 }
