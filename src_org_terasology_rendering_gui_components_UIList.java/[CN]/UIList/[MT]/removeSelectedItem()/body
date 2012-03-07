@@ -1,9 +1,25 @@
 {
+  if (_selectedItemIndex < 0 || _selectedItem == null) {
+    return;
+  }
   Vector2f deletedElementPosition=_items.get(_selectedItemIndex).getPosition();
   removeDisplayElement(_selectedItem);
   _items.remove(_selectedItemIndex);
+  _selectedItem=null;
   for (int i=_selectedItemIndex; i < _items.size(); i++) {
     _items.get(i).getPosition().y-=32f;
   }
-  _selectedItemIndex=_items.size() - 1;
+  if (_selectedItemIndex > _items.size() - 1) {
+    if (_items.size() - 1 >= 0) {
+      _selectedItemIndex=_items.size() - 1;
+      _items.get(_selectedItemIndex).setSelected(true);
+    }
+ else {
+      _selectedItemIndex=-1;
+    }
+  }
+  if (_selectedItemIndex >= 0) {
+    _selectedItem=_items.get(_selectedItemIndex);
+    _selectedItem.setSelected(true);
+  }
 }

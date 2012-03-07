@@ -6,7 +6,9 @@
       if (item.isVisible()) {
         if (item.intersects(mousePos)) {
           if (_mouseDown) {
-            _items.get(_selectedItemIndex).setSelected(false);
+            if (_selectedItemIndex > 0) {
+              _items.get(_selectedItemIndex).setSelected(false);
+            }
             item.setSelected(true);
             _selectedItem=item;
             _selectedItemIndex=i;
