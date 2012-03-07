@@ -17,9 +17,10 @@
   _entityManager.setEventSystem(new PojoEventSystem(_entityManager));
   _charMoveSys=new CharacterMovementSystem();
   _charMoveSys.setEntityManager(_entityManager);
-  _ranHopSys=new SimpleAISystem();
-  _ranHopSys.setEntityManager(_entityManager);
-  _entityManager.getEventSystem().registerEventHandler(_ranHopSys);
+  _simpleAISys=new SimpleAISystem();
+  _simpleAISys.setEntityManager(_entityManager);
+  _entityManager.getEventSystem().registerEventHandler(_simpleAISys);
   _charSoundSys=new CharacterSoundSystem();
   _entityManager.getEventSystem().registerEventHandler(_charSoundSys);
+  _localPlayerSys=new LocalPlayerSystem(_entityManager);
 }

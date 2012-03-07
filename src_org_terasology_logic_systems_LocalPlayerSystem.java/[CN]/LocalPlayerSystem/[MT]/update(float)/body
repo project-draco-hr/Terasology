@@ -1,0 +1,17 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
+    LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
+    CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    localPlayerComponent.pitch=TeraMath.clamp(localPlayerComponent.pitch + lookInput.y,-89,89);
+    localPlayerComponent.yaw=(localPlayerComponent.yaw - lookInput.x) % 360;
+    QuaternionUtil.setEuler(location.rotation,TeraMath.DEG_TO_RAD * localPlayerComponent.yaw,0,0);
+    Vector3f relMove=QuaternionUtil.quatRotate(location.rotation,movementInput,new Vector3f());
+    characterMovementComponent.drive.set(relMove);
+    characterMovementComponent.jump=jump;
+    Quat4f lookRotation=new Quat4f();
+    QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.yaw,TeraMath.DEG_TO_RAD * localPlayerComponent.pitch,0);
+    updateCamera(LocationHelper.localToWorldPos(location),lookRotation);
+  }
+  jump=false;
+}

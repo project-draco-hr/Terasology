@@ -1,9 +1,9 @@
 {
-  Player player=Terasology.getInstance().getActivePlayer();
-  if (player == null) {
+  Camera camera=Terasology.getInstance().getActiveCamera();
+  if (camera == null) {
     return false;
   }
   Vector3d soundPosition=new Vector3d(soundSource);
-  soundPosition.sub(player.getPosition());
+  soundPosition.sub(camera.getPosition());
   return soundPosition.lengthSquared() < MAX_DISTANCE_SQUARED;
 }

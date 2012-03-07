@@ -7,10 +7,12 @@
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render World");
   getActiveCamera().lookThrough();
-  _player.render();
+  if (Config.getInstance().isDebugCollision()) {
+    renderDebugCollision();
+  }
   glEnable(GL_LIGHT0);
   boolean headUnderWater=false;
-  if (_cameraMode == CAMERA_MODE.PLAYER)   headUnderWater=_player.isHeadUnderWater();
+  headUnderWater=(_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(getActiveCamera().getPosition()));
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("RenderOpaque");
   while (_renderQueueOpaque.size() > 0)   _renderQueueOpaque.poll().render();
@@ -44,7 +46,7 @@
       }
     }
   }
-  _player.renderExtractionOverlay();
+  _localPlayerSystem.renderExtractionOverlay();
   glDisable(GL_BLEND);
   if (headUnderWater)   glEnable(GL11.GL_CULL_FACE);
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
@@ -54,5 +56,5 @@
   PerformanceMonitor.startActivity("Render Post-Processing");
   PostProcessingRenderer.getInstance().renderScene();
   PerformanceMonitor.endActivity();
-  if (_cameraMode == CAMERA_MODE.PLAYER)   _player.renderFirstPersonViewElements();
+  if (_cameraMode == CAMERA_MODE.PLAYER)   _localPlayerSystem.renderFirstPersonViewElements();
 }

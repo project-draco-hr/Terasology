@@ -1,5 +1,5 @@
 {
-  Player player=Terasology.getInstance().getActivePlayer();
+  LocalPlayer player=Terasology.getInstance().getActivePlayer();
   for (int i=_blocks.size() - 1; i >= 0; i--) {
     BlockRigidBody b=_blocks.get(i);
     if (b._temporary)     continue;
@@ -21,7 +21,6 @@
       }
  else {
         Block block=BlockManager.getInstance().getBlock(b.getType());
-        player.getInventory().addItem(new ItemBlock(block.getBlockGroup()),1);
         AudioManager.play("Loot");
         _blocks.remove(i);
         _discreteDynamicsWorld.removeRigidBody(b);

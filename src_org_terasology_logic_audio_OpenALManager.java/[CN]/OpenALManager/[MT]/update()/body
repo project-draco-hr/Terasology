@@ -1,9 +1,9 @@
 {
-  Player player=Terasology.getInstance().getActivePlayer();
+  LocalPlayer player=Terasology.getInstance().getActivePlayer();
   if (player != null) {
-    Vector3d velocity=player.getVelocity();
-    Vector3d orientation=player.getViewingDirection();
-    AL10.alListener3f(AL10.AL_VELOCITY,(float)velocity.x,(float)velocity.y,(float)velocity.z);
+    Vector3f velocity=player.getVelocity();
+    Vector3f orientation=player.getViewDirection();
+    AL10.alListener3f(AL10.AL_VELOCITY,velocity.x,velocity.y,velocity.z);
     OpenALException.checkState("Setting listener velocity");
     FloatBuffer listenerOri=BufferUtils.createFloatBuffer(6).put(new float[]{(float)orientation.x,(float)orientation.y,(float)orientation.z,0.0f,1.0f,0.0f});
     listenerOri.flip();

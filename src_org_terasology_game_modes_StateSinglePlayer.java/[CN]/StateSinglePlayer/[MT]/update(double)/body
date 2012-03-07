@@ -1,9 +1,9 @@
 {
   updateUserInterface();
-  _ranHopSys.update((float)delta);
+  _simpleAISys.update((float)delta);
   _charMoveSys.update((float)delta);
   if (_worldRenderer != null && shouldUpdateWorld())   _worldRenderer.update(delta);
-  if (!screenHasFocus())   getWorldRenderer().getPlayer().updateInput();
+  if (!screenHasFocus())   _localPlayerSys.updateInput();
   if (screenHasFocus() || !shouldUpdateWorld()) {
     if (Mouse.isGrabbed()) {
       Mouse.setGrabbed(false);
@@ -13,13 +13,15 @@
  else {
     if (!Mouse.isGrabbed())     Mouse.setGrabbed(true);
   }
-  if (_worldRenderer != null) {
-    if (_worldRenderer.getPlayer().isDead()) {
-      _statusScreen.setVisible(true);
-      _statusScreen.updateStatus("Sorry! Seems like you have died. :-(");
-    }
+  boolean dead=true;
+  for (  EntityRef entity : _entityManager.iteratorEntities(LocalPlayerComponent.class)) {
+    dead=entity.getComponent(LocalPlayerComponent.class).isDead;
+  }
+  if (dead) {
+    _statusScreen.setVisible(true);
+    _statusScreen.updateStatus("Sorry! Seems like you have died. :-(");
+  }
  else {
-      _statusScreen.setVisible(false);
-    }
+    _statusScreen.setVisible(false);
   }
 }

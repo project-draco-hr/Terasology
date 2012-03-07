@@ -2,7 +2,7 @@
   Block activeBlock=_blockGroup.getArchetypeBlock();
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
   shader.enable();
-  Vector4f color=activeBlock.calcColorOffsetFor(Side.FRONT,Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature(),Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature());
+  Vector4f color=activeBlock.calcColorOffsetFor(Side.FRONT,Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature(player.getPosition()),Terasology.getInstance().getActiveWorldRenderer().getActiveTemperature(player.getPosition()));
   shader.setFloat3("colorOffset",color.x,color.y,color.z);
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);

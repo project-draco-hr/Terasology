@@ -12,8 +12,11 @@
   PerformanceMonitor.startActivity("Skysphere");
   _skysphere.update(delta);
   PerformanceMonitor.endActivity();
+  if (_activeCamera != null) {
+    _activeCamera.update(delta);
+  }
   PerformanceMonitor.startActivity("Player");
-  _player.update(delta);
+  _localPlayerSystem.update((float)delta);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Block Particle Emitter");
   _blockParticleEmitter.update(delta);

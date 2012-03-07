@@ -1,9 +1,11 @@
 {
-  if (mode == CAMERA_MODE.PLAYER && _player != null) {
-    _player.setRenderPlayerModel(false);
-  }
- else   if (mode == CAMERA_MODE.SPAWN) {
-    _player.setRenderPlayerModel(true);
-  }
   _cameraMode=mode;
+switch (mode) {
+case PLAYER:
+    _activeCamera=_defaultCamera;
+  break;
+default :
+_activeCamera=_spawnCamera;
+break;
+}
 }
