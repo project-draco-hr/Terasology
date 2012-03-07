@@ -1,0 +1,9 @@
+{
+  Vector2f deletedElementPosition=_items.get(_selectedItemIndex).getPosition();
+  removeDisplayElement(_selectedItem);
+  _items.remove(_selectedItemIndex);
+  for (int i=_selectedItemIndex; i < _items.size(); i++) {
+    _items.get(i).getPosition().y-=32f;
+  }
+  _selectedItemIndex=_items.size() - 1;
+}

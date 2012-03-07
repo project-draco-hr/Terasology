@@ -13,6 +13,9 @@
   _addToList=new UIButton(new Vector2f(256f,32f));
   _addToList.getLabel().setText("Add element");
   _addToList.setVisible(true);
+  _deleteFromList=new UIButton(new Vector2f(256f,32f));
+  _deleteFromList.getLabel().setText("Delete selected element");
+  _deleteFromList.setVisible(true);
   _goToBack.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       Terasology.getInstance().getGameMode().deactivateScreen("select_world");
@@ -35,9 +38,16 @@
     }
   }
 );
+  _deleteFromList.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      _list.removeSelectedItem();
+    }
+  }
+);
   addDisplayElement(_overlay);
   addDisplayElement(_list);
   addDisplayElement(_goToBack);
   addDisplayElement(_addToList);
+  addDisplayElement(_deleteFromList);
   update();
 }
