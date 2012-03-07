@@ -1,0 +1,11 @@
+{
+  try {
+    if (_lock.tryLock()) {
+      return new ArrayList<BlockPosition>(_activeBlocks);
+    }
+  }
+  finally {
+    _lock.unlock();
+  }
+  return null;
+}
