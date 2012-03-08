@@ -1,0 +1,15 @@
+{
+  try {
+    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+    GZIPOutputStream gzipOut=new GZIPOutputStream(baos);
+    ObjectOutputStream objectOut=new ObjectOutputStream(gzipOut);
+    objectOut.writeObject(c);
+    objectOut.close();
+    byte[] b=baos.toByteArray();
+    _sizeInByte+=b.length;
+    _map.put(c.getId(),b);
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+}
