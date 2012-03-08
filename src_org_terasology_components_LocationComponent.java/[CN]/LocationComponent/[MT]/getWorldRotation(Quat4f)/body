@@ -1,0 +1,9 @@
+{
+  output.set(rotation);
+  LocationComponent parentLoc=getParentLocationComponent();
+  while (parentLoc != null) {
+    output.mul(parentLoc.rotation,output);
+    parentLoc=parentLoc.getParentLocationComponent();
+  }
+  return output;
+}

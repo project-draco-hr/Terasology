@@ -1,7 +1,7 @@
 {
   try {
     Component component=(Component)super.clone();
-    for (    Field field : getClass().getFields()) {
+    for (    Field field : getClass().getDeclaredFields()) {
       Class fieldClass=field.getType();
       if (!Cloneable.class.isAssignableFrom(fieldClass)) {
         continue;
@@ -13,6 +13,7 @@
         field.set(component,clonedField);
       }
  catch (      Throwable e) {
+        logger.log(Level.SEVERE,"Failed to clone field",e);
       }
     }
     return component;

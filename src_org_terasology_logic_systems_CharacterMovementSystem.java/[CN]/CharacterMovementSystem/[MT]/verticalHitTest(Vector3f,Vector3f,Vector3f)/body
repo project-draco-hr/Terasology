@@ -4,7 +4,7 @@
   for (int i=0; i < blockPositions.size(); i++) {
     BlockPosition p=blockPositions.get(i);
     byte blockType1=worldProvider.getBlockAtPosition(new Vector3d(p.x,p.y,p.z));
-    AABB entityAABB=calcAABB(position,extents);
+    calcAABB(position,extents);
     Block block=BlockManager.getInstance().getBlock(blockType1);
     if (block == null || block.isPenetrable())     continue;
     for (    AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
@@ -18,8 +18,9 @@
         position.y=(float)(blockAABB.getPosition().y - blockAABB.getDimensions().y - entityAABB.getDimensions().y);
         position.y-=java.lang.Math.ulp(position.y);
       }
-      moved=true;
+      return true;
     }
   }
+  PerformanceMonitor.endActivity();
   return moved;
 }

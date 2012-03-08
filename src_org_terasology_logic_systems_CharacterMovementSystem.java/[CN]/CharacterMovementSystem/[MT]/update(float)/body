@@ -4,6 +4,7 @@
     LocationComponent location=entity.getComponent(LocationComponent.class);
     AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
     CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
+    if (!worldProvider.isChunkAvailableAt(location.getWorldPosition()))     continue;
     updatePosition(deltaSeconds,entity,location,collision,movementComp);
   }
 }

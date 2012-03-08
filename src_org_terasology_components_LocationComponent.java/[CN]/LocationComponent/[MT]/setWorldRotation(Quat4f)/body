@@ -1,0 +1,9 @@
+{
+  this.rotation.set(rotation);
+  LocationComponent parentLoc=getParentLocationComponent();
+  if (parentLoc != null) {
+    Quat4f worldRot=parentLoc.getWorldRotation();
+    worldRot.inverse();
+    this.rotation.mul(worldRot,this.rotation);
+  }
+}
