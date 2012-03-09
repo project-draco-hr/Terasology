@@ -1,0 +1,11 @@
+{
+  if (Config.getInstance().isPlacingBox()) {
+    RayBlockIntersection.Intersection selectedBlock=calcSelectedBlock();
+    if (selectedBlock != null) {
+      Block block=BlockManager.getInstance().getBlock(worldProvider.getBlockAtPosition(selectedBlock.getBlockPosition().toVector3d()));
+      if (block.isRenderBoundingBox()) {
+        block.getBounds(selectedBlock.getBlockPosition()).render(2f);
+      }
+    }
+  }
+}
