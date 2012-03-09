@@ -1,5 +1,12 @@
 {
   Terasology.getInstance().getLogger().log(Level.INFO,"Groovy console about to execute command: " + consoleString);
+  consoleString=consoleString.trim();
+  if (!(consoleString.startsWith("cmd.") || consoleString.startsWith("cfg."))) {
+    consoleString="cmd." + consoleString;
+  }
+  if (!consoleString.endsWith(")") && !consoleString.contains(" ") && !consoleString.contains(",")) {
+    consoleString+="()";
+  }
   updateBinding();
   GroovyShell shell=new GroovyShell(_bind);
   try {

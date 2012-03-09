@@ -6,5 +6,8 @@
     CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
     if (!worldProvider.isChunkAvailableAt(location.getWorldPosition()))     continue;
     updatePosition(deltaSeconds,entity,location,collision,movementComp);
+    updateSwimStatus(location,collision,movementComp);
+    entity.saveComponent(location);
+    entity.saveComponent(movementComp);
   }
 }
