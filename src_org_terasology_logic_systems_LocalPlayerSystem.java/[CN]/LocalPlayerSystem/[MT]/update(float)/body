@@ -3,19 +3,32 @@
     LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
     CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
     LocationComponent location=entity.getComponent(LocationComponent.class);
-    localPlayerComponent.pitch=TeraMath.clamp(localPlayerComponent.pitch + lookInput.y,-89,89);
-    localPlayerComponent.yaw=(localPlayerComponent.yaw - lookInput.x) % 360;
-    QuaternionUtil.setEuler(location.getLocalRotation(),TeraMath.DEG_TO_RAD * localPlayerComponent.yaw,0,0);
+    localPlayerComponent.viewPitch=TeraMath.clamp(localPlayerComponent.viewPitch + lookInput.y,-89,89);
+    localPlayerComponent.viewYaw=(localPlayerComponent.viewYaw - lookInput.x) % 360;
+    QuaternionUtil.setEuler(location.getLocalRotation(),TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,0,0);
     Vector3f relMove=new Vector3f(movementInput);
+    relMove.y=0;
+    if (characterMovementComponent.isGhosting || characterMovementComponent.isSwimming) {
+      Quat4f viewRot=new Quat4f();
+      QuaternionUtil.setEuler(viewRot,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
+      QuaternionUtil.quatRotate(viewRot,relMove,relMove);
+      relMove.y+=movementInput.y;
+    }
+ else {
+      QuaternionUtil.quatRotate(location.getLocalRotation(),relMove,relMove);
+    }
     float lengthSquared=relMove.lengthSquared();
     if (lengthSquared > 1)     relMove.normalize();
-    QuaternionUtil.quatRotate(location.getLocalRotation(),relMove,relMove);
     characterMovementComponent.setDrive(relMove);
     characterMovementComponent.jump=jump;
     characterMovementComponent.isRunning=running;
+    if (toggleGodMode) {
+      characterMovementComponent.isGhosting=!characterMovementComponent.isGhosting;
+    }
     Quat4f lookRotation=new Quat4f();
-    QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.yaw,TeraMath.DEG_TO_RAD * localPlayerComponent.pitch,0);
+    QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
     updateCamera(location.getWorldPosition(),lookRotation);
   }
   jump=false;
+  toggleGodMode=false;
 }

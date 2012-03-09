@@ -1,0 +1,8 @@
+{
+  if (random == null || event.getVelocity().y > 0f)   return;
+  CharacterSoundComponent characterSounds=entity.getComponent(CharacterSoundComponent.class);
+  if (characterSounds.footstepSounds.size() > 0) {
+    Sound sound=characterSounds.footstepSounds.get(random.randomIntAbs(characterSounds.footstepSounds.size()));
+    AudioManager.play(sound,event.getLocation(),1.0f,AudioManager.PRIORITY_NORMAL);
+  }
+}

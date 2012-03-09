@@ -3,6 +3,10 @@ switch (key) {
 case Keyboard.KEY_SPACE:
     if (!repeatEvent && state) {
       jump=true;
+      if (Terasology.getInstance().getTimeInMs() - lastTimeSpacePressed < 200) {
+        toggleGodMode=true;
+      }
+      lastTimeSpacePressed=Terasology.getInstance().getTimeInMs();
     }
   break;
 }

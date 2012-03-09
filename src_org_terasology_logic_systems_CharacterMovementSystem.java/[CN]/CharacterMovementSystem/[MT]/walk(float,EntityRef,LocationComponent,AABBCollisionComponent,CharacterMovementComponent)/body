@@ -31,11 +31,13 @@
   if (verticalHitTest(worldPos,oldPos,extents)) {
     movementComp.getVelocity().y=0;
     if (movementComp.jump) {
+      entity.send(new JumpEvent());
       movementComp.jump=false;
       movementComp.isGrounded=false;
       movementComp.getVelocity().y+=movementComp.jumpSpeed;
     }
  else     if (!movementComp.isGrounded) {
+      entity.send(new VerticalCollisionEvent(movementComp.getVelocity(),worldPos));
       movementComp.isGrounded=true;
     }
   }
