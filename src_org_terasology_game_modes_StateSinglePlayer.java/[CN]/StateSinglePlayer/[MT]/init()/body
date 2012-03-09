@@ -15,6 +15,8 @@
   _guiScreens.add(_statusScreen);
   _entityManager=new PojoEntityManager();
   _entityManager.setEventSystem(new PojoEventSystem(_entityManager));
+  _blockEntityLookup=new BlockEntityLookup(_entityManager);
+  _entityManager.getEventSystem().registerEventHandler(_blockEntityLookup);
   _charMoveSys=new CharacterMovementSystem();
   _charMoveSys.setEntityManager(_entityManager);
   _simpleAISys=new SimpleAISystem();
@@ -22,5 +24,9 @@
   _entityManager.getEventSystem().registerEventHandler(_simpleAISys);
   _charSoundSys=new CharacterSoundSystem();
   _entityManager.getEventSystem().registerEventHandler(_charSoundSys);
-  _localPlayerSys=new LocalPlayerSystem(_entityManager);
+  _localPlayerSys=new LocalPlayerSystem(_entityManager,_blockEntityLookup);
+  _healthSystem=new HealthSystem(_entityManager);
+  _entityManager.getEventSystem().registerEventHandler(_healthSystem);
+  _blockSystem=new BlockEntitySystem();
+  _entityManager.getEventSystem().registerEventHandler(_blockSystem);
 }

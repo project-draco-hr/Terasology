@@ -1,0 +1,10 @@
+{
+  if (worldProvider == null)   return;
+  BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+  worldProvider.setBlock(blockComp.getPosition(),EmptyBlockId,true,true);
+  byte upperBlockType=worldProvider.getBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z);
+  if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
+    worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,(byte)0x0,true,true);
+  }
+  entity.destroy();
+}
