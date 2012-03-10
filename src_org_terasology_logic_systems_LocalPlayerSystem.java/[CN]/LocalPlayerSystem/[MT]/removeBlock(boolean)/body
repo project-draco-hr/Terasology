@@ -12,6 +12,23 @@
         blockEntity.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
       }
       blockEntity.send(new DamageEvent(1));
+      EntityRef particlesEntity=entityManager.create();
+      particlesEntity.addComponent(new LocationComponent(blockPos.toVector3f()));
+      BlockParticleEffectComponent particleEffect=new BlockParticleEffectComponent();
+      particleEffect.spawnCount=64;
+      particleEffect.blockType=currentBlockType;
+      particleEffect.initialVelocityRange.set(4,4,4);
+      particleEffect.spawnRange.set(0.3f,0.3f,0.3f);
+      particleEffect.destroyEntityOnCompletion=true;
+      particleEffect.minSize=0.05f;
+      particleEffect.maxSize=0.1f;
+      particleEffect.minLifespan=1f;
+      particleEffect.maxLifespan=1.5f;
+      particleEffect.targetVelocity.set(0,-5,0);
+      particleEffect.acceleration.set(2f,2f,2f);
+      particleEffect.collideWithBlocks=true;
+      particlesEntity.addComponent(particleEffect);
     }
+    AudioManager.play("Dig",1.0f);
   }
 }

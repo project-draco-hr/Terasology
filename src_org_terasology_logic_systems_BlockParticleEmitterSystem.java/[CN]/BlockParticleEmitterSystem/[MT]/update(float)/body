@@ -1,0 +1,24 @@
+{
+  float delta=deltaMS / 1000;
+  for (  EntityRef entity : entityManager.iteratorEntities(BlockParticleEffectComponent.class,LocationComponent.class)) {
+    BlockParticleEffectComponent particleEffect=entity.getComponent(BlockParticleEffectComponent.class);
+    Iterator<Particle> iterator=particleEffect.particles.iterator();
+    while (iterator.hasNext()) {
+      BlockParticleEffectComponent.Particle p=iterator.next();
+      p.lifeRemaining-=delta;
+      if (p.lifeRemaining <= 0) {
+        iterator.remove();
+      }
+ else {
+        updateVelocity(entity,particleEffect,p,delta);
+        updatePosition(p,delta);
+      }
+    }
+    for (int i=0; particleEffect.spawnCount > 0 && i < PARTICLES_PER_UPDATE; ++i) {
+      spawnParticle(particleEffect);
+    }
+    if (particleEffect.particles.size() == 0 && particleEffect.destroyEntityOnCompletion) {
+      entity.destroy();
+    }
+  }
+}

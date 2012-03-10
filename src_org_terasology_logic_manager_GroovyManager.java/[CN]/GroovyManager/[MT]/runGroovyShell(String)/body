@@ -10,7 +10,10 @@
   updateBinding();
   GroovyShell shell=new GroovyShell(_bind);
   try {
-    shell.evaluate(consoleString);
+    Object result=shell.evaluate(consoleString);
+    if (result != null) {
+      logger.log(Level.INFO,"Result [" + result + "] from '"+ consoleString+ "'");
+    }
     return true;
   }
  catch (  Exception e) {

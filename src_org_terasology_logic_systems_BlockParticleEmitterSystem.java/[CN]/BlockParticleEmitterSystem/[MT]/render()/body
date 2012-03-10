@@ -1,0 +1,28 @@
+{
+  ShaderManager.getInstance().enableShader("particle");
+  glDisable(GL11.GL_CULL_FACE);
+  Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
+  for (  EntityRef entity : entityManager.iteratorEntities(BlockParticleEffectComponent.class,LocationComponent.class)) {
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    Vector3f worldPos=location.getWorldPosition();
+    if (!worldProvider.isChunkAvailableAt(worldPos)) {
+      continue;
+    }
+    double temperature=worldProvider.getTemperatureAt((int)worldPos.x,(int)worldPos.z);
+    double humidity=worldProvider.getHumidityAt((int)worldPos.x,(int)worldPos.z);
+    glPushMatrix();
+    glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
+    BlockParticleEffectComponent particleEffect=entity.getComponent(BlockParticleEffectComponent.class);
+    for (    Particle particle : particleEffect.particles) {
+      glPushMatrix();
+      glTranslatef(particle.position.x,particle.position.y,particle.position.z);
+      applyOrientation();
+      glScalef(particle.size,particle.size,particle.size);
+      float light=worldRenderer.getRenderingLightValueAt(new Vector3d(worldPos.x + particle.position.x,worldPos.y + particle.position.y,worldPos.z + particle.position.z));
+      renderParticle(particle,particleEffect.blockType,temperature,humidity,light);
+      glPopMatrix();
+    }
+    glPopMatrix();
+  }
+  glEnable(GL11.GL_CULL_FACE);
+}
