@@ -5,21 +5,8 @@
   ItemComponent itemComp=item.getComponent(ItemComponent.class);
   itemComp.stackCount=quantity;
   InventoryComponent inventory=Terasology.getInstance().getActivePlayer().getEntity().getComponent(InventoryComponent.class);
-  for (  EntityRef itemStack : inventory.itemSlots) {
-    if (itemStack != null) {
-      ItemComponent stackComp=itemStack.getComponent(ItemComponent.class);
-      if (itemComp.stackId.equals(stackComp.stackId)) {
-        stackComp.stackCount+=quantity;
-        item.destroy();
-        return;
-      }
-    }
+  InventorySystem inventorySystem=CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class);
+  if (!inventorySystem.addItem(Terasology.getInstance().getActivePlayer().getEntity(),item)) {
+    item.destroy();
   }
-  int freeSlot=inventory.itemSlots.indexOf(null);
-  if (freeSlot != -1) {
-    inventory.itemSlots.set(freeSlot,item);
-    itemComp.container=Terasology.getInstance().getActivePlayer().getEntity();
-    return;
-  }
-  item.destroy();
 }

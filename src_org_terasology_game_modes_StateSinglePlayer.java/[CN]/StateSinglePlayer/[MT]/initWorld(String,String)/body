@@ -11,16 +11,16 @@
     seed=random.randomCharacterString(16);
   }
   Terasology.getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys,_particleSystem);
+  _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys);
   PlayerFactory playerFactory=new PlayerFactory(_entityManager);
   _worldRenderer.setPlayer(new LocalPlayer(playerFactory.newInstance()));
   _worldRenderer.initPortal();
   fastForwardWorld();
-  _charMoveSys.setWorldProvider(_worldRenderer.getWorldProvider());
-  _simpleAISys.setWorldRenderer(_worldRenderer);
-  _simpleAISys.setRandom(_worldRenderer.getWorldProvider().getRandom());
-  _charSoundSys.setRandom(_worldRenderer.getWorldProvider().getRandom());
-  _localPlayerSys.setWorldProvider(_worldRenderer.getWorldProvider());
-  _blockSystem.setWorldProvider(_worldRenderer.getWorldProvider());
-  _itemSystem.setWorldProvider(_worldRenderer.getWorldProvider());
+  CoreRegistry.put(WorldRenderer.class,_worldRenderer);
+  CoreRegistry.put(IWorldProvider.class,_worldRenderer.getWorldProvider());
+  CoreRegistry.put(LocalPlayer.class,_worldRenderer.getPlayer());
+  CoreRegistry.put(Camera.class,_worldRenderer.getActiveCamera());
+  for (  ComponentSystem system : _componentSystemManager.iterateAll()) {
+    system.initialise();
+  }
 }

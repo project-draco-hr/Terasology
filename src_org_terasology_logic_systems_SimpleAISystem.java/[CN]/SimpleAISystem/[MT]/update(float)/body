@@ -1,17 +1,17 @@
 {
-  if (worldRenderer == null)   return;
   for (  EntityRef entity : entityManager.iteratorEntities(SimpleAIComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
     SimpleAIComponent ai=entity.getComponent(SimpleAIComponent.class);
     CharacterMovementComponent moveComp=entity.getComponent(CharacterMovementComponent.class);
     Vector3f worldPos=location.getWorldPosition();
     moveComp.getDrive().set(0,0,0);
-    if (worldRenderer.getPlayer() != null) {
+    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+    if (localPlayer != null) {
       Vector3f dist=new Vector3f(worldPos);
-      dist.sub(worldRenderer.getPlayer().getPosition());
+      dist.sub(localPlayer.getPosition());
       double distanceToPlayer=dist.lengthSquared();
       if (distanceToPlayer > 6 && distanceToPlayer < 16) {
-        ai.movementTarget.set(worldRenderer.getPlayer().getPosition());
+        ai.movementTarget.set(localPlayer.getPosition());
         ai.followingPlayer=true;
       }
  else {

@@ -1,0 +1,22 @@
+{
+  InventoryComponent inventory=inventoryEntity.getComponent(InventoryComponent.class);
+  ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+  if (inventory == null || item == null)   return false;
+  for (  EntityRef itemStack : inventory.itemSlots) {
+    if (itemStack != null) {
+      ItemComponent stackComp=itemStack.getComponent(ItemComponent.class);
+      if (item.stackId.equals(stackComp.stackId)) {
+        stackComp.stackCount+=item.stackCount;
+        itemEntity.destroy();
+        return true;
+      }
+    }
+  }
+  int freeSlot=inventory.itemSlots.indexOf(null);
+  if (freeSlot != -1) {
+    inventory.itemSlots.set(freeSlot,itemEntity);
+    item.container=inventoryEntity;
+    return true;
+  }
+  return false;
+}

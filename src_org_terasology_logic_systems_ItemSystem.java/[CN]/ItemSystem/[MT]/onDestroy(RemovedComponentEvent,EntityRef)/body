@@ -1,0 +1,10 @@
+{
+  ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+  if (item.container != null) {
+    InventoryComponent inventory=item.container.getComponent(InventoryComponent.class);
+    int index=inventory.itemSlots.indexOf(itemEntity);
+    if (index != -1) {
+      inventory.itemSlots.set(index,null);
+    }
+  }
+}

@@ -10,13 +10,16 @@
   if (Config.getInstance().isDebugCollision()) {
     renderDebugCollision();
   }
-  _localPlayerSystem.render();
+  ;
   glEnable(GL_LIGHT0);
   boolean headUnderWater=false;
   headUnderWater=(_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(getActiveCamera().getPosition()));
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("RenderOpaque");
   while (_renderQueueOpaque.size() > 0)   _renderQueueOpaque.poll().render();
+  for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
+    renderer.renderOpaque();
+  }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render ChunkOpaque");
   while (_renderQueueChunksOpaque.size() > 0)   _renderQueueChunksOpaque.poll().render(ChunkMesh.RENDER_PHASE.OPAQUE);
@@ -28,8 +31,9 @@
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Transparent");
   while (_renderQueueTransparent.size() > 0)   _renderQueueTransparent.poll().render();
-  _particleSystem.render();
-  _entityRendererSystem.render();
+  for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
+    renderer.renderTransparent();
+  }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render ChunkWaterIce");
   if (headUnderWater) {
@@ -48,7 +52,9 @@
       }
     }
   }
-  _blockDamageRenderer.render();
+  for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
+    renderer.renderOverlay();
+  }
   glDisable(GL_BLEND);
   if (headUnderWater)   glEnable(GL11.GL_CULL_FACE);
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
