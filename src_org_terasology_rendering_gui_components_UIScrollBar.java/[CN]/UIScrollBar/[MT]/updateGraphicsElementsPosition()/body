@@ -1,13 +1,20 @@
 {
-  float newScrollSize=_containerHeight * _step;
+  float newScrollSize=_containerLength * _step;
   float newBodyScrollSize=newScrollSize - _scrollGraphicsElements.get(0).getSize().x * 2;
-  if (newScrollSize != getSize().y) {
-    setSize(new Vector2f(15f,newScrollSize));
-    _scrollGraphicsElements.get(1).setSize(new Vector2f(newBodyScrollSize,15f));
-    _scrollGraphicsElements.get(2).getPosition().y=_scrollGraphicsElements.get(1).getPosition().y + _scrollGraphicsElements.get(0).getSize().x + _scrollGraphicsElements.get(1).getSize().x;
-    if (getPosition().y + getSize().y > _max) {
-      _prevMousePos=getPosition();
-      scrolled(new Vector2f(getPosition().x,(getPosition().y + getSize().y) - _max));
+  if (newScrollSize != getScrollBarSize()) {
+    if (_scrollType == ScrollType.vertical) {
+      setSize(new Vector2f(15f,newScrollSize));
+      _scrollGraphicsElements.get(1).setSize(new Vector2f(newBodyScrollSize,15f));
+      _scrollGraphicsElements.get(2).getPosition().y=_scrollGraphicsElements.get(1).getPosition().y + _scrollGraphicsElements.get(0).getSize().x + _scrollGraphicsElements.get(1).getSize().x;
+    }
+ else {
+      setSize(new Vector2f(newScrollSize,15f));
+      _scrollGraphicsElements.get(1).setSize(new Vector2f(newBodyScrollSize,15f));
+      _scrollGraphicsElements.get(2).getPosition().x=_scrollGraphicsElements.get(1).getPosition().x + _scrollGraphicsElements.get(0).getSize().x + _scrollGraphicsElements.get(1).getSize().x;
+    }
+    if (getScrollBarPosition() + getScrollBarSize() > _max) {
+      _prevMousePos=getScrollBarPosition();
+      scrolled((getScrollBarPosition() + getScrollBarSize()) - _max);
     }
   }
   _scrollGraphicsElements.get(0).getTextureOrigin().set(0f,155f / 512f);

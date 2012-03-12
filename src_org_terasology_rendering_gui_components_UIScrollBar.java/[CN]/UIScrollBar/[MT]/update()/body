@@ -4,18 +4,23 @@
   if (intersects(mousePos)) {
     if (_mouseDown) {
       _scrolled=true;
-      if (_prevMousePos == null) {
-        _prevMousePos=mousePos;
+      if (_prevMousePos == -1) {
+        if (_scrollType == ScrollType.vertical) {
+          _prevMousePos=mousePos.y;
+        }
+ else {
+          _prevMousePos=mousePos.x;
+        }
       }
     }
   }
   if (_scrolled) {
-    scrolled(mousePos);
+    scrolled(_scrollType == ScrollType.vertical ? mousePos.y : mousePos.x);
   }
   if (!_mouseDown || !_scrolled || _mouseUp) {
     _scrolled=false;
     _mouseDown=false;
-    _prevMousePos=null;
+    _prevMousePos=-1;
     _mouseUp=false;
   }
 }

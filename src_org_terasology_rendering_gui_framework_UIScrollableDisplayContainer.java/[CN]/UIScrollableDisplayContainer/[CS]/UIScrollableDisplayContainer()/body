@@ -1,13 +1,28 @@
 {
   super();
-  _scrollBar=new UIScrollBar(getSize());
-  _scrollBar.setVisible(true);
-  addDisplayElement(_scrollBar);
-  _scrollBar.addScrollListener(new IScrollListener(){
+  _scrollBarV=new UIScrollBar(getSize(),UIScrollBar.ScrollType.vertical);
+  _scrollBarV.setVisible(true);
+  _scrollBarH=new UIScrollBar(getSize(),UIScrollBar.ScrollType.horizontal);
+  _scrollBarH.setVisible(true);
+  addDisplayElement(_scrollBarV);
+  addDisplayElement(_scrollBarH);
+  _scrollBarV.addScrollListener(new IScrollListener(){
     public void scrolled(    UIDisplayElement element){
+      _verticalShift-=_scrollBarV.getScrollShift();
       for (      UIDisplayElement displayElement : getDisplayElements()) {
         if (displayElement.canMove()) {
-          displayElement.getPosition().y-=_scrollBar.getScrollShift();
+          displayElement.getPosition().y-=_scrollBarV.getScrollShift();
+        }
+      }
+    }
+  }
+);
+  _scrollBarH.addScrollListener(new IScrollListener(){
+    public void scrolled(    UIDisplayElement element){
+      _horizontalShift-=_scrollBarH.getScrollShift();
+      for (      UIDisplayElement displayElement : getDisplayElements()) {
+        if (displayElement.canMove()) {
+          displayElement.getPosition().x-=_scrollBarH.getScrollShift();
         }
       }
     }
