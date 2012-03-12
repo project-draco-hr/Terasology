@@ -2,5 +2,23 @@
   if (Terasology.getInstance().getActiveWorldRenderer() == null)   return;
   _selectionRectangle.setVisible(_selected);
   setPosition(new Vector2f((getSize().x - 8f) * _id - 2f,2f));
-  displayItemCount();
+  InventoryComponent inventory=Terasology.getInstance().getActivePlayer().getEntity().getComponent(InventoryComponent.class);
+  if (inventory.itemSlots.size() > _id) {
+    LocalPlayerComponent localPlayer=Terasology.getInstance().getActivePlayer().getEntity().getComponent(LocalPlayerComponent.class);
+    if (localPlayer != null) {
+      setSelected(localPlayer.selectedTool == _id);
+    }
+    EntityRef itemStack=inventory.itemSlots.get(_id);
+    ItemComponent item=null;
+    if (itemStack != null) {
+      item=itemStack.getComponent(ItemComponent.class);
+    }
+    if (item == null || item.stackCount < 2) {
+      getLabel().setVisible(false);
+    }
+ else {
+      getLabel().setVisible(true);
+      getLabel().setText(Integer.toString(item.stackCount));
+    }
+  }
 }

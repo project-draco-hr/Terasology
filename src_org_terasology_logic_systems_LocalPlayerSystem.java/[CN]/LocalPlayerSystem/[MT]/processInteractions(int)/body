@@ -2,11 +2,30 @@
   if (Terasology.getInstance().getTimeInMs() - lastInteraction < 200) {
     return;
   }
-  if (Mouse.isButtonDown(0) || button == 0) {
-    lastInteraction=Terasology.getInstance().getTimeInMs();
-  }
- else   if (Mouse.isButtonDown(1) || button == 1) {
-    removeBlock(true);
-    lastInteraction=Terasology.getInstance().getTimeInMs();
-  }
+  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,InventoryComponent.class)) {
+    LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
+    InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+    if (Mouse.isButtonDown(0) || button == 0) {
+      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayer.selectedTool);
+      if (selectedItemEntity != null) {
+        ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+switch (item.usage) {
+case OnBlock:
+          useItemOnBlock(entity,selectedItemEntity);
+        break;
+default :
+      removeBlock(true);
+    break;
+}
+}
+ else {
+removeBlock(true);
+}
+lastInteraction=Terasology.getInstance().getTimeInMs();
+}
+ else if (Mouse.isButtonDown(1) || button == 1) {
+removeBlock(true);
+lastInteraction=Terasology.getInstance().getTimeInMs();
+}
+}
 }

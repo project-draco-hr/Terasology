@@ -1,5 +1,14 @@
 {
-  if (state && (button == 0 || button == 1)) {
+  if (wheelMoved != 0) {
+    for (    EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class)) {
+      LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
+      localPlayer.selectedTool=(localPlayer.selectedTool + wheelMoved / 120) % 9;
+      while (localPlayer.selectedTool < 0) {
+        localPlayer.selectedTool=9 + localPlayer.selectedTool;
+      }
+    }
+  }
+ else   if (state && (button == 0 || button == 1)) {
     processInteractions(button);
   }
 }

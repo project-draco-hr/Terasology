@@ -1,0 +1,25 @@
+{
+  if (quantity < 1)   return;
+  PlaceableBlockFactory factory=new PlaceableBlockFactory(Terasology.getInstance().getCurrentGameState().getEntityManager());
+  EntityRef item=factory.newInstance(blockGroup);
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  itemComp.stackCount=quantity;
+  InventoryComponent inventory=Terasology.getInstance().getActivePlayer().getEntity().getComponent(InventoryComponent.class);
+  for (  EntityRef itemStack : inventory.itemSlots) {
+    if (itemStack != null) {
+      ItemComponent stackComp=itemStack.getComponent(ItemComponent.class);
+      if (itemComp.stackId.equals(stackComp.stackId)) {
+        stackComp.stackCount+=quantity;
+        item.destroy();
+        return;
+      }
+    }
+  }
+  int freeSlot=inventory.itemSlots.indexOf(null);
+  if (freeSlot != -1) {
+    inventory.itemSlots.set(freeSlot,item);
+    itemComp.container=Terasology.getInstance().getActivePlayer().getEntity();
+    return;
+  }
+  item.destroy();
+}

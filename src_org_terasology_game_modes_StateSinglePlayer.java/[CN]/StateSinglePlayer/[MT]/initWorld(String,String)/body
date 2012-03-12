@@ -12,8 +12,7 @@
   }
   Terasology.getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys,_particleSystem);
-  PlayerFactory playerFactory=new PlayerFactory();
-  playerFactory.setEntityManager(_entityManager);
+  PlayerFactory playerFactory=new PlayerFactory(_entityManager);
   _worldRenderer.setPlayer(new LocalPlayer(playerFactory.newInstance()));
   _worldRenderer.initPortal();
   fastForwardWorld();
@@ -23,4 +22,5 @@
   _charSoundSys.setRandom(_worldRenderer.getWorldProvider().getRandom());
   _localPlayerSys.setWorldProvider(_worldRenderer.getWorldProvider());
   _blockSystem.setWorldProvider(_worldRenderer.getWorldProvider());
+  _itemSystem.setWorldProvider(_worldRenderer.getWorldProvider());
 }

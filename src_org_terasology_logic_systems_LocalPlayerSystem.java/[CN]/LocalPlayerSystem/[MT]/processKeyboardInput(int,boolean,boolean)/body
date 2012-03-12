@@ -1,4 +1,11 @@
 {
+  if (inventorySlotBindMap.containsKey(key)) {
+    for (    EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class)) {
+      LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
+      localPlayer.selectedTool=inventorySlotBindMap.get(key);
+    }
+    return;
+  }
 switch (key) {
 case Keyboard.KEY_SPACE:
     if (!repeatEvent && state) {
