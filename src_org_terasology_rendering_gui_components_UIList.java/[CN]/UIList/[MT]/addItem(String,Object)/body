@@ -1,12 +1,11 @@
 {
-  Vector2f position=null;
   UIListItem newItem=new UIListItem(new Vector2f(getSize().x,(32f)),text,value);
   newItem.setVisible(true);
   if (_items.size() > 0) {
     newItem.setPosition(_items.get(0).getPosition());
   }
   newItem.getPosition().y+=32f * _items.size();
-  newItem.setIsMoveable(true);
+  newItem.setFixed(false);
   _items.add(newItem);
   addDisplayElement(newItem);
 }

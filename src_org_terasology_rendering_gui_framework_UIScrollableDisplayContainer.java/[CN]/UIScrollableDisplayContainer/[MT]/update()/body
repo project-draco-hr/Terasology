@@ -1,6 +1,63 @@
 {
-  if (!_scrollBarV.isScrolled()) {
-    updateScrollBars();
+  boolean verticalScrollIsScrolled=_scrollBarVertical.isScrolled();
+  boolean horizontalScrollIsScrolled=_scrollBarHorizontal.isScrolled();
+  float checkConfusionVertical=0.0f;
+  float checkConfusionHorizontal=0.0f;
+  if (!verticalScrollIsScrolled) {
+    _contentHeight=0.0f;
   }
+  if (!horizontalScrollIsScrolled) {
+    _contentWidth=0.0f;
+  }
+  for (  UIDisplayElement displayElement : getDisplayElements()) {
+    if (!displayElement.isFixed()) {
+      if (!verticalScrollIsScrolled) {
+        if (_contentHeight <= (displayElement.getPosition().y + _scrollShiftVertical + displayElement.getSize().y)) {
+          _contentHeight=displayElement.getPosition().y + displayElement.getSize().y + _scrollShiftVertical;
+        }
+        if (!_scrollBarVertical.isVisible() && displayElement.getPosition().y < checkConfusionVertical) {
+          checkConfusionVertical=displayElement.getPosition().y;
+        }
+      }
+      if (!horizontalScrollIsScrolled) {
+        if (_contentWidth <= (displayElement.getPosition().x + _scrollShiftHorizontal + displayElement.getSize().x)) {
+          _contentWidth=displayElement.getPosition().x + displayElement.getSize().x + _scrollShiftHorizontal;
+        }
+        if (!_scrollBarHorizontal.isVisible() && displayElement.getPosition().x < checkConfusionHorizontal) {
+          checkConfusionHorizontal=displayElement.getPosition().x;
+        }
+      }
+    }
+  }
+  if (_contentHeight <= getSize().y && _scrollBarVertical.isVisible()) {
+    _scrollBarVertical.setVisible(false);
+  }
+ else   if (_contentHeight > getSize().y && !_scrollBarVertical.isVisible()) {
+    _scrollBarVertical.setPosition(_containerPosVertical);
+    _scrollBarVertical.setVisible(true);
+  }
+  if (_contentWidth <= getSize().x && _scrollBarHorizontal.isVisible()) {
+    _scrollBarHorizontal.setVisible(false);
+  }
+ else   if (_contentWidth > getSize().x && !_scrollBarHorizontal.isVisible()) {
+    _scrollBarHorizontal.setPosition(_containerPosHorizontal);
+    _scrollBarHorizontal.setVisible(true);
+  }
+  if (checkConfusionVertical < 0.0f) {
+    for (    UIDisplayElement displayElement : getDisplayElements()) {
+      if (!displayElement.isFixed()) {
+        displayElement.getPosition().y+=(-1) * checkConfusionVertical;
+      }
+    }
+  }
+  if (checkConfusionHorizontal < 0.0f) {
+    for (    UIDisplayElement displayElement : getDisplayElements()) {
+      if (!displayElement.isFixed()) {
+        displayElement.getPosition().x+=(-1) * checkConfusionHorizontal;
+      }
+    }
+  }
+  _scrollBarVertical.setStep(_contentHeight,getSize().y);
+  _scrollBarHorizontal.setStep(_contentWidth,getSize().x);
   super.update();
 }
