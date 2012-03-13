@@ -21,6 +21,10 @@
       }
  else {
         Block block=BlockManager.getInstance().getBlock(b.getType());
+        EntityRef blockItem=_blockItemFactory.newInstance(block.getBlockGroup());
+        if (!CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class).addItem(player.getEntity(),blockItem)) {
+          blockItem.destroy();
+        }
         AudioManager.play("Loot");
         _blocks.remove(i);
         _discreteDynamicsWorld.removeRigidBody(b);
