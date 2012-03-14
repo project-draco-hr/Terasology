@@ -1,9 +1,4 @@
 {
   HealthComponent health=entity.getComponent(HealthComponent.class);
-  health.timeSinceLastDamage=0;
-  health.currentHealth-=event.getAmount();
-  if (health.currentHealth <= 0) {
-    entity.send(new NoHealthEvent());
-  }
-  entity.saveComponent(health);
+  applyDamage(entity,health,event.getAmount());
 }

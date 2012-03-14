@@ -7,14 +7,19 @@
     return;
   }
 switch (key) {
-case Keyboard.KEY_SPACE:
+case Keyboard.KEY_K:
     if (!repeatEvent && state) {
-      jump=true;
-      if (Terasology.getInstance().getTimeInMs() - lastTimeSpacePressed < 200) {
-        toggleGodMode=true;
-      }
-      lastTimeSpacePressed=Terasology.getInstance().getTimeInMs();
+      CoreRegistry.get(LocalPlayer.class).getEntity().send(new DamageEvent(9999));
     }
   break;
+case Keyboard.KEY_SPACE:
+if (!repeatEvent && state) {
+  jump=true;
+  if (Terasology.getInstance().getTimeInMs() - lastTimeSpacePressed < 200) {
+    toggleGodMode=true;
+  }
+  lastTimeSpacePressed=Terasology.getInstance().getTimeInMs();
+}
+break;
 }
 }

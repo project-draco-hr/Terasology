@@ -5,6 +5,7 @@
   for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,InventoryComponent.class)) {
     LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
     InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+    if (localPlayer.isDead)     continue;
     if (Mouse.isButtonDown(0) || button == 0) {
       EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayer.selectedTool);
       if (selectedItemEntity != null) {

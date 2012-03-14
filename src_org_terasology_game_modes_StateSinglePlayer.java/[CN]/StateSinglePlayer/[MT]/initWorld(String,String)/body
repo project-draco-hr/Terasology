@@ -13,7 +13,8 @@
   Terasology.getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys);
   PlayerFactory playerFactory=new PlayerFactory(_entityManager);
-  _worldRenderer.setPlayer(new LocalPlayer(playerFactory.newInstance()));
+  LocalPlayer localPlayer=new LocalPlayer(playerFactory.newInstance(new Vector3f(_worldRenderer.getWorldProvider().nextSpawningPoint())));
+  _worldRenderer.setPlayer(localPlayer);
   _worldRenderer.initPortal();
   fastForwardWorld();
   CoreRegistry.put(WorldRenderer.class,_worldRenderer);

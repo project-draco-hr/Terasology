@@ -1,8 +1,24 @@
 {
-  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
+  float deltaSeconds=delta / 1000;
+  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,PlayerComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
     LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
     CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
     LocationComponent location=entity.getComponent(LocationComponent.class);
+    PlayerComponent playerComponent=entity.getComponent(PlayerComponent.class);
+    if (localPlayerComponent.isDead) {
+      localPlayerComponent.respawnWait-=deltaSeconds;
+      if (localPlayerComponent.respawnWait > 0) {
+        characterMovementComponent.getDrive().set(0,0,0);
+        characterMovementComponent.jump=false;
+        continue;
+      }
+      localPlayerComponent.isDead=false;
+      HealthComponent health=entity.getComponent(HealthComponent.class);
+      if (health != null) {
+        health.currentHealth=health.maxHealth;
+      }
+      location.setWorldPosition(playerComponent.spawnPosition);
+    }
     localPlayerComponent.viewPitch=TeraMath.clamp(localPlayerComponent.viewPitch + lookInput.y,-89,89);
     localPlayerComponent.viewYaw=(localPlayerComponent.viewYaw - lookInput.x) % 360;
     QuaternionUtil.setEuler(location.getLocalRotation(),TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,0,0);

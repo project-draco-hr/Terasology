@@ -2,6 +2,7 @@
   float deltaSeconds=delta / 1000;
   for (  EntityRef entity : entityManager.iteratorEntities(HealthComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
+    if (health.currentHealth <= 0)     continue;
     if (health.currentHealth < health.maxHealth && health.regenRate > 0) {
       health.timeSinceLastDamage+=deltaSeconds;
       if (health.timeSinceLastDamage >= health.waitBeforeRegen) {
