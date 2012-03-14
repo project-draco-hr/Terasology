@@ -1,0 +1,19 @@
+{
+  BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+  EntityRef particlesEntity=entityManager.create();
+  particlesEntity.addComponent(new LocationComponent(blockComp.getPosition().toVector3f()));
+  BlockParticleEffectComponent particleEffect=new BlockParticleEffectComponent();
+  particleEffect.spawnCount=64;
+  particleEffect.blockType=worldProvider.getBlock(blockComp.getPosition());
+  particleEffect.initialVelocityRange.set(4,4,4);
+  particleEffect.spawnRange.set(0.3f,0.3f,0.3f);
+  particleEffect.destroyEntityOnCompletion=true;
+  particleEffect.minSize=0.05f;
+  particleEffect.maxSize=0.1f;
+  particleEffect.minLifespan=1f;
+  particleEffect.maxLifespan=1.5f;
+  particleEffect.targetVelocity.set(0,-5,0);
+  particleEffect.acceleration.set(2f,2f,2f);
+  particleEffect.collideWithBlocks=true;
+  particlesEntity.addComponent(particleEffect);
+}
