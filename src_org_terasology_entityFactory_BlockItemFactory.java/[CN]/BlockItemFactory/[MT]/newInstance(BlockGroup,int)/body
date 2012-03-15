@@ -1,5 +1,8 @@
 {
   EntityRef entity=entityManager.create();
+  if (blockGroup.getArchetypeBlock().getLuminance() > 0) {
+    entity.addComponent(new LightComponent());
+  }
   ItemComponent item=new ItemComponent();
   item.name=blockGroup.getTitle();
   item.consumedOnUse=true;
