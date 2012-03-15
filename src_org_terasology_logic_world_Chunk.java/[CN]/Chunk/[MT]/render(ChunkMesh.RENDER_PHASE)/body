@@ -1,10 +1,10 @@
 {
   if (isReadyForRendering()) {
     ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("chunk");
-    shader.setFloat3("chunkOffset",(float)(getPosition().x * Chunk.CHUNK_DIMENSION_X),(float)(getPosition().y * Chunk.CHUNK_DIMENSION_Y),(float)(getPosition().z * Chunk.CHUNK_DIMENSION_Z));
+    shader.setFloat3("chunkOffset",(float)(_pos.x * Chunk.CHUNK_DIMENSION_X),(float)(_pos.y * Chunk.CHUNK_DIMENSION_Y),(float)(_pos.z * Chunk.CHUNK_DIMENSION_Z));
     GL11.glPushMatrix();
     Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
-    GL11.glTranslated(getPosition().x * Chunk.CHUNK_DIMENSION_X - cameraPosition.x,getPosition().y * Chunk.CHUNK_DIMENSION_Y - cameraPosition.y,getPosition().z * Chunk.CHUNK_DIMENSION_Z - cameraPosition.z);
+    GL11.glTranslated(_pos.x * Chunk.CHUNK_DIMENSION_X - cameraPosition.x,_pos.y * Chunk.CHUNK_DIMENSION_Y - cameraPosition.y,_pos.z * Chunk.CHUNK_DIMENSION_Z - cameraPosition.z);
     for (int i=0; i < VERTICAL_SEGMENTS; i++) {
       if (!isSubMeshEmpty(i)) {
         if (Config.getInstance().isRenderChunkBoundingBoxes()) {
