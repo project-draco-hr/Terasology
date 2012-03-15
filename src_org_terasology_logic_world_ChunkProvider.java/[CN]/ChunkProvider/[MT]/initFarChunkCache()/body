@@ -1,0 +1,17 @@
+{
+  File f=new File(_parent.getObjectSavePath() + "/" + _parent.getTitle());
+  if (!f.exists()) {
+    _farChunkCache=new ChunkCacheGZip();
+    return;
+  }
+  try {
+    FileInputStream fileIn=new FileInputStream(f);
+    ObjectInputStream in=new ObjectInputStream(fileIn);
+    _farChunkCache=(ChunkCacheGZip)in.readObject();
+    in.close();
+    fileIn.close();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+}
