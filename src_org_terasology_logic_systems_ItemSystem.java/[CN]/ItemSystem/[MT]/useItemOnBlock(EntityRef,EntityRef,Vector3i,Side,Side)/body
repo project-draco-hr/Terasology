@@ -2,13 +2,17 @@
   if (item == null)   return;
   ItemComponent itemComp=item.getComponent(ItemComponent.class);
   if (itemComp == null)   return;
-  PlaceableBlockComponent placeableBlock=item.getComponent(PlaceableBlockComponent.class);
-  if (placeableBlock != null) {
-    if (placeBlock(placeableBlock.blockGroup,targetBlock,surfaceDirection,secondaryDirection)) {
+  BlockItemComponent blockItem=item.getComponent(BlockItemComponent.class);
+  if (blockItem != null) {
+    if (placeBlock(blockItem.blockGroup,targetBlock,surfaceDirection,secondaryDirection)) {
       itemComp.stackCount--;
       if (itemComp.stackCount == 0) {
         item.destroy();
       }
     }
+  }
+ else {
+    EntityRef targetEntity=blockEntityLookup.getOrCreateEntityAt(targetBlock);
+    item.send(new ActivateEvent(targetEntity,user));
   }
 }

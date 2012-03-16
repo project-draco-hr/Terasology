@@ -6,8 +6,8 @@
     LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
     InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
     if (localPlayer.isDead)     continue;
+    EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayer.selectedTool);
     if (Mouse.isButtonDown(0) || button == 0) {
-      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayer.selectedTool);
       if (selectedItemEntity != null) {
         ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
 switch (item.usage) {
@@ -15,17 +15,17 @@ case OnBlock:
           useItemOnBlock(entity,selectedItemEntity);
         break;
 default :
-      removeBlock(entity);
+      attack(entity,selectedItemEntity);
     break;
 }
 }
  else {
-removeBlock(entity);
+attack(entity,selectedItemEntity);
 }
 lastInteraction=Terasology.getInstance().getTimeInMs();
 }
  else if (Mouse.isButtonDown(1) || button == 1) {
-removeBlock(entity);
+attack(entity,selectedItemEntity);
 lastInteraction=Terasology.getInstance().getTimeInMs();
 }
 }
