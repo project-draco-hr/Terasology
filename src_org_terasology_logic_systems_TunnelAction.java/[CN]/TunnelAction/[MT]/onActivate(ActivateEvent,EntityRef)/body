@@ -1,0 +1,32 @@
+{
+  Vector3f dir=new Vector3f(event.getDirection());
+  Vector3f origin=new Vector3f(event.getLocation());
+  Vector3i blockPos=new Vector3i();
+  for (int s=4; s <= 10000; s+=30) {
+    origin.add(dir);
+    for (int i=0; i < 64; i++) {
+      Vector3f direction=random.randomVector3f();
+      direction.normalize();
+      Vector3f impulse=new Vector3f(direction);
+      impulse.scale(800000);
+      for (int j=0; j < 3; j++) {
+        Vector3f target=new Vector3f(origin);
+        target.x+=direction.x * j;
+        target.y+=direction.y * j;
+        target.z+=direction.z * j;
+        blockPos.set((int)target.x,(int)target.y,(int)target.z);
+        byte currentBlockType=worldProvider.getBlock(blockPos);
+        if (currentBlockType == 0x0)         continue;
+        Block currentBlock=BlockManager.getInstance().getBlock(currentBlockType);
+        if (currentBlock.isDestructible()) {
+          worldProvider.setBlock(blockPos,(byte)0x0,true,true);
+          EntityRef blockEntity=blockEntityLookup.getEntityAt(blockPos);
+          if (blockEntity != null) {
+            blockEntity.destroy();
+          }
+          physicsRenderer.addTemporaryBlock(target,currentBlockType,impulse,BulletPhysicsRenderer.BLOCK_SIZE.FULL_SIZE);
+        }
+      }
+    }
+  }
+}
