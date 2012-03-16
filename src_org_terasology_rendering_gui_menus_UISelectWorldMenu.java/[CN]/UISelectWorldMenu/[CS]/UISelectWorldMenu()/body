@@ -3,6 +3,8 @@
   _overlay.setVisible(false);
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
+  _input=new UIInput(new Vector2f(256f,30f));
+  _input.setVisible(true);
   Object[] worlds=Terasology.getInstance().getListWolds();
   for (  Object worldName : worlds) {
     _list.addItem(worldName.toString(),worldName.toString());
@@ -35,7 +37,12 @@
   _list.addItem("Add world" + _list.size(),"Add world " + _list.size());
   _addToList.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      _list.addItem("Add world " + _list.size(),"Add world " + _list.size());
+      if (_input.getValue().length() > 0) {
+        _list.addItem(_input.getValue(),_input.getValue());
+      }
+ else {
+        _list.addItem("Add world " + _list.size(),"Add world " + _list.size());
+      }
     }
   }
 );
@@ -45,10 +52,10 @@
     }
   }
 );
-  addDisplayElement(_overlay);
   addDisplayElement(_list);
   addDisplayElement(_goToBack);
   addDisplayElement(_addToList);
   addDisplayElement(_deleteFromList);
+  addDisplayElement(_input);
   update();
 }

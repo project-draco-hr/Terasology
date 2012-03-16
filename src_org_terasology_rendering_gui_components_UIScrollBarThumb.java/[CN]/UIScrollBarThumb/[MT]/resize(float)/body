@@ -1,0 +1,13 @@
+{
+  float newBodyScrollSize=newScrollSize - _header.getSize().x * 2;
+  if (_scrollType == UIScrollBar.ScrollType.vertical) {
+    setSize(new Vector2f(15f,newScrollSize));
+    _body.setSize(new Vector2f(newBodyScrollSize,15f));
+    _footer.getPosition().y=_body.getPosition().y + _header.getSize().x + _body.getSize().x;
+  }
+ else {
+    setSize(new Vector2f(newScrollSize,15f));
+    _body.setSize(new Vector2f(newBodyScrollSize,15f));
+    _footer.getPosition().x=_body.getPosition().x + _header.getSize().x + _body.getSize().x;
+  }
+}
