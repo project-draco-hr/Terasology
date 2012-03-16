@@ -9,8 +9,8 @@
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(movementComp.getVelocity());
   float changeMag=velocityDiff.length();
-  if (changeMag > UnderwaterInteria * delta) {
-    velocityDiff.scale(UnderwaterInteria * delta / changeMag);
+  if (changeMag > UnderwaterInertia * delta) {
+    velocityDiff.scale(UnderwaterInertia * delta / changeMag);
   }
   movementComp.getVelocity().x+=velocityDiff.x;
   movementComp.getVelocity().y+=velocityDiff.y;
@@ -32,9 +32,9 @@
   worldPos.z+=movementComp.getVelocity().z * delta;
   if (horizontalHitTest(worldPos,oldPos,extents)) {
     entity.send(new HorizontalCollisionEvent());
+    movementComp.getVelocity().x=(worldPos.x - oldPos.x) / delta;
+    movementComp.getVelocity().z=(worldPos.z - oldPos.z) / delta;
   }
-  movementComp.getVelocity().x=(worldPos.x - oldPos.x) / delta;
-  movementComp.getVelocity().z=(worldPos.z - oldPos.z) / delta;
   location.setWorldPosition(worldPos);
   if (movementComp.faceMovementDirection) {
     float yaw=(float)Math.atan2(movementComp.getVelocity().x,movementComp.getVelocity().z);

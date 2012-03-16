@@ -50,9 +50,9 @@
   worldPos.z+=movementComp.getVelocity().z * delta;
   if (horizontalHitTest(worldPos,oldPos,extents)) {
     entity.send(new HorizontalCollisionEvent());
+    movementComp.getVelocity().x=(worldPos.x - oldPos.x) / delta;
+    movementComp.getVelocity().z=(worldPos.z - oldPos.z) / delta;
   }
-  movementComp.getVelocity().x=(worldPos.x - oldPos.x) / delta;
-  movementComp.getVelocity().z=(worldPos.z - oldPos.z) / delta;
   Vector3f dist=new Vector3f(worldPos.x - oldPos.x,0,worldPos.z - oldPos.z);
   if (movementComp.isGrounded) {
     movementComp.footstepDelta+=dist.length();

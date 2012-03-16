@@ -24,7 +24,8 @@
   }
   boolean newSwimming=topUnderwater && bottomUnderwater;
   if (!newSwimming && movementComp.isSwimming && movementComp.getVelocity().y > 0) {
-    movementComp.getVelocity().y+=8.0f;
+    float len=movementComp.getVelocity().length();
+    movementComp.getVelocity().scale((len + 8) / len);
   }
   movementComp.isSwimming=newSwimming;
 }
