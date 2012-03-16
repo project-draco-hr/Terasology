@@ -3,7 +3,7 @@
   health.timeSinceLastDamage=0;
   health.currentHealth-=damageAmount;
   if (health.currentHealth <= 0) {
-    entity.send(new NoHealthEvent());
+    entity.send(new NoHealthEvent(instigator));
   }
   entity.saveComponent(health);
 }
