@@ -36,24 +36,24 @@
       }
       _parent.setState(bp.x,bp.y,bp.z,state);
       if (state > 7) {
-        _parent.setBlock(bp.x,bp.y,bp.z,(byte)0,false,true);
+        _parent.setBlock(bp.x,bp.y,bp.z,(byte)0,false,true,true);
         _parent.setState(bp.x,bp.y,bp.z,(byte)0);
         continue;
       }
       if ((typeBelow == 0 || BlockManager.getInstance().getBlock(typeBelow).getBlockForm() == Block.BLOCK_FORM.BILLBOARD)) {
-        _parent.setBlock(bpd.x,bpd.y,bpd.z,type,true,true);
+        _parent.setBlock(bpd.x,bpd.y,bpd.z,type,true,true,true);
         _parent.setState(bpd.x,bpd.y,bpd.z,(byte)1);
         addActiveBlock(bpd);
         continue;
       }
       if (typeBelow == BlockManager.getInstance().getBlock("Grass").getId() || typeBelow == BlockManager.getInstance().getBlock("Snow").getId()) {
-        _parent.setBlock(bpd.x,bpd.y,bpd.z,BlockManager.getInstance().getBlock("Dirt").getId(),false,true);
+        _parent.setBlock(bpd.x,bpd.y,bpd.z,BlockManager.getInstance().getBlock("Dirt").getId(),false,true,true);
       }
       for (int k=0; k < 4; k++) {
         BlockPosition nBp=new BlockPosition((int)NEIGHBORS4[k].x + bp.x,bp.y,(int)NEIGHBORS4[k].z + bp.z);
         byte nBpType=_parent.getBlock(nBp.x,nBp.y,nBp.z);
         if ((nBpType == 0 || BlockManager.getInstance().getBlock(nBpType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) && _parent.getBlock(nBp.x,nBp.y - 1,nBp.z) != type) {
-          _parent.setBlock(nBp.x,nBp.y,nBp.z,type,true,true);
+          _parent.setBlock(nBp.x,nBp.y,nBp.z,type,true,true,true);
           _parent.setState(nBp.x,nBp.y,nBp.z,(byte)(state + 1));
           addActiveBlock(nBp);
         }

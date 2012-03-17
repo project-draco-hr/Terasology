@@ -1,38 +1,3 @@
 {
-  int chunkPosX=TeraMath.calcChunkPosX(x);
-  int chunkPosZ=TeraMath.calcChunkPosZ(z);
-  int blockPosX=TeraMath.calcBlockPosX(x,chunkPosX);
-  int blockPosZ=TeraMath.calcBlockPosZ(z,chunkPosZ);
-  Chunk c=getChunkProvider().getChunk(chunkPosX,0,chunkPosZ);
-  if (c == null) {
-    return false;
-  }
-  if (overwrite || c.getBlock(blockPosX,y,blockPosZ) == 0x0) {
-    byte oldBlock=c.getBlock(blockPosX,y,blockPosZ);
-    byte newBlock;
-    c.setBlock(blockPosX,y,blockPosZ,type);
-    newBlock=type;
-    if (updateLight) {
-      c.refreshSunlightAtLocalPos(blockPosX,blockPosZ,true,true);
-      byte blockLightPrev=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
-      byte blockLightCurrent;
-      if (oldBlock == 0x0 && newBlock != 0x0) {
-        byte luminance=BlockManager.getInstance().getBlock(type).getLuminance();
-        c.setLight(blockPosX,y,blockPosZ,luminance,Chunk.LIGHT_TYPE.BLOCK);
-        blockLightCurrent=luminance;
-      }
- else {
-        c.setLight(blockPosX,y,blockPosZ,(byte)0x0,Chunk.LIGHT_TYPE.BLOCK);
-        c.refreshLightAtLocalPos(blockPosX,y,blockPosZ,Chunk.LIGHT_TYPE.BLOCK);
-        blockLightCurrent=getLight(x,y,z,Chunk.LIGHT_TYPE.BLOCK);
-      }
-      if (blockLightCurrent > blockLightPrev) {
-        c.spreadLight(blockPosX,y,blockPosZ,blockLightCurrent,Chunk.LIGHT_TYPE.BLOCK);
-      }
- else       if (blockLightCurrent < blockLightPrev) {
-        c.unspreadLight(blockPosX,y,blockPosZ,blockLightPrev,Chunk.LIGHT_TYPE.BLOCK);
-      }
-    }
-  }
-  return true;
+  return setBlock(x,y,z,type,updateLight,overwrite,false);
 }
