@@ -1,0 +1,21 @@
+{
+  Vector3f relMove=new Vector3f(movementInput);
+  relMove.y=0;
+  if (characterMovementComponent.isGhosting || characterMovementComponent.isSwimming) {
+    Quat4f viewRot=new Quat4f();
+    QuaternionUtil.setEuler(viewRot,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
+    QuaternionUtil.quatRotate(viewRot,relMove,relMove);
+    relMove.y+=movementInput.y;
+  }
+ else {
+    QuaternionUtil.quatRotate(location.getLocalRotation(),relMove,relMove);
+  }
+  float lengthSquared=relMove.lengthSquared();
+  if (lengthSquared > 1)   relMove.normalize();
+  characterMovementComponent.setDrive(relMove);
+  characterMovementComponent.jump=jump;
+  characterMovementComponent.isRunning=running;
+  if (toggleGodMode) {
+    characterMovementComponent.isGhosting=!characterMovementComponent.isGhosting;
+  }
+}

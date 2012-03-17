@@ -1,15 +1,13 @@
 {
   if (inventorySlotBindMap.containsKey(key)) {
-    for (    EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class)) {
-      LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
-      localPlayer.selectedTool=inventorySlotBindMap.get(key);
-    }
+    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+    localPlayerComp.selectedTool=inventorySlotBindMap.get(key);
     return;
   }
 switch (key) {
 case Keyboard.KEY_K:
     if (!repeatEvent && state) {
-      CoreRegistry.get(LocalPlayer.class).getEntity().send(new DamageEvent(9999,null));
+      localPlayer.getEntity().send(new DamageEvent(9999,null));
     }
   break;
 case Keyboard.KEY_SPACE:

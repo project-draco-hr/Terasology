@@ -1,52 +1,18 @@
 {
   float deltaSeconds=delta / 1000;
-  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,PlayerComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
-    LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
-    CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
-    LocationComponent location=entity.getComponent(LocationComponent.class);
-    PlayerComponent playerComponent=entity.getComponent(PlayerComponent.class);
-    if (localPlayerComponent.isDead) {
-      localPlayerComponent.respawnWait-=deltaSeconds;
-      if (localPlayerComponent.respawnWait > 0) {
-        characterMovementComponent.getDrive().set(0,0,0);
-        characterMovementComponent.jump=false;
-        continue;
-      }
-      localPlayerComponent.isDead=false;
-      HealthComponent health=entity.getComponent(HealthComponent.class);
-      if (health != null) {
-        health.currentHealth=health.maxHealth;
-      }
-      location.setWorldPosition(playerComponent.spawnPosition);
-    }
-    localPlayerComponent.viewPitch=TeraMath.clamp(localPlayerComponent.viewPitch + lookInput.y,-89,89);
-    localPlayerComponent.viewYaw=(localPlayerComponent.viewYaw - lookInput.x) % 360;
-    QuaternionUtil.setEuler(location.getLocalRotation(),TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,0,0);
-    Vector3f relMove=new Vector3f(movementInput);
-    relMove.y=0;
-    if (characterMovementComponent.isGhosting || characterMovementComponent.isSwimming) {
-      Quat4f viewRot=new Quat4f();
-      QuaternionUtil.setEuler(viewRot,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
-      QuaternionUtil.quatRotate(viewRot,relMove,relMove);
-      relMove.y+=movementInput.y;
-    }
- else {
-      QuaternionUtil.quatRotate(location.getLocalRotation(),relMove,relMove);
-    }
-    float lengthSquared=relMove.lengthSquared();
-    if (lengthSquared > 1)     relMove.normalize();
-    characterMovementComponent.setDrive(relMove);
-    characterMovementComponent.jump=jump;
-    characterMovementComponent.isRunning=running;
-    if (toggleGodMode) {
-      characterMovementComponent.isGhosting=!characterMovementComponent.isGhosting;
-    }
-    Quat4f lookRotation=new Quat4f();
-    QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
-    updateCamera(location.getWorldPosition(),lookRotation);
+  EntityRef entity=localPlayer.getEntity();
+  LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
+  CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  PlayerComponent playerComponent=entity.getComponent(PlayerComponent.class);
+  if (localPlayerComponent.isDead) {
+    if (!checkRespawn(deltaSeconds,entity,localPlayerComponent,characterMovementComponent,location,playerComponent))     return;
   }
-  jump=false;
-  toggleGodMode=false;
-  movementInput.set(0,0,0);
-  lookInput.set(0,0);
+  updateViewDirection(localPlayerComponent,location);
+  updateMovement(localPlayerComponent,characterMovementComponent,location);
+  Quat4f lookRotation=new Quat4f();
+  QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
+  updateCamera(location.getWorldPosition(),lookRotation);
+  localPlayerComponent.handAnimation=Math.max(0,localPlayerComponent.handAnimation - 2.5f * deltaSeconds);
+  resetInput();
 }

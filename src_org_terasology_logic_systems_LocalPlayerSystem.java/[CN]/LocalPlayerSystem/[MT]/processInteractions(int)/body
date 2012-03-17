@@ -2,23 +2,23 @@
   if (Terasology.getInstance().getTimeInMs() - lastInteraction < 200) {
     return;
   }
-  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class,InventoryComponent.class)) {
-    LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
-    InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-    if (localPlayer.isDead)     continue;
-    EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayer.selectedTool);
-    if (Mouse.isButtonDown(0) || button == 0) {
-      if (selectedItemEntity != null) {
-        ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+  EntityRef entity=localPlayer.getEntity();
+  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+  InventoryComponent inventory=localPlayer.getEntity().getComponent(InventoryComponent.class);
+  if (localPlayerComp.isDead)   return;
+  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+  if (Mouse.isButtonDown(0) || button == 0) {
+    if (selectedItemEntity != null) {
+      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
 switch (item.usage) {
 case OnBlock:
-          useItemOnBlock(entity,selectedItemEntity);
-        break;
+        useItemOnBlock(entity,selectedItemEntity);
+      break;
 case OnUser:
-      itemSystem.useItem(selectedItemEntity,entity);
-    break;
+    itemSystem.useItem(selectedItemEntity,entity);
+  break;
 case InDirection:
-  itemSystem.useItemInDirection(selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),entity);
+itemSystem.useItemInDirection(selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),entity);
 break;
 default :
 attack(entity,selectedItemEntity);
@@ -29,10 +29,11 @@ break;
 attack(entity,selectedItemEntity);
 }
 lastInteraction=Terasology.getInstance().getTimeInMs();
+localPlayerComp.handAnimation=0.5f;
 }
  else if (Mouse.isButtonDown(1) || button == 1) {
 attack(entity,selectedItemEntity);
 lastInteraction=Terasology.getInstance().getTimeInMs();
-}
+localPlayerComp.handAnimation=0.5f;
 }
 }
