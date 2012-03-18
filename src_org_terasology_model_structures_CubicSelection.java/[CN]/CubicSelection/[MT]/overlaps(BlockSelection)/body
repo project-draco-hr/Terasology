@@ -1,0 +1,15 @@
+{
+  int maxX=calcMaxX();
+  int minX=calcMinX();
+  int maxY=calcMaxY();
+  int minY=calcMinY();
+  int maxZ=calcMaxZ();
+  int minZ=calcMinZ();
+  for (  BlockPosition targetPos : otherSelection.positions()) {
+    if (targetPos.x <= maxX && targetPos.x >= minX && targetPos.y <= maxY && targetPos.y >= minY && targetPos.z <= maxZ && targetPos.z >= minZ) {
+      Terasology.getInstance().getLogger().log(Level.INFO,"Selections overlap at " + targetPos + ", maybe more, returning true");
+      return true;
+    }
+  }
+  return false;
+}
