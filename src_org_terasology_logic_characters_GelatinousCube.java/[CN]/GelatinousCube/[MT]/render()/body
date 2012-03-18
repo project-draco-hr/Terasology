@@ -4,7 +4,7 @@
   Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
   glTranslated(getPosition().x - cameraPosition.x,getPosition().y - cameraPosition.y,getPosition().z - cameraPosition.z);
   glRotatef((float)_yaw,0f,1f,0f);
-  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("genericMesh");
   shader.enable();
   shader.setFloat4("colorOffset",COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].z,1.0f);
   shader.setFloat("light",_parent.getRenderingLightValueAt(getPosition()));

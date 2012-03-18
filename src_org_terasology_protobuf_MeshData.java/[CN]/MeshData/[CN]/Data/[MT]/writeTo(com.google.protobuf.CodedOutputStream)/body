@@ -1,0 +1,25 @@
+{
+  getSerializedSize();
+  for (int i=0; i < vertices_.size(); i++) {
+    output.writeFloat(1,vertices_.get(i));
+  }
+  for (int i=0; i < texCoords0_.size(); i++) {
+    output.writeFloat(2,texCoords0_.get(i));
+  }
+  for (int i=0; i < texCoords1_.size(); i++) {
+    output.writeFloat(3,texCoords1_.get(i));
+  }
+  for (int i=0; i < normals_.size(); i++) {
+    output.writeFloat(4,normals_.get(i));
+  }
+  for (int i=0; i < colors_.size(); i++) {
+    output.writeFloat(5,colors_.get(i));
+  }
+  for (int i=0; i < indices_.size(); i++) {
+    output.writeInt32(6,indices_.get(i));
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeBytes(16,getNameBytes());
+  }
+  getUnknownFields().writeTo(output);
+}

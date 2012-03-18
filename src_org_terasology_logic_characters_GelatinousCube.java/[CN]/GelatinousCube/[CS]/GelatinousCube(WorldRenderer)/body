@@ -2,8 +2,27 @@
   super(parent);
   _randomSize=(float)(((_parent.getWorldProvider().getRandom().randomDouble() + 1.0) / 2.0) * 0.8 + 0.2);
   _randomColorId=Math.abs(_parent.getWorldProvider().getRandom().randomInt()) % COLORS.length;
-  Tessellator tessellator=new Tessellator();
-  TessellatorHelper.addBlockMesh(tessellator,new Vector4f(COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].y,1.0f),0.8f * _randomSize,0.8f,0.6f,0f,0f,0f);
-  TessellatorHelper.addBlockMesh(tessellator,new Vector4f(COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].y,0.6f),1.0f * _randomSize,1.0f,0.8f,0f,0f,0f);
-  _mesh=tessellator.generateMesh();
+  if (_mesh == null) {
+    InputStream stream=getClass().getClassLoader().getResourceAsStream("org/terasology/data/mesh/testmonkey.obj");
+    ObjMeshImporter importer=new ObjMeshImporter();
+    try {
+      _mesh=importer.importStream(new BufferedReader(new InputStreamReader(stream)));
+    }
+ catch (    IOException e) {
+      logger.log(Level.WARNING,"Failed to load mesh",e);
+    }
+ finally {
+      try {
+        stream.close();
+      }
+ catch (      IOException e) {
+      }
+    }
+    if (_mesh == null) {
+      Tessellator tessellator=new Tessellator();
+      TessellatorHelper.addBlockMesh(tessellator,new Vector4f(COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].y,1.0f),0.8f * _randomSize,0.8f,0.6f,0f,0f,0f);
+      TessellatorHelper.addBlockMesh(tessellator,new Vector4f(COLORS[_randomColorId].x,COLORS[_randomColorId].y,COLORS[_randomColorId].y,0.6f),1.0f * _randomSize,1.0f,0.8f,0f,0f,0f);
+      _mesh=tessellator.generateMesh();
+    }
+  }
 }
