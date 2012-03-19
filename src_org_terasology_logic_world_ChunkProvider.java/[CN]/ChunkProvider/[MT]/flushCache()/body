@@ -1,0 +1,19 @@
+{
+  if (_running || _nearChunkCache.size() <= CACHE_SIZE)   return;
+  _running=true;
+  Runnable r=new Runnable(){
+    public void run(){
+      ArrayList<Chunk> cachedChunks=new ArrayList<Chunk>(_nearChunkCache.values());
+      Collections.sort(cachedChunks);
+      if (cachedChunks.size() > CACHE_SIZE) {
+        Chunk chunkToDelete=cachedChunks.remove(cachedChunks.size() - 1);
+        _farChunkCache.put(chunkToDelete);
+        _nearChunkCache.values().remove(chunkToDelete);
+        chunkToDelete.dispose();
+      }
+      _running=false;
+    }
+  }
+;
+  Terasology.getInstance().submitTask("Flush Chunk Cache",r);
+}

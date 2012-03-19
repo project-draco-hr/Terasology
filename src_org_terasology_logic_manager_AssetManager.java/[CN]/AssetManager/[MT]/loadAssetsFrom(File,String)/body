@@ -1,0 +1,14 @@
+{
+  try {
+    if (file.isFile()) {
+      this.scanArchive(file,basePath);
+    }
+ else     if (file.isDirectory()) {
+      File dataDirectory=new File(file,basePath);
+      scanFiles(dataDirectory,dataDirectory.getAbsolutePath());
+    }
+  }
+ catch (  IOException e) {
+    throw new RuntimeException(e);
+  }
+}

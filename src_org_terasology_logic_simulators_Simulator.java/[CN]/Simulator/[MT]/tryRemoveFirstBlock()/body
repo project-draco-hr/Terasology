@@ -1,0 +1,15 @@
+{
+  try {
+    if (_lock.tryLock()) {
+      if (_activeBlocks.size() > 0) {
+        BlockPosition bp=_activeBlocks.iterator().next();
+        _activeBlocks.remove(bp);
+        return bp;
+      }
+    }
+  }
+  finally {
+    _lock.unlock();
+  }
+  return null;
+}

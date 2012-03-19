@@ -1,11 +1,12 @@
 {
-  int newChunkPosX=calcPlayerChunkOffsetX();
-  int newChunkPosZ=calcPlayerChunkOffsetZ();
+  int newChunkPosX=calcCamChunkOffsetX();
+  int newChunkPosZ=calcCamChunkOffsetZ();
+  int viewingDistance=Config.getInstance().getActiveViewingDistance();
   if (_chunkPosX != newChunkPosX || _chunkPosZ != newChunkPosZ || force) {
     _chunksInProximity.clear();
-    for (int x=-(_viewingDistance / 2); x < (_viewingDistance / 2); x++) {
-      for (int z=-(_viewingDistance / 2); z < (_viewingDistance / 2); z++) {
-        Chunk c=_worldProvider.getChunkProvider().loadOrCreateChunk(calcPlayerChunkOffsetX() + x,calcPlayerChunkOffsetZ() + z);
+    for (int x=-(viewingDistance / 2); x < (viewingDistance / 2); x++) {
+      for (int z=-(viewingDistance / 2); z < (viewingDistance / 2); z++) {
+        Chunk c=_worldProvider.getChunkProvider().getChunk(calcCamChunkOffsetX() + x,0,calcCamChunkOffsetZ() + z);
         _chunksInProximity.add(c);
       }
     }

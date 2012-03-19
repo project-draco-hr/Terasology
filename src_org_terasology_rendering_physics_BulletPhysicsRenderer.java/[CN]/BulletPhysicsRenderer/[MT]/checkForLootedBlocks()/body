@@ -1,11 +1,12 @@
 {
   Player player=Terasology.getInstance().getActivePlayer();
-  for (int i=_lootableBlocks.size() - 1; i >= 0; i--) {
-    BlockRigidBody b=_lootableBlocks.get(i);
+  for (int i=_blocks.size() - 1; i >= 0; i--) {
+    BlockRigidBody b=_blocks.get(i);
+    if (b._temporary)     continue;
     if (b.distanceToPlayer() < 8.0f && !b._picked) {
       b._picked=true;
     }
-    if (b._picked) {
+    if (b._picked && b.distanceToPlayer() < 32.0f) {
       if (b.distanceToPlayer() > 1.0) {
         Transform t=new Transform();
         b.getMotionState().getWorldTransform(t);
@@ -21,7 +22,8 @@
  else {
         Block block=BlockManager.getInstance().getBlock(b.getType());
         player.getInventory().addItem(new ItemBlock(block.getBlockGroup()),1);
-        _lootableBlocks.remove(i);
+        AudioManager.play("Loot");
+        _blocks.remove(i);
         _discreteDynamicsWorld.removeRigidBody(b);
       }
     }

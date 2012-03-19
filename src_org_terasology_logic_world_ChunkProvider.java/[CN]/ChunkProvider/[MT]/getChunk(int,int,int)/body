@@ -1,0 +1,14 @@
+{
+  int id=new Vector3i(x,y,z).hashCode();
+  Chunk c=_nearChunkCache.get(id);
+  if (c != null) {
+    return c;
+  }
+  c=_farChunkCache.get(id);
+  if (c == null) {
+    c=new Chunk(_parent,x,y,z);
+  }
+  _nearChunkCache.put(id,c);
+  c.setParent(_parent);
+  return c;
+}

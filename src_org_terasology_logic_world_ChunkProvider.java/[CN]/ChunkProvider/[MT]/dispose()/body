@@ -1,0 +1,33 @@
+{
+  Runnable r=new Runnable(){
+    public void run(){
+      for (      Chunk c : _nearChunkCache.values()) {
+        if (SAVE_CHUNKS) {
+          _farChunkCache.put(c);
+        }
+        c.dispose();
+      }
+      _nearChunkCache.clear();
+      File dirPath=new File(_parent.getObjectSavePath());
+      if (!dirPath.exists()) {
+        if (!dirPath.mkdirs()) {
+          Terasology.getInstance().getLogger().log(Level.SEVERE,"Could not create save directory.");
+          return;
+        }
+      }
+      File f=new File(_parent.getObjectSavePath() + '/' + _parent.getTitle());
+      try {
+        FileOutputStream fileOut=new FileOutputStream(f);
+        ObjectOutputStream out=new ObjectOutputStream(fileOut);
+        out.writeObject(_farChunkCache);
+        out.close();
+        fileOut.close();
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
+;
+  Terasology.getInstance().submitTask("Dispose Chunk",r);
+}

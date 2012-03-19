@@ -23,21 +23,19 @@
     }
   }
 );
+  _configButton=new UIButton(new Vector2f(256f,32f));
+  _configButton.getLabel().setText("Settings");
+  _configButton.setVisible(true);
   _startButton=new UIButton(new Vector2f(256f,32f));
-  _startButton.getLabel().setText("Play Terasology");
+  _startButton.getLabel().setText("Play!");
   _startButton.setVisible(true);
-  _startButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      Terasology.getInstance().setGameMode(Terasology.GameMode.runGame);
-    }
-  }
-);
   _overlay=new UIImageOverlay("menuBackground");
   _overlay.setVisible(false);
   addDisplayElement(_overlay);
   addDisplayElement(_title);
   addDisplayElement(_version);
   addDisplayElement(_optionsButton);
+  addDisplayElement(_configButton);
   addDisplayElement(_exitButton);
   addDisplayElement(_startButton);
   update();

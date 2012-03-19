@@ -1,0 +1,10 @@
+{
+  for (  SoundSource source : _soundSources.keySet()) {
+    if (!isActive(source)) {
+      if (lock(source)) {
+        return source;
+      }
+    }
+  }
+  return null;
+}

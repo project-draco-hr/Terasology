@@ -1,0 +1,10 @@
+{
+  if (!_running)   _activeMovementAcc=MOVEMENT_ACC;
+ else   if (_godMode)   _activeMovementAcc=MOVEMENT_ACC * 4.0;
+ else   _activeMovementAcc=MOVEMENT_ACC * RUNNING_FACTOR;
+  processMovement();
+  updatePosition(delta);
+  checkPosition();
+  updateSwimStatus();
+  playMovementSound();
+}

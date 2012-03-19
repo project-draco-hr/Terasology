@@ -1,0 +1,11 @@
+{
+  _tick+=delta;
+  if (Terasology.getInstance().getTimeInMs() - _lastTick >= 1000) {
+    _tickTock++;
+    _lastTick=Terasology.getInstance().getTimeInMs();
+    _portalManager.tickSpawn();
+    if (_tickTock % 10 == 0) {
+      _mobManager.tickAI();
+    }
+  }
+}

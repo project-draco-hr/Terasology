@@ -1,0 +1,13 @@
+{
+  boolean playing=isPlaying();
+  if (playing) {
+    AL10.alSourceStop(this.getSourceId());
+  }
+  AL10.alSourceRewind(this.getSourceId());
+  AL10.alSourcei(this.getSourceId(),AL11.AL_BYTE_OFFSET,(int)(this.audio.getBufferSize() * position));
+  OpenALException.checkState("Setting sound playback relaive position");
+  if (playing) {
+    this.play();
+  }
+  return this;
+}
