@@ -10,15 +10,18 @@
     _color.add(_activeColor.y);
     _color.add(_activeColor.z);
     _color.add(_activeColor.w);
-    _normals.add(_activeNormal.x);
-    _normals.add(_activeNormal.y);
-    _normals.add(_activeNormal.z);
-    _tex.add(texCoords[i].x);
-    _tex.add(texCoords[i].y);
-    _tex.add(0.0f);
-    _tex.add(_lighting.x);
-    _tex.add(_lighting.y);
-    _tex.add(_lighting.z);
+    if (useNormals) {
+      _normals.add(_activeNormal.x);
+      _normals.add(_activeNormal.y);
+      _normals.add(_activeNormal.z);
+    }
+    _texCoord0.add(texCoords[i].x);
+    _texCoord0.add(texCoords[i].y);
+    if (useLighting) {
+      _texCoord1.add(_lighting.x);
+      _texCoord1.add(_lighting.y);
+      _texCoord1.add(_lighting.z);
+    }
   }
   for (int i=0; i < vertices.length - 2; i++) {
     _indices.add(_indexOffset);

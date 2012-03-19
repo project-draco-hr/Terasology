@@ -1,0 +1,49 @@
+{
+  int size=memoizedSerializedSize;
+  if (size != -1)   return size;
+  size=0;
+{
+    int dataSize=0;
+    dataSize=4 * getVerticesList().size();
+    size+=dataSize;
+    size+=1 * getVerticesList().size();
+  }
+{
+    int dataSize=0;
+    dataSize=4 * getTexCoords0List().size();
+    size+=dataSize;
+    size+=1 * getTexCoords0List().size();
+  }
+{
+    int dataSize=0;
+    dataSize=4 * getTexCoords1List().size();
+    size+=dataSize;
+    size+=1 * getTexCoords1List().size();
+  }
+{
+    int dataSize=0;
+    dataSize=4 * getNormalsList().size();
+    size+=dataSize;
+    size+=1 * getNormalsList().size();
+  }
+{
+    int dataSize=0;
+    dataSize=4 * getColorsList().size();
+    size+=dataSize;
+    size+=1 * getColorsList().size();
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < indices_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(indices_.get(i));
+    }
+    size+=dataSize;
+    size+=1 * getIndicesList().size();
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    size+=com.google.protobuf.CodedOutputStream.computeBytesSize(16,getNameBytes());
+  }
+  size+=getUnknownFields().getSerializedSize();
+  memoizedSerializedSize=size;
+  return size;
+}
