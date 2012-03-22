@@ -1,0 +1,48 @@
+{
+  String[] subProperty=property.split("-");
+  if (property.indexOf("border") >= 0) {
+    if (subProperty.length > 1) {
+      if (subProperty[1].equals("image")) {
+        if (subProperty.length > 2) {
+          parseForOneBorder(property,value);
+        }
+ else {
+          parseForAllBorders(property,value);
+        }
+        _showTexturedBorders=true;
+      }
+    }
+ else {
+      if (value.equals("none")) {
+        _showBorders=false;
+        _showTexturedBorders=false;
+      }
+ else {
+        String[] values=value.split(" ");
+        if (subProperty.length == 2) {
+          float borderWidth=parseFloat(values[0]);
+          _bordersWidth.put("top",borderWidth);
+          _bordersWidth.put("right",borderWidth);
+          _bordersWidth.put("bottom",borderWidth);
+          _bordersWidth.put("left",borderWidth);
+          _bordersColors.put("top",hexToRGB(values[1]));
+          _bordersColors.put("right",hexToRGB(values[1]));
+          _bordersColors.put("bottom",hexToRGB(values[1]));
+          _bordersColors.put("left",hexToRGB(values[1]));
+          _showBorders=true;
+        }
+      }
+    }
+  }
+ else   if (property.indexOf("background") >= 0) {
+    if (subProperty.length > 1) {
+      parseBackground(subProperty,value);
+    }
+ else {
+      if (value.equals("none")) {
+        _showBackground=false;
+        _backgroundImage.setVisible(false);
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  String[] values=value.split(" ");
+  String textureName=values[0];
+  Vector2f textureSize=new Vector2f(parseFloat(values[1]),parseFloat(values[2]));
+  Vector2f texturePosition=new Vector2f(parseFloat(values[3]),parseFloat(values[4]));
+  _backgroundImage=new UIGraphicsElement(textureName);
+  _backgroundImage.setSize(getSize());
+  _backgroundImage.setVisible(true);
+  _backgroundImage.setCroped(false);
+  _backgroundImage.getTextureSize().set(textureSize);
+  _backgroundImage.getTextureOrigin().set(texturePosition.x,texturePosition.y);
+  if (values.length > 5) {
+    _backgroundImage.setRotateAngle(parseFloat(values[5]));
+  }
+}

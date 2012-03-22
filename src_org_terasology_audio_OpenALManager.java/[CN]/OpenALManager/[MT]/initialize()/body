@@ -4,7 +4,8 @@
     AL.create();
   }
  catch (  LWJGLException e) {
-    throw new RuntimeException(e);
+    logger.info("OpenAl crashed: " + e.getMessage());
+    return;
   }
   AL10.alGetError();
   logger.info("OpenAL " + AL10.alGetString(AL10.AL_VERSION) + " initialized!");
