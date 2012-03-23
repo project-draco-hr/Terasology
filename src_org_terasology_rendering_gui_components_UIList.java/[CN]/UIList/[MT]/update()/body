@@ -1,11 +1,15 @@
 {
   Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
   if (intersects(mousePos)) {
+    boolean itemClicked=false;
     for (int i=(_items.size() - 1); i >= 0; i--) {
       UIListItem item=_items.get(i);
       if (item.isVisible()) {
         if (item.intersects(mousePos)) {
           if (_mouseDown) {
+            if (item.isSelected()) {
+              break;
+            }
             if (_selectedItemIndex >= 0) {
               _items.get(_selectedItemIndex).setSelected(false);
             }
@@ -13,9 +17,14 @@
             _selectedItem=item;
             _selectedItemIndex=i;
             _mouseDown=false;
+            itemClicked=true;
           }
         }
       }
+    }
+    if (!itemClicked) {
+      _mouseUp=false;
+      _mouseDown=false;
     }
   }
  else {

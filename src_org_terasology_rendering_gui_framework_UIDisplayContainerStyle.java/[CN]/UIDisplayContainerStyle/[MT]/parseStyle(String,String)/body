@@ -13,23 +13,29 @@
       }
     }
  else {
+      System.out.println("border -one ");
       if (value.equals("none")) {
         _showBorders=false;
         _showTexturedBorders=false;
       }
  else {
         String[] values=value.split(" ");
-        if (subProperty.length == 2) {
-          float borderWidth=parseFloat(values[0]);
-          _bordersWidth.put("top",borderWidth);
-          _bordersWidth.put("right",borderWidth);
-          _bordersWidth.put("bottom",borderWidth);
-          _bordersWidth.put("left",borderWidth);
-          _bordersColors.put("top",hexToRGB(values[1]));
-          _bordersColors.put("right",hexToRGB(values[1]));
-          _bordersColors.put("bottom",hexToRGB(values[1]));
-          _bordersColors.put("left",hexToRGB(values[1]));
-          _showBorders=true;
+        if (values.length == 2) {
+          try {
+            float borderWidth=parseFloat(values[0]);
+            _bordersWidth.put("top",borderWidth);
+            _bordersWidth.put("right",borderWidth);
+            _bordersWidth.put("bottom",borderWidth);
+            _bordersWidth.put("left",borderWidth);
+            _bordersColors.put("top",hexToRGB(values[1]));
+            _bordersColors.put("right",hexToRGB(values[1]));
+            _bordersColors.put("bottom",hexToRGB(values[1]));
+            _bordersColors.put("left",hexToRGB(values[1]));
+            _showBorders=true;
+          }
+ catch (          NumberFormatException e) {
+            Terasology.getInstance().getLogger().log(Level.WARNING,"Bad value for border width: " + values[0]);
+          }
         }
       }
     }
@@ -41,7 +47,9 @@
  else {
       if (value.equals("none")) {
         _showBackground=false;
-        _backgroundImage.setVisible(false);
+        if (_backgroundImage != null) {
+          _backgroundImage.setVisible(false);
+        }
       }
     }
   }
