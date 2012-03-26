@@ -1,0 +1,13 @@
+{
+  if (_showTextured) {
+    for (    String borderType : _images.keySet()) {
+      if (borderType.equals("top") || borderType.equals("bottom")) {
+        _images.get(borderType).setSize(new Vector2f(getSize().x,_width.get(borderType).floatValue()));
+      }
+ else {
+        _images.get(borderType).setSize(new Vector2f(getSize().y,_width.get(borderType).floatValue()));
+      }
+      _images.get(borderType).update();
+    }
+  }
+}
