@@ -5,9 +5,19 @@
         _images.get(borderType).setSize(new Vector2f(getSize().x,_width.get(borderType).floatValue()));
       }
  else {
-        _images.get(borderType).setSize(new Vector2f(getSize().y,_width.get(borderType).floatValue()));
+        if (_images.get(borderType).getRotateAngle() > 0) {
+          _images.get(borderType).setSize(new Vector2f(getSize().y,_width.get(borderType).floatValue()));
+        }
+ else {
+          _images.get(borderType).setSize(new Vector2f(_width.get(borderType).floatValue(),getSize().y));
+        }
       }
       _images.get(borderType).update();
+    }
+  }
+  if (_showCorners) {
+    for (    String cornerType : _corners.keySet()) {
+      setCornerSize(cornerType);
     }
   }
 }

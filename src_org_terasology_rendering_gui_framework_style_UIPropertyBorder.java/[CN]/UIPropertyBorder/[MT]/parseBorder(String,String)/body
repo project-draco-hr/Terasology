@@ -11,13 +11,13 @@
     Vector2f textureSize=new Vector2f(parseFloat(values[1]),parseFloat(values[2]));
     Vector2f texturePosition=new Vector2f(parseFloat(values[3]),parseFloat(values[4]));
     float borderWidth=parseFloat(values[5]);
+    _width.put(borderType,borderWidth);
     _images.put(borderType,new UIGraphicsElement(textureName));
     _images.get(borderType).setVisible(true);
     _images.get(borderType).setCroped(false);
     setBorderPosition(borderType);
     _images.get(borderType).getTextureSize().set(textureSize);
     _images.get(borderType).getTextureOrigin().set(texturePosition.x,texturePosition.y);
-    _width.put(borderType,borderWidth);
     if (values.length > 6) {
       _images.get(borderType).setRotateAngle(parseFloat(values[6]));
     }
