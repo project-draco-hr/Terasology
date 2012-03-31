@@ -2,14 +2,14 @@
   if (componentClasses.length == 0) {
     return NullIterator.newInstance();
   }
-  TLongList idList=new TLongArrayList();
-  TLongObjectIterator<? extends Component> primeIterator=store.componentIterator(componentClasses[0]);
+  TIntList idList=new TIntArrayList();
+  TIntObjectIterator<? extends Component> primeIterator=store.componentIterator(componentClasses[0]);
   if (primeIterator == null) {
     return NullIterator.newInstance();
   }
   while (primeIterator.hasNext()) {
     primeIterator.advance();
-    long id=primeIterator.key();
+    int id=primeIterator.key();
     boolean discard=false;
     for (int i=1; i < componentClasses.length; ++i) {
       if (store.get(id,componentClasses[i]) == null) {

@@ -1,0 +1,54 @@
+{
+  Class typeClass=null;
+  if (type instanceof Class) {
+    typeClass=(Class)type;
+  }
+ else   if (type instanceof ParameterizedType) {
+    typeClass=(Class)((ParameterizedType)type).getRawType();
+  }
+  if (Enum.class.isAssignableFrom(typeClass)) {
+    return new EnumTypeHandler(typeClass);
+  }
+ else   if (List.class.isAssignableFrom(typeClass)) {
+    if (type instanceof ParameterizedType && ((ParameterizedType)type).getActualTypeArguments().length > 0) {
+      TypeHandler innerHandler=getHandlerFor(((ParameterizedType)type).getActualTypeArguments()[0],depth);
+      if (innerHandler != null) {
+        return new ListTypeHandler(innerHandler);
+      }
+    }
+    logger.log(Level.SEVERE,"List field is not parameterized, or holds unsupported type");
+    return null;
+  }
+ else   if (Map.class.isAssignableFrom(typeClass)) {
+    if (type instanceof ParameterizedType) {
+      Type[] types=((ParameterizedType)type).getActualTypeArguments();
+      if (types.length > 1 && String.class.equals(types[0])) {
+        TypeHandler valueHandler=getHandlerFor(types[1],depth);
+        if (valueHandler != null) {
+          return new StringMapTypeHandler(valueHandler);
+        }
+      }
+    }
+    logger.log(Level.SEVERE,"Map field is not parameterized, does not have a String key, or holds unsupported values");
+  }
+ else   if (typeHandlers.containsKey(typeClass)) {
+    return typeHandlers.get(typeClass);
+  }
+ else   if (depth <= MAX_SERIALIZATION_DEPTH && !typeClass.isLocalClass() && !(typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
+    logger.log(Level.WARNING,"Handling serialization of type " + typeClass + " via MappedContainer");
+    MappedContainerTypeHandler mappedHandler=new MappedContainerTypeHandler(typeClass);
+    for (    Field field : typeClass.getDeclaredFields()) {
+      if (Modifier.isTransient(field.getModifiers()))       continue;
+      field.setAccessible(true);
+      TypeHandler handler=getHandlerFor(field.getGenericType(),depth + 1);
+      if (handler == null) {
+        logger.log(Level.SEVERE,"Unsupported field type in component type " + typeClass.getSimpleName() + ", "+ field.getName()+ " : "+ field.getGenericType());
+      }
+ else {
+        mappedHandler.addField(new FieldInfo(field,handler));
+      }
+    }
+    return mappedHandler;
+  }
+  return null;
+}

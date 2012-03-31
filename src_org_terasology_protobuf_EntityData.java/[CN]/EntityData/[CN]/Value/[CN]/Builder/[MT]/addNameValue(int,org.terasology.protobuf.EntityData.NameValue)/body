@@ -1,0 +1,14 @@
+{
+  if (nameValueBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureNameValueIsMutable();
+    nameValue_.add(index,value);
+    onChanged();
+  }
+ else {
+    nameValueBuilder_.addMessage(index,value);
+  }
+  return this;
+}

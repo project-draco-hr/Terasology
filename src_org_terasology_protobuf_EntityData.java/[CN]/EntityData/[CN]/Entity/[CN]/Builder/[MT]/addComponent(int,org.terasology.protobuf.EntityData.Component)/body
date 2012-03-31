@@ -1,0 +1,14 @@
+{
+  if (componentBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureComponentIsMutable();
+    component_.add(index,value);
+    onChanged();
+  }
+ else {
+    componentBuilder_.addMessage(index,value);
+  }
+  return this;
+}

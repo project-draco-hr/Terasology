@@ -1,0 +1,58 @@
+{
+  if (other == org.terasology.protobuf.EntityData.World.getDefaultInstance())   return this;
+  if (entityBuilder_ == null) {
+    if (!other.entity_.isEmpty()) {
+      if (entity_.isEmpty()) {
+        entity_=other.entity_;
+        bitField0_=(bitField0_ & ~0x00000001);
+      }
+ else {
+        ensureEntityIsMutable();
+        entity_.addAll(other.entity_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.entity_.isEmpty()) {
+      if (entityBuilder_.isEmpty()) {
+        entityBuilder_.dispose();
+        entityBuilder_=null;
+        entity_=other.entity_;
+        bitField0_=(bitField0_ & ~0x00000001);
+        entityBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getEntityFieldBuilder() : null;
+      }
+ else {
+        entityBuilder_.addAllMessages(other.entity_);
+      }
+    }
+  }
+  if (!other.componentClass_.isEmpty()) {
+    if (componentClass_.isEmpty()) {
+      componentClass_=other.componentClass_;
+      bitField0_=(bitField0_ & ~0x00000002);
+    }
+ else {
+      ensureComponentClassIsMutable();
+      componentClass_.addAll(other.componentClass_);
+    }
+    onChanged();
+  }
+  if (other.hasNextEntityId()) {
+    setNextEntityId(other.getNextEntityId());
+  }
+  if (!other.deadEntityIds_.isEmpty()) {
+    if (deadEntityIds_.isEmpty()) {
+      deadEntityIds_=other.deadEntityIds_;
+      bitField0_=(bitField0_ & ~0x00000008);
+    }
+ else {
+      ensureDeadEntityIdsIsMutable();
+      deadEntityIds_.addAll(other.deadEntityIds_);
+    }
+    onChanged();
+  }
+  this.mergeExtensionFields(other);
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

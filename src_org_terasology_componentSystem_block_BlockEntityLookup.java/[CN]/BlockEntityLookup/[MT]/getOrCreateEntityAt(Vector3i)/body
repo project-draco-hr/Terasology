@@ -1,14 +1,10 @@
 {
-  long id=blockComponentLookup.get(blockPosition);
-  EntityRef blockEntity;
-  if (id == 0) {
+  EntityRef blockEntity=blockComponentLookup.get(blockPosition);
+  if (blockEntity.isNull()) {
     Block block=BlockManager.getInstance().getBlock(worldProvider.getBlock(blockPosition));
     blockEntity=entityManager.create();
     blockEntity.addComponent(new BlockComponent(blockPosition,true));
     blockEntity.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
-  }
- else {
-    blockEntity=entityManager.get(id);
   }
   return blockEntity;
 }
