@@ -1,0 +1,5 @@
+{
+  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+  entityManager.load(Helper.fixSavePath(new File("testsave.sav")),EntityManager.SaveFormat.Binary);
+  CoreRegistry.get(LocalPlayer.class).setEntity(entityManager.iteratorEntities(LocalPlayerComponent.class).iterator().next());
+}

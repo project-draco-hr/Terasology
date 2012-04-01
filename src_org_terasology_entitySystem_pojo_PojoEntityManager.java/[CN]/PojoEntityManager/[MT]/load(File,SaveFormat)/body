@@ -1,2 +1,47 @@
 {
+  clear();
+  FileInputStream in=new FileInputStream(file);
+  BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
+  EntityData.World world=null;
+  try {
+switch (format) {
+case Binary:
+      world=EntityData.World.parseFrom(in);
+    break;
+case Text:
+  EntityData.World.Builder builder=EntityData.World.newBuilder();
+TextFormat.merge(bufferedReader,builder);
+world=builder.build();
+break;
+case JSON:
+throw new IOException("Reading JSON format not supported yet");
+}
+}
+  finally {
+try {
+in.close();
+}
+ catch (IOException e) {
+logger.log(Level.SEVERE,"Failed to close file",e);
+}
+}
+if (world != null) {
+nextEntityId=world.getNextEntityId();
+validIds=new TIntHashSet(world.getEntityCount());
+for (EntityData.Entity entityData : world.getEntityList()) {
+validIds.add(entityData.getId());
+}
+for (EntityData.Entity entityData : world.getEntityList()) {
+int entityId=entityData.getId();
+for (EntityData.Component componentData : entityData.getComponentList()) {
+Class<? extends Component> componentClass=componentTypeLookup.get(componentData.getType().toLowerCase(Locale.ENGLISH));
+if (componentClass != null) {
+SerializationInfo serializationInfo=componentSerializationLookup.get(componentClass);
+Component component=serializationInfo.deserialize(componentData);
+store.put(entityId,component);
+}
+}
+}
+validIds=null;
+}
 }

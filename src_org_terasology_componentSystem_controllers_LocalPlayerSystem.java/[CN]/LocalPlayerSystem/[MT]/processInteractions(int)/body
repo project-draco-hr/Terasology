@@ -8,8 +8,8 @@
   if (localPlayerComp.isDead)   return;
   EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
   if (Mouse.isButtonDown(0) || button == 0) {
-    if (selectedItemEntity != null) {
-      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+    ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+    if (item != null) {
 switch (item.usage) {
 case OnBlock:
         useItemOnBlock(entity,selectedItemEntity);

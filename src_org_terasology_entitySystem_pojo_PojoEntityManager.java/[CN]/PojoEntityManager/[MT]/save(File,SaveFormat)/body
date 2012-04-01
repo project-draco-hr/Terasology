@@ -7,26 +7,12 @@
     EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
     entity.setId(id);
     for (    Component component : iterateComponents(id)) {
-      try {
-        EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
-        componentMessage.setType(component.getName());
-        SerializationInfo serializationInfo=componentSerializationLookup.get(component.getClass());
-        if (serializationInfo != null) {
-          for (          FieldInfo field : serializationInfo.fields) {
-            Object rawValue=field.getValue(component);
-            if (rawValue == null)             continue;
-            EntityData.Value value=field.getSerializationHandler().serialize(rawValue);
-            if (value == null)             continue;
-            componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
-          }
-        }
- else {
-          logger.log(Level.SEVERE,"Unregistered component type: " + component.getClass());
-        }
-        entity.addComponent(componentMessage.build());
+      SerializationInfo serializationInfo=componentSerializationLookup.get(component.getClass());
+      if (serializationInfo != null) {
+        entity.addComponent(serializationInfo.serialize(component));
       }
- catch (      IllegalAccessException e) {
-        logger.log(Level.SEVERE,"Exception during serializing component type: " + component.getClass(),e);
+ else {
+        logger.log(Level.SEVERE,"Unregistered component type: " + component.getClass());
       }
     }
     world.addEntity(entity.build());

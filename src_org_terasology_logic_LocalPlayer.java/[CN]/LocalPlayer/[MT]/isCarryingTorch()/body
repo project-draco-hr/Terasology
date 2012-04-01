@@ -2,9 +2,5 @@
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
   LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
   if (inventory == null || localPlayer == null)   return false;
-  if (inventory.itemSlots.get(localPlayer.selectedTool) != null) {
-    EntityRef item=inventory.itemSlots.get(localPlayer.selectedTool);
-    return item.getComponent(LightComponent.class) != null;
-  }
-  return false;
+  return inventory.itemSlots.get(localPlayer.selectedTool).hasComponent(LightComponent.class);
 }

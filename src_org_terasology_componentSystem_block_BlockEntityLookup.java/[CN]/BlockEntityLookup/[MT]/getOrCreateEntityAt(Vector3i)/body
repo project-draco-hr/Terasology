@@ -1,6 +1,6 @@
 {
   EntityRef blockEntity=blockComponentLookup.get(blockPosition);
-  if (blockEntity.isNull()) {
+  if (blockEntity == null || !blockEntity.exists()) {
     Block block=BlockManager.getInstance().getBlock(worldProvider.getBlock(blockPosition));
     blockEntity=entityManager.create();
     blockEntity.addComponent(new BlockComponent(blockPosition,true));

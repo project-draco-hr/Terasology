@@ -1,5 +1,12 @@
 {
-  SerializationInfo info=new SerializationInfo();
+  try {
+    componentClass.getConstructor();
+  }
+ catch (  NoSuchMethodException e) {
+    logger.log(Level.SEVERE,String.format("Unable to register component class %s: Default Constructor Required",componentClass.getSimpleName()));
+    return;
+  }
+  SerializationInfo info=new SerializationInfo(componentClass);
   for (  Field field : componentClass.getDeclaredFields()) {
     if (Modifier.isTransient(field.getModifiers()))     continue;
     field.setAccessible(true);
@@ -8,8 +15,9 @@
       logger.log(Level.SEVERE,"Unsupported field type in component type " + componentClass.getSimpleName() + ", "+ field.getName()+ " : "+ field.getGenericType());
     }
  else {
-      info.fields.add(new FieldInfo(field,typeHandler));
+      info.addField(new FieldInfo(field,typeHandler));
     }
   }
   componentSerializationLookup.put(componentClass,info);
+  componentTypeLookup.put(getComponentClassName(componentClass),componentClass);
 }

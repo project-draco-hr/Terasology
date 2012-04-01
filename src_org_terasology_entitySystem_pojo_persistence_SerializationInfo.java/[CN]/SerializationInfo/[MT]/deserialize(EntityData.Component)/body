@@ -1,0 +1,20 @@
+{
+  try {
+    Component component=clazz.newInstance();
+    for (    EntityData.NameValue field : componentData.getFieldList()) {
+      FieldInfo fieldInfo=fields.get(field.getName().toLowerCase(Locale.ENGLISH));
+      if (fieldInfo == null)       continue;
+      Object value=fieldInfo.getSerializationHandler().deserialize(field.getValue());
+      if (value == null)       continue;
+      fieldInfo.setValue(component,value);
+    }
+    return component;
+  }
+ catch (  InstantiationException e) {
+    logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+  }
+catch (  IllegalAccessException e) {
+    logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+  }
+  return null;
+}

@@ -8,7 +8,7 @@
     worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,(byte)0x0,true,true);
   }
   AudioManager.play("RemoveBlock",0.6f);
-  if (oldBlock.isStraightToInventory() && event.getInstigator() != null) {
+  if (oldBlock.isStraightToInventory() && event.getInstigator().exists()) {
     EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockGroup(),(byte)1);
     if (!inventorySystem.addItem(event.getInstigator(),item)) {
       item.destroy();
