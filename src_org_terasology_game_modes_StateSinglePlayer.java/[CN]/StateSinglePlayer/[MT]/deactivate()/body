@@ -1,3 +1,10 @@
 {
+  try {
+    _entityManager.save(new File(Terasology.getInstance().getWorldSavePath(getActiveWorldProvider().getTitle()),ENTITY_DATA_FILE),EntityManager.SaveFormat.Binary);
+  }
+ catch (  IOException e) {
+    _logger.log(Level.SEVERE,"Failed to save entities",e);
+  }
   dispose();
+  _entityManager.clear();
 }
