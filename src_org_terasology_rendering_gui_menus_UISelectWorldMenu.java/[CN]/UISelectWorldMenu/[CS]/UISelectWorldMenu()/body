@@ -2,7 +2,6 @@
   _overlay=new UIImageOverlay("menuBackground");
   _overlay.setVisible(true);
   _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,256f));
-  _window.setVisible(false);
   _window.center();
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
@@ -30,6 +29,8 @@
       Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed reading world data object. Sorry.",e);
     }
   }
+  _list.addItem("worldTitle1","worldSeed");
+  _list.addItem("worldTitle2","worldSeed");
   _goToBack=new UIButton(new Vector2f(256f,32f));
   _goToBack.getLabel().setText("Go to back");
   _goToBack.setVisible(true);
@@ -44,7 +45,7 @@
   _deleteFromList.setVisible(true);
   _createNewWorld.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      _window.setVisible(true);
+      _window.show();
     }
   }
 );
