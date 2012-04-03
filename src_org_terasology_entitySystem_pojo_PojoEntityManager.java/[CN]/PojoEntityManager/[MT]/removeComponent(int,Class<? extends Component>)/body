@@ -2,7 +2,7 @@
   Component component=store.get(entityId,componentClass);
   if (component != null) {
     if (eventSystem != null) {
-      eventSystem.send(new PojoEntityRef(this,entityId),RemovedComponentEvent.newInstance(),component);
+      eventSystem.send(createEntityRef(entityId),RemovedComponentEvent.newInstance(),component);
     }
     store.remove(entityId,componentClass);
   }

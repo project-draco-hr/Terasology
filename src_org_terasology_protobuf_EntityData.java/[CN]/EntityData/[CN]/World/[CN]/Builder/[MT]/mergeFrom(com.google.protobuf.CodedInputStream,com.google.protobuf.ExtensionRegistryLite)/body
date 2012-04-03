@@ -37,8 +37,8 @@ break;
 }
 case 136:
 {
-ensureDeadEntityIdsIsMutable();
-deadEntityIds_.add(input.readSInt32());
+ensureFreedEntityIdIsMutable();
+freedEntityId_.add(input.readSInt32());
 break;
 }
 case 138:
@@ -46,7 +46,7 @@ case 138:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 while (input.getBytesUntilLimit() > 0) {
-addDeadEntityIds(input.readSInt32());
+addFreedEntityId(input.readSInt32());
 }
 input.popLimit(limit);
 break;

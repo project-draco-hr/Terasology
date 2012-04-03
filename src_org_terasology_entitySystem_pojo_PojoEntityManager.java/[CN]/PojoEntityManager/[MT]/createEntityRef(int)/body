@@ -1,0 +1,12 @@
+{
+  if (entityId == NULL_ID) {
+    return EntityRef.NULL;
+  }
+  PojoEntityRef newRef=new PojoEntityRef(this,entityId);
+  PojoEntityRef existing=entityCache.get(newRef);
+  if (existing != null) {
+    return existing;
+  }
+  entityCache.put(newRef,newRef);
+  return newRef;
+}

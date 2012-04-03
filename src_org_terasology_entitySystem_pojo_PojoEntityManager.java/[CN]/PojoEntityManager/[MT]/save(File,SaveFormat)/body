@@ -1,6 +1,13 @@
 {
-  EntityData.World.Builder world=EntityData.World.newBuilder();
+  final EntityData.World.Builder world=EntityData.World.newBuilder();
   world.setNextEntityId(nextEntityId);
+  freedIds.forEach(new TIntProcedure(){
+    public boolean execute(    int i){
+      world.addFreedEntityId(i);
+      return true;
+    }
+  }
+);
   TIntIterator idIterator=store.entityIdIterator();
   while (idIterator.hasNext()) {
     int id=idIterator.next();
@@ -17,6 +24,7 @@
     }
     world.addEntity(entity.build());
   }
+  file.getParentFile().mkdirs();
   FileOutputStream out=new FileOutputStream(file);
   BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(out));
   try {

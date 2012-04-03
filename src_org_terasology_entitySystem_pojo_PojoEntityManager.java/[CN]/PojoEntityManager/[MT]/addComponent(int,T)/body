@@ -2,10 +2,10 @@
   Component oldComponent=store.put(entityId,component);
   if (eventSystem != null) {
     if (oldComponent == null) {
-      eventSystem.send(new PojoEntityRef(this,entityId),AddComponentEvent.newInstance(),component);
+      eventSystem.send(createEntityRef(entityId),AddComponentEvent.newInstance(),component);
     }
  else {
-      eventSystem.send(new PojoEntityRef(this,entityId),ChangedComponentEvent.newInstance(),component);
+      eventSystem.send(createEntityRef(entityId),ChangedComponentEvent.newInstance(),component);
     }
   }
   return component;
