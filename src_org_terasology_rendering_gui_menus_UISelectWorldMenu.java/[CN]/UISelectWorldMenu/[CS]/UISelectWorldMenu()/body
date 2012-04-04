@@ -1,8 +1,9 @@
 {
+  maximaze();
   _overlay=new UIImageOverlay("menuBackground");
-  _overlay.setVisible(true);
   _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,256f));
-  _window.center();
+  _window.setModal(true);
+  GUIManager.getInstance().addWindow(_window);
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
   ConfigObject config=null;
@@ -61,6 +62,5 @@
   addDisplayElement(_goToBack);
   addDisplayElement(_createNewWorld);
   addDisplayElement(_deleteFromList);
-  addDisplayElement(_window);
   update();
 }
