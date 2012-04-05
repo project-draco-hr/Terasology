@@ -8,10 +8,7 @@
   desiredVelocity.y-=UnderwaterGravity;
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(movementComp.getVelocity());
-  float changeMag=velocityDiff.length();
-  if (changeMag > UnderwaterInertia * delta) {
-    velocityDiff.scale(UnderwaterInertia * delta / changeMag);
-  }
+  velocityDiff.scale(Math.min(UnderwaterInertia * delta,1.0f));
   movementComp.getVelocity().x+=velocityDiff.x;
   movementComp.getVelocity().y+=velocityDiff.y;
   movementComp.getVelocity().z+=velocityDiff.z;

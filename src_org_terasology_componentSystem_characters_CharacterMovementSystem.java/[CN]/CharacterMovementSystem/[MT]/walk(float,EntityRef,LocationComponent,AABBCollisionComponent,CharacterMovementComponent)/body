@@ -16,10 +16,7 @@
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(movementComp.getVelocity());
   velocityDiff.y=0;
-  float changeMag=velocityDiff.length();
-  if (changeMag > movementComp.groundFriction * delta) {
-    velocityDiff.scale(movementComp.groundFriction * delta / changeMag);
-  }
+  velocityDiff.scale(Math.min(movementComp.groundFriction * delta,1.0f));
   movementComp.getVelocity().x+=velocityDiff.x;
   movementComp.getVelocity().z+=velocityDiff.z;
   movementComp.getVelocity().y=Math.max(-TerminalVelocity,(float)(movementComp.getVelocity().y - Gravity * delta));

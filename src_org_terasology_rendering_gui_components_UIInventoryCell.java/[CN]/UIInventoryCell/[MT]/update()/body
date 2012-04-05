@@ -1,4 +1,18 @@
 {
   setPosition(findPosition());
   processMouseInput();
+  InventoryComponent inventory=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(InventoryComponent.class);
+  if (inventory == null || inventory.itemSlots.size() < _id) {
+    getLabel().setVisible(false);
+    return;
+  }
+  EntityRef itemEntity=inventory.itemSlots.get(_id);
+  ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+  if (item != null && item.stackCount > 1) {
+    getLabel().setVisible(true);
+    getLabel().setText(Integer.toString(item.stackCount));
+  }
+ else {
+    getLabel().setVisible(false);
+  }
 }
