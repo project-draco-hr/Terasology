@@ -1,32 +1,26 @@
 {
   _mainMenu=new UIMainMenu();
   _mainMenu.setVisible(true);
-  _selectWorldMenu=new UISelectWorldMenu();
-  _selectWorldMenu.setVisible(false);
-  _mainMenu.getSinglePlayerButton().addClickListener(new IClickListener(){
+  UIButton singlePlayerButton=(UIButton)_mainMenu.getElementById("singlePlayerButton");
+  UIButton configButton=(UIButton)_mainMenu.getElementById("configButton");
+  UIButton exitButton=(UIButton)_mainMenu.getElementById("exitButton");
+  singlePlayerButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       _mainMenu.setVisible(false);
       _selectWorldMenu.setVisible(true);
     }
   }
 );
-  _mainMenu.getExitButton().addClickListener(new IClickListener(){
+  exitButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       Terasology.getInstance().exit();
     }
   }
 );
-  _mainMenu.getConfigButton().addClickListener(new IClickListener(){
+  configButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       _mainMenu.setVisible(false);
       _configMenu.setVisible(true);
-    }
-  }
-);
-  _selectWorldMenu.getGoToBackButton().addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      _selectWorldMenu.setVisible(false);
-      _mainMenu.setVisible(true);
     }
   }
 );

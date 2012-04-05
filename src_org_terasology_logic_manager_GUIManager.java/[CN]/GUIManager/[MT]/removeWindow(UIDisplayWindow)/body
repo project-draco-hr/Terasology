@@ -1,3 +1,11 @@
 {
   _renderer.removeDisplayElement(window);
+  if (_windowsById.containsValue(window)) {
+    for (    String key : _windowsById.keySet()) {
+      if (_windowsById.get(key).equals(window)) {
+        _windowsById.remove(key);
+        break;
+      }
+    }
+  }
 }

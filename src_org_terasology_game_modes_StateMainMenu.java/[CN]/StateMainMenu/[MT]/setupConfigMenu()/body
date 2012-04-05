@@ -1,13 +1,18 @@
 {
   _configMenu=new UIConfigMenu();
-  _configMenu.getBackToMainMenuButton().addClickListener(new IClickListener(){
+  _configMenu.setVisible(false);
+  UIButton backToMainMenuButton=(UIButton)_configMenu.getElementById("backToMainMenuButton");
+  UIButton graphicsQualityButton=(UIButton)_configMenu.getElementById("graphicsQualityButton");
+  UIButton FOVButton=(UIButton)_configMenu.getElementById("fovButton");
+  UIButton viewingDistanceButton=(UIButton)_configMenu.getElementById("viewingDistanceButton");
+  backToMainMenuButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       _mainMenu.setVisible(true);
       _configMenu.setVisible(false);
     }
   }
 );
-  _configMenu.getGraphicsQualityButton().addClickListener(new IClickListener(){
+  graphicsQualityButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       UIButton button=(UIButton)element;
       if (button.getLabel().getText().equals("Graphics Quality: Ugly")) {
@@ -25,7 +30,7 @@
     }
   }
 );
-  _configMenu.getFOVButton().addClickListener(new IClickListener(){
+  FOVButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       UIButton button=(UIButton)element;
       if (button.getLabel().getText().equals("Field of View: 75")) {
@@ -47,7 +52,7 @@
     }
   }
 );
-  _configMenu.getViewingDistanceButton().addClickListener(new IClickListener(){
+  viewingDistanceButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       UIButton button=(UIButton)element;
       if (button.getLabel().getText().equals("Viewing Distance: Near")) {
