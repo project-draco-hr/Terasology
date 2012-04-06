@@ -1,17 +1,3 @@
 {
-  EntityRef entity=entityManager.create();
-  if (blockGroup.getArchetypeBlock().getLuminance() > 0) {
-    entity.addComponent(new LightComponent());
-  }
-  ItemComponent item=new ItemComponent();
-  item.name=blockGroup.getTitle();
-  item.consumedOnUse=true;
-  if (blockGroup.getArchetypeBlock().isStackable()) {
-    item.stackId=blockGroup.getTitle() + "Block";
-    item.stackCount=(byte)quantity;
-  }
-  item.usage=ItemComponent.UsageType.OnBlock;
-  entity.addComponent(item);
-  entity.addComponent(new BlockItemComponent(blockGroup));
-  return entity;
+  return newInstance(blockGroup,quantity,null);
 }

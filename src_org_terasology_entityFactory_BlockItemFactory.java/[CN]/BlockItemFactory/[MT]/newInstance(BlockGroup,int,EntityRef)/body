@@ -1,0 +1,33 @@
+{
+  EntityRef entity=entityManager.create();
+  if (blockGroup.getArchetypeBlock().getLuminance() > 0) {
+    entity.addComponent(new LightComponent());
+  }
+  ItemComponent item=new ItemComponent();
+  item.name=blockGroup.getTitle();
+  item.consumedOnUse=true;
+  if (blockGroup.getArchetypeBlock().isStackable()) {
+    item.stackId=blockGroup.getTitle() + "Block";
+    item.stackCount=(byte)quantity;
+  }
+  item.usage=ItemComponent.UsageType.OnBlock;
+  entity.addComponent(item);
+  BlockItemComponent blockItem=new BlockItemComponent(blockGroup);
+  if (blockGroup.getArchetypeBlock().isEntityRetainedWhenItem()) {
+    if (placedEntity != null) {
+      blockItem.placedEntity=placedEntity;
+    }
+ else {
+      Prefab prefab=prefabManager.getPrefab(blockGroup.getArchetypeBlock().getEntityPrefab());
+      if (prefab != null) {
+        placedEntity=entityManager.create();
+        for (        Component component : prefab.listComponents()) {
+          placedEntity.addComponent(entityManager.copyComponent(component));
+        }
+        blockItem.placedEntity=placedEntity;
+      }
+    }
+  }
+  entity.addComponent(blockItem);
+  return entity;
+}
