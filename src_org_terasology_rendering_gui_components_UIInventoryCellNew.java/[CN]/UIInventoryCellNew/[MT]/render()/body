@@ -1,0 +1,24 @@
+{
+  background.renderTransformed();
+  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+  if (inventory == null || inventory.itemSlots.size() < slot) {
+    return;
+  }
+  EntityRef itemEntity=inventory.itemSlots.get(slot);
+  ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+  if (item == null)   return;
+  if (item.icon.isEmpty()) {
+    BlockItemComponent blockItem=itemEntity.getComponent(BlockItemComponent.class);
+    if (blockItem != null) {
+      renderBlockIcon(blockItem.blockGroup);
+    }
+  }
+ else {
+    Icon icon=Icon.get(item.icon);
+    if (icon != null) {
+      renderIcon(icon);
+    }
+  }
+  selectionRectangle.renderTransformed();
+  label.renderTransformed();
+}

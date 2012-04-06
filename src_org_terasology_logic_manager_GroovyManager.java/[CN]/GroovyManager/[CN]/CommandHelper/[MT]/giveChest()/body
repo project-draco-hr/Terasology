@@ -1,0 +1,8 @@
+{
+  BlockItemFactory factory=new BlockItemFactory(Terasology.getInstance().getCurrentGameState().getEntityManager());
+  EntityRef item=factory.newChest(BlockManager.getInstance().getBlockGroup("Chest"));
+  InventorySystem inventorySystem=CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class);
+  if (!inventorySystem.addItem(Terasology.getInstance().getActivePlayer().getEntity(),item)) {
+    item.destroy();
+  }
+}

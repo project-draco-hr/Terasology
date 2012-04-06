@@ -6,8 +6,10 @@
   ItemComponent item=new ItemComponent();
   item.name=blockGroup.getTitle();
   item.consumedOnUse=true;
-  item.stackId=blockGroup.getTitle() + "Block";
-  item.stackCount=(byte)quantity;
+  if (blockGroup.getArchetypeBlock().isStackable()) {
+    item.stackId=blockGroup.getTitle() + "Block";
+    item.stackCount=(byte)quantity;
+  }
   item.usage=ItemComponent.UsageType.OnBlock;
   entity.addComponent(item);
   entity.addComponent(new BlockItemComponent(blockGroup));

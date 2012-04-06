@@ -2,17 +2,19 @@
   InventoryComponent inventory=inventoryEntity.getComponent(InventoryComponent.class);
   ItemComponent item=itemEntity.getComponent(ItemComponent.class);
   if (inventory == null || item == null)   return false;
-  for (  EntityRef itemStack : inventory.itemSlots) {
-    ItemComponent stackComp=itemStack.getComponent(ItemComponent.class);
-    if (stackComp != null) {
-      if (item.stackId.equals(stackComp.stackId)) {
-        int stackSpace=MAX_STACK - stackComp.stackCount;
-        int amountToTransfer=Math.min(stackSpace,item.stackCount);
-        stackComp.stackCount+=amountToTransfer;
-        item.stackCount-=amountToTransfer;
-        if (item.stackCount == 0) {
-          itemEntity.destroy();
-          return true;
+  if (!item.stackId.isEmpty()) {
+    for (    EntityRef itemStack : inventory.itemSlots) {
+      ItemComponent stackComp=itemStack.getComponent(ItemComponent.class);
+      if (stackComp != null) {
+        if (item.stackId.equals(stackComp.stackId)) {
+          int stackSpace=MAX_STACK - stackComp.stackCount;
+          int amountToTransfer=Math.min(stackSpace,item.stackCount);
+          stackComp.stackCount+=amountToTransfer;
+          item.stackCount-=amountToTransfer;
+          if (item.stackCount == 0) {
+            itemEntity.destroy();
+            return true;
+          }
         }
       }
     }

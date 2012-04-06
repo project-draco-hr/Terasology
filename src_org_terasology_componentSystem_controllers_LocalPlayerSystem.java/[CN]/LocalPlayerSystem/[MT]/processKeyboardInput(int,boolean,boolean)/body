@@ -10,13 +10,18 @@ case Keyboard.KEY_K:
       localPlayer.getEntity().send(new DamageEvent(9999,null));
     }
   break;
+case Keyboard.KEY_E:
+if (!repeatEvent && state) {
+  processFrob();
+}
+break;
 case Keyboard.KEY_SPACE:
 if (!repeatEvent && state) {
-  jump=true;
-  if (Terasology.getInstance().getTimeInMs() - lastTimeSpacePressed < 200) {
-    toggleGodMode=true;
-  }
-  lastTimeSpacePressed=Terasology.getInstance().getTimeInMs();
+jump=true;
+if (Terasology.getInstance().getTimeInMs() - lastTimeSpacePressed < 200) {
+toggleGodMode=true;
+}
+lastTimeSpacePressed=Terasology.getInstance().getTimeInMs();
 }
 break;
 }
