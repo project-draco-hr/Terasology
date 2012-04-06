@@ -1,19 +1,18 @@
 {
   if (!localPlayer.isValid())   return;
-  float deltaSeconds=delta / 1000;
   EntityRef entity=localPlayer.getEntity();
   LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
   CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
   LocationComponent location=entity.getComponent(LocationComponent.class);
   PlayerComponent playerComponent=entity.getComponent(PlayerComponent.class);
   if (localPlayerComponent.isDead) {
-    if (!checkRespawn(deltaSeconds,entity,localPlayerComponent,characterMovementComponent,location,playerComponent))     return;
+    if (!checkRespawn(delta,entity,localPlayerComponent,characterMovementComponent,location,playerComponent))     return;
   }
   updateViewDirection(localPlayerComponent,location);
   updateMovement(localPlayerComponent,characterMovementComponent,location);
   Quat4f lookRotation=new Quat4f();
   QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
   updateCamera(location.getWorldPosition(),lookRotation);
-  localPlayerComponent.handAnimation=Math.max(0,localPlayerComponent.handAnimation - 2.5f * deltaSeconds);
+  localPlayerComponent.handAnimation=Math.max(0,localPlayerComponent.handAnimation - 2.5f * delta);
   resetInput();
 }
