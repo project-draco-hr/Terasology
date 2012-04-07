@@ -1,0 +1,9 @@
+{
+  PojoEntityManager entityManager=new PojoEntityManager();
+  entityManager.registerTypeHandler(Vector3f.class,new Vector3fTypeHandler());
+  entityManager.registerComponentClass(GetterSetterComponent.class);
+  GetterSetterComponent comp=new GetterSetterComponent();
+  GetterSetterComponent newComp=(GetterSetterComponent)entityManager.copyComponent(comp);
+  assertTrue(comp.getterUsed);
+  assertTrue(newComp.setterUsed);
+}
