@@ -1,0 +1,15 @@
+{
+  if (_focusedWindow.isModal() && _focusedWindow.isVisible()) {
+    return;
+  }
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  int size=_renderer.getDisplayElements().size();
+  for (int i=size - 1; i >= 0; i--) {
+    UIDisplayWindow window=(UIDisplayWindow)_renderer.getDisplayElements().get(i);
+    if (window.isVisible() && window.intersects(mousePos)) {
+      setTopWindow(i);
+      break;
+    }
+    ;
+  }
+}

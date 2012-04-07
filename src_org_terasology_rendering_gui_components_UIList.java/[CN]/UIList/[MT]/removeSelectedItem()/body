@@ -1,10 +1,9 @@
 {
-  if (_selectedItemIndex < 0 || _selectedItem == null) {
+  if (_selectedItemIndex < 0) {
     return;
   }
-  removeDisplayElement(_selectedItem);
+  removeDisplayElement(_items.get(_selectedItemIndex));
   _items.remove(_selectedItemIndex);
-  _selectedItem=null;
   for (int i=_selectedItemIndex; i < _items.size(); i++) {
     _items.get(i).getPosition().y-=32f;
   }
@@ -18,7 +17,6 @@
     }
   }
   if (_selectedItemIndex >= 0) {
-    _selectedItem=_items.get(_selectedItemIndex);
-    _selectedItem.setSelected(true);
+    _items.get(_selectedItemIndex).setSelected(true);
   }
 }
