@@ -1,9 +1,9 @@
 {
   for (  EntityRef entity : entityManager.iteratorEntities(CharacterMovementComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
+    if (!worldProvider.isChunkAvailableAt(location.getWorldPosition()))     continue;
     AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
     CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
-    if (!worldProvider.isChunkAvailableAt(location.getWorldPosition()))     continue;
     updatePosition(delta,entity,location,collision,movementComp);
     updateSwimStatus(location,collision,movementComp);
     entity.saveComponent(location);

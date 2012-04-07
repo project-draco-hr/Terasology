@@ -18,7 +18,7 @@
       Block currentBlock=BlockManager.getInstance().getBlock(currentBlockType);
       if (currentBlock.isDestructible()) {
         worldProvider.setBlock(blockPos,(byte)0x0,true,true);
-        EntityRef blockEntity=blockEntityLookup.getEntityAt(blockPos);
+        EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
         blockEntity.destroy();
         physicsRenderer.addTemporaryBlock(target,currentBlockType,impulse,BulletPhysicsRenderer.BLOCK_SIZE.FULL_SIZE);
       }

@@ -7,7 +7,7 @@
     Vector3i centerPos=blockIntersection.getBlockPosition();
     Block block=BlockManager.getInstance().getBlock(worldProvider.getBlock(centerPos));
     if (block.isUsable()) {
-      EntityRef blockEntity=blockEntityLookup.getOrCreateEntityAt(centerPos);
+      EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(centerPos);
       blockEntity.send(new ActivateEvent(entity,entity));
     }
   }
