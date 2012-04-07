@@ -5,7 +5,6 @@
   Vector3f viewDir=new Vector3f(0,0,-1);
   QuaternionUtil.quatRotate(rotation,viewDir,viewDir);
   playerCamera.getViewingDirection().set(viewDir);
-  CharacterMovementComponent charMovementComp=localPlayer.getEntity().getComponent(CharacterMovementComponent.class);
   float stepDelta=charMovementComp.footstepDelta - lastStepDelta;
   if (stepDelta < 0)   stepDelta+=charMovementComp.distanceBetweenFootsteps;
   bobFactor+=stepDelta;
