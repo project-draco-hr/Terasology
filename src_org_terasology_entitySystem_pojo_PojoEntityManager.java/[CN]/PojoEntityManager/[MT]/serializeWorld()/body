@@ -1,0 +1,30 @@
+{
+  final EntityData.World.Builder world=EntityData.World.newBuilder();
+  world.setNextEntityId(nextEntityId);
+  freedIds.forEach(new TIntProcedure(){
+    public boolean execute(    int i){
+      world.addFreedEntityId(i);
+      return true;
+    }
+  }
+);
+  for (  Prefab prefab : prefabManager.listPrefabs()) {
+    EntityData.Prefab.Builder prefabData=EntityData.Prefab.newBuilder();
+    prefabData.setName(prefab.getName());
+    for (    Prefab parent : prefab.getParents()) {
+      prefabData.addParentName(parent.getName());
+    }
+    for (    Component component : prefab.listOwnComponents()) {
+      EntityData.Component componentData=serializeComponent(component);
+      if (componentData != null) {
+        prefabData.addComponent(componentData);
+      }
+    }
+    world.addPrefab(prefabData.build());
+  }
+  TIntIterator idIterator=store.entityIdIterator();
+  while (idIterator.hasNext()) {
+    world.addEntity(serialzieEntity(idIterator));
+  }
+  return world;
+}

@@ -7,6 +7,12 @@
       return false;
     }
   }
+  for (int i=0; i < getPrefabCount(); i++) {
+    if (!getPrefab(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
   if (!extensionsAreInitialized()) {
     memoizedIsInitialized=0;
     return false;

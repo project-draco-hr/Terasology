@@ -8,6 +8,26 @@
   for (int i=0; i < component_.size(); i++) {
     size+=com.google.protobuf.CodedOutputStream.computeMessageSize(2,component_.get(i));
   }
+{
+    int dataSize=0;
+    for (int i=0; i < removedComponentIndex_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeSInt32SizeNoTag(removedComponentIndex_.get(i));
+    }
+    size+=dataSize;
+    if (!getRemovedComponentIndexList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    removedComponentIndexMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < removedComponent_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(removedComponent_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getRemovedComponentList().size();
+  }
   size+=extensionsSerializedSize();
   size+=getUnknownFields().getSerializedSize();
   memoizedSerializedSize=size;

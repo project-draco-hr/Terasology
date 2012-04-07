@@ -1,0 +1,10 @@
+{
+  EntityRef result=create();
+  if (prefab != null) {
+    for (    Component component : prefab.listComponents()) {
+      result.addComponent(copyComponent(component));
+    }
+    result.addComponent(new EntityInfoComponent(prefab.getName()));
+  }
+  return result;
+}

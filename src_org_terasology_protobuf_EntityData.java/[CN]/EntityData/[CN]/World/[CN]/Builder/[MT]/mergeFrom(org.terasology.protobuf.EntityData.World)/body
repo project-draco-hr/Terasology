@@ -27,10 +27,37 @@
       }
     }
   }
+  if (prefabBuilder_ == null) {
+    if (!other.prefab_.isEmpty()) {
+      if (prefab_.isEmpty()) {
+        prefab_=other.prefab_;
+        bitField0_=(bitField0_ & ~0x00000002);
+      }
+ else {
+        ensurePrefabIsMutable();
+        prefab_.addAll(other.prefab_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.prefab_.isEmpty()) {
+      if (prefabBuilder_.isEmpty()) {
+        prefabBuilder_.dispose();
+        prefabBuilder_=null;
+        prefab_=other.prefab_;
+        bitField0_=(bitField0_ & ~0x00000002);
+        prefabBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getPrefabFieldBuilder() : null;
+      }
+ else {
+        prefabBuilder_.addAllMessages(other.prefab_);
+      }
+    }
+  }
   if (!other.componentClass_.isEmpty()) {
     if (componentClass_.isEmpty()) {
       componentClass_=other.componentClass_;
-      bitField0_=(bitField0_ & ~0x00000002);
+      bitField0_=(bitField0_ & ~0x00000004);
     }
  else {
       ensureComponentClassIsMutable();
@@ -44,11 +71,22 @@
   if (!other.freedEntityId_.isEmpty()) {
     if (freedEntityId_.isEmpty()) {
       freedEntityId_=other.freedEntityId_;
-      bitField0_=(bitField0_ & ~0x00000008);
+      bitField0_=(bitField0_ & ~0x00000010);
     }
  else {
       ensureFreedEntityIdIsMutable();
       freedEntityId_.addAll(other.freedEntityId_);
+    }
+    onChanged();
+  }
+  if (!other.prefabName_.isEmpty()) {
+    if (prefabName_.isEmpty()) {
+      prefabName_=other.prefabName_;
+      bitField0_=(bitField0_ & ~0x00000020);
+    }
+ else {
+      ensurePrefabNameIsMutable();
+      prefabName_.addAll(other.prefabName_);
     }
     onChanged();
   }

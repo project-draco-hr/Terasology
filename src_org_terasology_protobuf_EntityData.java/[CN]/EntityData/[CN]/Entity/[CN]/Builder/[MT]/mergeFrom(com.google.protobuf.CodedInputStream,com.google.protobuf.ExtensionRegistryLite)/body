@@ -29,6 +29,28 @@ input.readMessage(subBuilder,extensionRegistry);
 addComponent(subBuilder.buildPartial());
 break;
 }
+case 24:
+{
+ensureRemovedComponentIndexIsMutable();
+removedComponentIndex_.add(input.readSInt32());
+break;
+}
+case 26:
+{
+int length=input.readRawVarint32();
+int limit=input.pushLimit(length);
+while (input.getBytesUntilLimit() > 0) {
+addRemovedComponentIndex(input.readSInt32());
+}
+input.popLimit(limit);
+break;
+}
+case 122:
+{
+ensureRemovedComponentIsMutable();
+removedComponent_.add(input.readBytes());
+break;
+}
 }
 }
 }

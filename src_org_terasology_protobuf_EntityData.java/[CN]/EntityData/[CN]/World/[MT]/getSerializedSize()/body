@@ -5,6 +5,9 @@
   for (int i=0; i < entity_.size(); i++) {
     size+=com.google.protobuf.CodedOutputStream.computeMessageSize(1,entity_.get(i));
   }
+  for (int i=0; i < prefab_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(2,prefab_.get(i));
+  }
 {
     int dataSize=0;
     for (int i=0; i < componentClass_.size(); i++) {
@@ -27,6 +30,14 @@
       size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
     }
     freedEntityIdMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < prefabName_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(prefabName_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=2 * getPrefabNameList().size();
   }
   size+=extensionsSerializedSize();
   size+=getUnknownFields().getSerializedSize();

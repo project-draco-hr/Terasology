@@ -23,6 +23,13 @@ input.readMessage(subBuilder,extensionRegistry);
 addEntity(subBuilder.buildPartial());
 break;
 }
+case 18:
+{
+org.terasology.protobuf.EntityData.Prefab.Builder subBuilder=org.terasology.protobuf.EntityData.Prefab.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addPrefab(subBuilder.buildPartial());
+break;
+}
 case 122:
 {
 ensureComponentClassIsMutable();
@@ -31,7 +38,7 @@ break;
 }
 case 128:
 {
-bitField0_|=0x00000004;
+bitField0_|=0x00000008;
 nextEntityId_=input.readSInt32();
 break;
 }
@@ -49,6 +56,12 @@ while (input.getBytesUntilLimit() > 0) {
 addFreedEntityId(input.readSInt32());
 }
 input.popLimit(limit);
+break;
+}
+case 146:
+{
+ensurePrefabNameIsMutable();
+prefabName_.add(input.readBytes());
 break;
 }
 }

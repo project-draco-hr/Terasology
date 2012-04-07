@@ -7,6 +7,16 @@
   for (int i=0; i < component_.size(); i++) {
     output.writeMessage(2,component_.get(i));
   }
+  if (getRemovedComponentIndexList().size() > 0) {
+    output.writeRawVarint32(26);
+    output.writeRawVarint32(removedComponentIndexMemoizedSerializedSize);
+  }
+  for (int i=0; i < removedComponentIndex_.size(); i++) {
+    output.writeSInt32NoTag(removedComponentIndex_.get(i));
+  }
+  for (int i=0; i < removedComponent_.size(); i++) {
+    output.writeBytes(15,removedComponent_.getByteString(i));
+  }
   extensionWriter.writeUntil(2000,output);
   getUnknownFields().writeTo(output);
 }

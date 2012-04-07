@@ -26,25 +26,6 @@ logger.log(Level.SEVERE,"Failed to close file",e);
 }
 }
 if (world != null) {
-nextEntityId=world.getNextEntityId();
-for (Integer deadId : world.getFreedEntityIdList()) {
-freedIds.add(deadId);
-}
-validIds=new TIntHashSet(world.getEntityCount());
-for (EntityData.Entity entityData : world.getEntityList()) {
-validIds.add(entityData.getId());
-}
-for (EntityData.Entity entityData : world.getEntityList()) {
-int entityId=entityData.getId();
-for (EntityData.Component componentData : entityData.getComponentList()) {
-Class<? extends Component> componentClass=componentTypeLookup.get(componentData.getType().toLowerCase(Locale.ENGLISH));
-if (componentClass != null) {
-SerializationInfo serializationInfo=componentSerializationLookup.get(componentClass);
-Component component=serializationInfo.deserialize(componentData);
-store.put(entityId,component);
-}
-}
-}
-validIds=new TIntHashSet();
+deserializeWorld(world);
 }
 }

@@ -4,6 +4,9 @@
   for (int i=0; i < entity_.size(); i++) {
     output.writeMessage(1,entity_.get(i));
   }
+  for (int i=0; i < prefab_.size(); i++) {
+    output.writeMessage(2,prefab_.get(i));
+  }
   for (int i=0; i < componentClass_.size(); i++) {
     output.writeBytes(15,componentClass_.getByteString(i));
   }
@@ -16,6 +19,9 @@
   }
   for (int i=0; i < freedEntityId_.size(); i++) {
     output.writeSInt32NoTag(freedEntityId_.get(i));
+  }
+  for (int i=0; i < prefabName_.size(); i++) {
+    output.writeBytes(18,prefabName_.getByteString(i));
   }
   extensionWriter.writeUntil(2000,output);
   getUnknownFields().writeTo(output);
