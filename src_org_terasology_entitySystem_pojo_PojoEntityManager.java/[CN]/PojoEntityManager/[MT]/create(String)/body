@@ -1,7 +1,10 @@
 {
-  Prefab prefab=prefabManager.getPrefab(prefabName);
-  if (prefab == null) {
-    logger.log(Level.WARNING,"Unable to instantiate unknown prefab: \"" + prefabName + "\"");
+  if (prefabName != null && !prefabName.isEmpty()) {
+    Prefab prefab=prefabManager.getPrefab(prefabName);
+    if (prefab == null) {
+      logger.log(Level.WARNING,"Unable to instantiate unknown prefab: \"" + prefabName + "\"");
+    }
+    return create(prefab);
   }
-  return create(prefab);
+  return create();
 }

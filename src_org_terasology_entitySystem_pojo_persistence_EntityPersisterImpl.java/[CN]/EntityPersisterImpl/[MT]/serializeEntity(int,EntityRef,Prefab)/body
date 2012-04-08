@@ -1,0 +1,23 @@
+{
+  EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
+  entity.setId(id);
+  for (  Component component : entityRef.iterateComponents()) {
+    Component prefabComponent=prefab.getComponent(component.getClass());
+    EntityData.Component componentData;
+    if (prefabComponent == null) {
+      componentData=serializeComponent(component);
+    }
+ else {
+      componentData=serializeComponent(prefabComponent,component);
+    }
+    if (componentData != null) {
+      entity.addComponent(componentData);
+    }
+  }
+  for (  Component prefabComponent : prefab.listComponents()) {
+    if (!entityRef.hasComponent(prefabComponent.getClass())) {
+      entity.addRemovedComponent(PersistenceUtil.getComponentClassName(prefabComponent.getClass()));
+    }
+  }
+  return entity.build();
+}

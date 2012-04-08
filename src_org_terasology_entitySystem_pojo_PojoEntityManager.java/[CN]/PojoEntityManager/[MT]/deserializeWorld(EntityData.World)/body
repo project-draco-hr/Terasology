@@ -16,7 +16,7 @@
         }
       }
       for (      EntityData.Component componentData : prefabData.getComponentList()) {
-        Component component=deserializeComponent(componentData);
+        Component component=entityPersister.deserializeComponent(componentData);
         if (component != null) {
           prefab.setComponent(component);
         }
@@ -30,7 +30,7 @@
   for (  EntityData.Entity entityData : world.getEntityList()) {
     int entityId=entityData.getId();
     for (    EntityData.Component componentData : entityData.getComponentList()) {
-      Component component=deserializeComponent(componentData);
+      Component component=entityPersister.deserializeComponent(componentData);
       if (component != null) {
         store.put(entityId,component);
       }

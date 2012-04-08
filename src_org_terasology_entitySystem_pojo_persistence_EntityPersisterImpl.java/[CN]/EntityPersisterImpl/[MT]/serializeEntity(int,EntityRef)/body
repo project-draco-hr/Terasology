@@ -1,8 +1,7 @@
 {
-  int id=idIterator.next();
   EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
   entity.setId(id);
-  for (  Component component : iterateComponents(id)) {
+  for (  Component component : entityRef.iterateComponents()) {
     EntityData.Component componentData=serializeComponent(component);
     if (componentData != null) {
       entity.addComponent(componentData);

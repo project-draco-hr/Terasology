@@ -15,7 +15,7 @@
       prefabData.addParentName(parent.getName());
     }
     for (    Component component : prefab.listOwnComponents()) {
-      EntityData.Component componentData=serializeComponent(component);
+      EntityData.Component componentData=entityPersister.serializeComponent(component);
       if (componentData != null) {
         prefabData.addComponent(componentData);
       }
@@ -24,7 +24,14 @@
   }
   TIntIterator idIterator=store.entityIdIterator();
   while (idIterator.hasNext()) {
-    world.addEntity(serialzieEntity(idIterator));
+    int id=idIterator.next();
+    EntityInfoComponent entityInfo=getComponent(id,EntityInfoComponent.class);
+    if (entityInfo != null && prefabManager.exists(entityInfo.parentPrefab)) {
+      world.addEntity(entityPersister.serializeEntity(id,createEntityRef(id),prefabManager.getPrefab(entityInfo.parentPrefab)));
+    }
+ else {
+      world.addEntity(entityPersister.serializeEntity(id,createEntityRef(id)));
+    }
   }
   return world;
 }

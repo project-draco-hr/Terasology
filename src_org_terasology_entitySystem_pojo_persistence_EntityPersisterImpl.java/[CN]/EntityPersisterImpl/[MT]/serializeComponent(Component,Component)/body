@@ -1,0 +1,12 @@
+{
+  SerializationInfo serializationInfo=componentSerializationLookup.get(base.getClass());
+  if (serializationInfo == null) {
+    logger.log(Level.SEVERE,"Unregistered component type: " + base.getClass());
+    registerComponentClass(base.getClass());
+    serializationInfo=componentSerializationLookup.get(base.getClass());
+  }
+  if (serializationInfo != null) {
+    return serializationInfo.serialize(base,delta);
+  }
+  return null;
+}
