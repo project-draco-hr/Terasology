@@ -1,0 +1,26 @@
+{
+  EntityRef entity=entityManager.createEntityWithId(entityData.getId());
+  if (entityData.hasParentPrefab() && !entityData.getParentPrefab().isEmpty() && prefabManager.exists(entityData.getParentPrefab())) {
+    Prefab prefab=prefabManager.getPrefab(entityData.getParentPrefab());
+    for (    Component component : prefab.listComponents()) {
+      String componentName=PersistenceUtil.getComponentClassName(component.getClass());
+      if (!containsIgnoreCase(componentName,entityData.getRemovedComponentList())) {
+        entity.addComponent(copyComponent(component));
+      }
+    }
+  }
+  for (  EntityData.Component componentData : entityData.getComponentList()) {
+    Class<? extends Component> componentClass=componentTypeLookup.get(componentData.getType().toLowerCase(Locale.ENGLISH));
+    if (componentClass == null) {
+      logger.log(Level.WARNING,"Unable to deserialise unknown component type: " + componentData.getType());
+      continue;
+    }
+    if (!entity.hasComponent(componentClass)) {
+      entity.addComponent(deserializeComponent(componentData));
+    }
+ else {
+      deserializeComponentOnto(entity.getComponent(componentClass),componentData);
+    }
+  }
+  return entity;
+}

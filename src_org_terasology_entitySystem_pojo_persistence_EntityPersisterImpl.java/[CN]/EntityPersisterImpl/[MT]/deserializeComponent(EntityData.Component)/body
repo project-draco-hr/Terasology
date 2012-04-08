@@ -4,5 +4,8 @@
     SerializationInfo serializationInfo=componentSerializationLookup.get(componentClass);
     return serializationInfo.deserialize(componentData);
   }
+ else {
+    logger.log(Level.WARNING,"Unable to deserialise unknown component type: " + componentData.getType());
+  }
   return null;
 }

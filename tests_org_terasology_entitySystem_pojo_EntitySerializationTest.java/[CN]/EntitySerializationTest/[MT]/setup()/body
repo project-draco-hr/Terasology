@@ -1,8 +1,9 @@
 {
   entityManager=new PojoEntityManager();
-  entityPersister=new EntityPersisterImpl();
-  entityPersister.registerTypeHandler(Vector3f.class,new Vector3fTypeHandler());
-  entityPersister.registerComponentClass(EntityInfoComponent.class);
-  entityPersister.registerComponentClass(IntegerComponent.class);
-  entityPersister.registerComponentClass(StringComponent.class);
+  entityManager.registerTypeHandler(Vector3f.class,new Vector3fTypeHandler());
+  entityManager.registerComponentClass(IntegerComponent.class);
+  entityManager.registerComponentClass(StringComponent.class);
+  prefabManager=new PojoPrefabManager();
+  entityManager.setPrefabManager(prefabManager);
+  entityPersister=entityManager.getEntityPersister();
 }

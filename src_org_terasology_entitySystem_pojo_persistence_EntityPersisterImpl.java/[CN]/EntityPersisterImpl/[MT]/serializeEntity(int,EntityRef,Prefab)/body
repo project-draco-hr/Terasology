@@ -1,7 +1,9 @@
 {
   EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
   entity.setId(id);
+  entity.setParentPrefab(prefab.getName());
   for (  Component component : entityRef.iterateComponents()) {
+    if (component.getClass().equals(EntityInfoComponent.class))     continue;
     Component prefabComponent=prefab.getComponent(component.getClass());
     EntityData.Component componentData;
     if (prefabComponent == null) {

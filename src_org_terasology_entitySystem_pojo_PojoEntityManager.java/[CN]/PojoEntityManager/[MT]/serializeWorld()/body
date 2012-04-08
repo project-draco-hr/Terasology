@@ -25,13 +25,7 @@
   TIntIterator idIterator=store.entityIdIterator();
   while (idIterator.hasNext()) {
     int id=idIterator.next();
-    EntityInfoComponent entityInfo=getComponent(id,EntityInfoComponent.class);
-    if (entityInfo != null && prefabManager.exists(entityInfo.parentPrefab)) {
-      world.addEntity(entityPersister.serializeEntity(id,createEntityRef(id),prefabManager.getPrefab(entityInfo.parentPrefab)));
-    }
- else {
-      world.addEntity(entityPersister.serializeEntity(id,createEntityRef(id)));
-    }
+    world.addEntity(entityPersister.serializeEntity(id,createEntityRef(id)));
   }
   return world;
 }

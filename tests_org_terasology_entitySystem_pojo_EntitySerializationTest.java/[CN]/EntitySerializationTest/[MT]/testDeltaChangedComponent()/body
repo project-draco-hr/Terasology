@@ -1,10 +1,11 @@
 {
-  Prefab prefab=new PojoPrefab("Test");
+  Prefab prefab=prefabManager.createPrefab("Test");
   prefab.setComponent(new StringComponent("Value"));
-  EntityRef entity=entityManager.create();
-  entity.addComponent(new StringComponent("Delta"));
-  EntityData.Entity entityData=entityPersister.serializeEntity(1,entity,prefab);
+  EntityRef entity=entityManager.create(prefab);
+  entity.getComponent(StringComponent.class).value="Delta";
+  EntityData.Entity entityData=entityPersister.serializeEntity(1,entity);
   assertEquals(1,entityData.getId());
+  assertEquals(prefab.getName(),entityData.getParentPrefab());
   assertEquals(1,entityData.getComponentCount());
   assertEquals(0,entityData.getRemovedComponentCount());
   EntityData.Component componentData=entityData.getComponent(0);

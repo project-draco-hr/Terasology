@@ -41,10 +41,13 @@
     }
     onChanged();
   }
+  if (other.hasParentPrefab()) {
+    setParentPrefab(other.getParentPrefab());
+  }
   if (!other.removedComponent_.isEmpty()) {
     if (removedComponent_.isEmpty()) {
       removedComponent_=other.removedComponent_;
-      bitField0_=(bitField0_ & ~0x00000008);
+      bitField0_=(bitField0_ & ~0x00000010);
     }
  else {
       ensureRemovedComponentIsMutable();

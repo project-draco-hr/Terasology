@@ -1,7 +1,14 @@
 {
   EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
   entity.setId(id);
+  EntityInfoComponent entityInfo=entityRef.getComponent(EntityInfoComponent.class);
+  if (entityInfo != null) {
+    if (entityInfo.parentPrefab != null && prefabManager.exists(entityInfo.parentPrefab)) {
+      return serializeEntity(id,entityRef,prefabManager.getPrefab(entityInfo.parentPrefab));
+    }
+  }
   for (  Component component : entityRef.iterateComponents()) {
+    if (component.getClass().equals(EntityInfoComponent.class))     continue;
     EntityData.Component componentData=serializeComponent(component);
     if (componentData != null) {
       entity.addComponent(componentData);
