@@ -1,0 +1,11 @@
+{
+  SerializationInfo serializationInfo=componentSerializationLookup.get(component.getClass());
+  if (serializationInfo == null) {
+    logger.log(Level.SEVERE,"Unable to clone component: " + component.getClass() + ", not registered");
+  }
+ else {
+    EntityData.Component data=serializationInfo.serialize(component);
+    return serializationInfo.deserialize(data);
+  }
+  return null;
+}

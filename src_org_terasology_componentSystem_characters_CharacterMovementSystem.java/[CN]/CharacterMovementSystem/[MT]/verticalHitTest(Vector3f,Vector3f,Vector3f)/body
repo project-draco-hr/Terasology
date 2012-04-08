@@ -1,0 +1,26 @@
+{
+  List<BlockPosition> blockPositions=WorldUtil.gatherAdjacentBlockPositions(origin);
+  boolean moved=false;
+  for (int i=0; i < blockPositions.size(); i++) {
+    BlockPosition p=blockPositions.get(i);
+    byte blockType1=worldProvider.getBlockAtPosition(new Vector3d(p.x,p.y,p.z));
+    calcAABB(position,extents);
+    Block block=BlockManager.getInstance().getBlock(blockType1);
+    if (block == null || block.isPenetrable())     continue;
+    for (    AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
+      if (!entityAABB.overlaps(blockAABB))       continue;
+      double direction=origin.y - position.y;
+      if (direction >= 0) {
+        position.y=(float)(blockAABB.getPosition().y + blockAABB.getDimensions().y + entityAABB.getDimensions().y);
+        position.y+=java.lang.Math.ulp(position.y);
+      }
+ else {
+        position.y=(float)(blockAABB.getPosition().y - blockAABB.getDimensions().y - entityAABB.getDimensions().y);
+        position.y-=java.lang.Math.ulp(position.y);
+      }
+      return true;
+    }
+  }
+  PerformanceMonitor.endActivity();
+  return moved;
+}

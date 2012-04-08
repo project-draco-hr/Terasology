@@ -1,0 +1,25 @@
+{
+  try {
+    Component component=(Component)super.clone();
+    for (    Field field : getClass().getDeclaredFields()) {
+      Class fieldClass=field.getType();
+      if (!Cloneable.class.isAssignableFrom(fieldClass)) {
+        logger.log(Level.SEVERE,"Failed to clone component field: " + fieldClass);
+        continue;
+      }
+      field.setAccessible(true);
+      try {
+        Method method=fieldClass.getMethod("clone");
+        Object clonedField=method.invoke(field.get(component));
+        field.set(component,clonedField);
+      }
+ catch (      Throwable e) {
+        logger.log(Level.SEVERE,"Failed to clone field",e);
+      }
+    }
+    return component;
+  }
+ catch (  CloneNotSupportedException e) {
+    throw new InternalError();
+  }
+}

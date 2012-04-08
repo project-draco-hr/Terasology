@@ -1,0 +1,20 @@
+{
+  this.container=container;
+  this.creature=creature;
+  inventorySystem=CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class);
+  background=new UIGraphicsElement("containerWindow");
+  background.getTextureSize().set(new Vector2f(256f / 256f,231f / 256f));
+  background.getTextureOrigin().set(new Vector2f(0.0f,0.0f));
+  addDisplayElement(background);
+  playerInventory=new UIInventoryNew(creature,4);
+  playerInventory.setVisible(true);
+  playerInventory.subscribe(this);
+  addDisplayElement(playerInventory);
+  containerInventory=new UIInventoryNew(container,4);
+  containerInventory.setVisible(true);
+  containerInventory.subscribe(this);
+  addDisplayElement(containerInventory);
+  setVisible(true);
+  background.setVisible(true);
+  update();
+}

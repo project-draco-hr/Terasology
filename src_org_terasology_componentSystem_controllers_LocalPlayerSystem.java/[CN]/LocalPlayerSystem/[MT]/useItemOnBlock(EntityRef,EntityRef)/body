@@ -1,0 +1,14 @@
+{
+  RayBlockIntersection.Intersection blockIntersection=calcSelectedBlock();
+  if (blockIntersection != null) {
+    Vector3i centerPos=blockIntersection.getBlockPosition();
+    Vector3i blockPos=blockIntersection.calcAdjacentBlockPos();
+    Side attachmentSide=Side.inDirection(blockPos.x - centerPos.x,blockPos.y - centerPos.y,blockPos.z - centerPos.z);
+    Vector3f attachDir=new Vector3f(centerPos.x - blockPos.x,centerPos.y - blockPos.y,centerPos.z - blockPos.z);
+    Vector3f rawDirection=new Vector3f(playerCamera.getViewingDirection());
+    float dot=rawDirection.dot(attachDir);
+    rawDirection.sub(new Vector3f(dot * attachDir.x,dot * attachDir.y,dot * attachDir.z));
+    Side direction=Side.inDirection(rawDirection.x,rawDirection.y,rawDirection.z);
+    itemSystem.useItemOnBlock(item,player,centerPos,attachmentSide,direction);
+  }
+}

@@ -1,0 +1,14 @@
+{
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
+  shader.enable();
+  shader.setFloat("light",Terasology.getInstance().getActiveWorldRenderer().getRenderingLightValue());
+  TextureManager.getInstance().bindTexture("char");
+  glPushMatrix();
+  glTranslatef(0.8f,-1.1f + bobOffset - handMovementAnimationOffset * 0.5f,-1.0f - handMovementAnimationOffset * 0.5f);
+  glRotatef(-45f - handMovementAnimationOffset * 64.0f,1.0f,0.0f,0.0f);
+  glRotatef(35f,0.0f,1.0f,0.0f);
+  glTranslatef(0f,0.25f,0f);
+  glScalef(0.3f,0.6f,0.3f);
+  handMesh.render();
+  glPopMatrix();
+}

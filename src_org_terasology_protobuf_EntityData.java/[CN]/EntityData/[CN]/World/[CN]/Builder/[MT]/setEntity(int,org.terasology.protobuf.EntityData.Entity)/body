@@ -1,0 +1,14 @@
+{
+  if (entityBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureEntityIsMutable();
+    entity_.set(index,value);
+    onChanged();
+  }
+ else {
+    entityBuilder_.setMessage(index,value);
+  }
+  return this;
+}

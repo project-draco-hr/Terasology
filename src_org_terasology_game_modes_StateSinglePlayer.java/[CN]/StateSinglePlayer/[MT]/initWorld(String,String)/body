@@ -11,8 +11,35 @@
     seed=random.randomCharacterString(16);
   }
   Terasology.getInstance().getLogger().log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  _worldRenderer=new WorldRenderer(title,seed);
-  _worldRenderer.setPlayer(new Player(_worldRenderer));
+  _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys);
+  File entityDataFile=new File(Terasology.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
+  _entityManager.clear();
+  if (entityDataFile.exists()) {
+    try {
+      _entityManager.load(entityDataFile,EntityManager.SaveFormat.Binary);
+    }
+ catch (    IOException e) {
+      _logger.log(Level.SEVERE,"Failed to load entity data",e);
+    }
+  }
+  LocalPlayer localPlayer=null;
+  Iterator<EntityRef> iterator=_entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
+  if (iterator.hasNext()) {
+    localPlayer=new LocalPlayer(iterator.next());
+  }
+ else {
+    PlayerFactory playerFactory=new PlayerFactory(_entityManager);
+    localPlayer=new LocalPlayer(playerFactory.newInstance(new Vector3f(_worldRenderer.getWorldProvider().nextSpawningPoint())));
+  }
+  _worldRenderer.setPlayer(localPlayer);
   _worldRenderer.initPortal();
   fastForwardWorld();
+  CoreRegistry.put(WorldRenderer.class,_worldRenderer);
+  CoreRegistry.put(IWorldProvider.class,_worldRenderer.getWorldProvider());
+  CoreRegistry.put(LocalPlayer.class,_worldRenderer.getPlayer());
+  CoreRegistry.put(Camera.class,_worldRenderer.getActiveCamera());
+  CoreRegistry.put(BulletPhysicsRenderer.class,_worldRenderer.getBulletRenderer());
+  for (  ComponentSystem system : _componentSystemManager.iterateAll()) {
+    system.initialise();
+  }
 }

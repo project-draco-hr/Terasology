@@ -1,0 +1,14 @@
+{
+  Vector3f diff=new Vector3f(particleEffect.targetVelocity);
+  diff.sub(particle.velocity);
+  diff.x*=particleEffect.acceleration.x * delta;
+  diff.y*=particleEffect.acceleration.y * delta;
+  diff.z*=particleEffect.acceleration.z * delta;
+  particle.velocity.add(diff);
+  if (particleEffect.collideWithBlocks == true) {
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    Vector3f pos=location.getWorldPosition();
+    pos.add(particle.position);
+    if (worldProvider.getBlockAtPosition(new Vector3d(pos.x,pos.y + 2 * Math.signum(particle.velocity.y) * particle.size,pos.z)) != 0x0)     particle.velocity.y=0;
+  }
+}

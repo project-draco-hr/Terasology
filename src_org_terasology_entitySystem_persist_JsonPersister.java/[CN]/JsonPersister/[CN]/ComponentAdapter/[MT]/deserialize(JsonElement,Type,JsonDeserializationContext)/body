@@ -1,0 +1,22 @@
+{
+  JsonObject object=json.getAsJsonObject();
+  try {
+    Class<?> componentClass=Class.forName(object.get("class").getAsString());
+    if (!Component.class.isAssignableFrom(componentClass)) {
+      throw new IllegalStateException("Wrong class specified - not Component!");
+    }
+    Component instance=(Component)componentClass.newInstance();
+    for (    Map.Entry<String,JsonElement> element : object.entrySet()) {
+      if ("class".equals(element.getKey())) {
+        continue;
+      }
+      Field field=componentClass.getDeclaredField(element.getKey());
+      field.setAccessible(true);
+      field.set(instance,gson.fromJson(element.getValue(),field.getType()));
+    }
+    return instance;
+  }
+ catch (  Throwable e) {
+    throw new RuntimeException(e);
+  }
+}

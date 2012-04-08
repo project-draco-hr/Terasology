@@ -1,0 +1,29 @@
+{
+  updateUserInterface();
+  for (  UpdateSubscriberSystem updater : _componentSystemManager.iterateUpdateSubscribers()) {
+    PerformanceMonitor.startActivity(updater.getClass().getSimpleName());
+    updater.update(delta);
+  }
+  if (_worldRenderer != null && shouldUpdateWorld())   _worldRenderer.update(delta);
+  if (!screenHasFocus())   _localPlayerSys.updateInput();
+  if (screenHasFocus() || !shouldUpdateWorld()) {
+    if (Mouse.isGrabbed()) {
+      Mouse.setGrabbed(false);
+      Mouse.setCursorPosition(Display.getWidth() / 2,Display.getHeight() / 2);
+    }
+  }
+ else {
+    if (!Mouse.isGrabbed())     Mouse.setGrabbed(true);
+  }
+  boolean dead=true;
+  for (  EntityRef entity : _entityManager.iteratorEntities(LocalPlayerComponent.class)) {
+    dead=entity.getComponent(LocalPlayerComponent.class).isDead;
+  }
+  if (dead) {
+    _statusScreen.setVisible(true);
+    _statusScreen.updateStatus("Sorry! Seems like you have died. :-(");
+  }
+ else {
+    _statusScreen.setVisible(false);
+  }
+}

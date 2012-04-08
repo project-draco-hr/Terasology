@@ -1,0 +1,56 @@
+{
+  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
+  while (true) {
+    int tag=input.readTag();
+switch (tag) {
+case 0:
+      this.setUnknownFields(unknownFields.build());
+    onChanged();
+  return this;
+default :
+{
+  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
+    this.setUnknownFields(unknownFields.build());
+    onChanged();
+    return this;
+  }
+  break;
+}
+case 10:
+{
+org.terasology.protobuf.EntityData.Entity.Builder subBuilder=org.terasology.protobuf.EntityData.Entity.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addEntity(subBuilder.buildPartial());
+break;
+}
+case 122:
+{
+ensureComponentClassIsMutable();
+componentClass_.add(input.readBytes());
+break;
+}
+case 128:
+{
+bitField0_|=0x00000004;
+nextEntityId_=input.readSInt32();
+break;
+}
+case 136:
+{
+ensureFreedEntityIdIsMutable();
+freedEntityId_.add(input.readSInt32());
+break;
+}
+case 138:
+{
+int length=input.readRawVarint32();
+int limit=input.pushLimit(length);
+while (input.getBytesUntilLimit() > 0) {
+addFreedEntityId(input.readSInt32());
+}
+input.popLimit(limit);
+break;
+}
+}
+}
+}

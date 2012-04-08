@@ -1,0 +1,36 @@
+{
+  if (other == org.terasology.protobuf.EntityData.Entity.getDefaultInstance())   return this;
+  if (other.hasId()) {
+    setId(other.getId());
+  }
+  if (componentBuilder_ == null) {
+    if (!other.component_.isEmpty()) {
+      if (component_.isEmpty()) {
+        component_=other.component_;
+        bitField0_=(bitField0_ & ~0x00000002);
+      }
+ else {
+        ensureComponentIsMutable();
+        component_.addAll(other.component_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.component_.isEmpty()) {
+      if (componentBuilder_.isEmpty()) {
+        componentBuilder_.dispose();
+        componentBuilder_=null;
+        component_=other.component_;
+        bitField0_=(bitField0_ & ~0x00000002);
+        componentBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getComponentFieldBuilder() : null;
+      }
+ else {
+        componentBuilder_.addAllMessages(other.component_);
+      }
+    }
+  }
+  this.mergeExtensionFields(other);
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

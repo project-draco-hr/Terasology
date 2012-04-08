@@ -1,0 +1,12 @@
+{
+  store.put(asType,object);
+  if (object instanceof UpdateSubscriberSystem) {
+    updateSubscribers.add((UpdateSubscriberSystem)object);
+  }
+  if (object instanceof RenderSystem) {
+    renderSubscribers.add((RenderSystem)object);
+  }
+  if (object instanceof EventHandlerSystem) {
+    CoreRegistry.get(EntityManager.class).getEventSystem().registerEventHandler((EventHandlerSystem)object);
+  }
+}

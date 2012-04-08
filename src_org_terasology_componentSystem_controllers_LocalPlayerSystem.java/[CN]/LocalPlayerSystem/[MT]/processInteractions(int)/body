@@ -1,0 +1,41 @@
+{
+  if (Terasology.getInstance().getTimeInMs() - lastInteraction < 200) {
+    return;
+  }
+  EntityRef entity=localPlayer.getEntity();
+  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+  InventoryComponent inventory=localPlayer.getEntity().getComponent(InventoryComponent.class);
+  if (localPlayerComp.isDead)   return;
+  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+  if (Mouse.isButtonDown(0) || button == 0) {
+    ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+    if (item != null) {
+switch (item.usage) {
+case OnBlock:
+        useItemOnBlock(entity,selectedItemEntity);
+      break;
+case OnUser:
+    itemSystem.useItem(selectedItemEntity,entity);
+  break;
+case InDirection:
+itemSystem.useItemInDirection(selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),entity);
+break;
+default :
+attack(entity,selectedItemEntity);
+break;
+}
+}
+ else {
+attack(entity,selectedItemEntity);
+}
+lastInteraction=Terasology.getInstance().getTimeInMs();
+localPlayerComp.handAnimation=0.5f;
+entity.saveComponent(localPlayerComp);
+}
+ else if (Mouse.isButtonDown(1) || button == 1) {
+attack(entity,selectedItemEntity);
+lastInteraction=Terasology.getInstance().getTimeInMs();
+localPlayerComp.handAnimation=0.5f;
+entity.saveComponent(localPlayerComp);
+}
+}

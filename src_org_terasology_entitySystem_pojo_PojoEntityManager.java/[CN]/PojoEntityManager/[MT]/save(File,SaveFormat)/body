@@ -1,0 +1,59 @@
+{
+  final EntityData.World.Builder world=EntityData.World.newBuilder();
+  world.setNextEntityId(nextEntityId);
+  freedIds.forEach(new TIntProcedure(){
+    public boolean execute(    int i){
+      world.addFreedEntityId(i);
+      return true;
+    }
+  }
+);
+  TIntIterator idIterator=store.entityIdIterator();
+  while (idIterator.hasNext()) {
+    int id=idIterator.next();
+    EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
+    entity.setId(id);
+    for (    Component component : iterateComponents(id)) {
+      SerializationInfo serializationInfo=componentSerializationLookup.get(component.getClass());
+      if (serializationInfo == null) {
+        logger.log(Level.SEVERE,"Unregistered component type: " + component.getClass());
+        registerComponentClass(component.getClass());
+        serializationInfo=componentSerializationLookup.get(component.getClass());
+      }
+      if (serializationInfo != null) {
+        entity.addComponent(serializationInfo.serialize(component));
+      }
+    }
+    world.addEntity(entity.build());
+  }
+  File parentFile=file.getParentFile();
+  if (parentFile != null) {
+    parentFile.mkdirs();
+  }
+  FileOutputStream out=new FileOutputStream(file);
+  BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(out));
+  try {
+switch (format) {
+case Binary:
+      world.build().writeTo(out);
+    out.flush();
+  break;
+case Text:
+TextFormat.print(world.build(),bufferedWriter);
+bufferedWriter.flush();
+break;
+case JSON:
+EntityDataJSONFormat.write(bufferedWriter,world.build());
+bufferedWriter.flush();
+break;
+}
+}
+  finally {
+try {
+out.close();
+}
+ catch (IOException e) {
+logger.log(Level.SEVERE,"Failed to close file",e);
+}
+}
+}

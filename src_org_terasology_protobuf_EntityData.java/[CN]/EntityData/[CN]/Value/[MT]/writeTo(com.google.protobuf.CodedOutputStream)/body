@@ -1,0 +1,51 @@
+{
+  getSerializedSize();
+  if (getDoubleList().size() > 0) {
+    output.writeRawVarint32(10);
+    output.writeRawVarint32(doubleMemoizedSerializedSize);
+  }
+  for (int i=0; i < double_.size(); i++) {
+    output.writeDoubleNoTag(double_.get(i));
+  }
+  if (getFloatList().size() > 0) {
+    output.writeRawVarint32(18);
+    output.writeRawVarint32(floatMemoizedSerializedSize);
+  }
+  for (int i=0; i < float_.size(); i++) {
+    output.writeFloatNoTag(float_.get(i));
+  }
+  if (getIntegerList().size() > 0) {
+    output.writeRawVarint32(26);
+    output.writeRawVarint32(integerMemoizedSerializedSize);
+  }
+  for (int i=0; i < integer_.size(); i++) {
+    output.writeSInt32NoTag(integer_.get(i));
+  }
+  if (getLongList().size() > 0) {
+    output.writeRawVarint32(34);
+    output.writeRawVarint32(longMemoizedSerializedSize);
+  }
+  for (int i=0; i < long_.size(); i++) {
+    output.writeSInt64NoTag(long_.get(i));
+  }
+  if (getBooleanList().size() > 0) {
+    output.writeRawVarint32(42);
+    output.writeRawVarint32(booleanMemoizedSerializedSize);
+  }
+  for (int i=0; i < boolean_.size(); i++) {
+    output.writeBoolNoTag(boolean_.get(i));
+  }
+  for (int i=0; i < string_.size(); i++) {
+    output.writeBytes(6,string_.getByteString(i));
+  }
+  for (int i=0; i < byte_.size(); i++) {
+    output.writeBytes(7,byte_.get(i));
+  }
+  for (int i=0; i < value_.size(); i++) {
+    output.writeMessage(8,value_.get(i));
+  }
+  for (int i=0; i < nameValue_.size(); i++) {
+    output.writeMessage(9,nameValue_.get(i));
+  }
+  getUnknownFields().writeTo(output);
+}

@@ -1,0 +1,49 @@
+{
+  getSerializedSize();
+  if (getVerticesList().size() > 0) {
+    output.writeRawVarint32(10);
+    output.writeRawVarint32(verticesMemoizedSerializedSize);
+  }
+  for (int i=0; i < vertices_.size(); i++) {
+    output.writeFloatNoTag(vertices_.get(i));
+  }
+  if (getTexCoords0List().size() > 0) {
+    output.writeRawVarint32(18);
+    output.writeRawVarint32(texCoords0MemoizedSerializedSize);
+  }
+  for (int i=0; i < texCoords0_.size(); i++) {
+    output.writeFloatNoTag(texCoords0_.get(i));
+  }
+  if (getTexCoords1List().size() > 0) {
+    output.writeRawVarint32(26);
+    output.writeRawVarint32(texCoords1MemoizedSerializedSize);
+  }
+  for (int i=0; i < texCoords1_.size(); i++) {
+    output.writeFloatNoTag(texCoords1_.get(i));
+  }
+  if (getNormalsList().size() > 0) {
+    output.writeRawVarint32(34);
+    output.writeRawVarint32(normalsMemoizedSerializedSize);
+  }
+  for (int i=0; i < normals_.size(); i++) {
+    output.writeFloatNoTag(normals_.get(i));
+  }
+  if (getColorsList().size() > 0) {
+    output.writeRawVarint32(42);
+    output.writeRawVarint32(colorsMemoizedSerializedSize);
+  }
+  for (int i=0; i < colors_.size(); i++) {
+    output.writeFloatNoTag(colors_.get(i));
+  }
+  if (getIndicesList().size() > 0) {
+    output.writeRawVarint32(50);
+    output.writeRawVarint32(indicesMemoizedSerializedSize);
+  }
+  for (int i=0; i < indices_.size(); i++) {
+    output.writeInt32NoTag(indices_.get(i));
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeBytes(16,getNameBytes());
+  }
+  getUnknownFields().writeTo(output);
+}

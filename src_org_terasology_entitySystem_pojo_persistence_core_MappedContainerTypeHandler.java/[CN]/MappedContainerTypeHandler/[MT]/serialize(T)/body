@@ -1,0 +1,18 @@
+{
+  if (value == null)   return null;
+  EntityData.Value.Builder result=EntityData.Value.newBuilder();
+  try {
+    for (    FieldInfo fieldInfo : fields.values()) {
+      Object rawValue=fieldInfo.getValue(value);
+      if (rawValue == null)       continue;
+      EntityData.Value fieldValue=fieldInfo.getSerializationHandler().serialize(rawValue);
+      if (fieldValue != null) {
+        result.addNameValue(EntityData.NameValue.newBuilder().setName(fieldInfo.getName()).setValue(fieldValue).build());
+      }
+    }
+  }
+ catch (  IllegalAccessException e) {
+    logger.log(Level.SEVERE,"Unable to serialize field of " + value.getClass(),e);
+  }
+  return result.build();
+}

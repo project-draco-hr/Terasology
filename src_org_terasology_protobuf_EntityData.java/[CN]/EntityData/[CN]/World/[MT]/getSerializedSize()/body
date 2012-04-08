@@ -1,0 +1,35 @@
+{
+  int size=memoizedSerializedSize;
+  if (size != -1)   return size;
+  size=0;
+  for (int i=0; i < entity_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(1,entity_.get(i));
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < componentClass_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(componentClass_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getComponentClassList().size();
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    size+=com.google.protobuf.CodedOutputStream.computeSInt32Size(16,nextEntityId_);
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < freedEntityId_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeSInt32SizeNoTag(freedEntityId_.get(i));
+    }
+    size+=dataSize;
+    if (!getFreedEntityIdList().isEmpty()) {
+      size+=2;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    freedEntityIdMemoizedSerializedSize=dataSize;
+  }
+  size+=extensionsSerializedSize();
+  size+=getUnknownFields().getSerializedSize();
+  memoizedSerializedSize=size;
+  return size;
+}

@@ -1,0 +1,31 @@
+{
+  Vector3f worldPos=location.getWorldPosition();
+  List<BlockPosition> blockPositions=WorldUtil.gatherAdjacentBlockPositions(worldPos);
+  boolean topUnderwater=false;
+  boolean bottomUnderwater=false;
+  Vector3f top=new Vector3f(worldPos);
+  Vector3f bottom=new Vector3f(worldPos);
+  top.y+=aabb.getExtents().y / 2;
+  bottom.y-=aabb.getExtents().y / 2;
+  for (int i=0; i < blockPositions.size(); i++) {
+    BlockPosition p=blockPositions.get(i);
+    byte blockType=worldProvider.getBlockAtPosition(new Vector3d(p.x,p.y,p.z));
+    Block block=BlockManager.getInstance().getBlock(blockType);
+    if (block.isLiquid()) {
+      for (      AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
+        if (blockAABB.contains(top)) {
+          topUnderwater=true;
+        }
+        if (blockAABB.contains(bottom)) {
+          bottomUnderwater=true;
+        }
+      }
+    }
+  }
+  boolean newSwimming=topUnderwater && bottomUnderwater;
+  if (!newSwimming && movementComp.isSwimming && movementComp.getVelocity().y > 0) {
+    float len=movementComp.getVelocity().length();
+    movementComp.getVelocity().scale((len + 8) / len);
+  }
+  movementComp.isSwimming=newSwimming;
+}

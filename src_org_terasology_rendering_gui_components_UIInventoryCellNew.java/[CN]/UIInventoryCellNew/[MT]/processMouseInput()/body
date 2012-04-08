@@ -1,0 +1,18 @@
+{
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  if (intersects(mousePos)) {
+    selectionRectangle.setVisible(true);
+    if (_mouseUp) {
+      _mouseUp=false;
+      for (      CellSubscriber subscriber : subscribers) {
+        subscriber.onCellActivated(this);
+      }
+    }
+  }
+ else {
+    _clickSoundPlayed=false;
+    _mouseUp=false;
+    _mouseDown=false;
+    selectionRectangle.setVisible(false);
+  }
+}

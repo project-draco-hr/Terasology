@@ -1,0 +1,84 @@
+{
+  int size=memoizedSerializedSize;
+  if (size != -1)   return size;
+  size=0;
+{
+    int dataSize=0;
+    dataSize=8 * getDoubleList().size();
+    size+=dataSize;
+    if (!getDoubleList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    doubleMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    dataSize=4 * getFloatList().size();
+    size+=dataSize;
+    if (!getFloatList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    floatMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < integer_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeSInt32SizeNoTag(integer_.get(i));
+    }
+    size+=dataSize;
+    if (!getIntegerList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    integerMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < long_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeSInt64SizeNoTag(long_.get(i));
+    }
+    size+=dataSize;
+    if (!getLongList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    longMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    dataSize=1 * getBooleanList().size();
+    size+=dataSize;
+    if (!getBooleanList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    booleanMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < string_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(string_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getStringList().size();
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < byte_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(byte_.get(i));
+    }
+    size+=dataSize;
+    size+=1 * getByteList().size();
+  }
+  for (int i=0; i < value_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(8,value_.get(i));
+  }
+  for (int i=0; i < nameValue_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(9,nameValue_.get(i));
+  }
+  size+=getUnknownFields().getSerializedSize();
+  memoizedSerializedSize=size;
+  return size;
+}

@@ -1,0 +1,10 @@
+{
+  if (this == o)   return true;
+  if (o instanceof EntityRef) {
+    if (!exists() && !((EntityRef)o).exists())     return true;
+  }
+  if (o instanceof PojoEntityRef) {
+    return id == ((PojoEntityRef)o).id;
+  }
+  return false;
+}

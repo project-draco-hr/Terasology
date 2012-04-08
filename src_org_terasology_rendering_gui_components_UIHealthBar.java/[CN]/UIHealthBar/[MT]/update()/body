@@ -1,8 +1,13 @@
 {
   if (Terasology.getInstance().getActiveWorldRenderer() == null)   return;
   super.update();
+  float healthRatio=0;
+  HealthComponent healthComp=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(HealthComponent.class);
+  if (healthComp != null) {
+    healthRatio=(float)healthComp.currentHealth / healthComp.maxHealth;
+  }
   for (int i=0; i < 10; i++) {
-    if (i < Terasology.getInstance().getActiveWorldRenderer().getPlayer().getHealthPercentage() * 10f)     _hearts[i].setVisible(true);
+    if (i < healthRatio * 10f)     _hearts[i].setVisible(true);
  else     _hearts[i].setVisible(false);
   }
 }

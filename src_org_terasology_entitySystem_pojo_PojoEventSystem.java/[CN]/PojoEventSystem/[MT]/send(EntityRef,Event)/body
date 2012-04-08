@@ -1,0 +1,16 @@
+{
+  Multimap<Class<? extends Component>,EventHandlerInfo> handlers=componentSpecificHandlers.get(event.getClass());
+  if (handlers == null)   return;
+  Set<EventHandlerInfo> processedHandlers=Sets.newHashSet();
+  for (  Class<? extends Component> compClass : handlers.keySet()) {
+    if (entity.hasComponent(compClass)) {
+      for (      EventHandlerInfo eventHandler : handlers.get(compClass)) {
+        if (eventHandler.isValidFor(entity)) {
+          if (processedHandlers.add(eventHandler)) {
+            eventHandler.invoke(entity,event);
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,11 +1,3 @@
 {
-  Mesh mesh=new Mesh();
-  mesh.vboVertexBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  mesh.vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  FloatBuffer vertices=createCombinedBuffer();
-  IntBuffer indices=createIndexBuffer();
-  mesh.vertexCount=indices.capacity();
-  VertexBufferObjectManager.getInstance().bufferVboData(mesh.vboVertexBuffer,vertices,GL15.GL_STATIC_DRAW);
-  VertexBufferObjectManager.getInstance().bufferVboElementData(mesh.vboIndexBuffer,indices,GL15.GL_STATIC_DRAW);
-  return mesh;
+  return Mesh.buildMesh(_vertices,_texCoord0,_texCoord1,_normals,_color,_indices);
 }

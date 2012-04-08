@@ -1,0 +1,18 @@
+{
+  CharacterMovementComponent charMoveComp=localPlayer.getEntity().getComponent(CharacterMovementComponent.class);
+  float bobOffset=calcBobbingOffset(charMoveComp.footstepDelta / charMoveComp.distanceBetweenFootsteps,(float)java.lang.Math.PI / 8f,0.05f,1f);
+  float handMovementAnimationOffset=localPlayer.getEntity().getComponent(LocalPlayerComponent.class).handAnimation;
+  int invSlotIndex=localPlayer.getEntity().getComponent(LocalPlayerComponent.class).selectedTool;
+  EntityRef heldItem=localPlayer.getEntity().getComponent(InventoryComponent.class).itemSlots.get(invSlotIndex);
+  ItemComponent heldItemComp=heldItem.getComponent(ItemComponent.class);
+  BlockItemComponent blockItem=heldItem.getComponent(BlockItemComponent.class);
+  if (blockItem != null) {
+    renderBlock(blockItem.blockFamily,bobOffset,handMovementAnimationOffset);
+  }
+ else   if (heldItemComp != null && heldItemComp.renderWithIcon) {
+    renderIcon(heldItemComp.icon,bobOffset,handMovementAnimationOffset);
+  }
+ else {
+    renderHand(bobOffset,handMovementAnimationOffset);
+  }
+}

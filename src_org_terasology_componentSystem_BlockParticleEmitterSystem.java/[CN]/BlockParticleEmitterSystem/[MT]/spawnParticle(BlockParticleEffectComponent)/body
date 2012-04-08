@@ -1,0 +1,10 @@
+{
+  Particle p=new Particle();
+  p.lifeRemaining=random.randomPosFloat() * (particleEffect.maxLifespan - particleEffect.maxLifespan) + particleEffect.minLifespan;
+  p.velocity.set(particleEffect.initialVelocityRange.x * random.randomFloat(),particleEffect.initialVelocityRange.y * random.randomFloat(),particleEffect.initialVelocityRange.z * random.randomFloat());
+  p.size=random.randomPosFloat() * (particleEffect.maxSize - particleEffect.minSize) + particleEffect.minSize;
+  p.position.set(particleEffect.spawnRange.x * random.randomFloat(),particleEffect.spawnRange.y * random.randomFloat(),particleEffect.spawnRange.z * random.randomFloat());
+  p.texOffset.set(random.randomPosFloat() * (Block.TEXTURE_OFFSET - TEX_SIZE),random.randomPosFloat() * (Block.TEXTURE_OFFSET - TEX_SIZE));
+  particleEffect.particles.add(p);
+  particleEffect.spawnCount--;
+}

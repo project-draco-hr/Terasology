@@ -1,0 +1,20 @@
+{
+  RayBlockIntersection.Intersection selectedBlock=calcSelectedBlock();
+  ItemComponent item=withItem.getComponent(ItemComponent.class);
+  if (selectedBlock != null) {
+    BlockPosition blockPos=selectedBlock.getBlockPosition();
+    byte currentBlockType=worldProvider.getBlock(blockPos.x,blockPos.y,blockPos.z);
+    Block block=BlockManager.getInstance().getBlock(currentBlockType);
+    int damage=1;
+    if (item != null) {
+      damage=item.baseDamage;
+      if (item.getPerBlockDamageBonus().containsKey(block.getBlockFamily().getTitle())) {
+        damage+=item.getPerBlockDamageBonus().get(block.getBlockFamily().getTitle());
+      }
+    }
+    if (block.isDestructible()) {
+      EntityRef blockEntity=blockEntityLookup.getOrCreateEntityAt(blockPos);
+      blockEntity.send(new DamageEvent(damage,player));
+    }
+  }
+}

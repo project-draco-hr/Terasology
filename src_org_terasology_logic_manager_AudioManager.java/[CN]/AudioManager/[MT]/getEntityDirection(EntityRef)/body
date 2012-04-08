@@ -1,0 +1,10 @@
+{
+  LocationComponent loc=entity.getComponent(LocationComponent.class);
+  if (loc != null) {
+    Quat4f rot=loc.getWorldRotation();
+    Vector3f dir=new Vector3f(0,0,-1);
+    QuaternionUtil.quatRotate(rot,dir,dir);
+    return dir;
+  }
+  return new Vector3f();
+}

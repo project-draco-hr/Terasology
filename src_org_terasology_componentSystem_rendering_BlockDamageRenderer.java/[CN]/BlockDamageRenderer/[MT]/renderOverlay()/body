@@ -1,0 +1,26 @@
+{
+  ShaderManager.getInstance().enableDefaultTextured();
+  TextureManager.getInstance().bindTexture("effects");
+  glEnable(GL11.GL_BLEND);
+  glBlendFunc(GL_DST_COLOR,GL_ZERO);
+  Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
+  for (  EntityRef entity : entityManager.iteratorEntities(HealthComponent.class,BlockComponent.class)) {
+    HealthComponent health=entity.getComponent(HealthComponent.class);
+    if (health.currentHealth == health.maxHealth)     continue;
+    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+    if (!worldProvider.isChunkAvailableAt(blockComp.getPosition()))     continue;
+    glPushMatrix();
+    glTranslated(blockComp.getPosition().x - cameraPosition.x,blockComp.getPosition().y - cameraPosition.y,blockComp.getPosition().z - cameraPosition.z);
+    float offset=java.lang.Math.round((1.0f - (float)health.currentHealth / health.maxHealth) * 10.0f) * 0.0625f;
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glTranslatef(offset,0f,0f);
+    glMatrixMode(GL_MODELVIEW);
+    overlayMesh.render();
+    glPopMatrix();
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+  }
+  glDisable(GL11.GL_BLEND);
+}

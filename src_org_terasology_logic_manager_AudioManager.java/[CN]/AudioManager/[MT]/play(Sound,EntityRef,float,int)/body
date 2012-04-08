@@ -1,0 +1,9 @@
+{
+  Vector3f pos=getEntityPosition(entity);
+  if (pos == null)   return null;
+  SoundSource source=source(sound,new Vector3d(pos),gain,priority);
+  if (source == null) {
+    return null;
+  }
+  return source.setVelocity(new Vector3d(getEntityVelocity(entity))).setDirection(new Vector3d(getEntityDirection(entity))).play();
+}

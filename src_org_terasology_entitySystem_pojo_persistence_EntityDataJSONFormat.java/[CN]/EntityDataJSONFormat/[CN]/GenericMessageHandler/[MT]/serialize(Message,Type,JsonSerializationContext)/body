@@ -1,0 +1,7 @@
+{
+  JsonObject result=new JsonObject();
+  for (  Map.Entry<Descriptors.FieldDescriptor,Object> field : src.getAllFields().entrySet()) {
+    result.add(field.getKey().getName(),context.serialize(field.getValue()));
+  }
+  return result;
+}

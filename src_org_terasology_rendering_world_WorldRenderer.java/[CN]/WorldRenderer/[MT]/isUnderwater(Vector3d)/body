@@ -1,0 +1,13 @@
+{
+  BlockPosition p=new BlockPosition(pos);
+  byte blockType=getWorldProvider().getBlockAtPosition(pos);
+  Block block=BlockManager.getInstance().getBlock(blockType);
+  if (block.isLiquid()) {
+    for (    AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
+      if (blockAABB.contains(pos)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}

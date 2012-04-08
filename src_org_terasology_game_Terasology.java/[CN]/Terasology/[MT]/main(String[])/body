@@ -1,7 +1,12 @@
 {
-  _instance.init();
-  _instance.run();
-  _instance.shutdown();
-  Config.getInstance().saveConfig("SAVED_WORLDS/last.cfg");
+  try {
+    _instance.init();
+    _instance.run();
+    _instance.shutdown();
+    Config.getInstance().saveConfig("SAVED_WORLDS/last.cfg");
+  }
+ catch (  Throwable t) {
+    _instance._logger.log(Level.SEVERE,"Uncaught Exception",t);
+  }
   System.exit(0);
 }

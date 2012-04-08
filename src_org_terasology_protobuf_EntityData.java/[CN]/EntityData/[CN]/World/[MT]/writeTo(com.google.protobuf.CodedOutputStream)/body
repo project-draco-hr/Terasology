@@ -1,0 +1,22 @@
+{
+  getSerializedSize();
+  com.google.protobuf.GeneratedMessage.ExtendableMessage<org.terasology.protobuf.EntityData.World>.ExtensionWriter extensionWriter=newExtensionWriter();
+  for (int i=0; i < entity_.size(); i++) {
+    output.writeMessage(1,entity_.get(i));
+  }
+  for (int i=0; i < componentClass_.size(); i++) {
+    output.writeBytes(15,componentClass_.getByteString(i));
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeSInt32(16,nextEntityId_);
+  }
+  if (getFreedEntityIdList().size() > 0) {
+    output.writeRawVarint32(138);
+    output.writeRawVarint32(freedEntityIdMemoizedSerializedSize);
+  }
+  for (int i=0; i < freedEntityId_.size(); i++) {
+    output.writeSInt32NoTag(freedEntityId_.get(i));
+  }
+  extensionWriter.writeUntil(2000,output);
+  getUnknownFields().writeTo(output);
+}

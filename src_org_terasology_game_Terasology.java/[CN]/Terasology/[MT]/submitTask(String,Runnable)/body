@@ -6,7 +6,10 @@
       try {
         task.run();
       }
-  finally {
+ catch (      RejectedExecutionException e) {
+        _logger.log(Level.SEVERE,"Thread submitted after shutdown requested: " + name);
+      }
+ finally {
         PerformanceMonitor.endThread(name);
       }
     }

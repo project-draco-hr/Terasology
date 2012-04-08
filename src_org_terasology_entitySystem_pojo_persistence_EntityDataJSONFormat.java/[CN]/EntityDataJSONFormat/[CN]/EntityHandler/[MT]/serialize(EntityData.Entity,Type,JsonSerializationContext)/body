@@ -1,0 +1,8 @@
+{
+  JsonObject result=new JsonObject();
+  result.addProperty("id",src.getId());
+  for (  EntityData.Component component : src.getComponentList()) {
+    result.add(component.getType(),context.serialize(component));
+  }
+  return result;
+}

@@ -1,0 +1,29 @@
+{
+  if (inventorySlotBindMap.containsKey(key)) {
+    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+    localPlayerComp.selectedTool=inventorySlotBindMap.get(key);
+    localPlayer.getEntity().saveComponent(localPlayerComp);
+    return;
+  }
+switch (key) {
+case Keyboard.KEY_K:
+    if (!repeatEvent && state) {
+      localPlayer.getEntity().send(new DamageEvent(9999,null));
+    }
+  break;
+case Keyboard.KEY_E:
+if (!repeatEvent && state) {
+  processFrob();
+}
+break;
+case Keyboard.KEY_SPACE:
+if (!repeatEvent && state) {
+jump=true;
+if (Terasology.getInstance().getTimeInMs() - lastTimeSpacePressed < 200) {
+toggleGodMode=true;
+}
+lastTimeSpacePressed=Terasology.getInstance().getTimeInMs();
+}
+break;
+}
+}

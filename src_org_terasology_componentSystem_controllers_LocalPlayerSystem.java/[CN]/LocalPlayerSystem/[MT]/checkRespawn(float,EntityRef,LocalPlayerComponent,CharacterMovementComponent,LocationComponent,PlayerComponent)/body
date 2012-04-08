@@ -1,0 +1,16 @@
+{
+  localPlayerComponent.respawnWait-=deltaSeconds;
+  if (localPlayerComponent.respawnWait > 0) {
+    characterMovementComponent.getDrive().set(0,0,0);
+    characterMovementComponent.jump=false;
+    return false;
+  }
+  localPlayerComponent.isDead=false;
+  HealthComponent health=entity.getComponent(HealthComponent.class);
+  if (health != null) {
+    health.currentHealth=health.maxHealth;
+    entity.saveComponent(health);
+  }
+  location.setWorldPosition(playerComponent.spawnPosition);
+  return true;
+}
