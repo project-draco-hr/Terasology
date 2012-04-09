@@ -1,0 +1,18 @@
+{
+  final EntityData.World.Builder world=EntityData.World.newBuilder();
+  world.setNextEntityId(entityManager.getNextId());
+  entityManager.getFreedIds().forEach(new TIntProcedure(){
+    public boolean execute(    int i){
+      world.addFreedEntityId(i);
+      return true;
+    }
+  }
+);
+  for (  Prefab prefab : prefabManager.listPrefabs()) {
+    world.addPrefab(serializePrefab(prefab));
+  }
+  for (  EntityRef entity : entityManager.iteratorEntities()) {
+    world.addEntity(serializeEntity(entity));
+  }
+  return world.build();
+}

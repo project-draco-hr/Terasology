@@ -3,8 +3,8 @@
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create(prefab);
   entity.removeComponent(StringComponent.class);
-  EntityData.Entity entityData=entityPersister.serializeEntity(1,entity);
-  assertEquals(1,entityData.getId());
+  EntityData.Entity entityData=entityPersister.serializeEntity(entity);
+  assertEquals(entity.getId(),entityData.getId());
   assertEquals(prefab.getName(),entityData.getParentPrefab());
   assertEquals(0,entityData.getComponentCount());
   assertEquals(Lists.newArrayList("String"),entityData.getRemovedComponentList());

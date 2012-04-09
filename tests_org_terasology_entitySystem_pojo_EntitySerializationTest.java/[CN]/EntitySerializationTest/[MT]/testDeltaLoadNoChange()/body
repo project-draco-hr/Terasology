@@ -2,7 +2,7 @@
   Prefab prefab=prefabManager.createPrefab("Test");
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create("Test");
-  EntityData.Entity entityData=entityPersister.serializeEntity(1,entity);
+  EntityData.Entity entityData=entityPersister.serializeEntity(entity);
   EntityRef loadedEntity=entityPersister.deserializeEntity(entityData);
   assertTrue(loadedEntity.exists());
   assertTrue(loadedEntity.hasComponent(StringComponent.class));

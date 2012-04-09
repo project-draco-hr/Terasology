@@ -1,12 +1,12 @@
 {
-  SerializationInfo serializationInfo=componentSerializationLookup.get(component.getClass());
-  if (serializationInfo == null) {
+  ComponentMetadata componentMetadata=componentSerializationLookup.get(component.getClass());
+  if (componentMetadata == null) {
     logger.log(Level.SEVERE,"Unregistered component type: " + component.getClass());
     registerComponentClass(component.getClass());
-    serializationInfo=componentSerializationLookup.get(component.getClass());
+    componentMetadata=componentSerializationLookup.get(component.getClass());
   }
-  if (serializationInfo != null) {
-    return serializationInfo.serialize(component);
+  if (componentMetadata != null) {
+    return componentMetadata.serialize(component);
   }
   return null;
 }

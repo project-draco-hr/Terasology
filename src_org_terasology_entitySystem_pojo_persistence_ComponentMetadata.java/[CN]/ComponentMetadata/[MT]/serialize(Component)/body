@@ -1,0 +1,21 @@
+{
+  EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
+  componentMessage.setType(component.getName());
+  for (  FieldMetadata field : fields.values()) {
+    try {
+      Object rawValue=null;
+      rawValue=field.getValue(component);
+      if (rawValue == null)       continue;
+      EntityData.Value value=field.getSerializationHandler().serialize(rawValue);
+      if (value == null)       continue;
+      componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
+    }
+ catch (    IllegalAccessException e) {
+      logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+    }
+catch (    InvocationTargetException e) {
+      logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+    }
+  }
+  return componentMessage.build();
+}

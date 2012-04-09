@@ -2,7 +2,7 @@
   try {
     T result=clazz.newInstance();
     for (    EntityData.NameValue entry : value.getNameValueList()) {
-      FieldInfo fieldInfo=fields.get(entry.getName().toLowerCase(Locale.ENGLISH));
+      FieldMetadata fieldInfo=fields.get(entry.getName().toLowerCase(Locale.ENGLISH));
       if (fieldInfo != null) {
         Object content=fieldInfo.getSerializationHandler().deserialize(entry.getValue());
         if (content != null) {

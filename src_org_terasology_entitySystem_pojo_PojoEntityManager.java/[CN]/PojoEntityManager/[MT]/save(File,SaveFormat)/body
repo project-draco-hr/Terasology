@@ -1,5 +1,5 @@
 {
-  final EntityData.World.Builder world=serializeWorld();
+  final EntityData.World world=entityPersister.serializeWorld();
   File parentFile=file.getParentFile();
   if (parentFile != null) {
     parentFile.mkdirs();
@@ -9,15 +9,15 @@
   try {
 switch (format) {
 case Binary:
-      world.build().writeTo(out);
+      world.writeTo(out);
     out.flush();
   break;
 case Text:
-TextFormat.print(world.build(),bufferedWriter);
+TextFormat.print(world,bufferedWriter);
 bufferedWriter.flush();
 break;
 case JSON:
-EntityDataJSONFormat.write(bufferedWriter,world.build());
+EntityDataJSONFormat.write(bufferedWriter,world);
 bufferedWriter.flush();
 break;
 }

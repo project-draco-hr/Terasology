@@ -1,8 +1,8 @@
 {
   Class<? extends Component> componentClass=componentTypeLookup.get(componentData.getType().toLowerCase(Locale.ENGLISH));
   if (componentClass != null) {
-    SerializationInfo serializationInfo=componentSerializationLookup.get(componentClass);
-    return serializationInfo.deserialize(componentData);
+    ComponentMetadata componentMetadata=componentSerializationLookup.get(componentClass);
+    return componentMetadata.deserialize(componentData);
   }
  else {
     logger.log(Level.WARNING,"Unable to deserialise unknown component type: " + componentData.getType());

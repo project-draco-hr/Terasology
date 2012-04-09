@@ -1,6 +1,6 @@
 {
-  SerializationInfo info=new SerializationInfo(GetterSetterComponent.class);
-  info.addField(new FieldInfo(GetterSetterComponent.class.getDeclaredField("value"),GetterSetterComponent.class,new Vector3fTypeHandler()));
+  ComponentMetadata info=new ComponentMetadata(GetterSetterComponent.class);
+  info.addField(new FieldMetadata(GetterSetterComponent.class.getDeclaredField("value"),GetterSetterComponent.class,new Vector3fTypeHandler()));
   GetterSetterComponent comp=new GetterSetterComponent();
   GetterSetterComponent newComp=(GetterSetterComponent)info.deserialize(info.serialize(comp));
   assertTrue(comp.getterUsed);

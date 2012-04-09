@@ -6,7 +6,7 @@
     logger.log(Level.SEVERE,String.format("Unable to register component class %s: Default Constructor Required",componentClass.getSimpleName()));
     return;
   }
-  SerializationInfo info=new SerializationInfo(componentClass);
+  ComponentMetadata info=new ComponentMetadata(componentClass);
   for (  Field field : componentClass.getDeclaredFields()) {
     if (Modifier.isTransient(field.getModifiers()))     continue;
     field.setAccessible(true);
@@ -15,7 +15,7 @@
       logger.log(Level.SEVERE,"Unsupported field type in component type " + componentClass.getSimpleName() + ", "+ field.getName()+ " : "+ field.getGenericType());
     }
  else {
-      info.addField(new FieldInfo(field,componentClass,typeHandler));
+      info.addField(new FieldMetadata(field,componentClass,typeHandler));
     }
   }
   componentSerializationLookup.put(componentClass,info);
