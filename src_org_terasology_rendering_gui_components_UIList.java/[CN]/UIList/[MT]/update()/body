@@ -1,6 +1,9 @@
 {
   Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
   if (intersects(mousePos)) {
+    if (_scrollBarVertical.intersects(mousePos) || _scrollBarHorizontal.intersects(mousePos)) {
+      return;
+    }
     boolean itemClicked=false;
     for (int i=(_items.size() - 1); i >= 0; i--) {
       UIListItem item=_items.get(i);
@@ -8,6 +11,7 @@
         if (item.intersects(mousePos)) {
           if (_mouseDown) {
             if (item.isSelected()) {
+              doubleClick();
               break;
             }
             if (_selectedItemIndex >= 0) {
@@ -27,6 +31,7 @@
     }
   }
  else {
+    _wheelMoved=0;
     _mouseUp=false;
     _mouseDown=false;
   }

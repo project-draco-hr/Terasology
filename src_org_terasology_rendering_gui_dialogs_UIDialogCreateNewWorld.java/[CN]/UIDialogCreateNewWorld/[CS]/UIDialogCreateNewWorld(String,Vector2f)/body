@@ -25,11 +25,15 @@
       if (_inputSeed.getValue().length() > 0) {
         Config.getInstance().setDefaultSeed(_inputSeed.getValue());
       }
+ else {
+        FastRandom random=new FastRandom();
+        Config.getInstance().setDefaultSeed(random.randomCharacterString(32));
+      }
       if (_inputWorldTitle.getValue().length() > 0) {
         Config.getInstance().setWorldTitle(_inputWorldTitle.getValue());
       }
  else {
-        Config.getInstance().setWorldTitle("World1");
+        Config.getInstance().setWorldTitle(getWorldName());
       }
       Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
     }
@@ -41,7 +45,7 @@
   _cancelButton.setVisible(true);
   _cancelButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      setVisible(false);
+      close(true);
     }
   }
 );

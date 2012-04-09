@@ -5,9 +5,15 @@
   _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,256f));
   _window.center();
   _window.setModal(true);
-  GUIManager.getInstance().addWindow(_window,"generate_world ");
+  GUIManager.getInstance().addWindow(_window,"generate_world");
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
+  _list.addDoubleClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      loadSelectedWorld();
+    }
+  }
+);
   ConfigObject config=null;
   String path=Terasology.getInstance().getWorldSavePath("");
   File worldCatalog=new File(path);
@@ -47,26 +53,32 @@
   _deleteFromList.setVisible(true);
   _createNewWorld.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      _window.show();
+      GUIManager.getInstance().setFocusedWindow(_window);
     }
   }
 );
   _deleteFromList.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
-      String path=Terasology.getInstance().getWorldSavePath((String)config.get("worldTitle"));
-      File world=new File(path);
-      WorldUtil.deleteWorld(world);
-      _list.removeSelectedItem();
+      if (_list.getSelectedItem() == null) {
+        GUIManager.getInstance().showMessage("Deleting error","Please choose the world.");
+        return;
+      }
+      try {
+        ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
+        String path=Terasology.getInstance().getWorldSavePath((String)config.get("worldTitle"));
+        File world=new File(path);
+        WorldUtil.deleteWorld(world);
+        _list.removeSelectedItem();
+      }
+ catch (      Exception e) {
+        GUIManager.getInstance().showMessage("Deleting error","Failed deleting world data object. Sorry.");
+      }
     }
   }
 );
   _loadFromList.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
-      Config.getInstance().setDefaultSeed((String)config.get("worldSeed"));
-      Config.getInstance().setWorldTitle((String)config.get("worldTitle"));
-      Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
+      loadSelectedWorld();
     }
   }
 );
@@ -77,5 +89,4 @@
   addDisplayElement(_createNewWorld,"createWorldButton");
   addDisplayElement(_deleteFromList,"deleteFromListButton");
   update();
-  GUIManager.getInstance().showMessage("Test","Yes! It\'s works!! ");
 }
