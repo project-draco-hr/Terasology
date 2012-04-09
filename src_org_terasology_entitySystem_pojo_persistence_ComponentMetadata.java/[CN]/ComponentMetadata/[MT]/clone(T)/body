@@ -1,0 +1,19 @@
+{
+  try {
+    T result=clazz.newInstance();
+    for (    FieldMetadata field : fields.values()) {
+      field.setValue(result,field.getSerializationHandler().copy(field.getValue(component)));
+    }
+    return result;
+  }
+ catch (  InstantiationException e) {
+    logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+  }
+catch (  IllegalAccessException e) {
+    logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+  }
+catch (  InvocationTargetException e) {
+    logger.log(Level.SEVERE,"Exception during serializing component type: " + clazz,e);
+  }
+  return null;
+}
