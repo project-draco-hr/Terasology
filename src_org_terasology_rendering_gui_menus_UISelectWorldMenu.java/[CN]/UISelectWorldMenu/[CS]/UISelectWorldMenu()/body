@@ -1,0 +1,68 @@
+{
+  maximaze();
+  _overlay=new UIImageOverlay("menuBackground");
+  _overlay.setVisible(true);
+  _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,256f));
+  _window.center();
+  _window.setModal(true);
+  GUIManager.getInstance().addWindow(_window,"generate_world");
+  _list=new UIList(new Vector2f(512f,256f));
+  _list.setVisible(true);
+  _list.addDoubleClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      loadSelectedWorld();
+    }
+  }
+);
+  _goToBack=new UIButton(new Vector2f(256f,32f));
+  _goToBack.getLabel().setText("Go to back");
+  _goToBack.setVisible(true);
+  _loadFromList=new UIButton(new Vector2f(128f,32f));
+  _loadFromList.getLabel().setText("Load");
+  _loadFromList.setVisible(true);
+  _createNewWorld=new UIButton(new Vector2f(192f,32f));
+  _createNewWorld.getLabel().setText("Create new world");
+  _createNewWorld.setVisible(true);
+  _deleteFromList=new UIButton(new Vector2f(128f,32f));
+  _deleteFromList.getLabel().setText("Delete");
+  _deleteFromList.setVisible(true);
+  _createNewWorld.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      GUIManager.getInstance().setFocusedWindow(_window);
+    }
+  }
+);
+  _deleteFromList.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      if (_list.getSelectedItem() == null) {
+        GUIManager.getInstance().showMessage("Deleting error","Please choose the world.");
+        return;
+      }
+      try {
+        ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
+        String path=Terasology.getInstance().getWorldSavePath((String)config.get("worldTitle"));
+        File world=new File(path);
+        WorldUtil.deleteWorld(world);
+        _list.removeSelectedItem();
+      }
+ catch (      Exception e) {
+        GUIManager.getInstance().showMessage("Deleting error","Failed deleting world data object. Sorry.");
+      }
+    }
+  }
+);
+  _loadFromList.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      loadSelectedWorld();
+    }
+  }
+);
+  fillList();
+  addDisplayElement(_overlay);
+  addDisplayElement(_list,"list");
+  addDisplayElement(_loadFromList,"loadFromListButton");
+  addDisplayElement(_goToBack,"goToBackButton");
+  addDisplayElement(_createNewWorld,"createWorldButton");
+  addDisplayElement(_deleteFromList,"deleteFromListButton");
+  update();
+}

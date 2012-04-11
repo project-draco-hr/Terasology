@@ -1,0 +1,30 @@
+{
+  updateThumb();
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  if (intersects(mousePos)) {
+    if (_mouseDown) {
+      _scrolled=true;
+      if (_prevMousePos == -1) {
+        if (_scrollType == ScrollType.vertical) {
+          _prevMousePos=mousePos.y;
+        }
+ else {
+          _prevMousePos=mousePos.x;
+        }
+      }
+    }
+  }
+  if (_scrolled) {
+    scrolled(calculateScrollFromMouse(_scrollType == ScrollType.vertical ? mousePos.y : mousePos.x));
+  }
+  if (_wheelMoved != 0 && _wheelled) {
+    scrolled(calculateScrollFromWheel(((-1) * _wheelMoved / 120) / _step));
+  }
+  if (!_mouseDown || !_scrolled || _mouseUp) {
+    _scrolled=false;
+    _mouseDown=false;
+    _prevMousePos=-1;
+    _mouseUp=false;
+  }
+  super.update();
+}

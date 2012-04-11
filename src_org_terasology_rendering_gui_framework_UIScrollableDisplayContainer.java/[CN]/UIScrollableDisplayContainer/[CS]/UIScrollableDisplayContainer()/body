@@ -1,0 +1,37 @@
+{
+  super();
+  _scrollBarVertical=new UIScrollBar(getSize(),UIScrollBar.ScrollType.vertical);
+  _scrollBarHorizontal=new UIScrollBar(getSize(),UIScrollBar.ScrollType.horizontal);
+  _scrollBarVertical.setVisible(true);
+  _scrollBarHorizontal.setVisible(true);
+  _scrollBarVertical.setCroped(false);
+  _scrollBarHorizontal.setCroped(false);
+  addDisplayElement(_scrollBarVertical);
+  addDisplayElement(_scrollBarHorizontal);
+  _scrollBarVertical.addScrollListener(new IScrollListener(){
+    public void scrolled(    UIDisplayElement element){
+      float shift=(_scrollBarVertical.getValue() - _oldVertivalValue);
+      _scrollShiftVertical+=shift;
+      for (      UIDisplayElement displayElement : getDisplayElements()) {
+        if (!displayElement.isFixed()) {
+          displayElement.getPosition().y-=shift;
+        }
+      }
+      _oldVertivalValue=_scrollBarVertical.getValue();
+    }
+  }
+);
+  _scrollBarHorizontal.addScrollListener(new IScrollListener(){
+    public void scrolled(    UIDisplayElement element){
+      float shift=(_scrollBarHorizontal.getValue() - _oldHorizontalValue);
+      _scrollShiftHorizontal+=shift;
+      for (      UIDisplayElement displayElement : getDisplayElements()) {
+        if (!displayElement.isFixed()) {
+          displayElement.getPosition().x-=shift;
+        }
+      }
+      _oldHorizontalValue=_scrollBarHorizontal.getValue();
+    }
+  }
+);
+}

@@ -1,0 +1,22 @@
+{
+  if (_selectedItemIndex < 0) {
+    return;
+  }
+  removeDisplayElement(_items.get(_selectedItemIndex));
+  _items.remove(_selectedItemIndex);
+  for (int i=_selectedItemIndex; i < _items.size(); i++) {
+    _items.get(i).getPosition().y-=32f;
+  }
+  if (_selectedItemIndex > _items.size() - 1) {
+    if (_items.size() - 1 >= 0) {
+      _selectedItemIndex=_items.size() - 1;
+      _items.get(_selectedItemIndex).setSelected(true);
+    }
+ else {
+      _selectedItemIndex=-1;
+    }
+  }
+  if (_selectedItemIndex >= 0) {
+    _items.get(_selectedItemIndex).setSelected(true);
+  }
+}

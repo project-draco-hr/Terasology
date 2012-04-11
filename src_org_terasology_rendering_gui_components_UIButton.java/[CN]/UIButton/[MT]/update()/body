@@ -1,5 +1,4 @@
 {
-  _defaultTexture.setSize(getSize());
   Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
   if (intersects(mousePos)) {
     if (!_clickSoundPlayed) {
@@ -11,17 +10,17 @@
       clicked();
     }
     if (_mouseDown) {
-      _defaultTexture.getTextureOrigin().set(0f,60f / 512f);
+      setClassStyle("button-mouseclick");
     }
  else {
-      _defaultTexture.getTextureOrigin().set(0f,30f / 512f);
+      setClassStyle("button-mouseover");
     }
   }
  else {
     _clickSoundPlayed=false;
     _mouseUp=false;
     _mouseDown=false;
-    _defaultTexture.getTextureOrigin().set(0f,0f);
+    setClassStyle("button");
   }
   _label.setPosition(new Vector2f(getSize().x / 2 - getLabel().getTextWidth() / 2,getSize().y / 2 - getLabel().getTextHeight() / 2));
 }

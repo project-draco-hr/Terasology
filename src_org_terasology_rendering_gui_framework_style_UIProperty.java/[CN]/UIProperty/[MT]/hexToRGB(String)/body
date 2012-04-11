@@ -1,0 +1,9 @@
+{
+  try {
+    return new Vector4f((float)Integer.parseInt(checkHex(hexColor).substring(0,2),16) / 255f,(float)Integer.parseInt(checkHex(hexColor).substring(2,4),16) / 255f,(float)Integer.parseInt(checkHex(hexColor).substring(4,6),16) / 255f,1.0f);
+  }
+ catch (  NumberFormatException e) {
+    Terasology.getInstance().getLogger().log(Level.WARNING,"Bad Hex color value - " + hexColor);
+    return new Vector4f();
+  }
+}
