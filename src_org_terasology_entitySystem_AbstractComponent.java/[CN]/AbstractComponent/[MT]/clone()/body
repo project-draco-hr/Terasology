@@ -4,7 +4,6 @@
     for (    Field field : getClass().getDeclaredFields()) {
       Class fieldClass=field.getType();
       if (!Cloneable.class.isAssignableFrom(fieldClass)) {
-        logger.log(Level.SEVERE,"Failed to clone component field: " + fieldClass);
         continue;
       }
       field.setAccessible(true);
