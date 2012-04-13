@@ -1,0 +1,37 @@
+{
+  String[] subProperty=property.split("-");
+  String[] values=value.split(" ");
+  if (values.length < 3) {
+    Terasology.getInstance().getLogger().log(Level.WARNING,"Bad value in border-corner-" + subProperty[1] + ": "+ value);
+    return;
+  }
+ else {
+    String cornerType=subProperty[2];
+    if (_images.size() < 4 || _width.size() < 4) {
+      Terasology.getInstance().getLogger().log(Level.WARNING,"You must initialize all border image first!");
+      return;
+    }
+    String textureName=values[0];
+    Vector2f texturePosition=new Vector2f(parseFloat(values[1]),parseFloat(values[2]));
+    Vector2f textureSize=new Vector2f();
+    if (cornerType.equals("topleft")) {
+      textureSize=new Vector2f(_images.get("left").getTextureSize().x,_images.get("top").getTextureSize().y);
+    }
+ else     if (cornerType.equals("topright")) {
+      textureSize=new Vector2f(_images.get("right").getTextureSize().x,_images.get("top").getTextureSize().y);
+    }
+ else     if (cornerType.equals("bottomright")) {
+      textureSize=new Vector2f(_images.get("right").getTextureSize().x,_images.get("bottom").getTextureSize().y);
+    }
+ else     if (cornerType.equals("bottomleft")) {
+      textureSize=new Vector2f(_images.get("left").getTextureSize().x,_images.get("bottom").getTextureSize().y);
+    }
+    _corners.put(cornerType,new UIGraphicsElement(textureName));
+    _corners.get(cornerType).setVisible(true);
+    _corners.get(cornerType).setCroped(false);
+    setCornerPosition(cornerType);
+    _corners.get(cornerType).getTextureSize().set(textureSize);
+    _corners.get(cornerType).getTextureOrigin().set(texturePosition.x,texturePosition.y);
+    _showCorners=true;
+  }
+}

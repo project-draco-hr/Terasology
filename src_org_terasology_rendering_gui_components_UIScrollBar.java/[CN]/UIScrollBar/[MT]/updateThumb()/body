@@ -1,0 +1,11 @@
+{
+  float newScrollSize=_containerLength * _step;
+  if (newScrollSize != _scrolBarThumb.getThumbSize()) {
+    _scrolBarThumb.resize(newScrollSize);
+  }
+  if ((_scrolBarThumb.getThumbPosition() + _scrolBarThumb.getThumbSize() > _max)) {
+    _prevMousePos=_scrolBarThumb.getThumbPosition();
+    scrolled((_scrolBarThumb.getThumbPosition() + _scrolBarThumb.getThumbSize()) - _max);
+  }
+  calculateValue();
+}

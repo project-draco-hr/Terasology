@@ -1,0 +1,12 @@
+{
+  if (_lastFocused == null || _lastFocused.equals(_focusedWindow)) {
+    return;
+  }
+  if (_focusedWindow.isMaximized() && _lastFocused.isMaximized()) {
+    _focusedWindow.setVisible(false);
+  }
+  _focusedWindow=_lastFocused;
+  if (!_focusedWindow.isVisible()) {
+    _focusedWindow.setVisible(true);
+  }
+}

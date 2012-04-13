@@ -1,22 +1,25 @@
 {
   _mainMenu=new UIMainMenu();
   _mainMenu.setVisible(true);
-  _mainMenu.getStartButton().addClickListener(new IClickListener(){
+  UIButton singlePlayerButton=(UIButton)_mainMenu.getElementById("singlePlayerButton");
+  UIButton configButton=(UIButton)_mainMenu.getElementById("configButton");
+  UIButton exitButton=(UIButton)_mainMenu.getElementById("exitButton");
+  singlePlayerButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
+      _selectWorldMenu.fillList();
+      GUIManager.getInstance().setFocusedWindow(_selectWorldMenu);
     }
   }
 );
-  _mainMenu.getExitButton().addClickListener(new IClickListener(){
+  exitButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       Terasology.getInstance().exit();
     }
   }
 );
-  _mainMenu.getConfigButton().addClickListener(new IClickListener(){
+  configButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      _mainMenu.setVisible(false);
-      _configMenu.setVisible(true);
+      GUIManager.getInstance().setFocusedWindow(_configMenu);
     }
   }
 );

@@ -1,0 +1,19 @@
+{
+  if (_list.size() < 1) {
+    GUIManager.getInstance().showMessage("Loading error","You haven't worlds. Please create new.");
+    return;
+  }
+  if (_list.getSelectedItem() == null) {
+    GUIManager.getInstance().showMessage("Loading error","Please choose the world.");
+    return;
+  }
+  try {
+    ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
+    Config.getInstance().setDefaultSeed((String)config.get("worldSeed"));
+    Config.getInstance().setWorldTitle((String)config.get("worldTitle"));
+    Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
+  }
+ catch (  Exception e) {
+    GUIManager.getInstance().showMessage("Loading error","Failed reading world data object. Sorry.");
+  }
+}
