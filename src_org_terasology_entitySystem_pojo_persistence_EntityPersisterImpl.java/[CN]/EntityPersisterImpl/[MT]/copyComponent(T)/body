@@ -1,0 +1,10 @@
+{
+  @SuppressWarnings("unchecked") ComponentMetadata<T> componentMetadata=(ComponentMetadata<T>)componentSerializationLookup.get(component.getClass());
+  if (componentMetadata == null) {
+    logger.log(Level.SEVERE,"Unable to clone component: " + component.getClass() + ", not registered");
+  }
+ else {
+    return componentMetadata.clone(component);
+  }
+  return null;
+}

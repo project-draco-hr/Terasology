@@ -5,14 +5,5 @@
       return serializeEntityDelta(entityRef,prefabManager.getPrefab(entityInfo.parentPrefab));
     }
   }
-  EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
-  entity.setId(entityRef.getId());
-  for (  Component component : entityRef.iterateComponents()) {
-    if (component.getClass().equals(EntityInfoComponent.class))     continue;
-    EntityData.Component componentData=serializeComponent(component);
-    if (componentData != null) {
-      entity.addComponent(componentData);
-    }
-  }
-  return entity.build();
+  return serializeEntityFull(entityRef);
 }

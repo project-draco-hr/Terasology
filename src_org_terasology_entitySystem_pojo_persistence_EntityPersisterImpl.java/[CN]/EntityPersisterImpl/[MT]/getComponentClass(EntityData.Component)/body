@@ -1,0 +1,19 @@
+{
+  Class<? extends Component> result=null;
+  if (componentData.hasTypeIndex()) {
+    result=componentIdTable.get(componentData.getTypeIndex());
+    if (result == null) {
+      logger.log(Level.WARNING,"Unable to deserialise unknown component with id: " + componentData.getTypeIndex());
+    }
+    return result;
+  }
+ else   if (componentData.hasType()) {
+    result=componentTypeLookup.get(componentData.getType().toLowerCase(Locale.ENGLISH));
+    if (result == null) {
+      logger.log(Level.WARNING,"Unable to deserialise unknown component type: " + componentData.getType());
+    }
+    return result;
+  }
+  logger.log(Level.WARNING,"Unable to deserialise component, no type provided.");
+  return result;
+}

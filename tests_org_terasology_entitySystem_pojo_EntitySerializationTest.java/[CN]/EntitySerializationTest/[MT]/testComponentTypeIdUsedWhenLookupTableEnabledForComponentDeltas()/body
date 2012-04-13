@@ -1,0 +1,12 @@
+{
+  entityPersister.setUsingLookupTables(true);
+  Map<Integer,Class<? extends Component>> componentIdTable=Maps.newHashMap();
+  componentIdTable.put(413,StringComponent.class);
+  entityPersister.setComponentTypeIdTable(componentIdTable);
+  Prefab prefab=prefabManager.createPrefab("Test");
+  prefab.setComponent(new StringComponent("Value"));
+  EntityRef entity=entityManager.create(prefab);
+  entity.getComponent(StringComponent.class).value="New";
+  EntityData.Entity entityData=entityPersister.serializeEntity(entity);
+  assertEquals(413,entityData.getComponent(0).getTypeIndex());
+}

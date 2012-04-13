@@ -1,10 +1,14 @@
 {
-  Class typeClass=null;
+  Class typeClass;
   if (type instanceof Class) {
     typeClass=(Class)type;
   }
  else   if (type instanceof ParameterizedType) {
     typeClass=(Class)((ParameterizedType)type).getRawType();
+  }
+ else {
+    logger.log(Level.SEVERE,"Cannot obtain class for type " + type);
+    return null;
   }
   if (Enum.class.isAssignableFrom(typeClass)) {
     return new EnumTypeHandler(typeClass);

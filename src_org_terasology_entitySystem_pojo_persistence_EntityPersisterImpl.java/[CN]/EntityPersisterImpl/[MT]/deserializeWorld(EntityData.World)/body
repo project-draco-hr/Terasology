@@ -8,6 +8,12 @@
       deserializePrefab(prefabData);
     }
   }
+  for (int index=0; index < world.getComponentClassCount(); ++index) {
+    Class<? extends Component> componentClass=componentTypeLookup.get(world.getComponentClass(index));
+    if (componentClass != null) {
+      componentIdTable.put(index,componentClass);
+    }
+  }
   for (  EntityData.Entity entityData : world.getEntityList()) {
     entityRefTypeHandler.getValidIds().add(entityData.getId());
   }

@@ -1,13 +1,9 @@
 {
   final EntityData.World.Builder world=EntityData.World.newBuilder();
-  world.setNextEntityId(entityManager.getNextId());
-  entityManager.getFreedIds().forEach(new TIntProcedure(){
-    public boolean execute(    int i){
-      world.addFreedEntityId(i);
-      return true;
-    }
+  writeIdInfo(world);
+  if (isUsingLookupTables()) {
+    writeComponentTypeTable(world);
   }
-);
   for (  Prefab prefab : prefabManager.listPrefabs()) {
     world.addPrefab(serializePrefab(prefab));
   }

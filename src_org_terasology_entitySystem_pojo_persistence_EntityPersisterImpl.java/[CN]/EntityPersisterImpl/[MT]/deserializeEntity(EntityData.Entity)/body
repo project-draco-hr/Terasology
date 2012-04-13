@@ -10,11 +10,8 @@
     }
   }
   for (  EntityData.Component componentData : entityData.getComponentList()) {
-    Class<? extends Component> componentClass=componentTypeLookup.get(componentData.getType().toLowerCase(Locale.ENGLISH));
-    if (componentClass == null) {
-      logger.log(Level.WARNING,"Unable to deserialise unknown component type: " + componentData.getType());
-      continue;
-    }
+    Class<? extends Component> componentClass=getComponentClass(componentData);
+    if (componentClass == null)     continue;
     if (!entity.hasComponent(componentClass)) {
       entity.addComponent(deserializeComponent(componentData));
     }

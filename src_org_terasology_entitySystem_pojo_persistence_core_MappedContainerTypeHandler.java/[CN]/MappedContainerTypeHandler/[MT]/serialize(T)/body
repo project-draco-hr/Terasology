@@ -5,7 +5,7 @@
     for (    FieldMetadata fieldInfo : fields.values()) {
       Object rawValue=fieldInfo.getValue(value);
       if (rawValue == null)       continue;
-      EntityData.Value fieldValue=fieldInfo.getSerializationHandler().serialize(rawValue);
+      EntityData.Value fieldValue=fieldInfo.serialize(rawValue);
       if (fieldValue != null) {
         result.addNameValue(EntityData.NameValue.newBuilder().setName(fieldInfo.getName()).setValue(fieldValue).build());
       }
