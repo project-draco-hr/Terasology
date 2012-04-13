@@ -1,0 +1,26 @@
+{
+  String[] properties=property.split("-");
+  if (properties.length > 1) {
+    if (properties[1].equals("color")) {
+      String[] values=value.split(" ");
+      _color=hexToRGB(values[0]);
+      _color.w=parseFloat(values[1]);
+      setVisible(true);
+    }
+ else     if (properties[1].equals("image")) {
+      parseBackgroundImage(value);
+      setVisible(true);
+    }
+ else     if (properties[1].equals("position")) {
+      parsePosition(value);
+    }
+  }
+ else {
+    if (value.equals("none")) {
+      setVisible(false);
+      if (_image != null) {
+        _image.setVisible(false);
+      }
+    }
+  }
+}
