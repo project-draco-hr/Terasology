@@ -35,21 +35,11 @@
  else   if (src.getStringCount() == 1) {
     return context.serialize(src.getString(0));
   }
- else   if (src.getValueCount() > 1) {
+ else   if (src.getValueCount() > 0) {
     return context.serialize(src.getValueList());
   }
- else   if (src.getValueCount() == 1) {
-    return context.serialize(src.getValue(0));
-  }
- else   if (src.getByteCount() > 1) {
-    JsonArray array=new JsonArray();
-    for (    ByteString bytes : src.getByteList()) {
-      array.add(context.serialize(bytes.toByteArray()));
-    }
-    return array;
-  }
- else   if (src.getByteCount() == 1) {
-    return context.serialize(src.getByte(0).toByteArray());
+ else   if (src.hasBytes()) {
+    return context.serialize(src.getBytes().toByteArray());
   }
  else   if (src.getNameValueCount() > 0) {
     JsonObject obj=new JsonObject();

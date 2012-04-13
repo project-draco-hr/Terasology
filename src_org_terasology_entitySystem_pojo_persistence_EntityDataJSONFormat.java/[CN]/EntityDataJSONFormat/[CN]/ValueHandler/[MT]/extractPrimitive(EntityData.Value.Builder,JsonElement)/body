@@ -1,0 +1,19 @@
+{
+  JsonPrimitive primitive=element.getAsJsonPrimitive();
+  if (primitive.isNumber()) {
+    value.addDouble(primitive.getAsDouble());
+    value.addFloat(primitive.getAsFloat());
+    try {
+      value.addLong(primitive.getAsLong());
+      value.addInteger(primitive.getAsInt());
+    }
+ catch (    NumberFormatException e) {
+    }
+  }
+  if (primitive.isBoolean()) {
+    value.addBoolean(primitive.getAsBoolean());
+  }
+  if (primitive.isString()) {
+    value.addString(primitive.getAsString());
+  }
+}

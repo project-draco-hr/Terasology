@@ -1,0 +1,30 @@
+{
+  EntityData.Entity.Builder entity=EntityData.Entity.newBuilder();
+  JsonObject jsonObject=json.getAsJsonObject();
+  for (  Map.Entry<String,JsonElement> entry : jsonObject.entrySet()) {
+    String name=entry.getKey().toLowerCase(Locale.ENGLISH);
+    if (name.equals("parentprefab")) {
+      if (entry.getValue().isJsonPrimitive()) {
+        entity.setParentPrefab(entry.getValue().getAsString());
+      }
+    }
+ else     if (name.equals("id")) {
+      if (entry.getValue().isJsonPrimitive()) {
+        entity.setId(entry.getValue().getAsInt());
+      }
+    }
+ else     if (name.equals("removedcomponent")) {
+      if (entry.getValue().isJsonArray()) {
+        for (        JsonElement element : entry.getValue().getAsJsonArray()) {
+          entity.addRemovedComponent(element.getAsString());
+        }
+      }
+    }
+ else {
+      EntityData.Component.Builder component=context.deserialize(entry.getValue(),EntityData.Component.Builder.class);
+      component.setType(entry.getKey());
+      entity.addComponent(component);
+    }
+  }
+  return entity.build();
+}

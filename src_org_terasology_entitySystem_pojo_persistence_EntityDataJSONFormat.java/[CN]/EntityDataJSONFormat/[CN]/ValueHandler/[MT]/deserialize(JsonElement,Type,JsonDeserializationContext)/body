@@ -1,0 +1,33 @@
+{
+  EntityData.Value.Builder value=EntityData.Value.newBuilder();
+  if (json.isJsonPrimitive()) {
+    extractPrimitive(value,json);
+  }
+ else   if (json.isJsonObject()) {
+    extractMap(json,context,value);
+  }
+ else   if (json.isJsonArray()) {
+    JsonArray jsonArray=json.getAsJsonArray();
+    TByteList byteList=new TByteArrayList();
+    for (    JsonElement element : jsonArray) {
+      if (element.isJsonArray()) {
+        value.addValue((EntityData.Value)context.deserialize(element,EntityData.Value.class));
+      }
+ else       if (json.isJsonObject()) {
+        extractMap(json,context,value);
+      }
+ else       if (element.isJsonPrimitive()) {
+        extractPrimitive(value,element);
+        if (element.getAsJsonPrimitive().isNumber()) {
+          try {
+            byteList.add(element.getAsByte());
+          }
+ catch (          NumberFormatException nfe) {
+          }
+        }
+      }
+    }
+    value.setBytes(ByteString.copyFrom(byteList.toArray()));
+  }
+  return value.build();
+}

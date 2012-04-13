@@ -1,0 +1,8 @@
+{
+  ByteArrayOutputStream baos=new ByteArrayOutputStream();
+  BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(baos));
+  EntityDataJSONFormat.write(writer,world);
+  writer.flush();
+  ByteArrayInputStream bais=new ByteArrayInputStream(baos.toByteArray());
+  return EntityDataJSONFormat.readWorld(new BufferedReader(new InputStreamReader(bais)));
+}
