@@ -1,0 +1,19 @@
+{
+  EntityPersister persister=_entityManager.getPersister();
+  for (  String prefabURI : AssetManager.list("prefab")) {
+    _logger.info("Loading prefab " + prefabURI);
+    try {
+      if (!prefabURI.endsWith(".prefab")) {
+        continue;
+      }
+      BufferedReader reader=new BufferedReader(new InputStreamReader(AssetManager.assetStream(prefabURI)));
+      EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
+      if (prefabData != null) {
+        persister.deserializePrefab(prefabData);
+      }
+    }
+ catch (    IOException e) {
+      _logger.log(Level.WARNING,"Failed to load prefab '" + prefabURI + "'",e);
+    }
+  }
+}
