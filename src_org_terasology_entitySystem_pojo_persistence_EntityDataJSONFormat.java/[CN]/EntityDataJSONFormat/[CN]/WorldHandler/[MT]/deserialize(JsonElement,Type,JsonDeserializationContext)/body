@@ -1,0 +1,29 @@
+{
+  EntityData.World.Builder world=EntityData.World.newBuilder();
+  if (json.isJsonObject()) {
+    JsonObject jsonObject=json.getAsJsonObject();
+    JsonArray prefabArray=jsonObject.getAsJsonArray("prefab");
+    if (prefabArray != null) {
+      for (      JsonElement prefabElem : prefabArray) {
+        world.addPrefab((EntityData.Prefab)context.deserialize(prefabElem,EntityData.Prefab.class));
+      }
+    }
+    JsonArray entityArray=jsonObject.getAsJsonArray("entity");
+    if (entityArray != null) {
+      for (      JsonElement entityElem : entityArray) {
+        world.addEntity((EntityData.Entity)context.deserialize(entityElem,EntityData.Entity.class));
+      }
+    }
+    JsonPrimitive nextId=jsonObject.getAsJsonPrimitive("next_entity_id");
+    if (nextId != null) {
+      world.setNextEntityId(nextId.getAsInt());
+    }
+    JsonArray freedIdArray=jsonObject.getAsJsonArray("freed_entity_id");
+    if (freedIdArray != null) {
+      for (      JsonElement freedId : freedIdArray) {
+        world.addFreedEntityId(freedId.getAsInt());
+      }
+    }
+  }
+  return world.build();
+}

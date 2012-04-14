@@ -8,9 +8,9 @@
     worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,(byte)0x0,true,true);
   }
   AudioManager.play("RemoveBlock",0.6f);
-  if ((oldBlock.isStraightToInventory() || oldBlock.isEntityRetainedWhenItem()) && event.getInstigator().exists()) {
+  if ((oldBlock.isStraightToInventory() || !oldBlock.isEntityTemporary()) && event.getInstigator().exists()) {
     EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily(),entity);
-    if (oldBlock.isEntityRetainedWhenItem()) {
+    if (!oldBlock.isEntityTemporary()) {
       entity.removeComponent(HealthComponent.class);
       entity.removeComponent(BlockComponent.class);
     }
@@ -22,7 +22,7 @@
  else {
     CoreRegistry.get(BulletPhysicsRenderer.class).addLootableBlocks(blockComp.getPosition().toVector3f(),oldBlock);
   }
-  if (!oldBlock.isEntityRetainedWhenItem()) {
+  if (oldBlock.isEntityTemporary()) {
     entity.destroy();
   }
 }

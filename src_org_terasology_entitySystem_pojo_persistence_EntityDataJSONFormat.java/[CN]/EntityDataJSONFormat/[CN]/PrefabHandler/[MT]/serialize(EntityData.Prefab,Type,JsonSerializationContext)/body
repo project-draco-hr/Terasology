@@ -1,7 +1,11 @@
 {
   JsonObject result=new JsonObject();
-  result.addProperty("name",src.getName());
-  result.add("parents",context.serialize(src.getParentNameList()));
+  if (src.hasName()) {
+    result.addProperty("name",src.getName());
+  }
+  if (src.getParentNameCount() > 0) {
+    result.add("parent",context.serialize(src.getParentNameList()));
+  }
   for (  EntityData.Component component : src.getComponentList()) {
     result.add(component.getType(),context.serialize(component));
   }
