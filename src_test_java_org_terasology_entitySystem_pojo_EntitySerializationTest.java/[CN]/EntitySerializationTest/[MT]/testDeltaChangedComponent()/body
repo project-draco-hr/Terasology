@@ -3,7 +3,7 @@
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create(prefab);
   entity.getComponent(StringComponent.class).value="Delta";
-  EntityData.Entity entityData=entityPersister.serializeEntity(entity);
+  EntityData.Entity entityData=entityPersisterHelper.serializeEntity(entity);
   assertEquals(entity.getId(),entityData.getId());
   assertEquals(prefab.getName(),entityData.getParentPrefab());
   assertEquals(1,entityData.getComponentCount());

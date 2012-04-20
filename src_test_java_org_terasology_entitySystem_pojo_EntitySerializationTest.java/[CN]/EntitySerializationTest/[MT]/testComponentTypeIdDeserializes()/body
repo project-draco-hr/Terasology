@@ -2,7 +2,7 @@
   entityPersister.setUsingLookupTables(true);
   EntityRef entity=entityManager.create();
   entity.addComponent(new StringComponent("Test"));
-  EntityData.World world=entityPersister.serializeWorld();
+  EntityData.World world=entityPersisterHelper.serializeWorld();
   entityManager.clear();
   entityPersister.deserializeWorld(world);
   assertNotNull(entity.getComponent(StringComponent.class));

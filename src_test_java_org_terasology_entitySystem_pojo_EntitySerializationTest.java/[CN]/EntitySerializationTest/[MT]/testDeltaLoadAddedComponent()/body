@@ -3,8 +3,8 @@
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create("Test");
   entity.addComponent(new IntegerComponent(2));
-  EntityData.Entity entityData=entityPersister.serializeEntity(entity);
-  EntityRef loadedEntity=entityPersister.deserializeEntity(entityData);
+  EntityData.Entity entityData=entityPersisterHelper.serializeEntity(entity);
+  EntityRef loadedEntity=entityPersisterHelper.deserializeEntity(entityData);
   assertTrue(loadedEntity.exists());
   assertTrue(loadedEntity.hasComponent(StringComponent.class));
   assertEquals("Value",loadedEntity.getComponent(StringComponent.class).value);

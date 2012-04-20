@@ -1,0 +1,20 @@
+{
+  if (componentData.hasTypeIndex()) {
+    ComponentMetadata metadata=componentLibrary.getMetadata(componentIdTable.get(componentData.getTypeIndex()));
+    if (metadata == null) {
+      logger.log(Level.WARNING,"Unable to deserialise unknown component with id: " + componentData.getTypeIndex());
+      return null;
+    }
+    return metadata.getType();
+  }
+ else   if (componentData.hasType()) {
+    ComponentMetadata metadata=componentLibrary.getMetadata(componentData.getType().toLowerCase(Locale.ENGLISH));
+    if (metadata == null) {
+      logger.log(Level.WARNING,"Unable to deserialise unknown component type: " + componentData.getType());
+      return null;
+    }
+    return metadata.getType();
+  }
+  logger.log(Level.WARNING,"Unable to deserialise component, no type provided.");
+  return null;
+}

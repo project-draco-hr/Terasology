@@ -1,0 +1,19 @@
+{
+  try {
+    T result=clazz.newInstance();
+    for (    EntityData.NameValue entry : value.getNameValueList()) {
+      FieldMetadata fieldInfo=fields.get(entry.getName().toLowerCase(Locale.ENGLISH));
+      if (fieldInfo != null) {
+        Object content=fieldInfo.deserialize(entry.getValue());
+        if (content != null) {
+          fieldInfo.setValue(result,content);
+        }
+      }
+    }
+    return result;
+  }
+ catch (  Exception e) {
+    logger.log(Level.SEVERE,"Unable to deserialize " + value,e);
+  }
+  return null;
+}

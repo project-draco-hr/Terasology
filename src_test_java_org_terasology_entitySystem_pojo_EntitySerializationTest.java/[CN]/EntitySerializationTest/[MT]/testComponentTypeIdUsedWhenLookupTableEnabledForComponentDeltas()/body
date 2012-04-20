@@ -7,6 +7,6 @@
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create(prefab);
   entity.getComponent(StringComponent.class).value="New";
-  EntityData.Entity entityData=entityPersister.serializeEntity(entity);
+  EntityData.Entity entityData=entityPersisterHelper.serializeEntity(entity);
   assertEquals(413,entityData.getComponent(0).getTypeIndex());
 }

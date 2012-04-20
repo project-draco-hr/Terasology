@@ -1,0 +1,20 @@
+{
+  entityManager.setNextId(world.getNextEntityId());
+  for (  Integer deadId : world.getFreedEntityIdList()) {
+    entityManager.getFreedIds().add(deadId);
+  }
+  for (  EntityData.Prefab prefabData : world.getPrefabList()) {
+    if (!prefabManager.exists(prefabData.getName())) {
+      deserializePrefab(prefabData);
+    }
+  }
+  for (int index=0; index < world.getComponentClassCount(); ++index) {
+    ComponentMetadata componentMetadata=componentLibrary.getMetadata(world.getComponentClass(index));
+    if (componentMetadata != null) {
+      componentIdTable.put(index,componentMetadata.getType());
+    }
+  }
+  for (  EntityData.Entity entityData : world.getEntityList()) {
+    deserializeEntity(entityData);
+  }
+}

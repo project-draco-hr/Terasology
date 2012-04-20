@@ -1,0 +1,19 @@
+{
+  final EntityData.World world=persisterHelper.serializeWorld();
+  File parentFile=file.getParentFile();
+  if (parentFile != null) {
+    parentFile.mkdirs();
+  }
+  FileOutputStream out=new FileOutputStream(file);
+  try {
+    format.save(out,world);
+  }
+  finally {
+    try {
+      out.close();
+    }
+ catch (    IOException e) {
+      logger.log(Level.SEVERE,"Failed to close file",e);
+    }
+  }
+}

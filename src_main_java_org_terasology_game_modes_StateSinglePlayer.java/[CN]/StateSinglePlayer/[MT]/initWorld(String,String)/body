@@ -16,7 +16,7 @@
   _entityManager.clear();
   if (entityDataFile.exists()) {
     try {
-      _entityManager.load(entityDataFile,EntityManager.SaveFormat.Binary);
+      CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);
     }
  catch (    IOException e) {
       _logger.log(Level.SEVERE,"Failed to load entity data",e);
