@@ -1,9 +1,5 @@
 {
-  String path=String.format("SAVED_WORLDS/%s",worldTitle);
-  File f=new File(path);
-  if (!f.getAbsolutePath().contains("Terasology")) {
-    f=new File(System.getProperty("java.io.tmpdir"),path);
-    return f.getAbsolutePath();
-  }
-  return path;
+  File result=new File(worldPath,worldTitle);
+  result.mkdirs();
+  return result;
 }

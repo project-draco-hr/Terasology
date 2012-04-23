@@ -13,7 +13,7 @@
   _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys);
   CoreRegistry.put(WorldRenderer.class,_worldRenderer);
-  File entityDataFile=new File(PathManager.getWorldSavePath(title),ENTITY_DATA_FILE);
+  File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
   _entityManager.clear();
   if (entityDataFile.exists()) {
     try {

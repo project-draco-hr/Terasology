@@ -8,14 +8,14 @@
         c.dispose();
       }
       _nearChunkCache.clear();
-      File dirPath=new File(_parent.getObjectSavePath());
+      File dirPath=_parent.getObjectSavePath();
       if (!dirPath.exists()) {
         if (!dirPath.mkdirs()) {
           logger.log(Level.SEVERE,"Could not create save directory.");
           return;
         }
       }
-      File f=new File(_parent.getObjectSavePath() + '/' + _parent.getTitle());
+      File f=new File(_parent.getObjectSavePath(),_parent.getTitle());
       try {
         FileOutputStream fileOut=new FileOutputStream(f);
         ObjectOutputStream out=new ObjectOutputStream(fileOut);

@@ -1,0 +1,12 @@
+{
+  try {
+    logger.log(Level.INFO,"Using config file: " + file);
+    FileOutputStream fos=new FileOutputStream(file);
+    OutputStreamWriter osw=new OutputStreamWriter(fos);
+    TextFormat.print(_setting.build(),osw);
+    osw.close();
+  }
+ catch (  Exception e) {
+    logger.log(Level.WARNING,"Could not write " + file,e);
+  }
+}

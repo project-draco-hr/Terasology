@@ -1,9 +1,24 @@
 {
-  if (System.getProperty("os.name").equals("Mac OS X"))   addLibraryPath("natives/macosx");
- else   if (System.getProperty("os.name").equals("Linux"))   addLibraryPath("natives/linux");
- else {
+  if (SystemUtils.IS_OS_MAC) {
+    addLibraryPath("natives/macosx");
+  }
+ else   if (SystemUtils.IS_OS_LINUX) {
+    addLibraryPath("natives/linux");
+    if (System.getProperty("os.arch").contains("64"))     System.loadLibrary("libopenal64");
+ else     System.loadLibrary("libopenal");
+  }
+ else   if (SystemUtils.IS_OS_SOLARIS) {
+    addLibraryPath("natives/solaris");
+    if (System.getProperty("os.arch").contains("64"))     System.loadLibrary("libopenal64");
+ else     System.loadLibrary("libopenal");
+  }
+ else   if (SystemUtils.IS_OS_WINDOWS) {
     addLibraryPath("natives/windows");
     if (System.getProperty("os.arch").contains("64"))     System.loadLibrary("OpenAL64");
  else     System.loadLibrary("OpenAL32");
+  }
+ else {
+    logger.log(Level.SEVERE,"Unsupported operating system: " + SystemUtils.OS_NAME);
+    System.exit(1);
   }
 }

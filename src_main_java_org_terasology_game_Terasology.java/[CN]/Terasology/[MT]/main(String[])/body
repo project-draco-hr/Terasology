@@ -1,10 +1,10 @@
 {
   try {
+    PathManager.getInstance().determineRootPath(true);
     initLogger();
     engine.init();
     engine.run(new StateMainMenu());
     engine.dispose();
-    Config.getInstance().saveConfig("SAVED_WORLDS/last.cfg");
   }
  catch (  Throwable t) {
     Logger.getLogger(Terasology.class.getName()).log(Level.SEVERE,"Uncaught Exception",t);

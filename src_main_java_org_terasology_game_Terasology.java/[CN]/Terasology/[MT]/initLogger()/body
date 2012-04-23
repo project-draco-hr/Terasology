@@ -1,9 +1,9 @@
 {
-  File dirPath=new File("logs");
+  File dirPath=PathManager.getInstance().getLogPath();
   if (!dirPath.exists()) {
     if (!dirPath.mkdirs()) {
       return;
     }
   }
-  addLogFileHandler("logs/Terasology.log",Level.INFO);
+  addLogFileHandler(new File(dirPath,"Terasology.log").getAbsolutePath(),Level.INFO);
 }
