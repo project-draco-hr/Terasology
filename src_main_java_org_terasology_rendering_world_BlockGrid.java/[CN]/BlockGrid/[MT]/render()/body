@@ -9,7 +9,7 @@
     }
     for (    BlockPosition gp : _gridPositions) {
       GL11.glPushMatrix();
-      Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
+      Vector3d cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
       GL11.glTranslated(gp.x - cameraPosition.x,gp.y - cameraPosition.y,gp.z - cameraPosition.z);
       _mesh.render();
       GL11.glPopMatrix();

@@ -1,18 +1,17 @@
 {
-  _gameThread=new Thread(){
+  gameThread=new Thread(){
     @Override public void run(){
       try {
-        _terasology=Terasology.getInstance();
-        _terasology.init();
-        _terasology.run();
-        _terasology.shutdown();
+        engine=new TerasologyEngine();
+        engine.run(new StateMainMenu());
+        engine.dispose();
         Config.getInstance().saveConfig("SAVED_WORLDS/last.cfg");
       }
  catch (      Exception e) {
-        Terasology.getInstance().getLogger().log(Level.SEVERE,e.toString(),e);
+        Logger.getLogger(TerasologyApplet.class.getName()).log(Level.SEVERE,e.toString(),e);
       }
     }
   }
 ;
-  _gameThread.start();
+  gameThread.start();
 }

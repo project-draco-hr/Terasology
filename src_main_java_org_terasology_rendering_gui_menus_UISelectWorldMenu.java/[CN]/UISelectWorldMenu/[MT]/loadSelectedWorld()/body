@@ -11,7 +11,7 @@
     ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
     Config.getInstance().setDefaultSeed((String)config.get("worldSeed"));
     Config.getInstance().setWorldTitle((String)config.get("worldTitle"));
-    Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
+    CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(config.get("worldTitle").toString(),config.get("worldSeed").toString()));
   }
  catch (  Exception e) {
     GUIManager.getInstance().showMessage("Loading error","Failed reading world data object. Sorry.");

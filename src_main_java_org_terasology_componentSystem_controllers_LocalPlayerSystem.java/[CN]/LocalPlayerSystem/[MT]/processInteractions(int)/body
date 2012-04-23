@@ -1,5 +1,5 @@
 {
-  if (Terasology.getInstance().getTimeInMs() - lastInteraction < 200) {
+  if (timer.getTimeInMs() - lastInteraction < 200) {
     return;
   }
   EntityRef entity=localPlayer.getEntity();
@@ -28,13 +28,13 @@ break;
  else {
 attack(entity,selectedItemEntity);
 }
-lastInteraction=Terasology.getInstance().getTimeInMs();
+lastInteraction=timer.getTimeInMs();
 localPlayerComp.handAnimation=0.5f;
 entity.saveComponent(localPlayerComp);
 }
  else if (Mouse.isButtonDown(1) || button == 1) {
 attack(entity,selectedItemEntity);
-lastInteraction=Terasology.getInstance().getTimeInMs();
+lastInteraction=timer.getTimeInMs();
 localPlayerComp.handAnimation=0.5f;
 entity.saveComponent(localPlayerComp);
 }

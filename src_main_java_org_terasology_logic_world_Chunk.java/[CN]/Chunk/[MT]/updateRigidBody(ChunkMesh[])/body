@@ -1,6 +1,6 @@
 {
   if (_rigidBody != null || meshes == null || meshes.length < VERTICAL_SEGMENTS)   return;
-  Terasology.getInstance().submitTask("Update Chunk Collision",new Runnable(){
+  CoreRegistry.get(GameEngine.class).submitTask("Update Chunk Collision",new Runnable(){
     public void run(){
       try {
         _lockRigidBody.lock();
@@ -27,7 +27,7 @@
             _rigidBody=new RigidBody(blockConsInf);
           }
  catch (          Exception e) {
-            Terasology.getInstance().getLogger().log(Level.WARNING,"Chunk failed to create rigid body.",e);
+            logger.log(Level.WARNING,"Chunk failed to create rigid body.",e);
           }
         }
       }

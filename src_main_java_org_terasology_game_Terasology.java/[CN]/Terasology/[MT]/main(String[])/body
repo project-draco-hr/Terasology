@@ -1,12 +1,13 @@
 {
   try {
-    _instance.init();
-    _instance.run();
-    _instance.shutdown();
+    initLogger();
+    engine.init();
+    engine.run(new StateMainMenu());
+    engine.dispose();
     Config.getInstance().saveConfig("SAVED_WORLDS/last.cfg");
   }
  catch (  Throwable t) {
-    _instance._logger.log(Level.SEVERE,"Uncaught Exception",t);
+    Logger.getLogger(Terasology.class.getName()).log(Level.SEVERE,"Uncaught Exception",t);
   }
   System.exit(0);
 }

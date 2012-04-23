@@ -1,7 +1,7 @@
 {
-  if (_cloudByteBuffer == null && Terasology.getInstance().getTimeInMs() - _lastCloudUpdate >= CLOUD_UPDATE_INTERVAL) {
-    _lastCloudUpdate=Terasology.getInstance().getTimeInMs();
-    Terasology.getInstance().submitTask("Generate Clouds",new Runnable(){
+  if (_cloudByteBuffer == null && _timer.getTimeInMs() - _lastCloudUpdate >= CLOUD_UPDATE_INTERVAL) {
+    _lastCloudUpdate=_timer.getTimeInMs();
+    CoreRegistry.get(GameEngine.class).submitTask("Generate Clouds",new Runnable(){
       public void run(){
         generateNewClouds();
       }

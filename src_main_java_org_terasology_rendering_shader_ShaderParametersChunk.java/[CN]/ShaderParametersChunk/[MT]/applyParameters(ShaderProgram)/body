@@ -1,5 +1,7 @@
 {
-  Terasology tera=Terasology.getInstance();
+  WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  IWorldProvider worldProvider=CoreRegistry.get(IWorldProvider.class);
   GL13.glActiveTexture(GL13.GL_TEXTURE1);
   TextureManager.getInstance().bindTexture("custom_lava_still");
   GL13.glActiveTexture(GL13.GL_TEXTURE2);
@@ -12,12 +14,12 @@
   program.setInt("textureWaterNormal",2);
   program.setInt("textureEffects",3);
   program.setInt("textureAtlas",0);
-  if (tera.getActiveWorldRenderer() != null)   program.setFloat("daylight",(float)tera.getActiveWorldRenderer().getDaylight());
-  if (tera.getActivePlayer() != null) {
-    program.setInt("carryingTorch",tera.getActivePlayer().isCarryingTorch() ? 1 : 0);
+  if (worldRenderer != null)   program.setFloat("daylight",(float)worldRenderer.getDaylight());
+  if (localPlayer != null) {
+    program.setInt("carryingTorch",localPlayer.isCarryingTorch() ? 1 : 0);
   }
-  if (tera.getActiveWorldProvider() != null) {
-    program.setFloat("time",(float)tera.getActiveWorldProvider().getTime());
+  if (worldProvider != null) {
+    program.setFloat("time",(float)worldProvider.getTime());
   }
   program.setFloat1("wavingCoordinates",BlockManager.getInstance().calcCoordinatesForWavingBlocks());
   program.setFloat2("grassCoordinate",BlockManager.getInstance().calcCoordinate("Grass"));

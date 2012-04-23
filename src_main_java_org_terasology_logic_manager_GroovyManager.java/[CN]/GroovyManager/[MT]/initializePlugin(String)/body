@@ -4,7 +4,7 @@
     gse=new GroovyScriptEngine(PLUGINS_PATH);
   }
  catch (  IOException ioe) {
-    Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed to initialize plugin (IOException): " + pluginName + ", reason: "+ ioe.toString(),ioe);
+    logger.log(Level.SEVERE,"Failed to initialize plugin (IOException): " + pluginName + ", reason: "+ ioe.toString(),ioe);
   }
   if (gse != null) {
     try {
@@ -12,10 +12,10 @@
       gse.run(pluginName,_bind);
     }
  catch (    ResourceException re) {
-      Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed to execute plugin (ResourceException): " + pluginName + ", reason: "+ re.toString(),re);
+      logger.log(Level.SEVERE,"Failed to execute plugin (ResourceException): " + pluginName + ", reason: "+ re.toString(),re);
     }
 catch (    ScriptException se) {
-      Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed to execute plugin (ScriptException): " + pluginName + ", reason: "+ se.toString(),se);
+      logger.log(Level.SEVERE,"Failed to execute plugin (ScriptException): " + pluginName + ", reason: "+ se.toString(),se);
     }
   }
 }

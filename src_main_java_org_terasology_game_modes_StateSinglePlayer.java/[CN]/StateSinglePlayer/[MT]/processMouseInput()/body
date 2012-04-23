@@ -3,8 +3,8 @@
   while (Mouse.next()) {
     int button=Mouse.getEventButton();
     int wheelMoved=Mouse.getEventDWheel();
-    if (_openDisplay != null && !_openDisplay.isOverlay()) {
-      _openDisplay.processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
+    if (GUIManager.getInstance().getFocusedWindow() != null) {
+      GUIManager.getInstance().processMouseInput(button,Mouse.getEventButtonState(),wheelMoved);
     }
  else {
       for (      UIDisplayElement screen : _guiScreens) {

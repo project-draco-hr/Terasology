@@ -9,7 +9,7 @@
   _exitButton.setVisible(true);
   _exitButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
-      Terasology.getInstance().exit();
+      CoreRegistry.get(GameEngine.class).shutdown();
     }
   }
 );
@@ -19,7 +19,7 @@
   _respawnButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       setVisible(false);
-      EntityRef playerEntity=Terasology.getInstance().getActivePlayer().getEntity();
+      EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
       LocalPlayerComponent localPlayerComponent=playerEntity.getComponent(LocalPlayerComponent.class);
       if (localPlayerComponent.isDead) {
         localPlayerComponent.isDead=false;
@@ -50,7 +50,7 @@
   _mainMenuButton.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       setVisible(false);
-      Terasology.getInstance().setGameState(Terasology.GAME_STATE.MAIN_MENU);
+      CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu());
     }
   }
 );

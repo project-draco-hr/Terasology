@@ -35,7 +35,7 @@
  else {
         Config.getInstance().setWorldTitle(getWorldName());
       }
-      Terasology.getInstance().setGameState(Terasology.GAME_STATE.SINGLE_PLAYER);
+      CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(Config.getInstance().getWorldTitle(),Config.getInstance().getDefaultSeed()));
     }
   }
 );

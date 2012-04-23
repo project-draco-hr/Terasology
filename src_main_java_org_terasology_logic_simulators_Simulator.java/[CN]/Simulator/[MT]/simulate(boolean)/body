@@ -1,6 +1,6 @@
 {
   if (_running)   return false;
-  long currentTime=Terasology.getInstance().getTimeInMs();
+  long currentTime=_timer.getTimeInMs();
   if ((currentTime > _lastUpdate + _updateInterval || force)) {
     _running=true;
     Runnable r=new Runnable(){
@@ -10,7 +10,7 @@
       }
     }
 ;
-    Terasology.getInstance().submitTask(_name,r);
+    CoreRegistry.get(GameEngine.class).submitTask(_name,r);
     _lastUpdate=currentTime;
     return true;
   }

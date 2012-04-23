@@ -2,7 +2,7 @@
   FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
   float[] mFloat=new float[16];
   GL11.glPushMatrix();
-  Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
+  Vector3d cameraPosition=_parent.getActiveCamera().getPosition();
   GL11.glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
   List<CollisionObject> collisionObjects=_discreteDynamicsWorld.getCollisionObjectArray();
   for (  CollisionObject co : collisionObjects) {
@@ -18,7 +18,7 @@
       GL11.glMultMatrix(mBuffer);
       if (br.getCollisionShape() == _blockShapeHalf)       GL11.glScalef(0.5f,0.5f,0.5f);
  else       if (br.getCollisionShape() == _blockShapeQuarter)       GL11.glScalef(0.25f,0.25f,0.25f);
-      block.renderWithLightValue(Terasology.getInstance().getActiveWorldRenderer().getRenderingLightValueAt(new Vector3d(t.origin)));
+      block.renderWithLightValue(_parent.getRenderingLightValueAt(new Vector3d(t.origin)));
       GL11.glPopMatrix();
     }
   }

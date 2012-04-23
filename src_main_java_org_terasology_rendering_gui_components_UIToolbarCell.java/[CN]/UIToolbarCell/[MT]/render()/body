@@ -1,7 +1,6 @@
 {
-  if (Terasology.getInstance().getActiveWorldRenderer() == null)   return;
   _selectionRectangle.renderTransformed();
-  InventoryComponent inventory=Terasology.getInstance().getActivePlayer().getEntity().getComponent(InventoryComponent.class);
+  InventoryComponent inventory=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(InventoryComponent.class);
   if (inventory.itemSlots.size() <= _id)   return;
   EntityRef itemEntity=inventory.itemSlots.get(_id);
   ItemComponent item=itemEntity.getComponent(ItemComponent.class);

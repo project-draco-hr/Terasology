@@ -1,7 +1,7 @@
 {
   _list.removeAll();
   ConfigObject config=null;
-  String path=Terasology.getInstance().getWorldSavePath("");
+  String path=PathManager.getWorldSavePath("");
   File worldCatalog=new File(path);
   for (  File file : worldCatalog.listFiles(new FileFilter(){
     public boolean accept(    File file){
@@ -23,7 +23,7 @@
       }
     }
  catch (    MalformedURLException e) {
-      Terasology.getInstance().getLogger().log(Level.SEVERE,"Failed reading world data object. Sorry.",e);
+      logger.log(Level.SEVERE,"Failed reading world data object. Sorry.",e);
     }
   }
 }

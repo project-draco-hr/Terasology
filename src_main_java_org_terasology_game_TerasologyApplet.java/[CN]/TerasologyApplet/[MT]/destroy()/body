@@ -1,4 +1,10 @@
 {
-  if (_terasology != null)   _terasology.exit();
+  if (engine != null)   engine.shutdown();
+  try {
+    gameThread.join();
+  }
+ catch (  InterruptedException e) {
+    Logger.getLogger(getClass().getName()).severe("Failed to cleanly shut down engine");
+  }
   super.destroy();
 }

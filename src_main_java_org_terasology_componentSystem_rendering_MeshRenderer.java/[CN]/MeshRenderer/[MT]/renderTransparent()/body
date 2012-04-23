@@ -1,7 +1,5 @@
 {
-  WorldRenderer worldRenderer=Terasology.getInstance().getActiveWorldRenderer();
-  if (worldRenderer == null)   return;
-  Vector3d cameraPosition=Terasology.getInstance().getActiveCamera().getPosition();
+  Vector3d cameraPosition=worldRenderer.getActiveCamera().getPosition();
   for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
     AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
     LocationComponent location=entity.getComponent(LocationComponent.class);

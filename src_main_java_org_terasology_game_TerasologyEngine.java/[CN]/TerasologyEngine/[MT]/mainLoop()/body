@@ -1,0 +1,42 @@
+{
+  PerformanceMonitor.startActivity("Other");
+  GameState state=null;
+  while (running && !Display.isCloseRequested()) {
+    if (!Display.isActive()) {
+      try {
+        Thread.sleep(1000);
+      }
+ catch (      InterruptedException e) {
+        logger.log(Level.WARNING,e.toString(),e);
+      }
+      Display.processMessages();
+      continue;
+    }
+    processStateChanges();
+    state=stateStack.peek();
+    if (state == null) {
+      shutdown();
+      break;
+    }
+    timer.tick();
+    PerformanceMonitor.startActivity("Main Update");
+    state.update(timer.getDelta());
+    PerformanceMonitor.endActivity();
+    PerformanceMonitor.startActivity("Render");
+    state.render();
+    Display.update();
+    Display.sync(60);
+    PerformanceMonitor.endActivity();
+    PerformanceMonitor.startActivity("Input");
+    state.handleInput(timer.getDelta());
+    PerformanceMonitor.endActivity();
+    PerformanceMonitor.startActivity("Audio");
+    AudioManager.getInstance().update();
+    PerformanceMonitor.endActivity();
+    PerformanceMonitor.rollCycle();
+    PerformanceMonitor.startActivity("Other");
+    if (Display.wasResized())     resizeViewport();
+  }
+  PerformanceMonitor.endActivity();
+  running=false;
+}

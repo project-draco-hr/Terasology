@@ -1,7 +1,3 @@
 {
-  IGameState state=Terasology.getInstance().getCurrentGameState();
-  if (state instanceof StateSinglePlayer) {
-    StateSinglePlayer spState=(StateSinglePlayer)state;
-    spState.initWorld(title);
-  }
+  CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(title));
 }

@@ -1,11 +1,12 @@
 {
-  Terasology tera=Terasology.getInstance();
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  WorldRenderer worldRendererd=CoreRegistry.get(WorldRenderer.class);
   GL13.glActiveTexture(GL13.GL_TEXTURE0);
   TextureManager.getInstance().bindTexture("slime");
-  if (tera.getActivePlayer() != null) {
-    program.setInt("carryingTorch",tera.getActivePlayer().isCarryingTorch() ? 1 : 0);
+  if (localPlayer != null) {
+    program.setInt("carryingTorch",localPlayer.isCarryingTorch() ? 1 : 0);
   }
-  if (tera.getActiveWorldRenderer() != null) {
-    program.setFloat("tick",(float)tera.getActiveWorldRenderer().getTick());
+  if (worldRendererd != null) {
+    program.setFloat("tick",(float)worldRendererd.getTick());
   }
 }

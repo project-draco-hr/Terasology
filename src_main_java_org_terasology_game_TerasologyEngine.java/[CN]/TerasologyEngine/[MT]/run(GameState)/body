@@ -1,0 +1,11 @@
+{
+  if (!initialised) {
+    init();
+  }
+  changeState(initialState);
+  running=true;
+  Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+  CoreRegistry.put(GameEngine.class,this);
+  mainLoop();
+  cleanup();
+}

@@ -3,9 +3,8 @@
   getMotionState().getWorldTransform(t);
   Matrix4f tMatrix=new Matrix4f();
   t.getMatrix(tMatrix);
-  LocalPlayer player=Terasology.getInstance().getActivePlayer();
   Vector3f blockPlayer=new Vector3f();
   tMatrix.get(blockPlayer);
-  blockPlayer.sub(new Vector3f(player.getPosition()));
+  blockPlayer.sub(new Vector3f(CoreRegistry.get(LocalPlayer.class).getPosition()));
   return blockPlayer.length();
 }
