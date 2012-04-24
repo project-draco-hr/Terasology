@@ -1,9 +1,9 @@
 {
   EntityPersisterHelper persisterHelper=new EntityPersisterHelperImpl(componentLibrary,(PersistableEntityManager)_entityManager);
-  for (  String prefabURI : AssetManager.list("prefab")) {
+  for (  AssetUri prefabURI : AssetManager.list(AssetType.PREFAB)) {
     _logger.info("Loading prefab " + prefabURI);
     try {
-      if (!prefabURI.endsWith(".prefab")) {
+      if (!prefabURI.getAssetName().endsWith(".prefab")) {
         continue;
       }
       BufferedReader reader=new BufferedReader(new InputStreamReader(AssetManager.assetStream(prefabURI)));

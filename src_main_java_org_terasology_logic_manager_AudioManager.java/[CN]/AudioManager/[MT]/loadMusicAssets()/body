@@ -1,8 +1,8 @@
 {
-  for (  String sound : AssetManager.list("music")) {
+  for (  AssetUri sound : AssetManager.list(AssetType.MUSIC)) {
     logger.info("Loading music " + sound);
     try {
-      String name=sound.substring(sound.lastIndexOf('/') + 1);
+      String name=sound.getAssetName().substring(sound.getAssetName().lastIndexOf('/') + 1);
       if (!name.endsWith(".ogg")) {
         continue;
       }

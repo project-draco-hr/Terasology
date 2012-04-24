@@ -12,6 +12,17 @@
   if (other.hasDebugInfo()) {
     mergeDebugInfo(other.getDebugInfo());
   }
+  if (!other.activeMod_.isEmpty()) {
+    if (activeMod_.isEmpty()) {
+      activeMod_=other.activeMod_;
+      bitField0_=(bitField0_ & ~0x00000010);
+    }
+ else {
+      ensureActiveModIsMutable();
+      activeMod_.addAll(other.activeMod_);
+    }
+    onChanged();
+  }
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
 }

@@ -1,4 +1,11 @@
 {
+  ModManager modManager=new ModManager();
+  for (  Mod mod : modManager.getMods()) {
+    mod.setEnabled(true);
+  }
+  modManager.saveModSelectionToConfig();
+  for (  Mod mod : modManager.getActiveMods()) {
+  }
   componentLibrary=new ComponentLibraryImpl();
   componentLibrary.registerTypeHandler(BlockFamily.class,new BlockFamilyTypeHandler());
   componentLibrary.registerTypeHandler(Color4f.class,new Color4fTypeHandler());

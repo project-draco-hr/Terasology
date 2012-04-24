@@ -1,0 +1,31 @@
+{
+  mods.clear();
+  Gson gson=new Gson();
+  File modPath=PathManager.getInstance().getModPath();
+  for (  File modFile : modPath.listFiles()) {
+    if (modFile.isDirectory()) {
+      File modInfoFile=new File(modFile.getPath(),"mod.txt");
+      if (modInfoFile.exists()) {
+        try {
+          ModInfo modInfo=gson.fromJson(new FileReader(modInfoFile),ModInfo.class);
+          mods.put(modInfo.getId(),new Mod(modFile,modInfo));
+          logger.info("Discovered mod: " + modInfo.getDisplayName());
+        }
+ catch (        FileNotFoundException e) {
+          logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+        }
+catch (        JsonIOException e) {
+          logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+        }
+      }
+    }
+ else {
+    }
+  }
+  for (  String activeModId : Config.getInstance().getActiveMods()) {
+    Mod mod=mods.get(activeModId);
+    if (mod != null) {
+      mod.setEnabled(true);
+    }
+  }
+}
