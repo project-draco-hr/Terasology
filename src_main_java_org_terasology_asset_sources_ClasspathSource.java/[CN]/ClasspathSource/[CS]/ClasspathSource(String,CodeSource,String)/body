@@ -1,16 +1,14 @@
 {
-  sourceId=id;
+  super(id);
   if (cs == null) {
     throw new IllegalStateException("Can't access assets: CodeSource is null");
   }
   URL url=cs.getLocation();
   try {
     File codePath=new File(url.toURI());
-    logger.info("Loading assets from " + codePath);
     this.loadAssetsFrom(codePath,basePath);
   }
  catch (  Throwable e) {
     throw new IllegalStateException("Error loading assets: " + e.getMessage(),e);
   }
-  logger.info("Loaded " + assets.size() + " assets");
 }

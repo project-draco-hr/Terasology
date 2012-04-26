@@ -1,24 +1,19 @@
 {
-  if (SystemUtils.IS_OS_MAC) {
+switch (LWJGLUtil.getPlatform()) {
+case LWJGLUtil.PLATFORM_MACOSX:
     addLibraryPath("natives/macosx");
-  }
- else   if (SystemUtils.IS_OS_LINUX) {
-    addLibraryPath("natives/linux");
-    if (System.getProperty("os.arch").contains("64"))     System.loadLibrary("openal64");
- else     System.loadLibrary("openal");
-  }
- else   if (SystemUtils.IS_OS_SOLARIS) {
-    addLibraryPath("natives/solaris");
-    if (System.getProperty("os.arch").contains("64"))     System.loadLibrary("openal64");
- else     System.loadLibrary("openal");
-  }
- else   if (SystemUtils.IS_OS_WINDOWS) {
-    addLibraryPath("natives/windows");
-    if (System.getProperty("os.arch").contains("64"))     System.loadLibrary("OpenAL64");
- else     System.loadLibrary("OpenAL32");
-  }
- else {
-    logger.log(Level.SEVERE,"Unsupported operating system: " + SystemUtils.OS_NAME);
-    System.exit(1);
-  }
+  break;
+case LWJGLUtil.PLATFORM_LINUX:
+addLibraryPath("natives/linux");
+if (System.getProperty("os.arch").contains("64")) System.loadLibrary("openal64");
+ else System.loadLibrary("openal");
+break;
+case LWJGLUtil.PLATFORM_WINDOWS:
+addLibraryPath("natives/windows");
+if (System.getProperty("os.arch").contains("64")) System.loadLibrary("OpenAL64");
+ else System.loadLibrary("OpenAL32");
+default :
+logger.log(Level.SEVERE,"Unsupported operating system: " + LWJGLUtil.getPlatformName());
+System.exit(1);
+}
 }

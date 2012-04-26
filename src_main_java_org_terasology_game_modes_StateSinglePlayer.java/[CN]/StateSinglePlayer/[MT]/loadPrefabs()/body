@@ -3,9 +3,6 @@
   for (  AssetUri prefabURI : AssetManager.list(AssetType.PREFAB)) {
     _logger.info("Loading prefab " + prefabURI);
     try {
-      if (!prefabURI.getAssetName().endsWith(".prefab")) {
-        continue;
-      }
       BufferedReader reader=new BufferedReader(new InputStreamReader(AssetManager.assetStream(prefabURI)));
       EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
       if (prefabData != null) {

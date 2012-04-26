@@ -1,20 +1,21 @@
 {
   if (!useAppDir) {
-    if (SystemUtils.IS_OS_WINDOWS) {
-      rootPath=new File(System.getenv("APPDATA") + "\\.terasology");
-    }
- else     if (SystemUtils.IS_OS_LINUX || SystemUtils.IS_OS_SOLARIS) {
+switch (LWJGLUtil.getPlatform()) {
+case LWJGLUtil.PLATFORM_LINUX:
       rootPath=new File("~/.terasology");
-    }
- else     if (SystemUtils.IS_OS_MAC) {
-      rootPath=new File(SystemUtils.getUserHome() + "/Library/" + "terasology");
-    }
+    break;
+case LWJGLUtil.PLATFORM_MACOSX:
+  rootPath=new File(System.getProperty("user.home") + "/Library/" + "terasology");
+break;
+case LWJGLUtil.PLATFORM_WINDOWS:
+rootPath=new File(System.getenv("APPDATA") + "\\.terasology");
+break;
+default :
+rootPath=new File(System.getProperty("user.home") + "/.terasology");
+}
+}
  else {
-      rootPath=new File(SystemUtils.getUserHome() + "/.terasology");
-    }
-  }
- else {
-    rootPath=new File(".").getAbsoluteFile();
-  }
-  updateDirs();
+rootPath=new File(".").getAbsoluteFile();
+}
+updateDirs();
 }

@@ -8,7 +8,7 @@
       if (modInfoFile.exists()) {
         try {
           ModInfo modInfo=gson.fromJson(new FileReader(modInfoFile),ModInfo.class);
-          mods.put(modInfo.getId(),new Mod(modFile,modInfo));
+          mods.put(modInfo.getId(),new Mod(modFile,modInfo,new DirectorySource(modInfo.getId(),modFile)));
           logger.info("Discovered mod: " + modInfo.getDisplayName());
         }
  catch (        FileNotFoundException e) {
