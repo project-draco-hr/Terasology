@@ -1,0 +1,7 @@
+{
+  EntityRef item=CoreRegistry.get(EntityManager.class).create(itemPrefabName);
+  InventorySystem inventorySystem=CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class);
+  if (!inventorySystem.addItem(CoreRegistry.get(LocalPlayer.class).getEntity(),item)) {
+    item.destroy();
+  }
+}
