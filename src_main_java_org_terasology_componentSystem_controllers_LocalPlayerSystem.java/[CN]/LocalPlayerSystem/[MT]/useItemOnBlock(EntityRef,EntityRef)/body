@@ -9,6 +9,6 @@
     float dot=rawDirection.dot(attachDir);
     rawDirection.sub(new Vector3f(dot * attachDir.x,dot * attachDir.y,dot * attachDir.z));
     Side direction=Side.inDirection(rawDirection.x,rawDirection.y,rawDirection.z);
-    itemSystem.useItemOnBlock(item,player,centerPos,attachmentSide,direction);
+    item.send(new UseItemOnBlockEvent(player,centerPos,attachmentSide,direction));
   }
 }

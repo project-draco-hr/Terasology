@@ -1,0 +1,6 @@
+{
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  if (itemComp == null || itemComp.usage != ItemComponent.UsageType.OnUser)   return;
+  item.send(new ActivateEvent(event.getInstigator(),event.getInstigator()));
+  checkConsumeItem(item,itemComp);
+}

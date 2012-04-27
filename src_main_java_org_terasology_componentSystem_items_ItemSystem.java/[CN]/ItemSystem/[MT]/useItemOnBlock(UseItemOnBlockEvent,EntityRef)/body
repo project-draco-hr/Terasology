@@ -1,0 +1,15 @@
+{
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  if (itemComp == null || itemComp.usage != ItemComponent.UsageType.OnBlock)   return;
+  BlockItemComponent blockItem=item.getComponent(BlockItemComponent.class);
+  if (blockItem != null) {
+    if (placeBlock(blockItem.blockFamily,event.getTargetBlock(),event.getSurfaceDirection(),event.getSecondaryDirection(),blockItem)) {
+      checkConsumeItem(item,itemComp);
+    }
+  }
+ else {
+    EntityRef targetEntity=blockEntityRegistry.getOrCreateEntityAt(event.getTargetBlock());
+    item.send(new ActivateEvent(targetEntity,event.getInstigator()));
+    checkConsumeItem(item,itemComp);
+  }
+}

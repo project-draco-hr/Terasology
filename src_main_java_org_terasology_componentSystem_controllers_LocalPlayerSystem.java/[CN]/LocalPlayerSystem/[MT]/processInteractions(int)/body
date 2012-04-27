@@ -15,10 +15,10 @@ case OnBlock:
         useItemOnBlock(entity,selectedItemEntity);
       break;
 case OnUser:
-    itemSystem.useItem(selectedItemEntity,entity);
+    selectedItemEntity.send(new UseItemEvent(entity));
   break;
 case InDirection:
-itemSystem.useItemInDirection(selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),entity);
+selectedItemEntity.send(new UseItemInDirectionEvent(entity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection())));
 break;
 default :
 attack(entity,selectedItemEntity);
