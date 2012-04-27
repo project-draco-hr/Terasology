@@ -2,8 +2,9 @@
   if (quantity < 1)   return;
   BlockItemFactory factory=new BlockItemFactory(CoreRegistry.get(EntityManager.class),CoreRegistry.get(PrefabManager.class));
   EntityRef item=factory.newInstance(blockFamily,quantity);
-  InventorySystem inventorySystem=CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class);
-  if (!inventorySystem.addItem(CoreRegistry.get(LocalPlayer.class).getEntity(),item)) {
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+  playerEntity.send(new ReceiveItemEvent(item));
+  if (!item.getComponent(ItemComponent.class).container.exists()) {
     item.destroy();
   }
 }

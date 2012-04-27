@@ -4,7 +4,5 @@
   InventoryComponent fromInventory=fromEntity.getComponent(InventoryComponent.class);
   if (fromInventory == null)   return;
   EntityRef itemEntity=fromInventory.itemSlots.get(slot);
-  if (inventorySystem.addItem(toEntity,itemEntity)) {
-    fromInventory.itemSlots.set(slot,EntityRef.NULL);
-  }
+  toEntity.send(new ReceiveItemEvent(itemEntity));
 }

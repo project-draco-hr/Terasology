@@ -22,7 +22,8 @@
  else {
         Block block=BlockManager.getInstance().getBlock(b.getType());
         EntityRef blockItem=_blockItemFactory.newInstance(block.getBlockFamily());
-        if (!CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class).addItem(player.getEntity(),blockItem)) {
+        player.getEntity().send(new ReceiveItemEvent(blockItem));
+        if (!blockItem.getComponent(ItemComponent.class).container.exists()) {
           blockItem.destroy();
         }
         AudioManager.play("Loot");

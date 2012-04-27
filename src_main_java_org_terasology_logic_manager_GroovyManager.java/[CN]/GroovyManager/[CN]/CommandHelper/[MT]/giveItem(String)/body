@@ -1,7 +1,14 @@
 {
-  EntityRef item=CoreRegistry.get(EntityManager.class).create(itemPrefabName);
-  InventorySystem inventorySystem=CoreRegistry.get(ComponentSystemManager.class).get(InventorySystem.class);
-  if (!inventorySystem.addItem(CoreRegistry.get(LocalPlayer.class).getEntity(),item)) {
-    item.destroy();
+  Prefab prefab=CoreRegistry.get(PrefabManager.class).getPrefab(itemPrefabName);
+  if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
+    EntityRef item=CoreRegistry.get(EntityManager.class).create(prefab);
+    EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+    playerEntity.send(new ReceiveItemEvent(item));
+    if (!item.getComponent(ItemComponent.class).container.exists()) {
+      item.destroy();
+    }
+  }
+ else {
+    giveBlock(itemPrefabName);
   }
 }

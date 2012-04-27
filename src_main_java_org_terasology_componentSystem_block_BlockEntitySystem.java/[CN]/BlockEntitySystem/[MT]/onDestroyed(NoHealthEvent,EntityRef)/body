@@ -14,7 +14,8 @@
       entity.removeComponent(HealthComponent.class);
       entity.removeComponent(BlockComponent.class);
     }
-    if (!inventorySystem.addItem(event.getInstigator(),item)) {
+    event.getInstigator().send(new ReceiveItemEvent(item));
+    if (!item.getComponent(ItemComponent.class).container.exists()) {
       item.destroy();
       CoreRegistry.get(BulletPhysicsRenderer.class).addLootableBlocks(blockComp.getPosition().toVector3f(),oldBlock);
     }
