@@ -1,6 +1,15 @@
 {
   Terasology.getInstance().getLogger().log(Level.INFO,"Groovy console about to execute command: " + consoleString);
   consoleString=consoleString.trim();
+  if (consoleString.startsWith("help")) {
+    try {
+      getHelp(consoleString);
+    }
+ catch (    Exception e) {
+      e.printStackTrace();
+    }
+    return 2;
+  }
   if (!(consoleString.startsWith("cmd.") || consoleString.startsWith("cfg."))) {
     consoleString="cmd." + consoleString;
   }
@@ -14,10 +23,13 @@
     if (result != null) {
       logger.log(Level.INFO,"Result [" + result + "] from '"+ consoleString+ "'");
     }
-    return true;
+    if (consoleString.contains("writeHelp")) {
+      return 2;
+    }
+    return 1;
   }
  catch (  Exception e) {
     e.printStackTrace();
-    return false;
+    return 0;
   }
 }

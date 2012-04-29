@@ -1,0 +1,31 @@
+{
+  String[] split=commandstring.split(" ");
+  IGameState state=Terasology.getInstance().getCurrentGameState();
+  UIDebugConsole _console;
+  if (state instanceof StateSinglePlayer) {
+    StateSinglePlayer spState=(StateSinglePlayer)state;
+    _console=spState.getHud().getDebugConsole();
+  }
+ else {
+    return;
+  }
+  if (split.length > 1) {
+    if (split[1].equals("commandList")) {
+      GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
+      Object[] commandlist=groovyhelpmanager.getCommandList().toArray();
+      String retval="Available commands :\n";
+      for (int i=0; i < commandlist.length; i++) {
+        retval+="     " + commandlist[i].toString();
+      }
+      _console.setHelpText(retval);
+    }
+    GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
+    if (groovyhelpmanager.getCommandList().contains(split[1])) {
+      GroovyHelp groovyhelp=groovyhelpmanager.readCommandHelp(split[1]);
+      _console.setHelpText(groovyhelp);
+    }
+  }
+ else {
+    _console.setHelpText("Type 'help commandList' to see a list of commands\nType 'help <command>' to see command specific help");
+  }
+}

@@ -1,0 +1,23 @@
+{
+  try {
+    groovyhelp.setCommandName("giveBlock");
+    String[] strings={"blockNbr","blockName","quantity"};
+    groovyhelp.setParameters(strings);
+    groovyhelp.setCommandDesc("Adds blocks of the given blockNbr or blockName to your inventory");
+    groovyhelp.setCommandHelp("test");
+    String[] strings2={"'giveBlock Water' Gives 16 water blocks","'giveBlock IronPyrites, 42' Gives 42 Iron Pyrite (Fool's Gold) blocks","'giveBlock Chest' Gives you a Chest block you can place, activate ('E'), put stuff in, destroy, pick up, place elsewhere, find same stuff in it!"};
+    groovyhelp.setExamples(strings2);
+    Gson gson=new Gson();
+    String test=gson.toJson(groovyhelp,groovyhelp.getClass());
+    UIDebugConsole _console=singlePlayer.getHud().getDebugConsole();
+    _console.setHelpText(groovyhelp);
+    JsonWriter writer=new JsonWriter(new FileWriter(".\\data\\help\\commands\\commands.json"));
+    writer.beginArray();
+    gson.toJson(groovyhelp,groovyhelp.getClass(),writer);
+    writer.endArray();
+    writer.close();
+  }
+ catch (  Exception e) {
+    e.printStackTrace();
+  }
+}
