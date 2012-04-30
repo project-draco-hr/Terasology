@@ -1,0 +1,54 @@
+{
+  String wrappedtext="";
+  int linecounter=0;
+  String[] parts=towrap.split(newLine);
+  int width=Display.getWidth() - 8;
+  int charCount=(int)(width / 7);
+  for (int i=0; i < parts.length; i++) {
+    if (parts[i].length() > charCount) {
+      int endpoint=charCount;
+      int beginpoint=0;
+      while (endpoint > beginpoint) {
+        for (int j=endpoint; j > beginpoint; j--) {
+          Character ch=parts[i].charAt(j);
+          if (Character.isSpaceChar(ch)) {
+            endpoint=j;
+            break;
+          }
+ else {
+switch (ch) {
+case '.':
+case '?':
+case ';':
+case ':':
+case '\t':
+case '!':
+              endpoint=j;
+            break;
+        }
+      }
+    }
+    wrappedtext+=parts[i].substring(beginpoint,endpoint) + newLine;
+    linecounter++;
+    beginpoint=endpoint + 1;
+    endpoint=beginpoint + charCount;
+    if (endpoint > parts[i].length() - 1) {
+      wrappedtext+=parts[i].substring(beginpoint,parts[i].length() - 1) + newLine;
+      linecounter++;
+      endpoint=-1;
+    }
+    if (linecounter == 40) {
+      return wrappedtext;
+    }
+  }
+}
+ else {
+  wrappedtext+=parts[i] + newLine;
+  linecounter++;
+  if (linecounter == 40) {
+    return wrappedtext;
+  }
+}
+}
+return wrappedtext;
+}

@@ -13,9 +13,9 @@
     if (split[1].equals("commandList")) {
       GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
       Object[] commandlist=groovyhelpmanager.getCommandList().toArray();
-      String retval="Available commands :\n";
+      String retval="Available commands :" + newLine + newLine;
       for (int i=0; i < commandlist.length; i++) {
-        retval+="     " + commandlist[i].toString();
+        retval+=commandlist[i].toString() + newLine;
       }
       _console.setHelpText(retval);
     }
@@ -26,6 +26,6 @@
     }
   }
  else {
-    _console.setHelpText("Type 'help commandList' to see a list of commands\nType 'help <command>' to see command specific help");
+    _console.showHelp();
   }
 }

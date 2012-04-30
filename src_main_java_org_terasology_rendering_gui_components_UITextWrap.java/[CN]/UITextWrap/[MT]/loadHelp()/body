@@ -1,0 +1,11 @@
+{
+  Gson gson=new Gson();
+  JsonReader reader=new JsonReader(new FileReader(".\\data\\console\\help.json"));
+  reader.beginArray();
+  _text="";
+  while (reader.hasNext()) {
+    _text+=gson.fromJson(reader,String.class) + newLine;
+  }
+  reader.endArray();
+  reader.close();
+}

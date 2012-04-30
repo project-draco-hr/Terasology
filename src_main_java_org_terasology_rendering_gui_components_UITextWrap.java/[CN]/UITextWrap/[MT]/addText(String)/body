@@ -1,0 +1,57 @@
+{
+  String wrappedtext="";
+  int linecounter=0;
+  String[] parts=addtext.split(newLine);
+  ArrayList<String> finaltext=new ArrayList<String>();
+  int width=Display.getWidth() - 8;
+  int charCount=(int)(width / 7);
+  for (int i=0; i < parts.length; i++) {
+    if (parts[i].length() > charCount) {
+      int endpoint=charCount;
+      int beginpoint=0;
+      while (endpoint > beginpoint) {
+        for (int j=endpoint; j > beginpoint; j--) {
+          Character ch=parts[i].charAt(j);
+          if (Character.isSpaceChar(ch)) {
+            endpoint=j;
+            break;
+          }
+ else {
+switch (ch) {
+case '.':
+case '?':
+case ';':
+case ':':
+case '\t':
+case '!':
+              endpoint=j;
+            break;
+        }
+      }
+    }
+    finaltext.add(parts[i].substring(beginpoint,endpoint) + newLine);
+    linecounter++;
+    beginpoint=endpoint + 1;
+    endpoint=beginpoint + charCount;
+    if (endpoint > parts[i].length() - 1) {
+      finaltext.add(parts[i].substring(beginpoint,parts[i].length() - 1) + newLine);
+      linecounter++;
+      endpoint=-1;
+    }
+  }
+}
+ else {
+  finaltext.add(parts[i] + newLine);
+  linecounter++;
+}
+}
+Gson gson=new Gson();
+JsonWriter writer=new JsonWriter(new FileWriter(".\\data\\console\\consolelog.json"));
+writer.beginArray();
+Iterator e=finaltext.iterator();
+while (e.hasNext()) {
+gson.toJson(e.next(),String.class,writer);
+}
+writer.endArray();
+writer.close();
+}

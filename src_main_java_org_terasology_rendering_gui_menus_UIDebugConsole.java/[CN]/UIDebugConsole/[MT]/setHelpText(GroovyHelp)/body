@@ -1,18 +1,21 @@
 {
-  _helpContent=groovyhelp.getCommandName() + " : " + groovyhelp.getCommandDesc()+ "\n";
+  String tempstring="";
+  tempstring+=groovyhelp.getCommandName() + " : " + groovyhelp.getCommandDesc()+ newLine;
   if (groovyhelp.getParameters().length > 0) {
-    String parameters="accepted parameters :\n";
+    String parameters="accepted parameters :" + newLine;
     for (int i=0; i < groovyhelp.getParameters().length; i++) {
-      parameters+=groovyhelp.getParameters()[i] + "\n";
+      parameters+=groovyhelp.getParameters()[i] + newLine;
     }
-    _helpContent+=parameters + "\n";
+    tempstring+=parameters + newLine;
   }
-  _helpContent+="detailed help : " + groovyhelp.getCommandHelp() + "\n";
+  tempstring+="detailed help : " + groovyhelp.getCommandHelp() + newLine;
   if (groovyhelp.getExamples().length > 0) {
-    String examples="Example(s) : \n";
+    String examples="Example(s) :" + newLine;
     for (int i=0; i < groovyhelp.getExamples().length; i++) {
-      examples+=groovyhelp.getExamples()[i] + "\n";
+      examples+=groovyhelp.getExamples()[i] + newLine;
     }
-    _helpContent+=examples + "\n";
+    tempstring+=examples + newLine;
+    _helpText.addText(tempstring);
+    _helpText.loadText();
   }
 }
