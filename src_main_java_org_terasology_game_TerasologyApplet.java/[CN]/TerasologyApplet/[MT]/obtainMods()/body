@@ -1,0 +1,26 @@
+{
+  String[] mods=getParameter("mods").split(",");
+  int rootPathIndex=getDocumentBase().toString().lastIndexOf('/');
+  String path=getDocumentBase().toString().substring(0,rootPathIndex + 1) + "mods/";
+  for (  String mod : mods) {
+    try {
+      URL url=new URL(path + mod);
+      ReadableByteChannel rbc=Channels.newChannel(url.openStream());
+      FileOutputStream fos=new FileOutputStream(new File(PathManager.getInstance().getModPath(),mod));
+      long readBytes=fos.getChannel().transferFrom(rbc,0,1 << 24);
+      while (readBytes == 1 << 24) {
+        readBytes=fos.getChannel().transferFrom(rbc,0,1 << 24);
+      }
+      fos.close();
+    }
+ catch (    MalformedURLException e) {
+      Logger.getLogger(TerasologyApplet.class.getName()).log(Level.SEVERE,"Unable to obtain mod '" + mod + "'",e);
+    }
+catch (    FileNotFoundException e) {
+      Logger.getLogger(TerasologyApplet.class.getName()).log(Level.SEVERE,"Unable to obtain mod '" + mod + "'",e);
+    }
+catch (    IOException e) {
+      Logger.getLogger(TerasologyApplet.class.getName()).log(Level.SEVERE,"Unable to obtain mod '" + mod + "'",e);
+    }
+  }
+}

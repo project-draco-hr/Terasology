@@ -1,10 +1,8 @@
 {
   ZipFile archive;
-  String archiveType="zip";
   String basePath="";
   if (file.getName().endsWith(".jar")) {
     archive=new JarFile(file,false);
-    archiveType="jar";
     basePath="org/terasology/data/";
   }
  else {
@@ -16,7 +14,7 @@
     String entryPath=entry.getName();
     if (entryPath.startsWith(basePath)) {
       String key=entryPath.substring(basePath.length());
-      URL url=new URL(archiveType + ":file:" + file.getAbsolutePath()+ "!/"+ entryPath);
+      URL url=new URL("jar:file:" + file.getAbsolutePath() + "!/"+ entryPath);
       AssetUri uri=getUri(key);
       if (uri != null) {
         addItem(uri,url);
