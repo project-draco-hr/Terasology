@@ -1,17 +1,19 @@
 {
-  int success=0;
+  boolean success=false;
   _helpText.resetScroll();
   try {
-    success=Terasology.getInstance().getGroovyManager().runGroovyShell(_consoleInput.toString());
+    if (_consoleInput.toString().startsWith("help")) {
+      getHelp(_consoleInput.toString());
+      return;
+    }
+ else {
+      success=Terasology.getInstance().getGroovyManager().runGroovyShell(_consoleInput.toString());
+    }
   }
  catch (  Exception e) {
     Terasology.getInstance().getLogger().log(Level.INFO,e.getMessage());
   }
-  if (success > 1) {
-    _consoleText.setText("");
-    return;
-  }
-  if (success > 0) {
+  if (success) {
     Terasology.getInstance().initOpenGLParams();
     Terasology.getInstance().getLogger().log(Level.INFO,"Console command \"{0}\" accepted.",_consoleInput);
     addToRingBuffer();
@@ -19,7 +21,12 @@
     setVisible(false);
   }
  else {
-    _helpContent="error : Type help for help, help <command> for command specific help";
+    try {
+      _helpText.loadError();
+    }
+ catch (    Exception e) {
+      e.printStackTrace();
+    }
     Terasology.getInstance().getLogger().log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
   }
 }
