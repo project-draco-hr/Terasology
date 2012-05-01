@@ -19,7 +19,27 @@ catch (        JsonIOException e) {
         }
       }
     }
- else {
+ else     if (modFile.isFile() && modFile.getName().endsWith(".zip")) {
+      try {
+        ZipFile zipFile=new ZipFile(modFile);
+        ZipEntry modInfoEntry=zipFile.getEntry("mod.txt");
+        if (modInfoEntry != null) {
+          try {
+            ModInfo modInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry)),ModInfo.class);
+            mods.put(modInfo.getId(),new Mod(modFile,modInfo,new ArchiveSource(modInfo.getId(),modFile)));
+            logger.info("Discovered mod: " + modInfo.getDisplayName());
+          }
+ catch (          FileNotFoundException e) {
+            logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+          }
+catch (          JsonIOException e) {
+            logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+          }
+        }
+      }
+ catch (      IOException e) {
+        logger.log(Level.SEVERE,"Invalid mod file: " + modFile,e);
+      }
     }
   }
   for (  String activeModId : Config.getInstance().getActiveMods()) {

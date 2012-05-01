@@ -1,0 +1,11 @@
+{
+  EventHandlerInfo info=new ReceiverEventHandlerInfo<T>(eventReceiver,priority,componentTypes);
+  for (  Class<? extends Component> c : componentTypes) {
+    Multimap<Class<? extends Component>,EventHandlerInfo> componentMap=componentSpecificHandlers.get(eventClass);
+    if (componentMap == null) {
+      componentMap=HashMultimap.create();
+      componentSpecificHandlers.put(eventClass,componentMap);
+    }
+    componentMap.put(c,info);
+  }
+}

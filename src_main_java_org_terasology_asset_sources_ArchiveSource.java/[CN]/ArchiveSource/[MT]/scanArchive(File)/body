@@ -1,0 +1,26 @@
+{
+  ZipFile archive;
+  String archiveType="zip";
+  String basePath="";
+  if (file.getName().endsWith(".jar")) {
+    archive=new JarFile(file,false);
+    archiveType="jar";
+    basePath="org/terasology/data/";
+  }
+ else {
+    archive=new ZipFile(file);
+  }
+  Enumeration<? extends ZipEntry> lister=archive.entries();
+  while (lister.hasMoreElements()) {
+    ZipEntry entry=lister.nextElement();
+    String entryPath=entry.getName();
+    if (entryPath.startsWith(basePath)) {
+      String key=entryPath.substring(basePath.length());
+      URL url=new URL(archiveType + ":file:" + file.getAbsolutePath()+ "!/"+ entryPath);
+      AssetUri uri=getUri(key);
+      if (uri != null) {
+        addItem(uri,url);
+      }
+    }
+  }
+}

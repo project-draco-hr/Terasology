@@ -14,7 +14,9 @@
   List<EventHandlerInfo> selectedHandlers=Lists.newArrayList(selectedHandlersSet);
   Collections.sort(selectedHandlers,priorityComparator);
   for (  EventHandlerInfo handler : selectedHandlers) {
-    handler.invoke(entity,event);
-    if (event.isCancelled())     return;
+    if (handler.isValidFor(entity)) {
+      handler.invoke(entity,event);
+      if (event.isCancelled())       return;
+    }
   }
 }

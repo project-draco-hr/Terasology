@@ -1,0 +1,17 @@
+{
+  File dirPath=PathManager.getInstance().getLogPath();
+  if (!dirPath.exists()) {
+    if (!dirPath.mkdirs()) {
+      return;
+    }
+  }
+  try {
+    FileHandler fh=new FileHandler(new File(dirPath,"Terasology.log").getAbsolutePath(),true);
+    fh.setLevel(Level.INFO);
+    fh.setFormatter(new SimpleFormatter());
+    Logger.getLogger("").addHandler(fh);
+  }
+ catch (  IOException ex) {
+    logger.log(Level.WARNING,ex.toString(),ex);
+  }
+}
