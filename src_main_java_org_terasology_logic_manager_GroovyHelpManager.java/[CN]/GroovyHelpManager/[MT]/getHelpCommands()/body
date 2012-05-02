@@ -1,0 +1,13 @@
+{
+  HashMap<String,String> commandlist=new HashMap<String,String>();
+  Gson gson=new Gson();
+  JsonReader reader=new JsonReader(new FileReader(".\\data\\help\\commands\\commands.json"));
+  reader.beginArray();
+  while (reader.hasNext()) {
+    groovyhelp=gson.fromJson(reader,GroovyHelp.class);
+    commandlist.put(groovyhelp.getCommandName(),groovyhelp.getCommandDesc());
+  }
+  reader.endArray();
+  reader.close();
+  return commandlist;
+}

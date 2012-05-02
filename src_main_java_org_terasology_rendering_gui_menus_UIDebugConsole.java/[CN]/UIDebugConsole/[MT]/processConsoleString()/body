@@ -1,7 +1,14 @@
 {
   boolean success=false;
+  _helpText.resetScroll();
   try {
-    success=CoreRegistry.get(GroovyManager.class).runGroovyShell(_consoleInput.toString());
+    if (_consoleInput.toString().startsWith("help")) {
+      getHelp(_consoleInput.toString());
+      return;
+    }
+ else {
+      success=CoreRegistry.get(GroovyManager.class).runGroovyShell(_consoleInput.toString());
+    }
   }
  catch (  Exception e) {
     logger.log(Level.INFO,e.getMessage());
@@ -13,6 +20,12 @@
     setVisible(false);
   }
  else {
+    try {
+      _helpText.loadError();
+    }
+ catch (    Exception e) {
+      e.printStackTrace();
+    }
     logger.log(Level.WARNING,"Console command \"{0}\" is invalid.",_consoleInput);
   }
 }

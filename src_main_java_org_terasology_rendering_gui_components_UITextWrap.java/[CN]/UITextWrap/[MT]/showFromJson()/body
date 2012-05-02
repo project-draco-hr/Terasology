@@ -1,0 +1,31 @@
+{
+  int maxlines=getLineCount();
+  int screenlines=getScreenLines();
+  long beginpos, endpos, counter;
+  if (screenlines + currentpos > maxlines) {
+    beginpos=-1;
+  }
+ else {
+    beginpos=maxlines - (screenlines + currentpos) + 1;
+  }
+  endpos=beginpos + screenlines;
+  if (endpos > maxlines) {
+    endpos=maxlines + 1;
+  }
+  counter=0;
+  Gson gson=new Gson();
+  JsonReader reader=new JsonReader(new FileReader(".\\data\\console\\consolelog.json"));
+  reader.beginArray();
+  _text="";
+  while (reader.hasNext()) {
+    if (counter > beginpos && counter < endpos) {
+      _text+=gson.fromJson(reader,String.class);
+    }
+ else {
+      gson.fromJson(reader,String.class);
+    }
+    counter++;
+  }
+  reader.endArray();
+  reader.close();
+}

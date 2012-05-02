@@ -1,0 +1,40 @@
+{
+  String[] split=commandstring.split(" ");
+  if (split.length > 1) {
+    if (split[1].equals("commandList")) {
+      GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
+      HashMap<String,String> commandhelp=groovyhelpmanager.getHelpCommands();
+      String[] commandlist=groovyhelpmanager.getGroovyCommands();
+      String retval="Available commands :" + newLine + newLine;
+      for (int i=0; i < commandlist.length; i++) {
+        if (commandhelp.containsKey(commandlist[i])) {
+          retval+=commandlist[i].toString() + " \t: " + commandhelp.get(commandlist[i]).toString()+ newLine;
+        }
+ else {
+          retval+=commandlist[i].toString() + " : undocumented" + newLine;
+        }
+      }
+      setHelpText(retval);
+      return;
+    }
+    GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
+    if (groovyhelpmanager.getHelpCommands().containsKey(split[1])) {
+      GroovyHelp groovyhelp=groovyhelpmanager.readCommandHelp(split[1]);
+      setHelpText(groovyhelp);
+      return;
+    }
+    if (split[1].equals("blockList")) {
+      String tempval="";
+      HashMap<Byte,String> blocks=groovyhelpmanager.getGroovyBlocks();
+      for (byte i=0; i < blocks.size(); i++) {
+        tempval+="blockName = " + blocks.get(i) + ", blockNbr = "+ i+ newLine;
+      }
+      setHelpText(tempval);
+      return;
+    }
+    showError();
+  }
+ else {
+    showHelp();
+  }
+}

@@ -1,0 +1,21 @@
+{
+  String tempstring="";
+  tempstring+=groovyhelp.getCommandName() + " : " + groovyhelp.getCommandDesc()+ newLine;
+  if (groovyhelp.getParameters().length > 0) {
+    String parameters="accepted parameters :" + newLine;
+    for (int i=0; i < groovyhelp.getParameters().length; i++) {
+      parameters+=groovyhelp.getParameters()[i] + newLine;
+    }
+    tempstring+=parameters + newLine;
+  }
+  tempstring+="detailed help : " + groovyhelp.getCommandHelp() + newLine;
+  if (groovyhelp.getExamples().length > 0) {
+    String examples="Example(s) :" + newLine;
+    for (int i=0; i < groovyhelp.getExamples().length; i++) {
+      examples+=groovyhelp.getExamples()[i] + newLine;
+    }
+    tempstring+=examples + newLine;
+    _helpText.addText(tempstring);
+    _helpText.showFromJson();
+  }
+}
