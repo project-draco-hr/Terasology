@@ -1,13 +1,11 @@
-def save(operator, context, filepath='', apply_modifiers=True, for_embed=False):
+def save(operator, context, filepath='', apply_modifiers=True):
     scene = context.scene
     file = open(filepath, 'w', encoding='utf8', newline='\n')
     fw = file.write
-    if for_embed:
-        fw('package org.terasology.data.shapes\n\n')
-    fw('shape {\n')
-    fw(('\tauthor = "%s"\n' % scene.teraAuthor))
+    fw('{\n')
+    fw(('\t"author" : "%s",\n' % scene.teraAuthor))
     now = datetime.datetime.now()
-    fw(('\texportDate = "%s"\n' % '{:%Y-%m-%d %H:%M:%S}'.format(now)))
+    fw(('\t"exportDate" : "%s"' % '{:%Y-%m-%d %H:%M:%S}'.format(now)))
     bpy.ops.object.mode_set(mode='OBJECT')
     parts = ['Center', 'Top', 'Bottom', 'Front', 'Back', 'Left', 'Right']
     for part in parts:
@@ -20,14 +18,14 @@ def save(operator, context, filepath='', apply_modifiers=True, for_embed=False):
         for object in bpy.data.objects:
             if object.teraAABB:
                 if first:
-                    fw('\tColliders = [\n')
+                    fw(',\n\t"colliders" : [\n')
                     first = False
                 else:
                     fw(',\n')
                 writeCollider(object, fw, scene)
         if (not first):
-            fw('\n\t]\n')
-    fw('}\n')
+            fw('\n\t]')
+    fw('\n}\n')
     file.close()
     print ('saving complete: %r ' % filepath)
     return {'FINISHED'}

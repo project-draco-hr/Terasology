@@ -1,9 +1,9 @@
 {
-  Vector3f[] newVertices=new Vector3f[_vertices.length];
-  Vector3f[] newNormals=new Vector3f[_normals.length];
+  Vector3f[] newVertices=new Vector3f[vertices.length];
+  Vector3f[] newNormals=new Vector3f[normals.length];
   for (int i=0; i < newVertices.length; ++i) {
-    newVertices[i]=QuaternionUtil.quatRotate(rotation,_vertices[i],new Vector3f());
-    newNormals[i]=QuaternionUtil.quatRotate(rotation,_normals[i],new Vector3f());
+    newVertices[i]=QuaternionUtil.quatRotate(rotation,vertices[i],new Vector3f());
+    newNormals[i]=QuaternionUtil.quatRotate(rotation,normals[i],new Vector3f());
   }
-  return new BlockMeshPart(newVertices,newNormals,_texCoords,_indices);
+  return new BlockMeshPart(newVertices,newNormals,texCoords,indices);
 }

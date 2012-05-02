@@ -25,32 +25,32 @@ def writeMeshPart(name, obj, fw, scene, apply_modifiers):
             uvs = (uvtemp[0], (1.0 - uvtemp[1]))
             processedFaces[i].append(len(processedVerts))
             processedVerts.append((vert, normal, uvs))
-    fw(('\t%s {\n' % name))
-    fw('\t\tvertices = [')
+    fw((',\n\t"%s" : {\n' % name.lower()))
+    fw('\t\t"vertices" : [')
     first = True
     for (i, v) in enumerate(processedVerts):
         if (not first):
             fw(', ')
         fw(('[%.6f, %.6f, %.6f]' % convertVec3d(v[0].co)))
         first = False
-    fw(']\n')
-    fw('\t\tnormals = [')
+    fw('],\n')
+    fw('\t\t"normals" : [')
     first = True
     for (i, v) in enumerate(processedVerts):
         if (not first):
             fw(', ')
         fw(('[%.6f, %.6f, %.6f]' % convertVec3d(v[1])))
         first = False
-    fw(']\n')
-    fw('\t\ttexcoords = [')
+    fw('],\n')
+    fw('\t\t"texcoords" : [')
     first = True
     for (i, v) in enumerate(processedVerts):
         if (not first):
             fw(', ')
         fw(('[%.6f, %.6f]' % v[2]))
         first = False
-    fw(']\n')
-    fw('\t\tfaces = [\n')
+    fw('],\n')
+    fw('\t\t"faces" : [\n')
     firstFace = True
     for face in processedFaces:
         if (not firstFace):
@@ -64,14 +64,14 @@ def writeMeshPart(name, obj, fw, scene, apply_modifiers):
             first = False
         fw(']')
         firstFace = False
-    fw('\n\t\t]\n')
+    fw('\n\t\t],\n')
     if ('teraFullSide' in obj):
         if obj.teraFullSide:
-            fw('\t\tfullSide = true\n')
+            fw('\t\t"fullSide" : true\n')
         else:
-            fw('\t\tfullSide = false\n')
+            fw('\t\t"fullSide" : false\n')
     else:
-        fw('\t\tfullSide = false\n')
-    fw('\t}\n')
+        fw('\t\t"fullSide" : false\n')
+    fw('\t}')
     if apply_modifiers:
         bpy.data.meshes.remove(mesh)

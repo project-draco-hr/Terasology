@@ -1,0 +1,35 @@
+{
+  BlockShape shape=new BlockShape(currentShapeName);
+  JsonObject shapeObj=json.getAsJsonObject();
+  if (shapeObj.has("center")) {
+    shape.setCenterMesh((BlockMeshPart)context.deserialize(shapeObj.get("center"),BlockMeshPart.class));
+  }
+  for (  Side side : Side.values()) {
+    if (shapeObj.has(side.toString().toLowerCase(Locale.ENGLISH))) {
+      JsonObject sideMeshObj=shapeObj.getAsJsonObject(side.toString().toLowerCase(Locale.ENGLISH));
+      shape.setSideMesh(side,(BlockMeshPart)context.deserialize(sideMeshObj,BlockMeshPart.class));
+      if (sideMeshObj.has("fullSide")) {
+        shape.setBlockingSide(side,sideMeshObj.get("fullSide").getAsBoolean());
+      }
+    }
+  }
+  List<AABB> colliders=Lists.newArrayList();
+  if (shapeObj.has("colliders") && shapeObj.get("colliders").isJsonArray()) {
+    JsonArray colliderArray=shapeObj.get("colliders").getAsJsonArray();
+    for (    JsonElement item : colliderArray) {
+      if (item.isJsonObject()) {
+        JsonObject collider=item.getAsJsonObject();
+        Vector3f pos=context.deserialize(collider.get("position"),Vector3f.class);
+        Vector3f extent=context.deserialize(collider.get("extents"),Vector3f.class);
+        if (pos == null)         throw new JsonParseException("Collider missing position");
+        if (extent == null)         throw new JsonParseException("Collider missing extents");
+        colliders.add(new AABB(pos,extent));
+      }
+    }
+  }
+ else {
+    colliders.add(new AABB(new Vector3f(),new Vector3f(0.5f,0.5f,0.5f)));
+  }
+  shape.setColliders(colliders);
+  return shape;
+}
