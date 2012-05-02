@@ -6,7 +6,7 @@
       BufferedReader reader=new BufferedReader(new InputStreamReader(AssetManager.assetStream(prefabURI)));
       EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
       if (prefabData != null) {
-        persisterHelper.deserializePrefab(prefabData);
+        persisterHelper.deserializePrefab(prefabData,prefabURI.getPackage());
       }
     }
  catch (    IOException e) {

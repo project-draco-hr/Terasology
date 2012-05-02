@@ -1,7 +1,8 @@
 {
-  if (prefabTable.containsKey(prefab.getName())) {
+  String normalisedName=normalizeName(prefab.getName());
+  if (prefabTable.containsKey(normalisedName)) {
     throw new IllegalArgumentException("Prefab '" + prefab.getName() + "' already registered!");
   }
-  prefabTable.put(prefab.getName(),prefab);
+  prefabTable.put(normalisedName,prefab);
   return prefab;
 }

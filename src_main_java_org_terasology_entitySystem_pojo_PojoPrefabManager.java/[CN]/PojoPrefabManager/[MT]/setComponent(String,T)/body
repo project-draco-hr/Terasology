@@ -2,5 +2,6 @@
   if (!exists(name)) {
     throw new IllegalArgumentException("No prefab exists with name: " + name);
   }
-  return getPrefab(name).setComponent(component);
+  String normalisedName=normalizeName(name);
+  return getPrefab(normalisedName).setComponent(component);
 }
