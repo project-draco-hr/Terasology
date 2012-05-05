@@ -1,0 +1,40 @@
+{
+  if (!uri.isValid())   return null;
+  Asset asset=assetCache.get(uri);
+  if (asset != null)   return asset;
+  URL url=getAsset(uri);
+  if (url == null) {
+    logger.log(Level.WARNING,"Unable to resolve asset: " + uri);
+    return null;
+  }
+  int extensionIndex=url.toString().lastIndexOf('.');
+  if (extensionIndex == -1)   return null;
+  String extension=url.toString().substring(extensionIndex + 1).toLowerCase(Locale.ENGLISH);
+  Map<String,AssetLoader> extensionMap=assetLoaders.get(uri.getAssetType());
+  if (extensionMap == null)   return null;
+  AssetLoader loader=extensionMap.get(extension);
+  if (loader == null)   return null;
+  InputStream stream=null;
+  try {
+    stream=url.openStream();
+    asset=loader.load(stream,uri,url);
+    if (asset != null) {
+      assetCache.put(uri,asset);
+    }
+    return asset;
+  }
+ catch (  IOException ioe) {
+    logger.log(Level.SEVERE,"Error reading asset " + uri,ioe);
+    return null;
+  }
+ finally {
+    if (stream != null) {
+      try {
+        stream.close();
+      }
+ catch (      IOException innerException) {
+        logger.log(Level.SEVERE,"Error closing stream for " + uri,innerException);
+      }
+    }
+  }
+}
