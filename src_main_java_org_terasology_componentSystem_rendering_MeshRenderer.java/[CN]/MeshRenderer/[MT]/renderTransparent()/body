@@ -1,9 +1,10 @@
 {
   Vector3d cameraPosition=worldRenderer.getActiveCamera().getPosition();
   for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
+    MeshComponent meshComp=entity.getComponent(MeshComponent.class);
+    if (meshComp.renderType == MeshComponent.RenderType.Normal)     continue;
     AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
     LocationComponent location=entity.getComponent(LocationComponent.class);
-    MeshComponent meshComp=entity.getComponent(MeshComponent.class);
     Vector3f worldPos=location.getWorldPosition();
     Vector3d extents=new Vector3d(collision.getExtents());
     float worldScale=location.getWorldScale();
