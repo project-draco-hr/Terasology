@@ -2,7 +2,7 @@
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
   shader.enable();
   shader.setFloat("light",worldRenderer.getRenderingLightValue());
-  TextureManager.getInstance().bindTexture("char");
+  glBindTexture(GL11.GL_TEXTURE_2D,handTex.getId());
   glPushMatrix();
   glTranslatef(0.8f,-0.8f + bobOffset - handMovementAnimationOffset * 0.5f,-1.0f - handMovementAnimationOffset * 0.5f);
   glRotatef(-45f - handMovementAnimationOffset * 64.0f,1.0f,0.0f,0.0f);
