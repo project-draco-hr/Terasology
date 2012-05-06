@@ -1,6 +1,7 @@
 {
+  if (effectsTexture == null)   return;
   ShaderManager.getInstance().enableDefaultTextured();
-  TextureManager.getInstance().bindTexture("effects");
+  glBindTexture(GL11.GL_TEXTURE_2D,effectsTexture.getId());
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_DST_COLOR,GL_ZERO);
   Vector3d cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();

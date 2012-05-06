@@ -1,12 +1,13 @@
 {
   CoreRegistry.put(GroovyManager.class,new GroovyManager());
-  ShaderManager.getInstance();
-  VertexBufferObjectManager.getInstance();
-  FontManager.getInstance();
   AssetManager.getInstance().register(AssetType.MESH,"obj",new ObjMeshLoader());
   AssetManager.getInstance().register(AssetType.MUSIC,"ogg",new OggStreamingSoundLoader());
   AssetManager.getInstance().register(AssetType.SOUND,"ogg",new OggSoundLoader());
+  AssetManager.getInstance().register(AssetType.TEXTURE,"png",new PNGTextureLoader());
   AssetManager.getInstance().addAssetSource(new ClasspathSource("engine",getClass().getProtectionDomain().getCodeSource(),"org/terasology/data"));
   BlockShapeManager.getInstance().reload();
   BlockManager.getInstance();
+  ShaderManager.getInstance();
+  VertexBufferObjectManager.getInstance();
+  FontManager.getInstance();
 }
