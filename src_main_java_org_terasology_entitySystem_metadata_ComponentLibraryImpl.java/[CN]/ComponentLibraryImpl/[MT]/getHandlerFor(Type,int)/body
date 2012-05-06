@@ -38,11 +38,18 @@
  else   if (typeHandlers.containsKey(typeClass)) {
     return typeHandlers.get(typeClass);
   }
- else   if (depth <= MAX_SERIALIZATION_DEPTH && !typeClass.isLocalClass() && !(typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
+ else   if (depth <= MAX_SERIALIZATION_DEPTH && !Modifier.isAbstract(typeClass.getModifiers()) && !typeClass.isLocalClass() && !(typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
+    try {
+      Constructor constructor=typeClass.getConstructor();
+    }
+ catch (    NoSuchMethodException e) {
+      logger.log(Level.SEVERE,String.format("Unable to register field of type %s: no publicly accessible default constructor",typeClass.getSimpleName()));
+      return null;
+    }
     logger.log(Level.WARNING,"Handling serialization of type " + typeClass + " via MappedContainer");
     MappedContainerTypeHandler mappedHandler=new MappedContainerTypeHandler(typeClass);
     for (    Field field : typeClass.getDeclaredFields()) {
-      if (Modifier.isTransient(field.getModifiers()))       continue;
+      if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers()))       continue;
       field.setAccessible(true);
       TypeHandler handler=getHandlerFor(field.getGenericType(),depth + 1);
       if (handler == null) {
