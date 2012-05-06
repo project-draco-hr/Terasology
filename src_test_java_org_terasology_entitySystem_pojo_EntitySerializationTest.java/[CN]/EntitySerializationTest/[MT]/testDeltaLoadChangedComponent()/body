@@ -4,6 +4,7 @@
   EntityRef entity=entityManager.create("Test");
   entity.getComponent(StringComponent.class).value="Delta";
   EntityData.Entity entityData=entityPersisterHelper.serializeEntity(entity);
+  entityManager.clear();
   EntityRef loadedEntity=entityPersisterHelper.deserializeEntity(entityData);
   assertTrue(loadedEntity.exists());
   assertTrue(loadedEntity.hasComponent(StringComponent.class));
