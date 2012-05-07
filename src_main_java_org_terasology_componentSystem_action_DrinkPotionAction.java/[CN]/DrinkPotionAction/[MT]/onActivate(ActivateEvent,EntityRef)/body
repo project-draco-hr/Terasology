@@ -1,0 +1,10 @@
+{
+  potion=entity.getComponent(PotionComponent.class);
+  HealthComponent health=event.getTarget().getComponent(HealthComponent.class);
+  if (potion.type.equals(PotionComponent.PotionType.Red) && health != null) {
+    health.currentHealth=health.maxHealth;
+    event.getTarget().saveComponent(health);
+    _logger.log(Level.SEVERE,"It does read the complete action");
+  }
+  _logger.log(Level.WARNING,"RECEIVED DRINK POTION");
+}
