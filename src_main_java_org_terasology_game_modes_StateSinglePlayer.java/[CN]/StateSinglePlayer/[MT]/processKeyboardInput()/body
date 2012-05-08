@@ -3,26 +3,28 @@
   boolean screenHasFocus=screenHasFocus();
   while (Keyboard.next()) {
     int key=Keyboard.getEventKey();
-    if (!Keyboard.isRepeatEvent() && Keyboard.getEventKeyState()) {
-      if (key == Keyboard.KEY_ESCAPE) {
-        if (GUIManager.getInstance().getFocusedWindow() != null) {
-          GUIManager.getInstance().removeWindow(GUIManager.getInstance().getFocusedWindow());
-        }
+    if (Keyboard.getEventKeyState()) {
+      if (!Keyboard.isRepeatEvent()) {
+        if (key == Keyboard.KEY_ESCAPE) {
+          if (GUIManager.getInstance().getFocusedWindow() != null) {
+            GUIManager.getInstance().removeWindow(GUIManager.getInstance().getFocusedWindow());
+          }
  else {
-          togglePauseMenu();
+            togglePauseMenu();
+          }
         }
-      }
-      if (key == Keyboard.KEY_I) {
-        toggleInventory();
-      }
-      if (key == Keyboard.KEY_F3) {
-        Config.getInstance().setDebug(!Config.getInstance().isDebug());
-      }
-      if (key == Keyboard.KEY_F && !screenHasFocus) {
-        toggleViewingDistance();
-      }
-      if (key == Keyboard.KEY_F12) {
-        _worldRenderer.printScreen();
+        if (key == Keyboard.KEY_I) {
+          toggleInventory();
+        }
+        if (key == Keyboard.KEY_F3) {
+          Config.getInstance().setDebug(!Config.getInstance().isDebug());
+        }
+        if (key == Keyboard.KEY_F && !screenHasFocus) {
+          toggleViewingDistance();
+        }
+        if (key == Keyboard.KEY_F12) {
+          _worldRenderer.printScreen();
+        }
       }
       if (GUIManager.getInstance().getFocusedWindow() != null) {
         GUIManager.getInstance().processKeyboardInput(key);
