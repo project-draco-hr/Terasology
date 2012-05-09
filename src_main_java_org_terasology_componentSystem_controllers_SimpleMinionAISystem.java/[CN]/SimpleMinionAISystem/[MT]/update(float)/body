@@ -1,14 +1,14 @@
 {
-  for (  EntityRef entity : entityManager.iteratorEntities(SimpleMinionAIComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
+  for (  EntityRef entity : entityManager.iteratorEntities(SimpleMinionAIComponent.class,CharacterMovementComponent.class,LocationComponent.class,MinionComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
     SimpleMinionAIComponent ai=entity.getComponent(SimpleMinionAIComponent.class);
     CharacterMovementComponent moveComp=entity.getComponent(CharacterMovementComponent.class);
-    MinionComponent minion=entity.getComponent(MinionComponent.class);
+    MinionComponent minioncomp=entity.getComponent(MinionComponent.class);
     Vector3f worldPos=location.getWorldPosition();
     moveComp.getDrive().set(0,0,0);
     LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
     if (localPlayer != null) {
-switch (minion.minionBehaviour) {
+switch (minioncomp.minionBehaviour) {
 case Follow:
 {
           Vector3f dist=new Vector3f(worldPos);
@@ -16,7 +16,6 @@ case Follow:
           double distanceToPlayer=dist.lengthSquared();
           if (distanceToPlayer > 8) {
             Vector3f target=localPlayer.getPosition();
-            target.x-=2;
             ai.movementTarget.set(target);
             ai.followingPlayer=true;
             entity.saveComponent(ai);
@@ -30,9 +29,19 @@ case Follow:
           location.getLocalRotation().set(axisAngle);
           entity.saveComponent(moveComp);
           entity.saveComponent(location);
+          break;
         }
 case Gather:
 {
+        Vector3f dist=new Vector3f(worldPos);
+        dist.sub(ai.movementTarget);
+        double distanceToTarget=dist.lengthSquared();
+        if (distanceToTarget < 4) {
+          if (timer.getTimeInMs() - time > 1000) {
+            time=timer.getTimeInMs();
+            attack(localPlayer.getEntity(),null,ai.movementTarget,moveComp);
+          }
+        }
         Vector3f targetDirection=new Vector3f();
         targetDirection.sub(ai.movementTarget,worldPos);
         targetDirection.normalize();
@@ -42,6 +51,7 @@ case Gather:
         location.getLocalRotation().set(axisAngle);
         entity.saveComponent(moveComp);
         entity.saveComponent(location);
+        break;
       }
 case Move:
 {
@@ -56,6 +66,7 @@ case Move:
       location.getLocalRotation().set(axisAngle);
       entity.saveComponent(moveComp);
       entity.saveComponent(location);
+      break;
     }
 }
 }
