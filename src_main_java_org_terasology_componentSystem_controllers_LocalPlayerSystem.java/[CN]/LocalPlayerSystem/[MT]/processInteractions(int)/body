@@ -5,20 +5,53 @@
   EntityRef entity=localPlayer.getEntity();
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+  MinionComponent minion=localPlayer.getEntity().getComponent(MinionComponent.class);
   if (localPlayerComp.isDead)   return;
-  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
-  if (Mouse.isButtonDown(0) || button == 0) {
-    ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
-    if (item != null) {
+  if (localPlayerComp.minionMode) {
+    EntityRef selectedMinionEntity=minion.MinionSlots.get(localPlayerComp.selectedMinion);
+    if (Mouse.isButtonDown(1)) {
+      if (selectedMinionEntity != EntityRef.NULL) {
+        selectedMinionEntity.destroy();
+        minion.MinionSlots.set(localPlayerComp.selectedMinion,EntityRef.NULL);
+      }
+    }
+ else {
+      if (Mouse.isButtonDown(0) || button == 0) {
+        GroovyHelpManager helpMan=new GroovyHelpManager();
+        if (selectedMinionEntity == EntityRef.NULL) {
+          helpMan.spawnCube(localPlayerComp.selectedMinion);
+        }
+ else {
+          SimpleMinionAIComponent minionai=selectedMinionEntity.getComponent(SimpleMinionAIComponent.class);
+          if (minionai != null) {
+            if (helpMan.calcSelectedBlock() != null) {
+              Vector3i centerPos=helpMan.calcSelectedBlock().getBlockPosition();
+              minionai.followingPlayer=false;
+              minionai.movementTarget=new Vector3f(centerPos.x,centerPos.y + 1,centerPos.z);
+            }
+          }
+        }
+      }
+      if (button == 1) {
+        if (selectedMinionEntity != EntityRef.NULL) {
+        }
+      }
+    }
+  }
+ else {
+    EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+    if (Mouse.isButtonDown(0) || button == 0) {
+      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+      if (item != null) {
 switch (item.usage) {
 case OnBlock:
-        useItemOnBlock(entity,selectedItemEntity);
-      break;
+          useItemOnBlock(entity,selectedItemEntity);
+        break;
 case OnUser:
-    selectedItemEntity.send(new UseItemEvent(entity));
-  break;
+      selectedItemEntity.send(new UseItemEvent(entity));
+    break;
 case InDirection:
-selectedItemEntity.send(new UseItemInDirectionEvent(entity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection())));
+  selectedItemEntity.send(new UseItemInDirectionEvent(entity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection())));
 break;
 default :
 attack(entity,selectedItemEntity);
@@ -37,5 +70,6 @@ attack(entity,selectedItemEntity);
 lastInteraction=timer.getTimeInMs();
 localPlayerComp.handAnimation=0.5f;
 entity.saveComponent(localPlayerComp);
+}
 }
 }
