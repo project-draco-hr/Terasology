@@ -5,14 +5,13 @@
   EntityRef entity=localPlayer.getEntity();
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-  MinionComponent minion=localPlayer.getEntity().getComponent(MinionComponent.class);
+  MinionBarComponent minion=localPlayer.getEntity().getComponent(MinionBarComponent.class);
   if (localPlayerComp.isDead)   return;
   if (localPlayerComp.minionMode) {
     EntityRef selectedMinionEntity=minion.MinionSlots.get(localPlayerComp.selectedMinion);
-    if (Mouse.isButtonDown(1)) {
+    if (button == 1) {
       if (selectedMinionEntity != EntityRef.NULL) {
-        selectedMinionEntity.destroy();
-        minion.MinionSlots.set(localPlayerComp.selectedMinion,EntityRef.NULL);
+        miniongui.setVisible(true);
       }
     }
  else {
