@@ -1,8 +1,8 @@
 {
   String[] split=commandstring.split(" ");
+  GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
   if (split.length > 1) {
     if (split[1].equals("commandList")) {
-      GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
       HashMap<String,String> commandhelp=groovyhelpmanager.getHelpCommands();
       String[] commandlist=groovyhelpmanager.getGroovyCommands();
       String retval="Available commands :" + newLine + newLine;
@@ -17,10 +17,19 @@
       setHelpText(retval);
       return;
     }
-    GroovyHelpManager groovyhelpmanager=new GroovyHelpManager();
     if (groovyhelpmanager.getHelpCommands().containsKey(split[1])) {
       GroovyHelp groovyhelp=groovyhelpmanager.readCommandHelp(split[1]);
       setHelpText(groovyhelp);
+      return;
+    }
+    if (split[1].equals("itemList")) {
+      String tempval="";
+      ArrayList<Prefab> prefabs=groovyhelpmanager.getItems();
+      Iterator<Prefab> it=prefabs.iterator();
+      while (it.hasNext()) {
+        tempval+="item = " + it.next().getName() + newLine;
+      }
+      setHelpText(tempval);
       return;
     }
     if (split[1].equals("blockList")) {
