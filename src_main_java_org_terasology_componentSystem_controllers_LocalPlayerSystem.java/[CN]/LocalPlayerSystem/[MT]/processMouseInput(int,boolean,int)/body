@@ -1,30 +1,10 @@
 {
+  MinionSystem minionsys=new MinionSystem();
   if (wheelMoved != 0) {
-    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
-    if (localPlayerComp.minionMode) {
-      if (localPlayerComp.minionSelect) {
-        MinionBarComponent inventory=localPlayer.getEntity().getComponent(MinionBarComponent.class);
-        if (inventory == null)         return;
-        EntityRef minion=inventory.MinionSlots.get(localPlayerComp.selectedMinion);
-        if (minion != null) {
-          MinionComponent minioncomp=minion.getComponent(MinionComponent.class);
-          if (minioncomp != null) {
-            int ordinal=((minioncomp.minionBehaviour.ordinal() - wheelMoved / 120) % 5);
-            while (ordinal < 0)             ordinal+=5;
-            minioncomp.minionBehaviour=MinionComponent.MinionBehaviour.values()[ordinal];
-            minion.saveComponent(minioncomp);
-          }
-        }
-      }
+    if (minionsys.MinionMode())     if (minionsys.MinionSelect())     minionsys.menuScroll(wheelMoved);
+ else     minionsys.barScroll(wheelMoved);
  else {
-        localPlayerComp.selectedMinion=(localPlayerComp.selectedMinion - wheelMoved / 120) % 9;
-        while (localPlayerComp.selectedMinion < 0) {
-          localPlayerComp.selectedMinion=9 + localPlayerComp.selectedMinion;
-        }
-      }
-      localPlayer.getEntity().saveComponent(localPlayerComp);
-    }
- else {
+      LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
       localPlayerComp.selectedTool=(localPlayerComp.selectedTool + wheelMoved / 120) % 9;
       while (localPlayerComp.selectedTool < 0) {
         localPlayerComp.selectedTool=9 + localPlayerComp.selectedTool;
@@ -34,24 +14,7 @@
   }
  else   if (button == 1 && !state) {
     miniongui.setVisible(false);
-    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
-    localPlayerComp.minionSelect=false;
-    localPlayer.getEntity().saveComponent(localPlayerComp);
-    MinionBarComponent inventory=localPlayer.getEntity().getComponent(MinionBarComponent.class);
-    if (inventory == null)     return;
-    EntityRef minion=inventory.MinionSlots.get(localPlayerComp.selectedMinion);
-    if (minion != null) {
-      MinionComponent minioncomp=minion.getComponent(MinionComponent.class);
-      if (minioncomp != null) {
-        if (minioncomp.minionBehaviour == MinionComponent.MinionBehaviour.Disappear) {
-          minion.destroy();
-          inventory.MinionSlots.set(localPlayerComp.selectedMinion,EntityRef.NULL);
-        }
- else         if (minioncomp.minionBehaviour == MinionComponent.MinionBehaviour.Inventory) {
-          minion.send(new ActivateEvent(minion,localPlayer.getEntity()));
-        }
-      }
-    }
+    minionsys.RightMouseReleased();
   }
  else   if (state && (button == 0 || button == 1)) {
     processInteractions(button);
