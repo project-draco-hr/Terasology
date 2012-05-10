@@ -1,0 +1,15 @@
+{
+  InputStream stream=url.openStream();
+  InputStreamReader reader=new InputStreamReader(stream);
+  try {
+    return CharStreams.toString(reader);
+  }
+  finally {
+    try {
+      reader.close();
+    }
+ catch (    IOException e) {
+      Logger.getLogger(getClass().getName()).log(Level.SEVERE,"Failed to close stream",e);
+    }
+  }
+}

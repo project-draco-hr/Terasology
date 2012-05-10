@@ -1,0 +1,16 @@
+{
+  String vertProgram=null;
+  String fragProgram=null;
+  for (  URL url : urls) {
+    if (url.toString().endsWith("_vert.glsl")) {
+      vertProgram=readUrl(url);
+    }
+ else     if (url.toString().endsWith("_frag.glsl")) {
+      fragProgram=readUrl(url);
+    }
+  }
+  if (vertProgram != null && fragProgram != null) {
+    return new Shader(uri,vertProgram,fragProgram);
+  }
+  return null;
+}

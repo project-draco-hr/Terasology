@@ -1,0 +1,22 @@
+{
+  String finalVert=createShaderBuilder().append(IncludedFunctionsVertex).append('\n').append(vertShader).toString();
+  String finalFrag=createShaderBuilder().append(IncludedFunctionsFragment).append('\n').append(fragShader).toString();
+  compileShader(GL20.GL_FRAGMENT_SHADER,finalFrag);
+  compileShader(GL20.GL_VERTEX_SHADER,finalVert);
+  shaderProgram=GL20.glCreateProgram();
+  GL20.glAttachShader(shaderProgram,fragmentProgram);
+  GL20.glAttachShader(shaderProgram,vertexProgram);
+  GL20.glLinkProgram(shaderProgram);
+  if (GL20.glGetProgram(shaderProgram,GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
+    valid=false;
+    logger.log(Level.WARNING,"Failed to link shader {0}.",GL20.glGetProgramInfoLog(shaderProgram,GL20.GL_LINK_STATUS));
+    return;
+  }
+  GL20.glValidateProgram(shaderProgram);
+  if (GL20.glGetProgram(shaderProgram,GL20.GL_VALIDATE_STATUS) == GL11.GL_FALSE) {
+    valid=false;
+    logger.log(Level.WARNING,"Failed to validate shader {0}.",GL20.glGetProgramInfoLog(shaderProgram,GL20.GL_VALIDATE_STATUS));
+    return;
+  }
+  valid=true;
+}
