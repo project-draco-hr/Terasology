@@ -1,14 +1,21 @@
 {
   potion=entity.getComponent(PotionComponent.class);
   EntityManager entityManager=CoreRegister.get(EntityManager.class);
-  EntityRef item=entityManager.create("core:emptyVial");
   HealthComponent health=event.getTarget().getComponent(HealthComponent.class);
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  EntityRef item=entityManager.create("core:emptyVial");
 switch (potion.type) {
 case Red:
     health.currentHealth=health.maxHealth;
   event.getTarget().saveComponent(health);
 event.getTarget().send(new ReceiveItemEvent(item));
-ItemComponent itemComp=item.getComponent(ItemComponent.class);
+if (itemComp != null && !itemComp.container.exists()) {
+item.destroy();
+}
+break;
+case Black:
+event.getInstigator().send(new BoostSpeedEvent());
+event.getTarget().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
 item.destroy();
 }
