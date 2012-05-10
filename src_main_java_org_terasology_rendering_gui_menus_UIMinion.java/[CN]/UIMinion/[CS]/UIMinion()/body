@@ -1,7 +1,7 @@
 {
-  setSize(new Vector2f(60f,80f));
+  setSize(new Vector2f(60f,100f));
   _background=new UIGraphicsElement("guiMinion");
-  _background.getTextureSize().set(new Vector2f(60f / 256f,80f / 256f));
+  _background.getTextureSize().set(new Vector2f(60f / 256f,100f / 256f));
   _background.getTextureOrigin().set(new Vector2f(30.0f / 256f,20.0f / 256f));
   _background.setSize(getSize());
   addDisplayElement(_background);
@@ -12,20 +12,4 @@
   _selectionRectangle.setSize(new Vector2f(60f,20f));
   _selectionRectangle.setVisible(true);
   addDisplayElement(_selectionRectangle);
-  UITransparentOverlay overlay=new UITransparentOverlay();
-  overlay.setSize(new Vector2f(60,60));
-  overlay.setVisible(true);
-  buttonMove=new UIButton(new Vector2f(100,24));
-  buttonMove.getLabel().setText("Move");
-  buttonMove.setVisible(true);
-  buttonMove.setFocus(true);
-  buttonMove.setPosition(new Vector2f(Display.getWidth() - 150,(Display.getHeight() / 2) - 96));
-  buttonMove.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      setMinionMoveBehaviour();
-    }
-  }
-);
-  addDisplayElement(buttonMove);
-  setVisible(true);
 }
