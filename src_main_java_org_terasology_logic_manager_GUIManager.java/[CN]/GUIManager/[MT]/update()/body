@@ -3,7 +3,9 @@
     int size=_renderer.getDisplayElements().size();
     if (size > 0) {
       UIDisplayWindow tempwindow=(UIDisplayWindow)_renderer.getDisplayElements().get(size - 1);
-      if (!UIMinionMenu.class.isInstance(tempwindow))       _focusedWindow=tempwindow;
+      if (!(tempwindow instanceof UIMinion)) {
+        _focusedWindow=tempwindow;
+      }
     }
   }
   _renderer.update();

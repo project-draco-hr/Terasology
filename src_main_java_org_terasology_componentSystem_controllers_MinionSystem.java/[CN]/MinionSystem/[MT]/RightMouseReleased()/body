@@ -1,7 +1,10 @@
 {
-  UIMinionMenu minionbehaviourmenu=(UIMinionMenu)GUIManager.getInstance().getWindowById(behaviourmenu);
+  UIMinion minionbehaviourmenu=(UIMinion)GUIManager.getInstance().getWindowById(behaviourmenu);
   if (minionbehaviourmenu != null) {
-    minionbehaviourmenu.close(true);
+    GUIManager.getInstance().removeWindow(minionbehaviourmenu);
+    if (GUIManager.getInstance().getWindowById("container") != null) {
+      GUIManager.getInstance().setFocusedWindow("container");
+    }
   }
   setMinionSelectMode(false);
   if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Disappear) {
