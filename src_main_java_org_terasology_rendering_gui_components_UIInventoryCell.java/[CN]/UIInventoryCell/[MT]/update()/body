@@ -8,9 +8,21 @@
   }
   EntityRef itemEntity=inventory.itemSlots.get(_id);
   ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+  BlockItemComponent blockItem=itemEntity.getComponent(BlockItemComponent.class);
   if (item != null && item.stackCount > 1) {
     getLabel().setVisible(true);
     getLabel().setText(Integer.toString(item.stackCount));
+    if (blockItem != null) {
+      _label2.setText(blockItem.blockFamily.getTitle());
+    }
+  }
+ else   if (item != null) {
+    if (blockItem != null) {
+      _label2.setText(blockItem.blockFamily.getTitle());
+    }
+ else {
+      _label2.setText(item.icon);
+    }
   }
  else {
     getLabel().setVisible(false);

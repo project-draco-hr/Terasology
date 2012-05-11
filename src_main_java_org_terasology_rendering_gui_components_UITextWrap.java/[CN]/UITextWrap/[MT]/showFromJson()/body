@@ -2,16 +2,19 @@
   int maxlines=getLineCount();
   int screenlines=getScreenLines();
   long beginpos, endpos, counter;
-  if (screenlines + currentpos > maxlines) {
+  if (screenlines > maxlines) {
     beginpos=-1;
   }
  else {
-    beginpos=maxlines - (screenlines + currentpos) + 1;
+    if (currentpos < 0) {
+      currentpos=0;
+    }
+    if (currentpos > maxlines - screenlines) {
+      currentpos=maxlines - screenlines;
+    }
+    beginpos=maxlines - (screenlines + currentpos) - 1;
   }
-  endpos=beginpos + screenlines;
-  if (endpos > maxlines) {
-    endpos=maxlines + 1;
-  }
+  endpos=beginpos + screenlines + 1;
   counter=0;
   Gson gson=new Gson();
   JsonReader reader=new JsonReader(new FileReader(".\\data\\console\\consolelog.json"));

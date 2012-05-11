@@ -1,0 +1,13 @@
+{
+  setMinionSelectMode(false);
+  if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Disappear) {
+    DestroyActiveMinion();
+  }
+ else   if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Inventory) {
+    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+    if (localPlayer == null)     return;
+    getSelectedMinion().send(new ActivateEvent(getSelectedMinion(),localPlayer.getEntity()));
+  }
+  MinionComponent minioncomp=getSelectedMinion().getComponent(MinionComponent.class);
+  getSelectedMinion().saveComponent(minioncomp);
+}

@@ -1,0 +1,19 @@
+{
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  if (localPlayer == null)   return;
+  GroovyHelpManager helpMan=new GroovyHelpManager();
+  LocalPlayerComponent localPlayerComponent=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+  if (!isMinionSelected()) {
+    helpMan.spawnCube(localPlayerComponent.selectedMinion);
+  }
+ else {
+    SimpleMinionAIComponent minionai=getSelectedMinion().getComponent(SimpleMinionAIComponent.class);
+    if (minionai != null) {
+      if (helpMan.calcSelectedBlock() != null) {
+        Vector3i centerPos=helpMan.calcSelectedBlock().getBlockPosition();
+        minionai.followingPlayer=false;
+        minionai.movementTarget=new Vector3f(centerPos.x,centerPos.y,centerPos.z);
+      }
+    }
+  }
+}

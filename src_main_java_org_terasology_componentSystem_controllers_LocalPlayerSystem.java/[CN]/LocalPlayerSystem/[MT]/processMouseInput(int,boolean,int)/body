@@ -1,11 +1,20 @@
 {
+  MinionSystem minionsys=new MinionSystem();
   if (wheelMoved != 0) {
-    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
-    localPlayerComp.selectedTool=(localPlayerComp.selectedTool + wheelMoved / 120) % 9;
-    while (localPlayerComp.selectedTool < 0) {
-      localPlayerComp.selectedTool=9 + localPlayerComp.selectedTool;
+    if (minionsys.MinionMode())     if (minionsys.MinionSelect())     minionsys.menuScroll(wheelMoved);
+ else     minionsys.barScroll(wheelMoved);
+ else {
+      LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+      localPlayerComp.selectedTool=(localPlayerComp.selectedTool + wheelMoved / 120) % 9;
+      while (localPlayerComp.selectedTool < 0) {
+        localPlayerComp.selectedTool=9 + localPlayerComp.selectedTool;
+      }
+      localPlayer.getEntity().saveComponent(localPlayerComp);
     }
-    localPlayer.getEntity().saveComponent(localPlayerComp);
+  }
+ else   if (button == 1 && !state) {
+    miniongui.setVisible(false);
+    minionsys.RightMouseReleased();
   }
  else   if (state && (button == 0 || button == 1)) {
     processInteractions(button);
