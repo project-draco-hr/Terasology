@@ -4,7 +4,9 @@
     Block block=BlockManager.getInstance().getBlock(worldProvider.getBlock(blockPosition));
     blockEntity=entityManager.create(block.getEntityPrefab());
     blockEntity.addComponent(new BlockComponent(blockPosition,block.isEntityTemporary()));
-    blockEntity.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
+    if (block.isDestructible()) {
+      blockEntity.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
+    }
   }
   return blockEntity;
 }

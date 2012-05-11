@@ -1,9 +1,5 @@
 {
-  byte currentBlockType=worldProvider.getBlock((int)position.x,(int)position.y,(int)position.z);
-  Block block=BlockManager.getInstance().getBlock(currentBlockType);
   int damage=1;
-  if (block.isDestructible()) {
-    EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(new Vector3i(position));
-    blockEntity.send(new DamageEvent(damage,player));
-  }
+  EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(new Vector3i(position));
+  blockEntity.send(new DamageEvent(damage,player));
 }

@@ -1,0 +1,18 @@
+{
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+switch (itemComp.usage) {
+case None:
+    event.cancel();
+  break;
+case OnBlock:
+if (event.getTarget().getComponent(BlockComponent.class) == null) {
+  event.cancel();
+}
+break;
+case OnEntity:
+if (event.getTarget().getComponent(BlockComponent.class) != null) {
+event.cancel();
+}
+break;
+}
+}

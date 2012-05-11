@@ -1,0 +1,10 @@
+{
+  RayBlockIntersection.Intersection blockIntersection=calcSelectedBlock();
+  if (blockIntersection != null) {
+    Vector3i centerPos=blockIntersection.getBlockPosition();
+    item.send(new ActivateEvent(CoreRegistry.get(BlockEntityRegistry.class).getOrCreateEntityAt(centerPos),player,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),blockIntersection.getSurfaceNormal()));
+  }
+ else {
+    item.send(new ActivateEvent(player,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection())));
+  }
+}

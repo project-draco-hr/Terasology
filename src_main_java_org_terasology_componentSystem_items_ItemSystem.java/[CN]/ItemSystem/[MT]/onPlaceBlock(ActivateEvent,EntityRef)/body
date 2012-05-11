@@ -1,0 +1,13 @@
+{
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  BlockItemComponent blockItem=item.getComponent(BlockItemComponent.class);
+  Side surfaceDir=Side.inDirection(event.getNormal());
+  Vector3f attachDir=surfaceDir.reverse().getVector3i().toVector3f();
+  Vector3f rawDirection=new Vector3f(event.getDirection());
+  float dot=rawDirection.dot(attachDir);
+  rawDirection.sub(new Vector3f(dot * attachDir.x,dot * attachDir.y,dot * attachDir.z));
+  Side secondaryDirection=Side.inDirection(rawDirection.x,rawDirection.y,rawDirection.z).reverse();
+  if (!placeBlock(blockItem.blockFamily,event.getTarget().getComponent(BlockComponent.class).getPosition(),surfaceDir,secondaryDirection,blockItem)) {
+    event.cancel();
+  }
+}
