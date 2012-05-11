@@ -1,0 +1,19 @@
+{
+  if (isDisposed())   return;
+  int texId=-1;
+  if (bindMap.containsKey(desc)) {
+    texId=bindMap.get(desc);
+  }
+ else {
+    ParamMetadata metadata=shader.getParameter(desc);
+    if (metadata == null) {
+      return;
+    }
+    enable();
+    texId=textureIndex++;
+    int id=GL20.glGetUniformLocation(shaderProgram,desc);
+    GL20.glUniform1i(id,texId);
+    bindMap.put(desc,texId);
+  }
+  textureMap.put(texId,texture);
+}
