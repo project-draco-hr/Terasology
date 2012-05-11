@@ -3,7 +3,7 @@
   componentCache=Maps.newHashMap();
   for (  Prefab ref : this.getParents()) {
     for (    Component component : ref.listComponents()) {
-      componentCache.put(component.getClass(),component.clone());
+      componentCache.put(component.getClass(),componentLibrary.copy(component));
     }
   }
   if (oldCache != null) {
