@@ -1,0 +1,20 @@
+{
+  if (!Keyboard.next()) {
+    return false;
+  }
+  KeyEvent e;
+  if (Keyboard.getEventKeyState()) {
+    if (Keyboard.isRepeatEvent()) {
+      e=KEY_REPEAT_EVENT;
+    }
+ else {
+      e=KEY_DOWN_EVENT;
+    }
+  }
+ else {
+    e=KEY_UP_EVENT;
+  }
+  e.key=Keyboard.getEventKey();
+  eventSystem.send(null,e);
+  return true;
+}
