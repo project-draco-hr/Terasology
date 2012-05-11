@@ -4,11 +4,24 @@
   if (c != null) {
     return c;
   }
-  c=_farChunkCache.get(id);
-  if (c == null) {
-    c=new Chunk(_parent,x,y,z);
+  _lockChunkCreation.lock();
+  try {
+    c=_nearChunkCache.get(id);
+    if (c != null) {
+      return c;
+    }
+    c=_farChunkCache.get(id);
+    if (c == null) {
+      c=new Chunk(_parent,x,y,z);
+    }
+    if (_nearChunkCache.containsKey(id)) {
+      Logger.getLogger("CP").log(Level.SEVERE,"duplicate id " + id + " found");
+    }
+    _nearChunkCache.put(id,c);
+    c.setParent(_parent);
+    return c;
   }
-  _nearChunkCache.put(id,c);
-  c.setParent(_parent);
-  return c;
+  finally {
+    _lockChunkCreation.unlock();
+  }
 }
