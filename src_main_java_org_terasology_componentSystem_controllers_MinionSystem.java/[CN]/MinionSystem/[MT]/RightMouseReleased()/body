@@ -1,4 +1,8 @@
 {
+  UIMinionMenu minionbehaviourmenu=(UIMinionMenu)GUIManager.getInstance().getWindowById(behaviourmenu);
+  if (minionbehaviourmenu != null) {
+    minionbehaviourmenu.close(true);
+  }
   setMinionSelectMode(false);
   if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Disappear) {
     DestroyActiveMinion();
@@ -8,6 +12,8 @@
     if (localPlayer == null)     return;
     getSelectedMinion().send(new ActivateEvent(getSelectedMinion(),localPlayer.getEntity()));
   }
-  MinionComponent minioncomp=getSelectedMinion().getComponent(MinionComponent.class);
-  getSelectedMinion().saveComponent(minioncomp);
+  if (getSelectedMinion() != null) {
+    MinionComponent minioncomp=getSelectedMinion().getComponent(MinionComponent.class);
+    getSelectedMinion().saveComponent(minioncomp);
+  }
 }
