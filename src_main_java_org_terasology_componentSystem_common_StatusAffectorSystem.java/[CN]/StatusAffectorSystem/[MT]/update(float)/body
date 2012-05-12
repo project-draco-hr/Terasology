@@ -9,4 +9,16 @@
       entity.removeComponent(SpeedBoostComponent.class);
     }
   }
+  for (  EntityRef entity : entityManager.iteratorEntities(HealthComponent.class,PoisonedComponent.class)) {
+    PoisonedComponent poisonedEffect=entity.getComponent(PoisonedComponent.class);
+    HealthComponent health=entity.getComponent(HealthComponent.class);
+    poisonedEffect.poisonDuration=poisonedEffect.poisonDuration - delta;
+    if (poisonedEffect.poisonDuration >= 1) {
+      health.currentHealth-=1;
+      entity.saveComponent(health);
+    }
+    if (poisonedEffect.poisonDuration <= 0) {
+      entity.removeComponent(PoisonedComponent.class);
+    }
+  }
 }

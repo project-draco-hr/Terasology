@@ -2,23 +2,30 @@
   potion=entity.getComponent(PotionComponent.class);
   EntityManager entityManager=CoreRegister.get(EntityManager.class);
   HealthComponent health=event.getTarget().getComponent(HealthComponent.class);
-  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  ItemComponent itemComp=entity.getComponent(ItemComponent.class);
   EntityRef item=entityManager.create("core:emptyVial");
 switch (potion.type) {
 case Red:
-    health.currentHealth=health.maxHealth;
-  event.getTarget().saveComponent(health);
+    event.getTarget().send(new ReceiveItemEvent(item));
+  if (itemComp != null && !itemComp.container.exists()) {
+    item.destroy();
+  }
+health.currentHealth=health.maxHealth;
+event.getTarget().saveComponent(health);
+break;
+case Green:
 event.getTarget().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
 item.destroy();
 }
+event.getTarget().send(new PoisonedEvent());
 break;
 case Purple:
-event.getInstigator().send(new BoostSpeedEvent());
 event.getTarget().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
 item.destroy();
 }
+event.getInstigator().send(new BoostSpeedEvent());
 break;
 default :
 break;
