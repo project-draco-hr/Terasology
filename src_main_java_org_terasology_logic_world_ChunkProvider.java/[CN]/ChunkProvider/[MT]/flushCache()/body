@@ -8,7 +8,15 @@
       if (cachedChunks.size() > CACHE_SIZE) {
         Chunk chunkToDelete=cachedChunks.remove(cachedChunks.size() - 1);
         _farChunkCache.put(chunkToDelete);
-        _nearChunkCache.values().remove(chunkToDelete);
+        _lockChunkCreation.lock();
+        try {
+          Vector3i pos=chunkToDelete.getPos();
+          int id=getNearCacheChunkId(pos.x,pos.y,pos.z);
+          _nearChunkCache.remove(id);
+        }
+  finally {
+          _lockChunkCreation.unlock();
+        }
         chunkToDelete.dispose();
       }
       _running=false;

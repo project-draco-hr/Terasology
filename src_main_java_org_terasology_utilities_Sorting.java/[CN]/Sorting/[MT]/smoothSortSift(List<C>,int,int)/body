@@ -1,0 +1,19 @@
+{
+  C val=m.get(head);
+  while (pshift > 1) {
+    int rt=head - 1;
+    int lf=head - 1 - smoothSortLP[pshift - 2];
+    if (val.compareTo(m.get(lf)) >= 0 && val.compareTo(m.get(rt)) >= 0)     break;
+    if (m.get(lf).compareTo(m.get(rt)) >= 0) {
+      m.set(head,m.get(lf));
+      head=lf;
+      pshift-=1;
+    }
+ else {
+      m.set(head,m.get(rt));
+      head=rt;
+      pshift-=2;
+    }
+  }
+  m.set(head,val);
+}
