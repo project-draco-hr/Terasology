@@ -1,7 +1,7 @@
 {
-  EntityPersisterHelper persisterHelper=new EntityPersisterHelperImpl(componentLibrary,(PersistableEntityManager)_entityManager);
+  EntityPersisterHelper persisterHelper=new EntityPersisterHelperImpl(entityManager);
   for (  AssetUri prefabURI : AssetManager.list(AssetType.PREFAB)) {
-    _logger.info("Loading prefab " + prefabURI);
+    logger.info("Loading prefab " + prefabURI);
     try {
       InputStream stream=AssetManager.assetStream(prefabURI);
       if (stream != null) {
@@ -13,11 +13,11 @@
         }
       }
  else {
-        _logger.severe("Failed to load prefab '" + prefabURI + "'");
+        logger.severe("Failed to load prefab '" + prefabURI + "'");
       }
     }
  catch (    IOException e) {
-      _logger.log(Level.WARNING,"Failed to load prefab '" + prefabURI + "'",e);
+      logger.log(Level.WARNING,"Failed to load prefab '" + prefabURI + "'",e);
     }
   }
 }

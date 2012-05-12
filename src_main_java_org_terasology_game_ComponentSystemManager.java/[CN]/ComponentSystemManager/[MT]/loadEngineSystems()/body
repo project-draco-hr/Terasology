@@ -1,0 +1,22 @@
+{
+  Reflections reflections=new Reflections("org.terasology.componentSystem");
+  Set<Class<?>> systems=reflections.getTypesAnnotatedWith(RegisterComponentSystem.class);
+  for (  Class<?> system : systems) {
+    if (!ComponentSystem.class.isAssignableFrom(system)) {
+      logger.log(Level.WARNING,String.format("Cannot load %s, must be a subclass of ComponentSystem",system.getSimpleName()));
+      continue;
+    }
+    RegisterComponentSystem registerInfo=system.getAnnotation(RegisterComponentSystem.class);
+    try {
+      ComponentSystem newSystem=(ComponentSystem)system.newInstance();
+      register(newSystem,"engine:" + system.getSimpleName());
+      logger.log(Level.INFO,"Loaded engine:" + system.getSimpleName());
+    }
+ catch (    InstantiationException e) {
+      logger.log(Level.SEVERE,"Failed to load system engine:" + system.getSimpleName(),e);
+    }
+catch (    IllegalAccessException e) {
+      logger.log(Level.SEVERE,"Failed to load system engine:" + system.getSimpleName(),e);
+    }
+  }
+}

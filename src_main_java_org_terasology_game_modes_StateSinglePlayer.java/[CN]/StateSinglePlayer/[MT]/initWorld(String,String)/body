@@ -10,26 +10,26 @@
  else   if (seed.isEmpty()) {
     seed=random.randomCharacterString(16);
   }
-  _logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  _worldRenderer=new WorldRenderer(title,seed,_entityManager,_localPlayerSys);
+  logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
+  _worldRenderer=new WorldRenderer(title,seed,entityManager,_localPlayerSys);
   CoreRegistry.put(WorldRenderer.class,_worldRenderer);
   File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
-  _entityManager.clear();
+  entityManager.clear();
   if (entityDataFile.exists()) {
     try {
       CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);
     }
  catch (    IOException e) {
-      _logger.log(Level.SEVERE,"Failed to load entity data",e);
+      logger.log(Level.SEVERE,"Failed to load entity data",e);
     }
   }
   LocalPlayer localPlayer=null;
-  Iterator<EntityRef> iterator=_entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
+  Iterator<EntityRef> iterator=entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
   if (iterator.hasNext()) {
     localPlayer=new LocalPlayer(iterator.next());
   }
  else {
-    PlayerFactory playerFactory=new PlayerFactory(_entityManager);
+    PlayerFactory playerFactory=new PlayerFactory(entityManager);
     localPlayer=new LocalPlayer(playerFactory.newInstance(new Vector3f(_worldRenderer.getWorldProvider().nextSpawningPoint())));
   }
   _worldRenderer.setPlayer(localPlayer);
@@ -40,7 +40,7 @@
   CoreRegistry.put(LocalPlayer.class,_worldRenderer.getPlayer());
   CoreRegistry.put(Camera.class,_worldRenderer.getActiveCamera());
   CoreRegistry.put(BulletPhysicsRenderer.class,_worldRenderer.getBulletRenderer());
-  for (  ComponentSystem system : _componentSystemManager.iterateAll()) {
+  for (  ComponentSystem system : componentSystemManager.iterateAll()) {
     system.initialise();
   }
 }
