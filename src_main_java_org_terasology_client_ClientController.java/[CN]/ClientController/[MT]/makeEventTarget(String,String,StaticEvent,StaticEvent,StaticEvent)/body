@@ -1,0 +1,23 @@
+{
+  return new BindTarget(category,description){
+    public void start(){
+      if (downEvent != null) {
+        downEvent.reset();
+        eventSystem.send(downEvent.getEntity(),downEvent);
+      }
+    }
+    public void end(){
+      if (upEvent != null) {
+        upEvent.reset();
+        eventSystem.send(upEvent.getEntity(),upEvent);
+      }
+    }
+    public void repeat(){
+      if (repeatEvent != null) {
+        repeatEvent.reset();
+        eventSystem.send(repeatEvent.getEntity(),repeatEvent);
+      }
+    }
+  }
+;
+}

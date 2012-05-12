@@ -1,11 +1,11 @@
 {
-  Vector3f relMove=new Vector3f(movementInput);
+  Vector3f relMove=new Vector3f(movementVector);
   relMove.y=0;
   if (characterMovementComponent.isGhosting || characterMovementComponent.isSwimming) {
     Quat4f viewRot=new Quat4f();
     QuaternionUtil.setEuler(viewRot,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
     QuaternionUtil.quatRotate(viewRot,relMove,relMove);
-    relMove.y+=movementInput.y;
+    relMove.y+=movementVector.y;
   }
  else {
     QuaternionUtil.quatRotate(location.getLocalRotation(),relMove,relMove);
