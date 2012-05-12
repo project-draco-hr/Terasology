@@ -1,7 +1,7 @@
 {
-  URL assetURL=this.getAsset(uri);
-  if (assetURL == null) {
+  List<URL> assetURLs=this.getAssetURLs(uri);
+  if (assetURLs.isEmpty()) {
     return null;
   }
-  return assetURL.openStream();
+  return assetURLs.get(0).openStream();
 }

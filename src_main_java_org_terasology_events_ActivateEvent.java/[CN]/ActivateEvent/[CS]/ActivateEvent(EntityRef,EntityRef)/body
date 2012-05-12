@@ -1,18 +1,3 @@
 {
-  this.instigator=instigator;
-  this.target=target;
-  LocationComponent loc=target.getComponent(LocationComponent.class);
-  if (loc != null) {
-    location=loc.getWorldPosition();
-  }
- else {
-    BlockComponent blockComp=target.getComponent(BlockComponent.class);
-    if (blockComp != null) {
-      location=blockComp.getPosition().toVector3f();
-    }
- else {
-      location=new Vector3f();
-    }
-  }
-  direction=new Vector3f();
+  this(target,instigator,new Vector3f(),new Vector3f(),new Vector3f());
 }

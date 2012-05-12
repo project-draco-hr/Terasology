@@ -1,0 +1,9 @@
+{
+  StringBuilder builder=new StringBuilder().append(PreProcessorPreamble);
+  if (Config.getInstance().isAnimatedWaterAndGrass())   builder.append("#define ANIMATED_WATER_AND_GRASS \n");
+  if (Config.getInstance().isFlickeringLight())   builder.append("#define FLICKERING_LIGHT \n");
+  builder.append("#define GAMMA ");
+  builder.append(((Double)Config.getInstance().getGamma()).toString());
+  builder.append('\n');
+  return builder;
+}

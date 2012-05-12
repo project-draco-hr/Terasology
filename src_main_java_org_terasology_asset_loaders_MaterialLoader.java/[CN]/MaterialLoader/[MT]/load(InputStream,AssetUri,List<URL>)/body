@@ -1,0 +1,32 @@
+{
+  MaterialMetadata metadata=gson.fromJson(new InputStreamReader(stream),MaterialMetadata.class);
+  Shader shader=AssetManager.load(new AssetUri(AssetType.SHADER,metadata.shader),Shader.class);
+  if (shader == null)   return null;
+  Material result=new Material(uri,shader);
+  for (  Map.Entry<String,Texture> entry : metadata.textures.entrySet()) {
+    result.setTexture(entry.getKey(),entry.getValue());
+  }
+  for (  Map.Entry<String,Float> entry : metadata.floatParams.entrySet()) {
+    result.setFloat(entry.getKey(),entry.getValue());
+  }
+  for (  Map.Entry<String,Integer> entry : metadata.intParams.entrySet()) {
+    result.setInt(entry.getKey(),entry.getValue());
+  }
+  for (  Map.Entry<String,float[]> entry : metadata.floatArrayParams.entrySet()) {
+switch (entry.getValue().length) {
+case 1:
+      result.setFloat(entry.getKey(),entry.getValue()[0]);
+    break;
+case 2:
+  result.setFloat2(entry.getKey(),entry.getValue()[0],entry.getValue()[1]);
+break;
+case 3:
+result.setFloat3(entry.getKey(),entry.getValue()[0],entry.getValue()[1],entry.getValue()[2]);
+break;
+case 4:
+result.setFloat4(entry.getKey(),entry.getValue()[0],entry.getValue()[1],entry.getValue()[2],entry.getValue()[3]);
+break;
+}
+}
+return result;
+}
