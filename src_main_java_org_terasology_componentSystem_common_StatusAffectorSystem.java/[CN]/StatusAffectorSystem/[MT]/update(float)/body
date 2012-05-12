@@ -1,7 +1,12 @@
 {
-  update(speedEffect.speedBoostDuration - delta);
-  if (speedEffect.speedBoostDuration <= 0) {
-    charmov.runFactor=1.5f;
-    event.getTarget().saveComponent(charmov);
+  for (  EntityRef entity : entityManager.iteratorEntities(CharacterMovementComponent.class,SpeedBoostComponent.class)) {
+    SpeedBoostComponent speedEffect=entity.getComponent(SpeedBoostComponent.class);
+    CharacterMovementComponent charmov=entity.getComponent(CharacterMovementComponent.class);
+    speedEffect.speedBoostDuration=speedEffect.speedBoostDuration - delta;
+    if (speedEffect.speedBoostDuration <= 0) {
+      charmov.runFactor=1.5f;
+      entity.saveComponent(charmov);
+      entity.removeComponent(SpeedBoostComponent.class);
+    }
   }
 }
