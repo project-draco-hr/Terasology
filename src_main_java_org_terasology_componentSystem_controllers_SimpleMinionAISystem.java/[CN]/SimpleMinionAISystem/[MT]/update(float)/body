@@ -38,17 +38,23 @@ case Follow:
         }
 case Gather:
 {
+        List<Vector3f> targets=ai.gatherTargets;
+        if (targets == null || targets.size() < 1)         return;
+        currentTarget=targets.get(0);
         Vector3f dist=new Vector3f(worldPos);
-        dist.sub(ai.movementTarget);
+        dist.sub(currentTarget);
         double distanceToTarget=dist.lengthSquared();
         if (distanceToTarget < 4) {
-          if (timer.getTimeInMs() - time > 500) {
-            time=timer.getTimeInMs();
-            attack(entity,ai.movementTarget);
+          if (timer.getTimeInMs() - attacktime > 500) {
+            attacktime=timer.getTimeInMs();
+            boolean attacked=attack(entity,currentTarget);
+            if (!attacked) {
+              ai.gatherTargets.remove(currentTarget);
+            }
           }
         }
         Vector3f targetDirection=new Vector3f();
-        targetDirection.sub(ai.movementTarget,worldPos);
+        targetDirection.sub(currentTarget,worldPos);
         if (targetDirection.x * targetDirection.x + targetDirection.z * targetDirection.z > 0.01f) {
           targetDirection.normalize();
           moveComp.setDrive(targetDirection);
@@ -65,10 +71,23 @@ case Gather:
       }
 case Move:
 {
+      List<Vector3f> targets=ai.movementTargets;
+      if (targets == null || targets.size() < 1)       return;
       ai.followingPlayer=false;
       entity.saveComponent(ai);
+      currentTarget=targets.get(0);
+      if (lastTarget == null)       lastTarget=targets.get(0);
+      Vector3f dist=new Vector3f(worldPos);
+      dist.sub(currentTarget);
+      double distanceToTarget=dist.lengthSquared();
+      if (distanceToTarget < 1.0d) {
+        ai.movementTargets.remove(0);
+        currentTarget=null;
+        lastTarget=null;
+        break;
+      }
       Vector3f targetDirection=new Vector3f();
-      targetDirection.sub(ai.movementTarget,worldPos);
+      targetDirection.sub(currentTarget,worldPos);
       if (targetDirection.x * targetDirection.x + targetDirection.z * targetDirection.z > 0.01f) {
         targetDirection.normalize();
         moveComp.setDrive(targetDirection);
@@ -83,6 +102,49 @@ case Move:
       entity.saveComponent(location);
       break;
     }
+case Patrol:
+{
+    List<Vector3f> targets=ai.patrolTargets;
+    if (targets == null || targets.size() < 1)     return;
+    ai.followingPlayer=false;
+    entity.saveComponent(ai);
+    if (patrolCounter < targets.size()) {
+      currentTarget=targets.get(patrolCounter);
+      if (lastTarget == null)       lastTarget=targets.get(0);
+    }
+    Vector3f dist=new Vector3f(worldPos);
+    dist.sub(currentTarget);
+    double distanceToTarget=dist.length();
+    if (distanceToTarget < 1.0d) {
+      patrolCounter++;
+      if (!(patrolCounter < targets.size()))       patrolCounter=0;
+      currentTarget=null;
+      lastTarget=null;
+      break;
+    }
+    Vector3f targetDirection=new Vector3f();
+    targetDirection.sub(currentTarget,worldPos);
+    if (targetDirection.x * targetDirection.x + targetDirection.z * targetDirection.z > 0.01f) {
+      targetDirection.normalize();
+      moveComp.setDrive(targetDirection);
+      float yaw=(float)Math.atan2(targetDirection.x,targetDirection.z);
+      AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
+      location.getLocalRotation().set(axisAngle);
+    }
+ else {
+      moveComp.setDrive(new Vector3f());
+    }
+    entity.saveComponent(moveComp);
+    entity.saveComponent(location);
+    break;
+  }
+case Test:
+{
+}
+default :
+{
+break;
+}
 }
 }
 }
