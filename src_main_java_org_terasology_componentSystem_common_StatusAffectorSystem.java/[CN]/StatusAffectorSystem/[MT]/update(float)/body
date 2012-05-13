@@ -14,8 +14,11 @@
     HealthComponent health=entity.getComponent(HealthComponent.class);
     poisonedEffect.poisonDuration=poisonedEffect.poisonDuration - delta;
     if (poisonedEffect.poisonDuration >= 1) {
-      health.currentHealth-=1;
+      health.currentHealth=Math.min(health.maxHealth,health.currentHealth - (int)poisonedEffect.poisonRate);
       entity.saveComponent(health);
+      if (health.currentHealth <= 0) {
+        entity.send(new NoHealthEvent(entity));
+      }
     }
     if (poisonedEffect.poisonDuration <= 0) {
       entity.removeComponent(PoisonedComponent.class);

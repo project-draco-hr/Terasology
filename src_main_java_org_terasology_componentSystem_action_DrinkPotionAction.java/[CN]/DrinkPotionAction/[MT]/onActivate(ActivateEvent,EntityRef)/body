@@ -20,6 +20,13 @@ item.destroy();
 }
 event.getTarget().send(new PoisonedEvent());
 break;
+case Orange:
+event.getInstigator().send(new CurePoisonEvent());
+event.getTarget().send(new ReceiveItemEvent(item));
+if (itemComp != null && !itemComp.container.exists()) {
+item.destroy();
+}
+break;
 case Purple:
 event.getTarget().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
