@@ -1,0 +1,23 @@
+{
+  for (int y=32; y < Chunk.CHUNK_DIMENSION_Y; y++) {
+    for (int x=0; x < Chunk.CHUNK_DIMENSION_X; x+=4) {
+      for (int z=0; z < Chunk.CHUNK_DIMENSION_Z; z+=4) {
+        BIOME_TYPE biome=calcBiomeTypeForGlobalPosition(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+        int randX=x + random.randomInt() % 12 + 6;
+        int randZ=z + random.randomInt() % 12 + 6;
+        if (c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Grass").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Snow").getId() || c.getBlock(randX,y,randZ) == BlockManager.getInstance().getBlock("Sand").getId()) {
+          double rand=Math.abs(random.randomDouble());
+          int randomGeneratorId;
+          int size=_parent.getTreeGenerators(biome).size();
+          if (size > 0) {
+            randomGeneratorId=Math.abs(random.randomInt()) % size;
+            TreeGenerator treeGen=_parent.getTreeGenerator(biome,randomGeneratorId);
+            if (rand < treeGen.getGenProbability()) {
+              generateTree(c,treeGen,randX,y,randZ,random);
+            }
+          }
+        }
+      }
+    }
+  }
+}

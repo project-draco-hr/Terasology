@@ -1,10 +1,11 @@
 {
+  FastRandom random=new FastRandom(worldSeed + c.getPos().hashCode());
   for (int y=0; y < Chunk.CHUNK_DIMENSION_Y; y++) {
     for (int x=0; x < Chunk.CHUNK_DIMENSION_X; x++) {
       for (int z=0; z < Chunk.CHUNK_DIMENSION_Z; z++) {
-        generateGrassAndFlowers(c,x,y,z);
+        generateGrassAndFlowers(c,x,y,z,random);
       }
     }
   }
-  generateTrees(c);
+  generateTrees(c,random);
 }

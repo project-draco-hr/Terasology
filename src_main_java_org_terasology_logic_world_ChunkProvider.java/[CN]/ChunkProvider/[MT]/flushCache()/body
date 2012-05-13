@@ -11,8 +11,7 @@
         _lockChunkCreation.lock();
         try {
           Vector3i pos=chunkToDelete.getPos();
-          int id=getNearCacheChunkId(pos.x,pos.y,pos.z);
-          _nearChunkCache.remove(id);
+          _nearChunkCache.remove(pos);
         }
   finally {
           _lockChunkCreation.unlock();

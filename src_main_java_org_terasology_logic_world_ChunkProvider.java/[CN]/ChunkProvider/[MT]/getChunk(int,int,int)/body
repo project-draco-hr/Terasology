@@ -1,23 +1,23 @@
 {
-  int id=getNearCacheChunkId(x,y,z);
-  Chunk c=_nearChunkCache.get(id);
+  Vector3i pos=new Vector3i(x,y,z);
+  Chunk c=_nearChunkCache.get(pos);
   if (c != null) {
     return c;
   }
   _lockChunkCreation.lock();
   try {
-    c=_nearChunkCache.get(id);
+    c=_nearChunkCache.get(pos);
     if (c != null) {
       return c;
     }
-    c=_farChunkCache.get(id);
+    c=_farChunkCache.get(pos);
     if (c == null) {
       c=new Chunk(_parent,x,y,z);
     }
-    if (_nearChunkCache.containsKey(id)) {
-      Logger.getLogger("CP").log(Level.SEVERE,"duplicate id " + id + " found");
+    if (_nearChunkCache.containsKey(pos)) {
+      Logger.getLogger("CP").log(Level.SEVERE,"duplicate id " + pos + " found");
     }
-    _nearChunkCache.put(id,c);
+    _nearChunkCache.put(pos,c);
     c.setParent(_parent);
     return c;
   }
