@@ -1,0 +1,17 @@
+{
+  int range=50;
+  HashSet<Integer> alreadyUsedHashes=new HashSet<Integer>();
+  for (int x=-range; x < range; ++x) {
+    for (int y=-range; y < range; ++y) {
+      for (int z=-range; z < range; ++z) {
+        int hash=new Vector3i(x,y,z).hashCode();
+        if (alreadyUsedHashes.contains(hash)) {
+          fail(String.format("duplicate hash %d at: %d,%d,%d",hash,x,y,z));
+        }
+ else {
+          alreadyUsedHashes.add(hash);
+        }
+      }
+    }
+  }
+}
