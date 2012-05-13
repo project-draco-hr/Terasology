@@ -2,7 +2,10 @@
   if (_focusedWindow == null) {
     int size=_renderer.getDisplayElements().size();
     if (size > 0) {
-      _focusedWindow=(UIDisplayWindow)_renderer.getDisplayElements().get(size - 1);
+      UIDisplayWindow tempwindow=(UIDisplayWindow)_renderer.getDisplayElements().get(size - 1);
+      if (!(tempwindow instanceof UIMinion)) {
+        _focusedWindow=tempwindow;
+      }
     }
   }
   _renderer.update();

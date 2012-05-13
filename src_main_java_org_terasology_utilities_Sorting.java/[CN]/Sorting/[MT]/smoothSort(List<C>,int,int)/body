@@ -1,0 +1,46 @@
+{
+  int head=lo;
+  int p=1;
+  int pshift=1;
+  while (head < hi) {
+    if ((p & 3) == 3) {
+      smoothSortSift(m,pshift,head);
+      p>>>=2;
+      pshift+=2;
+    }
+ else {
+      if (smoothSortLP[pshift - 1] >= hi - head) {
+        smoothSortTrinkle(m,p,pshift,head,false);
+      }
+ else {
+        smoothSortSift(m,pshift,head);
+      }
+      if (pshift == 1) {
+        p<<=1;
+        pshift--;
+      }
+ else {
+        p<<=(pshift - 1);
+        pshift=1;
+      }
+    }
+    p|=1;
+    head++;
+  }
+  smoothSortTrinkle(m,p,pshift,head,false);
+  while (pshift != 1 || p != 1) {
+    if (pshift <= 1) {
+      int trail=Integer.numberOfTrailingZeros(p & ~1);
+      p>>>=trail;
+      pshift+=trail;
+    }
+ else {
+      p<<=2;
+      p^=7;
+      pshift-=2;
+      smoothSortTrinkle(m,p >>> 1,pshift + 1,head - smoothSortLP[pshift] - 1,true);
+      smoothSortTrinkle(m,p,pshift,head - 1,true);
+    }
+    head--;
+  }
+}

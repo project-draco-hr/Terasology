@@ -1,4 +1,11 @@
 {
+  UIMinion minionbehaviourmenu=(UIMinion)GUIManager.getInstance().getWindowById(behaviourmenu);
+  if (minionbehaviourmenu != null) {
+    GUIManager.getInstance().removeWindow(minionbehaviourmenu);
+    if (GUIManager.getInstance().getWindowById("container") != null) {
+      GUIManager.getInstance().setFocusedWindow("container");
+    }
+  }
   setMinionSelectMode(false);
   if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Disappear) {
     DestroyActiveMinion();
