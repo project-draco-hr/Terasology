@@ -1,21 +1,19 @@
 {
-  if (!Keyboard.next()) {
-    return false;
-  }
-  KeyEvent e;
-  if (Keyboard.getEventKeyState()) {
-    if (Keyboard.isRepeatEvent()) {
-      e=KEY_REPEAT_EVENT;
+  while (Keyboard.next()) {
+    KeyEvent e;
+    if (Keyboard.getEventKeyState()) {
+      if (Keyboard.isRepeatEvent()) {
+        e=KEY_REPEAT_EVENT;
+      }
+ else {
+        e=KEY_DOWN_EVENT;
+      }
     }
  else {
-      e=KEY_DOWN_EVENT;
+      e=KEY_UP_EVENT;
     }
+    e.reset();
+    e.key=Keyboard.getEventKey();
+    eventSystem.send(localPlayerRef,e);
   }
- else {
-    e=KEY_UP_EVENT;
-  }
-  e.reset();
-  e.key=Keyboard.getEventKey();
-  eventSystem.send(localPlayerRef,e);
-  return true;
 }
