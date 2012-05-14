@@ -1,12 +1,14 @@
 {
+  Texture guiTex=AssetManager.loadTexture("engine:gui");
+  terrainTex=AssetManager.loadTexture("engine:terrain");
   this.slot=slot;
   this.entity=entity;
   setSize(size);
-  selectionRectangle=new UIGraphicsElement("gui");
+  selectionRectangle=new UIGraphicsElement(guiTex);
   selectionRectangle.getTextureSize().set(new Vector2f(24f / 256f,24f / 256f));
   selectionRectangle.getTextureOrigin().set(new Vector2f(0.0f,23f / 256f));
   selectionRectangle.setSize(getSize());
-  background=new UIGraphicsElement("gui");
+  background=new UIGraphicsElement(guiTex);
   background.getTextureSize().set(new Vector2f(20f / 256f,20f / 256f));
   background.getTextureOrigin().set(new Vector2f(1.0f / 256f,1f / 256f));
   background.setSize(getSize());
@@ -14,4 +16,7 @@
   label=new UIText();
   label.setVisible(true);
   label.setPosition(new Vector2f(30f,20f));
+  label2=new UIText();
+  label2.setVisible(true);
+  label2.setPosition(new Vector2f(0f,-14f));
 }

@@ -3,11 +3,12 @@
   if (entityData.hasParentPrefab() && !entityData.getParentPrefab().isEmpty() && prefabManager.exists(entityData.getParentPrefab())) {
     Prefab prefab=prefabManager.getPrefab(entityData.getParentPrefab());
     for (    Component component : prefab.listComponents()) {
-      String componentName=PersistenceUtil.getComponentClassName(component.getClass());
+      String componentName=ComponentUtil.getComponentClassName(component.getClass());
       if (!containsIgnoreCase(componentName,entityData.getRemovedComponentList())) {
         entity.addComponent(componentLibrary.copy(component));
       }
     }
+    entity.addComponent(new EntityInfoComponent(entityData.getParentPrefab()));
   }
   for (  EntityData.Component componentData : entityData.getComponentList()) {
     Class<? extends Component> componentClass=getComponentClass(componentData);

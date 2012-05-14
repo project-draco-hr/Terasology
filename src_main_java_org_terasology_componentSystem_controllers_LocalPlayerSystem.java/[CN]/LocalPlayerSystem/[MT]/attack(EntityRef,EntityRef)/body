@@ -12,9 +12,7 @@
         damage+=item.getPerBlockDamageBonus().get(block.getBlockFamily().getTitle());
       }
     }
-    if (block.isDestructible()) {
-      EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(blockPos);
-      blockEntity.send(new DamageEvent(damage,player));
-    }
+    EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(blockPos);
+    blockEntity.send(new DamageEvent(damage,player));
   }
 }

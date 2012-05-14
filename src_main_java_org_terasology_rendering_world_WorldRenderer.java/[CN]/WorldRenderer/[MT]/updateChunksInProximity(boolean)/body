@@ -3,16 +3,41 @@
   int newChunkPosZ=calcCamChunkOffsetZ();
   int viewingDistance=Config.getInstance().getActiveViewingDistance();
   if (_chunkPosX != newChunkPosX || _chunkPosZ != newChunkPosZ || force) {
-    _chunksInProximity.clear();
-    for (int x=-(viewingDistance / 2); x < (viewingDistance / 2); x++) {
-      for (int z=-(viewingDistance / 2); z < (viewingDistance / 2); z++) {
-        Chunk c=_worldProvider.getChunkProvider().getChunk(calcCamChunkOffsetX() + x,0,calcCamChunkOffsetZ() + z);
-        _chunksInProximity.add(c);
+    if (_chunksInProximity.size() == 0 || force) {
+      _chunksInProximity.clear();
+      for (int x=-(viewingDistance / 2); x < (viewingDistance / 2); x++) {
+        for (int z=-(viewingDistance / 2); z < (viewingDistance / 2); z++) {
+          Chunk c=_worldProvider.getChunkProvider().getChunk(newChunkPosX + x,0,newChunkPosZ + z);
+          _chunksInProximity.add(c);
+        }
+      }
+    }
+ else {
+      int vd2=viewingDistance / 2;
+      Rect2i oldView=new Rect2i(_chunkPosX - vd2,_chunkPosZ - vd2,viewingDistance,viewingDistance);
+      Rect2i newView=new Rect2i(newChunkPosX - vd2,newChunkPosZ - vd2,viewingDistance,viewingDistance);
+      List<Rect2i> removeRects=Rect2i.subtractEqualsSized(oldView,newView);
+      for (      Rect2i r : removeRects) {
+        for (int x=r.minX(); x < r.maxX(); ++x) {
+          for (int y=r.minY(); y < r.maxY(); ++y) {
+            Chunk c=_worldProvider.getChunkProvider().getChunk(x,0,y);
+            _chunksInProximity.remove(c);
+          }
+        }
+      }
+      List<Rect2i> addRects=Rect2i.subtractEqualsSized(newView,oldView);
+      for (      Rect2i r : addRects) {
+        for (int x=r.minX(); x < r.maxX(); ++x) {
+          for (int y=r.minY(); y < r.maxY(); ++y) {
+            Chunk c=_worldProvider.getChunkProvider().getChunk(x,0,y);
+            _chunksInProximity.add(c);
+          }
+        }
       }
     }
     _chunkPosX=newChunkPosX;
     _chunkPosZ=newChunkPosZ;
-    Collections.sort(_chunksInProximity);
+    Sorting.smoothSort(_chunksInProximity);
     return true;
   }
   return false;

@@ -5,7 +5,7 @@
   if (block == null)   return false;
   if (canPlaceBlock(block,targetBlock,placementPos)) {
     worldProvider.setBlock(placementPos.x,placementPos.y,placementPos.z,block.getId(),true,true);
-    AudioManager.play("PlaceBlock",0.5f);
+    AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"),0.5f);
     if (blockItem.placedEntity.exists()) {
       blockItem.placedEntity.addComponent(new BlockComponent(placementPos,false));
       blockItem.placedEntity.addComponent(new HealthComponent(type.getArchetypeBlock().getHardness(),2.0f,1.0f));

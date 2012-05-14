@@ -1,0 +1,11 @@
+{
+  SoundPool pool=AudioManager.getInstance().getSoundPool("music");
+  pool.stopAll();
+  Sound sound=(Sound)AssetManager.load(uri);
+  if (sound == null)   return null;
+  SoundSource source=pool.getSource(sound);
+  if (source == null) {
+    return null;
+  }
+  return source.setGain(0.1f).play();
+}

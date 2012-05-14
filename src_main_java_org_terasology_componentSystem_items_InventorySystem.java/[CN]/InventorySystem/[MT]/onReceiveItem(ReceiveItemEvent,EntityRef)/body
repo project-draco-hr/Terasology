@@ -25,12 +25,12 @@
   int freeSlot=inventory.itemSlots.indexOf(EntityRef.NULL);
   if (freeSlot != -1) {
     inventory.itemSlots.set(freeSlot,event.getItem());
-    InventoryComponent otherInventory=item.container.getComponent(InventoryComponent.class);
-    if (otherInventory != null) {
-      int heldSlot=otherInventory.itemSlots.indexOf(event.getItem());
-      if (heldSlot != -1) {
-        otherInventory.itemSlots.set(heldSlot,EntityRef.NULL);
-        item.container.saveComponent(otherInventory);
+    InventoryComponent sourceInventory=item.container.getComponent(InventoryComponent.class);
+    if (sourceInventory != null) {
+      int matchedSlot=sourceInventory.itemSlots.indexOf(event.getItem());
+      if (matchedSlot != -1) {
+        sourceInventory.itemSlots.set(matchedSlot,EntityRef.NULL);
+        item.container.saveComponent(sourceInventory);
       }
     }
     item.container=entity;

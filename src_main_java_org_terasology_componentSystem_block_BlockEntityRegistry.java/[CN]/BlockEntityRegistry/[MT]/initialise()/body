@@ -1,9 +1,17 @@
 {
   this.entityManager=CoreRegistry.get(EntityManager.class);
-  this.prefabManager=CoreRegistry.get(PrefabManager.class);
   this.worldProvider=CoreRegistry.get(IWorldProvider.class);
   for (  EntityRef blockComp : entityManager.iteratorEntities(BlockComponent.class)) {
     BlockComponent comp=blockComp.getComponent(BlockComponent.class);
     blockComponentLookup.put(new Vector3i(comp.getPosition()),blockComp);
+  }
+  for (  EntityRef entity : entityManager.iteratorEntities(BlockComponent.class)) {
+    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+    if (blockComp.temporary) {
+      HealthComponent health=entity.getComponent(HealthComponent.class);
+      if (health == null || health.currentHealth == health.maxHealth || health.currentHealth == 0) {
+        entity.destroy();
+      }
+    }
   }
 }

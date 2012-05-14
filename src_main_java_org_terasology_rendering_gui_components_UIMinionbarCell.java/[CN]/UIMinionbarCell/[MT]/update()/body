@@ -1,0 +1,13 @@
+{
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  _selectionRectangle.setVisible(_selected);
+  setPosition(new Vector2f(2f,(getSize().y - 8f) * _id - 2f));
+  MinionBarComponent inventory=localPlayer.getEntity().getComponent(MinionBarComponent.class);
+  if (inventory == null)   return;
+  if (inventory.MinionSlots.size() > _id) {
+    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+    if (localPlayerComp != null) {
+      setSelected(localPlayerComp.selectedMinion == _id);
+    }
+  }
+}

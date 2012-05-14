@@ -1,0 +1,22 @@
+{
+  UIMinion minionbehaviourmenu=(UIMinion)GUIManager.getInstance().getWindowById(behaviourmenu);
+  if (minionbehaviourmenu != null) {
+    GUIManager.getInstance().removeWindow(minionbehaviourmenu);
+    if (GUIManager.getInstance().getWindowById("container") != null) {
+      GUIManager.getInstance().setFocusedWindow("container");
+    }
+  }
+  setMinionSelectMode(false);
+  if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Disappear) {
+    DestroyActiveMinion();
+  }
+ else   if (getSelectedBehaviour() == MinionComponent.MinionBehaviour.Inventory) {
+    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+    if (localPlayer == null)     return;
+    getSelectedMinion().send(new ActivateEvent(getSelectedMinion(),localPlayer.getEntity()));
+    MinionComponent minioncomp=getSelectedMinion().getComponent(MinionComponent.class);
+    minioncomp.minionBehaviour=MinionComponent.MinionBehaviour.Move;
+  }
+  MinionComponent minioncomp=getSelectedMinion().getComponent(MinionComponent.class);
+  getSelectedMinion().saveComponent(minioncomp);
+}

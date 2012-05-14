@@ -1,0 +1,14 @@
+{
+  Reader reader=new InputStreamReader(url.openStream());
+  try {
+    return gson.fromJson(reader,ShaderMetadata.class);
+  }
+  finally {
+    try {
+      reader.close();
+    }
+ catch (    IOException e) {
+      Logger.getLogger(getClass().getName()).log(Level.SEVERE,"Failed to close stream",e);
+    }
+  }
+}

@@ -7,7 +7,7 @@
   if (BlockManager.getInstance().getBlock(upperBlockType).getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
     worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,(byte)0x0,true,true);
   }
-  AudioManager.play("RemoveBlock",0.6f);
+  AudioManager.play(new AssetUri(AssetType.SOUND,"engine:RemoveBlock"),0.6f);
   if ((oldBlock.isStraightToInventory() || !oldBlock.isEntityTemporary()) && event.getInstigator().exists()) {
     EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily(),entity);
     if (!oldBlock.isEntityTemporary()) {

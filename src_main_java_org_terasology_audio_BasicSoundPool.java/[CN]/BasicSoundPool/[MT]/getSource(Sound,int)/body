@@ -2,17 +2,17 @@
   if (sound == null) {
     return null;
   }
-  for (  SoundSource source : _soundSources.keySet()) {
+  for (  SoundSource source : soundSources.keySet()) {
     if (!isActive(source)) {
-      _soundSources.put(source,priority);
+      soundSources.put(source,priority);
       return source.setAudio(sound);
     }
   }
-  for (  Map.Entry<SoundSource,Integer> entry : _soundSources.entrySet()) {
+  for (  Map.Entry<SoundSource,Integer> entry : soundSources.entrySet()) {
     SoundSource source=entry.getKey();
     Integer soundPriority=entry.getValue();
     if (soundPriority < priority) {
-      _soundSources.put(source,priority);
+      soundSources.put(source,priority);
       return source.setAudio(sound);
     }
   }

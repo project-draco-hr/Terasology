@@ -3,7 +3,7 @@
   EntityRef entity=entityManager.create();
   entity.addComponent(new StringComponent("Test"));
   EntityData.World world=entityPersisterHelper.serializeWorld();
-  int typeId=world.getComponentClassList().indexOf(PersistenceUtil.getComponentClassName(StringComponent.class));
+  int typeId=world.getComponentClassList().indexOf(ComponentUtil.getComponentClassName(StringComponent.class));
   assertFalse(typeId == -1);
   boolean found=false;
   for (  EntityData.Component component : world.getEntity(0).getComponentList()) {

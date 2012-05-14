@@ -1,0 +1,15 @@
+{
+  setSize(new Vector2f(44f,364f));
+  _backgroundTexture=new UIGraphicsElement(AssetManager.loadTexture("engine:guiMinion"));
+  _backgroundTexture.setVisible(true);
+  _backgroundTexture.getTextureSize().set(new Vector2f(22f / 256f,182f / 256f));
+  _backgroundTexture.getTextureOrigin().set(new Vector2f(0.0f,0.0f));
+  _backgroundTexture.setSize(getSize());
+  addDisplayElement(_backgroundTexture);
+  _cells=new UIMinionbarCell[9];
+  for (int i=0; i < 9; i++) {
+    _cells[i]=new UIMinionbarCell(i);
+    _cells[i].setVisible(true);
+    addDisplayElement(_cells[i]);
+  }
+}

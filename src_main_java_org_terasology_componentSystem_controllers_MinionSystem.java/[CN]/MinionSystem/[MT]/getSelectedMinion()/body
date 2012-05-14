@@ -1,0 +1,12 @@
+{
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  if (localPlayer == null)   return null;
+  EntityRef entity=localPlayer.getEntity();
+  if (entity == null)   return null;
+  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComp == null)   return null;
+  MinionBarComponent minionbar=localPlayer.getEntity().getComponent(MinionBarComponent.class);
+  if (minionbar == null)   return null;
+  EntityRef minion=minionbar.MinionSlots.get(localPlayerComp.selectedMinion);
+  return minion;
+}

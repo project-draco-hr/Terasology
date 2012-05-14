@@ -5,7 +5,7 @@
   GL13.glActiveTexture(GL13.GL_TEXTURE2);
   PostProcessingRenderer.getInstance().getFBO("sceneBlur2").bindTexture();
   GL13.glActiveTexture(GL13.GL_TEXTURE3);
-  TextureManager.getInstance().bindTexture("vignette");
+  glBindTexture(GL11.GL_TEXTURE_2D,texture.getId());
   GL13.glActiveTexture(GL13.GL_TEXTURE4);
   scene.bindDepthTexture();
   GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -17,5 +17,9 @@
   program.setInt("texDepth",4);
   program.setFloat("viewingDistance",Config.getInstance().getActiveViewingDistance() * 8.0f);
   if (CoreRegistry.get(LocalPlayer.class).isValid()) {
+    Vector3d cameraPos=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+    byte blockId=CoreRegistry.get(IWorldProvider.class).getBlockAtPosition(cameraPos);
+    Block block=BlockManager.getInstance().getBlock(blockId);
+    program.setInt("swimming",block.isLiquid() ? 1 : 0);
   }
 }

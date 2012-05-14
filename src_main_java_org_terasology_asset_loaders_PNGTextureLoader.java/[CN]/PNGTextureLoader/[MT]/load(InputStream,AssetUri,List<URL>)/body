@@ -1,0 +1,34 @@
+{
+  PNGDecoder decoder=new PNGDecoder(stream);
+  ByteBuffer buf=ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
+  decoder.decode(buf,decoder.getWidth() * 4,PNGDecoder.RGBA);
+  buf.flip();
+  ByteBuffer data=buf;
+  int height=decoder.getHeight();
+  int width=decoder.getWidth();
+  Texture.FilterMode filterMode=Texture.FilterMode.Nearest;
+  Texture.WrapMode wrapMode=Texture.WrapMode.Clamp;
+  for (  URL url : urls) {
+    if (url.toString().endsWith(".json")) {
+      InputStreamReader reader=null;
+      try {
+        reader=new InputStreamReader(url.openStream());
+        TextureMetadata metadata=gson.fromJson(reader,TextureMetadata.class);
+        if (metadata.filterMode != null)         filterMode=metadata.filterMode;
+        if (metadata.wrapMode != null)         wrapMode=metadata.wrapMode;
+      }
+  finally {
+        if (reader != null) {
+          try {
+            reader.close();
+          }
+ catch (          IOException e) {
+            logger.log(Level.SEVERE,"Error closing " + url.toString(),e);
+          }
+        }
+      }
+      break;
+    }
+  }
+  return new Texture(uri,new ByteBuffer[]{data},width,height,wrapMode,filterMode);
+}
