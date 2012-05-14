@@ -16,26 +16,29 @@ switch (getSelectedBehaviour()) {
 case Follow:
 {
             minionai.movementTarget=new Vector3f(centerPos.x,centerPos.y,centerPos.z);
+            getSelectedMinion().saveComponent(minionai);
             break;
           }
 case Move:
 {
           minionai.movementTargets.add(new Vector3f(centerPos.x,centerPos.y,centerPos.z));
+          getSelectedMinion().saveComponent(minionai);
           break;
         }
 case Gather:
 {
         minionai.gatherTargets.add(new Vector3f(centerPos.x,centerPos.y,centerPos.z));
+        getSelectedMinion().saveComponent(minionai);
         break;
       }
 case Patrol:
 {
       minionai.patrolTargets.add(new Vector3f(centerPos.x,centerPos.y,centerPos.z));
+      getSelectedMinion().saveComponent(minionai);
       break;
     }
 }
 }
-getSelectedMinion().saveComponent(minionai);
 }
 }
 }
