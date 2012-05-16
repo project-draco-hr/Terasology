@@ -1,34 +1,34 @@
 {
   potion=entity.getComponent(PotionComponent.class);
+  poisoned=entity.getComponent(PoisonedComponent.class);
   EntityManager entityManager=CoreRegister.get(EntityManager.class);
   HealthComponent health=event.getTarget().getComponent(HealthComponent.class);
   ItemComponent itemComp=entity.getComponent(ItemComponent.class);
   EntityRef item=entityManager.create("core:emptyVial");
 switch (potion.type) {
 case Red:
-    event.getTarget().send(new ReceiveItemEvent(item));
-  if (itemComp != null && !itemComp.container.exists()) {
-    item.destroy();
-  }
-health.currentHealth=health.maxHealth;
-event.getTarget().saveComponent(health);
+    event.getInstigator().send(new BoostHpEvent());
+  event.getInstigator().send(new ReceiveItemEvent(item));
+if (itemComp != null && !itemComp.container.exists()) {
+  item.destroy();
+}
 break;
 case Green:
-event.getTarget().send(new ReceiveItemEvent(item));
+event.getInstigator().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
 item.destroy();
 }
-event.getTarget().send(new PoisonedEvent());
+event.getInstigator().send(new PoisonedEvent());
 break;
 case Orange:
 event.getInstigator().send(new CurePoisonEvent());
-event.getTarget().send(new ReceiveItemEvent(item));
+event.getInstigator().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
 item.destroy();
 }
 break;
 case Purple:
-event.getTarget().send(new ReceiveItemEvent(item));
+event.getInstigator().send(new ReceiveItemEvent(item));
 if (itemComp != null && !itemComp.container.exists()) {
 item.destroy();
 }
