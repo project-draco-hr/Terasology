@@ -39,7 +39,7 @@ case Follow:
 case Gather:
 {
         List<Vector3f> targets=ai.gatherTargets;
-        if (targets == null || targets.size() < 1)         return;
+        if (targets == null || targets.size() < 1)         break;
         Vector3f currentTarget=targets.get(0);
         Vector3f dist=new Vector3f(worldPos);
         dist.sub(currentTarget);
@@ -73,7 +73,7 @@ case Gather:
 case Move:
 {
       List<Vector3f> targets=ai.movementTargets;
-      if (targets == null || targets.size() < 1)       return;
+      if (targets == null || targets.size() < 1)       break;
       Vector3f currentTarget=targets.get(0);
       Vector3f dist=new Vector3f(worldPos);
       dist.sub(currentTarget);
@@ -103,14 +103,14 @@ case Move:
 case Patrol:
 {
     List<Vector3f> targets=ai.patrolTargets;
-    if (targets == null || targets.size() < 1)     return;
+    if (targets == null || targets.size() < 1)     break;
     int patrolCounter=ai.patrolCounter;
     Vector3f currentTarget=null;
     if (patrolCounter < targets.size()) {
       currentTarget=targets.get(patrolCounter);
     }
     if (currentTarget == null) {
-      return;
+      break;
     }
     Vector3f dist=new Vector3f(worldPos);
     dist.sub(currentTarget);
