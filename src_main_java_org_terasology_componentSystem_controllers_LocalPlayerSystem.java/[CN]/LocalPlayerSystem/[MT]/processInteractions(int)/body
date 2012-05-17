@@ -10,12 +10,14 @@
   if (minionsys.MinionMode()) {
     if (button == 1) {
       if (minionsys.isMinionSelected()) {
+        lastInteraction=timer.getTimeInMs();
         minionsys.RightMouseDown();
         minionsys.setMinionSelectMode(true);
       }
     }
  else {
       if (Mouse.isButtonDown(0) || button == 0) {
+        lastInteraction=timer.getTimeInMs();
         minionsys.setTarget();
       }
     }
