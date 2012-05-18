@@ -8,7 +8,14 @@
   AssetManager.getInstance().register(AssetType.MATERIAL,"mat",new MaterialLoader());
   AssetManager.getInstance().addAssetSource(new ClasspathSource("engine",getClass().getProtectionDomain().getCodeSource(),"org/terasology/data"));
   BlockShapeManager.getInstance().reload();
-  BlockManager.getInstance();
+  BlockManifestor manifestor=new BlockManifestor(BlockManager.getInstance());
+  try {
+    manifestor.loadConfig();
+  }
+ catch (  Exception e) {
+    logger.log(Level.SEVERE,"Failed to load block definitions",e);
+    System.exit(-1);
+  }
   for (  AssetUri uri : AssetManager.list(AssetType.SHADER)) {
     AssetManager.load(uri);
   }

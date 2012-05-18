@@ -1,0 +1,27 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(CharacterMovementComponent.class,SpeedBoostComponent.class)) {
+    SpeedBoostComponent speedEffect=entity.getComponent(SpeedBoostComponent.class);
+    CharacterMovementComponent charmov=entity.getComponent(CharacterMovementComponent.class);
+    speedEffect.speedBoostDuration=speedEffect.speedBoostDuration - delta;
+    if (speedEffect.speedBoostDuration <= 0) {
+      charmov.runFactor=1.5f;
+      entity.saveComponent(charmov);
+      entity.removeComponent(SpeedBoostComponent.class);
+    }
+  }
+  for (  EntityRef entity : entityManager.iteratorEntities(HealthComponent.class,PoisonedComponent.class)) {
+    PoisonedComponent poisonedEffect=entity.getComponent(PoisonedComponent.class);
+    HealthComponent health=entity.getComponent(HealthComponent.class);
+    poisonedEffect.poisonDuration=poisonedEffect.poisonDuration - delta;
+    if (poisonedEffect.poisonDuration >= 1) {
+      health.currentHealth=Math.min(health.maxHealth,health.currentHealth - (int)poisonedEffect.poisonRate);
+      entity.saveComponent(health);
+      if (health.currentHealth <= 0) {
+        entity.send(new NoHealthEvent(entity));
+      }
+    }
+    if (poisonedEffect.poisonDuration <= 0) {
+      entity.removeComponent(PoisonedComponent.class);
+    }
+  }
+}
