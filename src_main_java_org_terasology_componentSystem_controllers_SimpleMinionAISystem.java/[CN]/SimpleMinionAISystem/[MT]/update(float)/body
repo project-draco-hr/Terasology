@@ -102,12 +102,11 @@ case Test:
     }
     if (ai.previousTarget != ai.movementTargets.get(0)) {
       ai.locked=true;
-      ai.pathTargets=aStarPathing.findPath(worldPos,currentTarget);
+      ai.pathTargets=aStarPathing.findPath(worldPos,new Vector3f(currentTarget));
     }
     ai.locked=false;
     if (ai.pathTargets != null && ai.pathTargets.size() > 0) {
       pathTargets=ai.pathTargets;
-      pathTargets.get(0);
       ai.previousTarget=targets.get(0);
       currentTarget=pathTargets.get(0);
     }
@@ -115,7 +114,7 @@ case Test:
     Vector3f dist=new Vector3f(worldPos);
     dist.sub(currentTarget);
     double distanceToTarget=dist.length();
-    if (distanceToTarget < 1.5d) {
+    if (distanceToTarget < 0.1d) {
       if (ai.pathTargets != null && ai.pathTargets.size() > 0) {
         ai.pathTargets.remove(0);
         entity.saveComponent(ai);
