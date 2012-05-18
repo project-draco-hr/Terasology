@@ -2,15 +2,23 @@
   super.update();
   SpeedBoostComponent speed=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(SpeedBoostComponent.class);
   CharacterMovementComponent charmov=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(CharacterMovementComponent.class);
+  CuredComponent cured=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(CuredComponent.class);
   entityManager=CoreRegistry.get(EntityManager.class);
   for (  EntityRef entity : entityManager.iteratorEntities(SpeedBoostComponent.class)) {
     if (speed.speedBoostDuration >= 1) {
-      _buff.setVisible(true);
+      _speedbuff.setVisible(true);
       if (charmov.isRunning) {
-        _buff.getTextureOrigin().set(new Vector2f(16f / 256f,16f / 256f));
+        _speedbuff.getTextureOrigin().set(new Vector2f(16f / 256f,16f / 256f));
       }
- else       _buff.getTextureOrigin().set(new Vector2f(0.0f / 256f,16f / 256f));
+ else       _speedbuff.getTextureOrigin().set(new Vector2f(0.0f / 256f,16f / 256f));
     }
- else     _buff.setVisible(false);
+ else     _speedbuff.setVisible(false);
+  }
+  for (  EntityRef entity : entityManager.iteratorEntities(CuredComponent.class)) {
+    if (cured.cureDuration >= 1) {
+      _curedbuff.setVisible(true);
+      _curedbuff.getTextureOrigin().set(new Vector2f(16f / 256f,0.0f / 256f));
+    }
+ else     _curedbuff.setVisible(false);
   }
 }
