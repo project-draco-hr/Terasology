@@ -1,0 +1,30 @@
+{
+  FileInputStream fileIn=null;
+  ObjectInputStream in=null;
+  try {
+    fileIn=new FileInputStream(file);
+    in=new ObjectInputStream(fileIn);
+    return (ChunkCacheGZip)in.readObject();
+  }
+ catch (  ClassNotFoundException e) {
+    throw new IOException("Unable to load chunk cache",e);
+  }
+ finally {
+    if (in != null) {
+      try {
+        in.close();
+      }
+ catch (      IOException e) {
+        Logger.getLogger(ChunkCacheGZip.class.getName()).log(Level.SEVERE,"Failed to close input stream",e);
+      }
+    }
+    if (fileIn != null) {
+      try {
+        fileIn.close();
+      }
+ catch (      IOException e) {
+        Logger.getLogger(ChunkCacheGZip.class.getName()).log(Level.SEVERE,"Failed to close input stream",e);
+      }
+    }
+  }
+}

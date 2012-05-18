@@ -1,0 +1,15 @@
+{
+  out.writeInt(pos.x);
+  out.writeInt(pos.y);
+  out.writeInt(pos.z);
+  byte flags=0x0;
+  if (isLightDirty()) {
+    flags=Helper.setFlag(flags,(byte)0);
+  }
+  out.writeByte(flags);
+  out.writeObject(chunkState);
+  for (int i=0; i < blocks.size(); i++)   out.writeByte(blocks.getRawByte(i));
+  for (int i=0; i < sunlight.sizePacked(); i++)   out.writeByte(sunlight.getRawByte(i));
+  for (int i=0; i < light.sizePacked(); i++)   out.writeByte(light.getRawByte(i));
+  for (int i=0; i < states.sizePacked(); i++)   out.writeByte(states.getRawByte(i));
+}

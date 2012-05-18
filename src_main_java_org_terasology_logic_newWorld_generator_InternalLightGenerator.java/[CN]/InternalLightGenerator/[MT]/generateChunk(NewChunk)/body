@@ -1,0 +1,25 @@
+{
+  int top=NewChunk.CHUNK_DIMENSION_Y - 1;
+  for (int x=0; x < NewChunk.CHUNK_DIMENSION_X; x++) {
+    for (int z=0; z < NewChunk.CHUNK_DIMENSION_Z; z++) {
+      for (int y=top; y >= 0; y--) {
+        if (chunk.getBlock(x,y,z).isTranslucent()) {
+          chunk.setSunlight(x,y,z,NewChunk.MAX_LIGHT);
+        }
+ else {
+          break;
+        }
+      }
+    }
+  }
+  for (int x=0; x < NewChunk.CHUNK_DIMENSION_X; x++) {
+    for (int z=0; z < NewChunk.CHUNK_DIMENSION_Z; z++) {
+      for (int y=top; y >= 0; y--) {
+        if (chunk.getBlock(x,y,z).isTranslucent()) {
+          spreadSunlightInternal(chunk,x,y,z);
+          spreadLightInternal(chunk,x,y,z);
+        }
+      }
+    }
+  }
+}
