@@ -1,0 +1,18 @@
+{
+  MouseEvent e;
+  while (Mouse.next()) {
+    if (Mouse.getEventButton() == 1) {
+      e=Mouse.getEventButtonState() ? LEFT_MOUSE_DOWN_EVENT : LEFT_MOUSE_UP_EVENT;
+    }
+ else     if (Mouse.getEventButton() == 1) {
+      e=Mouse.getEventButtonState() ? RIGHT_MOUSE_DOWN_EVENT : RIGHT_MOUSE_UP_EVENT;
+    }
+ else {
+      e=Mouse.getEventButtonState() ? MOUSE_DOWN_EVENT : MOUSE_UP_EVENT;
+      e.button=Mouse.getEventButton();
+    }
+    e.reset();
+    e.target=target;
+    eventSystem.send(localPlayerRef,e);
+  }
+}

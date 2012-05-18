@@ -1,0 +1,15 @@
+{
+  if (target != lastMouseTarget) {
+    if (lastMouseTarget != null) {
+      MOUSE_OUT_EVENT.reset();
+      MOUSE_OUT_EVENT.target=lastMouseTarget;
+      eventSystem.send(localPlayerRef,MOUSE_OUT_EVENT);
+    }
+    if (target != null) {
+      MOUSE_OVER_EVENT.reset();
+      MOUSE_OVER_EVENT.target=target;
+      eventSystem.send(localPlayerRef,MOUSE_OVER_EVENT);
+    }
+    lastMouseTarget=target;
+  }
+}
