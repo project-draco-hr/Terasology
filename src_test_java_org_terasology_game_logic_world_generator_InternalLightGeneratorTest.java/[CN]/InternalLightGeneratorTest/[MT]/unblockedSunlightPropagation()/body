@@ -1,0 +1,7 @@
+{
+  NewChunk chunk=new NewChunk(0,0,0);
+  generator.generateChunk(chunk);
+  for (  Vector3i pos : Region3i.createFromMinAndSize(Vector3i.zero(),new Vector3i(NewChunk.CHUNK_DIMENSION_X,NewChunk.CHUNK_DIMENSION_Y,NewChunk.CHUNK_DIMENSION_Z))) {
+    assertEquals(NewChunk.MAX_LIGHT,chunk.getSunlight(pos));
+  }
+}

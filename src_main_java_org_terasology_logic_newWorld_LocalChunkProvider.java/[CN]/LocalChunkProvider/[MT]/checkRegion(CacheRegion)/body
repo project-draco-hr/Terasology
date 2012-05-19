@@ -1,8 +1,20 @@
 {
-  for (  Vector3i chunkPos : cacheRegion.getRegion()) {
+  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(2)) {
     NewChunk chunk=getChunk(chunkPos);
     if (chunk == null) {
-      chunk=createChunk(chunkPos);
+      createChunk(chunkPos);
+    }
+  }
+  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(1)) {
+    NewChunk chunk=getChunk(chunkPos);
+    if (chunk.getChunkState() == NewChunk.State.Awaiting2ndGenerationPass) {
+      fullGenerateChunk(chunk);
+    }
+  }
+  for (  Vector3i chunkPos : cacheRegion.getRegion()) {
+    NewChunk chunk=getChunk(chunkPos);
+    if (chunk.getChunkState() == NewChunk.State.AwaitingLightPropagation) {
+      chunk.setChunkState(NewChunk.State.Complete);
     }
   }
 }

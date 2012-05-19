@@ -1,0 +1,9 @@
+{
+  this.region=chunkRegion;
+  this.chunks=new NewChunk[chunkRegion.size().x * chunkRegion.size().z];
+  for (  Vector3i pos : region) {
+    NewChunk chunk=chunkProvider.getChunk(pos);
+    int index=absChunkIndex(pos.x,pos.y,pos.z);
+    chunks[index]=chunk;
+  }
+}
