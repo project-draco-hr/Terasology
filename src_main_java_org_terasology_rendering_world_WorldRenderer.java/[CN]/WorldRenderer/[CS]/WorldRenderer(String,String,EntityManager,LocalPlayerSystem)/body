@@ -1,7 +1,12 @@
 {
-  _worldProvider=new LocalWorldProvider(title,seed);
+  NewChunkGeneratorManager generatorManager=new NewChunkGeneratorManagerImpl(seed,new WorldBiomeProviderImpl(seed));
+  generatorManager.registerChunkGenerator(new PerlinTerrainGenerator());
+  generatorManager.registerChunkGenerator(new InternalLightGenerator());
+  _chunkProvider=new LocalChunkProvider(new NullChunkCache(),generatorManager);
+  _worldProvider=new NewLocalWorldProvider(title,seed,_chunkProvider);
+  _chunkTesselator=new NewChunkTessellator(_worldProvider.getBiomeProvider());
   _skysphere=new Skysphere(this);
-  _chunkUpdateManager=new ChunkUpdateManager();
+  _chunkUpdateManager=new ChunkUpdateManager(_chunkTesselator,_worldProvider);
   _worldTimeEventManager=new WorldTimeEventManager(_worldProvider);
   _portalManager=new PortalManager(manager);
   _blockGrid=new BlockGrid();

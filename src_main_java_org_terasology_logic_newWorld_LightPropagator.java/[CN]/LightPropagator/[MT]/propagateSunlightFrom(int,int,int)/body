@@ -1,34 +1,34 @@
 {
-  byte lightLevel=getSunlight(blockX,blockY,blockZ);
+  byte lightLevel=worldView.getSunlight(blockX,blockY,blockZ);
   if (lightLevel <= 1)   return;
   for (  Vector3i adjDir : HORIZONTAL_LIGHT_DIRECTIONS) {
     int adjX=blockX + adjDir.x;
     int adjZ=blockZ + adjDir.z;
-    byte adjLightValue=getSunlight(adjX,blockY,adjZ);
-    if (adjLightValue < lightLevel - 1 && getBlock(adjX,blockY,adjZ).isTranslucent()) {
-      setSunlight(adjX,blockY,adjZ,(byte)(lightLevel - 1));
+    byte adjLightValue=worldView.getSunlight(adjX,blockY,adjZ);
+    if (adjLightValue < lightLevel - 1 && worldView.getBlock(adjX,blockY,adjZ).isTranslucent()) {
+      worldView.setSunlight(adjX,blockY,adjZ,(byte)(lightLevel - 1));
       propagateSunlightFrom(adjX,blockY,adjZ);
     }
   }
   if (blockY > 0) {
-    byte lowerLight=getSunlight(blockX,blockY - 1,blockZ);
+    byte lowerLight=worldView.getSunlight(blockX,blockY - 1,blockZ);
     if (lightLevel == NewChunk.MAX_LIGHT) {
       if (lowerLight < lightLevel) {
-        setSunlight(blockX,blockY - 1,blockZ,lightLevel);
+        worldView.setSunlight(blockX,blockY - 1,blockZ,lightLevel);
         propagateSunlightFrom(blockX,blockY - 1,blockZ);
       }
     }
  else {
       if (lowerLight < lightLevel - 1) {
-        setSunlight(blockX,blockY - 1,blockZ,(byte)(lightLevel - 1));
+        worldView.setSunlight(blockX,blockY - 1,blockZ,(byte)(lightLevel - 1));
         propagateSunlightFrom(blockX,blockY - 1,blockZ);
       }
     }
   }
   if (blockY < NewChunk.CHUNK_DIMENSION_Y - 1) {
-    byte upperLight=getSunlight(blockX,blockY + 1,blockZ);
+    byte upperLight=worldView.getSunlight(blockX,blockY + 1,blockZ);
     if (upperLight < lightLevel - 1) {
-      setSunlight(blockX,blockY + 1,blockZ,(byte)(lightLevel - 1));
+      worldView.setSunlight(blockX,blockY + 1,blockZ,(byte)(lightLevel - 1));
       propagateSunlightFrom(blockX,blockY + 1,blockZ);
     }
   }

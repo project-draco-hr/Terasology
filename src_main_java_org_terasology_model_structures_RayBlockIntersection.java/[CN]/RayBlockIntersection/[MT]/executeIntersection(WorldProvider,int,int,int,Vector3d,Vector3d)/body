@@ -1,0 +1,37 @@
+{
+  Block block=w.getBlock(x,y,z);
+  if (block.isInvisible()) {
+    return null;
+  }
+  ArrayList<Intersection> result=new ArrayList<Intersection>();
+  for (  AABB blockAABB : block.getColliders(x,y,z)) {
+    Vector3d[] vertices=blockAABB.getVertices();
+    BlockPosition blockPos=new BlockPosition(x,y,z);
+    Intersection is=executeBlockFaceIntersection(blockPos,vertices[0],vertices[1],vertices[3],rayOrigin,rayDirection);
+    if (is != null) {
+      result.add(is);
+    }
+    is=executeBlockFaceIntersection(blockPos,vertices[4],vertices[7],vertices[5],rayOrigin,rayDirection);
+    if (is != null) {
+      result.add(is);
+    }
+    is=executeBlockFaceIntersection(blockPos,vertices[4],vertices[0],vertices[7],rayOrigin,rayDirection);
+    if (is != null) {
+      result.add(is);
+    }
+    is=executeBlockFaceIntersection(blockPos,vertices[5],vertices[6],vertices[1],rayOrigin,rayDirection);
+    if (is != null) {
+      result.add(is);
+    }
+    is=executeBlockFaceIntersection(blockPos,vertices[7],vertices[3],vertices[6],rayOrigin,rayDirection);
+    if (is != null) {
+      result.add(is);
+    }
+    is=executeBlockFaceIntersection(blockPos,vertices[4],vertices[5],vertices[0],rayOrigin,rayDirection);
+    if (is != null) {
+      result.add(is);
+    }
+  }
+  Collections.sort(result);
+  return result;
+}

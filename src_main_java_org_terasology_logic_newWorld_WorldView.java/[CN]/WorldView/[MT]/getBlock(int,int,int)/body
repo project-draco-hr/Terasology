@@ -1,0 +1,7 @@
+{
+  if (!isYInBounds(blockY))   return BlockManager.getInstance().getBlock((byte)0);
+  Vector3i chunkPos=TeraMath.calcChunkPos(blockX,blockY,blockZ);
+  int chunkIndex=relChunkIndex(chunkPos.x,chunkPos.y,chunkPos.z);
+  Vector3i innerBlockPos=TeraMath.calcBlockPos(blockX,blockY,blockZ,chunkPos);
+  return chunks[chunkIndex].getBlock(innerBlockPos);
+}

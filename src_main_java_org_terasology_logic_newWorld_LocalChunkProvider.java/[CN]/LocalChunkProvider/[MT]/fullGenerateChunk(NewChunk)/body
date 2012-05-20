@@ -1,6 +1,8 @@
 {
-  LightPropagator propagator=new LightPropagator(this,Region3i.createFromCenterExtents(chunk.getPos(),Vector3i.one()));
-  propagator.propagateOutOfChunk(chunk.getPos());
+  WorldView worldView=WorldView.CreateLocalView(chunk.getPos(),this);
+  logger.log(Level.INFO,"2nd Pass generating " + chunk.getPos());
+  LightPropagator propagator=new LightPropagator(worldView);
+  propagator.propagateOutOfTargetChunk();
   chunk.setChunkState(NewChunk.State.AwaitingLightPropagation);
   generator.postProcess(chunk.getPos());
 }

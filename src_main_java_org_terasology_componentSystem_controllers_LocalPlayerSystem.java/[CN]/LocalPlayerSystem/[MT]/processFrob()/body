@@ -5,7 +5,7 @@
   RayBlockIntersection.Intersection blockIntersection=calcSelectedBlock();
   if (blockIntersection != null) {
     Vector3i centerPos=blockIntersection.getBlockPosition();
-    Block block=BlockManager.getInstance().getBlock(worldProvider.getBlock(centerPos));
+    Block block=worldProvider.getBlock(centerPos);
     if (block.isUsable()) {
       EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(centerPos);
       blockEntity.send(new ActivateEvent(blockEntity,entity));

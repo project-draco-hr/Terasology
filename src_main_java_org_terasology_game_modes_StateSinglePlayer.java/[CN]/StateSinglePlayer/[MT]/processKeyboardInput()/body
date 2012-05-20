@@ -38,17 +38,18 @@
       }
     }
     if (debugEnabled && !screenHasFocus && Keyboard.getEventKeyState()) {
+      WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
       if (key == Keyboard.KEY_UP) {
-        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.005);
+        worldProvider.setTimeInDays(worldProvider.getTimeInDays() + 0.005f);
       }
       if (key == Keyboard.KEY_DOWN) {
-        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.005);
+        worldProvider.setTimeInDays(worldProvider.getTimeInDays() - 0.005f);
       }
       if (key == Keyboard.KEY_RIGHT) {
-        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() + 0.02);
+        worldProvider.setTimeInDays(worldProvider.getTimeInDays() + 0.02f);
       }
       if (key == Keyboard.KEY_LEFT) {
-        getActiveWorldProvider().setTime(getActiveWorldProvider().getTime() - 0.02);
+        worldProvider.setTimeInDays(worldProvider.getTimeInDays() - 0.02f);
       }
       if (key == Keyboard.KEY_R && !Keyboard.isRepeatEvent()) {
         getWorldRenderer().setWireframe(!getWorldRenderer().isWireframe());

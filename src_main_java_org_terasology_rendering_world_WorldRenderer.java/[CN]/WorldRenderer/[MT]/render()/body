@@ -13,21 +13,20 @@
   ;
   glEnable(GL_LIGHT0);
   boolean headUnderWater=false;
-  headUnderWater=(_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(getActiveCamera().getPosition()));
+  headUnderWater=(_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(new Vector3f(getActiveCamera().getPosition())));
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("RenderOpaque");
-  while (_renderQueueOpaque.size() > 0)   _renderQueueOpaque.poll().render();
   for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
     renderer.renderOpaque();
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render ChunkOpaque");
-  while (_renderQueueChunksOpaque.size() > 0)   _renderQueueChunksOpaque.poll().render(ChunkMesh.RENDER_PHASE.OPAQUE);
+  while (_renderQueueChunksOpaque.size() > 0)   renderChunk(_renderQueueChunksOpaque.poll(),ChunkMesh.RENDER_PHASE.OPAQUE);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render ChunkTransparent");
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  while (_renderQueueChunksSortedBillboards.size() > 0)   _renderQueueChunksSortedBillboards.poll().render(ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT);
+  while (_renderQueueChunksSortedBillboards.size() > 0)   renderChunk(_renderQueueChunksSortedBillboards.poll(),ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Transparent");
   while (_renderQueueTransparent.size() > 0)   _renderQueueTransparent.poll().render();
@@ -40,15 +39,15 @@
     glDisable(GL11.GL_CULL_FACE);
   }
   while (_renderQueueChunksSortedWater.size() > 0) {
-    Chunk c=_renderQueueChunksSortedWater.poll();
+    NewChunk c=_renderQueueChunksSortedWater.poll();
     for (int j=0; j < 2; j++) {
       if (j == 0) {
         glColorMask(false,false,false,false);
-        c.render(ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
+        renderChunk(c,ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
       }
  else {
         glColorMask(true,true,true,true);
-        c.render(ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
+        renderChunk(c,ChunkMesh.RENDER_PHASE.WATER_AND_ICE);
       }
     }
   }

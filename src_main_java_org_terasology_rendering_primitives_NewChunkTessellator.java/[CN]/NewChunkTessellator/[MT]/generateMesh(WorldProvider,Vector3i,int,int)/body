@@ -1,0 +1,21 @@
+{
+  PerformanceMonitor.startActivity("GenerateMesh");
+  ChunkMesh mesh=new ChunkMesh();
+  WorldView worldView=world.getWorldViewAround(chunkPos);
+  Vector3i chunkOffset=new Vector3i(chunkPos.x * NewChunk.CHUNK_DIMENSION_X,chunkPos.y * NewChunk.CHUNK_DIMENSION_Y,chunkPos.z * NewChunk.CHUNK_DIMENSION_Z);
+  for (int x=0; x < Chunk.CHUNK_DIMENSION_X; x++) {
+    for (int z=0; z < Chunk.CHUNK_DIMENSION_Z; z++) {
+      float biomeTemp=biomeProvider.getTemperatureAt(chunkOffset.x + x,chunkOffset.z + z);
+      float biomeHumidity=biomeProvider.getHumidityAt(chunkOffset.x + x,chunkOffset.z + z);
+      for (int y=verticalOffset; y < verticalOffset + meshHeight; y++) {
+        Block block=worldView.getBlock(x,y,z);
+        if (block == null || block.isInvisible())         continue;
+        generateBlockVertices(worldView,mesh,x,y,z,biomeTemp,biomeHumidity);
+      }
+    }
+  }
+  generateOptimizedBuffers(worldView,mesh);
+  _statVertexArrayUpdateCount++;
+  PerformanceMonitor.endActivity();
+  return mesh;
+}

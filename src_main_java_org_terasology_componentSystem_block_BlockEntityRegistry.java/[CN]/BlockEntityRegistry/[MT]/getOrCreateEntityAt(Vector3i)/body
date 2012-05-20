@@ -1,9 +1,8 @@
 {
   EntityRef blockEntity=blockComponentLookup.get(blockPosition);
   if (blockEntity == null || !blockEntity.exists()) {
-    byte id=worldProvider.getBlock(blockPosition);
-    if (id == 0)     return EntityRef.NULL;
-    Block block=BlockManager.getInstance().getBlock(id);
+    Block block=worldProvider.getBlock(blockPosition);
+    if (block.getId() == 0)     return EntityRef.NULL;
     blockEntity=entityManager.create(block.getEntityPrefab());
     if (block.isEntityTemporary()) {
       tempBlocks.add(blockEntity);

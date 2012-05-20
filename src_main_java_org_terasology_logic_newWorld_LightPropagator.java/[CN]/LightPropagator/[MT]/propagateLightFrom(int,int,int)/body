@@ -1,26 +1,26 @@
 {
-  byte lightLevel=getLight(blockX,blockY,blockZ);
+  byte lightLevel=worldView.getLight(blockX,blockY,blockZ);
   if (lightLevel <= 1)   return;
   for (  Vector3i adjDir : HORIZONTAL_LIGHT_DIRECTIONS) {
     int adjX=blockX + adjDir.x;
     int adjZ=blockZ + adjDir.z;
-    byte adjLightValue=getLight(adjX,blockY,adjZ);
-    if (adjLightValue < lightLevel - 1 && getBlock(adjX,blockY,adjZ).isTranslucent()) {
-      setLight(adjX,blockY,adjZ,(byte)(lightLevel - 1));
+    byte adjLightValue=worldView.getLight(adjX,blockY,adjZ);
+    if (adjLightValue < lightLevel - 1 && worldView.getBlock(adjX,blockY,adjZ).isTranslucent()) {
+      worldView.setLight(adjX,blockY,adjZ,(byte)(lightLevel - 1));
       propagateLightFrom(adjX,blockY,adjZ);
     }
   }
   if (blockY > 0) {
-    byte lowerLight=getLight(blockX,blockY - 1,blockZ);
+    byte lowerLight=worldView.getLight(blockX,blockY - 1,blockZ);
     if (lowerLight < lightLevel - 1) {
-      setLight(blockX,blockY - 1,blockZ,(byte)(lightLevel - 1));
+      worldView.setLight(blockX,blockY - 1,blockZ,(byte)(lightLevel - 1));
       propagateLightFrom(blockX,blockY - 1,blockZ);
     }
   }
   if (blockY < NewChunk.CHUNK_DIMENSION_Y - 1) {
-    byte upperLight=getLight(blockX,blockY + 1,blockZ);
+    byte upperLight=worldView.getLight(blockX,blockY + 1,blockZ);
     if (upperLight < lightLevel - 1) {
-      setLight(blockX,blockY + 1,blockZ,(byte)(lightLevel - 1));
+      worldView.setLight(blockX,blockY + 1,blockZ,(byte)(lightLevel - 1));
       propagateLightFrom(blockX,blockY + 1,blockZ);
     }
   }

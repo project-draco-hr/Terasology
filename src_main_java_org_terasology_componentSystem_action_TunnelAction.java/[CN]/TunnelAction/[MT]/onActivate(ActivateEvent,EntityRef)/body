@@ -15,14 +15,13 @@
         target.y+=direction.y * j;
         target.z+=direction.z * j;
         blockPos.set((int)target.x,(int)target.y,(int)target.z);
-        byte currentBlockType=worldProvider.getBlock(blockPos);
-        if (currentBlockType == 0x0)         continue;
-        Block currentBlock=BlockManager.getInstance().getBlock(currentBlockType);
+        Block currentBlock=worldProvider.getBlock(blockPos);
+        if (currentBlock.getId() == 0x0)         continue;
         if (currentBlock.isDestructible()) {
-          worldProvider.setBlock(blockPos,(byte)0x0,true,true);
+          worldProvider.setBlock(blockPos,BlockManager.getInstance().getAir(),currentBlock);
           EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
           blockEntity.destroy();
-          physicsRenderer.addTemporaryBlock(target,currentBlockType,impulse,BulletPhysicsRenderer.BLOCK_SIZE.FULL_SIZE);
+          physicsRenderer.addTemporaryBlock(target,currentBlock.getId(),impulse,BulletPhysicsRenderer.BLOCK_SIZE.FULL_SIZE);
         }
       }
     }
