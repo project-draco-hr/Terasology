@@ -1,2 +1,17 @@
 {
+  generatorThreadPool.shutdown();
+  try {
+    generatorThreadPool.awaitTermination(5,TimeUnit.SECONDS);
+  }
+ catch (  InterruptedException e) {
+    logger.log(Level.SEVERE,"Interrupted while attempting clean shutdown",e);
+  }
+  for (  NewChunk chunk : nearCache.values()) {
+    farCache.put(chunk);
+    chunk.dispose();
+  }
+  nearCache.clear();
+  generatedChunks.clear();
+  generateQueue.clear();
+  generatingChunks.clear();
 }

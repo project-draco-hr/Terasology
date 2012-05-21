@@ -6,6 +6,9 @@
   PerformanceMonitor.startActivity("Update Tick");
   updateTick(delta);
   PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Update Chunk Cache");
+  _chunkProvider.update();
+  PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Close Chunks");
   updateChunksInProximity(false);
   PerformanceMonitor.endActivity();
@@ -15,8 +18,6 @@
   if (_activeCamera != null) {
     _activeCamera.update(delta);
   }
-  PerformanceMonitor.startActivity("Flush World Cache");
-  PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Fire Events");
   _worldTimeEventManager.fireWorldTimeEvents();
   PerformanceMonitor.endActivity();

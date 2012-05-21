@@ -1,20 +1,12 @@
 {
-  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(new Vector3i(2,0,2))) {
+  for (  final Vector3i chunkPos : cacheRegion.getRegion().expand(new Vector3i(2,0,2))) {
     NewChunk chunk=getChunk(chunkPos);
-    if (chunk == null) {
-      createChunk(chunkPos);
-    }
-  }
-  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(new Vector3i(1,0,1))) {
-    NewChunk chunk=getChunk(chunkPos);
-    if (chunk.getChunkState() == NewChunk.State.Awaiting2ndGenerationPass) {
-      fullGenerateChunk(chunk);
-    }
-  }
-  for (  Vector3i chunkPos : cacheRegion.getRegion()) {
-    NewChunk chunk=getChunk(chunkPos);
-    if (chunk.getChunkState() == NewChunk.State.AwaitingLightPropagation) {
-      chunk.setChunkState(NewChunk.State.Complete);
+    if (chunk == null && !generatingChunks.contains(chunkPos)) {
+      logger.log(Level.FINE,"Generating Chunk " + chunkPos);
+      generatingChunks.add(chunkPos);
+      if (!generateQueue.offer(chunkPos)) {
+        logger.severe("Failed to queue chunk generation: " + chunkPos);
+      }
     }
   }
 }

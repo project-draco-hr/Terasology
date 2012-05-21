@@ -1,8 +1,7 @@
 {
   WorldView worldView=WorldView.CreateLocalView(chunk.getPos(),this);
-  logger.log(Level.INFO,"2nd Pass generating " + chunk.getPos());
   LightPropagator propagator=new LightPropagator(worldView);
   propagator.propagateOutOfTargetChunk();
-  chunk.setChunkState(NewChunk.State.AwaitingLightPropagation);
+  chunk.setChunkState(NewChunk.State.AwaitingFullLighting);
   generator.postProcess(chunk.getPos());
 }

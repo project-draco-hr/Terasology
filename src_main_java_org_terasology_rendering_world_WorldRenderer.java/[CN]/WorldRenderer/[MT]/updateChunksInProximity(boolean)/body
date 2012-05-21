@@ -1,7 +1,6 @@
 {
   int newChunkPosX=calcCamChunkOffsetX();
   int newChunkPosZ=calcCamChunkOffsetZ();
-  _pendingChunks=false;
   int viewingDistance=Config.getInstance().getActiveViewingDistance();
   if (_chunkPosX != newChunkPosX || _chunkPosZ != newChunkPosZ || force || _pendingChunks) {
     if (_chunksInProximity.size() == 0 || force || _pendingChunks) {
@@ -9,7 +8,7 @@
       for (int x=-(viewingDistance / 2); x < (viewingDistance / 2); x++) {
         for (int z=-(viewingDistance / 2); z < (viewingDistance / 2); z++) {
           NewChunk c=_chunkProvider.getChunk(newChunkPosX + x,0,newChunkPosZ + z);
-          if (c != null && c.getChunkState() == NewChunk.State.Complete) {
+          if (c != null && c.getChunkState() == NewChunk.State.Complete && _worldProvider.getWorldViewAround(c.getPos()) != null) {
             _chunksInProximity.add(c);
           }
  else {
@@ -36,7 +35,7 @@
         for (int x=r.minX(); x < r.maxX(); ++x) {
           for (int y=r.minY(); y < r.maxY(); ++y) {
             NewChunk c=_chunkProvider.getChunk(x,0,y);
-            if (c != null) {
+            if (c != null && c.getChunkState() == NewChunk.State.Complete && _worldProvider.getWorldViewAround(c.getPos()) != null) {
               _chunksInProximity.add(c);
             }
  else {

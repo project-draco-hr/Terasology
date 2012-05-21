@@ -1,4 +1,22 @@
 {
   this.farCache=farCache;
   this.generator=generator;
+  for (int i=0; i < NUM_GENERATOR_THREADS; ++i) {
+    generatorThreadPool.execute(new Runnable(){
+      @Override public void run(){
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        boolean running=true;
+        while (running) {
+          try {
+            Vector3i pos=generateQueue.take();
+            createChunk(pos);
+          }
+ catch (          InterruptedException e) {
+            running=false;
+          }
+        }
+      }
+    }
+);
+  }
 }

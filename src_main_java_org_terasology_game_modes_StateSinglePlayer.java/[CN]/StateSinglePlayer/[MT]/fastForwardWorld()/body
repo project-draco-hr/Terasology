@@ -4,10 +4,11 @@
   _metrics.setVisible(false);
   Display.update();
   int chunksGenerated=0;
-  while (chunksGenerated < 64) {
-    getWorldRenderer().pregenerateChunks();
+  Timer timer=CoreRegistry.get(Timer.class);
+  long startTime=timer.getTimeInMs();
+  while (!getWorldRenderer().pregenerateChunks() && timer.getTimeInMs() - startTime < 5000) {
     chunksGenerated++;
-    _loadingScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(chunksGenerated / 64f) * 100f));
+    _loadingScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(timer.getTimeInMs() - startTime) / 50.0f));
     renderUserInterface();
     updateUserInterface();
     Display.update();
