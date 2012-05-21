@@ -4,7 +4,7 @@
     SimpleMinionAIComponent ai=entity.getComponent(SimpleMinionAIComponent.class);
     CharacterMovementComponent moveComp=entity.getComponent(CharacterMovementComponent.class);
     MinionComponent minioncomp=entity.getComponent(MinionComponent.class);
-    Vector3f worldPos=location.getWorldPosition();
+    Vector3f worldPos=new Vector3f(location.getWorldPosition());
     moveComp.getDrive().set(0,0,0);
     LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
     if (localPlayer != null) {
@@ -49,7 +49,7 @@ case Move:
       List<Vector3f> targets=ai.movementTargets;
       if (targets == null || targets.size() < 1)       break;
       Vector3f currentTarget=targets.get(0);
-      worldPos.y=worldPos.y - (worldPos.y % 1);
+      worldPos.y=worldPos.y - (worldPos.y % 1) + 0.5f;
       Vector3f dist=new Vector3f(worldPos);
       dist.sub(currentTarget);
       double distanceToTarget=dist.length();
@@ -110,7 +110,7 @@ case Test:
       ai.previousTarget=targets.get(0);
       currentTarget=pathTargets.get(0);
     }
-    worldPos.y=worldPos.y - (worldPos.y % 1);
+    worldPos.y=worldPos.y - (worldPos.y % 1) + 0.5f;
     Vector3f dist=new Vector3f(worldPos);
     dist.sub(currentTarget);
     double distanceToTarget=dist.length();
