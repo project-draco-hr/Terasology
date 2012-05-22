@@ -10,14 +10,14 @@
       propagateLightFrom(adjX,blockY,adjZ);
     }
   }
-  if (blockY > 0) {
+  if (blockY > 0 && worldView.getBlock(blockX,blockY - 1,blockZ).isTranslucent()) {
     byte lowerLight=worldView.getLight(blockX,blockY - 1,blockZ);
     if (lowerLight < lightLevel - 1) {
       worldView.setLight(blockX,blockY - 1,blockZ,(byte)(lightLevel - 1));
       propagateLightFrom(blockX,blockY - 1,blockZ);
     }
   }
-  if (blockY < NewChunk.CHUNK_DIMENSION_Y - 1) {
+  if (blockY < NewChunk.CHUNK_DIMENSION_Y - 1 && worldView.getBlock(blockX,blockY + 1,blockZ).isTranslucent()) {
     byte upperLight=worldView.getLight(blockX,blockY + 1,blockZ);
     if (upperLight < lightLevel - 1) {
       worldView.setLight(blockX,blockY + 1,blockZ,(byte)(lightLevel - 1));

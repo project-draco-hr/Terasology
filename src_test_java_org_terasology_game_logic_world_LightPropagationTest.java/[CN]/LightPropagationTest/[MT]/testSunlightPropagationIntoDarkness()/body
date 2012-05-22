@@ -1,0 +1,8 @@
+{
+  view.setSunlight(0,128,0,NewChunk.MAX_LIGHT);
+  propagator.propagateOutOfTargetChunk();
+  for (  Vector3i pos : Region3i.createFromMinMax(new Vector3i(1 - NewChunk.CHUNK_DIMENSION_X,0,1 - NewChunk.CHUNK_DIMENSION_Z),new Vector3i(NewChunk.CHUNK_DIMENSION_X - 1,NewChunk.CHUNK_DIMENSION_Y - 1,NewChunk.CHUNK_DIMENSION_Z - 1))) {
+    byte expected=(byte)Math.max(0,NewChunk.MAX_LIGHT - TeraMath.fastAbs(pos.x) - TeraMath.fastAbs(pos.z));
+    assertEquals(pos.toString(),expected,view.getSunlight(pos));
+  }
+}
