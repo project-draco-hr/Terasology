@@ -1,8 +1,10 @@
 {
   int top=NewChunk.CHUNK_DIMENSION_Y - 1;
+  short[] tops=new short[NewChunk.CHUNK_DIMENSION_X * NewChunk.CHUNK_DIMENSION_Z];
   for (int x=0; x < NewChunk.CHUNK_DIMENSION_X; x++) {
     for (int z=0; z < NewChunk.CHUNK_DIMENSION_Z; z++) {
-      for (int y=top; y >= 0; y--) {
+      int y=top;
+      for (; y >= 0; y--) {
         if (chunk.getBlock(x,y,z).isTranslucent()) {
           chunk.setSunlight(x,y,z,NewChunk.MAX_LIGHT);
         }
@@ -10,13 +12,18 @@
           break;
         }
       }
+      tops[x + NewChunk.CHUNK_DIMENSION_X * z]=(short)y;
     }
   }
   for (int x=0; x < NewChunk.CHUNK_DIMENSION_X; x++) {
     for (int z=0; z < NewChunk.CHUNK_DIMENSION_Z; z++) {
       for (int y=top; y >= 0; y--) {
-        if (chunk.getBlock(x,y,z).isTranslucent()) {
+        Block block=chunk.getBlock(x,y,z);
+        if (y > tops[x + NewChunk.CHUNK_DIMENSION_X * z] && ((x > 0 && tops[(x - 1) + NewChunk.CHUNK_DIMENSION_X * z] >= y) || (x < NewChunk.CHUNK_DIMENSION_X - 1 && tops[(x + 1) + NewChunk.CHUNK_DIMENSION_X * z] >= y) || (z > 0 && tops[x + NewChunk.CHUNK_DIMENSION_X * (z - 1)] >= y)|| (z < NewChunk.CHUNK_DIMENSION_Z - 1 && tops[x + NewChunk.CHUNK_DIMENSION_X * (z + 1)] >= y))) {
           spreadSunlightInternal(chunk,x,y,z);
+        }
+        if (block.getLuminance() > 0) {
+          chunk.setLight(x,y,z,block.getLuminance());
           spreadLightInternal(chunk,x,y,z);
         }
       }
