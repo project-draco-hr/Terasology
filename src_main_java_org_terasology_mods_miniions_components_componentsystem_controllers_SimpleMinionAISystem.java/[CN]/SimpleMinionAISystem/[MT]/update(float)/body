@@ -103,6 +103,10 @@ case Test:
     if (ai.previousTarget != ai.movementTargets.get(0)) {
       ai.locked=true;
       ai.pathTargets=aStarPathing.findPath(worldPos,new Vector3f(currentTarget));
+      if (ai.pathTargets == null) {
+        MinionSystem minionSystem=new MinionSystem();
+        entity.send(new MinionMessageEvent(localPlayer.getEntity(),entity,worldPos,MinionMessageEvent.MessageType.Debug,minionSystem.getMessage(MinionSystem.Messages.NoPath)));
+      }
     }
     ai.locked=false;
     if (ai.pathTargets != null && ai.pathTargets.size() > 0) {
