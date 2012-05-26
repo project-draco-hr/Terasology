@@ -1,0 +1,31 @@
+{
+  UIGraphicsElement _messageTexture=new UIGraphicsElement(AssetManager.loadTexture("engine:items"));
+  _messageTexture.getTextureSize().set(new Vector2f(16f / 256f,16f / 256f));
+  float originStart=0;
+switch (minionMessageType) {
+case Urgent:
+{
+      originStart+=16.0f;
+      break;
+    }
+case Normal:
+{
+    originStart=0;
+    break;
+  }
+case Debug:
+{
+  originStart+=32.0f;
+  break;
+}
+default :
+{
+originStart+=48.0f;
+}
+}
+_messageTexture.getTextureOrigin().set(new Vector2f(224.0f / 256f,originStart / 256f));
+_messageTexture.setSize(new Vector2f(iconSize,iconSize));
+_messageTexture.setPosition(new Vector2f(0.0f,counter * iconSize));
+_messageTexture.setVisible(true);
+return _messageTexture;
+}

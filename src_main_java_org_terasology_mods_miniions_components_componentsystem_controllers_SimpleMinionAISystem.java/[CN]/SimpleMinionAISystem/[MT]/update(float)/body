@@ -105,7 +105,9 @@ case Test:
       ai.pathTargets=aStarPathing.findPath(worldPos,new Vector3f(currentTarget));
       if (ai.pathTargets == null) {
         MinionSystem minionSystem=new MinionSystem();
-        entity.send(new MinionMessageEvent(localPlayer.getEntity(),entity,worldPos,MinionMessageEvent.MessageType.Debug,minionSystem.getMessage(MinionSystem.Messages.NoPath)));
+        MinionMessage messagetosend=new MinionMessage(MinionMessageType.Debug,"test","testdesc","testcont",entity,localPlayer.getEntity());
+        entity.send(new MinionMessageEvent(messagetosend));
+        ai.movementTargets.remove(0);
       }
     }
     ai.locked=false;
@@ -124,7 +126,9 @@ case Test:
         entity.saveComponent(ai);
       }
  else {
-        ai.movementTargets.remove(0);
+        if (ai.movementTargets.size() > 0) {
+          ai.movementTargets.remove(0);
+        }
         ai.previousTarget=null;
         entity.saveComponent(ai);
       }

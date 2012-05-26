@@ -30,6 +30,11 @@ case Inventory:
   }
 case Test:
 {
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  if (localPlayer == null)   return;
+  EntityRef entity=getSelectedMinion();
+  MinionMessage messagetosend=new MinionMessage(MinionMessageType.Debug,"test","testdesc","testcont",entity,localPlayer.getEntity());
+  entity.send(new MinionMessageEvent(messagetosend));
   break;
 }
 case Disappear:
