@@ -1,13 +1,13 @@
 {
   boolean playing=isPlaying();
   if (playing) {
-    AL10.alSourceStop(this.getSourceId());
+    AL10.alSourceStop(getSourceId());
   }
-  AL10.alSourceRewind(this.getSourceId());
-  AL10.alSourcei(this.getSourceId(),AL11.AL_SAMPLE_OFFSET,(this.audio.getSamplingRate() * position));
+  AL10.alSourceRewind(getSourceId());
+  AL10.alSourcei(getSourceId(),AL11.AL_SAMPLE_OFFSET,audio.getSamplingRate() * position);
   OpenALException.checkState("Setting sound playback absolute position");
   if (playing) {
-    this.play();
+    play();
   }
   return this;
 }

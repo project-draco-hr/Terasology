@@ -1,8 +1,6 @@
 {
   final boolean bigEndian=ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN;
-  if (block.synthesis(packet) == 0) {
-    dspState.synthesis_blockin(block);
-  }
+  if (block.synthesis(packet) == 0)   dspState.synthesis_blockin(block);
   int convOff=0;
   int samples;
   while ((samples=dspState.synthesis_pcmout(_pcm,_index)) > 0) {
