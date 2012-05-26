@@ -1,7 +1,13 @@
 {
   WorldView worldView=WorldView.createLocalView(chunk.getPos(),this);
-  LightPropagator propagator=new LightPropagator(worldView);
-  propagator.propagateOutOfTargetChunk();
+  worldView.lock();
+  try {
+    LightPropagator propagator=new LightPropagator(worldView);
+    propagator.propagateOutOfTargetChunk();
+    generator.postProcess(worldView);
+  }
+  finally {
+    worldView.unlock();
+  }
   chunk.setChunkState(NewChunk.State.AwaitingFullLighting);
-  generator.postProcess(chunk.getPos());
 }

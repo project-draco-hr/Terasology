@@ -6,13 +6,18 @@
       checkRegion(cacheRegion);
     }
   }
-  if (!generatedChunks.isEmpty()) {
+  while (!generatedChunks.isEmpty()) {
     Vector3i chunkPos=generatedChunks.poll();
-    logger.log(Level.FINE,"Received Chunk " + chunkPos);
+    logger.log(Level.FINE,"Received generated chunk " + chunkPos);
     generatingChunks.remove(chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
       checkFullGenerate(pos);
     }
+  }
+  while (!secondPassCompleteChunks.isEmpty()) {
+    Vector3i chunkPos=secondPassCompleteChunks.poll();
+    logger.log(Level.FINE,"Received second passed chunk " + chunkPos);
+    secondPassPendingChunks.remove(chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(2,0,2))) {
       checkComplete(pos);
     }

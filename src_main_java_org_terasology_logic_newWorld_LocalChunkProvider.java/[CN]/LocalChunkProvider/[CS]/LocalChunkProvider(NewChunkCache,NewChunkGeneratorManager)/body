@@ -1,4 +1,5 @@
 {
+  logger.setLevel(Level.FINE);
   this.farCache=farCache;
   this.generator=generator;
   for (int i=0; i < NUM_GENERATOR_THREADS; ++i) {
@@ -10,10 +11,37 @@
           try {
             Vector3i pos=generateQueue.take();
             createChunk(pos);
+            generatedChunks.add(pos);
           }
  catch (          InterruptedException e) {
             logger.log(Level.INFO,"Generator Thread ending");
             running=false;
+          }
+catch (          Exception e) {
+            logger.log(Level.SEVERE,"Error in generate thread",e);
+          }
+        }
+      }
+    }
+);
+  }
+  for (int i=0; i < NUM_SECOND_PASS_THREADS; ++i) {
+    secondPassThreadPool.execute(new Runnable(){
+      @Override public void run(){
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        boolean running=true;
+        while (running) {
+          try {
+            Vector3i pos=secondPassQueue.take();
+            fullGenerateChunk(getChunk(pos));
+            secondPassCompleteChunks.add(pos);
+          }
+ catch (          InterruptedException e) {
+            logger.log(Level.INFO,"Second Pass Thread ending");
+            running=false;
+          }
+catch (          Exception e) {
+            logger.log(Level.SEVERE,"Error in second pass thread",e);
           }
         }
       }
