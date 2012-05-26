@@ -1,8 +1,8 @@
 {
-  int top=NewChunk.CHUNK_DIMENSION_Y - 1;
-  short[] tops=new short[NewChunk.CHUNK_DIMENSION_X * NewChunk.CHUNK_DIMENSION_Z];
-  for (int x=0; x < NewChunk.CHUNK_DIMENSION_X; x++) {
-    for (int z=0; z < NewChunk.CHUNK_DIMENSION_Z; z++) {
+  int top=NewChunk.SIZE_Y - 1;
+  short[] tops=new short[NewChunk.SIZE_X * NewChunk.SIZE_Z];
+  for (int x=0; x < NewChunk.SIZE_X; x++) {
+    for (int z=0; z < NewChunk.SIZE_Z; z++) {
       int y=top;
       for (; y >= 0; y--) {
         if (chunk.getBlock(x,y,z).isTranslucent()) {
@@ -12,14 +12,14 @@
           break;
         }
       }
-      tops[x + NewChunk.CHUNK_DIMENSION_X * z]=(short)y;
+      tops[x + NewChunk.SIZE_X * z]=(short)y;
     }
   }
-  for (int x=0; x < NewChunk.CHUNK_DIMENSION_X; x++) {
-    for (int z=0; z < NewChunk.CHUNK_DIMENSION_Z; z++) {
+  for (int x=0; x < NewChunk.SIZE_X; x++) {
+    for (int z=0; z < NewChunk.SIZE_Z; z++) {
       for (int y=top; y >= 0; y--) {
         Block block=chunk.getBlock(x,y,z);
-        if (y > tops[x + NewChunk.CHUNK_DIMENSION_X * z] && ((x > 0 && tops[(x - 1) + NewChunk.CHUNK_DIMENSION_X * z] >= y) || (x < NewChunk.CHUNK_DIMENSION_X - 1 && tops[(x + 1) + NewChunk.CHUNK_DIMENSION_X * z] >= y) || (z > 0 && tops[x + NewChunk.CHUNK_DIMENSION_X * (z - 1)] >= y)|| (z < NewChunk.CHUNK_DIMENSION_Z - 1 && tops[x + NewChunk.CHUNK_DIMENSION_X * (z + 1)] >= y))) {
+        if (y > tops[x + NewChunk.SIZE_X * z] && ((x > 0 && tops[(x - 1) + NewChunk.SIZE_X * z] >= y) || (x < NewChunk.SIZE_X - 1 && tops[(x + 1) + NewChunk.SIZE_X * z] >= y) || (z > 0 && tops[x + NewChunk.SIZE_X * (z - 1)] >= y)|| (z < NewChunk.SIZE_Z - 1 && tops[x + NewChunk.SIZE_X * (z + 1)] >= y))) {
           spreadSunlightInternal(chunk,x,y,z);
         }
         if (block.getLuminance() > 0) {

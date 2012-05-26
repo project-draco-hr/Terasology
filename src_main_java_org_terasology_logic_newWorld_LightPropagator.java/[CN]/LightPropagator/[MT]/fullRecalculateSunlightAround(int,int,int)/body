@@ -1,0 +1,55 @@
+{
+  int checkY=y - 1;
+  while (checkY >= 0 && worldView.getBlock(x,checkY,z).isTranslucent()) {
+    checkY--;
+  }
+  checkY++;
+  int yMax=Math.min(y + NewChunk.MAX_LIGHT,NewChunk.SIZE_Y - 1);
+  int yMin=Math.max(0,checkY - NewChunk.MAX_LIGHT + 1);
+  for (int offsetX=1 - NewChunk.MAX_LIGHT; offsetX < NewChunk.MAX_LIGHT; ++offsetX) {
+    int zRange=NewChunk.MAX_LIGHT - TeraMath.fastAbs(offsetX);
+    for (int offsetZ=1 - zRange; offsetZ < zRange; ++offsetZ) {
+      for (int colY=yMin; colY < yMax; colY++) {
+        worldView.setSunlight(x + offsetX,colY,z + offsetZ,(byte)0);
+      }
+    }
+  }
+  for (int offsetX=1 - NewChunk.MAX_LIGHT; offsetX < NewChunk.MAX_LIGHT; ++offsetX) {
+    int zRange=NewChunk.MAX_LIGHT - TeraMath.fastAbs(offsetX);
+    for (int offsetZ=1 - zRange; offsetZ < zRange; ++offsetZ) {
+      byte light=worldView.getSunlight(x + offsetX,yMax,z + offsetZ);
+      if (light > 1) {
+        pushSunlight(x + offsetX,yMax,z + offsetZ,light);
+      }
+    }
+  }
+  if (yMin > 0) {
+    for (int offsetX=1 - NewChunk.MAX_LIGHT; offsetX < NewChunk.MAX_LIGHT; ++offsetX) {
+      int zRange=NewChunk.MAX_LIGHT - TeraMath.fastAbs(offsetX);
+      for (int offsetZ=1 - zRange; offsetZ < zRange; ++offsetZ) {
+        byte light=worldView.getSunlight(x + offsetX,yMin - 1,z + offsetZ);
+        if (light > 1) {
+          pushSunlight(x + offsetX,yMin - 1,z + offsetZ,light);
+        }
+      }
+    }
+  }
+  for (int offsetX=-NewChunk.MAX_LIGHT; offsetX < NewChunk.MAX_LIGHT + 1; ++offsetX) {
+    int offsetZ=-NewChunk.MAX_LIGHT + TeraMath.fastAbs(offsetX);
+    for (int colY=yMin; colY < yMax; colY++) {
+      byte light=worldView.getSunlight(x + offsetX,colY,z + offsetZ);
+      if (light > 1) {
+        pushSunlight(x + offsetX,colY,z + offsetZ,light);
+      }
+    }
+    if (offsetZ < 0) {
+      offsetZ*=-1;
+      for (int colY=yMin; colY < yMax; colY++) {
+        byte light=worldView.getSunlight(x + offsetX,colY,z + offsetZ);
+        if (light > 1) {
+          pushSunlight(x + offsetX,colY,z + offsetZ,light);
+        }
+      }
+    }
+  }
+}

@@ -1,10 +1,4 @@
 {
-  Vector3i minPos=new Vector3i(-extent,0,-extent);
-  minPos.add(pos);
-  Vector3i maxPos=new Vector3i(extent,0,extent);
-  maxPos.add(pos);
-  Vector3i minChunk=TeraMath.calcChunkPos(minPos);
-  Vector3i maxChunk=TeraMath.calcChunkPos(maxPos);
-  Region3i region=Region3i.createFromMinMax(minChunk,maxChunk);
-  return createWorldView(region,new Vector3i(-minChunk.x,0,-minChunk.z),chunkProvider);
+  Region3i region=TeraMath.getChunkRegionAroundBlockPos(pos,extent);
+  return createWorldView(region,new Vector3i(-region.min().x,0,-region.min().z),chunkProvider);
 }

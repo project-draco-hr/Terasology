@@ -1,14 +1,18 @@
 {
-  int maxX=NewChunk.CHUNK_DIMENSION_X - 1;
-  int maxZ=NewChunk.CHUNK_DIMENSION_Z - 1;
-  for (int y=0; y < NewChunk.CHUNK_DIMENSION_Y; y++) {
-    for (int x=0; x < maxX; x++) {
-      propagateFrom(x,y,0);
-      propagateFrom(x + 1,y,maxZ);
+  int maxX=NewChunk.SIZE_X - 1;
+  int maxZ=NewChunk.SIZE_Z - 1;
+  for (int y=0; y < NewChunk.SIZE_Y; y++) {
+    for (int x=0; x < NewChunk.SIZE_X; x++) {
+      propagateSunlightFrom(x,y,0,Side.FRONT);
+      propagateSunlightFrom(x,y,maxZ,Side.BACK);
+      propagateLightFrom(x,y,0,Side.FRONT);
+      propagateLightFrom(x,y,maxZ,Side.BACK);
     }
-    for (int z=0; z < maxZ; z++) {
-      propagateFrom(0,y,z + 1);
-      propagateFrom(maxX,y,z);
+    for (int z=0; z < NewChunk.SIZE_Z; z++) {
+      propagateSunlightFrom(0,y,z,Side.LEFT);
+      propagateSunlightFrom(maxX,y,z,Side.RIGHT);
+      propagateLightFrom(0,y,z,Side.LEFT);
+      propagateLightFrom(maxX,y,z,Side.RIGHT);
     }
   }
 }

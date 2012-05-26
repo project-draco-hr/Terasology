@@ -1,0 +1,9 @@
+{
+  byte lightLevel=worldView.getSunlight(blockX,blockY,blockZ);
+  Vector3i adjSide=new Vector3i(blockX,blockY,blockZ);
+  adjSide.add(side.getVector3i());
+  if (lightLevel > 1 && worldView.getSunlight(adjSide) < lightLevel - 1 && worldView.getBlock(adjSide).isTranslucent()) {
+    worldView.setSunlight(adjSide,(byte)(lightLevel - 1));
+    pushSunlight(adjSide.x,adjSide.y,adjSide.z,(byte)(lightLevel - 1));
+  }
+}

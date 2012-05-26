@@ -1,0 +1,8 @@
+{
+  for (  Side side : Side.values()) {
+    Vector3i adjDir=side.getVector3i();
+    byte adjLight=(byte)((worldView.getLight(x + adjDir.x,y + adjDir.y,z + adjDir.z)) - 1);
+    newLight=(adjLight > newLight) ? adjLight : newLight;
+  }
+  return newLight;
+}
