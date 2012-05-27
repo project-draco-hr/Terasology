@@ -46,14 +46,19 @@
       for (      Side side : Side.horizontalSides()) {
         Vector3i adjPos=new Vector3i(pos);
         adjPos.add(side.getVector3i());
-        Block block=worldView.getBlock(adjPos);
-        if (block.isTranslucent()) {
-          byte adjLight=worldView.getSunlight(adjPos);
-          if (adjLight < lightLevel - 1) {
-            worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
-            nextWave.add(adjPos);
-            affectedRegion=affectedRegion.expandToContain(adjPos);
+        try {
+          Block block=worldView.getBlock(adjPos);
+          if (block.isTranslucent()) {
+            byte adjLight=worldView.getSunlight(adjPos);
+            if (adjLight < lightLevel - 1) {
+              worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
+              nextWave.add(adjPos);
+              affectedRegion=affectedRegion.expandToContain(adjPos);
+            }
           }
+        }
+ catch (        ArrayIndexOutOfBoundsException e) {
+          logger.log(Level.SEVERE,String.format("Pushing Light %s %d %s",new Vector3i(x,y,z),lightLevel,worldView.getChunkRegion()),e);
         }
       }
     }

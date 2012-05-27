@@ -3,22 +3,34 @@
     cacheRegion.update();
     if (cacheRegion.isDirty()) {
       cacheRegion.setUpToDate();
-      checkRegion(cacheRegion);
+      checkForMissingChunks(cacheRegion);
     }
   }
-  while (!generatedChunks.isEmpty()) {
-    Vector3i chunkPos=generatedChunks.poll();
+  while (generatePhase.isResultAvailable()) {
+    Vector3i chunkPos=generatePhase.poll();
     logger.log(Level.FINE,"Received generated chunk " + chunkPos);
-    generatingChunks.remove(chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
-      checkFullGenerate(pos);
+      checkReadyForSecondPass(pos);
     }
   }
-  while (!secondPassCompleteChunks.isEmpty()) {
-    Vector3i chunkPos=secondPassCompleteChunks.poll();
+  while (secondPassPhase.isResultAvailable()) {
+    Vector3i chunkPos=secondPassPhase.poll();
     logger.log(Level.FINE,"Received second passed chunk " + chunkPos);
-    secondPassPendingChunks.remove(chunkPos);
-    for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(2,0,2))) {
+    for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
+      checkReadyToDoInternalLighting(pos);
+    }
+  }
+  while (internalLightingPhase.isResultAvailable()) {
+    Vector3i chunkPos=internalLightingPhase.poll();
+    logger.log(Level.FINE,"Received internally lit chunk " + chunkPos);
+    for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
+      checkReadyToPropagateLighting(pos);
+    }
+  }
+  while (propagateLightPhase.isResultAvailable()) {
+    Vector3i chunkPos=propagateLightPhase.poll();
+    logger.log(Level.FINE,"Received second passed chunk " + chunkPos);
+    for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
       checkComplete(pos);
     }
   }

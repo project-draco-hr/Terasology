@@ -1,6 +1,9 @@
 {
   this.biomeProvider=biomeProvider;
-  for (  NewChunkGenerator generator : chunkGenerators) {
+  for (  BaseChunkGenerator generator : chunkGenerators) {
+    generator.setWorldBiomeProvider(biomeProvider);
+  }
+  for (  BaseChunkGenerator generator : secondPassChunkGenerators) {
     generator.setWorldBiomeProvider(biomeProvider);
   }
 }

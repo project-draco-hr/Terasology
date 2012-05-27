@@ -1,5 +1,11 @@
 {
-  this.region=chunkRegion;
+  this.chunkRegion=chunkRegion;
+  Vector3i blockMin=new Vector3i();
+  blockMin.sub(offset);
+  blockMin.mult(NewChunk.SIZE_X,0,NewChunk.SIZE_Z);
+  Vector3i blockSize=chunkRegion.size();
+  blockSize.mult(NewChunk.SIZE_X,NewChunk.SIZE_Y,NewChunk.SIZE_Z);
+  this.blockRegion=Region3i.createFromMinAndSize(blockMin,blockSize);
   this.chunks=chunks;
   this.offset=offset;
 }

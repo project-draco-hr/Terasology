@@ -2,7 +2,9 @@
   NewChunkGeneratorManager generatorManager=new NewChunkGeneratorManagerImpl(seed,new WorldBiomeProviderImpl(seed));
   generatorManager.registerChunkGenerator(new PerlinTerrainGenerator());
   generatorManager.registerChunkGenerator(new FloraGenerator());
-  generatorManager.registerChunkGenerator(new InternalLightGenerator());
+  ForestGenerator forestGen=new ForestGenerator();
+  new DefaultGenerators(forestGen);
+  generatorManager.registerChunkGenerator(forestGen);
   _chunkProvider=new LocalChunkProvider(new NullChunkCache(),generatorManager);
   _worldProvider=new NewLocalWorldProvider(title,seed,_chunkProvider);
   _chunkTesselator=new NewChunkTessellator(_worldProvider.getBiomeProvider());

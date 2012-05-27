@@ -1,7 +1,7 @@
 {
-  if (!isYInBounds(blockY))   return 0;
-  Vector3i chunkPos=TeraMath.calcChunkPos(blockX,blockY,blockZ);
-  int chunkIndex=relChunkIndex(chunkPos.x,chunkPos.y,chunkPos.z);
-  Vector3i innerBlockPos=TeraMath.calcBlockPos(blockX,blockY,blockZ,chunkPos);
-  return chunks[chunkIndex].getSunlight(innerBlockPos);
+  if (!blockRegion.encompasses(blockX,blockY,blockZ)) {
+    return 0;
+  }
+  int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
+  return chunks[chunkIndex].getSunlight(blockX & 0xf,blockY,blockZ & 0xf);
 }

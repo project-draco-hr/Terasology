@@ -1,0 +1,11 @@
+{
+  NewChunk chunk=chunkProvider.getChunk(pos);
+  chunk.lock();
+  try {
+    InternalLightProcessor.generateInternalLighting(chunk);
+    chunk.setChunkState(NewChunk.State.LightPropagationPending);
+  }
+  finally {
+    chunk.unlock();
+  }
+}
