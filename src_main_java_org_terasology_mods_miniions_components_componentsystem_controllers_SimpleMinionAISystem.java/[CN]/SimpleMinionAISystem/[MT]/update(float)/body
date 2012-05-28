@@ -11,132 +11,28 @@
 switch (minioncomp.minionBehaviour) {
 case Follow:
 {
-          Vector3f dist=new Vector3f(worldPos);
-          dist.sub(localPlayer.getPosition());
-          double distanceToPlayer=dist.lengthSquared();
-          if (distanceToPlayer > 8) {
-            Vector3f target=localPlayer.getPosition();
-            ai.movementTarget.set(target);
-            ai.followingPlayer=true;
-            entity.saveComponent(ai);
-          }
-          setMovement(ai.movementTarget,worldPos,entity,moveComp,location);
+          executeFollowAI(worldPos,localPlayer,ai,entity,moveComp,location);
           break;
         }
 case Gather:
 {
-        List<Vector3f> targets=ai.gatherTargets;
-        if (targets == null || targets.size() < 1)         break;
-        Vector3f currentTarget=targets.get(0);
-        Vector3f dist=new Vector3f(worldPos);
-        dist.sub(currentTarget);
-        double distanceToTarget=dist.lengthSquared();
-        if (distanceToTarget < 4) {
-          if (timer.getTimeInMs() - ai.lastAttacktime > 500) {
-            ai.lastAttacktime=timer.getTimeInMs();
-            boolean attacked=attack(entity,currentTarget);
-            if (!attacked) {
-              ai.gatherTargets.remove(currentTarget);
-            }
-          }
-        }
-        entity.saveComponent(ai);
-        setMovement(currentTarget,worldPos,entity,moveComp,location);
+        executeGatherAI(worldPos,ai,entity,moveComp,location);
         break;
       }
 case Move:
 {
-      List<Vector3f> targets=ai.movementTargets;
-      if (targets == null || targets.size() < 1)       break;
-      Vector3f currentTarget=targets.get(0);
-      worldPos.y=worldPos.y - (worldPos.y % 1) + 0.5f;
-      Vector3f dist=new Vector3f(worldPos);
-      dist.sub(currentTarget);
-      double distanceToTarget=dist.length();
-      if (distanceToTarget < 0.1d) {
-        ai.movementTargets.remove(0);
-        entity.saveComponent(ai);
-        currentTarget=null;
-        break;
-      }
-      setMovement(currentTarget,worldPos,entity,moveComp,location);
+      executeMoveAI(worldPos,ai,entity,moveComp,location);
       break;
     }
 case Patrol:
 {
-    List<Vector3f> targets=ai.patrolTargets;
-    if (targets == null || targets.size() < 1)     break;
-    int patrolCounter=ai.patrolCounter;
-    Vector3f currentTarget=null;
-    if (patrolCounter < targets.size()) {
-      currentTarget=targets.get(patrolCounter);
-    }
-    if (currentTarget == null) {
-      break;
-    }
-    Vector3f dist=new Vector3f(worldPos);
-    dist.sub(currentTarget);
-    double distanceToTarget=dist.length();
-    if (distanceToTarget < 0.1d) {
-      patrolCounter++;
-      if (!(patrolCounter < targets.size()))       patrolCounter=0;
-      ai.patrolCounter=patrolCounter;
-      entity.saveComponent(ai);
-      break;
-    }
-    setMovement(currentTarget,worldPos,entity,moveComp,location);
+    executePatrolAI(worldPos,ai,entity,moveComp,location);
     break;
   }
 case Test:
 {
-  if (!ai.locked) {
-    List<Vector3f> targets=ai.movementTargets;
-    List<Vector3f> pathTargets=ai.pathTargets;
-    if (targets == null || targets.size() < 1)     break;
-    Vector3f currentTarget;
-    if (pathTargets != null && pathTargets.size() > 0) {
-      currentTarget=pathTargets.get(0);
-    }
- else {
-      currentTarget=targets.get(0);
-    }
-    if (ai.previousTarget != ai.movementTargets.get(0)) {
-      ai.locked=true;
-      ai.pathTargets=aStarPathing.findPath(worldPos,new Vector3f(currentTarget));
-      if (ai.pathTargets == null) {
-        MinionSystem minionSystem=new MinionSystem();
-        MinionMessage messagetosend=new MinionMessage(MinionMessageType.Debug,"test","testdesc","testcont",entity,localPlayer.getEntity());
-        entity.send(new MinionMessageEvent(messagetosend));
-        ai.movementTargets.remove(0);
-      }
-    }
-    ai.locked=false;
-    if (ai.pathTargets != null && ai.pathTargets.size() > 0) {
-      pathTargets=ai.pathTargets;
-      ai.previousTarget=targets.get(0);
-      currentTarget=pathTargets.get(0);
-    }
-    worldPos.y=worldPos.y - (worldPos.y % 1) + 0.5f;
-    Vector3f dist=new Vector3f(worldPos);
-    dist.sub(currentTarget);
-    double distanceToTarget=dist.length();
-    if (distanceToTarget < 0.1d) {
-      if (ai.pathTargets != null && ai.pathTargets.size() > 0) {
-        ai.pathTargets.remove(0);
-        entity.saveComponent(ai);
-      }
- else {
-        if (ai.movementTargets.size() > 0) {
-          ai.movementTargets.remove(0);
-        }
-        ai.previousTarget=null;
-        entity.saveComponent(ai);
-      }
-      break;
-    }
-    setMovement(currentTarget,worldPos,entity,moveComp,location);
-    break;
-  }
+  executeTestAI(worldPos,ai,localPlayer,entity,moveComp,location);
+  break;
 }
 default :
 {

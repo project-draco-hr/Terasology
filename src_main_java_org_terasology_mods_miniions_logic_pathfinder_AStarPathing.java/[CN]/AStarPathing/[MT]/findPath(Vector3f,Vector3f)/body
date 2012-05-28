@@ -5,7 +5,9 @@
   PathNode start=new PathNode((int)from.x / 1,(int)from.y / 1,(int)from.z / 1);
   Vector3f tempvec=to;
   tempvec.sub(from);
-  if (tempvec.length() < 0.5)   return null;
+  if (tempvec.length() < 0.5) {
+    return null;
+  }
   openSet.add(start);
   start.update(0,null,target);
   while (!openSet.isEmpty()) {
@@ -27,10 +29,14 @@
           break;
         }
       }
-      if (canskip)       continue;
+      if (canskip) {
+        continue;
+      }
       PathNode neighbor=new PathNode(nx,ny,nz);
       if (node.parent != null) {
-        if (node.parent.equals(neighbor))         continue;
+        if (node.parent.equals(neighbor)) {
+          continue;
+        }
       }
       int pathCost=node.getCost(neighbor);
       if (pathCost == 0) {

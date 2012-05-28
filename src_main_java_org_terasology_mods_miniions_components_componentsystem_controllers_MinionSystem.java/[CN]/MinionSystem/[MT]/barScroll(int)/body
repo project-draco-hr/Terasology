@@ -1,10 +1,16 @@
 {
   LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
-  if (localPlayer == null)   return;
+  if (localPlayer == null) {
+    return;
+  }
   EntityRef entity=localPlayer.getEntity();
-  if (entity == null)   return;
+  if (entity == null) {
+    return;
+  }
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
-  if (localPlayerComp == null)   return;
+  if (localPlayerComp == null) {
+    return;
+  }
   localPlayerComp.selectedMinion=(localPlayerComp.selectedMinion - wheelMoved / 120) % 9;
   while (localPlayerComp.selectedMinion < 0) {
     localPlayerComp.selectedMinion=9 + localPlayerComp.selectedMinion;

@@ -1,14 +1,24 @@
 {
   LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
-  if (localPlayer == null)   return false;
+  if (localPlayer == null) {
+    return false;
+  }
   EntityRef entity=localPlayer.getEntity();
-  if (entity == null)   return false;
+  if (entity == null) {
+    return false;
+  }
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
-  if (localPlayerComp == null)   return false;
+  if (localPlayerComp == null) {
+    return false;
+  }
   MinionBarComponent minionbar=localPlayer.getEntity().getComponent(MinionBarComponent.class);
-  if (minionbar == null)   return false;
+  if (minionbar == null) {
+    return false;
+  }
   EntityRef minion=minionbar.MinionSlots.get(localPlayerComp.selectedMinion);
-  if (minion != null)   minion.destroy();
+  if (minion != null) {
+    minion.destroy();
+  }
   minionbar.MinionSlots.set(localPlayerComp.selectedMinion,EntityRef.NULL);
   return true;
 }

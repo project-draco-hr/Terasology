@@ -3,14 +3,16 @@
   _displayElements.clear();
   elements.clear();
   messageQueue.peek();
-  int queheight=(int)getSize().y / (int)iconSize;
+  int queheight=(int)getSize().y / (int)ICON_SIZE;
   int counter=0;
   Iterator<MinionMessage> it=messageQueue.iterator();
   while (it.hasNext()) {
     MinionMessage minionMessage=it.next();
     minionMessage.setIndex(counter);
-    elements.add(getMessageIcon(minionMessage.getMinionMessageType(),counter));
+    elements.add(getMessageIcon(minionMessage.getMinionMessagePriority(),counter));
     addDisplayElement(elements.get(counter));
-    if (counter++ > queheight)     break;
+    if (counter++ > queheight) {
+      break;
+    }
   }
 }

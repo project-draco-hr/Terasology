@@ -1,8 +1,10 @@
 {
   EntityRef minion=getSelectedMinion();
   MinionComponent minioncomp=minion.getComponent(MinionComponent.class);
-  int ordinal=((minioncomp.minionBehaviour.ordinal() - wheelMoved / 120) % popupentries);
-  while (ordinal < 0)   ordinal+=popupentries;
-  minioncomp.minionBehaviour=MinionComponent.MinionBehaviour.values()[ordinal];
+  int ordinal=((minioncomp.minionBehaviour.ordinal() - wheelMoved / 120) % POPUP_ENTRIES);
+  while (ordinal < 0) {
+    ordinal+=POPUP_ENTRIES;
+  }
+  minioncomp.minionBehaviour=MinionBehaviour.values()[ordinal];
   minion.saveComponent(minioncomp);
 }

@@ -1,13 +1,17 @@
 {
-  _selectionRectangle.renderTransformed();
+  selectionRectangle.renderTransformed();
   MinionBarComponent inventory=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(MinionBarComponent.class);
   if (inventory == null) {
     return;
   }
-  if (inventory.MinionSlots.size() <= _id)   return;
-  EntityRef minionEntity=inventory.MinionSlots.get(_id);
+  if (inventory.MinionSlots.size() <= id) {
+    return;
+  }
+  EntityRef minionEntity=inventory.MinionSlots.get(id);
   MinionComponent minion=minionEntity.getComponent(MinionComponent.class);
-  if (minion == null)   return;
+  if (minion == null) {
+    return;
+  }
   if (minion.icon.isEmpty()) {
     Icon icon=Icon.get("gelcube");
     if (icon != null) {
@@ -20,5 +24,5 @@
       renderIcon(icon);
     }
   }
-  _label.renderTransformed();
+  label.renderTransformed();
 }
