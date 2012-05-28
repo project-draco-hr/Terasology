@@ -8,10 +8,10 @@
     return;
   }
   try {
-    ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
-    Config.getInstance().setDefaultSeed((String)config.get("worldSeed"));
-    Config.getInstance().setWorldTitle((String)config.get("worldTitle"));
-    CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(config.get("worldTitle").toString(),config.get("worldSeed").toString()));
+    WorldInfo info=(WorldInfo)_list.getSelectedItem().getValue();
+    Config.getInstance().setDefaultSeed(info.getSeed());
+    Config.getInstance().setWorldTitle(info.getTitle());
+    CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(info.getTitle(),info.getSeed()));
   }
  catch (  Exception e) {
     GUIManager.getInstance().showMessage("Loading error","Failed reading world data object. Sorry.");

@@ -1,0 +1,27 @@
+{
+  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(new Vector3i(4,0,4))) {
+    NewChunk chunk=getChunk(chunkPos);
+    if (chunk == null && !generatePhase.processing(chunkPos)) {
+      logger.log(Level.FINE,"Generating Chunk " + chunkPos);
+      generatePhase.queue(chunkPos);
+    }
+ else     if (chunk != null) {
+switch (chunk.getChunkState()) {
+case AdjacencyGenerationPending:
+        checkReadyForSecondPass(chunkPos);
+      break;
+case InternalLightGenerationPending:
+    checkReadyToDoInternalLighting(chunkPos);
+  break;
+case LightPropagationPending:
+checkReadyToPropagateLighting(chunkPos);
+break;
+case FullLightConnectivityPending:
+checkComplete(chunkPos);
+break;
+default :
+break;
+}
+}
+}
+}

@@ -3,7 +3,7 @@
     cacheRegion.update();
     if (cacheRegion.isDirty()) {
       cacheRegion.setUpToDate();
-      checkForMissingChunks(cacheRegion);
+      checkChunkStatus(cacheRegion);
     }
   }
   while (generatePhase.isResultAvailable()) {
@@ -44,6 +44,14 @@
         if (region.getRegion().encompasses(pos)) {
           keep=true;
           break;
+        }
+      }
+      if (!keep) {
+        for (        ChunkPhase phase : phases) {
+          if (phase.processing(pos)) {
+            keep=true;
+            break;
+          }
         }
       }
       if (!keep) {

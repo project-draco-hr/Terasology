@@ -5,7 +5,7 @@
   for (int i=0; i < _chunksInProximity.size(); i++) {
     NewChunk c=_chunksInProximity.get(i);
     ChunkMesh[] mesh=c.getMesh();
-    if (isChunkVisible(c)) {
+    if (isChunkVisible(c) && isChunkValidForRender(c)) {
       if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.OPAQUE) > 0)       _renderQueueChunksOpaque.add(c);
  else       _statIgnoredPhases++;
       if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.WATER_AND_ICE) > 0)       _renderQueueChunksSortedWater.add(c);
@@ -24,7 +24,7 @@
         c.setMesh(c.getPendingMesh());
         c.setPendingMesh(null);
       }
-      if (c.isDirty() || mesh == null) {
+      if ((c.isDirty() || mesh == null) && isChunkValidForRender(c)) {
         _statDirtyChunks++;
         _chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
       }

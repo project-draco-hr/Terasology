@@ -1,9 +1,12 @@
 {
   this.farCache=farCache;
-  this.generator=generator;
   Comparator<Vector3i> chunkRelevanceComparator=new ChunkRelevanceComparator();
   generatePhase=new CreateChunkPhase(4,chunkRelevanceComparator,generator,nearCache);
   secondPassPhase=new SecondPassPhase(1,chunkRelevanceComparator,generator,this);
   internalLightingPhase=new InternalLightingPhase(2,chunkRelevanceComparator,this);
   propagateLightPhase=new PropagateLightingPhase(1,chunkRelevanceComparator,generator,this);
+  phases.add(generatePhase);
+  phases.add(secondPassPhase);
+  phases.add(internalLightingPhase);
+  phases.add(propagateLightPhase);
 }

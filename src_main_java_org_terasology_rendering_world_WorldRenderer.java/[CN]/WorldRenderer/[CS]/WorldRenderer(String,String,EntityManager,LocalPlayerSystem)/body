@@ -5,7 +5,19 @@
   ForestGenerator forestGen=new ForestGenerator();
   new DefaultGenerators(forestGen);
   generatorManager.registerChunkGenerator(forestGen);
-  _chunkProvider=new LocalChunkProvider(new NullChunkCache(),generatorManager);
+  File f=new File(PathManager.getInstance().getWorldSavePath(title),title + ".dat");
+  if (f.exists()) {
+    try {
+      chunkCache=ChunkCacheGZip.load(f);
+    }
+ catch (    IOException e) {
+      e.printStackTrace();
+    }
+  }
+  if (chunkCache == null) {
+    chunkCache=new ChunkCacheGZip();
+  }
+  _chunkProvider=new LocalChunkProvider(chunkCache,generatorManager);
   _worldProvider=new NewLocalWorldProvider(title,seed,_chunkProvider);
   _chunkTesselator=new NewChunkTessellator(_worldProvider.getBiomeProvider());
   _skysphere=new Skysphere(this);
