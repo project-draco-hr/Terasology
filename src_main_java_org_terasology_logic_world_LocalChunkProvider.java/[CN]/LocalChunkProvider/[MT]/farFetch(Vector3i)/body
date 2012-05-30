@@ -1,0 +1,8 @@
+{
+  Chunk c=farStore.get(pos);
+  if (c != null) {
+    Chunk prev=nearCache.putIfAbsent(pos,c);
+    return (prev != null) ? prev : c;
+  }
+  return null;
+}

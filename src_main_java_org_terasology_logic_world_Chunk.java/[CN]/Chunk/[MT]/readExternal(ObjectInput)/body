@@ -1,12 +1,11 @@
 {
-  _pos.x=in.readInt();
-  _pos.y=in.readInt();
-  _pos.z=in.readInt();
-  byte flags=in.readByte();
-  setLightDirty(Helper.isFlagSet(flags,(short)0));
-  setFresh(Helper.isFlagSet(flags,(short)1));
-  for (int i=0; i < _blocks.size(); i++)   _blocks.setRawByte(i,in.readByte());
-  for (int i=0; i < _sunlight.sizePacked(); i++)   _sunlight.setRawByte(i,in.readByte());
-  for (int i=0; i < _light.sizePacked(); i++)   _light.setRawByte(i,in.readByte());
-  for (int i=0; i < _states.sizePacked(); i++)   _states.setRawByte(i,in.readByte());
+  pos.x=in.readInt();
+  pos.y=in.readInt();
+  pos.z=in.readInt();
+  setDirty(true);
+  chunkState=(State)in.readObject();
+  for (int i=0; i < blocks.size(); i++)   blocks.setRawByte(i,in.readByte());
+  for (int i=0; i < sunlight.sizePacked(); i++)   sunlight.setRawByte(i,in.readByte());
+  for (int i=0; i < light.sizePacked(); i++)   light.setRawByte(i,in.readByte());
+  for (int i=0; i < states.sizePacked(); i++)   states.setRawByte(i,in.readByte());
 }

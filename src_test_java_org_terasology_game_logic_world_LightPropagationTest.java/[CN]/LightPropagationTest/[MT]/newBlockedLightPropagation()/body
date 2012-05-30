@@ -6,7 +6,7 @@
   view.setBlock(lightPos,torch,air);
   propagator.update(lightPos,torch,air);
   for (  Vector3i pos : Region3i.createFromMinMax(WORLD_MIN,new Vector3i(4,WORLD_MAX.y,WORLD_MAX.z))) {
-    byte expected=(byte)Math.max(0,NewChunk.MAX_LIGHT - lightPos.gridDistance(pos));
+    byte expected=(byte)Math.max(0,Chunk.MAX_LIGHT - lightPos.gridDistance(pos));
     assertEquals(pos.toString(),expected,view.getLight(pos));
   }
   for (  Vector3i pos : Region3i.createFromMinMax(new Vector3i(5,WORLD_MIN.y,WORLD_MIN.z),WORLD_MAX)) {

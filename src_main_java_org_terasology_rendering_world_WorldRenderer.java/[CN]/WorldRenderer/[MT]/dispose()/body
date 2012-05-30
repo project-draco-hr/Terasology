@@ -8,12 +8,13 @@
     _logger.log(Level.SEVERE,"Failed to save world manifest");
   }
   AudioManager.getInstance().stopAllSounds();
+  chunkStore.dispose();
   File chunkFile=new File(PathManager.getInstance().getWorldSavePath(_worldProvider.getTitle()),_worldProvider.getTitle() + ".dat");
   try {
     FileOutputStream fileOut=new FileOutputStream(chunkFile);
     BufferedOutputStream bos=new BufferedOutputStream(fileOut);
     ObjectOutputStream out=new ObjectOutputStream(bos);
-    out.writeObject(chunkCache);
+    out.writeObject(chunkStore);
     out.close();
     bos.flush();
     bos.close();

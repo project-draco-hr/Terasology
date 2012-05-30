@@ -42,8 +42,8 @@
         return;
       }
       try {
-        ConfigObject config=(ConfigObject)_list.getSelectedItem().getValue();
-        File world=PathManager.getInstance().getWorldSavePath((String)config.get("worldTitle"));
+        WorldInfo worldInfo=(WorldInfo)_list.getSelectedItem().getValue();
+        File world=PathManager.getInstance().getWorldSavePath(worldInfo.getTitle());
         WorldUtil.deleteWorld(world);
         _list.removeSelectedItem();
       }

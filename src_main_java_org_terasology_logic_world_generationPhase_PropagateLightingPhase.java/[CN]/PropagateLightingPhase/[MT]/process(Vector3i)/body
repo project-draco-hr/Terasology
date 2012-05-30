@@ -1,0 +1,11 @@
+{
+  WorldView worldView=WorldView.createLocalView(pos,chunkProvider);
+  worldView.lock();
+  try {
+    new LightPropagator(worldView).propagateOutOfTargetChunk();
+    chunkProvider.getChunk(pos).setChunkState(Chunk.State.FullLightConnectivityPending);
+  }
+  finally {
+    worldView.unlock();
+  }
+}

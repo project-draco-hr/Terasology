@@ -1,0 +1,28 @@
+{
+  queue=new PriorityBlockingQueue<Vector3i>(128,chunkRelevanceComparator);
+  threads=Executors.newFixedThreadPool(numThreads);
+  for (int i=0; i < numThreads; ++i) {
+    threads.execute(new Runnable(){
+      @Override public void run(){
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        while (running.get()) {
+          try {
+            Vector3i pos=queue.poll(500,TimeUnit.MILLISECONDS);
+            if (pos != null) {
+              process(pos);
+              completed.add(pos);
+            }
+          }
+ catch (          InterruptedException e) {
+            logger.log(Level.SEVERE,"Thread interrupted",e);
+          }
+catch (          Exception e) {
+            logger.log(Level.SEVERE,"Error in thread",e);
+          }
+        }
+        logger.log(Level.INFO,"Thread shutdown safely");
+      }
+    }
+);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  generatePhase.dispose();
+  secondPassPhase.dispose();
+  internalLightingPhase.dispose();
+  propagateLightPhase.dispose();
+  for (  Chunk chunk : nearCache.values()) {
+    farStore.put(chunk);
+    chunk.dispose();
+  }
+  nearCache.clear();
+}

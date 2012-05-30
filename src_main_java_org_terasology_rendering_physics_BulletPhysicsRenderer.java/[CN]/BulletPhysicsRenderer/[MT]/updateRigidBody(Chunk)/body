@@ -1,0 +1,32 @@
+{
+  if (chunk.getRigidBody() != null || chunk.getMesh() == null)   return;
+  TriangleIndexVertexArray vertexArray=new TriangleIndexVertexArray();
+  int tris=0;
+  ChunkMesh[] meshes=chunk.getMesh();
+  for (int k=0; k < Chunk.VERTICAL_SEGMENTS; k++) {
+    ChunkMesh mesh=meshes[k];
+    if (mesh != null) {
+      IndexedMesh indexedMesh=mesh._indexedMesh;
+      if (indexedMesh != null) {
+        tris+=mesh._indexedMesh.numTriangles;
+        vertexArray.addIndexedMesh(indexedMesh);
+      }
+      mesh._indexedMesh=null;
+    }
+  }
+  if (tris == 0) {
+    return;
+  }
+  try {
+    BvhTriangleMeshShape shape=new BvhTriangleMeshShape(vertexArray,true);
+    Matrix3f rot=new Matrix3f();
+    rot.setIdentity();
+    DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,new Vector3f((float)chunk.getPos().x * Chunk.SIZE_X,(float)chunk.getPos().y * Chunk.SIZE_Y,(float)chunk.getPos().z * Chunk.SIZE_Z),1.0f)));
+    RigidBodyConstructionInfo blockConsInf=new RigidBodyConstructionInfo(0,blockMotionState,shape,new Vector3f());
+    RigidBody rigidBody=new RigidBody(blockConsInf);
+    chunk.setRigidBody(rigidBody);
+  }
+ catch (  Exception e) {
+    _logger.log(Level.WARNING,"Chunk failed to create rigid body.",e);
+  }
+}

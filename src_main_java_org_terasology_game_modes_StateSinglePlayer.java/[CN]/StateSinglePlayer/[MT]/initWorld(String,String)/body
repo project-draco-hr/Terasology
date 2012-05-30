@@ -23,18 +23,7 @@
       logger.log(Level.SEVERE,"Failed to load entity data",e);
     }
   }
-  LocalPlayer localPlayer=null;
-  Iterator<EntityRef> iterator=entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
-  if (iterator.hasNext()) {
-    localPlayer=new LocalPlayer(iterator.next());
-  }
- else {
-    PlayerFactory playerFactory=new PlayerFactory(entityManager);
-    localPlayer=new LocalPlayer(playerFactory.newInstance(nextSpawningPoint()));
-  }
-  _worldRenderer.setPlayer(localPlayer);
-  _worldRenderer.initPortal();
-  fastForwardWorld();
+  prepareWorld();
   CoreRegistry.put(WorldRenderer.class,_worldRenderer);
   CoreRegistry.put(WorldProvider.class,_worldRenderer.getWorldProvider());
   CoreRegistry.put(LocalPlayer.class,_worldRenderer.getPlayer());

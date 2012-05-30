@@ -1,25 +1,26 @@
 {
-  NewChunkGeneratorManager generatorManager=new NewChunkGeneratorManagerImpl(seed,new WorldBiomeProviderImpl(seed));
+  ChunkGeneratorManager generatorManager=new ChunkGeneratorManagerImpl(seed,new WorldBiomeProviderImpl(seed));
   generatorManager.registerChunkGenerator(new PerlinTerrainGenerator());
   generatorManager.registerChunkGenerator(new FloraGenerator());
+  generatorManager.registerChunkGenerator(new LiquidsGenerator());
   ForestGenerator forestGen=new ForestGenerator();
   new DefaultGenerators(forestGen);
   generatorManager.registerChunkGenerator(forestGen);
   File f=new File(PathManager.getInstance().getWorldSavePath(title),title + ".dat");
   if (f.exists()) {
     try {
-      chunkCache=ChunkCacheGZip.load(f);
+      chunkStore=ChunkStoreGZip.load(f);
     }
  catch (    IOException e) {
       e.printStackTrace();
     }
   }
-  if (chunkCache == null) {
-    chunkCache=new ChunkCacheGZip();
+  if (chunkStore == null) {
+    chunkStore=new ChunkStoreGZip();
   }
-  _chunkProvider=new LocalChunkProvider(chunkCache,generatorManager);
-  _worldProvider=new NewLocalWorldProvider(title,seed,_chunkProvider);
-  _chunkTesselator=new NewChunkTessellator(_worldProvider.getBiomeProvider());
+  _chunkProvider=new LocalChunkProvider(chunkStore,generatorManager);
+  _worldProvider=new WorldProviderImpl(title,seed,_chunkProvider);
+  _chunkTesselator=new ChunkTessellator(_worldProvider.getBiomeProvider());
   _skysphere=new Skysphere(this);
   _chunkUpdateManager=new ChunkUpdateManager(_chunkTesselator,_worldProvider);
   _worldTimeEventManager=new WorldTimeEventManager(_worldProvider);

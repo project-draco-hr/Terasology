@@ -1,13 +1,13 @@
 {
-  NewChunk chunk=new NewChunk(0,0,0);
-  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,NewChunk.SIZE_Y - 1,0),new Vector3i(NewChunk.SIZE_X,1,NewChunk.SIZE_Z))) {
+  Chunk chunk=new Chunk(0,0,0);
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,Chunk.SIZE_Y - 1,0),new Vector3i(Chunk.SIZE_X,1,Chunk.SIZE_Z))) {
     chunk.setBlock(pos,solidBlock);
   }
-  chunk.setBlock(8,NewChunk.SIZE_Y - 1,8,airBlock);
+  chunk.setBlock(8,Chunk.SIZE_Y - 1,8,airBlock);
   InternalLightProcessor.generateInternalLighting(chunk);
-  for (  Vector3i pos : Region3i.createFromMinAndSize(Vector3i.zero(),new Vector3i(NewChunk.SIZE_X,NewChunk.SIZE_Y - 1,NewChunk.SIZE_Z))) {
+  for (  Vector3i pos : Region3i.createFromMinAndSize(Vector3i.zero(),new Vector3i(Chunk.SIZE_X,Chunk.SIZE_Y - 1,Chunk.SIZE_Z))) {
     int dist=TeraMath.fastAbs(pos.x - 8) + TeraMath.fastAbs(pos.z - 8);
-    int expected=Math.max(NewChunk.MAX_LIGHT - dist,0);
+    int expected=Math.max(Chunk.MAX_LIGHT - dist,0);
     assertEquals("Incorrect at " + pos,expected,chunk.getSunlight(pos));
   }
 }

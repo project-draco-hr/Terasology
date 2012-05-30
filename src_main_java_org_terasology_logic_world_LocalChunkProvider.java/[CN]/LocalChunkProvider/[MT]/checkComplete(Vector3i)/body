@@ -1,0 +1,15 @@
+{
+  Chunk chunk=getChunk(pos);
+  if (chunk != null && chunk.getChunkState() == Chunk.State.FullLightConnectivityPending) {
+    for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,new Vector3i(1,0,1))) {
+      if (!adjPos.equals(pos)) {
+        Chunk adjChunk=getChunk(adjPos);
+        if (adjChunk == null || adjChunk.getChunkState().compareTo(Chunk.State.FullLightConnectivityPending) < 0) {
+          return;
+        }
+      }
+    }
+    logger.log(Level.FINE,"Now complete " + pos);
+    chunk.setChunkState(Chunk.State.Complete);
+  }
+}

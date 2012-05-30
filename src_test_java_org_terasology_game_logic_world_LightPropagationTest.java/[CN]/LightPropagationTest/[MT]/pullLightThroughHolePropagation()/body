@@ -9,7 +9,7 @@
   view.setBlock(holePos,air,dirt);
   propagator.update(holePos,air,dirt);
   for (  Vector3i pos : Region3i.createFromMinMax(WORLD_MIN,new Vector3i(4,WORLD_MAX.y,WORLD_MAX.z))) {
-    byte expected=(byte)Math.max(0,NewChunk.MAX_LIGHT - lightPos.gridDistance(pos));
+    byte expected=(byte)Math.max(0,Chunk.MAX_LIGHT - lightPos.gridDistance(pos));
     assertEquals(pos.toString(),expected,view.getLight(pos));
   }
   for (  Vector3i pos : Region3i.createFromMinMax(new Vector3i(5,WORLD_MIN.y,WORLD_MIN.z),new Vector3i(5,WORLD_MAX.y,WORLD_MAX.z))) {
@@ -17,9 +17,9 @@
       assertEquals(pos.toString(),0,view.getLight(pos));
     }
   }
-  assertEquals(NewChunk.MAX_LIGHT - 1,view.getLight(holePos));
+  assertEquals(Chunk.MAX_LIGHT - 1,view.getLight(holePos));
   for (  Vector3i pos : Region3i.createFromMinMax(new Vector3i(6,WORLD_MIN.y,WORLD_MIN.z),WORLD_MAX)) {
-    byte expected=(byte)Math.max(0,NewChunk.MAX_LIGHT - 1 - holePos.gridDistance(pos));
+    byte expected=(byte)Math.max(0,Chunk.MAX_LIGHT - 1 - holePos.gridDistance(pos));
     assertEquals(pos.toString(),expected,view.getLight(pos));
   }
 }
