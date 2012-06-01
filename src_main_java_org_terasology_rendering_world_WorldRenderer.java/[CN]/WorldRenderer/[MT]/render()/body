@@ -13,7 +13,7 @@
   ;
   glEnable(GL_LIGHT0);
   boolean headUnderWater=false;
-  headUnderWater=(_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(getActiveCamera().getPosition()));
+  headUnderWater=_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(getActiveCamera().getPosition());
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("RenderOpaque");
   while (_renderQueueOpaque.size() > 0)   _renderQueueOpaque.poll().render();

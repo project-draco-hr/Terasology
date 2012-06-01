@@ -1,7 +1,7 @@
 {
   if (isReadyForRendering()) {
     ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("chunk");
-    shader.setFloat3("chunkOffset",(float)(_pos.x * Chunk.CHUNK_DIMENSION_X),(float)(_pos.y * Chunk.CHUNK_DIMENSION_Y),(float)(_pos.z * Chunk.CHUNK_DIMENSION_Z));
+    shader.setFloat3("chunkOffset",(_pos.x * Chunk.CHUNK_DIMENSION_X),(_pos.y * Chunk.CHUNK_DIMENSION_Y),(_pos.z * Chunk.CHUNK_DIMENSION_Z));
     GL11.glPushMatrix();
     Vector3d cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
     GL11.glTranslated(_pos.x * Chunk.CHUNK_DIMENSION_X - cameraPosition.x,_pos.y * Chunk.CHUNK_DIMENSION_Y - cameraPosition.y,_pos.z * Chunk.CHUNK_DIMENSION_Z - cameraPosition.z);

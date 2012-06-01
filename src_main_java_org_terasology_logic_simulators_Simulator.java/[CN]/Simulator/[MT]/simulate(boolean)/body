@@ -1,10 +1,10 @@
 {
   if (_running)   return false;
   long currentTime=_timer.getTimeInMs();
-  if ((currentTime > _lastUpdate + _updateInterval || force)) {
+  if (currentTime > _lastUpdate + _updateInterval || force) {
     _running=true;
     Runnable r=new Runnable(){
-      public void run(){
+      @Override public void run(){
         executeSimulation();
         _running=false;
       }
