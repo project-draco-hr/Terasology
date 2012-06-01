@@ -6,11 +6,10 @@
   int chunksGenerated=0;
   Timer timer=CoreRegistry.get(Timer.class);
   long startTime=timer.getTimeInMs();
-  LocalPlayer localPlayer=null;
   Iterator<EntityRef> iterator=entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
   if (iterator.hasNext()) {
-    localPlayer=new LocalPlayer(iterator.next());
-    _worldRenderer.setPlayer(localPlayer);
+    CoreRegistry.get(LocalPlayer.class).setEntity(iterator.next());
+    _worldRenderer.setPlayer(CoreRegistry.get(LocalPlayer.class));
   }
  else {
     EntityRef spawnZoneEntity=entityManager.create();
@@ -27,8 +26,8 @@
       spawnPoint.y--;
     }
     PlayerFactory playerFactory=new PlayerFactory(entityManager);
-    localPlayer=new LocalPlayer(playerFactory.newInstance(new Vector3f(spawnPoint.x + 0.5f,spawnPoint.y + 2.0f,spawnPoint.z + 0.5f)));
-    _worldRenderer.setPlayer(localPlayer);
+    CoreRegistry.get(LocalPlayer.class).setEntity(playerFactory.newInstance(new Vector3f(spawnPoint.x + 0.5f,spawnPoint.y + 2.0f,spawnPoint.z + 0.5f)));
+    _worldRenderer.setPlayer(CoreRegistry.get(LocalPlayer.class));
     _worldRenderer.getChunkProvider().removeRegionEntity(spawnZoneEntity);
     spawnZoneEntity.destroy();
   }

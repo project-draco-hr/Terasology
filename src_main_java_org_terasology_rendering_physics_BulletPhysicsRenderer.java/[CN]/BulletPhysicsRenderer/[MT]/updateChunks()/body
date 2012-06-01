@@ -4,13 +4,15 @@
   for (int i=0; i < 32 && i < chunks.size(); i++) {
     final Chunk chunk=chunks.get(i);
     if (chunk != null) {
-      updateRigidBody(chunk);
-      RigidBody c=chunk.getRigidBody();
-      if (c != null) {
-        newBodies.add(c);
-        if (!_chunks.contains(c)) {
-          _discreteDynamicsWorld.addRigidBody(c);
+      if (updateRigidBody(chunk)) {
+        RigidBody c=chunk.getRigidBody();
+        if (c != null) {
+          newBodies.add(c);
+          if (!_chunks.contains(c)) {
+            _discreteDynamicsWorld.addRigidBody(c);
+          }
         }
+        break;
       }
     }
   }

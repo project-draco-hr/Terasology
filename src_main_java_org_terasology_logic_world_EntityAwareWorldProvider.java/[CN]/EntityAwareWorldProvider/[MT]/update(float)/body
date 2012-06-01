@@ -1,0 +1,17 @@
+{
+  int processed=0;
+  while (!eventQueue.isEmpty() && processed < 32) {
+    BlockChangedEvent event=eventQueue.poll();
+    getOrCreateEntityAt(event.getBlockPosition()).send(event);
+    processed++;
+  }
+  for (  EntityRef entity : tempBlocks) {
+    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+    if (blockComp == null || !blockComp.temporary)     continue;
+    HealthComponent healthComp=entity.getComponent(HealthComponent.class);
+    if (healthComp == null || healthComp.currentHealth == healthComp.maxHealth) {
+      entity.destroy();
+    }
+  }
+  tempBlocks.clear();
+}

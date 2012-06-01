@@ -19,7 +19,10 @@
     chunkStore=new ChunkStoreGZip();
   }
   _chunkProvider=new LocalChunkProvider(chunkStore,generatorManager);
-  _worldProvider=new WorldProviderImpl(title,seed,_chunkProvider);
+  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(title,seed,_chunkProvider));
+  CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
+  CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
+  _worldProvider=new WorldProviderWrapper(entityWorldProvider);
   _chunkTesselator=new ChunkTessellator(_worldProvider.getBiomeProvider());
   _skysphere=new Skysphere(this);
   _chunkUpdateManager=new ChunkUpdateManager(_chunkTesselator,_worldProvider);

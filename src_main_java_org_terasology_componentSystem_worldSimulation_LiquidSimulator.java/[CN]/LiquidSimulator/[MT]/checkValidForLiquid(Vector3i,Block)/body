@@ -1,0 +1,29 @@
+{
+  Vector3i aboveBlockPos=new Vector3i(blockPos.x,blockPos.y + 1,blockPos.z);
+  if (world.getBlock(aboveBlockPos).equals(type)) {
+    return true;
+  }
+ else {
+    int adjacent=0;
+    int adjacentGaps=0;
+    for (    Side side : Side.horizontalSides()) {
+      Vector3i adjPos=new Vector3i(blockPos);
+      adjPos.add(side.getVector3i());
+      Block adjType=world.getBlock(adjPos);
+      if (adjType.equals(type)) {
+        adjPos.y-=1;
+        Block adjSupport=world.getBlock(adjPos);
+        if (!(adjSupport.isLiquid() || adjSupport.equals(air))) {
+          adjacent++;
+        }
+ else {
+          adjacentGaps++;
+        }
+      }
+ else       if (adjType.equals(air) || adjType.getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
+        adjacentGaps++;
+      }
+    }
+    return adjacentGaps == 0 || (adjacentGaps == 1 && adjacent > 0) || adjacent >= 1;
+  }
+}

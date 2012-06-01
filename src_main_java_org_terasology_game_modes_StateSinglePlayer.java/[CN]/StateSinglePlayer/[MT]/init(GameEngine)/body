@@ -8,11 +8,8 @@
   entityManager=new EntitySystemBuilder().build();
   componentSystemManager=new ComponentSystemManager();
   CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
-  BlockEntityRegistry blockEntityRegistry=new BlockEntityRegistry();
-  CoreRegistry.put(BlockEntityRegistry.class,blockEntityRegistry);
   localPlayerSys=new LocalPlayerSystem();
   componentSystemManager.register(localPlayerSys,"engine:LocalPlayerSystem");
-  componentSystemManager.register(blockEntityRegistry,"engine:BlockEntityRegistry");
   componentSystemManager.loadEngineSystems();
   CoreRegistry.put(WorldPersister.class,new WorldPersister(entityManager));
   loadPrefabs();
