@@ -11,15 +11,9 @@
   streamState.init(page.serialno());
   info.init();
   comment.init();
-  if (streamState.pagein(page) < 0) {
-    throw new Exception("Error reading first page of Ogg bitstream data.");
-  }
-  if (streamState.packetout(packet) != 1) {
-    throw new Exception("Error reading initial header packet.");
-  }
-  if (info.synthesis_headerin(comment,packet) < 0) {
-    throw new Exception("This Ogg bitstream does not contain Vorbis audio data.");
-  }
+  if (streamState.pagein(page) < 0)   throw new Exception("Error reading first page of Ogg bitstream data.");
+  if (streamState.packetout(packet) != 1)   throw new Exception("Error reading initial header packet.");
+  if (info.synthesis_headerin(comment,packet) < 0)   throw new Exception("This Ogg bitstream does not contain Vorbis audio data.");
   int i=0;
   while (i < 2) {
     while (i < 2) {
@@ -29,12 +23,8 @@
         streamState.pagein(page);
         while (i < 2) {
           result=streamState.packetout(packet);
-          if (result == 0) {
-            break;
-          }
-          if (result == -1) {
-            throw new Exception("Corrupt secondary header. Exiting.");
-          }
+          if (result == 0)           break;
+          if (result == -1)           throw new Exception("Corrupt secondary header. Exiting.");
           info.synthesis_headerin(comment,packet);
           i++;
         }
@@ -43,12 +33,8 @@
     index=syncState.buffer(4096);
     buffer=syncState.data;
     bytes=in.read(buffer,index,4096);
-    if (bytes < 0) {
-      bytes=0;
-    }
-    if (bytes == 0 && i < 2) {
-      throw new Exception("End of file before finding all Vorbis headers!");
-    }
+    if (bytes < 0)     bytes=0;
+    if (bytes == 0 && i < 2)     throw new Exception("End of file before finding all Vorbis headers!");
     syncState.wrote(bytes);
   }
   convsize=4096 / info.channels;
