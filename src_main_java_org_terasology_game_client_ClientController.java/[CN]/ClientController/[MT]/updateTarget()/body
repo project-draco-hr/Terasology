@@ -1,0 +1,23 @@
+{
+  if (!target.exists() && targetBlockPos != null) {
+    target=blockRegistry.getOrCreateEntityAt(targetBlockPos);
+  }
+  if (!target.exists()) {
+    localPlayer.getEntity().send(new MouseOutEvent(target));
+    targetBlockPos=null;
+  }
+  Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  RayBlockIntersection.Intersection hitInfo=BlockRaytracer.trace(camera.getPosition(),camera.getViewingDirection(),worldProvider);
+  Vector3i newBlockPos=(hitInfo != null) ? hitInfo.getBlockPosition() : null;
+  if (!Objects.equal(targetBlockPos,newBlockPos)) {
+    if (targetBlockPos != null) {
+      localPlayer.getEntity().send(new MouseOutEvent(target));
+    }
+    target=EntityRef.NULL;
+    targetBlockPos=newBlockPos;
+    if (newBlockPos != null) {
+      target=blockRegistry.getOrCreateEntityAt(targetBlockPos);
+      localPlayer.getEntity().send(new MouseOverEvent(target));
+    }
+  }
+}

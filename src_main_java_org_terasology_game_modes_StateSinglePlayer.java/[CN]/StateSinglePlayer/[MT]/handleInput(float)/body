@@ -1,4 +1,14 @@
 {
-  processKeyboardInput();
-  processMouseInput();
+  _clientController.update(delta);
+  if (screenHasFocus() || !shouldUpdateWorld()) {
+    if (Mouse.isGrabbed()) {
+      Mouse.setGrabbed(false);
+      Mouse.setCursorPosition(Display.getWidth() / 2,Display.getHeight() / 2);
+    }
+  }
+ else {
+    if (!Mouse.isGrabbed()) {
+      Mouse.setGrabbed(true);
+    }
+  }
 }

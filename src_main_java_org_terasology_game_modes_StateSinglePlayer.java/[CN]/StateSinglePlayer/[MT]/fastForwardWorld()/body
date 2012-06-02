@@ -1,18 +1,14 @@
 {
-  _loadingScreen.setVisible(true);
-  _hud.setVisible(false);
-  _metrics.setVisible(false);
+  UILoadingScreen loadingScreen=GUIManager.getInstance().addWindow(new UILoadingScreen(),"engine:loadingScreen");
   Display.update();
   int chunksGenerated=0;
   while (chunksGenerated < 64) {
     getWorldRenderer().generateChunk();
     chunksGenerated++;
-    _loadingScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(chunksGenerated / 64f) * 100f));
+    loadingScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(chunksGenerated / 64f) * 100f));
     renderUserInterface();
     updateUserInterface();
     Display.update();
   }
-  _loadingScreen.setVisible(false);
-  _hud.setVisible(true);
-  _metrics.setVisible(true);
+  GUIManager.getInstance().removeWindow(loadingScreen);
 }

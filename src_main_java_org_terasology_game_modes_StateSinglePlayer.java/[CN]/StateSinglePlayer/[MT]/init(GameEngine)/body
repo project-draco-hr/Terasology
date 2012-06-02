@@ -56,6 +56,9 @@
   componentLibrary.registerComponentClass(PoisonedComponent.class);
   loadPrefabs();
   BlockEntityRegistry blockEntityRegistry=new BlockEntityRegistry();
+  _clientController=new ClientController();
+  CoreRegistry.put(ClientController.class,_clientController);
+  _componentSystemManager.register(_clientController,"engine:ClientController");
   _componentSystemManager.register(blockEntityRegistry,"engine:BlockEntityRegistry");
   CoreRegistry.put(BlockEntityRegistry.class,blockEntityRegistry);
   _componentSystemManager.register(new CharacterMovementSystem(),"engine:CharacterMovementSystem");
@@ -77,22 +80,9 @@
   _componentSystemManager.register(new TunnelAction(),"engine:TunnelAction");
   _componentSystemManager.register(new AccessInventoryAction(),"engine:AccessInventoryAction");
   _componentSystemManager.register(new SpawnPrefabAction(),"engine:SpawnPrefabAction");
-  _componentSystemManager.register(new ReadBookAction(),"engine: ReadBookAction");
-  _componentSystemManager.register(new BookshelfHandler(),"engine: BookshelfHandler");
-  _componentSystemManager.register(new DrinkPotionAction(),"engine : DrinkPotionAction");
-  _componentSystemManager.register(new StatusAffectorSystem(),"engine : StatusAffectorSystem");
-  _hud=new UIHeadsUpDisplay();
-  _hud.setVisible(true);
-  _pauseMenu=new UIPauseMenu();
-  _loadingScreen=new UILoadingScreen();
-  _statusScreen=new UIStatusScreen();
-  _inventoryScreen=new UIInventoryScreen();
-  _metrics=new UIMetrics();
-  _metrics.setVisible(true);
-  _guiScreens.add(_metrics);
-  _guiScreens.add(_hud);
-  _guiScreens.add(_pauseMenu);
-  _guiScreens.add(_loadingScreen);
-  _guiScreens.add(_inventoryScreen);
-  _guiScreens.add(_statusScreen);
+  _componentSystemManager.register(new ReadBookAction(),"engine:ReadBookAction");
+  _componentSystemManager.register(new BookshelfHandler(),"engine:BookshelfHandler");
+  _componentSystemManager.register(new DrinkPotionAction(),"engine:DrinkPotionAction");
+  _componentSystemManager.register(new StatusAffectorSystem(),"engine:StatusAffectorSystem");
+  _componentSystemManager.register(new LocalPlayerScreensSystem(),"engine:LocalPlayerScreensSystem");
 }

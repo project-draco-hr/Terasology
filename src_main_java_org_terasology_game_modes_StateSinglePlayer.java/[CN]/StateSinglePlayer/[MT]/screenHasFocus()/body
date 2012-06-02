@@ -1,8 +1,3 @@
 {
-  for (  UIDisplayElement screen : _guiScreens) {
-    if (screen.isVisible() && !screen.isOverlay()) {
-      return true;
-    }
-  }
-  return GUIManager.getInstance().getFocusedWindow() != null;
+  return GUIManager.getInstance().getFocusedWindow() != null && GUIManager.getInstance().getFocusedWindow().isModal() && GUIManager.getInstance().getFocusedWindow().isVisible();
 }

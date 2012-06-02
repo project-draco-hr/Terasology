@@ -1,13 +1,7 @@
 {
-  EntityRef mouseTarget=null;
-  if (modal) {
-    mouseTarget=null;
-  }
- else {
-    lookInput.set((float)(mouseSensititivy * Mouse.getDX()),(float)(mouseSensititivy * Mouse.getDY()));
-    mouseTarget=null;
-  }
-  processMouseTransition(mouseTarget);
-  processMouseButtons(mouseTarget);
-  processKeyboardInput(mouseTarget);
+  updateTarget();
+  UIDisplayWindow focusWindow=GUIManager.getInstance().getFocusedWindow();
+  boolean consumedByUI=focusWindow != null && focusWindow.isVisible() && focusWindow.isModal();
+  processMouseInput(delta,consumedByUI);
+  processKeyboardInput(delta,consumedByUI);
 }
