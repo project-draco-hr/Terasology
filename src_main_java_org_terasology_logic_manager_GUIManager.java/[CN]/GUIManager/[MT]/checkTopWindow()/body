@@ -6,7 +6,7 @@
   int size=_renderer.getDisplayElements().size();
   for (int i=size - 1; i >= 0; i--) {
     UIDisplayWindow window=(UIDisplayWindow)_renderer.getDisplayElements().get(i);
-    if (window.isVisible() && window.intersects(mousePos)) {
+    if (window.isVisible() && window.intersects(mousePos) && window.isModal()) {
       setTopWindow(i);
       break;
     }

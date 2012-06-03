@@ -1,0 +1,22 @@
+{
+  while (Mouse.next()) {
+    if (Mouse.getEventButton() != -1) {
+      int button=Mouse.getEventButton();
+      boolean buttonDown=Mouse.getEventButtonState();
+      boolean consumed=sendMouseEvent(button,buttonDown,delta);
+      BindInfo bind=mouseButtonBinds.get(button);
+      if (bind != null) {
+        bind.invoke(buttonDown,delta,consumed,GUIManager.getInstance().isConsumingInput());
+      }
+    }
+ else     if (Mouse.getEventDWheel() != 0) {
+      int wheelMoved=Mouse.getEventDWheel();
+      boolean consumed=sendMouseWheelEvent(wheelMoved,delta);
+      BindInfo bind=(wheelMoved > 0) ? mouseWheelUpBind : mouseWheelDownBind;
+      if (bind != null) {
+        bind.invoke(true,delta,consumed,GUIManager.getInstance().isConsumingInput());
+        bind.invoke(false,delta,consumed,GUIManager.getInstance().isConsumingInput());
+      }
+    }
+  }
+}

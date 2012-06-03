@@ -1,0 +1,29 @@
+{
+  if (pressed) {
+    if (downInputs++ == 0) {
+      if (guiOnly) {
+        GUIManager.getInstance().processBindButton(id,pressed);
+        keyConsumed=true;
+      }
+      if (!keyConsumed) {
+        buttonEvent.prepare(id,ButtonState.DOWN,delta,target);
+        localPlayer.getEntity().send(buttonEvent);
+        keyConsumed=buttonEvent.isConsumed();
+      }
+    }
+  }
+ else   if (downInputs != 0) {
+    if (--downInputs == 0) {
+      if (guiOnly) {
+        GUIManager.getInstance().processBindButton(id,pressed);
+        keyConsumed=true;
+      }
+      if (!keyConsumed) {
+        buttonEvent.prepare(id,ButtonState.UP,delta,target);
+        localPlayer.getEntity().send(buttonEvent);
+        keyConsumed=buttonEvent.isConsumed();
+      }
+    }
+  }
+  return keyConsumed;
+}

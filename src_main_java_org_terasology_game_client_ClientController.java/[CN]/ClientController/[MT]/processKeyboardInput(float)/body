@@ -1,0 +1,11 @@
+{
+  while (Keyboard.next()) {
+    int key=Keyboard.getEventKey();
+    ButtonState state=getButtonState(Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+    boolean consumed=sendKeyEvent(key,state,delta);
+    BindInfo bind=keyBinds.get(key);
+    if (bind != null && !Keyboard.isRepeatEvent()) {
+      bind.invoke(Keyboard.getEventKeyState(),delta,consumed,GUIManager.getInstance().isConsumingInput());
+    }
+  }
+}
