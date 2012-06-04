@@ -6,7 +6,11 @@
   Vector3f blockPlayer=new Vector3f();
   tMatrix.get(blockPlayer);
   LocationComponent loc=target.getComponent(LocationComponent.class);
-  if (loc != null)   blockPlayer.sub(loc.getWorldPosition());
- else   blockPlayer.sub(new Vector3f());
+  if (loc != null) {
+    blockPlayer.sub(loc.getWorldPosition());
+  }
+ else {
+    blockPlayer.sub(new Vector3f());
+  }
   return blockPlayer.length();
 }

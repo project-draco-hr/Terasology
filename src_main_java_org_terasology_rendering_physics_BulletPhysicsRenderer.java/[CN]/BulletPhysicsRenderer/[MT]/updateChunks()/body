@@ -8,10 +8,16 @@
       RigidBody c=chunk.getRigidBody();
       if (c != null) {
         newBodies.add(c);
-        if (!_chunks.contains(c))         _discreteDynamicsWorld.addRigidBody(c);
+        if (!_chunks.contains(c)) {
+          _discreteDynamicsWorld.addRigidBody(c);
+        }
       }
     }
   }
-  for (  RigidBody body : _chunks)   if (!newBodies.contains(body))   _discreteDynamicsWorld.removeRigidBody(body);
+  for (  RigidBody body : _chunks) {
+    if (!newBodies.contains(body)) {
+      _discreteDynamicsWorld.removeRigidBody(body);
+    }
+  }
   _chunks=newBodies;
 }
