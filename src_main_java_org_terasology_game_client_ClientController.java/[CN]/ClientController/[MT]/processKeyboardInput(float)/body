@@ -3,9 +3,9 @@
     int key=Keyboard.getEventKey();
     ButtonState state=getButtonState(Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
     boolean consumed=sendKeyEvent(key,state,delta);
-    BindInfo bind=keyBinds.get(key);
+    BindButton bind=keyBinds.get(key);
     if (bind != null && !Keyboard.isRepeatEvent()) {
-      bind.invoke(Keyboard.getEventKeyState(),delta,consumed,GUIManager.getInstance().isConsumingInput());
+      bind.updateBindState(Keyboard.getEventKeyState(),delta,target,localPlayer.getEntity(),consumed,GUIManager.getInstance().isConsumingInput());
     }
   }
 }
