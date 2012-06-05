@@ -1,7 +1,7 @@
 {
   if (pressed) {
-    pressedButtons++;
-    if (pressedButtons == 0 && mode.isActivatedOnPress()) {
+    activeInputs++;
+    if (activeInputs == 1 && mode.isActivatedOnPress()) {
       if (guiOnly) {
         GUIManager.getInstance().processBindButton(id,pressed);
         keyConsumed=true;
@@ -16,9 +16,9 @@
       }
     }
   }
- else   if (pressedButtons != 0) {
-    pressedButtons--;
-    if (pressedButtons == 0 && mode.isActivatedOnRelease()) {
+ else   if (activeInputs != 0) {
+    activeInputs--;
+    if (activeInputs == 0 && mode.isActivatedOnRelease()) {
       if (guiOnly) {
         GUIManager.getInstance().processBindButton(id,pressed);
         keyConsumed=true;

@@ -1,0 +1,12 @@
+{
+  boolean guiConsumingInput=GUIManager.getInstance().isConsumingInput();
+  while (Keyboard.next()) {
+    int key=Keyboard.getEventKey();
+    ButtonState state=getButtonState(Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
+    boolean consumed=sendKeyEvent(key,state,delta);
+    BindButton bind=keyBinds.get(key);
+    if (bind != null && !Keyboard.isRepeatEvent()) {
+      bind.updateBindState(Keyboard.getEventKeyState(),delta,target,localPlayer.getEntity(),consumed,guiConsumingInput);
+    }
+  }
+}
