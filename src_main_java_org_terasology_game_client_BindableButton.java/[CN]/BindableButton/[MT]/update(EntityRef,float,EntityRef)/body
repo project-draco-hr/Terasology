@@ -1,0 +1,10 @@
+{
+  long time=timer.getTimeInMs();
+  if (repeating && getState() == ButtonState.DOWN && mode.isActivatedOnPress() && time - lastActivateTime > repeatTime) {
+    lastActivateTime=time;
+    if (!GUIManager.getInstance().isConsumingInput()) {
+      buttonEvent.prepare(id,ButtonState.REPEAT,delta,target);
+      localPlayer.send(buttonEvent);
+    }
+  }
+}

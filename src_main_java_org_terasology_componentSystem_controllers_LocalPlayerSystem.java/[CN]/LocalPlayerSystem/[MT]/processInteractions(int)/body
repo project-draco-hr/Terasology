@@ -22,25 +22,4 @@
       }
     }
   }
- else {
-    EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
-    if (Mouse.isButtonDown(0) || button == 0) {
-      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
-      if (item != null && item.usage != ItemComponent.UsageType.None) {
-        useItem(entity,selectedItemEntity);
-      }
- else {
-        attack(entity,selectedItemEntity);
-      }
-      lastInteraction=timer.getTimeInMs();
-      localPlayerComp.handAnimation=0.5f;
-      entity.saveComponent(localPlayerComp);
-    }
- else     if (Mouse.isButtonDown(1) || button == 1) {
-      attack(entity,selectedItemEntity);
-      lastInteraction=timer.getTimeInMs();
-      localPlayerComp.handAnimation=0.5f;
-      entity.saveComponent(localPlayerComp);
-    }
-  }
 }
