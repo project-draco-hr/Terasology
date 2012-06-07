@@ -1,20 +1,3 @@
 {
-  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-  if (inventory == null) {
-    setVisible(false);
-  }
- else {
-    setVisible(true);
-    float height=Math.max(inventory.itemSlots.size() / width,1);
-    setSize(new Vector2f(width * (cellSize.x + cellBorder.x),height * (cellSize.y + cellBorder.y)));
-    for (int i=0; i < inventory.itemSlots.size(); ++i) {
-      UIInventoryCellNew cell=new UIInventoryCellNew(entity,i,cellSize);
-      cells.add(cell);
-      cell.setSize(cellSize);
-      cell.setPosition(new Vector2f(i % width * (cellSize.x + cellBorder.x),i / width * (cellSize.y + cellBorder.y)));
-      cell.setVisible(true);
-      cell.subscribe(this);
-      addDisplayElement(cell);
-    }
-  }
+  targetWidth=width;
 }

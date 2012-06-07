@@ -1,0 +1,9 @@
+{
+  LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+  localPlayerComp.selectedTool=(localPlayerComp.selectedTool - 1) % 9;
+  if (localPlayerComp.selectedTool < 0) {
+    localPlayerComp.selectedTool=9 + localPlayerComp.selectedTool;
+  }
+  localPlayer.getEntity().saveComponent(localPlayerComp);
+  event.consume();
+}

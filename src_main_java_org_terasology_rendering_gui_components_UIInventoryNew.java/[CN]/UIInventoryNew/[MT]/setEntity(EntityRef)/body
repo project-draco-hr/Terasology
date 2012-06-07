@@ -1,3 +1,25 @@
 {
   this.entity=entity;
+  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+  for (  UIInventoryCellNew cell : cells) {
+    removeDisplayElement(cell);
+  }
+  cells.clear();
+  if (inventory == null) {
+    setVisible(false);
+  }
+ else {
+    setVisible(true);
+    float height=Math.max(inventory.itemSlots.size() / targetWidth,1);
+    setSize(new Vector2f(targetWidth * (cellSize.x + cellBorder.x),height * (cellSize.y + cellBorder.y)));
+    for (int i=0; i < inventory.itemSlots.size(); ++i) {
+      UIInventoryCellNew cell=new UIInventoryCellNew(entity,i,cellSize);
+      cells.add(cell);
+      cell.setSize(cellSize);
+      cell.setPosition(new Vector2f(i % targetWidth * (cellSize.x + cellBorder.x),i / targetWidth * (cellSize.y + cellBorder.y)));
+      cell.setVisible(true);
+      cell.subscribe(this);
+      addDisplayElement(cell);
+    }
+  }
 }

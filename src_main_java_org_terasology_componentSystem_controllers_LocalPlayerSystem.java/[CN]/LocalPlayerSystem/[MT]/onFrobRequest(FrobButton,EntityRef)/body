@@ -1,0 +1,9 @@
+{
+  if (event.getState() != ButtonState.DOWN) {
+    return;
+  }
+  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComp.isDead)   return;
+  event.getTarget().send(new ActivateEvent(entity,entity));
+  event.consume();
+}
