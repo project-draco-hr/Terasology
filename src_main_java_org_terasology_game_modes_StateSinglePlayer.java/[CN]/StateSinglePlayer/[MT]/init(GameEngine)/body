@@ -23,6 +23,7 @@
   EventSystem eventSystem=new PojoEventSystem(_entityManager);
   _entityManager.setEventSystem(eventSystem);
   CoreRegistry.put(EntityManager.class,_entityManager);
+  CoreRegistry.put(EventSystem.class,eventSystem);
   _componentSystemManager=new ComponentSystemManager();
   CoreRegistry.put(ComponentSystemManager.class,_componentSystemManager);
   CoreRegistry.put(WorldPersister.class,new WorldPersister(componentLibrary,_entityManager));
@@ -70,6 +71,7 @@
   componentLibrary.registerComponentClass(PotionComponent.class);
   componentLibrary.registerComponentClass(SpeedBoostComponent.class);
   componentLibrary.registerComponentClass(PoisonedComponent.class);
+  componentLibrary.registerComponentClass(MinionControllerComponent.class);
   loadPrefabs();
   BlockEntityRegistry blockEntityRegistry=new BlockEntityRegistry();
   _inputSystem=new InputSystem();
@@ -102,4 +104,5 @@
   _componentSystemManager.register(new StatusAffectorSystem(),"engine:StatusAffectorSystem");
   _componentSystemManager.register(new MenuControlSystem(),"engine:MenuControlSystem");
   _componentSystemManager.register(new DebugControlSystem(),"engine:DebugControlSystem");
+  _componentSystemManager.register(new MinionSystem(),"miniion:MinionSystem");
 }

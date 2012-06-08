@@ -1,0 +1,10 @@
+{
+  MinionControllerComponent minionController=player.getComponent(MinionControllerComponent.class);
+  MinionBarComponent inventory=player.getComponent(MinionBarComponent.class);
+  BlockComponent blockComp=target.getComponent(BlockComponent.class);
+  if (blockComp == null || minionController == null || inventory == null) {
+    return;
+  }
+  Vector3i centerPos=blockComp.getPosition();
+  inventory.MinionSlots.set(minionController.selectedMinion,minionFactory.generateMiniion(new Vector3f(centerPos.x,centerPos.y + 1,centerPos.z),minionController.selectedMinion));
+}

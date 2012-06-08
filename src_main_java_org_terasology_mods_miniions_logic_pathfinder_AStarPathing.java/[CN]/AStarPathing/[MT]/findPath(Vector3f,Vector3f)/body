@@ -1,0 +1,59 @@
+{
+  pathNodeCache.clear();
+  Queue<PathNode> openSet=new PriorityQueue<PathNode>(20);
+  PathNode target=new PathNode((int)to.x / 1,(int)to.y / 1,(int)to.z / 1);
+  PathNode start=new PathNode((int)from.x / 1,(int)from.y / 1,(int)from.z / 1);
+  Vector3f tempvec=to;
+  tempvec.sub(from);
+  if (tempvec.length() < 0.5) {
+    return null;
+  }
+  openSet.add(start);
+  start.update(0,null,target);
+  while (!openSet.isEmpty()) {
+    PathNode node=openSet.poll();
+    if (target.equals(node)) {
+      System.out.println("Path found!");
+      return rebuildPath(node);
+    }
+    byte[][] neighborsMatrix=defaultNeighborMatrix;
+    for (    byte[] matrix : neighborsMatrix) {
+      int nx=node.x + matrix[0];
+      int ny=node.y + matrix[1] + 1;
+      int nz=node.z + matrix[2];
+      boolean canskip=true;
+      for (int j=0; j > -3; j--) {
+        if (isWalkable(nx,ny + j,nz)) {
+          ny=ny + j;
+          canskip=false;
+          break;
+        }
+      }
+      if (canskip) {
+        continue;
+      }
+      PathNode neighbor=new PathNode(nx,ny,nz);
+      if (node.parent != null) {
+        if (node.parent.equals(neighbor)) {
+          continue;
+        }
+      }
+      int pathCost=node.getCost(neighbor);
+      if (pathCost == 0) {
+        continue;
+      }
+      pathCost+=node.pathCost;
+      if (pathCost > start.totalCost * PATH_COST_LIMIT_MULTIPLIER) {
+        continue;
+      }
+      neighbor.update(pathCost,node,target);
+      if (!openSet.contains(neighbor)) {
+        neighbor.store();
+        openSet.add(neighbor);
+      }
+    }
+  }
+  System.out.println("Path not found!");
+  PerformanceMonitor.endActivity();
+  return null;
+}

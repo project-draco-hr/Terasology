@@ -11,7 +11,7 @@
     }
  else     if (Mouse.getEventDWheel() != 0) {
       int wheelMoved=Mouse.getEventDWheel();
-      boolean consumed=sendMouseWheelEvent(wheelMoved,delta);
+      boolean consumed=sendMouseWheelEvent(wheelMoved / 120,delta);
       BindableButton bind=(wheelMoved > 0) ? mouseWheelUpBind : mouseWheelDownBind;
       if (bind != null) {
         bind.updateBindState(true,delta,target,localPlayer.getEntity(),consumed,GUIManager.getInstance().isConsumingInput());
