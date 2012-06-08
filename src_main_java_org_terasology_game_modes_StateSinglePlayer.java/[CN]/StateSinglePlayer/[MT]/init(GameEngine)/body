@@ -74,6 +74,9 @@
   componentLibrary.registerComponentClass(MinionControllerComponent.class);
   loadPrefabs();
   BlockEntityRegistry blockEntityRegistry=new BlockEntityRegistry();
+  _cameraTargetSystem=new CameraTargetSystem();
+  CoreRegistry.put(CameraTargetSystem.class,_cameraTargetSystem);
+  _componentSystemManager.register(_cameraTargetSystem,"engine:CameraTargetSystem");
   _inputSystem=new InputSystem();
   CoreRegistry.put(InputSystem.class,_inputSystem);
   _componentSystemManager.register(_inputSystem,"engine:InputSystem");

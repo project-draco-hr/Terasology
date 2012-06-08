@@ -1,0 +1,18 @@
+{
+  KeyEvent event;
+switch (state) {
+case UP:
+    event=KeyUpEvent.create(key,delta,cameraTargetSystem.getTarget());
+  break;
+case DOWN:
+event=KeyDownEvent.create(key,delta,cameraTargetSystem.getTarget());
+break;
+case REPEAT:
+event=KeyRepeatEvent.create(key,delta,cameraTargetSystem.getTarget());
+break;
+default :
+return false;
+}
+localPlayer.getEntity().send(event);
+return event.isConsumed();
+}

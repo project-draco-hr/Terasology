@@ -1,0 +1,30 @@
+{
+  while (Mouse.next()) {
+    if (Mouse.getEventButton() != -1) {
+      int button=Mouse.getEventButton();
+      boolean buttonDown=Mouse.getEventButtonState();
+      boolean consumed=sendMouseEvent(button,buttonDown,delta);
+      BindableButtonImpl bind=mouseButtonBinds.get(button);
+      if (bind != null) {
+        bind.updateBindState(buttonDown,delta,cameraTargetSystem.getTarget(),localPlayer.getEntity(),consumed,GUIManager.getInstance().isConsumingInput());
+      }
+    }
+ else     if (Mouse.getEventDWheel() != 0) {
+      int wheelMoved=Mouse.getEventDWheel();
+      boolean consumed=sendMouseWheelEvent(wheelMoved / 120,delta);
+      BindableButtonImpl bind=(wheelMoved > 0) ? mouseWheelUpBind : mouseWheelDownBind;
+      if (bind != null) {
+        bind.updateBindState(true,delta,cameraTargetSystem.getTarget(),localPlayer.getEntity(),consumed,GUIManager.getInstance().isConsumingInput());
+        bind.updateBindState(false,delta,cameraTargetSystem.getTarget(),localPlayer.getEntity(),consumed,GUIManager.getInstance().isConsumingInput());
+      }
+    }
+  }
+  int deltaX=Mouse.getDX();
+  if (deltaX != 0 && !GUIManager.getInstance().isConsumingInput()) {
+    localPlayer.getEntity().send(new MouseXAxisEvent(deltaX * mouseSensitivity,delta,cameraTargetSystem.getTarget()));
+  }
+  int deltaY=Mouse.getDY();
+  if (deltaY != 0 && !GUIManager.getInstance().isConsumingInput()) {
+    localPlayer.getEntity().send(new MouseYAxisEvent(deltaY * mouseSensitivity,delta,cameraTargetSystem.getTarget()));
+  }
+}
