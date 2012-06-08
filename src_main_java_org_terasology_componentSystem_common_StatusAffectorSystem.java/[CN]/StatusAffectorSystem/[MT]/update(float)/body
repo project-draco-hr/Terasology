@@ -24,4 +24,13 @@
       entity.removeComponent(PoisonedComponent.class);
     }
   }
+  for (  EntityRef entity : entityManager.iteratorEntities(CuredComponent.class)) {
+    CuredComponent curedEffect=entity.getComponent(CuredComponent.class);
+    PoisonedComponent poisonedEffect=entity.getComponent(PoisonedComponent.class);
+    curedEffect.cureDuration=curedEffect.cureDuration - delta;
+    if (curedEffect.cureDuration >= 1) {
+      entity.saveComponent(curedEffect);
+    }
+ else     entity.removeComponent(CuredComponent.class);
+  }
 }
