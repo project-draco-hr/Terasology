@@ -1,0 +1,18 @@
+{
+switch (chunk.getChunkState()) {
+case AdjacencyGenerationPending:
+    checkReadyForSecondPass(chunk.getPos());
+  break;
+case InternalLightGenerationPending:
+checkReadyToDoInternalLighting(chunk.getPos());
+break;
+case LightPropagationPending:
+checkReadyToPropagateLighting(chunk.getPos());
+break;
+case FullLightConnectivityPending:
+checkComplete(chunk.getPos());
+break;
+default :
+break;
+}
+}

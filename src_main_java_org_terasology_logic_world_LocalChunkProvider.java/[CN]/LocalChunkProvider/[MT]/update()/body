@@ -3,37 +3,65 @@
     cacheRegion.update();
     if (cacheRegion.isDirty()) {
       cacheRegion.setUpToDate();
-      checkChunkStatus(cacheRegion);
+      final Region3i reviewRegion=cacheRegion.getRegion().expand(new Vector3i(1,0,1));
+      CoreRegistry.get(GameEngine.class).submitTask("Review chunk region",new Runnable(){
+        @Override public void run(){
+          for (          Vector3i chunkPos : reviewRegion) {
+            Chunk chunk=getChunk(chunkPos);
+            if (chunk == null) {
+              PerformanceMonitor.startActivity("Check chunk in cache");
+              if (farStore.contains(chunkPos) && !fetchPhase.processing(chunkPos)) {
+                fetchPhase.queue(chunkPos);
+              }
+ else               if (!generatePhase.processing(chunkPos)) {
+                generatePhase.queue(chunkPos);
+              }
+              PerformanceMonitor.endActivity();
+            }
+ else {
+              checkState(chunk);
+            }
+          }
+        }
+      }
+);
     }
   }
-  while (generatePhase.isResultAvailable()) {
+  if (fetchPhase.isResultAvailable()) {
+    Vector3i chunkPos=fetchPhase.poll();
+    for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
+      checkState(pos);
+    }
+  }
+  if (generatePhase.isResultAvailable()) {
     Vector3i chunkPos=generatePhase.poll();
     logger.log(Level.FINE,"Received generated chunk " + chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
       checkReadyForSecondPass(pos);
     }
   }
-  while (secondPassPhase.isResultAvailable()) {
+  if (secondPassPhase.isResultAvailable()) {
     Vector3i chunkPos=secondPassPhase.poll();
     logger.log(Level.FINE,"Received second passed chunk " + chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
       checkReadyToDoInternalLighting(pos);
     }
   }
-  while (internalLightingPhase.isResultAvailable()) {
+  if (internalLightingPhase.isResultAvailable()) {
     Vector3i chunkPos=internalLightingPhase.poll();
     logger.log(Level.FINE,"Received internally lit chunk " + chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
       checkReadyToPropagateLighting(pos);
     }
   }
-  while (propagateLightPhase.isResultAvailable()) {
+  if (propagateLightPhase.isResultAvailable()) {
     Vector3i chunkPos=propagateLightPhase.poll();
     logger.log(Level.FINE,"Received second passed chunk " + chunkPos);
     for (    Vector3i pos : Region3i.createFromCenterExtents(chunkPos,new Vector3i(1,0,1))) {
       checkComplete(pos);
     }
   }
+  PerformanceMonitor.startActivity("Review cache size");
   if (nearCache.size() > CACHE_SIZE) {
     logger.log(Level.INFO,"Compacting cache");
     Iterator<Vector3i> iterator=nearCache.keySet().iterator();
@@ -41,7 +69,7 @@
       Vector3i pos=iterator.next();
       boolean keep=false;
       for (      CacheRegion region : regions) {
-        if (region.getRegion().encompasses(pos)) {
+        if (region.getRegion().expand(new Vector3i(4,0,4)).encompasses(pos)) {
           keep=true;
           break;
         }
@@ -55,7 +83,6 @@
         }
       }
       if (!keep) {
-        logger.log(Level.INFO,"Caching " + pos);
         Chunk chunk=nearCache.get(pos);
         farStore.put(chunk);
         iterator.remove();
@@ -63,4 +90,5 @@
       }
     }
   }
+  PerformanceMonitor.endActivity();
 }

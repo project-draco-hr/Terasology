@@ -1,27 +1,18 @@
 {
-  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(new Vector3i(4,0,4))) {
+  for (  Vector3i chunkPos : cacheRegion.getRegion().expand(new Vector3i(1,0,1))) {
     Chunk chunk=getChunk(chunkPos);
-    if (chunk == null && !generatePhase.processing(chunkPos)) {
-      logger.log(Level.FINE,"Generating Chunk " + chunkPos);
-      generatePhase.queue(chunkPos);
+    if (chunk == null) {
+      PerformanceMonitor.startActivity("Check chunk in cache");
+      if (farStore.contains(chunkPos) && !fetchPhase.processing(chunkPos)) {
+        fetchPhase.queue(chunkPos);
+      }
+ else       if (!generatePhase.processing(chunkPos)) {
+        generatePhase.queue(chunkPos);
+      }
+      PerformanceMonitor.endActivity();
     }
- else     if (chunk != null) {
-switch (chunk.getChunkState()) {
-case AdjacencyGenerationPending:
-        checkReadyForSecondPass(chunkPos);
-      break;
-case InternalLightGenerationPending:
-    checkReadyToDoInternalLighting(chunkPos);
-  break;
-case LightPropagationPending:
-checkReadyToPropagateLighting(chunkPos);
-break;
-case FullLightConnectivityPending:
-checkComplete(chunkPos);
-break;
-default :
-break;
-}
-}
-}
+ else {
+      checkState(chunk);
+    }
+  }
 }
