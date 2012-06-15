@@ -1,19 +1,19 @@
 {
   boolean playing=isPlaying();
   if (playing) {
-    this.stop();
+    stop();
   }
-  this.reset();
+  reset();
   if (sound instanceof AbstractSound) {
-    this.audio=(AbstractSound)sound;
-    AL10.alSourcei(this.getSourceId(),AL10.AL_BUFFER,this.audio.getBufferId());
+    audio=sound;
+    AL10.alSourcei(getSourceId(),AL10.AL_BUFFER,audio.getBufferId());
     OpenALException.checkState("Assigning buffer to source");
   }
  else {
     throw new IllegalArgumentException("Unsupported sound object!");
   }
   if (playing) {
-    this.play();
+    play();
   }
   return this;
 }

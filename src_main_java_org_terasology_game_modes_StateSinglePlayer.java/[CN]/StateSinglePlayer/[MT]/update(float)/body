@@ -4,26 +4,21 @@
     PerformanceMonitor.startActivity(updater.getClass().getSimpleName());
     updater.update(delta);
   }
-  if (_worldRenderer != null && shouldUpdateWorld())   _worldRenderer.update(delta);
-  if (!screenHasFocus())   localPlayerSys.updateInput();
-  if (screenHasFocus() || !shouldUpdateWorld()) {
-    if (Mouse.isGrabbed()) {
-      Mouse.setGrabbed(false);
-      Mouse.setCursorPosition(Display.getWidth() / 2,Display.getHeight() / 2);
-    }
-  }
- else {
-    if (!Mouse.isGrabbed())     Mouse.setGrabbed(true);
+  if (worldRenderer != null && shouldUpdateWorld()) {
+    worldRenderer.update(delta);
   }
   boolean dead=true;
   for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class)) {
     dead=entity.getComponent(LocalPlayerComponent.class).isDead;
   }
   if (dead) {
-    _statusScreen.setVisible(true);
-    _statusScreen.updateStatus("Sorry! Seems like you have died. :-(");
+    if (GUIManager.getInstance().getWindowById("engine:statusScreen") == null) {
+      UIStatusScreen statusScreen=GUIManager.getInstance().addWindow(new UIStatusScreen(),"engine:statusScreen");
+      statusScreen.updateStatus("Sorry! Seems like you have died :-(");
+      statusScreen.setVisible(true);
+    }
   }
  else {
-    _statusScreen.setVisible(false);
+    GUIManager.getInstance().removeWindow("engine:statusScreen");
   }
 }

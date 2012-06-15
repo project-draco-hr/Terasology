@@ -1,0 +1,8 @@
+{
+  Set<EventHandlerInfo> result=Sets.newHashSet();
+  selectEventHandlersSpecificToType(eventType,entity,result);
+  for (  Class<? extends Event> parentEventType : parentEvents.get(eventType)) {
+    selectEventHandlersSpecificToType(parentEventType,entity,result);
+  }
+  return result;
+}

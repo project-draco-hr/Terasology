@@ -1,0 +1,13 @@
+{
+  MinionControllerComponent minionController=playerEntity.getComponent(MinionControllerComponent.class);
+  if (minionController.minionMode) {
+    EntityRef minion=getSelectedMinion(playerEntity);
+    if (minion.exists()) {
+      setTarget(minion,event.getTarget(),playerEntity);
+    }
+ else {
+      createMinion(playerEntity,event.getTarget());
+    }
+    event.consume();
+  }
+}

@@ -1,7 +1,13 @@
 {
   List<T> result=Lists.newArrayListWithCapacity(value.getStringCount());
   for (  String item : value.getStringList()) {
-    result.add(enumType.cast(Enum.valueOf(enumType,item)));
+    try {
+      Enum resultValue=Enum.valueOf(enumType,item);
+      result.add(enumType.cast(resultValue));
+    }
+ catch (    IllegalArgumentException iae) {
+      logger.log(Level.WARNING,"Unable to deserialize enum: ",iae);
+    }
   }
   return result;
 }

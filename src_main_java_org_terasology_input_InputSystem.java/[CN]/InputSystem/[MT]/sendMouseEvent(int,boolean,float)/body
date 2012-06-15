@@ -1,0 +1,18 @@
+{
+  MouseButtonEvent event;
+switch (button) {
+case -1:
+    return false;
+case 0:
+  event=(buttonDown) ? LeftMouseDownButtonEvent.create(delta,cameraTargetSystem.getTarget()) : LeftMouseUpButtonEvent.create(delta,cameraTargetSystem.getTarget());
+break;
+case 1:
+event=(buttonDown) ? RightMouseDownButtonEvent.create(delta,cameraTargetSystem.getTarget()) : RightMouseUpButtonEvent.create(delta,cameraTargetSystem.getTarget());
+break;
+default :
+event=(buttonDown) ? MouseDownButtonEvent.create(button,delta,cameraTargetSystem.getTarget()) : MouseUpButtonEvent.create(button,delta,cameraTargetSystem.getTarget());
+break;
+}
+localPlayer.getEntity().send(event);
+return event.isConsumed();
+}

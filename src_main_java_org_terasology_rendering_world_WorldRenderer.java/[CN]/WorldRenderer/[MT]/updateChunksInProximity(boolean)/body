@@ -5,8 +5,8 @@
   if (_chunkPosX != newChunkPosX || _chunkPosZ != newChunkPosZ || force || _pendingChunks) {
     if (_chunksInProximity.size() == 0 || force || _pendingChunks) {
       _chunksInProximity.clear();
-      for (int x=-(viewingDistance / 2); x < (viewingDistance / 2); x++) {
-        for (int z=-(viewingDistance / 2); z < (viewingDistance / 2); z++) {
+      for (int x=-(viewingDistance / 2); x < viewingDistance / 2; x++) {
+        for (int z=-(viewingDistance / 2); z < viewingDistance / 2; z++) {
           Chunk c=_chunkProvider.getChunk(newChunkPosX + x,0,newChunkPosZ + z);
           if (c != null && c.getChunkState() == Chunk.State.COMPLETE && _worldProvider.getWorldViewAround(c.getPos()) != null) {
             _chunksInProximity.add(c);

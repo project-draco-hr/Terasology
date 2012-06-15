@@ -6,12 +6,11 @@
   if (setTopWindow == null) {
     return;
   }
-  if (_lastFocused != null && _lastFocused.equals(setTopWindow)) {
-    return;
-  }
-  _lastFocused=_focusedWindow;
-  if (_lastFocused != null && _lastFocused.isMaximized() && setTopWindow.isMaximized()) {
-    _lastFocused.setVisible(false);
+  if (_focusedWindow != null && _focusedWindow.isVisible()) {
+    _lastFocused=_focusedWindow;
+    if (_lastFocused != null && _lastFocused.isMaximized() && setTopWindow.isMaximized()) {
+      _lastFocused.setVisible(false);
+    }
   }
   _focusedWindow=setTopWindow;
   if (!_focusedWindow.isMaximized()) {

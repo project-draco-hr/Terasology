@@ -7,6 +7,7 @@
   PersistableEntityManager entityManager=new PojoEntityManager(library,prefabManager);
   entityManager.setEventSystem(new PojoEventSystem(entityManager));
   CoreRegistry.put(EntityManager.class,entityManager);
+  CoreRegistry.put(EventSystem.class,entityManager.getEventSystem());
   registerComponents(library);
   return entityManager;
 }

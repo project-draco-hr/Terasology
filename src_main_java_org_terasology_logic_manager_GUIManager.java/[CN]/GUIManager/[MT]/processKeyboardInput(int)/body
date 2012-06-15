@@ -1,7 +1,17 @@
 {
+  checkTopWindow();
+  if (key == Keyboard.KEY_ESCAPE) {
+    if (_focusedWindow != null && _focusedWindow.isModal()) {
+      _focusedWindow.setVisible(false);
+    }
+  }
+  if (_focusedWindow != null && _focusedWindow.isModal() && _focusedWindow.isVisible()) {
+    _focusedWindow.processKeyboardInput(key);
+    return;
+  }
   List<UIDisplayElement> screens=Lists.newArrayList(_renderer.getDisplayElements());
   for (  UIDisplayElement screen : screens) {
-    if (screen.isVisible() && !screen.isOverlay()) {
+    if (!((UIDisplayWindow)screen).isModal()) {
       screen.processKeyboardInput(key);
     }
   }

@@ -2,6 +2,7 @@
   for (  ComponentSystem system : componentSystemManager.iterateAll()) {
     system.shutdown();
   }
+  GUIManager.getInstance().closeWindows();
   try {
     CoreRegistry.get(WorldPersister.class).save(new File(PathManager.getInstance().getWorldSavePath(CoreRegistry.get(WorldProvider.class).getTitle()),ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
   }

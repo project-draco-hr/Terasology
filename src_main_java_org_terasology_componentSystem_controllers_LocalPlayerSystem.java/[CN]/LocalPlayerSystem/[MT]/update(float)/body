@@ -8,14 +8,11 @@
   if (localPlayerComponent.isDead) {
     if (!checkRespawn(delta,entity,localPlayerComponent,characterMovementComponent,location,playerComponent))     return;
   }
-  updateViewDirection(localPlayerComponent,location);
   updateMovement(localPlayerComponent,characterMovementComponent,location);
   Quat4f lookRotation=new Quat4f();
   QuaternionUtil.setEuler(lookRotation,TeraMath.DEG_TO_RAD * localPlayerComponent.viewYaw,TeraMath.DEG_TO_RAD * localPlayerComponent.viewPitch,0);
   updateCamera(characterMovementComponent,location.getWorldPosition(),lookRotation);
   localPlayerComponent.handAnimation=Math.max(0,localPlayerComponent.handAnimation - 2.5f * delta);
-  entity.saveComponent(location);
   entity.saveComponent(characterMovementComponent);
   entity.saveComponent(localPlayerComponent);
-  resetInput();
 }

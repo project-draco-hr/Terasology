@@ -1,0 +1,11 @@
+{
+  LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
+  localPlayer.viewYaw=(localPlayer.viewYaw - event.getValue()) % 360;
+  entity.saveComponent(localPlayer);
+  LocationComponent loc=entity.getComponent(LocationComponent.class);
+  if (loc != null) {
+    QuaternionUtil.setEuler(loc.getLocalRotation(),TeraMath.DEG_TO_RAD * localPlayer.viewYaw,0,0);
+    entity.saveComponent(loc);
+  }
+  event.consume();
+}

@@ -1,0 +1,40 @@
+{
+  boolean debugEnabled=Config.getInstance().isDebug();
+  if (debugEnabled) {
+switch (event.getKey()) {
+case Keyboard.KEY_R:
+      worldRenderer.setWireframe(!worldRenderer.isWireframe());
+    event.consume();
+  break;
+case Keyboard.KEY_P:
+worldRenderer.setCameraMode(WorldRenderer.CAMERA_MODE.PLAYER);
+event.consume();
+break;
+case Keyboard.KEY_O:
+worldRenderer.setCameraMode(WorldRenderer.CAMERA_MODE.SPAWN);
+event.consume();
+break;
+case Keyboard.KEY_K:
+entity.send(new DamageEvent(9999,null));
+break;
+case Keyboard.KEY_H:
+GUIManager.getInstance().getWindowById("engine:hud").setVisible(!GUIManager.getInstance().getWindowById("engine:hud").isVisible());
+event.consume();
+break;
+}
+}
+switch (event.getKey()) {
+case Keyboard.KEY_F3:
+Config.getInstance().setDebug(!Config.getInstance().isDebug());
+event.consume();
+break;
+case Keyboard.KEY_F:
+toggleViewingDistance();
+event.consume();
+break;
+case Keyboard.KEY_F4:
+metrics.toggleMode();
+event.consume();
+break;
+}
+}

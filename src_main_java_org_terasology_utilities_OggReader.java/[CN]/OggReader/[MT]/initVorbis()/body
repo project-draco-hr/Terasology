@@ -5,7 +5,9 @@
   int bytes=in.read(buffer,index,4096);
   syncState.wrote(bytes);
   if (syncState.pageout(page) != 1) {
-    if (bytes < 4096)     return;
+    if (bytes < 4096) {
+      return;
+    }
     throw new Exception("Input does not appear to be an Ogg bitstream.");
   }
   streamState.init(page.serialno());
@@ -24,7 +26,9 @@
   while (i < 2) {
     while (i < 2) {
       int result=syncState.pageout(page);
-      if (result == 0)       break;
+      if (result == 0) {
+        break;
+      }
       if (result == 1) {
         streamState.pagein(page);
         while (i < 2) {
