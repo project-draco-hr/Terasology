@@ -1,0 +1,14 @@
+{
+  if (dirt.equals(event.getNewType())) {
+    blockQueue.offer(event.getBlockPosition());
+  }
+  if (dirt.equals(event.getNewType()) || air.equals(event.getNewType())) {
+    for (    Side side : Side.values()) {
+      Vector3i adjPos=new Vector3i(event.getBlockPosition());
+      adjPos.add(side.getVector3i());
+      if (dirt.equals(world.getBlock(adjPos))) {
+        blockQueue.offer(event.getBlockPosition());
+      }
+    }
+  }
+}
