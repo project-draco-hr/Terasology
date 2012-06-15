@@ -1,15 +1,35 @@
 {
   Chunk chunk=getChunk(pos);
-  if (chunk != null && chunk.getChunkState() == Chunk.State.InternalLightGenerationPending && !internalLightingPhase.processing(pos)) {
-    for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,new Vector3i(1,0,1))) {
+  if (chunk != null && chunk.getChunkState() == Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING) {
+    for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,LOCAL_REGION_EXTENTS)) {
       if (!adjPos.equals(pos)) {
         Chunk adjChunk=getChunk(adjPos);
-        if (adjChunk == null || adjChunk.getChunkState().compareTo(Chunk.State.InternalLightGenerationPending) < 0) {
+        if (adjChunk == null || adjChunk.getChunkState().compareTo(Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING) < 0) {
           return;
         }
       }
     }
-    logger.log(Level.FINE,"Queueing for adjacency generation " + pos);
-    internalLightingPhase.queue(pos);
+    logger.log(Level.FINE,"Queueing for internal light generation " + pos);
+    chunkTasksQueue.offer(new AbstractChunkTask(pos,this){
+      @Override public void enact(){
+        Chunk chunk=getProvider().getChunk(getPosition());
+        if (chunk == null) {
+          return;
+        }
+        chunk.lock();
+        try {
+          if (chunk.isDisposed() || chunk.getChunkState() != Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING) {
+            return;
+          }
+          InternalLightProcessor.generateInternalLighting(chunk);
+          chunk.setChunkState(Chunk.State.LIGHT_PROPAGATION_PENDING);
+          reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.REVIEW,Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)));
+        }
+  finally {
+          chunk.unlock();
+        }
+      }
+    }
+);
   }
 }

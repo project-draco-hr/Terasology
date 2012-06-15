@@ -2,5 +2,5 @@
   CacheRegion region=new CacheRegion(entity,distance);
   regions.remove(region);
   regions.add(region);
-  checkChunkStatus(region);
+  reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.PRODUCE,region.getRegion().expand(new Vector3i(2,0,2))));
 }
