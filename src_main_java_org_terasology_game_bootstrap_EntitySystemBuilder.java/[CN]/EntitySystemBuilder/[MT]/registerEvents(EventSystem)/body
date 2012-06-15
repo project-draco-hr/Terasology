@@ -1,0 +1,7 @@
+{
+  Reflections reflections=new Reflections("org.terasology");
+  Set<Class<? extends Event>> eventTypes=reflections.getSubTypesOf(Event.class);
+  for (  Class<? extends Event> eventType : eventTypes) {
+    eventSystem.registerEvent("engine:" + eventType.getSimpleName(),eventType);
+  }
+}

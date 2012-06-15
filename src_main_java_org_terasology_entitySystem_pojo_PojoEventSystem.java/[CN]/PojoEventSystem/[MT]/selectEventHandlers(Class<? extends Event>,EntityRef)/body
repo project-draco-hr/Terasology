@@ -1,8 +1,15 @@
 {
   Set<EventHandlerInfo> result=Sets.newHashSet();
-  selectEventHandlersSpecificToType(eventType,entity,result);
-  for (  Class<? extends Event> parentEventType : parentEvents.get(eventType)) {
-    selectEventHandlersSpecificToType(parentEventType,entity,result);
+  Multimap<Class<? extends Component>,EventHandlerInfo> handlers=componentSpecificHandlers.get(eventType);
+  if (handlers == null)   return result;
+  for (  Class<? extends Component> compClass : handlers.keySet()) {
+    if (entity.hasComponent(compClass)) {
+      for (      EventHandlerInfo eventHandler : handlers.get(compClass)) {
+        if (eventHandler.isValidFor(entity)) {
+          result.add(eventHandler);
+        }
+      }
+    }
   }
   return result;
 }

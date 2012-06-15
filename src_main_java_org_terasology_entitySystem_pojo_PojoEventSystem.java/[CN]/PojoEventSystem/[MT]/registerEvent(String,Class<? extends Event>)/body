@@ -3,15 +3,9 @@
     eventIdMap.put(name,eventType);
   }
   logger.info("Registering event " + eventType.getSimpleName());
-  Class parent=eventType.getSuperclass();
-  while (parent != null) {
-    if (Event.class.isAssignableFrom(parent) && !AbstractEvent.class.equals(parent)) {
-      logger.info("Found parent event " + parent.getSimpleName());
-      parentEvents.put(eventType,parent);
-      parent=parent.getSuperclass();
-    }
- else {
-      parent=null;
+  for (  Class parent : Reflections.getAllSuperTypes(eventType,Predicates.assignableFrom(Event.class))) {
+    if (!AbstractEvent.class.equals(parent) && !Event.class.equals(parent)) {
+      childEvents.put(parent,eventType);
     }
   }
 }
