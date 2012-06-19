@@ -27,12 +27,11 @@
     fogIntensity=TeraMath.lerpf(0.5f,0.05f,daylightFactor);
   }
   WorldRenderer renderer=CoreRegistry.get(WorldRenderer.class);
-  fogIntensity=fogIntensity + (float)TeraMath.clamp(renderer.getWorldProvider().getPerlinGenerator().noise(renderer.getWorldProvider().getTime() * 4.0,0.038291,0.874691) * 15.0 * daylight + 0.1 * daylight,0.0,15.0) + 0.05f;
+  fogIntensity+=renderer.getWorldProvider().getBiomeProvider().getFog(renderer.getWorldProvider().getTimeInDays(),daylight);
   program.setFloat("fogIntensity",fogIntensity);
   if (CoreRegistry.get(LocalPlayer.class).isValid()) {
     Vector3d cameraPos=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
-    byte blockId=CoreRegistry.get(IWorldProvider.class).getBlockAtPosition(cameraPos);
-    Block block=BlockManager.getInstance().getBlock(blockId);
+    Block block=CoreRegistry.get(WorldProvider.class).getBlock(new Vector3f(cameraPos));
     program.setInt("swimming",block.isLiquid() ? 1 : 0);
   }
 }

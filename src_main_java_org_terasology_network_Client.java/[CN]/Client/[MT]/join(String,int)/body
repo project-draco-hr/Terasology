@@ -1,0 +1,15 @@
+{
+  factory=new NioClientSocketChannelFactory(Executors.newCachedThreadPool(),Executors.newCachedThreadPool());
+  ClientBootstrap bootstrap=new ClientBootstrap(factory);
+  bootstrap.setPipelineFactory(new TerasologyClientPipelineFactory());
+  bootstrap.setOption("tcpNoDelay",true);
+  bootstrap.setOption("keepAlive",true);
+  ChannelFuture connectCheck=bootstrap.connect(new InetSocketAddress(host,port));
+  connectCheck.awaitUninterruptibly();
+  if (!connectCheck.isSuccess()) {
+    logger.log(Level.SEVERE,"Failed to connect to server",connectCheck.getCause());
+    connectCheck.getChannel().getCloseFuture().awaitUninterruptibly();
+    factory.releaseExternalResources();
+  }
+  clientChannel=connectCheck.getChannel();
+}

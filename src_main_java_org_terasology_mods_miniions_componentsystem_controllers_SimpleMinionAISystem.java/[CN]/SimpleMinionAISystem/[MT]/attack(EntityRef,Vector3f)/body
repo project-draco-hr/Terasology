@@ -1,6 +1,6 @@
 {
   int damage=1;
-  Block block=BlockManager.getInstance().getBlock(worldProvider.getBlockAtPosition(new Vector3d(position.x,position.y - 0.5f,position.z)));
+  Block block=worldProvider.getBlock(new Vector3f(position.x,position.y - 0.5f,position.z));
   if ((block.isDestructible()) && (!block.isSelectionRayThrough())) {
     EntityRef blockEntity=blockEntityRegistry.getOrCreateEntityAt(new Vector3i(position));
     if (blockEntity == EntityRef.NULL) {

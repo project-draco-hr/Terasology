@@ -1,0 +1,11 @@
+{
+  Vector3i minPos=new Vector3i(blockRegion.min());
+  minPos.sub(1,0,1);
+  Vector3i maxPos=new Vector3i(blockRegion.max());
+  maxPos.add(1,0,1);
+  Vector3i minChunk=TeraMath.calcChunkPos(minPos);
+  Vector3i maxChunk=TeraMath.calcChunkPos(maxPos);
+  for (  Vector3i pos : Region3i.createFromMinMax(minChunk,maxChunk)) {
+    chunks[pos.x + offset.x + chunkRegion.size().x * (pos.z + offset.z)].setDirty(true);
+  }
+}

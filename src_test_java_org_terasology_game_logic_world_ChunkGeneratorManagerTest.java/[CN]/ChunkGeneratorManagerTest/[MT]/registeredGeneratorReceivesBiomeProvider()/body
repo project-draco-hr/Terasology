@@ -1,0 +1,7 @@
+{
+  WorldBiomeProvider biomeProvider=mock(WorldBiomeProvider.class);
+  ChunkGeneratorManager generatorManager=new ChunkGeneratorManagerImpl(Seed,biomeProvider);
+  ChunkGenerator generator=mock(ChunkGenerator.class);
+  generatorManager.registerChunkGenerator(generator);
+  verify(generator).setWorldBiomeProvider(biomeProvider);
+}

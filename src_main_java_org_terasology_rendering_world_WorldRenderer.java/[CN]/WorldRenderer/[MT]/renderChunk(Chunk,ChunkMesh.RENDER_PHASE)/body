@@ -1,0 +1,24 @@
+{
+  if (chunk.getChunkState() == Chunk.State.COMPLETE && chunk.getMesh() != null) {
+    ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("chunk");
+    shader.setFloat3("chunkOffset",(float)(chunk.getPos().x * Chunk.SIZE_X),(float)(chunk.getPos().y * Chunk.SIZE_Y),(float)(chunk.getPos().z * Chunk.SIZE_Z));
+    GL11.glPushMatrix();
+    Vector3d cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+    GL11.glTranslated(chunk.getPos().x * Chunk.SIZE_X - cameraPosition.x,chunk.getPos().y * Chunk.SIZE_Y - cameraPosition.y,chunk.getPos().z * Chunk.SIZE_Z - cameraPosition.z);
+    for (int i=0; i < VERTICAL_SEGMENTS; i++) {
+      if (!chunk.getMesh()[i].isEmpty()) {
+        if (Config.getInstance().isRenderChunkBoundingBoxes()) {
+          chunk.getSubMeshAABB(i).renderLocally(1f);
+          _statRenderedTriangles+=12;
+        }
+        shader.enable();
+        chunk.getMesh()[i].render(phase);
+        _statRenderedTriangles+=chunk.getMesh()[i].triangleCount();
+      }
+    }
+    GL11.glPopMatrix();
+  }
+ else {
+    _statChunkNotReady++;
+  }
+}

@@ -3,7 +3,7 @@
   Vector3f playerPos=localPlayer.getPosition();
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("block");
   shader.enable();
-  Vector4f color=activeBlock.calcColorOffsetFor(Side.FRONT,worldProvider.getTemperatureAt(TeraMath.floorToInt(playerPos.x),TeraMath.floorToInt(playerPos.z)),worldProvider.getHumidityAt(TeraMath.floorToInt(playerPos.x),TeraMath.floorToInt(playerPos.z)));
+  Vector4f color=activeBlock.calcColorOffsetFor(Side.FRONT,worldProvider.getBiomeProvider().getTemperatureAt(TeraMath.floorToInt(playerPos.x),TeraMath.floorToInt(playerPos.z)),worldProvider.getBiomeProvider().getHumidityAt(TeraMath.floorToInt(playerPos.x),TeraMath.floorToInt(playerPos.z)));
   shader.setFloat3("colorOffset",color.x,color.y,color.z);
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);

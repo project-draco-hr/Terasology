@@ -1,0 +1,10 @@
+{
+  for (int i=0; i < Chunk.SIZE_Y; ++i) {
+    view.setSunlight(0,i,0,Chunk.MAX_LIGHT);
+  }
+  propagator.propagateOutOfTargetChunk();
+  for (  Vector3i pos : Region3i.createFromMinMax(WORLD_MIN,new Vector3i(-1,WORLD_MAX.y,WORLD_MAX.z))) {
+    byte expected=(byte)Math.max(0,Chunk.MAX_LIGHT - TeraMath.fastAbs(pos.x) - TeraMath.fastAbs(pos.z));
+    assertEquals(pos.toString(),expected,view.getSunlight(pos));
+  }
+}

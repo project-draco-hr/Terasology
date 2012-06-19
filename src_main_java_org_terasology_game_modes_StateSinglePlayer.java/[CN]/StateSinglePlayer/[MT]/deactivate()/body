@@ -1,11 +1,14 @@
 {
+  for (  ComponentSystem system : componentSystemManager.iterateAll()) {
+    system.shutdown();
+  }
   GUIManager.getInstance().closeWindows();
   try {
-    CoreRegistry.get(WorldPersister.class).save(new File(PathManager.getInstance().getWorldSavePath(getActiveWorldProvider().getTitle()),ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
+    CoreRegistry.get(WorldPersister.class).save(new File(PathManager.getInstance().getWorldSavePath(CoreRegistry.get(WorldProvider.class).getTitle()),ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
   }
  catch (  IOException e) {
-    _logger.log(Level.SEVERE,"Failed to save entities",e);
+    logger.log(Level.SEVERE,"Failed to save entities",e);
   }
   dispose();
-  _entityManager.clear();
+  entityManager.clear();
 }

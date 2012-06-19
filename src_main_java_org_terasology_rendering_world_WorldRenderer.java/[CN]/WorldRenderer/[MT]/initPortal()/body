@@ -2,7 +2,14 @@
   if (!_portalManager.hasPortal()) {
     Vector3d loc=new Vector3d(getPlayerPosition().x,getPlayerPosition().y + 4,getPlayerPosition().z);
     _logger.log(Level.INFO,"Portal location is" + loc);
-    _worldProvider.setBlock((int)loc.x - 1,(int)loc.y,(int)loc.z,BlockManager.getInstance().getBlock("PortalBlock").getId(),false,true);
+    Vector3i pos=new Vector3i((int)loc.x - 1,(int)loc.y,(int)loc.z);
+    while (true) {
+      Block oldBlock=_worldProvider.getBlock(pos);
+      if (_worldProvider.setBlock(pos,BlockManager.getInstance().getBlock("PortalBlock"),oldBlock)) {
+        break;
+      }
+      return;
+    }
     _portalManager.addPortal(loc);
   }
 }

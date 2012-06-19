@@ -8,8 +8,8 @@
         blockPosX=(int)(pos.x + (pos.x >= 0 ? 0.5f : -0.5f)) + x;
         blockPosY=(int)(pos.y + (pos.y >= 0 ? 0.5f : -0.5f)) + y;
         blockPosZ=(int)(pos.z + (pos.z >= 0 ? 0.5f : -0.5f)) + z;
-        byte blockType=worldProvider.getBlock(blockPosX,blockPosY,blockPosZ);
-        if (BlockManager.getInstance().getBlock(blockType).isSelectionRayThrough()) {
+        Block block=worldProvider.getBlock(blockPosX,blockPosY,blockPosZ);
+        if (block.isSelectionRayThrough()) {
           continue;
         }
         List<RayBlockIntersection.Intersection> iss=RayBlockIntersection.executeIntersection(worldProvider,blockPosX,blockPosY,blockPosZ,playerCamera.getPosition(),playerCamera.getViewingDirection());

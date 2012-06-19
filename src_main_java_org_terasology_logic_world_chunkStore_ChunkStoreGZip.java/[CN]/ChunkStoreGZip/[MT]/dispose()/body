@@ -1,0 +1,10 @@
+{
+  running.set(false);
+  compressionThreads.shutdown();
+  try {
+    compressionThreads.awaitTermination(30,TimeUnit.SECONDS);
+  }
+ catch (  InterruptedException e) {
+    logger.log(Level.SEVERE,"Interrupted while awaiting thread disposal");
+  }
+}
