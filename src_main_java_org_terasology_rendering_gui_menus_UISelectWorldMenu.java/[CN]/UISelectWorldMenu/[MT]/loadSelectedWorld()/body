@@ -1,10 +1,10 @@
 {
   if (_list.size() < 1) {
-    GUIManager.getInstance().showMessage("Loading error","You haven't worlds. Please create new.");
+    GUIManager.getInstance().showMessage("Error","You did not create a world yet!");
     return;
   }
   if (_list.getSelectedItem() == null) {
-    GUIManager.getInstance().showMessage("Loading error","Please choose the world.");
+    GUIManager.getInstance().showMessage("Error","Please choose a world!");
     return;
   }
   try {
@@ -14,6 +14,6 @@
     CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(info.getTitle(),info.getSeed()));
   }
  catch (  Exception e) {
-    GUIManager.getInstance().showMessage("Loading error","Failed reading world data object. Sorry.");
+    GUIManager.getInstance().showMessage("Error","Failed reading world data object. Sorry.");
   }
 }
