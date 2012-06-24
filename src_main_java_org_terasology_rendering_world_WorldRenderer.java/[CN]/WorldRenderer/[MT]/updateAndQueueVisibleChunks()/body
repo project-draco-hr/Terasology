@@ -10,8 +10,10 @@
  else       _statIgnoredPhases++;
       if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.WATER_AND_ICE) > 0)       _renderQueueChunksSortedWater.add(c);
  else       _statIgnoredPhases++;
-      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0)       _renderQueueChunksSortedBillboards.add(c);
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0 && i < MAX_BILLBOARD_CHUNKS)       _renderQueueChunksSortedBillboards.add(c);
  else       _statIgnoredPhases++;
+      if (i < MAX_ANIMATED_CHUNKS)       c.setAnimated(true);
+ else       c.setAnimated(false);
       if (c.getPendingMesh() != null) {
         for (int j=0; j < c.getPendingMesh().length; j++) {
           c.getPendingMesh()[j].generateVBOs();

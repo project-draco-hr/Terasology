@@ -1,13 +1,4 @@
 {
-  if (_cloudByteBuffer == null && _timer.getTimeInMs() - _lastCloudUpdate >= CLOUD_UPDATE_INTERVAL) {
-    _lastCloudUpdate=_timer.getTimeInMs();
-    CoreRegistry.get(GameEngine.class).submitTask("Generate Clouds",new Runnable(){
-      public void run(){
-        generateNewClouds();
-      }
-    }
-);
-  }
   FloatBuffer buffer=BufferUtils.createFloatBuffer(4);
   buffer.put(0.0f).put((float)java.lang.Math.cos(_sunPosAngle)).put((float)java.lang.Math.sin(_sunPosAngle)).put(1.0f);
   buffer.flip();
