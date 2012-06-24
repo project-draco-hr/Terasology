@@ -9,7 +9,7 @@
   rot.setIdentity();
   DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,position,1.0f)));
   Vector3f fallInertia=new Vector3f();
-  shape.calculateLocalInertia(block.getMass(),fallInertia);
+  shape.calculateLocalInertia(10 * block.getMass(),fallInertia);
   RigidBodyConstructionInfo blockCI=new RigidBodyConstructionInfo(block.getMass(),blockMotionState,shape,fallInertia);
   BlockRigidBody rigidBlock=new BlockRigidBody(blockCI,type);
   rigidBlock.setRestitution(0.0f);

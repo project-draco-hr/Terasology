@@ -1,0 +1,32 @@
+{
+  if (collisionShape.getShapeType() == BroadphaseNativeType.INVALID_SHAPE_PROXYTYPE) {
+    WorldShape worldShape=(WorldShape)collisionShape;
+    Vector3f minAABB1=new Vector3f();
+    Vector3f maxAABB1=new Vector3f();
+    Vector3f minAABB2=new Vector3f();
+    Vector3f maxAABB2=new Vector3f();
+    castShape.getAabb(convexFromTrans,minAABB1,maxAABB1);
+    castShape.getAabb(convexToTrans,minAABB2,maxAABB2);
+    minAABB1.x=Math.min(minAABB1.x,minAABB2.x);
+    minAABB1.y=Math.min(minAABB1.y,minAABB2.y);
+    minAABB1.z=Math.min(minAABB1.z,minAABB2.z);
+    maxAABB1.x=Math.max(maxAABB1.x,maxAABB2.x);
+    maxAABB1.y=Math.max(maxAABB1.y,maxAABB2.y);
+    maxAABB1.z=Math.max(maxAABB1.z,maxAABB2.z);
+    Region3i region=Region3i.createFromMinMax(new Vector3i(minAABB1,0.5f),new Vector3i(maxAABB1,0.5f));
+    Matrix3f rot=new Matrix3f();
+    rot.setIdentity();
+    for (    Vector3i pos : region) {
+      if (worldShape.getWorld().getBlock(pos).isPenetrable())       continue;
+      Transform childTrans=new Transform(new Matrix4f(rot,pos.toVector3f(),1.0f));
+      CollisionShape childCollisionShape=defaultBox;
+      CollisionShape saveCollisionShape=collisionObject.getCollisionShape();
+      collisionObject.internalSetTemporaryCollisionShape(childCollisionShape);
+      objectQuerySingle(castShape,convexFromTrans,convexToTrans,collisionObject,childCollisionShape,childTrans,resultCallback,allowedPenetration);
+      collisionObject.internalSetTemporaryCollisionShape(saveCollisionShape);
+    }
+  }
+ else {
+    objectQuerySingle(castShape,convexFromTrans,convexToTrans,collisionObject,collisionShape,colObjWorldTransform,resultCallback,allowedPenetration);
+  }
+}

@@ -1,0 +1,35 @@
+{
+  if ((proxyType0 == SPHERE_SHAPE_PROXYTYPE) && (proxyType1 == SPHERE_SHAPE_PROXYTYPE)) {
+    return sphereSphereCF;
+  }
+  if (proxyType0 == INVALID_SHAPE_PROXYTYPE) {
+    return worldCreateFunc;
+  }
+ else   if (proxyType1 == INVALID_SHAPE_PROXYTYPE) {
+    return swappedWorldCreateFunc;
+  }
+  if (proxyType0.isConvex() && (proxyType1 == STATIC_PLANE_PROXYTYPE)) {
+    return convexPlaneCF;
+  }
+  if (proxyType1.isConvex() && (proxyType0 == STATIC_PLANE_PROXYTYPE)) {
+    return planeConvexCF;
+  }
+  if (proxyType0.isConvex() && proxyType1.isConvex()) {
+    return convexConvexCreateFunc;
+  }
+  if (proxyType0.isConvex() && proxyType1.isConcave()) {
+    return convexConcaveCreateFunc;
+  }
+  if (proxyType1.isConvex() && proxyType0.isConcave()) {
+    return swappedConvexConcaveCreateFunc;
+  }
+  if (proxyType0.isCompound()) {
+    return compoundCreateFunc;
+  }
+ else {
+    if (proxyType1.isCompound()) {
+      return swappedCompoundCreateFunc;
+    }
+  }
+  return emptyCreateFunc;
+}

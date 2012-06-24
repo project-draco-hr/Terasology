@@ -1,0 +1,34 @@
+{
+  Transform convexFromTrans=Stack.alloc(Transform.class);
+  Transform convexToTrans=Stack.alloc(Transform.class);
+  convexFromTrans.set(convexFromWorld);
+  convexToTrans.set(convexToWorld);
+  Vector3f castShapeAabbMin=Stack.alloc(Vector3f.class);
+  Vector3f castShapeAabbMax=Stack.alloc(Vector3f.class);
+{
+    Vector3f linVel=Stack.alloc(Vector3f.class);
+    Vector3f angVel=Stack.alloc(Vector3f.class);
+    TransformUtil.calculateVelocity(convexFromTrans,convexToTrans,1f,linVel,angVel);
+    Transform R=Stack.alloc(Transform.class);
+    R.setIdentity();
+    R.setRotation(convexFromTrans.getRotation(Stack.alloc(Quat4f.class)));
+    castShape.calculateTemporalAabb(R,linVel,angVel,1f,castShapeAabbMin,castShapeAabbMax);
+  }
+  Transform tmpTrans=Stack.alloc(Transform.class);
+  Vector3f collisionObjectAabbMin=Stack.alloc(Vector3f.class);
+  Vector3f collisionObjectAabbMax=Stack.alloc(Vector3f.class);
+  float[] hitLambda=new float[1];
+  for (int i=0; i < collisionObjects.size(); i++) {
+    CollisionObject collisionObject=collisionObjects.getQuick(i);
+    if (resultCallback.needsCollision(collisionObject.getBroadphaseHandle())) {
+      collisionObject.getWorldTransform(tmpTrans);
+      collisionObject.getCollisionShape().getAabb(tmpTrans,collisionObjectAabbMin,collisionObjectAabbMax);
+      AabbUtil2.aabbExpand(collisionObjectAabbMin,collisionObjectAabbMax,castShapeAabbMin,castShapeAabbMax);
+      hitLambda[0]=1f;
+      Vector3f hitNormal=Stack.alloc(Vector3f.class);
+      if (AabbUtil2.rayAabb(convexFromWorld.origin,convexToWorld.origin,collisionObjectAabbMin,collisionObjectAabbMax,hitLambda,hitNormal)) {
+        objectQuerySingleExtended(castShape,convexFromTrans,convexToTrans,collisionObject,collisionObject.getCollisionShape(),tmpTrans,resultCallback,getDispatchInfo().allowedCcdPenetration);
+      }
+    }
+  }
+}

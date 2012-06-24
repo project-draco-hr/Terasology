@@ -1,0 +1,51 @@
+{
+  PerformanceMonitor.startActivity("World Process Collision");
+  CollisionObject colObj=isSwapped ? body1 : body0;
+  CollisionObject otherObj=isSwapped ? body0 : body1;
+  assert(colObj.getCollisionShape().getShapeType() == BroadphaseNativeType.INVALID_SHAPE_PROXYTYPE);
+  WorldShape worldShape=(WorldShape)colObj.getCollisionShape();
+  Transform otherObjTransform=new Transform();
+  otherObj.getWorldTransform(otherObjTransform);
+  Vector3f aabbMin=Stack.alloc(Vector3f.class);
+  Vector3f aabbMax=Stack.alloc(Vector3f.class);
+  otherObj.getCollisionShape().getAabb(otherObjTransform,aabbMin,aabbMax);
+  Matrix4f otherObjMatrix=new Matrix4f();
+  otherObjTransform.getMatrix(otherObjMatrix);
+  Vector3f otherObjPos=new Vector3f();
+  otherObjMatrix.get(otherObjPos);
+  Region3i region=Region3i.createFromMinMax(new Vector3i(aabbMin,0.f),new Vector3i(aabbMax,1.f));
+  Transform orgTrans=Stack.alloc(Transform.class);
+  colObj.getWorldTransform(orgTrans);
+  Transform newChildWorldTrans=Stack.alloc(Transform.class);
+  Matrix4f childMat=Stack.alloc(Matrix4f.class);
+  Matrix3f rot=Stack.alloc(Matrix3f.class);
+  rot.setIdentity();
+  for (  Vector3i blockPos : region) {
+    Block block=worldShape.getWorld().getBlock(blockPos);
+    if (block.isPenetrable()) {
+      CollisionAlgorithm alg=collisionAlgMap.remove(blockPos);
+      if (alg != null) {
+        dispatcher.freeCollisionAlgorithm(alg);
+      }
+    }
+ else {
+      CollisionShape childShape=defaultBox;
+      colObj.internalSetTemporaryCollisionShape(childShape);
+      CollisionAlgorithm alg=collisionAlgMap.get(blockPos);
+      if (alg == null) {
+        alg=dispatcher.findAlgorithm(colObj,otherObj);
+        collisionAlgMap.put(blockPos,alg);
+      }
+      childMat.set(rot,blockPos.toVector3f(),1.0f);
+      newChildWorldTrans.set(childMat);
+      colObj.setWorldTransform(newChildWorldTrans);
+      colObj.setInterpolationWorldTransform(newChildWorldTrans);
+      colObj.setUserPointer(blockPos);
+      alg.processCollision(colObj,otherObj,dispatchInfo,resultOut);
+    }
+  }
+  colObj.internalSetTemporaryCollisionShape(worldShape);
+  colObj.setWorldTransform(orgTrans);
+  colObj.setInterpolationWorldTransform(orgTrans);
+  PerformanceMonitor.endActivity();
+}
