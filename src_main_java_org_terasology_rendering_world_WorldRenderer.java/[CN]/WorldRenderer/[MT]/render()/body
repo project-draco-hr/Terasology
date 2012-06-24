@@ -10,10 +10,9 @@
   if (Config.getInstance().isDebugCollision()) {
     renderDebugCollision();
   }
-  ;
   glEnable(GL_LIGHT0);
-  boolean headUnderWater=false;
-  headUnderWater=_cameraMode == CAMERA_MODE.PLAYER && isUnderwater(new Vector3f(getActiveCamera().getPosition()));
+  boolean headUnderWater;
+  headUnderWater=_cameraMode == CAMERA_MODE.PLAYER && isUnderwater();
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("RenderOpaque");
   for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
