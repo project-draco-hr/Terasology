@@ -8,7 +8,8 @@
       byte aboveLight=worldView.getSunlight(x + region.min().x,y + 1,z + region.min().z);
       if (aboveLight == Chunk.MAX_LIGHT) {
         for (; y >= 0; y--) {
-          if (worldView.getBlock(x + region.min().x,y,z + region.min().z).isTranslucent()) {
+          Block block=worldView.getBlock(x + region.min().x,y,z + region.min().z);
+          if (sunlightRetainsFullStrengthIn(block)) {
             worldView.setSunlight(x + region.min().x,y,z + region.min().z,Chunk.MAX_LIGHT);
           }
  else {

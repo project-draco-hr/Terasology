@@ -19,7 +19,7 @@
     chunkStore=new ChunkStoreGZip();
   }
   _chunkProvider=new LocalChunkProvider(chunkStore,generatorManager);
-  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(title,seed,_chunkProvider));
+  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(title,seed,time,_chunkProvider));
   CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
   CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
   _worldProvider=new WorldProviderWrapper(entityWorldProvider);

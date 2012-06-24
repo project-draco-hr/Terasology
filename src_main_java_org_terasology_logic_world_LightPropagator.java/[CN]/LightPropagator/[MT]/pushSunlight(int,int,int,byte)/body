@@ -3,9 +3,15 @@
   Collection<Vector3i> nextWave=Lists.newArrayList();
   nextWave.add(new Vector3i(x,y,z));
   if (lightLevel == Chunk.MAX_LIGHT && worldView.getSunlight(x,y - 1,z) < Chunk.MAX_LIGHT) {
-    for (int columnY=y - 1; columnY >= 0 && worldView.getBlock(x,columnY,z).isTranslucent(); columnY--) {
-      worldView.setSunlight(x,columnY,z,lightLevel);
-      nextWave.add(new Vector3i(x,columnY,z));
+    for (int columnY=y - 1; columnY >= 0; columnY--) {
+      Block block=worldView.getBlock(x,columnY,z);
+      if (sunlightRetainsFullStrengthIn(block)) {
+        worldView.setSunlight(x,columnY,z,lightLevel);
+        nextWave.add(new Vector3i(x,columnY,z));
+      }
+ else {
+        break;
+      }
     }
   }
   Region3i affectedRegion=Region3i.createFromMinAndSize(new Vector3i(x,y,z),Vector3i.one());
