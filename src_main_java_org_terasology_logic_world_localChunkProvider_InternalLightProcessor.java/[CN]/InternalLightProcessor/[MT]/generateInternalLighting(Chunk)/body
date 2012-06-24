@@ -1,6 +1,7 @@
 {
   int top=Chunk.SIZE_Y - 1;
   short[] tops=new short[Chunk.SIZE_X * Chunk.SIZE_Z];
+  short[] partLit=new short[Chunk.SIZE_X * Chunk.SIZE_Z];
   for (int x=0; x < Chunk.SIZE_X; x++) {
     for (int z=0; z < Chunk.SIZE_Z; z++) {
       int y=top;
@@ -18,6 +19,7 @@
   }
   for (int x=0; x < Chunk.SIZE_X; x++) {
     for (int z=0; z < Chunk.SIZE_Z; z++) {
+      spreadSunlightInternal(chunk,x,tops[x + Chunk.SIZE_X * z] + 1,z);
       for (int y=top; y >= 0; y--) {
         Block block=chunk.getBlock(x,y,z);
         if (y > tops[x + Chunk.SIZE_X * z] && ((x > 0 && tops[(x - 1) + Chunk.SIZE_X * z] >= y) || (x < Chunk.SIZE_X - 1 && tops[(x + 1) + Chunk.SIZE_X * z] >= y) || (z > 0 && tops[x + Chunk.SIZE_X * (z - 1)] >= y)|| (z < Chunk.SIZE_Z - 1 && tops[x + Chunk.SIZE_X * (z + 1)] >= y))) {

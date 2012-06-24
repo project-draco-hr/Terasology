@@ -34,16 +34,18 @@
             }
           }
         }
-        if (pos.y > 0) {
-          Vector3i adjPos=new Vector3i(pos.x,pos.y - 1,pos.z);
-          Block block=worldView.getBlock(adjPos);
-          if (block.isTranslucent()) {
-            byte adjLight=worldView.getSunlight(adjPos);
-            if (adjLight < lightLevel - 1) {
-              worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
-              nextWave.add(adjPos);
-              affectedRegion=affectedRegion.expandToContain(adjPos);
-            }
+      }
+    }
+    for (    Vector3i pos : currentWave) {
+      if (pos.y > 0) {
+        Vector3i adjPos=new Vector3i(pos.x,pos.y - 1,pos.z);
+        Block block=worldView.getBlock(adjPos);
+        if (block.isTranslucent()) {
+          byte adjLight=worldView.getSunlight(adjPos);
+          if (adjLight < lightLevel - 1) {
+            worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
+            nextWave.add(adjPos);
+            affectedRegion=affectedRegion.expandToContain(adjPos);
           }
         }
       }
