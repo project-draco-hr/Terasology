@@ -1,8 +1,7 @@
 {
-  byte oldValue=_blocks.get(x,y,z);
-  _blocks.set(x,y,z,type);
-  if (oldValue != type) {
-    setDirty(true);
-    markNeighborsDirty(x,z);
+  byte oldValue=blocks.set(x,y,z,blockId);
+  if (oldValue != blockId) {
+    return true;
   }
+  return false;
 }

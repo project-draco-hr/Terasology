@@ -2,13 +2,18 @@
   int newChunkPosX=calcCamChunkOffsetX();
   int newChunkPosZ=calcCamChunkOffsetZ();
   int viewingDistance=Config.getInstance().getActiveViewingDistance();
-  if (_chunkPosX != newChunkPosX || _chunkPosZ != newChunkPosZ || force) {
-    if (_chunksInProximity.size() == 0 || force) {
+  if (_chunkPosX != newChunkPosX || _chunkPosZ != newChunkPosZ || force || _pendingChunks) {
+    if (_chunksInProximity.size() == 0 || force || _pendingChunks) {
       _chunksInProximity.clear();
       for (int x=-(viewingDistance / 2); x < viewingDistance / 2; x++) {
         for (int z=-(viewingDistance / 2); z < viewingDistance / 2; z++) {
-          Chunk c=_worldProvider.getChunkProvider().getChunk(newChunkPosX + x,0,newChunkPosZ + z);
-          _chunksInProximity.add(c);
+          Chunk c=_chunkProvider.getChunk(newChunkPosX + x,0,newChunkPosZ + z);
+          if (c != null && c.getChunkState() == Chunk.State.COMPLETE && _worldProvider.getWorldViewAround(c.getPos()) != null) {
+            _chunksInProximity.add(c);
+          }
+ else {
+            _pendingChunks=true;
+          }
         }
       }
     }
@@ -20,7 +25,7 @@
       for (      Rect2i r : removeRects) {
         for (int x=r.minX(); x < r.maxX(); ++x) {
           for (int y=r.minY(); y < r.maxY(); ++y) {
-            Chunk c=_worldProvider.getChunkProvider().getChunk(x,0,y);
+            Chunk c=_chunkProvider.getChunk(x,0,y);
             _chunksInProximity.remove(c);
           }
         }
@@ -29,15 +34,20 @@
       for (      Rect2i r : addRects) {
         for (int x=r.minX(); x < r.maxX(); ++x) {
           for (int y=r.minY(); y < r.maxY(); ++y) {
-            Chunk c=_worldProvider.getChunkProvider().getChunk(x,0,y);
-            _chunksInProximity.add(c);
+            Chunk c=_chunkProvider.getChunk(x,0,y);
+            if (c != null && c.getChunkState() == Chunk.State.COMPLETE && _worldProvider.getWorldViewAround(c.getPos()) != null) {
+              _chunksInProximity.add(c);
+            }
+ else {
+              _pendingChunks=true;
+            }
           }
         }
       }
     }
     _chunkPosX=newChunkPosX;
     _chunkPosZ=newChunkPosZ;
-    Sorting.smoothSort(_chunksInProximity);
+    Collections.sort(_chunksInProximity,new ChunkProximityComparator());
     return true;
   }
   return false;

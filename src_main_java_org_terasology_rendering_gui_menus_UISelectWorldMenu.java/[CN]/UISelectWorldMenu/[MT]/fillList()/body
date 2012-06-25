@@ -1,6 +1,5 @@
 {
   _list.removeAll();
-  ConfigObject config=null;
   File worldCatalog=PathManager.getInstance().getWorldPath();
   for (  File file : worldCatalog.listFiles(new FileFilter(){
     public boolean accept(    File file){
@@ -13,15 +12,15 @@
     }
   }
 )) {
-    File worldManifest=new File(file,"WorldManifest.groovy");
+    File worldManifest=new File(file,WorldInfo.DEFAULT_FILE_NAME);
     if (!worldManifest.exists())     continue;
     try {
-      config=new ConfigSlurper().parse(worldManifest.toURI().toURL());
-      if (config.get("worldTitle") != null && config.get("worldSeed") != null) {
-        _list.addItem((String)config.get("worldTitle"),config);
+      WorldInfo info=WorldInfo.load(worldManifest);
+      if (!info.getTitle().isEmpty()) {
+        _list.addItem(info.getTitle(),info);
       }
     }
- catch (    MalformedURLException e) {
+ catch (    IOException e) {
       logger.log(Level.SEVERE,"Failed reading world data object. Sorry.",e);
     }
   }

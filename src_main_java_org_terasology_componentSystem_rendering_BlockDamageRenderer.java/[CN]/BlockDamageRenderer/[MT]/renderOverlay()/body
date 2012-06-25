@@ -9,7 +9,7 @@
     HealthComponent health=entity.getComponent(HealthComponent.class);
     if (health.currentHealth == health.maxHealth)     continue;
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
-    if (!worldProvider.isChunkAvailableAt(blockComp.getPosition()))     continue;
+    if (!worldProvider.isBlockActive(blockComp.getPosition()))     continue;
     glPushMatrix();
     glTranslated(blockComp.getPosition().x - cameraPosition.x,blockComp.getPosition().y - cameraPosition.y,blockComp.getPosition().z - cameraPosition.z);
     float offset=java.lang.Math.round((1.0f - (float)health.currentHealth / health.maxHealth) * 10.0f) * 0.0625f;

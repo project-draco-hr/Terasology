@@ -1,0 +1,12 @@
+{
+  List<Vector3i> mins=Arrays.asList(new Vector3i(),new Vector3i(1,1,1),new Vector3i(3,4,5));
+  List<Vector3i> expectedSize=Arrays.asList(new Vector3i(1,1,1),new Vector3i(3,3,3),new Vector3i(8,5,2));
+  List<Vector3i> max=Arrays.asList(new Vector3i(),new Vector3i(3,3,3),new Vector3i(10,8,6));
+  for (int i=0; i < mins.size(); ++i) {
+    Region3i region=Region3i.createFromMinMax(mins.get(i),max.get(i));
+    assertEquals(mins.get(i),region.min());
+    assertEquals(max.get(i),region.max());
+    assertEquals(expectedSize.get(i),region.size());
+    assertFalse(region.isEmpty());
+  }
+}

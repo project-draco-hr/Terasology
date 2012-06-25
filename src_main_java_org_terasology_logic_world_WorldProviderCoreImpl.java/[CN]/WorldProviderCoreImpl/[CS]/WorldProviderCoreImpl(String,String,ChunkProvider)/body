@@ -1,0 +1,16 @@
+{
+  if (seed == null || seed.isEmpty()) {
+    throw new IllegalArgumentException("No seed provided.");
+  }
+  if (title == null) {
+    title=seed;
+  }
+  this.title=title;
+  this.seed=seed;
+  this.biomeProvider=new WorldBiomeProviderImpl(seed);
+  this.chunkProvider=chunkProvider;
+  Timer timer=CoreRegistry.get(Timer.class);
+  if (timer != null) {
+    timeOffset=-timer.getTimeInMs() + Config.getInstance().getInitialTimeOffsetInMs();
+  }
+}

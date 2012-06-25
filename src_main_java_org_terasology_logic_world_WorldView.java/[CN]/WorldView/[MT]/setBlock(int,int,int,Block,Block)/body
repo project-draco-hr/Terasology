@@ -1,0 +1,7 @@
+{
+  if (!blockRegion.encompasses(blockX,blockY,blockZ)) {
+    return false;
+  }
+  int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
+  return chunks[chunkIndex].setBlock(blockX & 0xf,blockY,blockZ & 0xf,type,oldType);
+}

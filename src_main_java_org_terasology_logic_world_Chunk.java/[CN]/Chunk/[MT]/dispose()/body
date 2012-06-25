@@ -1,22 +1,13 @@
 {
-  _lock.lock();
-  try {
-    if (_disposed) {
-      return;
-    }
-    if (_activeMeshes != null)     for (    ChunkMesh _activeMeshe : _activeMeshes) {
-      _activeMeshe.dispose();
-    }
-    if (_newMeshes != null) {
-      for (      ChunkMesh _newMeshe : _newMeshes) {
-        _newMeshe.dispose();
-      }
-    }
-    _disposed=true;
-    _activeMeshes=null;
-    _newMeshes=null;
+  disposed=true;
+  if (rigidBody != null) {
+    rigidBody.destroy();
+    rigidBody=null;
   }
-  finally {
-    _lock.unlock();
+  if (mesh != null) {
+    for (    ChunkMesh chunkMesh : mesh) {
+      chunkMesh.dispose();
+    }
+    mesh=null;
   }
 }

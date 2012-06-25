@@ -1,28 +1,28 @@
 {
-  updateClouds();
   glDisable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
   glEnable(GL13.GL_TEXTURE_CUBE_MAP);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0);
   GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP,_textureIds.get(0));
-  _sunPosAngle=(float)java.lang.Math.toRadians(360.0 * _parent.getWorldProvider().getTime() - 90.0);
+  GL13.glActiveTexture(GL13.GL_TEXTURE1);
+  GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP,_textureIds.get(1));
+  _sunPosAngle=(float)java.lang.Math.toRadians(360.0 * _parent.getWorldProvider().getTimeInDays() - 90.0);
   Vector4d sunNormalise=new Vector4d(0.0f,java.lang.Math.cos(_sunPosAngle),java.lang.Math.sin(_sunPosAngle),1.0);
   sunNormalise.normalize();
   Vector3d zenithColor=new Vector3d();
   if (sunNormalise.y >= -0.35)   zenithColor=getAllWeatherZenith((float)sunNormalise.y);
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("sky");
   shader.enable();
+  shader.setInt("texCubeStars",0);
+  shader.setInt("texCubeSky",1);
   shader.setFloat4("sunPos",0.0f,(float)java.lang.Math.cos(_sunPosAngle),(float)java.lang.Math.sin(_sunPosAngle),1.0f);
-  shader.setFloat("time",(float)_parent.getWorldProvider().getTime());
+  shader.setFloat("time",_parent.getWorldProvider().getTimeInDays());
   shader.setFloat("sunAngle",(float)_sunPosAngle);
   shader.setFloat("turbidity",(float)_turbidity);
   shader.setFloat3("zenith",(float)zenithColor.x,(float)zenithColor.y,(float)zenithColor.z);
+  shader.setFloat("daylight",(float)getDaylight());
   drawSphere();
   glDisable(GL13.GL_TEXTURE_CUBE_MAP);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  ShaderManager.getInstance().enableShader("clouds");
-  int lightClouds=GL20.glGetUniformLocation(ShaderManager.getInstance().getShaderProgram("clouds").getShaderId(),"light");
-  GL20.glUniform1f(lightClouds,(float)getDaylight());
-  drawClouds();
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
 }

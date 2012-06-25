@@ -4,7 +4,7 @@
   int counter=0;
   for (int x=-128; x < 128; x++) {
     for (int z=-128; z < 128; z++) {
-      BIOME_TYPE bt=calcBiomeTypeForGlobalPosition(x * ZOOM_FACTOR + (int)POSITION.x,z * ZOOM_FACTOR + (int)POSITION.y);
+      WorldBiomeProvider.Biome bt=biomeProvider.getBiomeAt(x * ZOOM_FACTOR + (int)POSITION.x,z * ZOOM_FACTOR + (int)POSITION.y);
       Color color=Color.BLACK;
 switch (bt) {
 case PLAINS:
@@ -24,7 +24,7 @@ color=new Color(0,25,0);
 break;
 }
 for (int height=256; height > 0; height-=4) {
-double n=calcDensity(x * ZOOM_FACTOR + (int)POSITION.x,height - 1,z * ZOOM_FACTOR + (int)POSITION.y);
+double n=generator.calcDensity(x * ZOOM_FACTOR + (int)POSITION.x,height - 1,z * ZOOM_FACTOR + (int)POSITION.y);
 if (n >= 0) {
 if (height > 32) g.setColor(new Color(Math.min(height + color.getRed(),255),Math.min(height + color.getGreen(),255),Math.min(height + color.getBlue(),255)));
  else g.setColor(new Color(0,0,(int)(255.0 * (32.0 - (32.0 - height)) / 32.0)));

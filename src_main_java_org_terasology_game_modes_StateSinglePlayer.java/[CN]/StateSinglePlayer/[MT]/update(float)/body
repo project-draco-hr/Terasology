@@ -1,14 +1,14 @@
 {
   updateUserInterface();
-  for (  UpdateSubscriberSystem updater : _componentSystemManager.iterateUpdateSubscribers()) {
+  for (  UpdateSubscriberSystem updater : componentSystemManager.iterateUpdateSubscribers()) {
     PerformanceMonitor.startActivity(updater.getClass().getSimpleName());
     updater.update(delta);
   }
-  if (_worldRenderer != null && shouldUpdateWorld()) {
-    _worldRenderer.update(delta);
+  if (worldRenderer != null && shouldUpdateWorld()) {
+    worldRenderer.update(delta);
   }
   boolean dead=true;
-  for (  EntityRef entity : _entityManager.iteratorEntities(LocalPlayerComponent.class)) {
+  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class)) {
     dead=entity.getComponent(LocalPlayerComponent.class).isDead;
   }
   if (dead) {

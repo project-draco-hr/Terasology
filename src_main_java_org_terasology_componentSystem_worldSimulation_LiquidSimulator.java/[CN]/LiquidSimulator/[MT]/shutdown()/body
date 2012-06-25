@@ -1,0 +1,13 @@
+{
+  running.set(false);
+  executor.shutdown();
+  try {
+    executor.awaitTermination(1,TimeUnit.MILLISECONDS);
+  }
+ catch (  InterruptedException e) {
+    logger.log(Level.SEVERE,"Interrupted awaiting shutdown");
+  }
+  if (blockQueue.isEmpty()) {
+    executor.shutdownNow();
+  }
+}

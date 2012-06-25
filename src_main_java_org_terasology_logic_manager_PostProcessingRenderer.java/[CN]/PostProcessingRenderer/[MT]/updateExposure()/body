@@ -1,4 +1,7 @@
 {
+  long currentTime=CoreRegistry.get(Timer.class).getTimeInMs();
+  if (CoreRegistry.get(Timer.class).getTimeInMs() - lastExposureUpdate < 1000)   return;
+  lastExposureUpdate=currentTime;
   FloatBuffer pixels=BufferUtils.createFloatBuffer(4);
   FBO scene=PostProcessingRenderer.getInstance().getFBO("scene1");
   scene.bindTexture();

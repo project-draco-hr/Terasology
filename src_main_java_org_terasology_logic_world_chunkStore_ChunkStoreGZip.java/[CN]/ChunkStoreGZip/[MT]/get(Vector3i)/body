@@ -1,0 +1,24 @@
+{
+  Chunk c;
+  c=modifiedChunks.get(id);
+  if (c != null) {
+    return new Chunk(c);
+  }
+  try {
+    byte[] b=compressedChunks.get(id);
+    if (b == null)     return null;
+    ByteArrayInputStream bais=new ByteArrayInputStream(b);
+    GZIPInputStream gzipIn=new GZIPInputStream(bais);
+    ObjectInputStream objectIn=new ObjectInputStream(gzipIn);
+    c=(Chunk)objectIn.readObject();
+    objectIn.close();
+  }
+ catch (  IOException e) {
+    logger.log(Level.SEVERE,"Error loading chunk: ",e);
+    ;
+  }
+catch (  ClassNotFoundException e) {
+    logger.log(Level.SEVERE,"Error loading chunk: ",e);
+  }
+  return c;
+}

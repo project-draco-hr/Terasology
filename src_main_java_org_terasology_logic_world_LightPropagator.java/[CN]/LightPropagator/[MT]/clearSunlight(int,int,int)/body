@@ -1,0 +1,17 @@
+{
+  byte oldSunlight=worldView.getSunlight(x,y,z);
+  if (oldSunlight == Chunk.MAX_LIGHT) {
+    worldView.setSunlight(x,y,z,(byte)0);
+    fullRecalculateSunlightAround(x,y,z);
+    return Region3i.createFromMinAndSize(new Vector3i(x - Chunk.MAX_LIGHT + 1,0,z - Chunk.MAX_LIGHT + 1),new Vector3i(2 * Chunk.MAX_LIGHT - 1,Chunk.SIZE_Y,2 * Chunk.MAX_LIGHT - 1));
+  }
+ else   if (oldSunlight > 1) {
+    localRecalculateSunlightAround(x,y,z,oldSunlight);
+    return Region3i.createFromCenterExtents(new Vector3i(x,y,z),oldSunlight - 1);
+  }
+ else   if (oldSunlight > 0) {
+    worldView.setSunlight(x,y,z,(byte)0);
+    return Region3i.createFromCenterExtents(new Vector3i(x,y,z),0);
+  }
+  return Region3i.EMPTY;
+}

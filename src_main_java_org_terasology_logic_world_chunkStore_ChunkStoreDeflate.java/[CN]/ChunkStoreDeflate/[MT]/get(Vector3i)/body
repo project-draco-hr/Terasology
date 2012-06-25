@@ -1,0 +1,19 @@
+{
+  Chunk c=null;
+  try {
+    byte[] b=map.get(id);
+    if (b == null)     return null;
+    ByteArrayInputStream bais=new ByteArrayInputStream(b);
+    InflaterInputStream gzipIn=new InflaterInputStream(bais);
+    ObjectInputStream objectIn=new ObjectInputStream(gzipIn);
+    c=(Chunk)objectIn.readObject();
+    objectIn.close();
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+catch (  ClassNotFoundException e) {
+    e.printStackTrace();
+  }
+  return c;
+}

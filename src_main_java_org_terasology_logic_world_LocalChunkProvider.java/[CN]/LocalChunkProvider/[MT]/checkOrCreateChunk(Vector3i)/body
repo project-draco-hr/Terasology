@@ -1,0 +1,32 @@
+{
+  Chunk chunk=getChunk(chunkPos);
+  if (chunk == null) {
+    PerformanceMonitor.startActivity("Check chunk in cache");
+    if (farStore.contains(chunkPos)) {
+      chunkTasksQueue.offer(new AbstractChunkTask(chunkPos,this){
+        @Override public void enact(){
+          Chunk chunk=farStore.get(getPosition());
+          if (nearCache.putIfAbsent(getPosition(),chunk) == null) {
+            reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.REVIEW,Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)));
+          }
+        }
+      }
+);
+    }
+ else {
+      chunkTasksQueue.offer(new AbstractChunkTask(chunkPos,this){
+        @Override public void enact(){
+          Chunk chunk=generator.generateChunk(getPosition());
+          if (null == nearCache.putIfAbsent(getPosition(),chunk)) {
+            reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.REVIEW,Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)));
+          }
+        }
+      }
+);
+    }
+    PerformanceMonitor.endActivity();
+  }
+ else {
+    checkState(chunk);
+  }
+}

@@ -1,0 +1,9 @@
+{
+  view.setBlock(5,32,5,torch,air);
+  propagator.update(5,32,5,torch,air);
+  view.setBlock(5,32,5,air,torch);
+  propagator.update(5,32,5,air,torch);
+  for (  Vector3i pos : Region3i.createFromMinMax(WORLD_MIN,WORLD_MAX)) {
+    assertEquals(pos.toString(),0,view.getLight(pos));
+  }
+}

@@ -5,7 +5,7 @@
     damage=item.baseDamage;
     BlockComponent blockComp=target.getComponent(BlockComponent.class);
     if (blockComp != null) {
-      Block block=BlockManager.getInstance().getBlock(worldProvider.getBlock(blockComp.getPosition()));
+      Block block=worldProvider.getBlock(blockComp.getPosition());
       if (item.getPerBlockDamageBonus().containsKey(block.getBlockFamily().getTitle())) {
         damage+=item.getPerBlockDamageBonus().get(block.getBlockFamily().getTitle());
       }

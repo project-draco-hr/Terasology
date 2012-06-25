@@ -1,0 +1,52 @@
+{
+  Block targetBlock=c.getBlock(x,y,z);
+  if ((targetBlock.equals(grassBlock) || targetBlock.equals(sandBlock) || targetBlock.equals(snowBlock)) && c.getBlock(x,y + 1,z).equals(BlockManager.getInstance().getAir())) {
+    double grassRand=(random.randomDouble() + 1.0) / 2.0;
+    double grassProb=1.0;
+    WorldBiomeProvider.Biome biome=biomeProvider.getBiomeAt(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+switch (biome) {
+case PLAINS:
+      grassProb=1.0 - PLAINS_GRASS_DENSITY;
+    break;
+case MOUNTAINS:
+  grassProb=1.0 - MOUNTAINS_GRASS_DENSITY;
+break;
+case FOREST:
+grassProb=1.0 - FOREST_GRASS_DENSITY;
+break;
+case SNOW:
+grassProb=1.0 - SNOW_GRASS_DENSITY;
+break;
+case DESERT:
+grassProb=1.0 - DESERT_GRASS_DENSITY;
+break;
+}
+if (grassRand > grassProb) {
+double rand=random.standNormalDistrDouble();
+if (rand > -0.4 && rand < 0.4) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("TallGrass1").getId());
+}
+ else if (rand > -0.6 && rand < 0.6) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("TallGrass2").getId());
+}
+ else {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("TallGrass3").getId());
+}
+double flowerRand=random.randomDouble();
+if (random.standNormalDistrDouble() < -2) {
+if (flowerRand >= -1.0 && flowerRand < 0.2) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("RedFlower").getId());
+}
+ else if (flowerRand >= 0.2 && flowerRand < 0.6) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("YellowFlower").getId());
+}
+ else if (flowerRand >= 0.6 && flowerRand < 0.7) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("BrownShroom").getId());
+}
+ else if (flowerRand >= 0.7 && flowerRand < 0.8) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("RedShroom").getId());
+}
+}
+}
+}
+}

@@ -1,0 +1,15 @@
+{
+  byte light=0;
+  if (y == Chunk.SIZE_Y - 1) {
+    light=Chunk.MAX_LIGHT;
+  }
+ else {
+    light=(byte)Math.max(light,worldView.getSunlight(x,y + 1,z));
+    light=(byte)Math.max(light,worldView.getSunlight(x,y - 1,z) - 1);
+    for (    Side side : Side.horizontalSides()) {
+      Vector3i adjPos=side.getVector3i();
+      light=(byte)Math.max(light,worldView.getSunlight(x + adjPos.x,y + adjPos.y,z + adjPos.z) - 1);
+    }
+  }
+  return light;
+}

@@ -1,0 +1,16 @@
+{
+  if (type.isTranslucent() == oldType.isTranslucent()) {
+    return Region3i.EMPTY;
+  }
+  if (type.isTranslucent()) {
+    byte light=pullSunlight(x,y,z);
+    worldView.setSunlight(x,y,z,light);
+    if (light > 1) {
+      return pushSunlight(x,y,z,light);
+    }
+  }
+ else {
+    return clearSunlight(x,y,z);
+  }
+  return Region3i.EMPTY;
+}

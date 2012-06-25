@@ -1,0 +1,7 @@
+{
+  if (!blockRegion.encompasses(blockX,blockY,blockZ)) {
+    return BlockManager.getInstance().getAir();
+  }
+  int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
+  return chunks[chunkIndex].getBlock(blockX & 0xf,blockY,blockZ & 0xf);
+}

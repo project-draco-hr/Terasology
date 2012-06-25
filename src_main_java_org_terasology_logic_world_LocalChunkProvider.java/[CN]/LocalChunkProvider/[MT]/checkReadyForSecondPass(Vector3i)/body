@@ -1,0 +1,39 @@
+{
+  Chunk chunk=getChunk(pos);
+  if (chunk != null && chunk.getChunkState() == Chunk.State.ADJACENCY_GENERATION_PENDING) {
+    for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,LOCAL_REGION_EXTENTS)) {
+      if (!adjPos.equals(pos)) {
+        Chunk adjChunk=getChunk(adjPos);
+        if (adjChunk == null) {
+          return;
+        }
+      }
+    }
+    logger.log(Level.FINE,"Queueing for adjacency generation " + pos);
+    chunkTasksQueue.offer(new AbstractChunkTask(pos,this){
+      @Override public void enact(){
+        WorldView view=WorldView.createLocalView(getPosition(),getProvider());
+        if (view == null) {
+          return;
+        }
+        view.lock();
+        try {
+          if (!view.isValidView()) {
+            return;
+          }
+          Chunk chunk=getProvider().getChunk(getPosition());
+          if (chunk.getChunkState() != Chunk.State.ADJACENCY_GENERATION_PENDING) {
+            return;
+          }
+          generator.secondPassChunk(getPosition(),view);
+          chunk.setChunkState(Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING);
+          reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.REVIEW,Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)));
+        }
+  finally {
+          view.unlock();
+        }
+      }
+    }
+);
+  }
+}

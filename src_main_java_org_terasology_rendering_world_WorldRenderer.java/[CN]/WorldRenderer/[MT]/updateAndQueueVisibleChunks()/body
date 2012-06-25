@@ -4,22 +4,41 @@
   _statIgnoredPhases=0;
   for (int i=0; i < _chunksInProximity.size(); i++) {
     Chunk c=_chunksInProximity.get(i);
-    if (isChunkVisible(c)) {
-      if (c.triangleCount(ChunkMesh.RENDER_PHASE.OPAQUE) > 0)       _renderQueueChunksOpaque.add(c);
+    ChunkMesh[] mesh=c.getMesh();
+    if (isChunkVisible(c) && isChunkValidForRender(c)) {
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.OPAQUE) > 0)       _renderQueueChunksOpaque.add(c);
  else       _statIgnoredPhases++;
-      if (c.triangleCount(ChunkMesh.RENDER_PHASE.WATER_AND_ICE) > 0)       _renderQueueChunksSortedWater.add(c);
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.WATER_AND_ICE) > 0)       _renderQueueChunksSortedWater.add(c);
  else       _statIgnoredPhases++;
-      if (c.triangleCount(ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0)       _renderQueueChunksSortedBillboards.add(c);
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0 && i < MAX_BILLBOARD_CHUNKS)       _renderQueueChunksSortedBillboards.add(c);
  else       _statIgnoredPhases++;
-      c.update();
-      if (c.isDirty() || c.isLightDirty() || c.isFresh()) {
+      if (i < MAX_ANIMATED_CHUNKS)       c.setAnimated(true);
+ else       c.setAnimated(false);
+      if (c.getPendingMesh() != null) {
+        for (int j=0; j < c.getPendingMesh().length; j++) {
+          c.getPendingMesh()[j].generateVBOs();
+        }
+        if (c.getMesh() != null) {
+          for (int j=0; j < c.getMesh().length; j++) {
+            c.getMesh()[j].dispose();
+          }
+        }
+        c.setMesh(c.getPendingMesh());
+        c.setPendingMesh(null);
+      }
+      if ((c.isDirty() || mesh == null) && isChunkValidForRender(c)) {
         _statDirtyChunks++;
         _chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
       }
       _statVisibleChunks++;
     }
  else     if (i > Config.getInstance().getMaxChunkVBOs()) {
-      c.clearMeshes();
+      if (mesh != null) {
+        for (        ChunkMesh m : mesh) {
+          m.dispose();
+        }
+        c.setMesh(null);
+      }
     }
   }
 }

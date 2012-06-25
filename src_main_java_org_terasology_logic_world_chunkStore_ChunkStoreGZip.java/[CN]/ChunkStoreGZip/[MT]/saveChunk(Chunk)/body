@@ -1,0 +1,16 @@
+{
+  try {
+    ByteArrayOutputStream baos=new ByteArrayOutputStream();
+    GZIPOutputStream gzipOut=new GZIPOutputStream(baos);
+    ObjectOutputStream objectOut=new ObjectOutputStream(gzipOut);
+    objectOut.writeObject(c);
+    objectOut.close();
+    byte[] b=baos.toByteArray();
+    sizeInByte.addAndGet(b.length);
+    compressedChunks.put(c.getPos(),b);
+    modifiedChunks.remove(c.getPos(),c);
+  }
+ catch (  IOException e) {
+    logger.log(Level.SEVERE,"Error saving chunk: ",e);
+  }
+}
