@@ -4,6 +4,8 @@
   grass=BlockManager.getInstance().getBlock("Grass");
   snow=BlockManager.getInstance().getBlock("Snow");
   dirt=BlockManager.getInstance().getBlock("Dirt");
+  water=BlockManager.getInstance().getBlock("Water");
+  lava=BlockManager.getInstance().getBlock("Lava");
   blockQueue=Queues.newLinkedBlockingQueue();
   running.set(true);
   executor=Executors.newFixedThreadPool(1);
@@ -14,7 +16,10 @@
         try {
           Vector3i blockPos=blockQueue.take();
           if (world.isBlockActive(blockPos)) {
-            simulate(blockPos);
+            WorldView view=world.getWorldViewAround(TeraMath.calcChunkPos(blockPos));
+            if (view != null && view.isValidView()) {
+              simulate(blockPos,view);
+            }
           }
           Thread.sleep(50);
         }

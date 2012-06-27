@@ -1,0 +1,48 @@
+{
+  Block block=worldView.getBlock(pos);
+  if (isLiquidBlocking(block)) {
+    return new LiquidData();
+  }
+  LiquidData currentState=worldView.getLiquid(pos);
+  if (currentState.getDepth() == MAX_LIQUID_DEPTH) {
+    return currentState;
+  }
+  LiquidData aboveState=worldView.getLiquid(pos.x,pos.y + 1,pos.z);
+  if (aboveState.getDepth() > 0) {
+    return new LiquidData(aboveState.getType(),MAX_LIQUID_DEPTH);
+  }
+  LiquidData h1=new LiquidData();
+  LiquidData h2=new LiquidData();
+  for (  Side side : Side.horizontalSides()) {
+    Vector3i adjDir=side.getVector3i();
+    LiquidData state=worldView.getLiquid(pos.x + adjDir.x,pos.y,pos.z + adjDir.z);
+    Block supportingBlock=worldView.getBlock(pos.x + adjDir.x,pos.y - 1,pos.z + adjDir.z);
+    if (!supportingBlock.isPenetrable()) {
+      if (state.getDepth() > h1.getDepth()) {
+        h2=h1;
+        h1=state;
+      }
+ else       if (state.getDepth() > h2.getDepth()) {
+        h2=state;
+      }
+    }
+  }
+  if (h1.getDepth() > 0) {
+    if (h2.getDepth() == 0) {
+      return new LiquidData(h1.getType(),h1.getDepth() - 1);
+    }
+ else     if (h1.getType() == h2.getType()) {
+      if (h1.getDepth() == h2.getDepth()) {
+        return new LiquidData(h1.getType(),h1.getDepth());
+      }
+      return new LiquidData(h1.getType(),(byte)(h1.getDepth() - 1));
+    }
+ else {
+      byte finalDepth=(byte)(h1.getDepth() - h2.getDepth() - 1);
+      if (finalDepth > 0) {
+        return new LiquidData(h1.getType(),finalDepth);
+      }
+    }
+  }
+  return new LiquidData();
+}

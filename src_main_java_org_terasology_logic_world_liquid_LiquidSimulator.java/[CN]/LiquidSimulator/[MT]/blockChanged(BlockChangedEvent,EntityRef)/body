@@ -1,26 +1,20 @@
 {
-  if (event.getNewType().isLiquid()) {
+  if (!event.getNewType().isLiquid()) {
+    LiquidData currentState=world.getLiquid(event.getBlockPosition());
+    if (currentState.getDepth() > 0) {
+      world.setLiquid(event.getBlockPosition(),new LiquidData(),currentState);
+    }
     blockQueue.offer(event.getBlockPosition());
   }
- else   if (event.getNewType() == BlockManager.getInstance().getAir()) {
-    Block block=fillWithLiquid(event.getBlockPosition());
-    if (block.isLiquid()) {
-      world.setBlock(event.getBlockPosition(),block,event.getNewType());
-      event.cancel();
+ else {
+    LiquidData currentState=world.getLiquid(event.getBlockPosition());
+    if (currentState.getDepth() == 0) {
+      world.setLiquid(event.getBlockPosition(),new LiquidData((water.equals(event.getNewType())) ? LiquidType.WATER : LiquidType.LAVA,MAX_LIQUID_DEPTH),currentState);
     }
-  }
- else   if (event.getOldType().isLiquid()) {
-    Vector3i belowPos=new Vector3i(event.getBlockPosition());
-    belowPos.y-=1;
-    if (world.getBlock(belowPos).isLiquid()) {
-      blockQueue.offer(belowPos);
-    }
-    for (    Side side : Side.horizontalSides()) {
+    for (    Side side : Side.values()) {
       Vector3i adjPos=new Vector3i(event.getBlockPosition());
       adjPos.add(side.getVector3i());
-      if (world.getBlock(adjPos).isLiquid()) {
-        blockQueue.offer(belowPos);
-      }
+      blockQueue.offer(adjPos);
     }
   }
 }
