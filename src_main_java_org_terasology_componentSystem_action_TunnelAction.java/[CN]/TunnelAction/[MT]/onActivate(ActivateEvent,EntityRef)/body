@@ -2,6 +2,7 @@
   Vector3f dir=new Vector3f(event.getDirection());
   Vector3f origin=new Vector3f(event.getOrigin());
   Vector3i blockPos=new Vector3i();
+  int blockCounter=MAX_DESTROYED_BLOCKS;
   for (int s=4; s <= 10000; s+=30) {
     origin.add(dir);
     for (int i=0; i < 64; i++) {
@@ -22,7 +23,9 @@
           EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
           blockEntity.destroy();
           physicsRenderer.addTemporaryBlock(target,currentBlock.getId(),impulse,BulletPhysicsRenderer.BLOCK_SIZE.FULL_SIZE);
+          blockCounter--;
         }
+        if (blockCounter <= 0)         return;
       }
     }
   }
