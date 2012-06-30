@@ -1,0 +1,31 @@
+{
+  MiniaturizerComponent comp=entity.getComponent(MiniaturizerComponent.class);
+  BlockGrid grid=comp.blockGrid;
+  HashSet<BlockGrid.GridPosition> gridPositions=grid.getGridPositions();
+  if (gridPositions.size() < 2) {
+    comp.reset();
+    Vector3i targetPos=new Vector3i(event.getTargetLocation());
+    entity.getComponent(MiniaturizerComponent.class).blockGrid.addGridPosition(targetPos,worldProvider.getBlock(targetPos).getId());
+  }
+ else {
+    MiniatureChunk chunk=new MiniatureChunk();
+    for (int x=grid.getMinBounds().x; x <= grid.getMaxBounds().x; ++x) {
+      for (int y=grid.getMinBounds().y; y <= grid.getMaxBounds().y; ++y) {
+        for (int z=grid.getMinBounds().z; z <= grid.getMaxBounds().z; ++z) {
+          Vector3i localPos=new Vector3i();
+          Vector3i globalPos=new Vector3i(x,y,z);
+          localPos.sub(globalPos,grid.getMinBounds());
+          if (localPos.x >= MiniatureChunk.SIZE_X || localPos.y >= MiniatureChunk.SIZE_Y || localPos.z >= MiniatureChunk.SIZE_Z || localPos.x < 0 || localPos.y < 0 || localPos.z < 0)           continue;
+          chunk.setSunlight(localPos,worldProvider.getSunlight(globalPos));
+          chunk.setLight(localPos,worldProvider.getLight(globalPos));
+          chunk.setBlock(localPos,worldProvider.getBlock(globalPos));
+        }
+      }
+    }
+    Vector3f renderLocation=new Vector3f(event.getTargetLocation());
+    renderLocation.y+=0.5f + (MiniaturizerComponent.SCALE / 2f);
+    comp.miniatureChunk=chunk;
+    comp.renderPosition=new Vector3f(renderLocation);
+    grid.clear();
+  }
+}
