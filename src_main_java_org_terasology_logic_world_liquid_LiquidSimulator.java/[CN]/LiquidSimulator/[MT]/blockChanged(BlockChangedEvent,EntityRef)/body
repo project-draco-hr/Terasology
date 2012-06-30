@@ -4,7 +4,14 @@
     if (currentState.getDepth() > 0) {
       world.setLiquid(event.getBlockPosition(),new LiquidData(),currentState);
     }
-    blockQueue.offer(event.getBlockPosition());
+    if (event.getNewType().isPenetrable()) {
+      blockQueue.offer(new SimulateBlock(event.getBlockPosition(),world.getTime() + PROPAGATION_DELAY));
+    }
+    for (    Side side : Side.values()) {
+      Vector3i adjPos=new Vector3i(event.getBlockPosition());
+      adjPos.add(side.getVector3i());
+      blockQueue.offer(new SimulateBlock(adjPos,world.getTime() + PROPAGATION_DELAY));
+    }
   }
  else {
     LiquidData currentState=world.getLiquid(event.getBlockPosition());
@@ -14,7 +21,7 @@
     for (    Side side : Side.values()) {
       Vector3i adjPos=new Vector3i(event.getBlockPosition());
       adjPos.add(side.getVector3i());
-      blockQueue.offer(adjPos);
+      blockQueue.offer(new SimulateBlock(adjPos,world.getTime() + PROPAGATION_DELAY));
     }
   }
 }

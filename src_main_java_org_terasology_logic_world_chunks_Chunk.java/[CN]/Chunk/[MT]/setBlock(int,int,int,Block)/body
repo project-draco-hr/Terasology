@@ -1,3 +1,10 @@
 {
-  return setBlock(x,y,z,block.getId());
+  byte oldValue=blocks.set(x,y,z,block.getId());
+  if (oldValue != block.getId()) {
+    if (!block.isLiquid()) {
+      setLiquid(x,y,z,new LiquidData());
+    }
+    return true;
+  }
+  return false;
 }

@@ -7,27 +7,25 @@
   water=BlockManager.getInstance().getBlock("Water");
   lava=BlockManager.getInstance().getBlock("Lava");
   blockQueue=Queues.newLinkedBlockingQueue();
-  running.set(true);
-  executor=Executors.newFixedThreadPool(1);
-  executor.execute(new Runnable(){
-    @Override public void run(){
-      Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-      while (running.get()) {
-        try {
-          Vector3i blockPos=blockQueue.take();
-          if (world.isBlockActive(blockPos)) {
-            WorldView view=world.getWorldViewAround(TeraMath.calcChunkPos(blockPos));
-            if (view != null && view.isValidView()) {
-              simulate(blockPos,view);
+  executor=Executors.newFixedThreadPool(NUM_THREADS);
+  for (int i=0; i < NUM_THREADS; ++i) {
+    executor.execute(new Runnable(){
+      @Override public void run(){
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        while (true) {
+          try {
+            LiquidSimulationTask task=blockQueue.take();
+            if (task.shutdownThread()) {
+              break;
             }
+            task.run();
           }
-          Thread.sleep(50);
-        }
- catch (        InterruptedException e) {
-          logger.log(Level.INFO,"Interrupted");
+ catch (          InterruptedException e) {
+            logger.log(Level.INFO,"Interrupted");
+          }
         }
       }
     }
-  }
 );
+  }
 }
