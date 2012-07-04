@@ -1,10 +1,11 @@
 {
   if (Config.getInstance().isPlacingBox()) {
-    RayBlockIntersection.Intersection selectedBlock=calcSelectedBlock();
-    if (selectedBlock != null) {
-      Block block=worldProvider.getBlock(selectedBlock.getBlockPosition());
+    EntityRef target=cameraTargetSystem.getTarget();
+    BlockComponent blockComp=target.getComponent(BlockComponent.class);
+    if (blockComp != null) {
+      Block block=worldProvider.getBlock(blockComp.getPosition());
       if (block.isRenderBoundingBox()) {
-        block.getBounds(selectedBlock.getBlockPosition()).render(2f);
+        block.getBounds(blockComp.getPosition()).render(2f);
       }
     }
   }

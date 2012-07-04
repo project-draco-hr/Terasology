@@ -4,15 +4,16 @@ switch (button) {
 case -1:
     return false;
 case 0:
-  event=(buttonDown) ? LeftMouseDownButtonEvent.create(delta,cameraTargetSystem.getTarget()) : LeftMouseUpButtonEvent.create(delta,cameraTargetSystem.getTarget());
+  event=(buttonDown) ? LeftMouseDownButtonEvent.create(delta) : LeftMouseUpButtonEvent.create(delta);
 break;
 case 1:
-event=(buttonDown) ? RightMouseDownButtonEvent.create(delta,cameraTargetSystem.getTarget()) : RightMouseUpButtonEvent.create(delta,cameraTargetSystem.getTarget());
+event=(buttonDown) ? RightMouseDownButtonEvent.create(delta) : RightMouseUpButtonEvent.create(delta);
 break;
 default :
-event=(buttonDown) ? MouseDownButtonEvent.create(button,delta,cameraTargetSystem.getTarget()) : MouseUpButtonEvent.create(button,delta,cameraTargetSystem.getTarget());
+event=(buttonDown) ? MouseDownButtonEvent.create(button,delta) : MouseUpButtonEvent.create(button,delta);
 break;
 }
+setupTarget(event);
 localPlayer.getEntity().send(event);
 return event.isConsumed();
 }

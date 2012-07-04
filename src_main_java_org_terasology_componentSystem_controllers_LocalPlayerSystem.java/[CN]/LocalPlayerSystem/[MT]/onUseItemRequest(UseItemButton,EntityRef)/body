@@ -8,7 +8,7 @@
   EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
   ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
   if (item != null && item.usage != ItemComponent.UsageType.NONE) {
-    useItem(entity,selectedItemEntity);
+    useItem(event.getTarget(),entity,selectedItemEntity,event.getHitPosition(),event.getHitNormal());
   }
  else {
     attack(event.getTarget(),entity,selectedItemEntity);

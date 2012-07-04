@@ -8,17 +8,26 @@
     lostTarget=true;
   }
   Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
-  RayBlockIntersection.Intersection hitInfo=BlockRaytracer.trace(camera.getPosition(),camera.getViewingDirection(),worldProvider);
-  Vector3i newBlockPos=(hitInfo != null) ? hitInfo.getBlockPosition() : null;
-  if (!Objects.equal(targetBlockPos,newBlockPos) || lostTarget) {
-    EntityRef oldTarget=target;
-    target=EntityRef.NULL;
-    targetBlockPos=newBlockPos;
-    if (newBlockPos != null) {
-      target=blockRegistry.getOrCreateEntityAt(targetBlockPos);
+  BulletPhysicsRenderer physicsRenderer=CoreRegistry.get(BulletPhysicsRenderer.class);
+  HitResult hitInfo=physicsRenderer.rayTrace(new Vector3f(camera.getPosition()),new Vector3f(camera.getViewingDirection()),TARGET_DISTANCE);
+  if (hitInfo.isHit()) {
+    hitPosition=hitInfo.getHitPoint();
+    hitNormal=hitInfo.getHitNormal();
+    Vector3i newBlockPos=null;
+    BlockComponent blockComp=hitInfo.getEntity().getComponent(BlockComponent.class);
+    if (blockComp != null) {
+      newBlockPos=new Vector3i(blockComp.getPosition());
     }
-    oldTarget.send(new CameraOutEvent());
-    target.send(new CameraOverEvent());
-    localPlayer.getEntity().send(new CameraTargetChangedEvent(oldTarget,target));
+    if (!Objects.equal(targetBlockPos,newBlockPos) || lostTarget) {
+      EntityRef oldTarget=target;
+      target=EntityRef.NULL;
+      targetBlockPos=newBlockPos;
+      if (newBlockPos != null) {
+        target=hitInfo.getEntity();
+      }
+      oldTarget.send(new CameraOutEvent());
+      target.send(new CameraOverEvent());
+      localPlayer.getEntity().send(new CameraTargetChangedEvent(oldTarget,target));
+    }
   }
 }
