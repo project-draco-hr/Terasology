@@ -9,6 +9,7 @@
   _blockItemFactory=new BlockItemFactory(CoreRegistry.get(EntityManager.class),CoreRegistry.get(PrefabManager.class));
   blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
   _timer=CoreRegistry.get(Timer.class);
+  CoreRegistry.get(EventSystem.class).registerEventReceiver(this,BlockChangedEvent.class,BlockComponent.class);
   PhysicsWorldWrapper wrapper=new PhysicsWorldWrapper(parent.getWorldProvider());
   VoxelWorldShape worldShape=new VoxelWorldShape(wrapper);
   Matrix3f rot=new Matrix3f();
