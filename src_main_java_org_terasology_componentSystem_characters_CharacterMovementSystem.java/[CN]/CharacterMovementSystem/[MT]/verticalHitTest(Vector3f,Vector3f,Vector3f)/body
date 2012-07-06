@@ -6,8 +6,8 @@
     Block block=worldProvider.getBlock(p);
     calcAABB(position,extents);
     if (block == null || block.isPenetrable())     continue;
-    for (    AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
-      if (!entityAABB.overlaps(blockAABB))       continue;
+    AABB blockAABB=block.getBounds(p);
+    if (entityAABB.overlaps(blockAABB)) {
       double direction=origin.y - position.y;
       if (direction >= 0) {
         position.y=(float)(blockAABB.getPosition().y + blockAABB.getDimensions().y + entityAABB.getDimensions().y);

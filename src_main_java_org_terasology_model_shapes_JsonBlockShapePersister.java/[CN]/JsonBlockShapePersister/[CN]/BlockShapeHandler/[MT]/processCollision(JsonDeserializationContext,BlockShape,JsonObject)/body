@@ -1,0 +1,28 @@
+{
+  if (collisionInfo.has("symmetric") && collisionInfo.get("symmetric").isJsonPrimitive() && collisionInfo.get("symmetric").getAsJsonPrimitive().isBoolean()) {
+    shape.setCollisionSymmetric(collisionInfo.get("symmetric").getAsBoolean());
+  }
+  if (collisionInfo.has("colliders") && collisionInfo.get("colliders").isJsonArray() && collisionInfo.get("colliders").getAsJsonArray().size() > 0) {
+    JsonArray colliderArray=collisionInfo.get("colliders").getAsJsonArray();
+    if (shape.isCollisionSymmetric()) {
+      ColliderInfo info=processColliders(context,colliderArray,Rotation.NONE);
+      shape.setCollisionShape(info.collisionShape);
+      shape.setCollisionOffset(info.offset);
+    }
+ else {
+      for (      Rotation rot : Rotation.horizontalRotations()) {
+        ColliderInfo info=processColliders(context,colliderArray,rot);
+        shape.setCollisionShape(rot,info.collisionShape);
+        shape.setCollisionOffset(rot,info.offset);
+        if (info.symmetric) {
+          shape.setCollisionSymmetric(true);
+          break;
+        }
+      }
+    }
+  }
+ else {
+    shape.setCollisionShape(CUBE_SHAPE);
+    shape.setCollisionSymmetric(true);
+  }
+}

@@ -11,13 +11,12 @@
     BlockPosition p=blockPositions.get(i);
     Block block=worldProvider.getBlock(p);
     if (block.isLiquid()) {
-      for (      AABB blockAABB : block.getColliders(p.x,p.y,p.z)) {
-        if (blockAABB.contains(top)) {
-          topUnderwater=true;
-        }
-        if (blockAABB.contains(bottom)) {
-          bottomUnderwater=true;
-        }
+      AABB blockAABB=block.getBounds(p);
+      if (blockAABB.contains(top)) {
+        topUnderwater=true;
+      }
+      if (blockAABB.contains(bottom)) {
+        bottomUnderwater=true;
       }
     }
   }

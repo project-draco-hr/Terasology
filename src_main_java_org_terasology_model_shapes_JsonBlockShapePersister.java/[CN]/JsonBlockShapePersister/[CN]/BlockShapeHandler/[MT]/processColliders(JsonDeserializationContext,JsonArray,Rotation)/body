@@ -1,0 +1,17 @@
+{
+  if (colliderArray.size() == 1) {
+    JsonElement shapeDef=colliderArray.get(0);
+    if (shapeDef.isJsonObject()) {
+      JsonObject collider=shapeDef.getAsJsonObject();
+      return processBoxShape(context,collider,rot);
+    }
+ else {
+      ColliderInfo info=new ColliderInfo(new Vector3f(),CUBE_SHAPE);
+      info.symmetric=true;
+      return info;
+    }
+  }
+ else {
+    return processCompoundShape(context,colliderArray,rot);
+  }
+}
