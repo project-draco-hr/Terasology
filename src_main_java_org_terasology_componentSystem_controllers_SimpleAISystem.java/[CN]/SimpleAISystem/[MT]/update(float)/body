@@ -1,9 +1,12 @@
 {
   for (  EntityRef entity : entityManager.iteratorEntities(SimpleAIComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
+    Vector3f worldPos=location.getWorldPosition();
+    if (!worldProvider.isBlockActive(worldPos)) {
+      continue;
+    }
     SimpleAIComponent ai=entity.getComponent(SimpleAIComponent.class);
     CharacterMovementComponent moveComp=entity.getComponent(CharacterMovementComponent.class);
-    Vector3f worldPos=location.getWorldPosition();
     moveComp.getDrive().set(0,0,0);
     LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
     if (localPlayer != null) {
