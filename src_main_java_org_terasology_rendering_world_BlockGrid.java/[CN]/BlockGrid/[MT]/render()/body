@@ -7,10 +7,10 @@
  else {
       glColorMask(true,true,true,true);
     }
-    for (    BlockPosition gp : _gridPositions) {
+    for (    GridPosition gp : _gridPositions) {
       GL11.glPushMatrix();
       Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
-      GL11.glTranslated(gp.x - cameraPosition.x,gp.y - cameraPosition.y,gp.z - cameraPosition.z);
+      GL11.glTranslated(gp.position.x - cameraPosition.x,gp.position.y - cameraPosition.y,gp.position.z - cameraPosition.z);
       _mesh.render();
       GL11.glPopMatrix();
     }

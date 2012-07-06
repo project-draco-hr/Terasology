@@ -2,10 +2,10 @@
   Vector3i blockPos=new Vector3i(x,y,z);
   WorldView worldView;
   if (type.isTranslucent() != oldType.isTranslucent() || type.getLuminance() != oldType.getLuminance()) {
-    worldView=WorldView.createSubview(blockPos,Chunk.MAX_LIGHT + 1,chunkProvider);
+    worldView=WorldView.createSubviewAroundBlock(blockPos,Chunk.MAX_LIGHT + 1,chunkProvider);
   }
  else {
-    worldView=WorldView.createSubview(blockPos,1,chunkProvider);
+    worldView=WorldView.createSubviewAroundBlock(blockPos,1,chunkProvider);
   }
   if (worldView != null) {
     worldView.lock();

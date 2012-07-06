@@ -1,0 +1,9 @@
+{
+  Vector3i chunkPos=TeraMath.calcChunkPos(x,y,z);
+  Chunk chunk=chunkProvider.getChunk(chunkPos);
+  if (chunk != null) {
+    Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
+    return chunk.setLiquid(blockPos,newState,oldState);
+  }
+  return false;
+}

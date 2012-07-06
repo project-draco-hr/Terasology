@@ -1,0 +1,11 @@
+{
+  pos.x=in.readInt();
+  pos.y=in.readInt();
+  pos.z=in.readInt();
+  setDirty(true);
+  chunkState=(State)in.readObject();
+  for (int i=0; i < blocks.size(); i++)   blocks.setRawByte(i,in.readByte());
+  for (int i=0; i < sunlight.sizePacked(); i++)   sunlight.setRawByte(i,in.readByte());
+  for (int i=0; i < light.sizePacked(); i++)   light.setRawByte(i,in.readByte());
+  for (int i=0; i < liquid.sizePacked(); i++)   liquid.setRawByte(i,in.readByte());
+}

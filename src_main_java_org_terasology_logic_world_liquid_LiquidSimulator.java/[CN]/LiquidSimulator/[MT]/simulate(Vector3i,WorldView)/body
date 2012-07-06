@@ -1,0 +1,26 @@
+{
+  Block block=view.getBlock(blockPos);
+  LiquidData current=view.getLiquid(blockPos);
+  LiquidData newState=calcStateFor(blockPos,view);
+  if (!newState.equals(current)) {
+    view.lock();
+    try {
+      if (view.isValidView() && world.setLiquid(blockPos,newState,current)) {
+        if (newState.getDepth() > 0) {
+          world.setBlock(blockPos,((newState.getType() == LiquidType.WATER) ? water : lava),block);
+          Vector3i belowBlockPos=new Vector3i(blockPos.x,blockPos.y - 1,blockPos.z);
+          Block belowType=world.getBlock(belowBlockPos);
+          if (grass.equals(belowType) || snow.equals(belowType)) {
+            world.setBlock(belowBlockPos,dirt,belowType);
+          }
+        }
+ else {
+          world.setBlock(blockPos,air,block);
+        }
+      }
+    }
+  finally {
+      view.unlock();
+    }
+  }
+}

@@ -15,7 +15,7 @@
   }
 );
   _goToBack=new UIButton(new Vector2f(256f,32f));
-  _goToBack.getLabel().setText("Go to back");
+  _goToBack.getLabel().setText("Go back");
   _goToBack.setVisible(true);
   _loadFromList=new UIButton(new Vector2f(128f,32f));
   _loadFromList.getLabel().setText("Load");
@@ -38,7 +38,7 @@
   _deleteFromList.addClickListener(new IClickListener(){
     public void clicked(    UIDisplayElement element){
       if (_list.getSelectedItem() == null) {
-        GUIManager.getInstance().showMessage("Deleting error","Please choose the world.");
+        GUIManager.getInstance().showMessage("Error","Please choose a world first.");
         return;
       }
       try {
@@ -48,7 +48,7 @@
         _list.removeSelectedItem();
       }
  catch (      Exception e) {
-        GUIManager.getInstance().showMessage("Deleting error","Failed deleting world data object. Sorry.");
+        GUIManager.getInstance().showMessage("Error","Failed deleting world data object. Sorry.");
       }
     }
   }

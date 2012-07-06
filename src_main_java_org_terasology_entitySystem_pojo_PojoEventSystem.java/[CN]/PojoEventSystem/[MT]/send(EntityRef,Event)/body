@@ -1,11 +1,16 @@
 {
-  Set<EventHandlerInfo> selectedHandlersSet=selectEventHandlers(event.getClass(),entity);
-  List<EventHandlerInfo> selectedHandlers=Lists.newArrayList(selectedHandlersSet);
-  Collections.sort(selectedHandlers,priorityComparator);
-  for (  EventHandlerInfo handler : selectedHandlers) {
-    if (handler.isValidFor(entity)) {
-      handler.invoke(entity,event);
-      if (event.isCancelled())       return;
+  if (Thread.currentThread() != mainThread) {
+    pendingEvents.offer(new PendingEvent(entity,event));
+  }
+ else {
+    Set<EventHandlerInfo> selectedHandlersSet=selectEventHandlers(event.getClass(),entity);
+    List<EventHandlerInfo> selectedHandlers=Lists.newArrayList(selectedHandlersSet);
+    Collections.sort(selectedHandlers,priorityComparator);
+    for (    EventHandlerInfo handler : selectedHandlers) {
+      if (handler.isValidFor(entity)) {
+        handler.invoke(entity,event);
+        if (event.isCancelled())         return;
+      }
     }
   }
 }

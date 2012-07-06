@@ -1,6 +1,6 @@
 {
   byte lightValue=chunk.getSunlight(x,y,z);
-  if (y > 0 && lightValue < Chunk.MAX_LIGHT && chunk.getSunlight(x,y - 1,z) < lightValue - 1 && chunk.getBlock(x,y - 1,z).isTranslucent()) {
+  if (y > 0 && chunk.getSunlight(x,y - 1,z) < lightValue - 1 && chunk.getBlock(x,y - 1,z).isTranslucent()) {
     chunk.setSunlight(x,y - 1,z,(byte)(lightValue - 1));
     spreadSunlightInternal(chunk,x,y - 1,z);
   }

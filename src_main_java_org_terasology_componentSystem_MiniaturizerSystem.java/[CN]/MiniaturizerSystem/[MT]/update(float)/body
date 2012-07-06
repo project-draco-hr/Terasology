@@ -1,0 +1,10 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(MiniaturizerComponent.class)) {
+    MiniaturizerComponent min=entity.getComponent(MiniaturizerComponent.class);
+    if (min.chunkMesh == null && min.miniatureChunk != null) {
+      min.chunkMesh=worldRenderer.getChunkTesselator().generateMinaturizedMesh(min.miniatureChunk);
+      min.chunkMesh.generateVBOs();
+      min.chunkMesh._vertexElements=null;
+    }
+  }
+}

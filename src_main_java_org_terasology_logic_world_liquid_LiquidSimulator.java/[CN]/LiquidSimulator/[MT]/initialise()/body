@@ -1,0 +1,31 @@
+{
+  world=CoreRegistry.get(WorldProvider.class);
+  air=BlockManager.getInstance().getAir();
+  grass=BlockManager.getInstance().getBlock("Grass");
+  snow=BlockManager.getInstance().getBlock("Snow");
+  dirt=BlockManager.getInstance().getBlock("Dirt");
+  water=BlockManager.getInstance().getBlock("Water");
+  lava=BlockManager.getInstance().getBlock("Lava");
+  blockQueue=Queues.newLinkedBlockingQueue();
+  executor=Executors.newFixedThreadPool(NUM_THREADS);
+  for (int i=0; i < NUM_THREADS; ++i) {
+    executor.execute(new Runnable(){
+      @Override public void run(){
+        Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+        while (true) {
+          try {
+            LiquidSimulationTask task=blockQueue.take();
+            if (task.shutdownThread()) {
+              break;
+            }
+            task.run();
+          }
+ catch (          InterruptedException e) {
+            logger.log(Level.INFO,"Interrupted");
+          }
+        }
+      }
+    }
+);
+  }
+}
