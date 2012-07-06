@@ -3,7 +3,7 @@
     ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("chunk");
     shader.setFloat3("chunkOffset",(float)(chunk.getPos().x * Chunk.SIZE_X),(float)(chunk.getPos().y * Chunk.SIZE_Y),(float)(chunk.getPos().z * Chunk.SIZE_Z));
     GL11.glPushMatrix();
-    Vector3d cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+    Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
     GL11.glTranslated(chunk.getPos().x * Chunk.SIZE_X - cameraPosition.x,chunk.getPos().y * Chunk.SIZE_Y - cameraPosition.y,chunk.getPos().z * Chunk.SIZE_Z - cameraPosition.z);
     for (int i=0; i < VERTICAL_SEGMENTS; i++) {
       if (!chunk.getMesh()[i].isEmpty()) {

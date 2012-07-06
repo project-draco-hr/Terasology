@@ -4,7 +4,7 @@
   glBindTexture(GL11.GL_TEXTURE_2D,effectsTexture.getId());
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_DST_COLOR,GL_ZERO);
-  Vector3d cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+  Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
   for (  EntityRef entity : entityManager.iteratorEntities(HealthComponent.class,BlockComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
     if (health.currentHealth == health.maxHealth)     continue;
