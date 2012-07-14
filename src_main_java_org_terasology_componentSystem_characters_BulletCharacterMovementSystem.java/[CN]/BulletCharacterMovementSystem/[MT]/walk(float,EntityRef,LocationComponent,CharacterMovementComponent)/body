@@ -1,0 +1,61 @@
+{
+  Vector3f desiredVelocity=new Vector3f(movementComp.getDrive());
+  float maxSpeed=movementComp.maxGroundSpeed;
+  if (movementComp.isRunning) {
+    maxSpeed*=movementComp.runFactor;
+  }
+  if (desiredVelocity.y != 0) {
+    float speed=desiredVelocity.length();
+    desiredVelocity.y=0;
+    if (desiredVelocity.x != 0 || desiredVelocity.z != 0) {
+      desiredVelocity.normalize();
+      desiredVelocity.scale(speed);
+    }
+  }
+  desiredVelocity.scale(maxSpeed);
+  Vector3f velocityDiff=new Vector3f(desiredVelocity);
+  velocityDiff.sub(movementComp.getVelocity());
+  velocityDiff.scale(Math.min(movementComp.groundFriction * delta,1.0f));
+  movementComp.getVelocity().x+=velocityDiff.x;
+  movementComp.getVelocity().z+=velocityDiff.z;
+  movementComp.getVelocity().y=Math.max(-TerminalVelocity,(movementComp.getVelocity().y - Gravity * delta));
+  Vector3f moveDelta=new Vector3f(movementComp.getVelocity());
+  moveDelta.scale(delta);
+  MoveResult moveResult=move(location.getWorldPosition(),moveDelta,movementComp.stepHeight,movementComp.collider);
+  Vector3f distanceMoved=new Vector3f(moveResult.finalPosition);
+  distanceMoved.sub(location.getWorldPosition());
+  location.setWorldPosition(moveResult.finalPosition);
+  movementComp.collider.setWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),moveResult.finalPosition,1.0f)));
+  if (moveResult.hitBottom) {
+    if (!movementComp.isGrounded) {
+      entity.send(new VerticalCollisionEvent(movementComp.getVelocity(),moveResult.finalPosition));
+      movementComp.isGrounded=true;
+    }
+    movementComp.getVelocity().y=0;
+    if (movementComp.jump) {
+      entity.send(new JumpEvent());
+      movementComp.jump=false;
+      movementComp.isGrounded=false;
+      movementComp.getVelocity().y+=movementComp.jumpSpeed;
+    }
+  }
+ else {
+    movementComp.isGrounded=false;
+    movementComp.jump=false;
+  }
+  if (moveResult.hitHoriz) {
+    entity.send(new HorizontalCollisionEvent());
+  }
+  if (movementComp.isGrounded) {
+    movementComp.footstepDelta+=distanceMoved.length();
+    if (movementComp.footstepDelta > movementComp.distanceBetweenFootsteps) {
+      movementComp.footstepDelta-=movementComp.distanceBetweenFootsteps;
+      entity.send(new FootstepEvent());
+    }
+  }
+  if (movementComp.faceMovementDirection && distanceMoved.lengthSquared() > 0.01f) {
+    float yaw=(float)Math.atan2(distanceMoved.x,distanceMoved.z);
+    AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
+    location.getLocalRotation().set(axisAngle);
+  }
+}

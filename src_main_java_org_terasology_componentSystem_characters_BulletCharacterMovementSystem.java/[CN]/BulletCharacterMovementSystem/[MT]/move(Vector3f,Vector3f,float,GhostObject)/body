@@ -1,0 +1,9 @@
+{
+  MoveResult result=new MoveResult();
+  Vector3f position=new Vector3f(startPosition);
+  result.finalPosition=position;
+  float steppedUpDist=moveUp((moveDelta.y > 0) ? moveDelta.y : 0,stepHeight,collider,result,position);
+  moveHorizontal(new Vector3f(moveDelta.x,0,moveDelta.z),collider,position);
+  moveDown((moveDelta.y < 0) ? moveDelta.y : 0,steppedUpDist,collider,result,position);
+  return result;
+}

@@ -1,0 +1,19 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(CharacterMovementComponent.class,LocationComponent.class)) {
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    if (!worldProvider.isBlockActive(location.getWorldPosition()))     continue;
+    CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
+    if (movementComp.collider == null) {
+      float height=movementComp.height - 2 * movementComp.radius;
+      float width=movementComp.radius;
+      ConvexShape capsule=new CapsuleShape(width,height);
+      movementComp.collider=physics.creationCollider(location.getWorldPosition(),capsule);
+      movementComp.collider.setUserPointer(entity);
+      capsule.setMargin(0.05f);
+    }
+    updatePosition(delta,entity,location,movementComp);
+    updateSwimStatus(location,movementComp);
+    entity.saveComponent(location);
+    entity.saveComponent(movementComp);
+  }
+}
