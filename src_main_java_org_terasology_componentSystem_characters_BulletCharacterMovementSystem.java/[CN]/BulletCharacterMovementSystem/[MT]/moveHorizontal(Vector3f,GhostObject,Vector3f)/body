@@ -1,5 +1,6 @@
 {
   float remainingFraction=1.0f;
+  boolean horizontalHit=false;
   Vector3f normalizedDir=Vector3fUtil.safeNormalize(horizMove,new Vector3f());
   Vector3f targetPos=new Vector3f(position);
   targetPos.add(horizMove);
@@ -12,6 +13,9 @@
       actualMove.sub(targetPos,position);
       actualMove.scale(Math.max(0,callback.closestHitFraction));
       position.add(actualMove);
+      if (callback.hitNormalWorld.dot(new Vector3f(0,1,0)) < 0.5f) {
+        horizontalHit=true;
+      }
       extractResidualMovement(callback.hitNormalWorld,targetPos,position);
       Vector3f currentDir=new Vector3f();
       currentDir.sub(targetPos,position);
@@ -30,4 +34,5 @@
       position.set(targetPos);
     }
   }
+  return horizontalHit;
 }

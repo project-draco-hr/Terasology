@@ -4,8 +4,8 @@
     if (!worldProvider.isBlockActive(location.getWorldPosition()))     continue;
     CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
     if (movementComp.collider == null) {
-      float height=movementComp.height - 2 * movementComp.radius;
-      float width=movementComp.radius;
+      float height=(movementComp.height - 2 * movementComp.radius) * location.getWorldScale();
+      float width=movementComp.radius * location.getWorldScale();
       ConvexShape capsule=new CapsuleShape(width,height);
       movementComp.collider=physics.creationCollider(location.getWorldPosition(),capsule);
       movementComp.collider.setUserPointer(entity);
