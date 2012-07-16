@@ -8,14 +8,14 @@
       AABB blockAABB=block.getBounds(p);
       if (calcAABB(position,extents).overlaps(blockAABB)) {
         result=true;
-        Vector3d direction=new Vector3d(position.x,0f,position.z);
+        Vector3f direction=new Vector3f(position.x,0f,position.z);
         direction.x-=origin.x;
         direction.z-=origin.z;
-        Vector3d blockPoi=blockAABB.closestPointOnAABBToPoint(new Vector3d(origin));
-        Vector3d entityPoi=calcAABB(origin,extents).closestPointOnAABBToPoint(blockPoi);
-        Vector3d planeNormal=blockAABB.getFirstHitPlane(direction,new Vector3d(origin),new Vector3d(extents),true,false,true);
-        Vector3d slideVector=new Vector3d(planeNormal.z,0,-planeNormal.x);
-        Vector3d pushBack=new Vector3d();
+        Vector3f blockPoi=blockAABB.closestPointOnAABBToPoint(origin);
+        Vector3f entityPoi=calcAABB(origin,extents).closestPointOnAABBToPoint(blockPoi);
+        Vector3f planeNormal=blockAABB.getFirstHitPlane(direction,origin,extents,true,false,true);
+        Vector3f slideVector=new Vector3f(planeNormal.z,0,-planeNormal.x);
+        Vector3f pushBack=new Vector3f();
         pushBack.sub(blockPoi,entityPoi);
         double length=slideVector.dot(direction);
         Vector3d newPosition=new Vector3d();

@@ -8,15 +8,7 @@
     return false;
   }
   if (!block.isPenetrable()) {
-    for (    EntityRef player : entityManager.iteratorEntities(PlayerComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
-      LocationComponent location=player.getComponent(LocationComponent.class);
-      AABBCollisionComponent collision=player.getComponent(AABBCollisionComponent.class);
-      Vector3f worldPos=location.getWorldPosition();
-      AABB blockAABB=block.getBounds(blockPos);
-      if (blockAABB.overlaps(new AABB(worldPos,collision.getExtents()))) {
-        return false;
-      }
-    }
+    return !CoreRegistry.get(BulletPhysicsRenderer.class).scanArea(block.getBounds(blockPos),CollisionFilterGroups.ALL_FILTER).iterator().hasNext();
   }
   return true;
 }

@@ -1,8 +1,8 @@
 {
   if (aabb == null) {
-    Vector3d dimensions=new Vector3d(getChunkSizeX() / 2.0,getChunkSizeY() / 2.0,getChunkSizeZ() / 2.0);
-    Vector3d position=new Vector3d(getChunkWorldPosX() + dimensions.x - 0.5f,dimensions.y - 0.5f,getChunkWorldPosZ() + dimensions.z - 0.5f);
-    aabb=new AABB(position,dimensions);
+    Vector3f dimensions=new Vector3f(0.5f * getChunkSizeX(),0.5f * getChunkSizeY(),0.5f * getChunkSizeZ());
+    Vector3f position=new Vector3f(getChunkWorldPosX() + dimensions.x - 0.5f,dimensions.y - 0.5f,getChunkWorldPosZ() + dimensions.z - 0.5f);
+    aabb=AABB.createCenterExtent(position,dimensions);
   }
   return aabb;
 }
