@@ -1,0 +1,11 @@
+{
+  while (!_insertionQueue.isEmpty()) {
+    RigidBodyRequest request=_insertionQueue.poll();
+    if (request.body instanceof BlockRigidBody)     _blocks.addFirst((BlockRigidBody)request.body);
+    _discreteDynamicsWorld.addRigidBody(request.body,request.groups,request.filter);
+  }
+  while (!_removalQueue.isEmpty()) {
+    RigidBody body=_removalQueue.poll();
+    _discreteDynamicsWorld.removeRigidBody(body);
+  }
+}

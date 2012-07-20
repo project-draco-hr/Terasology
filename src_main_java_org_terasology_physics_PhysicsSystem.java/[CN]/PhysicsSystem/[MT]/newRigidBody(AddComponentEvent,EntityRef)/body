@@ -1,0 +1,19 @@
+{
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  RigidBodyComponent rigidBody=entity.getComponent(RigidBodyComponent.class);
+  ConvexShape shape=getShapeFor(entity);
+  float scale=location.getWorldScale();
+  shape.setLocalScaling(new Vector3f(scale,scale,scale));
+  if (shape != null) {
+    Vector3f fallInertia=new Vector3f();
+    shape.calculateLocalInertia(rigidBody.mass,fallInertia);
+    RigidBodyConstructionInfo info=new RigidBodyConstructionInfo(rigidBody.mass,new EntityMotionState(entity),shape,fallInertia);
+    RigidBody collider=new RigidBody(info);
+    collider.setUserPointer(entity);
+    RigidBody oldBody=entityRigidBodies.put(entity,collider);
+    physics.addRigidBody(collider,CollisionFilterGroups.DEFAULT_FILTER,(short)(CollisionFilterGroups.DEFAULT_FILTER | CollisionFilterGroups.STATIC_FILTER | CollisionFilterGroups.KINEMATIC_FILTER));
+    if (oldBody != null) {
+      physics.removeRigidBody(oldBody);
+    }
+  }
+}

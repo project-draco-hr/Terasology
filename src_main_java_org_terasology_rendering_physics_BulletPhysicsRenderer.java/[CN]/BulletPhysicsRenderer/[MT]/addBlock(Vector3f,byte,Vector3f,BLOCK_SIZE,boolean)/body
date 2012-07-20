@@ -17,6 +17,6 @@
   rigidBlock.setFriction(0.5f);
   rigidBlock._temporary=temporary;
   rigidBlock.applyImpulse(impulse,new Vector3f(0.0f,0.0f,0.0f));
-  _insertionQueue.add(rigidBlock);
+  _insertionQueue.add(new RigidBodyRequest(rigidBlock,CollisionFilterGroups.DEFAULT_FILTER,(short)(CollisionFilterGroups.DEFAULT_FILTER | CollisionFilterGroups.STATIC_FILTER)));
   return rigidBlock;
 }
