@@ -1,0 +1,12 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(LifespanComponent.class)) {
+    LifespanComponent lifespan=entity.getComponent(LifespanComponent.class);
+    lifespan.lifespan-=delta;
+    if (lifespan.lifespan < 0) {
+      entity.destroy();
+    }
+ else {
+      entity.saveComponent(lifespan);
+    }
+  }
+}
