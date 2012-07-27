@@ -1,0 +1,45 @@
+{
+  DynamicsWorld world=physics.getWorld();
+  ObjectArrayList<PersistentManifold> manifolds=new ObjectArrayList<PersistentManifold>();
+  for (  PairCachingGhostObject trigger : entityTriggers.values()) {
+    EntityRef entity=(EntityRef)trigger.getUserPointer();
+    for (    BroadphasePair initialPair : trigger.getOverlappingPairCache().getOverlappingPairArray()) {
+      EntityRef otherEntity=null;
+      if (initialPair.pProxy0.clientObject == trigger) {
+        if (((CollisionObject)initialPair.pProxy1.clientObject).getUserPointer() instanceof EntityRef) {
+          otherEntity=(EntityRef)((CollisionObject)initialPair.pProxy1.clientObject).getUserPointer();
+        }
+      }
+ else {
+        if (((CollisionObject)initialPair.pProxy0.clientObject).getUserPointer() instanceof EntityRef) {
+          otherEntity=(EntityRef)((CollisionObject)initialPair.pProxy0.clientObject).getUserPointer();
+        }
+      }
+      if (otherEntity == null) {
+        continue;
+      }
+      BroadphasePair pair=world.getPairCache().findPair(initialPair.pProxy0,initialPair.pProxy1);
+      if (pair == null) {
+        continue;
+      }
+      manifolds.clear();
+      if (pair.algorithm != null) {
+        pair.algorithm.getAllContactManifolds(manifolds);
+      }
+      for (      PersistentManifold manifold : manifolds) {
+        for (int point=0; point < manifold.getNumContacts(); ++point) {
+          ManifoldPoint manifoldPoint=manifold.getContactPoint(point);
+          if (manifoldPoint.getDistance() < 0) {
+            entity.send(new CollideEvent(otherEntity));
+            otherEntity.send(new CollideEvent(entity));
+            break;
+          }
+        }
+      }
+    }
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    if (location != null) {
+      trigger.setWorldTransform(new Transform(new Matrix4f(location.getWorldRotation(),location.getWorldPosition(),1.0f)));
+    }
+  }
+}

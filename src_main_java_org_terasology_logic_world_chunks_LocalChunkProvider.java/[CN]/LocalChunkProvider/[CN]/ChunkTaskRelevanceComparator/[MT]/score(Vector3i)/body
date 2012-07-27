@@ -1,10 +1,16 @@
 {
   int score=Integer.MAX_VALUE;
-  for (  CacheRegion region : regions) {
-    int dist=distFromRegion(chunk,region.center);
-    if (dist < score) {
-      score=dist;
+  regionLock.readLock().lock();
+  try {
+    for (    CacheRegion region : regions) {
+      int dist=distFromRegion(chunk,region.center);
+      if (dist < score) {
+        score=dist;
+      }
     }
+    return score;
   }
-  return score;
+  finally {
+    regionLock.readLock().unlock();
+  }
 }
