@@ -1,9 +1,11 @@
 {
   Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,LocationComponent.class)) {
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
+  shader.enable();
+  for (  EntityRef entity : gelatinous) {
     MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-    if (meshComp.renderType == MeshComponent.RenderType.Normal)     continue;
     LocationComponent location=entity.getComponent(LocationComponent.class);
+    if (location == null)     continue;
     Quat4f worldRot=location.getWorldRotation();
     Vector3f worldPos=location.getWorldPosition();
     float worldScale=location.getWorldScale();
@@ -15,8 +17,6 @@
       rot.set(worldRot);
       glRotatef(TeraMath.RAD_TO_DEG * rot.angle,rot.x,rot.y,rot.z);
       glScalef(worldScale,worldScale,worldScale);
-      ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
-      shader.enable();
       shader.setFloat4("colorOffset",meshComp.color.x,meshComp.color.y,meshComp.color.z,meshComp.color.w);
       shader.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
       mesh.render();

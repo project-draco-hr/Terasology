@@ -1,27 +1,29 @@
 {
   boolean carryingTorch=CoreRegistry.get(LocalPlayer.class).isCarryingTorch();
   Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,LocationComponent.class)) {
-    MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-    if (meshComp.renderType != MeshComponent.RenderType.Normal || meshComp.mesh == null)     continue;
-    LocationComponent location=entity.getComponent(LocationComponent.class);
-    Quat4f worldRot=location.getWorldRotation();
-    Vector3f worldPos=location.getWorldPosition();
-    float worldScale=location.getWorldScale();
-    AABB aabb=meshComp.mesh.getAABB().transform(worldRot,worldPos,worldScale);
-    if (worldRenderer.isAABBVisible(aabb)) {
-      glPushMatrix();
-      glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
-      AxisAngle4f rot=new AxisAngle4f();
-      rot.set(location.getWorldRotation());
-      glRotatef(TeraMath.RAD_TO_DEG * rot.angle,rot.x,rot.y,rot.z);
-      glScalef(worldScale,worldScale,worldScale);
-      meshComp.material.enable();
-      meshComp.material.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
-      meshComp.material.setInt("carryingTorch",carryingTorch ? 1 : 0);
-      meshComp.material.bindTextures();
-      meshComp.mesh.render();
-      glPopMatrix();
+  for (  Material material : opaqueMesh.keys()) {
+    material.enable();
+    material.setInt("carryingTorch",carryingTorch ? 1 : 0);
+    material.bindTextures();
+    for (    EntityRef entity : opaqueMesh.get(material)) {
+      MeshComponent meshComp=entity.getComponent(MeshComponent.class);
+      LocationComponent location=entity.getComponent(LocationComponent.class);
+      if (location == null)       continue;
+      Quat4f worldRot=location.getWorldRotation();
+      Vector3f worldPos=location.getWorldPosition();
+      float worldScale=location.getWorldScale();
+      AABB aabb=meshComp.mesh.getAABB().transform(worldRot,worldPos,worldScale);
+      if (worldRenderer.isAABBVisible(aabb)) {
+        glPushMatrix();
+        glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
+        AxisAngle4f rot=new AxisAngle4f();
+        rot.set(worldRot);
+        glRotatef(TeraMath.RAD_TO_DEG * rot.angle,rot.x,rot.y,rot.z);
+        glScalef(worldScale,worldScale,worldScale);
+        material.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
+        meshComp.mesh.render();
+        glPopMatrix();
+      }
     }
   }
 }

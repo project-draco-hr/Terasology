@@ -42,7 +42,9 @@ if (currentBlock.isDestructible()) {
 worldProvider.setBlock(blockPos,BlockManager.getInstance().getAir(),currentBlock);
 EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
 blockEntity.destroy();
-physicsRenderer.addTemporaryBlock(target,currentBlock.getId(),impulse,BulletPhysicsRenderer.BLOCK_SIZE.HALF_SIZE);
+if (random.randomInt(4) == 0) {
+droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily());
+}
 }
 }
 }
