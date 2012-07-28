@@ -11,7 +11,10 @@
     seed=random.randomCharacterString(16);
   }
   logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  worldRenderer=new WorldRenderer(title,seed,time,entityManager,localPlayerSys);
+  ChunkGeneratorManager chunkGeneratorManager=initChunkGeneratorManager(title);
+  chunkGeneratorManager.setWorldSeed(seed);
+  chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(seed));
+  worldRenderer=new WorldRenderer(title,seed,time,chunkGeneratorManager,entityManager,localPlayerSys);
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
   File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
   entityManager.clear();

@@ -1,0 +1,26 @@
+{
+  ChunkGeneratorManager chunkGeneratorManager=null;
+  File generatorDataFile=new File(PathManager.getInstance().getWorldSavePath(title),CHUNK_GENERATOR_FILE);
+  try {
+    chunkGeneratorManager=new ChunkGeneratorPersister().load(generatorDataFile);
+  }
+ catch (  IOException e) {
+    logger.log(Level.SEVERE,"Failed to load generator data",e);
+  }
+  if (chunkGeneratorManager == null) {
+    chunkGeneratorManager=new ChunkGeneratorManagerImpl();
+    chunkGeneratorManager.registerChunkGenerator(new PerlinTerrainGenerator());
+    chunkGeneratorManager.registerChunkGenerator(new FloraGenerator());
+    chunkGeneratorManager.registerChunkGenerator(new LiquidsGenerator());
+    ForestGenerator forestGen=new ForestGenerator();
+    new DefaultGenerators(forestGen);
+    chunkGeneratorManager.registerChunkGenerator(forestGen);
+    try {
+      new ChunkGeneratorPersister().save(generatorDataFile,chunkGeneratorManager);
+    }
+ catch (    IOException e) {
+      logger.log(Level.SEVERE,"Failed to save generator data",e);
+    }
+  }
+  return chunkGeneratorManager;
+}
