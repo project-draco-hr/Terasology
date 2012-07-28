@@ -1,0 +1,21 @@
+{
+  Vector3f min;
+  Vector3f max;
+  Iterator<AABB> i=others.iterator();
+  if (i.hasNext()) {
+    AABB next=i.next();
+    min=next.getMin();
+    max=next.getMax();
+  }
+ else {
+    return createEmpty();
+  }
+  while (i.hasNext()) {
+    AABB next=i.next();
+    Vector3f otherMin=next.getMin();
+    Vector3f otherMax=next.getMax();
+    Vector3fUtil.min(min,otherMin,min);
+    Vector3fUtil.max(max,otherMax,max);
+  }
+  return new AABB(min,max);
+}

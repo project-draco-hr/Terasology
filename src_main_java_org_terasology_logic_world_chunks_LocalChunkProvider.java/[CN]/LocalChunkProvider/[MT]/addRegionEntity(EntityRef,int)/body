@@ -1,6 +1,12 @@
 {
   CacheRegion region=new CacheRegion(entity,distance);
-  regions.remove(region);
-  regions.add(region);
+  regionLock.writeLock().lock();
+  try {
+    regions.remove(region);
+    regions.add(region);
+  }
+  finally {
+    regionLock.writeLock().unlock();
+  }
   reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.PRODUCE,region.getRegion().expand(new Vector3i(2,0,2))));
 }

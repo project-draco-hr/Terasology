@@ -1,10 +1,17 @@
 {
   int processed=0;
-  while (!eventQueue.isEmpty() && processed < 32) {
-    BlockChangedEvent event=eventQueue.poll();
+  PerformanceMonitor.startActivity("BlockChangedEventQueue");
+  BlockChangedEvent event=eventQueue.poll();
+  while (event != null) {
+    logger.finer(String.format("%s: %s -> %s",event.getBlockPosition(),event.getOldType().getBlockFamily().getTitle(),event.getNewType().getBlockFamily().getTitle()));
     getOrCreateEntityAt(event.getBlockPosition()).send(event);
-    processed++;
+    if (processed++ >= 4) {
+      break;
+    }
+    event=eventQueue.poll();
   }
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Temp Blocks Cleanup");
   for (  EntityRef entity : tempBlocks) {
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
     if (blockComp == null || !blockComp.temporary)     continue;
@@ -14,4 +21,5 @@
     }
   }
   tempBlocks.clear();
+  PerformanceMonitor.endActivity();
 }

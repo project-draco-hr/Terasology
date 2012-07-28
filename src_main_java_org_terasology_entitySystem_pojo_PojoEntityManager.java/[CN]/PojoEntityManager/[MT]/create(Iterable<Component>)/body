@@ -1,0 +1,10 @@
+{
+  EntityRef entity=create();
+  for (  Component c : components) {
+    store.put(entity.getId(),c);
+  }
+  if (eventSystem != null) {
+    eventSystem.send(entity,AddComponentEvent.newInstance());
+  }
+  return entity;
+}

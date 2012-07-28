@@ -1,0 +1,30 @@
+{
+  boolean result=false;
+  List<BlockPosition> blockPositions=WorldUtil.gatherAdjacentBlockPositions(origin);
+  for (int i=0; i < blockPositions.size(); i++) {
+    BlockPosition p=blockPositions.get(i);
+    Block block=worldProvider.getBlock(p);
+    if (!block.isPenetrable()) {
+      AABB blockAABB=block.getBounds(p);
+      if (calcAABB(position,extents).overlaps(blockAABB)) {
+        result=true;
+        Vector3f direction=new Vector3f(position.x,0f,position.z);
+        direction.x-=origin.x;
+        direction.z-=origin.z;
+        Vector3f blockPoi=blockAABB.closestPointOnAABBToPoint(origin);
+        Vector3f entityPoi=calcAABB(origin,extents).closestPointOnAABBToPoint(blockPoi);
+        Vector3f planeNormal=blockAABB.getFirstHitPlane(direction,origin,extents,true,false,true);
+        Vector3f slideVector=new Vector3f(planeNormal.z,0,-planeNormal.x);
+        Vector3f pushBack=new Vector3f();
+        pushBack.sub(blockPoi,entityPoi);
+        double length=slideVector.dot(direction);
+        Vector3d newPosition=new Vector3d();
+        newPosition.z=origin.z + pushBack.z * 0.2 + length * slideVector.z;
+        newPosition.x=origin.x + pushBack.x * 0.2 + length * slideVector.x;
+        newPosition.y=origin.y;
+        position.set(newPosition);
+      }
+    }
+  }
+  return result;
+}

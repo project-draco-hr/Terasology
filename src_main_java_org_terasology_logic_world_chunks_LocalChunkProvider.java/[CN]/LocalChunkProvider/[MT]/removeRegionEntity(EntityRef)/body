@@ -1,3 +1,9 @@
 {
-  regions.remove(new CacheRegion(entity,0));
+  regionLock.writeLock().lock();
+  try {
+    regions.remove(new CacheRegion(entity,0));
+  }
+  finally {
+    regionLock.writeLock().unlock();
+  }
 }

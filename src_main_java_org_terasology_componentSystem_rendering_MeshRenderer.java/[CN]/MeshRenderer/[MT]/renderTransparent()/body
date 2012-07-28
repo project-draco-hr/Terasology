@@ -1,27 +1,25 @@
 {
   Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  for (  EntityRef entity : manager.iteratorEntities(MeshComponent.class,AABBCollisionComponent.class,LocationComponent.class)) {
+  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
+  shader.enable();
+  for (  EntityRef entity : gelatinous) {
     MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-    if (meshComp.renderType == MeshComponent.RenderType.Normal)     continue;
-    AABBCollisionComponent collision=entity.getComponent(AABBCollisionComponent.class);
     LocationComponent location=entity.getComponent(LocationComponent.class);
+    if (location == null)     continue;
+    Quat4f worldRot=location.getWorldRotation();
     Vector3f worldPos=location.getWorldPosition();
-    Vector3d extents=new Vector3d(collision.getExtents());
     float worldScale=location.getWorldScale();
-    extents.scale(worldScale);
-    AABB aabb=new AABB(new Vector3d(worldPos),new Vector3d(collision.getExtents()));
+    AABB aabb=gelatinousCubeMesh.getAABB().transform(worldRot,worldPos,worldScale);
     if (worldRenderer.isAABBVisible(aabb)) {
       glPushMatrix();
       glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
       AxisAngle4f rot=new AxisAngle4f();
-      rot.set(location.getWorldRotation());
+      rot.set(worldRot);
       glRotatef(TeraMath.RAD_TO_DEG * rot.angle,rot.x,rot.y,rot.z);
       glScalef(worldScale,worldScale,worldScale);
-      ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("gelatinousCube");
-      shader.enable();
       shader.setFloat4("colorOffset",meshComp.color.x,meshComp.color.y,meshComp.color.z,meshComp.color.w);
       shader.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
-      mesh.render();
+      gelatinousCubeMesh.render();
       glPopMatrix();
     }
   }

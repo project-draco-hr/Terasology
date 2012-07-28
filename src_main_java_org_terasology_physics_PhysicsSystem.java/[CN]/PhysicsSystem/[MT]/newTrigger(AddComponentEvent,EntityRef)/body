@@ -1,0 +1,12 @@
+{
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  TriggerComponent trigger=entity.getComponent(TriggerComponent.class);
+  ConvexShape shape=getShapeFor(entity);
+  if (shape != null) {
+    float scale=location.getWorldScale();
+    shape.setLocalScaling(new Vector3f(scale,scale,scale));
+    PairCachingGhostObject triggerObj=physics.createCollider(location.getWorldPosition(),shape,CollisionFilterGroups.SENSOR_TRIGGER,(short)(CollisionFilterGroups.DEFAULT_FILTER | CollisionFilterGroups.SENSOR_TRIGGER),CollisionFlags.NO_CONTACT_RESPONSE);
+    triggerObj.setUserPointer(entity);
+    entityTriggers.put(entity,triggerObj);
+  }
+}

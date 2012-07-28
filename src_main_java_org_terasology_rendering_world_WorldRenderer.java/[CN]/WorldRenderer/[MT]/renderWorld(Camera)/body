@@ -26,7 +26,6 @@
   while (_renderQueueChunksSortedBillboards.size() > 0)   renderChunk(_renderQueueChunksSortedBillboards.poll(),ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Transparent");
-  while (_renderQueueTransparent.size() > 0)   _renderQueueTransparent.poll().render();
   for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
     renderer.renderTransparent();
   }

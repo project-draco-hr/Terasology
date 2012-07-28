@@ -5,7 +5,8 @@
     if (blockComp != null) {
       Block block=worldProvider.getBlock(blockComp.getPosition());
       if (block.isRenderBoundingBox()) {
-        block.getBounds(blockComp.getPosition()).render(2f);
+        aabbRenderer.setAABB(block.getBounds(blockComp.getPosition()));
+        aabbRenderer.render(2f);
       }
     }
   }

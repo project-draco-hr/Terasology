@@ -1,0 +1,18 @@
+{
+  Vector3f movementDirection=new Vector3f();
+  movementDirection.sub(targetPos,currentPos);
+  float movementLength=movementDirection.length();
+  if (movementLength > BulletGlobals.SIMD_EPSILON) {
+    movementDirection.normalize();
+    Vector3f reflectDir=Vector3fUtil.reflect(movementDirection,hitNormal,new Vector3f());
+    reflectDir.normalize();
+    Vector3f perpindicularDir=Vector3fUtil.getPerpendicularComponent(reflectDir,hitNormal,new Vector3f());
+    targetPos.set(currentPos);
+    if (normalMag != 0.0f) {
+      Vector3f perpComponent=new Vector3f();
+      perpComponent.scale(normalMag * movementLength,perpindicularDir);
+      targetPos.add(perpComponent);
+    }
+  }
+  return targetPos;
+}

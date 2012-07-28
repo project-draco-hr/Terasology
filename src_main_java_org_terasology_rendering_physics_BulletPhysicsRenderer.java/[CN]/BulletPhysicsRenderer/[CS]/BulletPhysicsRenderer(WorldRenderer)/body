@@ -1,12 +1,13 @@
 {
   _broadphase=new DbvtBroadphase();
+  _broadphase.getOverlappingPairCache().setInternalGhostPairCallback(new GhostPairCallback());
   _defaultCollisionConfiguration=new DefaultCollisionConfiguration();
   _dispatcher=new CollisionDispatcher(_defaultCollisionConfiguration);
   _sequentialImpulseConstraintSolver=new SequentialImpulseConstraintSolver();
   _discreteDynamicsWorld=new DiscreteDynamicsWorld(_dispatcher,_broadphase,_sequentialImpulseConstraintSolver,_defaultCollisionConfiguration);
-  _discreteDynamicsWorld.setGravity(new Vector3f(0f,-10f,0f));
+  _discreteDynamicsWorld.setGravity(new Vector3f(0f,-15f,0f));
   _parent=parent;
-  _blockItemFactory=new BlockItemFactory(CoreRegistry.get(EntityManager.class),CoreRegistry.get(PrefabManager.class));
+  _blockItemFactory=new BlockItemFactory(CoreRegistry.get(EntityManager.class));
   blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
   _timer=CoreRegistry.get(Timer.class);
   CoreRegistry.get(EventSystem.class).registerEventReceiver(this,BlockChangedEvent.class,BlockComponent.class);
@@ -17,5 +18,6 @@
   DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,new Vector3f(0,0,0),1.0f)));
   RigidBodyConstructionInfo blockConsInf=new RigidBodyConstructionInfo(0,blockMotionState,worldShape,new Vector3f());
   RigidBody rigidBody=new RigidBody(blockConsInf);
+  rigidBody.setCollisionFlags(CollisionFlags.STATIC_OBJECT | rigidBody.getCollisionFlags());
   _discreteDynamicsWorld.addRigidBody(rigidBody);
 }

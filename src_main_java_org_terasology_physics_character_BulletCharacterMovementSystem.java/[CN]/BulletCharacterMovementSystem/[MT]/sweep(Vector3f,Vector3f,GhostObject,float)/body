@@ -1,0 +1,9 @@
+{
+  Transform startTransform=new Transform(new Matrix4f(new Quat4f(0,0,0,1),from,1.0f));
+  Transform endTransform=new Transform(new Matrix4f(new Quat4f(0,0,0,1),to,1.0f));
+  SweepCallback callback=new SweepCallback(collider,new Vector3f(0,1,0),-1.0f);
+  callback.collisionFilterGroup=collider.getBroadphaseHandle().collisionFilterGroup;
+  callback.collisionFilterMask=collider.getBroadphaseHandle().collisionFilterMask;
+  collider.convexSweepTest((ConvexShape)(collider.getCollisionShape()),startTransform,endTransform,callback,allowedPenetration);
+  return callback;
+}

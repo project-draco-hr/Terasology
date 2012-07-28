@@ -1,0 +1,14 @@
+{
+  BlockPickupComponent blockPickupComponent=entity.getComponent(BlockPickupComponent.class);
+  EntityRef blockItem=blockItemFactory.newInstance(blockPickupComponent.blockFamily);
+  ReceiveItemEvent giveItemEvent=new ReceiveItemEvent(blockItem);
+  event.getOtherEntity().send(giveItemEvent);
+  ItemComponent itemComp=blockItem.getComponent(ItemComponent.class);
+  if (itemComp != null && !itemComp.container.exists()) {
+    blockItem.destroy();
+  }
+ else {
+    AudioManager.play(new AssetUri(AssetType.SOUND,"engine:Loot"));
+    entity.destroy();
+  }
+}

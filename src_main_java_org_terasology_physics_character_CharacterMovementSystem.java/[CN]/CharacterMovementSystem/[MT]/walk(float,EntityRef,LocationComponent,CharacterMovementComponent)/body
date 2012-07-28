@@ -1,0 +1,67 @@
+{
+  Vector3f desiredVelocity=new Vector3f(movementComp.getDrive());
+  float maxSpeed=movementComp.maxGroundSpeed;
+  if (movementComp.isRunning) {
+    maxSpeed*=movementComp.runFactor;
+  }
+  if (desiredVelocity.y != 0) {
+    float speed=desiredVelocity.length();
+    desiredVelocity.y=0;
+    if (desiredVelocity.x != 0 || desiredVelocity.z != 0) {
+      desiredVelocity.normalize();
+      desiredVelocity.scale(speed);
+    }
+  }
+  desiredVelocity.scale(maxSpeed);
+  Vector3f velocityDiff=new Vector3f(desiredVelocity);
+  velocityDiff.sub(movementComp.getVelocity());
+  velocityDiff.y=0;
+  velocityDiff.scale(Math.min(movementComp.groundFriction * delta,1.0f));
+  movementComp.getVelocity().x+=velocityDiff.x;
+  movementComp.getVelocity().z+=velocityDiff.z;
+  movementComp.getVelocity().y=Math.max(-TerminalVelocity,(float)(movementComp.getVelocity().y - Gravity * delta));
+  Vector3f worldPos=location.getWorldPosition();
+  Vector3f oldPos=new Vector3f(worldPos);
+  worldPos.y+=movementComp.getVelocity().y * delta;
+  Vector3f extents=new Vector3f(movementComp.radius,0.5f * movementComp.height,movementComp.radius);
+  extents.scale(location.getWorldScale());
+  if (verticalHitTest(worldPos,oldPos,extents)) {
+    if (!movementComp.isGrounded) {
+      entity.send(new VerticalCollisionEvent(movementComp.getVelocity(),worldPos));
+      movementComp.isGrounded=true;
+    }
+    movementComp.getVelocity().y=0;
+    if (movementComp.jump) {
+      entity.send(new JumpEvent());
+      movementComp.jump=false;
+      movementComp.isGrounded=false;
+      movementComp.getVelocity().y+=movementComp.jumpSpeed;
+    }
+  }
+ else {
+    movementComp.isGrounded=false;
+    movementComp.jump=false;
+  }
+  oldPos.set(worldPos);
+  worldPos.x+=movementComp.getVelocity().x * delta;
+  worldPos.z+=movementComp.getVelocity().z * delta;
+  if (horizontalHitTest(worldPos,oldPos,extents)) {
+    entity.send(new HorizontalCollisionEvent());
+    movementComp.getVelocity().x=(worldPos.x - oldPos.x) / delta;
+    movementComp.getVelocity().z=(worldPos.z - oldPos.z) / delta;
+  }
+  Vector3f dist=new Vector3f(worldPos.x - oldPos.x,0,worldPos.z - oldPos.z);
+  if (movementComp.isGrounded) {
+    movementComp.footstepDelta+=dist.length();
+    if (movementComp.footstepDelta > movementComp.distanceBetweenFootsteps) {
+      movementComp.footstepDelta-=movementComp.distanceBetweenFootsteps;
+      entity.send(new FootstepEvent());
+    }
+  }
+  location.setWorldPosition(worldPos);
+  if (movementComp.faceMovementDirection && movementComp.getVelocity().lengthSquared() > 0.01f) {
+    float yaw=(float)Math.atan2(movementComp.getVelocity().x,movementComp.getVelocity().z);
+    AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
+    location.getLocalRotation().set(axisAngle);
+  }
+}

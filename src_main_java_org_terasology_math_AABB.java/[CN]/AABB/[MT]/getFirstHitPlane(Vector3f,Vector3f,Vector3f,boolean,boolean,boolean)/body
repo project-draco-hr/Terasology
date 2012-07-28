@@ -1,0 +1,41 @@
+{
+  Vector3f hitNormal=new Vector3f();
+  float dist=Float.POSITIVE_INFINITY;
+  if (testX) {
+    float distX;
+    if (direction.x > 0) {
+      distX=(min.x - pos.x - dimensions.x) / direction.x;
+    }
+ else {
+      distX=(max.x - pos.x + dimensions.x) / direction.x;
+    }
+    if (distX >= 0 && distX < dist) {
+      hitNormal.set(Math.copySign(1,direction.x),0,0);
+    }
+  }
+  if (testY) {
+    float distY;
+    if (direction.y > 0) {
+      distY=(min.y - pos.y - dimensions.y) / direction.y;
+    }
+ else {
+      distY=(max.y - pos.y + dimensions.y) / direction.y;
+    }
+    if (distY >= 0 && distY < dist) {
+      hitNormal.set(0,Math.copySign(1,direction.y),0);
+    }
+  }
+  if (testZ) {
+    float distZ;
+    if (direction.z > 0) {
+      distZ=(min.z - pos.z - dimensions.z) / direction.z;
+    }
+ else {
+      distZ=(max.z - pos.z + dimensions.z) / direction.z;
+    }
+    if (distZ >= 0 && distZ < dist) {
+      hitNormal.set(0,0,Math.copySign(1,direction.z));
+    }
+  }
+  return hitNormal;
+}

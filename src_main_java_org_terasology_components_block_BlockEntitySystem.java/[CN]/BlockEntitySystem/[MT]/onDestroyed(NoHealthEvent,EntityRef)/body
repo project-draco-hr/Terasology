@@ -1,0 +1,32 @@
+{
+  if (worldProvider == null)   return;
+  BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+  Block oldBlock=worldProvider.getBlock(blockComp.getPosition());
+  worldProvider.setBlock(blockComp.getPosition(),BlockManager.getInstance().getAir(),oldBlock);
+  Block upperBlock=worldProvider.getBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z);
+  if (upperBlock.getBlockForm() == Block.BLOCK_FORM.BILLBOARD) {
+    worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,BlockManager.getInstance().getAir(),upperBlock);
+  }
+  AudioManager.play(new AssetUri(AssetType.SOUND,"engine:RemoveBlock"),0.6f);
+  if ((oldBlock.isStraightToInventory() || !oldBlock.isEntityTemporary()) && event.getInstigator().exists()) {
+    EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily(),entity);
+    if (!oldBlock.isEntityTemporary()) {
+      entity.removeComponent(HealthComponent.class);
+      entity.removeComponent(BlockComponent.class);
+    }
+    event.getInstigator().send(new ReceiveItemEvent(item));
+    ItemComponent itemComp=item.getComponent(ItemComponent.class);
+    if (itemComp != null && !itemComp.container.exists()) {
+      item.destroy();
+      EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
+      block.send(new ImpulseEvent(random.randomVector3f(30)));
+    }
+  }
+ else {
+    EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
+    block.send(new ImpulseEvent(random.randomVector3f(30)));
+  }
+  if (oldBlock.isEntityTemporary()) {
+    entity.destroy();
+  }
+}
