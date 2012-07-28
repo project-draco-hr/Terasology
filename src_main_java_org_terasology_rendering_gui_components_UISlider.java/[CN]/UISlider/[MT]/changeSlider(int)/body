@@ -1,0 +1,13 @@
+{
+  if (value < _min) {
+    value=_min;
+  }
+ else   if (value > _max) {
+    value=_max;
+  }
+  _slider.getPosition().set(valueToPos(value),0);
+  if (value != _currentValue) {
+    _currentValue=value;
+    notifyChangedListeners();
+  }
+}

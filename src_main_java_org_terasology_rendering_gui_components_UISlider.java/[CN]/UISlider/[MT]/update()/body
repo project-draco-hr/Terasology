@@ -1,0 +1,15 @@
+{
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  updateSlider(mousePos);
+  if (intersects(mousePos)) {
+    setClassStyle("slider-mouseover");
+    if (_mouseDown && !_moveActive) {
+      changeSlider(mousePos.x);
+    }
+  }
+ else {
+    setClassStyle("slider");
+  }
+  _label.setPosition(new Vector2f(getSize().x / 2 - _label.getTextWidth() / 2,getSize().y / 2 - _label.getTextHeight() / 2));
+  super.update();
+}
