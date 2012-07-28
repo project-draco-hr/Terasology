@@ -1,15 +1,15 @@
 {
-  FileInputStream in=new FileInputStream(file);
+  final FileInputStream in=new FileInputStream(file);
   ChunkGeneratorManager chunkGeneratorManager=null;
   try {
-    BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
+    final BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
     chunkGeneratorManager=ChunkGeneratorJSONFormat.read(bufferedReader);
   }
   finally {
     try {
       in.close();
     }
- catch (    IOException e) {
+ catch (    final IOException e) {
       logger.log(Level.SEVERE,"Failed to close file",e);
     }
   }

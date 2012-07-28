@@ -1,11 +1,11 @@
 {
-  File parentFile=file.getParentFile();
+  final File parentFile=file.getParentFile();
   if (parentFile != null) {
     parentFile.mkdirs();
   }
-  FileOutputStream out=new FileOutputStream(file);
+  final FileOutputStream out=new FileOutputStream(file);
   try {
-    BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(out));
+    final BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(out));
     ChunkGeneratorJSONFormat.write(chunkGeneratorManager,bufferedWriter);
     bufferedWriter.flush();
   }
@@ -13,7 +13,7 @@
     try {
       out.close();
     }
- catch (    IOException e) {
+ catch (    final IOException e) {
       logger.log(Level.SEVERE,"Failed to close file",e);
     }
   }
