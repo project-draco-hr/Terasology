@@ -1,8 +1,12 @@
 {
   try {
-    return null;
+    final JSONChunkGeneratorManager jsonChunkGeneratorManager=ChunkGeneratorJSONFormat.newGson().fromJson(reader,JSONChunkGeneratorManager.class);
+    return jsonChunkGeneratorManager.createChunkGeneratorManager();
   }
- catch (  JsonSyntaxException e) {
+ catch (  final JsonSyntaxException e) {
+    throw new IOException("Failed to load chunkGeneratorManager",e);
+  }
+catch (  final IOException e) {
     throw new IOException("Failed to load chunkGeneratorManager",e);
   }
 }
