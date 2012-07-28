@@ -29,7 +29,7 @@ for (int i=0; i < 256; i++) {
 Vector3f direction=new Vector3f(random.randomFloat(),random.randomFloat(),random.randomFloat());
 direction.normalize();
 Vector3f impulse=new Vector3f(direction);
-impulse.scale(80);
+impulse.scale(300);
 for (int j=0; j < 4; j++) {
 Vector3f target=new Vector3f(origin);
 target.x+=direction.x * j;
@@ -43,7 +43,8 @@ worldProvider.setBlock(blockPos,BlockManager.getInstance().getAir(),currentBlock
 EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
 blockEntity.destroy();
 if (random.randomInt(4) == 0) {
-droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily());
+EntityRef block=droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily(),5);
+block.send(new ImpulseEvent(impulse));
 }
 }
 }

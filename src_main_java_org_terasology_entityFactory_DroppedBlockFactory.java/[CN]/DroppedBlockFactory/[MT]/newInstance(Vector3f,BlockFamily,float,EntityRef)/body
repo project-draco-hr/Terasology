@@ -12,6 +12,9 @@
     blockMesh.mesh=blockFamily.getArchetypeBlock().getMesh();
     blockEntity.saveComponent(blockMesh);
     blockEntity.saveComponent(blockPickup);
+    LifespanComponent lifespanComp=blockEntity.getComponent(LifespanComponent.class);
+    lifespanComp.lifespan=lifespan;
+    blockEntity.saveComponent(lifespanComp);
     return blockEntity;
   }
   return EntityRef.NULL;

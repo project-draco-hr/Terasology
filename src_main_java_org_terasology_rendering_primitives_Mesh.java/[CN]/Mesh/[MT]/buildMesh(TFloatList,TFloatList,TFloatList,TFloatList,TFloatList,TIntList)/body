@@ -13,11 +13,17 @@
   }
   indexBuffer.flip();
   Mesh mesh=new Mesh();
-  mesh.vboVertexBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  mesh.vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  mesh.vertices=vertices;
+  mesh.texCoord0=texCoord0;
+  mesh.texCoord1=texCoord1;
+  mesh.normals=normals;
+  mesh.colors=colors;
+  mesh.indices=indices;
   mesh.indexCount=indices.size();
   mesh.aabb=calculateAABB(vertices,vertexCount);
+  mesh.vboVertexBuffer=VertexBufferObjectManager.getInstance().getVboId();
   VertexBufferObjectManager.getInstance().bufferVboData(mesh.vboVertexBuffer,vertexBuffer,GL15.GL_STATIC_DRAW);
+  mesh.vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
   VertexBufferObjectManager.getInstance().bufferVboElementData(mesh.vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
   mesh.stride=vertSize * 4;
   mesh.vertexOffset=0;
