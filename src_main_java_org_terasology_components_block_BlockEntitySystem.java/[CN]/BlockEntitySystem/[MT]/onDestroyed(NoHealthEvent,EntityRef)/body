@@ -18,11 +18,13 @@
     ItemComponent itemComp=item.getComponent(ItemComponent.class);
     if (itemComp != null && !itemComp.container.exists()) {
       item.destroy();
-      droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
+      EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
+      block.send(new ImpulseEvent(random.randomVector3f(30)));
     }
   }
  else {
-    droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
+    EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
+    block.send(new ImpulseEvent(random.randomVector3f(30)));
   }
   if (oldBlock.isEntityTemporary()) {
     entity.destroy();
