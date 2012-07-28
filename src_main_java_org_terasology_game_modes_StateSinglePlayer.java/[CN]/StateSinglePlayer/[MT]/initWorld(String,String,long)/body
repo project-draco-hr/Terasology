@@ -13,16 +13,6 @@
   logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
   worldRenderer=new WorldRenderer(title,seed,time,entityManager,localPlayerSys);
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
-  File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
-  entityManager.clear();
-  if (entityDataFile.exists()) {
-    try {
-      CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);
-    }
- catch (    IOException e) {
-      logger.log(Level.SEVERE,"Failed to load entity data",e);
-    }
-  }
   Iterator<EntityRef> worldEntityIterator=entityManager.iteratorEntities(WorldComponent.class).iterator();
   if (worldEntityIterator.hasNext()) {
     worldRenderer.getChunkProvider().setWorldEntity(worldEntityIterator.next());
@@ -39,6 +29,16 @@
   CoreRegistry.put(BulletPhysicsRenderer.class,worldRenderer.getBulletRenderer());
   for (  ComponentSystem system : componentSystemManager.iterateAll()) {
     system.initialise();
+  }
+  File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
+  entityManager.clear();
+  if (entityDataFile.exists()) {
+    try {
+      CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);
+    }
+ catch (    IOException e) {
+      logger.log(Level.SEVERE,"Failed to load entity data",e);
+    }
   }
   prepareWorld();
 }
