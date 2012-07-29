@@ -1,15 +1,15 @@
 {
   if (_slider.intersects(mousePos)) {
-    if (_mouseDown) {
-      _moveActive=true;
+    if (_mouseDown && _moveActive == null) {
+      _moveActive=this;
     }
   }
   if (_mouseUp) {
-    _moveActive=false;
+    _moveActive=null;
     _mouseDown=false;
     _mouseUp=false;
   }
-  if (_moveActive) {
+  if (_moveActive == this) {
     changeSlider(mousePos.x);
   }
 }
