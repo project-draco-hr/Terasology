@@ -1,0 +1,168 @@
+{
+  _videoOptionsMenu=new UIVideoOptions();
+  _videoOptionsMenu.setVisible(false);
+  UIButton videoToSettingsMenuButton=(UIButton)_videoOptionsMenu.getElementById("backToSettingsMenuButton");
+  UIButton graphicsQualityButton=(UIButton)_videoOptionsMenu.getElementById("graphicsQualityButton");
+  UIButton FOVButton=(UIButton)_videoOptionsMenu.getElementById("fovButton");
+  UIButton viewingDistanceButton=(UIButton)_videoOptionsMenu.getElementById("viewingDistanceButton");
+  UIButton animateGrassButton=(UIButton)_videoOptionsMenu.getElementById("animateGrassButton");
+  UIButton reflectiveWaterButton=(UIButton)_videoOptionsMenu.getElementById("reflectiveWaterButton");
+  UIButton blurIntensityButton=(UIButton)_videoOptionsMenu.getElementById("blurIntensityButton");
+  UIButton bobbingButton=(UIButton)_videoOptionsMenu.getElementById("bobbingButton");
+  videoToSettingsMenuButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      GUIManager.getInstance().setFocusedWindow(_configMenu);
+    }
+  }
+);
+  graphicsQualityButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Graphics Quality: Ugly")) {
+        Config.getInstance().setGraphicsQuality(1);
+        button.getLabel().setText("Graphics Quality: Nice");
+      }
+ else       if (button.getLabel().getText().equals("Graphics Quality: Nice")) {
+        Config.getInstance().setGraphicsQuality(2);
+        button.getLabel().setText("Graphics Quality: Epic");
+      }
+ else       if (button.getLabel().getText().equals("Graphics Quality: Epic")) {
+        Config.getInstance().setGraphicsQuality(0);
+        button.getLabel().setText("Graphics Quality: Ugly");
+      }
+    }
+  }
+);
+  FOVButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Field of View: 75")) {
+        button.getLabel().setText("Field of View: 80");
+        Config.getInstance().setFov(80);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 80")) {
+        button.getLabel().setText("Field of View: 85");
+        Config.getInstance().setFov(85);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 85")) {
+        button.getLabel().setText("Field of View: 90");
+        Config.getInstance().setFov(90);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 90")) {
+        button.getLabel().setText("Field of View: 95");
+        Config.getInstance().setFov(95);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 95")) {
+        button.getLabel().setText("Field of View: 100");
+        Config.getInstance().setFov(100);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 100")) {
+        button.getLabel().setText("Field of View: 105");
+        Config.getInstance().setFov(105);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 105")) {
+        button.getLabel().setText("Field of View: 110");
+        Config.getInstance().setFov(110);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 110")) {
+        button.getLabel().setText("Field of View: 115");
+        Config.getInstance().setFov(115);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 115")) {
+        button.getLabel().setText("Field of View: 120");
+        Config.getInstance().setFov(120);
+      }
+ else       if (button.getLabel().getText().equals("Field of View: 120")) {
+        button.getLabel().setText("Field of View: 75");
+        Config.getInstance().setFov(75);
+      }
+    }
+  }
+);
+  viewingDistanceButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Viewing Distance: Near")) {
+        button.getLabel().setText("Viewing Distance: Moderate");
+        Config.getInstance().setViewingDistanceById(1);
+      }
+ else       if (button.getLabel().getText().equals("Viewing Distance: Moderate")) {
+        button.getLabel().setText("Viewing Distance: Far");
+        Config.getInstance().setViewingDistanceById(2);
+      }
+ else       if (button.getLabel().getText().equals("Viewing Distance: Far")) {
+        Config.getInstance().setViewingDistanceById(3);
+        button.getLabel().setText("Viewing Distance: Ultra");
+      }
+ else       if (button.getLabel().getText().equals("Viewing Distance: Ultra")) {
+        Config.getInstance().setViewingDistanceById(0);
+        button.getLabel().setText("Viewing Distance: Near");
+      }
+    }
+  }
+);
+  animateGrassButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Animated grass: false")) {
+        button.getLabel().setText("Animated grass: true");
+        Config.getInstance().setAnimatedGrass(true);
+      }
+ else       if (button.getLabel().getText().equals("Animated grass: true")) {
+        button.getLabel().setText("Animated grass: false");
+        Config.getInstance().setAnimatedGrass(false);
+      }
+    }
+  }
+);
+  reflectiveWaterButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Reflective water: false")) {
+        button.getLabel().setText("Reflective water: true");
+        Config.getInstance().setComplexWater(true);
+      }
+ else       if (button.getLabel().getText().equals("Reflective water: true")) {
+        button.getLabel().setText("Reflective water: false");
+        Config.getInstance().setComplexWater(false);
+      }
+    }
+  }
+);
+  blurIntensityButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Blur intensity: Normal")) {
+        button.getLabel().setText("Blur intensity: Max");
+        Config.getInstance().setBlurIntensity(3);
+      }
+ else       if (button.getLabel().getText().equals("Blur intensity: Max")) {
+        button.getLabel().setText("Blur intensity: Off");
+        Config.getInstance().setBlurIntensity(0);
+      }
+ else       if (button.getLabel().getText().equals("Blur intensity: Off")) {
+        button.getLabel().setText("Blur intensity: Some");
+        Config.getInstance().setBlurIntensity(1);
+      }
+ else       if (button.getLabel().getText().equals("Blur intensity: Some")) {
+        button.getLabel().setText("Blur intensity: Normal");
+        Config.getInstance().setBlurIntensity(2);
+      }
+    }
+  }
+);
+  bobbingButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      UIButton button=(UIButton)element;
+      if (button.getLabel().getText().equals("Bobbing: true")) {
+        button.getLabel().setText("Bobbing: false");
+        Config.getInstance().setCameraBobbing(false);
+      }
+ else       if (button.getLabel().getText().equals("Bobbing: false")) {
+        button.getLabel().setText("Bobbing: true");
+        Config.getInstance().setCameraBobbing(true);
+      }
+    }
+  }
+);
+}
