@@ -1,0 +1,42 @@
+{
+  maximize();
+  _title=new UIGraphicsElement(AssetManager.loadTexture("engine:terasology"));
+  _title.setVisible(true);
+  _title.setSize(new Vector2f(512f,128f));
+  _version=new UIText("Audio Settings");
+  _version.setVisible(true);
+  _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:loadingBackground"));
+  _overlay.setVisible(true);
+  _soundOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
+  _soundOptionSlider.addChangedListener(new IChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      UISlider slider=(UISlider)element;
+      if (slider.getValue() > 0)       slider.setText("Sound Volume: " + String.valueOf(slider.getValue()));
+ else       slider.setText("Sound Volume: Off");
+      Config.getInstance().setSoundVolume(slider.getValue());
+    }
+  }
+);
+  _soundOptionSlider.setVisible(true);
+  _musicOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
+  _musicOptionSlider.addChangedListener(new IChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      UISlider slider=(UISlider)element;
+      if (slider.getValue() > 0)       slider.setText("Music Volume: " + String.valueOf(slider.getValue()));
+ else       slider.setText("Music Volume: Off");
+      Config.getInstance().setMusicVolume(slider.getValue());
+    }
+  }
+);
+  _musicOptionSlider.setVisible(true);
+  _backToConfigMenuButton=new UIButton(new Vector2f(256f,32f));
+  _backToConfigMenuButton.getLabel().setText("Back");
+  _backToConfigMenuButton.setVisible(true);
+  addDisplayElement(_overlay);
+  addDisplayElement(_title);
+  addDisplayElement(_version);
+  addDisplayElement(_soundOptionSlider,"soundVolumeSlider");
+  addDisplayElement(_musicOptionSlider,"musicVolumeSlider");
+  addDisplayElement(_backToConfigMenuButton,"backToConfigMenuButton");
+  update();
+}
