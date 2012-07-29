@@ -1,0 +1,15 @@
+{
+  BoxShape shape=new BoxShape(area.getExtents());
+  GhostObject scanObject=createCollider(area.getCenter(),shape,CollisionFilterGroups.SENSOR_TRIGGER,combineGroups(collisionFilter),CollisionFlags.NO_CONTACT_RESPONSE);
+  _broadphase.calculateOverlappingPairs(_dispatcher);
+  List<EntityRef> result=Lists.newArrayList();
+  for (int i=0; i < scanObject.getNumOverlappingObjects(); ++i) {
+    CollisionObject other=scanObject.getOverlappingObject(i);
+    Object userObj=other.getUserPointer();
+    if (userObj instanceof EntityRef) {
+      result.add((EntityRef)userObj);
+    }
+  }
+  removeCollider(scanObject);
+  return result;
+}

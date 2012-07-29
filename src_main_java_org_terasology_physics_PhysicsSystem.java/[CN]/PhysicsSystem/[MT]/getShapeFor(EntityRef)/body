@@ -5,6 +5,10 @@
     halfExtents.scale(0.5f);
     return new BoxShape(halfExtents);
   }
+  SphereShapeComponent sphere=entity.getComponent(SphereShapeComponent.class);
+  if (sphere != null) {
+    return new SphereShape(sphere.radius);
+  }
   CapsuleShapeComponent capsule=entity.getComponent(CapsuleShapeComponent.class);
   if (capsule != null) {
     return new CapsuleShape(capsule.radius,capsule.height);
@@ -13,9 +17,18 @@
   if (cylinder != null) {
     return new CylinderShape(new Vector3f(cylinder.radius,0.5f * cylinder.height,cylinder.radius));
   }
-  SphereShapeComponent sphere=entity.getComponent(SphereShapeComponent.class);
-  if (sphere != null) {
-    return new SphereShape(sphere.radius);
+  HullShapeComponent hull=entity.getComponent(HullShapeComponent.class);
+  if (hull != null) {
+    ObjectArrayList<Vector3f> verts=new ObjectArrayList<Vector3f>();
+    TFloatIterator iterator=hull.sourceMesh.getVertices().iterator();
+    while (iterator.hasNext()) {
+      Vector3f newVert=new Vector3f();
+      newVert.x=iterator.next();
+      newVert.y=iterator.next();
+      newVert.z=iterator.next();
+      verts.add(newVert);
+    }
+    return new ConvexHullShape(verts);
   }
   CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
   if (characterMovementComponent != null) {

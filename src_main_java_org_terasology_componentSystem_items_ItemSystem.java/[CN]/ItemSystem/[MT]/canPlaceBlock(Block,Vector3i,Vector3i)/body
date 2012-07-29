@@ -8,7 +8,7 @@
     return false;
   }
   if (!block.isPenetrable()) {
-    return !CoreRegistry.get(BulletPhysicsRenderer.class).scanArea(block.getBounds(blockPos),CollisionFilterGroups.ALL_FILTER).iterator().hasNext();
+    return !CoreRegistry.get(BulletPhysics.class).scanArea(block.getBounds(blockPos),Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT,StandardCollisionGroup.CHARACTER)).iterator().hasNext();
   }
   return true;
 }
