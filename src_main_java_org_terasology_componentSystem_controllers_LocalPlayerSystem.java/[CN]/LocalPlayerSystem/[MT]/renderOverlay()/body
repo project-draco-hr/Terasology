@@ -1,13 +1,25 @@
 {
   if (Config.getInstance().isPlacingBox()) {
     EntityRef target=cameraTargetSystem.getTarget();
+    AABB aabb=null;
     BlockComponent blockComp=target.getComponent(BlockComponent.class);
     if (blockComp != null) {
       Block block=worldProvider.getBlock(blockComp.getPosition());
       if (block.isRenderBoundingBox()) {
-        aabbRenderer.setAABB(block.getBounds(blockComp.getPosition()));
-        aabbRenderer.render(2f);
+        aabb=block.getBounds(blockComp.getPosition());
       }
+    }
+ else {
+      MeshComponent mesh=target.getComponent(MeshComponent.class);
+      LocationComponent location=target.getComponent(LocationComponent.class);
+      if (mesh != null && mesh.mesh != null && location != null) {
+        aabb=mesh.mesh.getAABB();
+        aabb=aabb.transform(location.getWorldRotation(),location.getWorldPosition(),location.getWorldScale());
+      }
+    }
+    if (aabb != null) {
+      aabbRenderer.setAABB(aabb);
+      aabbRenderer.render(2f);
     }
   }
 }
