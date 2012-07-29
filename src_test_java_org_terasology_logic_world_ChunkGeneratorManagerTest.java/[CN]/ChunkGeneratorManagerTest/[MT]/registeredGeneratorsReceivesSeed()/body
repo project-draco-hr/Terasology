@@ -1,9 +1,9 @@
 {
-  WorldBiomeProvider biomeProvider=mock(WorldBiomeProvider.class);
-  ChunkGeneratorManager generatorManager=new ChunkGeneratorManagerImpl();
-  generatorManager.setWorldSeed(Seed);
+  final WorldBiomeProvider biomeProvider=Mockito.mock(WorldBiomeProvider.class);
+  final ChunkGeneratorManager generatorManager=new ChunkGeneratorManagerImpl();
+  generatorManager.setWorldSeed(ChunkGeneratorManagerTest.SEED);
   generatorManager.setWorldBiomeProvider(biomeProvider);
-  ChunkGenerator generator=mock(ChunkGenerator.class);
+  final ChunkGenerator generator=Mockito.mock(ChunkGenerator.class);
   generatorManager.registerChunkGenerator(generator);
-  verify(generator).setWorldSeed(Seed);
+  Mockito.verify(generator).setWorldSeed(ChunkGeneratorManagerTest.SEED);
 }

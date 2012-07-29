@@ -8,13 +8,7 @@
     logger.log(Level.SEVERE,"Failed to load generator data",e);
   }
   if (chunkGeneratorManager == null) {
-    chunkGeneratorManager=new ChunkGeneratorManagerImpl();
-    chunkGeneratorManager.registerChunkGenerator(new PerlinTerrainGenerator());
-    chunkGeneratorManager.registerChunkGenerator(new FloraGenerator());
-    chunkGeneratorManager.registerChunkGenerator(new LiquidsGenerator());
-    ForestGenerator forestGen=new ForestGenerator();
-    new DefaultGenerators(forestGen);
-    chunkGeneratorManager.registerChunkGenerator(forestGen);
+    chunkGeneratorManager=ChunkGeneratorManagerImpl.getDefaultInstance();
     try {
       new ChunkGeneratorPersister().save(generatorDataFile,chunkGeneratorManager);
     }
