@@ -3,12 +3,17 @@
   playBackgroundMusic();
   GUIManager.getInstance().getWindowById("main").setVisible(true);
   GUIManager.getInstance().getWindowById("config").setVisible(false);
+  GUIManager.getInstance().getWindowById("videoOptions").setVisible(false);
   GUIManager.getInstance().getWindowById("selectWorld").setVisible(false);
   GUIManager.getInstance().getWindowById("generate_world").setVisible(false);
   GUIManager.getInstance().setFocusedWindow("main");
-  UIButton graphicsQualityButton=(UIButton)_configMenu.getElementById("graphicsQualityButton");
-  UIButton FOVButton=(UIButton)_configMenu.getElementById("fovButton");
-  UIButton viewingDistanceButton=(UIButton)_configMenu.getElementById("viewingDistanceButton");
+  UIButton graphicsQualityButton=(UIButton)_videoOptionsMenu.getElementById("graphicsQualityButton");
+  UIButton FOVButton=(UIButton)_videoOptionsMenu.getElementById("fovButton");
+  UIButton viewingDistanceButton=(UIButton)_videoOptionsMenu.getElementById("viewingDistanceButton");
+  UIButton animateGrassButton=(UIButton)_videoOptionsMenu.getElementById("animateGrassButton");
+  UIButton reflectiveWaterButton=(UIButton)_videoOptionsMenu.getElementById("reflectiveWaterButton");
+  UIButton blurIntensityButton=(UIButton)_videoOptionsMenu.getElementById("blurIntensityButton");
+  UIButton bobbingButton=(UIButton)_videoOptionsMenu.getElementById("bobbingButton");
   if (Config.getInstance().getActiveViewingDistanceId() == 3)   viewingDistanceButton.getLabel().setText("Viewing Distance: Ultra");
  else   if (Config.getInstance().getActiveViewingDistanceId() == 1)   viewingDistanceButton.getLabel().setText("Viewing Distance: Moderate");
  else   if (Config.getInstance().getActiveViewingDistanceId() == 2)   viewingDistanceButton.getLabel().setText("Viewing Distance: Far");
@@ -17,4 +22,34 @@
  else   if (Config.getInstance().getGraphicsQuality() == 2)   graphicsQualityButton.getLabel().setText("Graphics Quality: Epic");
  else   graphicsQualityButton.getLabel().setText("Graphics Quality: Ugly");
   FOVButton.getLabel().setText("Field of View: " + (int)Config.getInstance().getFov());
+  if (Config.getInstance().isAnimatedGrass()) {
+    animateGrassButton.getLabel().setText("Animated grass: true");
+  }
+ else {
+    animateGrassButton.getLabel().setText("Animated grass: false");
+  }
+  if (Config.getInstance().isComplexWater()) {
+    reflectiveWaterButton.getLabel().setText("Reflective water: true");
+  }
+ else {
+    reflectiveWaterButton.getLabel().setText("Reflective water: false");
+  }
+  if (Config.getInstance().getBlurIntensity() == 0) {
+    blurIntensityButton.getLabel().setText("Blur intensity: Off");
+  }
+ else   if (Config.getInstance().getBlurIntensity() == 1) {
+    blurIntensityButton.getLabel().setText("Blur intensity: Some");
+  }
+ else   if (Config.getInstance().getBlurIntensity() == 2) {
+    blurIntensityButton.getLabel().setText("Blur intensity: Normal");
+  }
+ else   if (Config.getInstance().getBlurIntensity() == 3) {
+    blurIntensityButton.getLabel().setText("Blur intensity: Max");
+  }
+  if (Config.getInstance().isCameraBobbing()) {
+    bobbingButton.getLabel().setText("Bobbing: true");
+  }
+ else {
+    bobbingButton.getLabel().setText("Bobbing: false");
+  }
 }
