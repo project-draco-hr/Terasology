@@ -1,0 +1,20 @@
+{
+  ChunkGeneratorManager chunkGeneratorManager=null;
+  File generatorDataFile=new File(PathManager.getInstance().getWorldSavePath(title),CHUNK_GENERATOR_FILE);
+  try {
+    chunkGeneratorManager=new ChunkGeneratorPersister().load(generatorDataFile);
+  }
+ catch (  IOException e) {
+    logger.log(Level.SEVERE,"Failed to load generator data",e);
+  }
+  if (chunkGeneratorManager == null) {
+    chunkGeneratorManager=ChunkGeneratorManagerImpl.getDefaultInstance();
+    try {
+      new ChunkGeneratorPersister().save(generatorDataFile,chunkGeneratorManager);
+    }
+ catch (    IOException e) {
+      logger.log(Level.SEVERE,"Failed to save generator data",e);
+    }
+  }
+  return chunkGeneratorManager;
+}
