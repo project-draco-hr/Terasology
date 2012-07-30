@@ -1,4 +1,4 @@
-def writeCollider(obj, fw, scene):
+def writeAABBCollider(obj, fw, scene):
     if (not obj):
         return
     mesh = obj.data
@@ -18,7 +18,8 @@ def writeCollider(obj, fw, scene):
     for i in range(3):
         pos[i] = (0.5 * (max[i] + min[i]))
         dim[i] = (0.5 * (max[i] - min[i]))
-    fw('\t\t{\n')
-    fw(('\t\t\t"position" : [%.6f, %.6f, %.6f],\n' % convertVec3d(pos)))
-    fw(('\t\t\t"extents" : [%.6f, %.6f, %.6f]\n' % convertVec3dAbs(dim)))
-    fw('\t\t}')
+    fw('\t\t\t{\n')
+    fw('\t\t\t\t"type" : "AABB",\n')
+    fw(('\t\t\t\t"position" : [%.6f, %.6f, %.6f],\n' % convertVec3d(pos)))
+    fw(('\t\t\t\t"extents" : [%.6f, %.6f, %.6f]\n' % convertVec3dAbs(dim)))
+    fw('\t\t\t}')

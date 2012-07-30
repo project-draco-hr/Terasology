@@ -1,0 +1,18 @@
+def writeSphereCollider(obj, fw, scene):
+    if (not obj):
+        return
+    mesh = obj.data
+    center = [0.0, 0.0, 0.0]
+    for v in mesh.vertices:
+        vert = mesh.vertices[index].co
+        center += vert
+    center /= len(mesh.vertices)
+    radius = 0.0
+    for v in mesh.vertices:
+        dist = (center - v.co).length
+        radius = max(dist, radius)
+    fw('\t\t\t{\n')
+    fw('\t\t\t\t"type" : "Sphere",\n')
+    fw(('\t\t\t\t"position" : [%.6f, %.6f, %.6f],\n' % convertVec3d(center)))
+    fw(('\t\t\t\t"radius" : %.6f\n' % radius))
+    fw('\t\t\t}')
