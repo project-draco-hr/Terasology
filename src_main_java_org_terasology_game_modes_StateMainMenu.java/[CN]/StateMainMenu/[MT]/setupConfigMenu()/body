@@ -1,38 +1,38 @@
 {
   _configMenu=new UIConfigMenu();
   _configMenu.setVisible(false);
+  UIButton videoButton=(UIButton)_configMenu.getElementById("videoButton");
+  UIButton audioButton=(UIButton)_configMenu.getElementById("audioButton");
+  UIButton controlsButton=(UIButton)_configMenu.getElementById("controlsButton");
+  UIButton modsButton=(UIButton)_configMenu.getElementById("modsButton");
   UIButton backToMainMenuButton=(UIButton)_configMenu.getElementById("backToMainMenuButton");
-  UIButton videoOptionsButton=(UIButton)_configMenu.getElementById("videoOptionsButton");
-  UIButton soundOptionsButton=(UIButton)_configMenu.getElementById("soundOptionsButton");
-  UIButton inputOptionsButton=(UIButton)_configMenu.getElementById("inputOptionsButton");
-  UIButton modOptionsButton=(UIButton)_configMenu.getElementById("modOptionsButton");
+  videoButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      GUIManager.getInstance().setFocusedWindow(_configMenuVideo);
+    }
+  }
+);
+  audioButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      GUIManager.getInstance().setFocusedWindow(_configMenuAudio);
+    }
+  }
+);
+  controlsButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      GUIManager.getInstance().setFocusedWindow(_configMenuControls);
+    }
+  }
+);
+  modsButton.addClickListener(new IClickListener(){
+    @Override public void clicked(    UIDisplayElement element){
+      GUIManager.getInstance().setFocusedWindow(_configMenuMods);
+    }
+  }
+);
   backToMainMenuButton.addClickListener(new IClickListener(){
     @Override public void clicked(    UIDisplayElement element){
       GUIManager.getInstance().setFocusedWindow(_mainMenu);
-    }
-  }
-);
-  videoOptionsButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
-      GUIManager.getInstance().setFocusedWindow(_videoOptionsMenu);
-    }
-  }
-);
-  soundOptionsButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
-      GUIManager.getInstance().setFocusedWindow(_soundOptionsMenu);
-    }
-  }
-);
-  inputOptionsButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
-      GUIManager.getInstance().setFocusedWindow(_inputOptionsMenu);
-    }
-  }
-);
-  modOptionsButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
-      GUIManager.getInstance().setFocusedWindow(_modOptionMenu);
     }
   }
 );

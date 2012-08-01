@@ -1,0 +1,20 @@
+{
+  final File parentFile=file.getParentFile();
+  if (parentFile != null) {
+    parentFile.mkdirs();
+  }
+  final FileOutputStream out=new FileOutputStream(file);
+  try {
+    final BufferedWriter bufferedWriter=new BufferedWriter(new OutputStreamWriter(out));
+    ChunkGeneratorJSONFormat.write(chunkGeneratorManager,bufferedWriter);
+    bufferedWriter.flush();
+  }
+  finally {
+    try {
+      out.close();
+    }
+ catch (    final IOException e) {
+      logger.log(Level.SEVERE,"Failed to close file",e);
+    }
+  }
+}
