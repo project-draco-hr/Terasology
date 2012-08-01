@@ -8,24 +8,23 @@
     lostTarget=true;
   }
   Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
-  BulletPhysicsRenderer physicsRenderer=CoreRegistry.get(BulletPhysicsRenderer.class);
-  HitResult hitInfo=physicsRenderer.rayTrace(new Vector3f(camera.getPosition()),new Vector3f(camera.getViewingDirection()),TARGET_DISTANCE);
+  BulletPhysics physicsRenderer=CoreRegistry.get(BulletPhysics.class);
+  HitResult hitInfo=physicsRenderer.rayTrace(new Vector3f(camera.getPosition()),new Vector3f(camera.getViewingDirection()),TARGET_DISTANCE,filter);
   Vector3i newBlockPos=null;
+  EntityRef newTarget=EntityRef.NULL;
   if (hitInfo.isHit()) {
+    newTarget=hitInfo.getEntity();
     hitPosition=hitInfo.getHitPoint();
     hitNormal=hitInfo.getHitNormal();
-    BlockComponent blockComp=hitInfo.getEntity().getComponent(BlockComponent.class);
+    BlockComponent blockComp=newTarget.getComponent(BlockComponent.class);
     if (blockComp != null) {
       newBlockPos=new Vector3i(blockComp.getPosition());
     }
   }
-  if (!Objects.equal(targetBlockPos,newBlockPos) || lostTarget) {
+  if (!Objects.equal(target,newTarget) || lostTarget) {
     EntityRef oldTarget=target;
-    target=EntityRef.NULL;
+    target=newTarget;
     targetBlockPos=newBlockPos;
-    if (newBlockPos != null) {
-      target=hitInfo.getEntity();
-    }
     oldTarget.send(new CameraOutEvent());
     target.send(new CameraOverEvent());
     localPlayer.getEntity().send(new CameraTargetChangedEvent(oldTarget,target));

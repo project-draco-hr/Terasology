@@ -11,7 +11,7 @@
     RigidBody collider=new RigidBody(info);
     collider.setUserPointer(entity);
     RigidBody oldBody=entityRigidBodies.put(entity,collider);
-    physics.addRigidBody(collider,CollisionFilterGroups.DEFAULT_FILTER,(short)(CollisionFilterGroups.DEFAULT_FILTER | CollisionFilterGroups.STATIC_FILTER | CollisionFilterGroups.KINEMATIC_FILTER| CollisionFilterGroups.SENSOR_TRIGGER));
+    physics.addRigidBody(collider,Lists.<CollisionGroup>newArrayList(rigidBody.collisionGroup),rigidBody.collidesWith);
     if (oldBody != null) {
       physics.removeRigidBody(oldBody);
     }
