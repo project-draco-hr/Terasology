@@ -1,17 +1,28 @@
 {
-  if (colliderArray.size() == 1) {
-    JsonElement shapeDef=colliderArray.get(0);
-    if (shapeDef.isJsonObject()) {
-      JsonObject collider=shapeDef.getAsJsonObject();
-      return processBoxShape(context,collider,rot);
-    }
- else {
-      ColliderInfo info=new ColliderInfo(new Vector3f(),CUBE_SHAPE);
-      info.symmetric=true;
-      return info;
+  List<ColliderInfo> colliders=Lists.newArrayList();
+  for (  JsonElement elem : colliderArray) {
+    if (elem.isJsonObject()) {
+      JsonObject colliderObj=elem.getAsJsonObject();
+      if (colliderObj.has("type") && colliderObj.get("type").isJsonPrimitive() && colliderObj.getAsJsonPrimitive("type").isString()) {
+        String type=colliderObj.get("type").getAsString();
+        if ("AABB".equals(type)) {
+          colliders.add(processAABBShape(context,colliderObj,rot));
+        }
+ else         if ("Sphere".equals(type)) {
+          colliders.add(processSphereShape(context,colliderObj,rot));
+        }
+      }
     }
   }
+  if (colliders.size() > 1) {
+    return processCompoundShape(colliders);
+  }
+ else   if (colliders.size() == 1) {
+    return colliders.get(0);
+  }
  else {
-    return processCompoundShape(context,colliderArray,rot);
+    ColliderInfo result=new ColliderInfo(new Vector3f(),CUBE_SHAPE);
+    result.symmetric=true;
+    return result;
   }
 }

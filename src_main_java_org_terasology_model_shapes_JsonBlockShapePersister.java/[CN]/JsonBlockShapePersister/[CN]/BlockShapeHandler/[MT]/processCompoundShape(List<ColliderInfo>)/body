@@ -1,0 +1,8 @@
+{
+  CompoundShape collisionShape=new CompoundShape();
+  for (  ColliderInfo collider : colliders) {
+    Transform transform=new Transform(new Matrix4f(Rotation.NONE.getQuat4f(),collider.offset,1.0f));
+    collisionShape.addChildShape(transform,collider.collisionShape);
+  }
+  return new ColliderInfo(new Vector3f(),collisionShape);
+}

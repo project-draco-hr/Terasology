@@ -1,0 +1,19 @@
+def writeMeshCollision(fw, scene):
+    fw(',\n\t"collision" : {\n')
+    if scene.teraCollisionSymmetric:
+        fw('\t\t"symmetric" : true,\n')
+    first = True
+    for object in bpy.data.objects:
+        if ((object.teraColliderType != '') and (object.teraColliderType != 'None')):
+            if first:
+                fw('\t\t"colliders" : [\n')
+                first = False
+            else:
+                fw(',\n')
+            if (object.teraColliderType == 'AABB'):
+                writeAABBCollider(object, fw, scene)
+            elif (object.teraColliderType == 'Sphere'):
+                writeSphereCollider(object, fw, scene)
+    if (not first):
+        fw('\n\t\t]\n')
+    fw('\t}')

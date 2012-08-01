@@ -1,0 +1,6 @@
+{
+  Vector3f offset=context.deserialize(colliderDef.get("position"),Vector3f.class);
+  float radius=colliderDef.get("radius").getAsFloat();
+  if (offset == null)   throw new JsonParseException("Sphere Collider missing position");
+  return new ColliderInfo(QuaternionUtil.quatRotate(rot.getQuat4f(),offset,offset),new SphereShape(radius));
+}

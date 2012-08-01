@@ -1,4 +1,4 @@
-def writeAutoCollider(fw, scene):
+def writeAABBCollision(fw, scene):
     parts = ['Center', 'Top', 'Bottom', 'Front', 'Back', 'Left', 'Right']
     min = [100000.0, 100000.0, 100000.0]
     max = [(-100000.0), (-100000.0), (-100000.0)]
@@ -19,9 +19,14 @@ def writeAutoCollider(fw, scene):
     for i in range(3):
         pos[i] = (0.5 * (max[i] + min[i]))
         dim[i] = (0.5 * (max[i] - min[i]))
-    fw(',\n\t"colliders" : [\n')
-    fw('\t\t{\n')
-    fw(('\t\t\t"position" : [%.6f, %.6f, %.6f],\n' % convertVec3d(pos)))
-    fw(('\t\t\t"extents" : [%.6f, %.6f, %.6f]\n' % convertVec3dAbs(dim)))
-    fw('\t\t}\n')
-    fw('\t]')
+    fw(',\n\t"collision" : {\n')
+    if scene.teraCollisionSymmetric:
+        fw('\t\t"symmetric" : true,\n')
+    fw('\t\t"colliders" : [\n')
+    fw('\t\t\t{\n')
+    fw('\t\t\t\t"type" : "AABB",\n')
+    fw(('\t\t\t\t"position" : [%.6f, %.6f, %.6f],\n' % convertVec3d(pos)))
+    fw(('\t\t\t\t"extents" : [%.6f, %.6f, %.6f]\n' % convertVec3dAbs(dim)))
+    fw('\t\t\t}\n')
+    fw('\t\t]\n')
+    fw('\t}')

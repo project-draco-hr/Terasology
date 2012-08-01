@@ -17,7 +17,9 @@ def writeMeshPart(name, obj, fw, scene, apply_modifiers):
         faceVerts = f.vertices
         for (j, index) in enumerate(faceVerts):
             vert = mesh.vertices[index]
-            if f.use_smooth:
+            if scene.teraBillboardNormals:
+                normal = [0, 0, 1]
+            elif f.use_smooth:
                 normal = tuple(f.normal)
             else:
                 normal = tuple(vert.normal)
