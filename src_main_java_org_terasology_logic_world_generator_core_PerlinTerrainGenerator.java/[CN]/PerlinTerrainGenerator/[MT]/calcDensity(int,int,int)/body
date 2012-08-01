@@ -3,7 +3,7 @@
   double ocean=calcOceanTerrain(x,z);
   double river=calcRiverTerrain(x,z);
   float temp=biomeProvider.getTemperatureAt(x,z);
-  float humidity=biomeProvider.getHumidityAt(x,z);
+  float humidity=biomeProvider.getHumidityAt(x,z) * temp;
   Vector2f distanceToMountainBiome=new Vector2f(temp - 0.25f,humidity - 0.35f);
   double mIntens=TeraMath.clamp(1.0 - distanceToMountainBiome.length() * 3.0);
   double densityMountains=calcMountainDensity(x,y,z) * mIntens;
