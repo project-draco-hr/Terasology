@@ -1,16 +1,18 @@
 {
-  final FileInputStream in=new FileInputStream(file);
   ChunkGeneratorManager chunkGeneratorManager=null;
-  try {
-    final BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
-    chunkGeneratorManager=ChunkGeneratorJSONFormat.read(bufferedReader);
-  }
-  finally {
+  if (file.exists()) {
+    final FileInputStream in=new FileInputStream(file);
     try {
-      in.close();
+      final BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
+      chunkGeneratorManager=ChunkGeneratorJSONFormat.read(bufferedReader);
     }
- catch (    final IOException e) {
-      logger.log(Level.SEVERE,"Failed to close file",e);
+  finally {
+      try {
+        in.close();
+      }
+ catch (      final IOException e) {
+        logger.log(Level.SEVERE,"Failed to close file",e);
+      }
     }
   }
   return chunkGeneratorManager;
