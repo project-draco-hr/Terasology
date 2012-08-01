@@ -2,10 +2,9 @@ def writeSphereCollider(obj, fw, scene):
     if (not obj):
         return
     mesh = obj.data
-    center = [0.0, 0.0, 0.0]
+    center = Vector((0, 0, 0))
     for v in mesh.vertices:
-        vert = mesh.vertices[index].co
-        center += vert
+        center += v.co
     center /= len(mesh.vertices)
     radius = 0.0
     for v in mesh.vertices:
