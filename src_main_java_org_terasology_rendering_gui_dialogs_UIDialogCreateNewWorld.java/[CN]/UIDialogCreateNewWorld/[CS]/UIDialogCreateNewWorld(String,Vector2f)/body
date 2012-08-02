@@ -45,27 +45,43 @@
  else {
         Config.getInstance().setWorldTitle(getWorldName());
       }
-      Config.getInstance().setChunkGenerator((Integer)_chunkGenerator.getSelectedItem().getValue());
-      CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(Config.getInstance().getWorldTitle(),Config.getInstance().getDefaultSeed()));
-    }
-  }
+      List<String> chunkList=new ArrayList<String>();
+switch (_chunkGenerator.getSelectedItemIndex()) {
+case 1:
+        chunkList.add(FlatTerrainGenerator.class.getName());
+      chunkList.add(FloraGenerator.class.getName());
+    chunkList.add(LiquidsGenerator.class.getName());
+  chunkList.add(ForestGenerator.class.getName());
+break;
+default :
+chunkList.add(PerlinTerrainGenerator.class.getName());
+chunkList.add(FloraGenerator.class.getName());
+chunkList.add(LiquidsGenerator.class.getName());
+chunkList.add(ForestGenerator.class.getName());
+break;
+}
+String[] chunksListArr=chunkList.toArray(new String[chunkList.size()]);
+Config.getInstance().setChunkGenerator(chunksListArr);
+CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(Config.getInstance().getWorldTitle(),Config.getInstance().getDefaultSeed()));
+}
+}
 );
-  _cancelButton=new UIButton(new Vector2f(128f,32f));
-  _cancelButton.setPosition(new Vector2f(_okButton.getPosition().x + _okButton.getSize().x + 16f,_okButton.getPosition().y));
-  _cancelButton.getLabel().setText("Cancel");
-  _cancelButton.setVisible(true);
-  _cancelButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
-      close(true);
-    }
-  }
+_cancelButton=new UIButton(new Vector2f(128f,32f));
+_cancelButton.setPosition(new Vector2f(_okButton.getPosition().x + _okButton.getSize().x + 16f,_okButton.getPosition().y));
+_cancelButton.getLabel().setText("Cancel");
+_cancelButton.setVisible(true);
+_cancelButton.addClickListener(new IClickListener(){
+public void clicked(UIDisplayElement element){
+close(true);
+}
+}
 );
-  addDisplayElement(_inputWorldTitleLabel,"inputWorldTitleLabel");
-  addDisplayElement(_inputWorldTitle,"inputWorldTitle");
-  addDisplayElement(_inputSeedLabel,"inputSeedLabel");
-  addDisplayElement(_inputSeed,"inputSeed");
-  addDisplayElement(_chunkGeneratorLabel,"chunkGeneratorLabel");
-  addDisplayElement(_okButton,"okButton");
-  addDisplayElement(_cancelButton,"cancelButton");
-  addDisplayElement(_chunkGenerator,"chunkGenerator");
+addDisplayElement(_inputWorldTitleLabel,"inputWorldTitleLabel");
+addDisplayElement(_inputWorldTitle,"inputWorldTitle");
+addDisplayElement(_inputSeedLabel,"inputSeedLabel");
+addDisplayElement(_inputSeed,"inputSeed");
+addDisplayElement(_chunkGeneratorLabel,"chunkGeneratorLabel");
+addDisplayElement(_okButton,"okButton");
+addDisplayElement(_cancelButton,"cancelButton");
+addDisplayElement(_chunkGenerator,"chunkGenerator");
 }

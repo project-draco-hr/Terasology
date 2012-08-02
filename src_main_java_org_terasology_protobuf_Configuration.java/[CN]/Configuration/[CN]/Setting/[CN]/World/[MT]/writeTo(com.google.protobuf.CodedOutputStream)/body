@@ -30,8 +30,11 @@
   if (((bitField0_ & 0x00000200) == 0x00000200)) {
     output.writeBytes(11,getDefaultSeedBytes());
   }
+  for (int i=0; i < chunkGenerator_.size(); i++) {
+    output.writeBytes(12,chunkGenerator_.getByteString(i));
+  }
   if (((bitField0_ & 0x00000400) == 0x00000400)) {
-    output.writeInt32(12,chunkGenerator_);
+    output.writeInt32(13,chunkGeneratorFlatHeight_);
   }
   getUnknownFields().writeTo(output);
 }
