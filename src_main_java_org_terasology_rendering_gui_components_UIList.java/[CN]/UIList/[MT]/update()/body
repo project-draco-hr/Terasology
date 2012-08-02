@@ -1,9 +1,6 @@
 {
   Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
-  if (intersects(mousePos)) {
-    if (_scrollBarVertical.intersects(mousePos) || _scrollBarHorizontal.intersects(mousePos)) {
-      return;
-    }
+  if (intersects(mousePos) && !checkClickOnScrollBar(mousePos)) {
     boolean itemClicked=false;
     for (int i=(_items.size() - 1); i >= 0; i--) {
       UIListItem item=_items.get(i);

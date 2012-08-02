@@ -1,0 +1,29 @@
+{
+  super.update();
+  checkSelectedItem();
+  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+  if (_baseList.checkClickOnScrollBar(mousePos) || _baseList.getScrollBarVertival().isScrolled() || _baseList.getScrollBarHorizontal().isScrolled()) {
+    return;
+  }
+  if (intersects(mousePos)) {
+    if (!_clickSoundPlayed) {
+      AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"));
+      _clickSoundPlayed=true;
+    }
+    if (_mouseUp) {
+      _mouseUp=false;
+    }
+    if (_mouseDown) {
+      clicked();
+      _mouseDown=false;
+    }
+  }
+ else {
+    if (_mouseDown && _opened) {
+      clicked();
+    }
+    _mouseDown=false;
+    _clickSoundPlayed=false;
+    _mouseUp=false;
+  }
+}
