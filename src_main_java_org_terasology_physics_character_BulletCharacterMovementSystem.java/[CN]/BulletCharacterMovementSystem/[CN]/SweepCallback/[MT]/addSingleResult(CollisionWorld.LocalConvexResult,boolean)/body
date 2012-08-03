@@ -2,17 +2,5 @@
   if (convexResult.hitCollisionObject == me) {
     return 1.0f;
   }
-  Vector3f hitNormalWorld;
-  if (normalInWorldSpace) {
-    hitNormalWorld=convexResult.hitNormalLocal;
-  }
- else {
-    hitNormalWorld=new Vector3f();
-    hitCollisionObject.getWorldTransform(new Transform()).basis.transform(convexResult.hitNormalLocal,hitNormalWorld);
-  }
-  float dotUp=up.dot(hitNormalWorld);
-  if (dotUp < minSlopeDot) {
-    return 1.0f;
-  }
   return super.addSingleResult(convexResult,normalInWorldSpace);
 }

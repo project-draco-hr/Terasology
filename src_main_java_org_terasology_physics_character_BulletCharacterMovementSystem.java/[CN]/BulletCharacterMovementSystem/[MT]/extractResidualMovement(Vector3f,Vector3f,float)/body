@@ -1,0 +1,15 @@
+{
+  float movementLength=direction.length();
+  if (movementLength > BulletGlobals.SIMD_EPSILON) {
+    direction.normalize();
+    Vector3f reflectDir=Vector3fUtil.reflect(direction,hitNormal,new Vector3f());
+    reflectDir.normalize();
+    Vector3f perpindicularDir=Vector3fUtil.getPerpendicularComponent(reflectDir,hitNormal,new Vector3f());
+    if (normalMag != 0.0f) {
+      Vector3f perpComponent=new Vector3f();
+      perpComponent.scale(normalMag * movementLength,perpindicularDir);
+      direction.set(perpComponent);
+    }
+  }
+  return direction;
+}

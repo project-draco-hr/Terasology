@@ -21,7 +21,7 @@
   movementComp.getVelocity().y=Math.max(-TerminalVelocity,(movementComp.getVelocity().y - Gravity * delta));
   Vector3f moveDelta=new Vector3f(movementComp.getVelocity());
   moveDelta.scale(delta);
-  MoveResult moveResult=move(location.getWorldPosition(),moveDelta,movementComp.stepHeight,movementComp.collider);
+  MoveResult moveResult=move(location.getWorldPosition(),moveDelta,(movementComp.isGrounded) ? movementComp.stepHeight : 0,movementComp.slopeFactor,movementComp.collider);
   Vector3f distanceMoved=new Vector3f(moveResult.finalPosition);
   distanceMoved.sub(location.getWorldPosition());
   location.setWorldPosition(moveResult.finalPosition);

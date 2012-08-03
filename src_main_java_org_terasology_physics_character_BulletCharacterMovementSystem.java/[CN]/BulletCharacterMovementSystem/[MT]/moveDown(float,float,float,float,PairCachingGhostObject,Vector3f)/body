@@ -1,0 +1,46 @@
+{
+  float stepDist=steppedUpAmount - fallAmount + stepDownAmount;
+  float remainingDist=stepDist;
+  Vector3f currentPos=new Vector3f(position);
+  Vector3f targetPos=new Vector3f(position);
+  targetPos.y-=remainingDist + VERTICAL_PENETRATION_LEEWAY;
+  Vector3f normalizedDir=new Vector3f(targetPos);
+  normalizedDir.sub(currentPos);
+  normalizedDir.normalize();
+  boolean hit=false;
+  int iteration=0;
+  while (remainingDist > BulletGlobals.SIMD_EPSILON && iteration++ < 10) {
+    SweepCallback callback=sweep(currentPos,targetPos,collider,-1.0f,VERTICAL_PENETRATION);
+    float actualDist=Math.max(0,(remainingDist + VERTICAL_PENETRATION_LEEWAY) * callback.closestHitFraction - VERTICAL_PENETRATION_LEEWAY);
+    Vector3f expectedMove=new Vector3f(targetPos);
+    expectedMove.sub(currentPos);
+    if (expectedMove.lengthSquared() > BulletGlobals.SIMD_EPSILON) {
+      expectedMove.normalize();
+      expectedMove.scale(actualDist);
+      currentPos.add(expectedMove);
+    }
+    if (callback.hasHit()) {
+      hit=true;
+      break;
+    }
+ else {
+      break;
+    }
+  }
+  if (iteration >= 10) {
+    hit=true;
+  }
+  if (!hit) {
+    if (stepDownAmount > 0) {
+      moveDown(fallAmount - steppedUpAmount,0,0,slopeFactor,collider,position);
+    }
+ else {
+      position.set(currentPos);
+    }
+    return false;
+  }
+ else {
+    position.set(currentPos);
+    return true;
+  }
+}
