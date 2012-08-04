@@ -22,7 +22,7 @@
     setStyle("background-position","0 90/512");
   }
   if (isFocused()) {
-    if (!_textCursor.isVisible()) {
+    if (!isDisabled() && !_textCursor.isVisible()) {
       _textCursor.setVisible(true);
     }
     setStyle("background-position","0 120/512");
@@ -32,6 +32,10 @@
       _textCursor.setVisible(false);
     }
     setStyle("background-position","0 90/512");
+  }
+  _inputText.setPosition(new Vector2f(_padding.x,getSize().y / 2 - _inputText.getTextHeight() / 2));
+  if (!isDisabled() && isFocused()) {
+    _textCursor.setPosition(new Vector2f(_textCursor.getPosition().x,getSize().y / 2 - _textCursor.getSize().y / 1.5f));
   }
   updateTextShift();
   super.update();

@@ -1,9 +1,0 @@
-{
-  Vector3f offset=context.deserialize(colliderDef.get("position"),Vector3f.class);
-  Vector3f extent=context.deserialize(colliderDef.get("extents"),Vector3f.class);
-  if (offset == null)   throw new JsonParseException("Collider missing position");
-  if (extent == null)   throw new JsonParseException("Collider missing extents");
-  QuaternionUtil.quatRotate(rot.getQuat4f(),extent,extent);
-  extent.absolute();
-  return new ColliderInfo(QuaternionUtil.quatRotate(rot.getQuat4f(),offset,offset),new BoxShape(extent));
-}

@@ -1,0 +1,32 @@
+def writeAABBCollision(fw, scene):
+    parts = ['Center', 'Top', 'Bottom', 'Front', 'Back', 'Left', 'Right']
+    min = [100000.0, 100000.0, 100000.0]
+    max = [(-100000.0), (-100000.0), (-100000.0)]
+    for part in parts:
+        if (part in bpy.data.objects):
+            mesh = bpy.data.objects[part].data
+            for (faceNum, f) in enumerate(mesh.faces):
+                faceVerts = f.vertices
+                for (vertNum, index) in enumerate(faceVerts):
+                    vert = mesh.vertices[index].co
+                    for i in range(3):
+                        if (vert[i] > max[i]):
+                            max[i] = vert[i]
+                        elif (vert[i] < min[i]):
+                            min[i] = vert[i]
+    pos = [0.0, 0.0, 0.0]
+    dim = [0.0, 0.0, 0.0]
+    for i in range(3):
+        pos[i] = (0.5 * (max[i] + min[i]))
+        dim[i] = (0.5 * (max[i] - min[i]))
+    fw(',\n\t"collision" : {\n')
+    if scene.teraCollisionSymmetric:
+        fw('\t\t"symmetric" : true,\n')
+    fw('\t\t"colliders" : [\n')
+    fw('\t\t\t{\n')
+    fw('\t\t\t\t"type" : "AABB",\n')
+    fw(('\t\t\t\t"position" : [%.6f, %.6f, %.6f],\n' % convertVec3d(pos)))
+    fw(('\t\t\t\t"extents" : [%.6f, %.6f, %.6f]\n' % convertVec3dAbs(dim)))
+    fw('\t\t\t}\n')
+    fw('\t\t]\n')
+    fw('\t}')
