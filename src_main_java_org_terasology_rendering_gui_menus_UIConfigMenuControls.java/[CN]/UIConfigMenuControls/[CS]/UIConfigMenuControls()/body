@@ -17,7 +17,7 @@
   subtitle.setVisible(true);
   overlay=new UIImageOverlay(AssetManager.loadTexture("engine:loadingBackground"));
   overlay.setVisible(true);
-  _backToConfigMenuButton=new UIButton(new Vector2f(256f,32f));
+  _backToConfigMenuButton=new UIButton(new Vector2f(128f,32f));
   _backToConfigMenuButton.getLabel().setText("Back");
   _backToConfigMenuButton.setVisible(true);
   ForwardButton=new UIButton(new Vector2f(64f,32f));
@@ -128,12 +128,24 @@
   UsehelditemButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyUsehelditem()));
   UsehelditemButton.addClickListener(editButtonClick);
   UsehelditemButton.setVisible(true);
-  defaultButton=new UIButton(new Vector2f(80f,32f));
+  MouseSensitivity=new UISlider(new Vector2f(256f,32f),20,150);
+  MouseSensitivity.setVisible(true);
+  MouseSensitivity.addChangedListener(new IChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      UISlider slider=(UISlider)element;
+      slider.setText("Mouse Sensitivity: " + String.valueOf(slider.getValue()));
+      Config.getInstance().setMouseSens((float)slider.getValue() / 1000f);
+    }
+  }
+);
+  MouseSensitivity.setValue((int)(Config.getInstance().getMouseSens() * 1000));
+  defaultButton=new UIButton(new Vector2f(128f,32f));
   defaultButton.getLabel().setText("Default");
   defaultButton.setVisible(true);
   defaultButton.addClickListener(new IClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       InputConfig.getInstance().loadDefaultConfig();
+      Config.getInstance().setMouseSens(0.075f);
       ForwardButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyForward()));
       BackwardButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyBackward()));
       RightButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyRight()));
@@ -161,6 +173,7 @@
       Toolslot8Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot8()));
       Toolslot9Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot9()));
       UsehelditemButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyUsehelditem()));
+      MouseSensitivity.setValue((int)(Config.getInstance().getMouseSens() * 1000));
     }
   }
 );
@@ -276,6 +289,7 @@
   addDisplayElement(Toolslot8Button,"Toolslot8Button");
   addDisplayElement(Toolslot9Button,"Toolslot9Button");
   addDisplayElement(UsehelditemButton,"UsehelditemButton");
+  addDisplayElement(MouseSensitivity,"MouseSensitivity");
   addDisplayElement(defaultButton,"defaultButton");
   layout();
 }
