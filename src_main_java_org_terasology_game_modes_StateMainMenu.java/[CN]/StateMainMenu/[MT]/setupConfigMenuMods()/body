@@ -5,26 +5,26 @@
   UIButton minionOptionsButton=(UIButton)_configMenuMods.getElementById("minionOptionsButton");
   UIButton backToSettingsMenuButton=(UIButton)_configMenuMods.getElementById("backToConfigMenuButton");
   minionOptionsButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
+    @Override public void click(    UIDisplayElement element,    int button){
       _configMenuMods.setVisible(true);
       _configMenu.setVisible(false);
     }
   }
 );
   minionsButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
-      UIButton button=(UIButton)element;
-      if (button.getLabel().getText().equals("Minions enabled : false")) {
-        button.getLabel().setText("Minions enabled : true");
+    @Override public void click(    UIDisplayElement element,    int button){
+      UIButton b=(UIButton)element;
+      if (b.getLabel().getText().equals("Minions enabled : false")) {
+        b.getLabel().setText("Minions enabled : true");
       }
- else       if (button.getLabel().getText().equals("Minions enabled : true")) {
-        button.getLabel().setText("Minions enabled : false");
+ else       if (b.getLabel().getText().equals("Minions enabled : true")) {
+        b.getLabel().setText("Minions enabled : false");
       }
     }
   }
 );
   backToSettingsMenuButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
+    @Override public void click(    UIDisplayElement element,    int button){
       GUIManager.getInstance().setFocusedWindow(_configMenu);
     }
   }

@@ -6,6 +6,34 @@
   setClassStyle("slider","background-image: engine:gui_menu 256/512 30/512 0 0");
   setClassStyle("slider-mouseover","background-image: engine:gui_menu 256/512 30/512 0 30/512");
   setClassStyle("slider");
+  addMouseListener(new IMouseMoveListener(){
+    @Override public void leave(    UIDisplayElement element){
+      setClassStyle("slider");
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+      AudioManager.play(new AssetUri(AssetType.SOUND,"engine:click"),1.0f);
+      setClassStyle("slider-mouseover");
+    }
+    @Override public void move(    UIDisplayElement element){
+      if (isFocused()) {
+        changeSlider(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x);
+      }
+    }
+  }
+);
+  addMouseButtonListener(new IMouseButtonListener(){
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+      setClassStyle("slider");
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (intersect)       changeSlider(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x);
+    }
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+  }
+);
   _slider=new UIGraphicsElement(AssetManager.loadTexture("engine:gui_menu"));
   _slider.setParent(this);
   _slider.setVisible(true);
@@ -13,6 +41,19 @@
   _slider.getTextureOrigin().set(0f,60f / 512f);
   _slider.getTextureSize().set(new Vector2f(256f / 512f,30f / 512f));
   _slider.setSize(new Vector2f(16f,getSize().y));
+  _slider.addMouseButtonListener(new IMouseButtonListener(){
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+      setFocus(null);
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (!isFocused() && intersect) {
+        setFocus(_sliderObj);
+      }
+    }
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+  }
+);
   _label=new UIText("");
   _label.setVisible(true);
   addDisplayElement(_slider);

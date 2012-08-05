@@ -8,7 +8,7 @@
   _exitButton.getLabel().setText("Exit Terasology");
   _exitButton.setVisible(true);
   _exitButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
+    @Override public void click(    UIDisplayElement element,    int button){
       CoreRegistry.get(GameEngine.class).shutdown();
     }
   }
@@ -17,7 +17,7 @@
   _respawnButton.getLabel().setText("Respawn");
   _respawnButton.setVisible(true);
   _respawnButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
+    @Override public void click(    UIDisplayElement element,    int button){
       setVisible(false);
       EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
       LocalPlayerComponent localPlayerComponent=playerEntity.getComponent(LocalPlayerComponent.class);
@@ -48,7 +48,7 @@
   _mainMenuButton.getLabel().setText("Return to Main Menu");
   _mainMenuButton.setVisible(true);
   _mainMenuButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
+    @Override public void click(    UIDisplayElement element,    int button){
       setVisible(false);
       CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu());
     }

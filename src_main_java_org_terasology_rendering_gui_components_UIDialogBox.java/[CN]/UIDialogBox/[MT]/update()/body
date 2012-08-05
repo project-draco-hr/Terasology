@@ -1,26 +1,8 @@
 {
   Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
-  if (intersects(mousePos)) {
-    if (_mouseDown) {
-      _focused=true;
-      if (_title.intersects(mousePos)) {
-        _dragged=true;
-        if (_prevMousePos == null) {
-          _prevMousePos=new Vector2f(mousePos);
-        }
-      }
-    }
-  }
   if (_dragged) {
     drag(new Vector2f(_prevMousePos.x - mousePos.x,_prevMousePos.y - mousePos.y));
     _prevMousePos=new Vector2f(mousePos);
-  }
-  if (!_mouseDown || !_dragged || _mouseUp) {
-    _dragged=false;
-    _mouseDown=false;
-    _prevMousePos=null;
-    _mouseUp=false;
-    _focused=false;
   }
   super.update();
 }

@@ -2,6 +2,60 @@
   setSize(size);
   setCrop(true);
   setStyle("background-image","engine:gui_menu 256/512 30/512 0 90/512");
+  addClickListener(new IClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      if (!isDisabled()) {
+        setFocus(_inputObj);
+        setStyle("background-position","0 120/512");
+        if (_inputValue.length() > 0 && _inputText.getTextWidth() > 0) {
+          Vector2f absolutePosition=_inputText.calcAbsolutePosition();
+          float positionRelativeElement=absolutePosition.x + _inputText.getTextWidth() - new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x;
+          float averageSymbols=_inputText.getTextWidth() / _inputValue.length();
+          int pos=Math.abs((int)(positionRelativeElement / averageSymbols) - _inputValue.length());
+          if (pos > _inputValue.length()) {
+            pos=_inputValue.length();
+          }
+ else           if (pos < 0) {
+            pos=0;
+          }
+          _cursorPosition=pos;
+        }
+      }
+    }
+  }
+);
+  addMouseButtonListener(new IMouseButtonListener(){
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (isFocused() && !intersect)       setFocus(null);
+    }
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+  }
+);
+  addMouseListener(new IMouseMoveListener(){
+    @Override public void leave(    UIDisplayElement element){
+      setStyle("background-position","0 90/512");
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+      AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"));
+    }
+    @Override public void move(    UIDisplayElement element){
+    }
+  }
+);
+  addFocusListener(new IFocusListener(){
+    @Override public void focusOn(    UIDisplayElement element){
+      if (!isDisabled())       _textCursor.setVisible(true);
+    }
+    @Override public void focusOff(    UIDisplayElement element){
+      _textCursor.setVisible(false);
+    }
+  }
+);
   _inputText=new UIText();
   _inputText.setVisible(true);
   _inputText.setColor(Color.black);
@@ -9,6 +63,7 @@
   _textCursor=new UITextCursor();
   _textCursor.setVisible(true);
   _textCursor.setPosition(new Vector2f(getPosition().x + _padding.x,getPosition().y));
+  _textCursor.setVisible(false);
   addDisplayElement(_inputText);
   addDisplayElement(_textCursor);
 }

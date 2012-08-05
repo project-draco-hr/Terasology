@@ -19,6 +19,7 @@
   _chunkGenerator=new UIComboBox(new Vector2f(176f,22f),new Vector2f(176f,88f));
   _chunkGenerator.addItem("Normal",new Integer(0));
   _chunkGenerator.addItem("Flat",new Integer(1));
+  _chunkGenerator.setSelectedItemIndex(0);
   _chunkGenerator.setVisible(true);
   _inputWorldTitleLabel.setPosition(new Vector2f(15f,32f));
   _inputWorldTitle.setPosition(new Vector2f(_inputWorldTitleLabel.getPosition().x,_inputWorldTitleLabel.getPosition().y + _inputWorldTitleLabel.getSize().y + 8f));
@@ -31,7 +32,7 @@
   _okButton.setPosition(new Vector2f(size.x / 2 - _okButton.getSize().x - 16f,size.y - _okButton.getSize().y - 10));
   _okButton.setVisible(true);
   _okButton.addClickListener(new IClickListener(){
-    public void clicked(    UIDisplayElement element){
+    @Override public void click(    UIDisplayElement element,    int button){
       if (_inputSeed.getValue().length() > 0) {
         Config.getInstance().setDefaultSeed(_inputSeed.getValue());
       }
@@ -71,7 +72,7 @@ _cancelButton.setPosition(new Vector2f(_okButton.getPosition().x + _okButton.get
 _cancelButton.getLabel().setText("Cancel");
 _cancelButton.setVisible(true);
 _cancelButton.addClickListener(new IClickListener(){
-public void clicked(UIDisplayElement element){
+@Override public void click(UIDisplayElement element,int button){
 close(true);
 }
 }
