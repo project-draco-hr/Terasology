@@ -41,8 +41,8 @@ float humidity=biomeProvider.getHumidityAt(x * ZOOM_FACTOR + (int)POSITION.x,z *
 float temp=biomeProvider.getTemperatureAt(x * ZOOM_FACTOR + (int)POSITION.x,z * ZOOM_FACTOR + (int)POSITION.y);
 humidity*=temp;
 Vector4f vecCol=new Vector4f();
-if (mapStyle == MapStyle.COLOR_LUT) vecCol=Block.calcColorForTemperatureAndHumidity(temp,humidity);
- else if (mapStyle == MapStyle.FOLIAGE_LUT) vecCol=Block.calcFoliageColorForTemperatureAndHumidity(temp,humidity);
+if (mapStyle == MapStyle.COLOR_LUT) vecCol=Block.ColorSource.COLOR_LUT.calcColor(temp,humidity);
+ else if (mapStyle == MapStyle.FOLIAGE_LUT) vecCol=Block.ColorSource.FOLIAGE_LUT.calcColor(temp,humidity);
 for (int height=256; height > 0; height-=4) {
 double n=generator.calcDensity(x * ZOOM_FACTOR + (int)POSITION.x,height - 1,z * ZOOM_FACTOR + (int)POSITION.y);
 if (n >= 0) {

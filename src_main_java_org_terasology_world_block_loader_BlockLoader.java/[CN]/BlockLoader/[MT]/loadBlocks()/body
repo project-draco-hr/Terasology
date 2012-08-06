@@ -1,0 +1,30 @@
+{
+  logger.log(Level.INFO,"Loading Blocks...");
+  for (  AssetUri blockDefUri : AssetManager.list(AssetType.BLOCK_DEFINITION)) {
+    logger.log(Level.INFO,"Loading " + blockDefUri);
+    BlockDefinition blockDef=loadBlockDefinition(blockDefUri);
+    if (blockDef != null) {
+      Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
+      Map<BlockPart,Integer> tileIndices=prepareTiles(blockDef,blockDefUri.getSimpleString());
+      BlockShape shape=null;
+      if (!blockDef.shape.isEmpty()) {
+        shape=(BlockShape)AssetManager.load(new AssetUri(AssetType.SHAPE,blockDef.shape));
+      }
+      if (shape == null) {
+        shape=cubeShape;
+      }
+      applyShape(block,shape,tileIndices);
+      Map<BlockPart,Block.ColorSource> colorSourceMap=prepareColorSources(blockDef);
+      Map<BlockPart,Vector4f> colorOffsetsMap=prepareColorOffsets(blockDef);
+      for (      BlockPart part : BlockPart.values()) {
+        block.setColorSource(part,colorSourceMap.get(part));
+        block.setColorOffset(part,colorOffsetsMap.get(part));
+      }
+      if (block.isLiquid()) {
+        applyLoweredShape(block,loweredShape,tileIndices);
+      }
+      BlockFamily family=new SymmetricFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),block);
+      registerFamily(family);
+    }
+  }
+}

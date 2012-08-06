@@ -1,0 +1,30 @@
+{
+  InputStream stream=null;
+  try {
+    stream=AssetManager.assetStream(blockDefUri);
+    if (stream != null) {
+      BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
+      return gson.fromJson(reader,BlockDefinition.class);
+    }
+ else {
+      logger.severe("Failed to load block definition '" + blockDefUri + "'");
+    }
+  }
+ catch (  JsonParseException e) {
+    logger.log(Level.WARNING,"Failed to parse block definition '" + blockDefUri + "'",e);
+  }
+catch (  IOException e) {
+    logger.log(Level.WARNING,"Failed to load block definition '" + blockDefUri + "'",e);
+  }
+ finally {
+    if (stream != null) {
+      try {
+        stream.close();
+      }
+ catch (      IOException e) {
+        logger.log(Level.SEVERE,"Failed to close stream",e);
+      }
+    }
+  }
+  return null;
+}

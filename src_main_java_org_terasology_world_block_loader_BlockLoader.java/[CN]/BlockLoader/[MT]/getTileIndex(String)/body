@@ -1,0 +1,17 @@
+{
+  AssetUri uri=new AssetUri(AssetType.BLOCK_TILE,tileUri);
+  if (tileIndexes.containsKey(tileUri)) {
+    return tileIndexes.get(tileUri);
+  }
+  Tile tile=(Tile)AssetManager.load(uri);
+  if (tile != null) {
+    int index=tiles.size();
+    tiles.add(tile);
+    tileIndexes.put(uri,index);
+    return index;
+  }
+ else {
+    logger.warning("Unable to resolve block tile '" + uri + "'");
+    return 0;
+  }
+}
