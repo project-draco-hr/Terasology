@@ -12,6 +12,7 @@
         if (health.currentHealth == health.maxHealth) {
           entity.send(new FullHealthEvent());
         }
+        entity.send(new HealthChangedEvent(entity,health.currentHealth,health.maxHealth));
       }
     }
     entity.saveComponent(health);
