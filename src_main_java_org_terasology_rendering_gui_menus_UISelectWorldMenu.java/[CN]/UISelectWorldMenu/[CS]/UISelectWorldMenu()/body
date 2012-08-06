@@ -8,7 +8,7 @@
   GUIManager.getInstance().addWindow(_window,"generate_world");
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
-  _list.addDoubleClickListener(new IClickListener(){
+  _list.addDoubleClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       loadSelectedWorld();
     }
@@ -26,7 +26,7 @@
   _deleteFromList=new UIButton(new Vector2f(128f,32f));
   _deleteFromList.getLabel().setText("Delete");
   _deleteFromList.setVisible(true);
-  _createNewWorld.addClickListener(new IClickListener(){
+  _createNewWorld.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       GUIManager.getInstance().setFocusedWindow(_window);
       _window.clearInputControls();
@@ -35,7 +35,7 @@
     }
   }
 );
-  _deleteFromList.addClickListener(new IClickListener(){
+  _deleteFromList.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (_list.getSelectedItem() == null) {
         GUIManager.getInstance().showMessage("Error","Please choose a world first.");
@@ -53,7 +53,7 @@
     }
   }
 );
-  _loadFromList.addClickListener(new IClickListener(){
+  _loadFromList.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       loadSelectedWorld();
     }

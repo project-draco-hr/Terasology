@@ -1,6 +1,6 @@
 {
   maximize();
-  IClickListener editButtonClick=new IClickListener(){
+  ClickListener editButtonClick=new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (editButton == null) {
         editButton=(UIButton)element;
@@ -130,7 +130,7 @@
   UsehelditemButton.setVisible(true);
   MouseSensitivity=new UISlider(new Vector2f(256f,32f),20,150);
   MouseSensitivity.setVisible(true);
-  MouseSensitivity.addChangedListener(new IChangedListener(){
+  MouseSensitivity.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       UISlider slider=(UISlider)element;
       slider.setText("Mouse Sensitivity: " + String.valueOf(slider.getValue()));
@@ -142,7 +142,7 @@
   defaultButton=new UIButton(new Vector2f(128f,32f));
   defaultButton.getLabel().setText("Default");
   defaultButton.setVisible(true);
-  defaultButton.addClickListener(new IClickListener(){
+  defaultButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       InputConfig.getInstance().loadDefaultConfig();
       Config.getInstance().setMouseSens(0.075f);
