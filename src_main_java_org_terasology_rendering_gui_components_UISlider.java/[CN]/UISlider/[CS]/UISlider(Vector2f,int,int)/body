@@ -6,7 +6,7 @@
   setClassStyle("slider","background-image: engine:gui_menu 256/512 30/512 0 0");
   setClassStyle("slider-mouseover","background-image: engine:gui_menu 256/512 30/512 0 30/512");
   setClassStyle("slider");
-  addMouseListener(new IMouseMoveListener(){
+  addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
       setClassStyle("slider");
     }
@@ -23,7 +23,7 @@
     }
   }
 );
-  addMouseButtonListener(new IMouseButtonListener(){
+  addMouseButtonListener(new MouseButtonListener(){
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
       setClassStyle("slider");
     }
@@ -41,7 +41,7 @@
   _slider.getTextureOrigin().set(0f,60f / 512f);
   _slider.getTextureSize().set(new Vector2f(256f / 512f,30f / 512f));
   _slider.setSize(new Vector2f(16f,getSize().y));
-  _slider.addMouseButtonListener(new IMouseButtonListener(){
+  _slider.addMouseButtonListener(new MouseButtonListener(){
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
       setFocus(null);
     }

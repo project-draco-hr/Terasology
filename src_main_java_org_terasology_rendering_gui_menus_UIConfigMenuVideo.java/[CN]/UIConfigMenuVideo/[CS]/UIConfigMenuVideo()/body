@@ -8,7 +8,7 @@
   _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:loadingBackground"));
   _overlay.setVisible(true);
   _graphicsQualityButton=new UIStateButton(new Vector2f(256f,32f));
-  IStateButtonAction graphicsQualityStateAction=new IStateButtonAction(){
+  StateButtonAction graphicsQualityStateAction=new StateButtonAction(){
     @Override public void action(    UIDisplayElement element){
       UIStateButton button=(UIStateButton)element;
 switch (button.getState()) {
@@ -35,7 +35,7 @@ _graphicsQualityButton.addState("Graphics Quality: Epic",graphicsQualityStateAct
 _graphicsQualityButton.addClickListener(clickAction);
 _graphicsQualityButton.setVisible(true);
 _viewingDistanceButton=new UIStateButton(new Vector2f(256f,32f));
-IStateButtonAction viewingDistanceStateAction=new IStateButtonAction(){
+StateButtonAction viewingDistanceStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
 Config.getInstance().setViewingDistanceById(button.getState());
@@ -49,7 +49,7 @@ _viewingDistanceButton.addState("Viewing Distance: Ultra",viewingDistanceStateAc
 _viewingDistanceButton.addClickListener(clickAction);
 _viewingDistanceButton.setVisible(true);
 _fovButton=new UISlider(new Vector2f(256f,32f),75,120);
-_fovButton.addChangedListener(new IChangedListener(){
+_fovButton.addChangedListener(new ChangedListener(){
 @Override public void changed(UIDisplayElement element){
 UISlider slider=(UISlider)element;
 slider.setText("FOV: " + String.valueOf(slider.getValue()));
@@ -59,7 +59,7 @@ Config.getInstance().setFov(slider.getValue());
 );
 _fovButton.setVisible(true);
 _animateGrassButton=new UIStateButton(new Vector2f(256f,32f));
-IStateButtonAction animateGrassStateAction=new IStateButtonAction(){
+StateButtonAction animateGrassStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
 if (button.getState() == 0) Config.getInstance().setAnimatedGrass(false);
@@ -73,7 +73,7 @@ _animateGrassButton.addState("Animate Grass: On",animateGrassStateAction);
 _animateGrassButton.addClickListener(clickAction);
 _animateGrassButton.setVisible(true);
 _reflectiveWaterButton=new UIStateButton(new Vector2f(256f,32f));
-IStateButtonAction reflectiveWaterStateAction=new IStateButtonAction(){
+StateButtonAction reflectiveWaterStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
 if (button.getState() == 0) Config.getInstance().setComplexWater(false);
@@ -87,7 +87,7 @@ _reflectiveWaterButton.addState("Reflective water: On",reflectiveWaterStateActio
 _reflectiveWaterButton.addClickListener(clickAction);
 _reflectiveWaterButton.setVisible(true);
 _blurIntensityButton=new UIStateButton(new Vector2f(256f,32f));
-IStateButtonAction blurIntensityStateAction=new IStateButtonAction(){
+StateButtonAction blurIntensityStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
 Config.getInstance().setBlurIntensity(button.getState());
@@ -101,7 +101,7 @@ _blurIntensityButton.addState("Blur intensity: Max",blurIntensityStateAction);
 _blurIntensityButton.addClickListener(clickAction);
 _blurIntensityButton.setVisible(true);
 _bobbingButton=new UIStateButton(new Vector2f(256f,32f));
-IStateButtonAction bobbingStateAction=new IStateButtonAction(){
+StateButtonAction bobbingStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
 if (button.getState() == 0) Config.getInstance().setCameraBobbing(false);
@@ -113,7 +113,7 @@ _bobbingButton.addState("Bobbing: Off",bobbingStateAction);
 _bobbingButton.addState("Bobbing: On",bobbingStateAction);
 _bobbingButton.addClickListener(clickAction);
 _bobbingButton.setVisible(true);
-_backToConfigMenuButton=new UIButton(new Vector2f(256f,32f));
+_backToConfigMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
 _backToConfigMenuButton.getLabel().setText("Back");
 _backToConfigMenuButton.setVisible(true);
 addDisplayElement(_overlay);

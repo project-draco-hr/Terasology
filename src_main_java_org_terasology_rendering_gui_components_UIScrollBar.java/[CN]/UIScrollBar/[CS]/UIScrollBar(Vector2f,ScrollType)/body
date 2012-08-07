@@ -11,7 +11,7 @@ _scrolBarThumb=new UIScrollBarThumb(getSize(),ScrollType.horizontal);
 break;
 }
 _scrolBarThumb.setVisible(true);
-_scrolBarThumb.addMouseButtonListener(new IMouseButtonListener(){
+_scrolBarThumb.addMouseButtonListener(new MouseButtonListener(){
 @Override public void wheel(UIDisplayElement element,int wheel,boolean intersect){
 scrolled(calculateScrollFromWheel(((-1) * wheel / 30) / _step));
 }
@@ -34,7 +34,7 @@ _prevMousePos=mousePos.x;
 }
 }
 );
-addMouseListener(new IMouseMoveListener(){
+addMouseMoveListener(new MouseMoveListener(){
 @Override public void move(UIDisplayElement element){
 if (_scrolled) {
 Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
