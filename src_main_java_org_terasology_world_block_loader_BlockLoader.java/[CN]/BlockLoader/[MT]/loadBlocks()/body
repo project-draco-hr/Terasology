@@ -2,51 +2,29 @@
   logger.log(Level.INFO,"Loading Blocks...");
   for (  AssetUri blockDefUri : AssetManager.list(AssetType.BLOCK_DEFINITION)) {
     logger.log(Level.INFO,"Loading " + blockDefUri);
-    BlockDefinition blockDef=loadBlockDefinition(blockDefUri);
-    if (blockDef != null) {
-      Map<BlockPart,Integer> tileIndices=prepareTiles(blockDef,blockDefUri.getSimpleString());
-      Map<BlockPart,Block.ColorSource> colorSourceMap=prepareColorSources(blockDef);
-      Map<BlockPart,Vector4f> colorOffsetsMap=prepareColorOffsets(blockDef);
-      BlockShape shape=null;
-      if (!blockDef.shape.isEmpty()) {
-        shape=(BlockShape)AssetManager.load(new AssetUri(AssetType.SHAPE,blockDef.shape));
-      }
-      if (shape == null) {
-        shape=cubeShape;
-      }
-      if (blockDef.liquid) {
-        blockDef.rotation=BlockDefinition.RotationType.NONE;
-      }
-switch (blockDef.rotation) {
-case HORIZONTAL:
-        Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
-      for (      Rotation rot : Rotation.horizontalRotations()) {
-        Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
-        applyShape(block,shape,tileIndices,rot);
-        for (        BlockPart part : BlockPart.values()) {
-          block.setColorSource(part,colorSourceMap.get(part));
-          block.setColorOffset(part,colorOffsetsMap.get(part));
+    try {
+      JsonElement rawJson=readJson(blockDefUri);
+      if (rawJson != null) {
+        JsonObject blockDefJson=rawJson.getAsJsonObject();
+        BlockDefinition blockDef=loadBlockDefinition(blockDefJson);
+        if (blockDef.liquid) {
+          blockDef.rotation=BlockDefinition.RotationType.NONE;
         }
-        blockMap.put(rot.rotate(Side.FRONT),block);
-      }
-    BlockFamily horizFamily=new HorizontalBlockFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockMap);
-  registerFamily(horizFamily);
-break;
+switch (blockDef.rotation) {
 case ALIGNTOSURFACE:
+          processAlignToSurfaceFamily(blockDefUri,blockDefJson);
+        break;
+case HORIZONTAL:
+      processHorizontalBlockFamily(blockDefUri,blockDef);
+    break;
 default :
-Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
-applyShape(block,shape,tileIndices,Rotation.NONE);
-for (BlockPart part : BlockPart.values()) {
-block.setColorSource(part,colorSourceMap.get(part));
-block.setColorOffset(part,colorOffsetsMap.get(part));
-}
-if (block.isLiquid()) {
-applyLoweredShape(block,loweredShape,tileIndices);
-}
-BlockFamily family=new SymmetricFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),block);
-registerFamily(family);
+  processSingleBlockFamily(blockDefUri,blockDef);
 break;
 }
+}
+}
+ catch (JsonParseException e) {
+logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
 }
 }
 }

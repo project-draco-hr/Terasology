@@ -4,7 +4,7 @@
     stream=AssetManager.assetStream(blockDefUri);
     if (stream != null) {
       BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
-      return gson.fromJson(reader,BlockDefinition.class);
+      return parser.parse(reader);
     }
  else {
       logger.severe("Failed to load block definition '" + blockDefUri + "'");
