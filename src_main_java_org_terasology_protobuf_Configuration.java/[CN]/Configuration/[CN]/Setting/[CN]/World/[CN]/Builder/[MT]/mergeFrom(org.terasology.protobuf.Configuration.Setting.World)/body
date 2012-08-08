@@ -30,8 +30,19 @@
   if (other.hasDefaultSeed()) {
     setDefaultSeed(other.getDefaultSeed());
   }
-  if (other.hasChunkGenerator()) {
-    setChunkGenerator(other.getChunkGenerator());
+  if (!other.chunkGenerator_.isEmpty()) {
+    if (chunkGenerator_.isEmpty()) {
+      chunkGenerator_=other.chunkGenerator_;
+      bitField0_=(bitField0_ & ~0x00000400);
+    }
+ else {
+      ensureChunkGeneratorIsMutable();
+      chunkGenerator_.addAll(other.chunkGenerator_);
+    }
+    onChanged();
+  }
+  if (other.hasChunkGeneratorFlatHeight()) {
+    setChunkGeneratorFlatHeight(other.getChunkGeneratorFlatHeight());
   }
   this.mergeUnknownFields(other.getUnknownFields());
   return this;
