@@ -1,6 +1,14 @@
 {
   super.layout();
-  if (_inventory != null) {
-    _inventory.center();
+  if (inventory != null) {
+    background.center();
+    inventory.center();
+    inventory.getPosition().y+=48;
+    if (inventory.getCells().size() >= 9) {
+      for (int i=0; i < 9; i++) {
+        System.out.print("|");
+        inventory.getCells().get(i).getPosition().y+=200;
+      }
+    }
   }
 }
