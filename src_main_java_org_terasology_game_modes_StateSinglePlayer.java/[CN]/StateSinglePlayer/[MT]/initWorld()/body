@@ -4,17 +4,14 @@
     worldRenderer.dispose();
     worldRenderer=null;
   }
-  if (seed == null) {
-    seed=random.randomCharacterString(16);
+  if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
+    worldInfo.setSeed(random.randomCharacterString(16));
   }
- else   if (seed.isEmpty()) {
-    seed=random.randomCharacterString(16);
-  }
-  logger.log(Level.INFO,"Creating new World with seed \"{0}\"",seed);
-  ChunkGeneratorManager chunkGeneratorManager=initChunkGeneratorManager(title);
-  chunkGeneratorManager.setWorldSeed(seed);
-  chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(seed));
-  worldRenderer=new WorldRenderer(title,seed,time,chunkGeneratorManager,entityManager,localPlayerSys);
+  logger.log(Level.INFO,"World seed: \"{0}\"",worldInfo.getSeed());
+  ChunkGeneratorManager chunkGeneratorManager=ChunkGeneratorManagerImpl.buildChunkGenerator(Arrays.asList(worldInfo.getChunkGenerators()));
+  chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
+  chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
+  worldRenderer=new WorldRenderer(worldInfo,chunkGeneratorManager,entityManager,localPlayerSys);
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
   Iterator<EntityRef> worldEntityIterator=entityManager.iteratorEntities(WorldComponent.class).iterator();
   if (worldEntityIterator.hasNext()) {
@@ -33,7 +30,7 @@
   for (  ComponentSystem system : componentSystemManager.iterateAll()) {
     system.initialise();
   }
-  File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(title),ENTITY_DATA_FILE);
+  File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),ENTITY_DATA_FILE);
   entityManager.clear();
   if (entityDataFile.exists()) {
     try {
