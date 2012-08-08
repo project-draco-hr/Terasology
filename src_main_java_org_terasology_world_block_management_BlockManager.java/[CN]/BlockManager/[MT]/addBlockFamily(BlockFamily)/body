@@ -1,6 +1,12 @@
 {
   familyByUri.put(family.getURI(),family);
   for (  Block block : family.listBlocks()) {
+    byte id=idByUri.get(block.getURI());
+    if (id == 0) {
+      id=(byte)nextId++;
+      idByUri.put(block.getURI(),id);
+    }
+    block.setId(id);
     blocksById.put(block.getId(),block);
     blocksByUri.put(block.getURI(),block);
   }

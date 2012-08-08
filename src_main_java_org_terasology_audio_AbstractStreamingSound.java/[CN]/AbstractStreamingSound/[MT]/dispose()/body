@@ -1,7 +1,8 @@
 {
   for (int i=0; i < buffers.length; i++) {
     if (buffers[i] != 0) {
-      AL10.alDeleteBuffers(buffers[i]);
     }
   }
+  OpenALException.checkState("Deleting buffer data");
+  buffers=new int[0];
 }
