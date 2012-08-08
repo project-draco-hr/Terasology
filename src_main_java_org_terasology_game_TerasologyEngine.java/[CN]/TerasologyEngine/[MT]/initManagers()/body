@@ -1,11 +1,6 @@
 {
   CoreRegistry.put(GroovyManager.class,new GroovyManager());
-  AssetManager.getInstance().register(AssetType.MESH,"obj",new ObjMeshLoader());
-  AssetManager.getInstance().register(AssetType.MUSIC,"ogg",new OggStreamingSoundLoader());
-  AssetManager.getInstance().register(AssetType.SOUND,"ogg",new OggSoundLoader());
-  AssetManager.getInstance().register(AssetType.TEXTURE,"png",new PNGTextureLoader());
-  AssetManager.getInstance().register(AssetType.SHADER,"glsl",new GLSLShaderLoader());
-  AssetManager.getInstance().register(AssetType.MATERIAL,"mat",new MaterialLoader());
+  AssetType.registerAssetTypes();
   AssetManager.getInstance().addAssetSource(new ClasspathSource("engine",getClass().getProtectionDomain().getCodeSource(),"org/terasology/data"));
   BlockShapeManager.getInstance().reload();
   BlockManifestor manifestor=new BlockManifestor(BlockManager.getInstance());
