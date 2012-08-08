@@ -56,12 +56,22 @@
 );
   _overlay=new UITransparentOverlay();
   _overlay.setVisible(true);
+  _backToGameButton=new UIButton(new Vector2f(256f,32f));
+  _backToGameButton.getLabel().setText("Back to game");
+  _backToGameButton.setVisible(true);
+  _backToGameButton.addClickListener(new IClickListener(){
+    public void clicked(    UIDisplayElement element){
+      setVisible(false);
+    }
+  }
+);
   addDisplayElement(_overlay);
   addDisplayElement(_title);
   addDisplayElement(_version);
   addDisplayElement(_exitButton);
   addDisplayElement(_respawnButton);
   addDisplayElement(_mainMenuButton);
+  addDisplayElement(_backToGameButton);
   setModal(true);
   layout();
 }
