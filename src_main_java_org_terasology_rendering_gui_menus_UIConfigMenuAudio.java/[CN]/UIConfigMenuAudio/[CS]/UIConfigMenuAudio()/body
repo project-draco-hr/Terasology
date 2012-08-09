@@ -8,7 +8,7 @@
   _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:loadingBackground"));
   _overlay.setVisible(true);
   _soundOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
-  _soundOptionSlider.addChangedListener(new IChangedListener(){
+  _soundOptionSlider.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       UISlider slider=(UISlider)element;
       if (slider.getValue() > 0)       slider.setText("Sound Volume: " + String.valueOf(slider.getValue()));
@@ -19,7 +19,7 @@
 );
   _soundOptionSlider.setVisible(true);
   _musicOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
-  _musicOptionSlider.addChangedListener(new IChangedListener(){
+  _musicOptionSlider.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       UISlider slider=(UISlider)element;
       if (slider.getValue() > 0)       slider.setText("Music Volume: " + String.valueOf(slider.getValue()));
@@ -29,7 +29,7 @@
   }
 );
   _musicOptionSlider.setVisible(true);
-  _backToConfigMenuButton=new UIButton(new Vector2f(256f,32f));
+  _backToConfigMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _backToConfigMenuButton.getLabel().setText("Back");
   _backToConfigMenuButton.setVisible(true);
   addDisplayElement(_overlay);
@@ -38,5 +38,5 @@
   addDisplayElement(_soundOptionSlider,"soundVolumeSlider");
   addDisplayElement(_musicOptionSlider,"musicVolumeSlider");
   addDisplayElement(_backToConfigMenuButton,"backToConfigMenuButton");
-  update();
+  layout();
 }

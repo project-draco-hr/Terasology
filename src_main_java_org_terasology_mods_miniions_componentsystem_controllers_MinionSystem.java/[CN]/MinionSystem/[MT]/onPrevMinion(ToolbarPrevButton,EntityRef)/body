@@ -1,7 +1,10 @@
 {
   MinionControllerComponent minionController=entity.getComponent(MinionControllerComponent.class);
   if (minionController.minionMode) {
-    minionController.selectedMinion=(minionController.selectedMinion + 1) % 9;
+    minionController.selectedMinion=(minionController.selectedMinion - 1) % 9;
+    if (minionController.selectedMinion < 0) {
+      minionController.selectedMinion+=9;
+    }
     entity.saveComponent(minionController);
     event.consume();
   }

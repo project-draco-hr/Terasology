@@ -1,38 +1,6 @@
 {
-  Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
-  if (intersects(mousePos)) {
-    if (!_clickSoundPlayed) {
-      AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"));
-      _clickSoundPlayed=true;
-    }
-    if (_mouseUp) {
-      _mouseUp=false;
-    }
-    if (_mouseDown) {
-      clicked(mousePos);
-    }
-  }
- else {
-    if (_mouseDown) {
-      _focused=false;
-    }
-    _clickSoundPlayed=false;
-    _mouseUp=false;
-    _mouseDown=false;
-    setStyle("background-position","0 90/512");
-  }
-  if (isFocused()) {
-    if (!_textCursor.isVisible()) {
-      _textCursor.setVisible(true);
-    }
-    setStyle("background-position","0 120/512");
-  }
- else {
-    if (_textCursor.isVisible()) {
-      _textCursor.setVisible(false);
-    }
-    setStyle("background-position","0 90/512");
-  }
+  _inputText.setPosition(new Vector2f(_padding.x,getSize().y / 2 - _inputText.getTextHeight() / 2));
+  _textCursor.setPosition(new Vector2f(_textCursor.getPosition().x,getSize().y / 2 - _textCursor.getSize().y / 1.5f));
   updateTextShift();
   super.update();
 }

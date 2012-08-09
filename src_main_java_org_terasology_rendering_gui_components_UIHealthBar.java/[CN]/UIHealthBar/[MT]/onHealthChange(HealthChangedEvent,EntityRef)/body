@@ -1,0 +1,19 @@
+{
+  float healthRatio=(float)event.getCurrentHealth() / event.getMaxHealth();
+  for (int i=0; i < 10; i++) {
+    if (i < healthRatio * 10f)     _hearts[i].setVisible(true);
+ else     _hearts[i].setVisible(false);
+    PoisonedComponent poisoned=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PoisonedComponent.class);
+    entityManager=CoreRegistry.get(EntityManager.class);
+    for (    EntityRef entity : entityManager.iteratorEntities(PoisonedComponent.class)) {
+      if (poisoned.poisonDuration >= 1)       _hearts[i].getTextureOrigin().set(new Vector2f(106f / 256f,0.0f));
+ else       _hearts[i].getTextureOrigin().set(new Vector2f(52f / 256f,0.0f));
+    }
+    for (    EntityRef entity : entityManager.iteratorEntities(CuredComponent.class)) {
+      CuredComponent cured=CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(CuredComponent.class);
+      entityManager=CoreRegistry.get(EntityManager.class);
+      if (cured.cureDuration >= 1)       _hearts[i].getTextureOrigin().set(new Vector2f(52f / 256f,0.0f));
+ else       _hearts[i].getTextureOrigin().set(new Vector2f(52f / 256f,0.0f));
+    }
+  }
+}

@@ -32,8 +32,16 @@
   if (((bitField0_ & 0x00000200) == 0x00000200)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(11,getDefaultSeedBytes());
   }
+{
+    int dataSize=0;
+    for (int i=0; i < chunkGenerator_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(chunkGenerator_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getChunkGeneratorList().size();
+  }
   if (((bitField0_ & 0x00000400) == 0x00000400)) {
-    size+=com.google.protobuf.CodedOutputStream.computeInt32Size(12,chunkGenerator_);
+    size+=com.google.protobuf.CodedOutputStream.computeInt32Size(13,chunkGeneratorFlatHeight_);
   }
   size+=getUnknownFields().getSerializedSize();
   memoizedSerializedSize=size;

@@ -1,0 +1,17 @@
+{
+  if (!itemEntity.exists())   return;
+  if (itemComponent == null)   return;
+  if (itemComponent.icon.isEmpty()) {
+    BlockItemComponent blockItem=itemEntity.getComponent(BlockItemComponent.class);
+    if (blockItem != null) {
+      renderBlockIcon(blockItem.blockFamily);
+    }
+  }
+ else {
+    Icon icon=Icon.get(itemComponent.icon);
+    if (icon != null) {
+      renderIcon(icon);
+    }
+  }
+  super.render();
+}

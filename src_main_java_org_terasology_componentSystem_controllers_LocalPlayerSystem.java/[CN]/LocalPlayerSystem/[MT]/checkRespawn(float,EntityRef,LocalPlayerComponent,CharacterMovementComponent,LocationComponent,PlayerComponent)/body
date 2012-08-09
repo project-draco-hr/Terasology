@@ -9,6 +9,7 @@
   HealthComponent health=entity.getComponent(HealthComponent.class);
   if (health != null) {
     health.currentHealth=health.maxHealth;
+    entity.send(new HealthChangedEvent(entity,health.currentHealth,health.maxHealth));
     entity.saveComponent(health);
   }
   location.setWorldPosition(playerComponent.spawnPosition);

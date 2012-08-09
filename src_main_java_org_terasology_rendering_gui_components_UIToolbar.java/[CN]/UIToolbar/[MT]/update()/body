@@ -1,5 +1,15 @@
 {
   super.update();
-  centerHorizontally();
-  getPosition().y=Display.getHeight() - getSize().y;
+  if (tools != null && CoreRegistry.get(LocalPlayer.class).getEntity() != EntityRef.NULL) {
+    if (tools.getEntity() == EntityRef.NULL) {
+      tools.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity());
+    }
+  }
+  if (tools.getCells().size() > 0) {
+    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+    tools.getCells().get(previousSelected).setSelectionRectangleEnable(false);
+    tools.getCells().get(localPlayerComp.selectedTool).setSelectionRectangleEnable(true);
+    previousSelected=localPlayerComp.selectedTool;
+  }
 }
