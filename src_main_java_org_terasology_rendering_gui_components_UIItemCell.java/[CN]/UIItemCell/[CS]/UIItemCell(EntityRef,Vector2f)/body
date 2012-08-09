@@ -1,5 +1,6 @@
 {
   this.ownerEntity=owner;
+  this.ownerInventory=ownerEntity.getComponent(InventoryComponent.class);
   setSize(size);
   Texture guiTex=AssetManager.loadTexture("engine:gui");
   selectionRectangle=new UIGraphicsElement(guiTex);
@@ -20,7 +21,7 @@
   if (movementIcon == null) {
     movementIcon=new UIItemCellIcon();
     movementIcon.setVisible(false);
-    movementIcon.setItemEntity(null);
+    movementIcon.setItemEntity(EntityRef.NULL);
   }
   addMouseMoveListener(mouseMoveListener);
   addMouseButtonListener(mouseButtonListener);

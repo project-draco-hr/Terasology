@@ -1,0 +1,14 @@
+{
+  if (itemEntity.exists()) {
+    ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+    BlockItemComponent blockItem=itemEntity.getComponent(BlockItemComponent.class);
+    if (item != null) {
+      if (blockItem != null)       itemLabel.setText(blockItem.blockFamily.getTitle());
+ else       itemLabel.setText(item.name);
+    }
+    itemLabel.setVisible(enable);
+  }
+ else {
+    itemLabel.setVisible(false);
+  }
+}
