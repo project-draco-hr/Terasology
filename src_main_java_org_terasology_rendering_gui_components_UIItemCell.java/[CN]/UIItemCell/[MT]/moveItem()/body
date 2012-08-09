@@ -1,0 +1,17 @@
+{
+  EntityRef item=getFromMovementSlot();
+  if (!ownerInventory.itemSlots.get(slot).exists()) {
+    moveItemPlace();
+  }
+ else {
+    ItemComponent sourceItem=item.getComponent(ItemComponent.class);
+    ItemComponent targetItem=ownerInventory.itemSlots.get(slot).getComponent(ItemComponent.class);
+    if (targetItem.stackId.equals(sourceItem.stackId) && !targetItem.stackId.isEmpty() && !sourceItem.stackId.isEmpty()) {
+      moveItemMerge();
+    }
+ else {
+      moveItemSwap();
+    }
+  }
+  ownerEntity.saveComponent(ownerInventory);
+}
