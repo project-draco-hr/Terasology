@@ -1,10 +1,10 @@
 {
   Block centerBlock=worldProvider.getBlock(targetBlock.x,targetBlock.y,targetBlock.z);
-  if (!centerBlock.isAllowBlockAttachment()) {
+  if (!centerBlock.isAttachmentAllowed()) {
     return false;
   }
   Block adjBlock=worldProvider.getBlock(blockPos.x,blockPos.y,blockPos.z);
-  if (adjBlock != null && !adjBlock.isInvisible() && !adjBlock.isSelectionRayThrough()) {
+  if (!adjBlock.isInvisible() || adjBlock.isTargetable()) {
     return false;
   }
   if (!block.isPenetrable()) {

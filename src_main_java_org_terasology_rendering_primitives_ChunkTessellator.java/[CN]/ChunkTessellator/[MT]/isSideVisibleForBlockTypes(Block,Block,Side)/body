@@ -1,5 +1,5 @@
 {
-  if (currentBlock.getSideMesh(side) == null)   return false;
+  if (currentBlock.getMeshPart(BlockPart.fromSide(side)) == null)   return false;
   if (currentBlock.isLiquid() && blockToCheck.isLiquid())   return false;
-  return blockToCheck.getId() == 0x0 || !blockToCheck.isBlockingSide(side.reverse()) || (!currentBlock.isTranslucent() && blockToCheck.isTranslucent());
+  return blockToCheck.getId() == 0x0 || !blockToCheck.isFullSide(side.reverse()) || (!currentBlock.isTranslucent() && blockToCheck.isTranslucent());
 }

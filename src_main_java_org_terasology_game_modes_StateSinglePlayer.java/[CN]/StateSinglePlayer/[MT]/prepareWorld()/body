@@ -1,7 +1,6 @@
 {
   UIScreenLoading loadingScreen=GUIManager.getInstance().addWindow(new UIScreenLoading(),"engine:loadingScreen");
   Display.update();
-  int chunksGenerated=0;
   Timer timer=CoreRegistry.get(Timer.class);
   long startTime=timer.getTimeInMs();
   Iterator<EntityRef> iterator=entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
@@ -30,7 +29,6 @@
     spawnZoneEntity.destroy();
   }
   while (!getWorldRenderer().pregenerateChunks() && timer.getTimeInMs() - startTime < 5000) {
-    chunksGenerated++;
     loadingScreen.updateStatus(String.format("Fast forwarding world... %.2f%%! :-)",(timer.getTimeInMs() - startTime) / 50.0f),(timer.getTimeInMs() - startTime) / 50.0f);
     renderUserInterface();
     updateUserInterface();

@@ -1,0 +1,6 @@
+{
+  parser=new JsonParser();
+  gson=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(BlockDefinition.Tiles.class,new BlockTilesDefinitionHandler()).registerTypeAdapter(BlockDefinition.ColorSources.class,new BlockColorSourceDefinitionHandler()).registerTypeAdapter(BlockDefinition.ColorOffsets.class,new BlockColorOffsetDefinitionHandler()).registerTypeAdapter(Vector4f.class,new Vector4fHandler()).create();
+  cubeShape=(BlockShape)AssetManager.load(new AssetUri(AssetType.SHAPE,"engine:cube"));
+  loweredShape=(BlockShape)AssetManager.load(new AssetUri(AssetType.SHAPE,"engine:loweredCube"));
+}
