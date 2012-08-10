@@ -1,0 +1,10 @@
+{
+  EntityRef item=getFromTransferSlot();
+  ItemComponent sourceItem=item.getComponent(ItemComponent.class);
+  ItemComponent targetItem=targetCell.itemEntity.getComponent(ItemComponent.class);
+  targetItem.container=sourceItem.container;
+  sendToTransferSlot(targetCell.itemEntity,(byte)0);
+  sourceItem.container=ownerEntity;
+  ownerInventory.itemSlots.set(targetCell.slot,item);
+  return true;
+}
