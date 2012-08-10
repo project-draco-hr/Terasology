@@ -10,9 +10,11 @@
         health.currentHealth=Math.min(health.maxHealth,health.currentHealth + (int)health.partialRegen);
         health.partialRegen%=1f;
         if (health.currentHealth == health.maxHealth) {
-          entity.send(new FullHealthEvent());
+          entity.send(new FullHealthEvent(entity,health.maxHealth));
         }
-        entity.send(new HealthChangedEvent(entity,health.currentHealth,health.maxHealth));
+ else {
+          entity.send(new HealthChangedEvent(entity,health.currentHealth,health.maxHealth));
+        }
       }
     }
     entity.saveComponent(health);

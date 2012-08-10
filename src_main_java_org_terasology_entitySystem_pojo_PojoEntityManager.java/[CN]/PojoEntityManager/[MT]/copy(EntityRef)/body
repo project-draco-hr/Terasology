@@ -1,0 +1,10 @@
+{
+  if (!other.exists()) {
+    return EntityRef.NULL;
+  }
+  List<Component> newEntityComponents=Lists.newArrayList();
+  for (  Component c : other.iterateComponents()) {
+    newEntityComponents.add(componentLibrary.copy(c));
+  }
+  return create(newEntityComponents);
+}

@@ -1,0 +1,25 @@
+{
+  ByteBuffer[] data=new ByteBuffer[NUM_MIPMAPS];
+  for (int i=0; i < NUM_MIPMAPS; ++i) {
+    BufferedImage image=generateAtlas(i);
+    ByteArrayOutputStream bos=new ByteArrayOutputStream();
+    try {
+      ImageIO.write(image,"png",bos);
+      PNGDecoder decoder=new PNGDecoder(new ByteArrayInputStream(bos.toByteArray()));
+      ByteBuffer buf=ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
+      decoder.decode(buf,decoder.getWidth() * 4,PNGDecoder.RGBA);
+      buf.flip();
+      data[i]=buf;
+    }
+ catch (    IOException e) {
+      logger.severe("Failed to write in-memory image");
+    }
+  }
+  Texture terrainTex=new Texture(data,Block.ATLAS_SIZE_IN_PX,Block.ATLAS_SIZE_IN_PX,Texture.WrapMode.Clamp,Texture.FilterMode.Nearest);
+  AssetManager.getInstance().addAssetTemporary(new AssetUri(AssetType.TEXTURE,"engine:terrain"),terrainTex);
+  Material terrainMat=new Material(new AssetUri(AssetType.MATERIAL,"engine:terrain"),AssetManager.loadShader("engine:block"));
+  terrainMat.setTexture("textureAtlas",terrainTex);
+  terrainMat.setFloat3("colorOffset",1,1,1);
+  terrainMat.setInt("textured",1);
+  AssetManager.getInstance().addAssetTemporary(new AssetUri(AssetType.MATERIAL,"engine:terrain"),terrainMat);
+}

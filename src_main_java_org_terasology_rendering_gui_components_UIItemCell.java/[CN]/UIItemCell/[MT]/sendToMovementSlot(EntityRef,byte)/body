@@ -8,6 +8,12 @@
  else   if (amount > 0 && amount <= InventorySystem.MAX_STACK) {
     ItemComponent itemComponent=itemEntity.getComponent(ItemComponent.class);
     itemComponent.stackCount-=amount;
+    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+    EntityRef moveItem=entityManager.copy(item);
+    itemComponent=moveItem.getComponent(ItemComponent.class);
+    itemComponent.stackCount=amount;
+    itemComponent.container=ownerEntity;
+    CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PlayerComponent.class).movementSlot=moveItem;
   }
   ownerEntity.saveComponent(ownerInventory);
 }

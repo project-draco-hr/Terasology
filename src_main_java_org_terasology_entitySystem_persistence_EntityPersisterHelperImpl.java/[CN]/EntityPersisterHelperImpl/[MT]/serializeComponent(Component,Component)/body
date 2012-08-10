@@ -18,8 +18,13 @@
       Object deltaValue=field.getValue(delta);
       if (!Objects.equal(origValue,deltaValue)) {
         EntityData.Value value=field.serialize(deltaValue);
-        componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
-        changed=true;
+        if (value != null) {
+          componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
+          changed=true;
+        }
+ else {
+          logger.log(Level.SEVERE,"Exception serializing component type: " + base.getClass() + ", field: "+ field.getName()+ " - returned null");
+        }
       }
     }
  catch (    IllegalAccessException e) {

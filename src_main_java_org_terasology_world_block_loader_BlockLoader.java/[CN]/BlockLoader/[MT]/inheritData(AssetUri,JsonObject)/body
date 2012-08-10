@@ -1,0 +1,17 @@
+{
+  JsonObject parentObj=blockDefJson;
+  while (parentObj.has("basedOn")) {
+    AssetUri parentUri=new AssetUri(AssetType.BLOCK_DEFINITION,parentObj.get("basedOn").getAsString());
+    if (rootAssetUri.equals(parentUri)) {
+      logger.severe("Circular inheritance detected in " + rootAssetUri);
+      break;
+    }
+ else     if (!parentUri.isValid()) {
+      logger.severe(rootAssetUri + " based on invalid uri: " + parentObj.get("basedOn").getAsString());
+      break;
+    }
+    JsonObject parent=readJson(parentUri).getAsJsonObject();
+    mergeJsonInto(parent,blockDefJson);
+    parentObj=parent;
+  }
+}

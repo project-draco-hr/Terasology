@@ -1,0 +1,19 @@
+{
+  FloatBuffer buffer=BufferUtils.createFloatBuffer(32);
+  int counter=0;
+  for (  Block b : blocksByUri.values()) {
+    if (b.isWaving()) {
+      Vector2f pos=b.getTextureAtlasPos(BlockPart.TOP);
+      buffer.put(pos.x);
+      buffer.put(pos.y);
+      counter++;
+    }
+  }
+  while (counter < 16) {
+    buffer.put(-1);
+    buffer.put(-1);
+    counter++;
+  }
+  buffer.flip();
+  return buffer;
+}

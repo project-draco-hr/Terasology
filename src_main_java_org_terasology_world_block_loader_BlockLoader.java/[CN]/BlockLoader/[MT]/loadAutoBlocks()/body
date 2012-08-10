@@ -1,0 +1,12 @@
+{
+  logger.log(Level.INFO,"Loading Auto Blocks...");
+  BlockDefinition defaultBlockDef=new BlockDefinition();
+  for (  AssetUri blockTileUri : AssetManager.list(AssetType.BLOCK_TILE)) {
+    if (AssetManager.getInstance().getAssetURLs(blockTileUri).get(0).getPath().contains(AUTO_BLOCK_URL_FRAGMENT)) {
+      BlockUri uri=new BlockUri(blockTileUri.getPackage(),blockTileUri.getAssetName());
+      if (!BlockManager.getInstance().hasBlockFamily(uri)) {
+        processSingleBlockFamily(blockTileUri,defaultBlockDef);
+      }
+    }
+  }
+}

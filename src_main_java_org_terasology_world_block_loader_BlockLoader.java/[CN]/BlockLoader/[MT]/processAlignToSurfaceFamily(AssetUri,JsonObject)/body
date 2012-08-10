@@ -1,0 +1,26 @@
+{
+  Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+  if (blockDefJson.has("top")) {
+    JsonObject topDefJson=blockDefJson.getAsJsonObject("top");
+    blockDefJson.remove("top");
+    mergeJsonInto(blockDefJson,topDefJson);
+    BlockDefinition topDef=loadBlockDefinition(topDefJson);
+    blockMap.put(Side.TOP,constructSingleBlock(blockDefUri,topDef));
+  }
+  if (blockDefJson.has("sides")) {
+    JsonObject sideDefJson=blockDefJson.getAsJsonObject("sides");
+    blockDefJson.remove("sides");
+    mergeJsonInto(blockDefJson,sideDefJson);
+    BlockDefinition sideDef=loadBlockDefinition(sideDefJson);
+    constructHorizontalBlocks(blockDefUri,sideDef,blockMap);
+  }
+  if (blockDefJson.has("bottom")) {
+    JsonObject bottomDefJson=blockDefJson.getAsJsonObject("bottom");
+    blockDefJson.remove("bottom");
+    mergeJsonInto(blockDefJson,bottomDefJson);
+    BlockDefinition bottomDef=loadBlockDefinition(bottomDefJson);
+    blockMap.put(Side.BOTTOM,constructSingleBlock(blockDefUri,bottomDef));
+  }
+  BlockFamily family=new AlignToSurfaceFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockMap);
+  registerFamily(family);
+}

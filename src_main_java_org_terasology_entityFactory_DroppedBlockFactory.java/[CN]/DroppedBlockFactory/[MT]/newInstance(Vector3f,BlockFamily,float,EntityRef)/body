@@ -1,20 +1,23 @@
 {
-  if (blockFamily.getArchetypeBlock().isTranslucent()) {
+  if (!blockFamily.getArchetypeBlock().isDebrisOnDestroy()) {
     return EntityRef.NULL;
   }
   Prefab prefab=CoreRegistry.get(PrefabManager.class).getPrefab("core:droppedBlock");
   if (prefab != null && prefab.getComponent(LocationComponent.class) != null) {
-    EntityRef blockEntity=CoreRegistry.get(EntityManager.class).create(prefab,location);
-    MeshComponent blockMesh=blockEntity.getComponent(MeshComponent.class);
+    EntityRef blockEntity=entityManager.create(prefab,location);
     BlockPickupComponent blockPickup=blockEntity.getComponent(BlockPickupComponent.class);
     blockPickup.blockFamily=blockFamily;
     blockPickup.placedEntity=placedEntity;
+    blockEntity.saveComponent(blockPickup);
+    MeshComponent blockMesh=blockEntity.getComponent(MeshComponent.class);
     blockMesh.mesh=blockFamily.getArchetypeBlock().getMesh();
     blockEntity.saveComponent(blockMesh);
-    blockEntity.saveComponent(blockPickup);
     LifespanComponent lifespanComp=blockEntity.getComponent(LifespanComponent.class);
     lifespanComp.lifespan=lifespan;
     blockEntity.saveComponent(lifespanComp);
+    RigidBodyComponent rigidBody=blockEntity.getComponent(RigidBodyComponent.class);
+    rigidBody.mass=blockFamily.getArchetypeBlock().getMass();
+    blockEntity.saveComponent(rigidBody);
     return blockEntity;
   }
   return EntityRef.NULL;
