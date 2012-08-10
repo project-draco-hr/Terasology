@@ -1,6 +1,19 @@
 {
-  if (blockIdentifier.isEmpty()) {
-    return packageName + PACKAGE_SEPARATOR + familyName;
+  if (isValid()) {
+    StringBuilder builder=new StringBuilder();
+    builder.append(packageName);
+    builder.append(PACKAGE_SEPARATOR);
+    builder.append(familyName);
+    if (!shapePackageName.isEmpty()) {
+      builder.append(PACKAGE_SEPARATOR);
+      builder.append(shapePackageName);
+      builder.append(PACKAGE_SEPARATOR);
+      builder.append(shapeName);
+    }
+    if (blockIdentifier.isEmpty()) {
+      return packageName + PACKAGE_SEPARATOR + familyName;
+    }
+    return packageName + PACKAGE_SEPARATOR + familyName+ IDENTIFIER_SEPARATOR+ blockIdentifier;
   }
-  return packageName + PACKAGE_SEPARATOR + familyName+ IDENTIFIER_SEPARATOR+ blockIdentifier;
+  return "";
 }

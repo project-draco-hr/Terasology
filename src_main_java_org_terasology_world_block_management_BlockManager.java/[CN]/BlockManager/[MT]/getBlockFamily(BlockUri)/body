@@ -1,3 +1,11 @@
 {
-  return familyByUri.get(uri);
+  BlockFamily family=familyByUri.get(uri);
+  if (family == null) {
+    family=partiallyRegisteredFamilies.get(uri);
+    if (family != null) {
+      partiallyRegisteredFamilies.remove(uri);
+      registerBlockFamily(family);
+    }
+  }
+  return family;
 }
