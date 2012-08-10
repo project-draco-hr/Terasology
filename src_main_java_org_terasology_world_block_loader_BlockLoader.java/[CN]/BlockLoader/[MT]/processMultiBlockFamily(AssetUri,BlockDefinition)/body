@@ -1,0 +1,27 @@
+{
+  for (  String shapeString : blockDef.shapes) {
+    AssetUri shapeUri=new AssetUri(AssetType.SHAPE,shapeString);
+    BlockShape shape=(BlockShape)AssetManager.load(shapeUri);
+    if (shape != null) {
+      BlockUri familyUri;
+      if (shape.equals(cubeShape)) {
+        familyUri=new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName());
+      }
+ else {
+        familyUri=new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName(),shapeUri.getPackage(),shapeUri.getAssetName());
+      }
+      blockDef.shape=shapeString;
+      if (shape.isCollisionSymmetric()) {
+        Block block=constructSingleBlock(blockDefUri,blockDef);
+        BlockFamily family=new SymmetricFamily(familyUri,block);
+        registerFamily(family);
+      }
+ else {
+        Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+        constructHorizontalBlocks(blockDefUri,blockDef,blockMap);
+        BlockFamily horizFamily=new HorizontalBlockFamily(familyUri,blockMap);
+        registerFamily(horizFamily);
+      }
+    }
+  }
+}

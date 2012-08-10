@@ -13,17 +13,24 @@
         BlockDefinition blockDef=loadBlockDefinition(blockDefJson);
         if (blockDef.liquid) {
           blockDef.rotation=BlockDefinition.RotationType.NONE;
+          blockDef.shapes.clear();
+          blockDef.shape="";
         }
+        if (blockDef.shapes.isEmpty()) {
 switch (blockDef.rotation) {
 case ALIGNTOSURFACE:
-          processAlignToSurfaceFamily(blockDefUri,blockDefJson);
-        break;
+            processAlignToSurfaceFamily(blockDefUri,blockDefJson);
+          break;
 case HORIZONTAL:
-      processHorizontalBlockFamily(blockDefUri,blockDef);
-    break;
+        processHorizontalBlockFamily(blockDefUri,blockDef);
+      break;
 default :
-  processSingleBlockFamily(blockDefUri,blockDef);
-break;
+    processSingleBlockFamily(blockDefUri,blockDef);
+  break;
+}
+}
+ else {
+processMultiBlockFamily(blockDefUri,blockDef);
 }
 }
 }
