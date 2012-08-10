@@ -1,11 +1,33 @@
 {
-  UIListItem newItem=new UIListItem(new Vector2f(getSize().x,(32f)),text,value);
+  final UIListItem newItem=new UIListItem(new Vector2f(getSize().x,(32f)),text,value);
   newItem.setVisible(true);
   if (_items.size() > 0) {
     newItem.setPosition(_items.get(0).getPosition());
   }
   newItem.getPosition().y+=32f * _items.size();
   newItem.setFixed(false);
+  newItem.addClickListener(new ClickListener(){
+    private long _lastTime=System.currentTimeMillis();
+    private int _lastButton=-1;
+    @Override public void click(    UIDisplayElement element,    int button){
+      Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
+      if (!getScrollBarHorizontal().intersects(mousePos) && !getScrollBarVertival().intersects(mousePos)) {
+        if ((System.currentTimeMillis() - _lastTime) < 200 && _lastButton == button) {
+          notifyDoubleClickListeners();
+        }
+        _lastTime=System.currentTimeMillis();
+        _lastButton=button;
+        UIListItem item=(UIListItem)element;
+        if (item != _selectedItem) {
+          if (_selectedItem != null)           _selectedItem.setSelected(false);
+          _selectedItem=item;
+          _selectedItem.setSelected(true);
+          notifyChangedListeners();
+        }
+      }
+    }
+  }
+);
   _items.add(newItem);
   addDisplayElement(newItem);
 }

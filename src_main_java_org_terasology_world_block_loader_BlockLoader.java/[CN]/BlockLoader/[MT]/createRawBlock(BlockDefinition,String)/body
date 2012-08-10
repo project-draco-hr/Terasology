@@ -1,0 +1,32 @@
+{
+  Block block=new Block();
+  block.setLiquid(def.liquid);
+  block.setHardness(def.hardness);
+  block.setAttachmentAllowed(def.attachmentAllowed);
+  block.setSupportRequired(def.supportRequired);
+  block.setPenetrable(def.penetrable);
+  block.setTargetable(def.targetable);
+  block.setInvisible(def.invisible);
+  block.setTranslucent(def.translucent);
+  block.setDoubleSided(def.doubleSided);
+  block.setShadowCasting(def.shadowCasting);
+  block.setWaving(def.waving);
+  block.setLuminance(def.luminance);
+  if (!def.displayName.isEmpty()) {
+    block.setDisplayName(def.displayName);
+  }
+ else {
+    block.setDisplayName(properCase(defaultName));
+  }
+  block.setMass(def.mass);
+  block.setDebrisOnDestroy(def.debrisOnDestroy);
+  if (def.entity != null) {
+    block.setEntityPrefab(def.entity.prefab);
+    block.setEntityTemporary(def.entity.temporary);
+  }
+  if (def.inventory != null) {
+    block.setStackable(def.inventory.stackable);
+    block.setDirectPickup(def.inventory.directPickup);
+  }
+  return block;
+}

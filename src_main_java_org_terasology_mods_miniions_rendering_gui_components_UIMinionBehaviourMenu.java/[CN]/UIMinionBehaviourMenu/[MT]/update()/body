@@ -1,0 +1,24 @@
+{
+  super.update();
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  if (localPlayer != null) {
+    MinionBarComponent inventory=localPlayer.getEntity().getComponent(MinionBarComponent.class);
+    if (inventory == null) {
+      return;
+    }
+    MinionControllerComponent minionController=localPlayer.getEntity().getComponent(MinionControllerComponent.class);
+    if (minionController != null) {
+      int selectedMinion=minionController.selectedMinion;
+      EntityRef minion=inventory.minionSlots.get(selectedMinion);
+      if (minion != null) {
+        MinionComponent minioncomp=minion.getComponent(MinionComponent.class);
+        if (minioncomp != null) {
+          int selection=20 * (minioncomp.minionBehaviour.ordinal());
+          int startpos=(44 * (6 - (selectedMinion + 1)));
+          selectionrectangle.setPosition(new Vector2f(Display.getWidth() - (100),(Display.getHeight() / 2) - startpos + selection));
+          background.setPosition(new Vector2f(Display.getWidth() - (100),(Display.getHeight() / 2) - startpos));
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  Block targetBlock=c.getBlock(x,y,z);
+  if ((targetBlock.equals(grassBlock) || targetBlock.equals(sandBlock) || targetBlock.equals(snowBlock)) && c.getBlock(x,y + 1,z).equals(BlockManager.getInstance().getAir())) {
+    double grassRand=(random.randomDouble() + 1.0) / 2.0;
+    double grassProb=1.0;
+    WorldBiomeProvider.Biome biome=biomeProvider.getBiomeAt(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+switch (biome) {
+case PLAINS:
+      grassProb=1.0 - PLAINS_GRASS_DENSITY;
+    break;
+case MOUNTAINS:
+  grassProb=1.0 - MOUNTAINS_GRASS_DENSITY;
+break;
+case FOREST:
+grassProb=1.0 - FOREST_GRASS_DENSITY;
+break;
+case SNOW:
+grassProb=1.0 - SNOW_GRASS_DENSITY;
+break;
+case DESERT:
+grassProb=1.0 - DESERT_GRASS_DENSITY;
+break;
+}
+if (grassRand > grassProb) {
+double rand=random.standNormalDistrDouble();
+if (rand > -0.4 && rand < 0.4) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:TallGrass1"));
+}
+ else if (rand > -0.6 && rand < 0.6) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:TallGrass2"));
+}
+ else {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:TallGrass3"));
+}
+double flowerRand=random.randomDouble();
+if (random.standNormalDistrDouble() < -2) {
+if (flowerRand >= -1.0 && flowerRand < -0.9) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:YellowFlower"));
+}
+ else if (flowerRand >= -0.9 && flowerRand < -0.8) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:RedFlower"));
+}
+ else if (flowerRand >= -0.8 && flowerRand < -0.7) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:BrownShroom"));
+}
+ else if (flowerRand >= -0.7 && flowerRand < -0.6) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:BigBrownShroom"));
+}
+ else if (flowerRand >= -0.6 && flowerRand < -0.5) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:RedShroom"));
+}
+ else if (flowerRand >= -0.5 && flowerRand < -0.4) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:RedClover"));
+}
+ else if (flowerRand >= -0.4 && flowerRand < -0.3) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Lavender"));
+}
+ else if (flowerRand >= -0.3 && flowerRand < -0.2) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Iris"));
+}
+ else if (flowerRand >= -0.2 && flowerRand < -0.1) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:GlowbellBloom"));
+}
+ else if (flowerRand >= -0.1 && flowerRand < 0.0) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Glowbell"));
+}
+ else if (flowerRand >= 0.0 && flowerRand < 0.1) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:DeadBush"));
+}
+ else if (flowerRand >= 0.1 && flowerRand < 0.2) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Dandelion"));
+}
+ else if (flowerRand >= 0.2 && flowerRand < 0.3) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Cotton1"));
+}
+ else if (flowerRand >= 0.3 && flowerRand < 0.4) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Cotton2"));
+}
+ else if (flowerRand >= 0.4 && flowerRand < 0.5) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Cotton3"));
+}
+ else if (flowerRand >= 0.5 && flowerRand < 0.6) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Cotton4"));
+}
+ else if (flowerRand >= 0.6 && flowerRand < 0.7) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Cotton5"));
+}
+ else if (flowerRand >= 0.7 && flowerRand < 0.8) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Cotton6"));
+}
+ else if (flowerRand >= 0.8 && flowerRand < 0.9) {
+c.setBlock(x,y + 1,z,BlockManager.getInstance().getBlock("engine:Tulip"));
+}
+}
+}
+}
+}

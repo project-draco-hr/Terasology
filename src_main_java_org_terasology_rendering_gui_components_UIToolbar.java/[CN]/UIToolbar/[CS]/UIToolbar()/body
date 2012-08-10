@@ -1,15 +1,8 @@
 {
   setSize(new Vector2f(364f,44f));
-  _backgroundTexture=new UIGraphicsElement(AssetManager.loadTexture("engine:gui"));
-  _backgroundTexture.setVisible(true);
-  _backgroundTexture.getTextureSize().set(new Vector2f(182f / 256f,22f / 256f));
-  _backgroundTexture.getTextureOrigin().set(new Vector2f(0.0f,0.0f));
-  _backgroundTexture.setSize(getSize());
-  addDisplayElement(_backgroundTexture);
-  _cells=new UIToolbarCell[9];
-  for (int i=0; i < 9; i++) {
-    _cells[i]=new UIToolbarCell(i);
-    _cells[i].setVisible(true);
-    addDisplayElement(_cells[i]);
-  }
+  tools=new UIItemContainer(9,1);
+  tools.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity());
+  tools.setVisible(true);
+  addDisplayElement(tools);
+  layout();
 }

@@ -1,8 +1,0 @@
-{
-  EntityRef fromEntity=inventoryNew.getEntity();
-  EntityRef toEntity=(fromEntity.equals(container)) ? creature : container;
-  InventoryComponent fromInventory=fromEntity.getComponent(InventoryComponent.class);
-  if (fromInventory == null)   return;
-  EntityRef itemEntity=fromInventory.itemSlots.get(slot);
-  toEntity.send(new ReceiveItemEvent(itemEntity));
-}

@@ -80,10 +80,16 @@ bitField0_|=0x00000200;
 defaultSeed_=input.readBytes();
 break;
 }
-case 96:
+case 98:
 {
-bitField0_|=0x00000400;
-chunkGenerator_=input.readInt32();
+ensureChunkGeneratorIsMutable();
+chunkGenerator_.add(input.readBytes());
+break;
+}
+case 104:
+{
+bitField0_|=0x00000800;
+chunkGeneratorFlatHeight_=input.readInt32();
 break;
 }
 }

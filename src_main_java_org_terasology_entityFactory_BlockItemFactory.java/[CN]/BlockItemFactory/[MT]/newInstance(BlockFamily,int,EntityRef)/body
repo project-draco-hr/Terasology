@@ -7,10 +7,10 @@
     entity.addComponent(new LightComponent());
   }
   ItemComponent item=new ItemComponent();
-  item.name=blockFamily.getTitle();
+  item.name=blockFamily.getDisplayName();
   item.consumedOnUse=true;
   if (blockFamily.getArchetypeBlock().isStackable()) {
-    item.stackId=blockFamily.getTitle() + "Block";
+    item.stackId="block:" + blockFamily.getURI().toString();
     item.stackCount=(byte)quantity;
   }
   item.usage=ItemComponent.UsageType.ON_BLOCK;

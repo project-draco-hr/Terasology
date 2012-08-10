@@ -1,24 +1,24 @@
 {
-  _mainMenu=new UIMainMenu();
+  _mainMenu=new UIMenuMain();
   _mainMenu.setVisible(true);
   UIButton singlePlayerButton=(UIButton)_mainMenu.getElementById("singlePlayerButton");
   UIButton configButton=(UIButton)_mainMenu.getElementById("configButton");
   UIButton exitButton=(UIButton)_mainMenu.getElementById("exitButton");
-  singlePlayerButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
+  singlePlayerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
       _selectWorldMenu.fillList();
       GUIManager.getInstance().setFocusedWindow(_selectWorldMenu);
     }
   }
 );
-  exitButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
+  exitButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
       _gameInstance.shutdown();
     }
   }
 );
-  configButton.addClickListener(new IClickListener(){
-    @Override public void clicked(    UIDisplayElement element){
+  configButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
       GUIManager.getInstance().setFocusedWindow(_configMenu);
     }
   }

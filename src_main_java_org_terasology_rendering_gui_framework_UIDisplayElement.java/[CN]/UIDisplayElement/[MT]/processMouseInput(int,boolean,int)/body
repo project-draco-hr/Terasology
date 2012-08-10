@@ -1,17 +1,42 @@
 {
-  if (button == 0 && state && !_mouseUp) {
-    _mouseDown=true;
-    _mouseUp=false;
-    _clickSoundPlayed=false;
-  }
- else   if (button == 0 && !state && _mouseDown) {
-    _mouseUp=true;
-    _mouseDown=false;
-  }
-  if (wheelMoved != 0) {
-    _wheelMoved=wheelMoved;
-  }
+  if (_mouseListeners.size() > 0 || _mouseButtonListeners.size() > 0 || _clickListeners.size() > 0) {
+    if (intersects(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()))) {
+      if (button != -1 && state && !_mouseIsDown) {
+        notifyMouseButtonListeners(button,true,wheelMoved,true);
+        _mouseIsDown=true;
+      }
+ else       if (button != -1 && !state && _mouseIsDown) {
+        notifyClickListeners(button);
+        notifyMouseButtonListeners(button,false,wheelMoved,true);
+        _mouseIsDown=false;
+      }
+      if (wheelMoved != 0) {
+        notifyMouseButtonListeners(-1,false,wheelMoved,false);
+      }
+      notifyMouseListeners(EMouseEvents.HOVER);
+      if (lastMouseState == EMouseEvents.LEAVE || lastMouseState == null) {
+        notifyMouseListeners(EMouseEvents.ENTER);
+        lastMouseState=EMouseEvents.ENTER;
+      }
+    }
  else {
-    _wheelMoved=0;
+      if (button != -1 && state) {
+        notifyMouseButtonListeners(button,true,wheelMoved,false);
+      }
+ else       if (button != -1 && !state) {
+        notifyMouseButtonListeners(button,false,wheelMoved,false);
+        _mouseIsDown=false;
+      }
+      if (wheelMoved != 0) {
+        notifyMouseButtonListeners(-1,false,wheelMoved,false);
+      }
+      if (lastMouseState == EMouseEvents.ENTER || lastMouseState == null) {
+        notifyMouseListeners(EMouseEvents.LEAVE);
+        lastMouseState=EMouseEvents.LEAVE;
+      }
+    }
+  }
+  if (_mouseListeners.size() > 0) {
+    notifyMouseListeners(EMouseEvents.MOVE);
   }
 }

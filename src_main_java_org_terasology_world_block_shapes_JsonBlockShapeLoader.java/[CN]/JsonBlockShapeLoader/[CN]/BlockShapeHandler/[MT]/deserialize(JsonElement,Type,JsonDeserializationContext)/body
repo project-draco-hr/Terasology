@@ -1,0 +1,22 @@
+{
+  BlockShape shape=new BlockShape();
+  JsonObject shapeObj=json.getAsJsonObject();
+  for (  BlockPart part : BlockPart.values()) {
+    if (shapeObj.has(part.toString().toLowerCase(Locale.ENGLISH))) {
+      JsonObject meshObj=shapeObj.getAsJsonObject(part.toString().toLowerCase(Locale.ENGLISH));
+      shape.setMeshPart(part,(BlockMeshPart)context.deserialize(meshObj,BlockMeshPart.class));
+      if (part.isSide() && meshObj.has("fullSide")) {
+        shape.setBlockingSide(part.getSide(),meshObj.get("fullSide").getAsBoolean());
+      }
+    }
+  }
+  if (shapeObj.has("collision") && shapeObj.get("collision").isJsonObject()) {
+    JsonObject collisionInfo=shapeObj.get("collision").getAsJsonObject();
+    processCollision(context,shape,collisionInfo);
+  }
+ else {
+    shape.setCollisionShape(CUBE_SHAPE);
+    shape.setCollisionSymmetric(true);
+  }
+  return shape;
+}
