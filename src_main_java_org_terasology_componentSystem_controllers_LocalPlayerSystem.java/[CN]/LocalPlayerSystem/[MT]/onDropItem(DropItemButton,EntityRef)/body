@@ -1,31 +1,42 @@
 {
+  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+  BlockItemComponent block=selectedItemEntity.getComponent(BlockItemComponent.class);
+  if (!selectedItemEntity.hasComponent(BlockItemComponent.class) || block.blockFamily.getArchetypeBlock().isPenetrable()) {
+    return;
+  }
   if (event.getState() == ButtonState.DOWN && lastTimeThrowInteraction == 0) {
     lastTimeThrowInteraction=timer.getTimeInMs();
     return;
   }
-  float dropPower=(float)Math.floor((timer.getTimeInMs() - lastTimeThrowInteraction) / 1000) * 25f;
-  lastTimeThrowInteraction=0;
-  if (dropPower > 125f) {
-    dropPower=125f;
-  }
-  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
-  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
   if (localPlayerComp.isDead)   return;
-  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
-  if (selectedItemEntity.hasComponent(BlockItemComponent.class)) {
-    BlockItemComponent block=selectedItemEntity.getComponent(BlockItemComponent.class);
+  UIGraphicsElement crossHair=(UIGraphicsElement)GUIManager.getInstance().getWindowById("engine:hud").getElementById("crosshair");
+  crossHair.getTextureSize().set(new Vector2f(22f / 256f,22f / 256f));
+  float dropPower=(float)Math.floor((timer.getTimeInMs() - lastTimeThrowInteraction) / 200);
+  if (dropPower > 6) {
+    dropPower=6;
+  }
+  crossHair.getTextureOrigin().set(new Vector2f((46f + 22f * dropPower) / 256f,23f / 256f));
+  if (event.getState() == ButtonState.UP) {
+    dropPower*=25f;
     EntityManager entityManager=CoreRegistry.get(EntityManager.class);
     DroppedBlockFactory droppedBlockFactory=new DroppedBlockFactory(entityManager);
-    Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 2,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 2,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 2);
+    Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 1.5f,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 1.5f,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 1.5f);
     EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(newPosition),block.blockFamily,20);
-    droppedBlock.send(new ImpulseEvent(new Vector3f(playerCamera.getViewingDirection().x * dropPower,playerCamera.getViewingDirection().y * dropPower,playerCamera.getViewingDirection().z * dropPower)));
-    ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
-    item.stackCount--;
-    if (item.stackCount <= 0) {
-      selectedItemEntity.destroy();
+    if (!droppedBlock.equals(EntityRef.NULL)) {
+      droppedBlock.send(new ImpulseEvent(new Vector3f(playerCamera.getViewingDirection().x * dropPower,playerCamera.getViewingDirection().y * dropPower,playerCamera.getViewingDirection().z * dropPower)));
+      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+      item.stackCount--;
+      if (item.stackCount <= 0) {
+        selectedItemEntity.destroy();
+      }
+      localPlayerComp.handAnimation=0.5f;
     }
+    lastTimeThrowInteraction=0;
+    crossHair.getTextureSize().set(new Vector2f(20f / 256f,20f / 256f));
+    crossHair.getTextureOrigin().set(new Vector2f(24f / 256f,24f / 256f));
   }
-  localPlayerComp.handAnimation=0.5f;
   entity.saveComponent(localPlayerComp);
   event.consume();
 }
