@@ -1,11 +1,15 @@
 {
   logger.log(Level.INFO,"Loading Blocks...");
   for (  AssetUri blockDefUri : AssetManager.list(AssetType.BLOCK_DEFINITION)) {
-    logger.log(Level.INFO,"Loading " + blockDefUri);
     try {
       JsonElement rawJson=readJson(blockDefUri);
       if (rawJson != null) {
         JsonObject blockDefJson=rawJson.getAsJsonObject();
+        if (blockDefJson.has("template") && blockDefJson.get("template").getAsBoolean()) {
+          continue;
+        }
+        logger.log(Level.INFO,"Loading " + blockDefUri);
+        inheritData(blockDefUri,blockDefJson);
         BlockDefinition blockDef=loadBlockDefinition(blockDefJson);
         if (blockDef.liquid) {
           blockDef.rotation=BlockDefinition.RotationType.NONE;
@@ -24,6 +28,9 @@ break;
 }
 }
  catch (JsonParseException e) {
+logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
+}
+catch (NullPointerException e) {
 logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
 }
 }

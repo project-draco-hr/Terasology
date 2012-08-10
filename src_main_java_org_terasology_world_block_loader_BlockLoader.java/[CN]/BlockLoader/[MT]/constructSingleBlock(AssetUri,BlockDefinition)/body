@@ -1,16 +1,16 @@
 {
-  Map<BlockPart,Integer> tileIndices=prepareTiles(blockDef,blockDefUri.getSimpleString());
+  Map<BlockPart,AssetUri> tileUris=prepareTiles(blockDef,blockDefUri.getSimpleString());
   Map<BlockPart,Block.ColorSource> colorSourceMap=prepareColorSources(blockDef);
   Map<BlockPart,Vector4f> colorOffsetsMap=prepareColorOffsets(blockDef);
   BlockShape shape=getShape(blockDef);
   Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
-  applyShape(block,shape,tileIndices,Rotation.NONE);
+  applyShape(block,shape,tileUris,Rotation.NONE);
   for (  BlockPart part : BlockPart.values()) {
     block.setColorSource(part,colorSourceMap.get(part));
     block.setColorOffset(part,colorOffsetsMap.get(part));
   }
   if (block.isLiquid()) {
-    applyLoweredShape(block,loweredShape,tileIndices);
+    applyLoweredShape(block,loweredShape,tileUris);
   }
   return block;
 }

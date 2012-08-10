@@ -1,20 +1,20 @@
 {
-  Map<BlockPart,Integer> tileIndices=Maps.newEnumMap(BlockPart.class);
+  Map<BlockPart,AssetUri> tileUris=Maps.newEnumMap(BlockPart.class);
   if (!blockDef.tile.isEmpty()) {
     defaultName=blockDef.tile;
   }
-  int tileId=getTileIndex(defaultName);
+  AssetUri tileUri=new AssetUri(AssetType.BLOCK_TILE,defaultName);
   for (  BlockPart part : BlockPart.values()) {
-    tileIndices.put(part,tileId);
+    tileUris.put(part,tileUri);
   }
   if (blockDef.tiles != null) {
     for (    BlockPart part : BlockPart.values()) {
       String partTile=blockDef.tiles.map.get(part);
       if (partTile != null) {
-        tileId=getTileIndex(blockDef.tiles.map.get(part));
-        tileIndices.put(part,tileId);
+        tileUri=new AssetUri(AssetType.BLOCK_TILE,blockDef.tiles.map.get(part));
+        tileUris.put(part,tileUri);
       }
     }
   }
-  return tileIndices;
+  return tileUris;
 }
