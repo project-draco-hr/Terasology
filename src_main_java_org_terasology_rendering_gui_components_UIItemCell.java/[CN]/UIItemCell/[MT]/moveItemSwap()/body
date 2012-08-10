@@ -1,0 +1,8 @@
+{
+  EntityRef item=getFromMovementSlot();
+  ItemComponent sourceItem=item.getComponent(ItemComponent.class);
+  sendToMovementSlot(itemEntity,(byte)-1);
+  sourceItem.container=ownerEntity;
+  ownerInventory.itemSlots.set(slot,item);
+  setMovementIconVisibility(true);
+}
