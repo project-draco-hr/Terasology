@@ -4,6 +4,11 @@
     mod.setEnabled(true);
   }
   modManager.saveModSelectionToConfig();
+  AssetManager.getInstance().clear();
+  BlockManager.getInstance().setBlockIdMap(worldInfo.getBlockIdMap());
+  BlockLoader blockLoader=new BlockLoader();
+  blockLoader.load();
+  blockLoader.buildAtlas();
   cacheTextures();
   entityManager=new EntitySystemBuilder().build();
   eventSystem=CoreRegistry.get(EventSystem.class);

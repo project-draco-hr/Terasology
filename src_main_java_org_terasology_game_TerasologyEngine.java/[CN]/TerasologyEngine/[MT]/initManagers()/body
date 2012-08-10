@@ -3,21 +3,6 @@
   CoreRegistry.put(GroovyManager.class,new GroovyManager());
   AssetType.registerAssetTypes();
   AssetManager.getInstance().addAssetSource(new ClasspathSource("engine",getClass().getProtectionDomain().getCodeSource(),"org/terasology/data"));
-  BlockShapeManager.getInstance().reload();
-  BlockManifestor manifestor=new BlockManifestor(BlockManager.getInstance());
-  try {
-    manifestor.loadConfig();
-  }
- catch (  Exception e) {
-    logger.log(Level.SEVERE,"Failed to load block definitions",e);
-    System.exit(-1);
-  }
-  for (  AssetUri uri : AssetManager.list(AssetType.SHADER)) {
-    AssetManager.load(uri);
-  }
-  for (  AssetUri uri : AssetManager.list(AssetType.MATERIAL)) {
-    AssetManager.load(uri);
-  }
   ShaderManager.getInstance();
   VertexBufferObjectManager.getInstance();
   FontManager.getInstance();

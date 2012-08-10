@@ -1,2 +1,10 @@
 {
+  Iterator<Asset> iterator=assetCache.values().iterator();
+  while (iterator.hasNext()) {
+    Asset asset=iterator.next();
+    if (!asset.getURI().getPackage().equals("engine")) {
+      asset.dispose();
+      iterator.remove();
+    }
+  }
 }

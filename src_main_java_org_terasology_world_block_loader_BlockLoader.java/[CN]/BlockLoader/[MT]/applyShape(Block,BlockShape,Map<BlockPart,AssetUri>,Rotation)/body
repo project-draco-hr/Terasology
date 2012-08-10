@@ -1,0 +1,15 @@
+{
+  for (  BlockPart part : BlockPart.values()) {
+    int tileIndex=getTileIndex(tileUris.get(part),shape.getMeshPart(part) != null);
+    Vector2f atlasPos=calcAtlasPositionForId(tileIndex);
+    BlockPart targetPart=rot.rotate(part);
+    block.setTextureAtlasPos(targetPart,atlasPos);
+    if (shape.getMeshPart(part) != null) {
+      block.setMeshPart(targetPart,shape.getMeshPart(part).rotate(rot.getQuat4f()).mapTexCoords(atlasPos,Block.TEXTURE_OFFSET_WIDTH));
+      if (part.isSide()) {
+        block.setFullSide(targetPart.getSide(),shape.isBlockingSide(part.getSide()));
+      }
+    }
+  }
+  block.setCollision(shape.getCollisionOffset(rot),shape.getCollisionShape(rot));
+}
