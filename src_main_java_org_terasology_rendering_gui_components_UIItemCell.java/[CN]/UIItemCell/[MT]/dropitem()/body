@@ -1,0 +1,15 @@
+{
+  EntityRef item=getFromTransferSlot();
+  if (item.exists()) {
+    BlockItemComponent blockItem=item.getComponent(BlockItemComponent.class);
+    int dropPower=6;
+    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+    LocalPlayerComponent localPlayerComp=localPlayer.getEntity().getComponent(LocalPlayerComponent.class);
+    DroppedBlockFactory droppedBlockFactory=new DroppedBlockFactory(entityManager);
+    EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(localPlayer.getPosition().x + localPlayer.getViewDirection().x * 1.5f,localPlayer.getPosition().y + localPlayer.getViewDirection().y * 1.5f,localPlayer.getPosition().z + localPlayer.getViewDirection().z * 1.5f),blockItem.blockFamily,20);
+    droppedBlock.send(new ImpulseEvent(new Vector3f(localPlayer.getViewDirection().x * dropPower,localPlayer.getViewDirection().y * dropPower,localPlayer.getViewDirection().z * dropPower)));
+    localPlayerComp.handAnimation=0.5f;
+  }
+  System.out.println("drop");
+}

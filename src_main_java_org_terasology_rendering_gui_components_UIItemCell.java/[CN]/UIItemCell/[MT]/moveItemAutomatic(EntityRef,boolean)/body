@@ -1,0 +1,40 @@
+{
+  ItemComponent sourceItem=getFromTransferSlot().getComponent(ItemComponent.class);
+  ItemComponent targetItem;
+  InventoryComponent targetInventory=targetEntity.getComponent(InventoryComponent.class);
+  if (getFromTransferSlot().exists() && targetInventory != null) {
+    if (!sourceItem.stackId.isEmpty()) {
+      for (      EntityRef itemStack : targetInventory.itemSlots) {
+        targetItem=itemStack.getComponent(ItemComponent.class);
+        if (targetItem != null) {
+          if (targetItem.stackId.equals(sourceItem.stackId)) {
+            int spaceLeft=InventorySystem.MAX_STACK - targetItem.stackCount;
+            if (spaceLeft < sourceItem.stackCount) {
+              targetItem.stackCount=InventorySystem.MAX_STACK;
+              sourceItem.stackCount-=spaceLeft;
+            }
+ else {
+              targetItem.stackCount+=sourceItem.stackCount;
+              sendToTransferSlot(EntityRef.NULL,(byte)0);
+            }
+          }
+        }
+        if (!getFromTransferSlot().exists()) {
+          break;
+        }
+      }
+    }
+    if (getFromTransferSlot().exists()) {
+      int freeSlot=targetInventory.itemSlots.indexOf(EntityRef.NULL);
+      if (freeSlot != -1) {
+        sourceItem.container=targetEntity;
+        targetInventory.itemSlots.set(freeSlot,getFromTransferSlot());
+        sendToTransferSlot(EntityRef.NULL,(byte)0);
+      }
+ else {
+        if (dropOnFull)         dropitem();
+      }
+    }
+    targetEntity.saveComponent(targetInventory);
+  }
+}
