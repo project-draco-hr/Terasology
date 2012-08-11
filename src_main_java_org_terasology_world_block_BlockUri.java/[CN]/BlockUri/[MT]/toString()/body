@@ -10,10 +10,11 @@
       builder.append(PACKAGE_SEPARATOR);
       builder.append(shapeName);
     }
-    if (blockIdentifier.isEmpty()) {
-      return packageName + PACKAGE_SEPARATOR + familyName;
+    if (!blockIdentifier.isEmpty()) {
+      builder.append(IDENTIFIER_SEPARATOR);
+      builder.append(blockIdentifier);
     }
-    return packageName + PACKAGE_SEPARATOR + familyName+ IDENTIFIER_SEPARATOR+ blockIdentifier;
+    return builder.toString();
   }
   return "";
 }

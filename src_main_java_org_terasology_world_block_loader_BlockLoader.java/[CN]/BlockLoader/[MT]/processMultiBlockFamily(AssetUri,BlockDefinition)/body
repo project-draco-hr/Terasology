@@ -1,4 +1,5 @@
 {
+  List<BlockFamily> result=Lists.newArrayList();
   for (  String shapeString : blockDef.shapes) {
     AssetUri shapeUri=new AssetUri(AssetType.SHAPE,shapeString);
     BlockShape shape=(BlockShape)AssetManager.load(shapeUri);
@@ -13,15 +14,14 @@
       blockDef.shape=shapeString;
       if (shape.isCollisionSymmetric()) {
         Block block=constructSingleBlock(blockDefUri,blockDef);
-        BlockFamily family=new SymmetricFamily(familyUri,block);
-        registerFamily(family);
+        result.add(new SymmetricFamily(familyUri,block));
       }
  else {
         Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
         constructHorizontalBlocks(blockDefUri,blockDef,blockMap);
-        BlockFamily horizFamily=new HorizontalBlockFamily(familyUri,blockMap);
-        registerFamily(horizFamily);
+        result.add(new HorizontalBlockFamily(familyUri,blockMap));
       }
     }
   }
+  return result;
 }
