@@ -2,7 +2,9 @@
   Prefab prefab=prefabManager.createPrefab("Test");
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create("Test");
-  entity.getComponent(StringComponent.class).value="Delta";
+  StringComponent comp=entity.getComponent(StringComponent.class);
+  comp.value="Delta";
+  entity.saveComponent(comp);
   EntityData.Entity entityData=entityPersisterHelper.serializeEntity(entity);
   entityManager.clear();
   EntityRef loadedEntity=entityPersisterHelper.deserializeEntity(entityData);
