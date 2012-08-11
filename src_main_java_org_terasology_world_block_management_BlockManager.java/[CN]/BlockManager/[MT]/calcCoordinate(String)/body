@@ -1,8 +1,9 @@
 {
   BlockUri blockUri=new BlockUri(uri);
+  Block block=getBlock(blockUri);
   FloatBuffer buffer=BufferUtils.createFloatBuffer(2);
-  if (blocksByUri.containsKey(blockUri)) {
-    Vector2f position=blocksByUri.get(blockUri).getTextureAtlasPos(BlockPart.LEFT);
+  if (!block.isInvisible()) {
+    Vector2f position=block.getTextureAtlasPos(BlockPart.LEFT);
     buffer.put(position.x);
     buffer.put(position.y);
   }

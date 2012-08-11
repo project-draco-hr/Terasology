@@ -1,0 +1,16 @@
+{
+  reset();
+  for (  Map.Entry<String,Byte> entry : knownBlockMappings.entrySet()) {
+    idByUri.put(new BlockUri(entry.getKey()),(byte)entry.getValue());
+  }
+  nextId=idByUri.size();
+  BlockLoader.LoadBlockDefinitionResults blockDefinitions=blockLoader.loadBlockDefinitions();
+  for (  BlockFamily family : blockDefinitions.families) {
+    registerBlockFamily(family);
+  }
+  for (  BlockUri shapelessFamily : blockDefinitions.shapelessDefinitions) {
+    shapelessBlockDefinition.add(shapelessFamily);
+  }
+  blockLoader.buildAtlas();
+  bindBlocks(knownBlockMappings);
+}
