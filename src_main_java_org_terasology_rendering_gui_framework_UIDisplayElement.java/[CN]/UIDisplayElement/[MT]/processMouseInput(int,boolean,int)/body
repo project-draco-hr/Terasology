@@ -11,7 +11,7 @@
         _mouseIsDown=false;
       }
       if (wheelMoved != 0) {
-        notifyMouseButtonListeners(-1,false,wheelMoved,false);
+        notifyMouseButtonListeners(-1,false,wheelMoved,true);
       }
       notifyMouseListeners(EMouseEvents.HOVER);
       if (lastMouseState == EMouseEvents.LEAVE || lastMouseState == null) {
@@ -36,7 +36,7 @@
       }
     }
   }
-  if (_mouseListeners.size() > 0) {
+  if (_mouseListeners.size() > 0 && button == -1 && wheelMoved == 0) {
     notifyMouseListeners(EMouseEvents.MOVE);
   }
 }

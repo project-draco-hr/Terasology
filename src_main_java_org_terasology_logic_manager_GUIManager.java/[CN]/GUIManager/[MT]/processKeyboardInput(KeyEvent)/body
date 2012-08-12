@@ -1,0 +1,13 @@
+{
+  checkTopWindow();
+  if (_focusedWindow != null && _focusedWindow.isModal() && _focusedWindow.isVisible()) {
+    _focusedWindow.processKeyboardInput(event);
+    return;
+  }
+  List<UIDisplayElement> screens=Lists.newArrayList(_renderer.getDisplayElements());
+  for (  UIDisplayElement screen : screens) {
+    if (!((UIDisplayWindow)screen).isModal()) {
+      screen.processKeyboardInput(event);
+    }
+  }
+}

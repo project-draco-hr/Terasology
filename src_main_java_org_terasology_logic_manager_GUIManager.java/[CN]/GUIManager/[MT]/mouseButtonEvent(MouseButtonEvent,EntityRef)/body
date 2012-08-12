@@ -1,0 +1,10 @@
+{
+  if (isConsumingInput()) {
+    processMouseInput(event.getButton(),event.getState() != ButtonState.UP,0);
+    if (_focusedWindow != null) {
+      if (_focusedWindow.isModal()) {
+        event.consume();
+      }
+    }
+  }
+}

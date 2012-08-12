@@ -1,4 +1,9 @@
 {
+  eventSystem.process();
+  for (  ComponentSystem system : componentSystemManager.iterateAll()) {
+    system.shutdown();
+  }
   stopBackgroundMusic();
   GUIManager.getInstance().closeWindows();
+  entityManager.clear();
 }

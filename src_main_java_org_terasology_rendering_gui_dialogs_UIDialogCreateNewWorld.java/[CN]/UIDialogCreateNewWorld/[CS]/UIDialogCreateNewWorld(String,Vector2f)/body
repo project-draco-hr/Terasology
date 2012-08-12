@@ -33,6 +33,10 @@
   _okButton.setVisible(true);
   _okButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
+      if (_inputWorldTitle.getValue().isEmpty()) {
+      }
+ else       if (PathManager.getInstance().getWorldSavePath(_inputWorldTitle.getValue()).exists()) {
+      }
       if (_inputSeed.getValue().length() > 0) {
         Config.getInstance().setDefaultSeed(_inputSeed.getValue());
       }

@@ -18,16 +18,15 @@
         bind.updateBindState(false,delta,localPlayer.getEntity(),cameraTargetSystem.getTarget(),cameraTargetSystem.getHitPosition(),cameraTargetSystem.getHitNormal(),consumed,GUIManager.getInstance().isConsumingInput());
       }
     }
-    GUIManager.getInstance().processMouseInput(Mouse.getEventButton(),Mouse.getEventButtonState(),Mouse.getEventDWheel());
   }
   int deltaX=Mouse.getDX();
-  if (deltaX != 0 && !GUIManager.getInstance().isConsumingInput()) {
+  if (deltaX != 0) {
     MouseAxisEvent event=new MouseXAxisEvent(deltaX * mouseSensitivity,delta);
     setupTarget(event);
     localPlayer.getEntity().send(event);
   }
   int deltaY=Mouse.getDY();
-  if (deltaY != 0 && !GUIManager.getInstance().isConsumingInput()) {
+  if (deltaY != 0) {
     MouseAxisEvent event=new MouseYAxisEvent(deltaY * mouseSensitivity,delta);
     setupTarget(event);
     localPlayer.getEntity().send(event);

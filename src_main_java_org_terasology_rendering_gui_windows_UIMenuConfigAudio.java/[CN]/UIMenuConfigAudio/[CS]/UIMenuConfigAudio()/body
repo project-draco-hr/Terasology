@@ -1,4 +1,7 @@
 {
+  setModal(true);
+  setCloseBinds(new String[]{});
+  setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
   maximize();
   _title=new UIGraphicsElement(AssetManager.loadTexture("engine:terasology"));
   _title.setVisible(true);
@@ -32,6 +35,12 @@
   _backToConfigMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _backToConfigMenuButton.getLabel().setText("Back");
   _backToConfigMenuButton.setVisible(true);
+  _backToConfigMenuButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuConfig"));
+    }
+  }
+);
   addDisplayElement(_overlay);
   addDisplayElement(_title);
   addDisplayElement(_version);

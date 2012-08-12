@@ -1,4 +1,5 @@
 {
+  setModal(true);
   maximize();
   _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:menuBackground"));
   _overlay.setVisible(true);
@@ -17,6 +18,12 @@
   _goToBack=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _goToBack.getLabel().setText("Go back");
   _goToBack.setVisible(true);
+  _goToBack.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuMain"));
+    }
+  }
+);
   _loadFromList=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
   _loadFromList.getLabel().setText("Load");
   _loadFromList.setVisible(true);

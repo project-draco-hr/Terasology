@@ -5,26 +5,27 @@
   if (targetItem.stackId.equals(sourceItem.stackId) && !targetItem.stackId.isEmpty() && !sourceItem.stackId.isEmpty()) {
     if (amount == 0) {
       int spaceLeft=InventorySystem.MAX_STACK - targetItem.stackCount;
-      if (spaceLeft < sourceItem.stackCount) {
+      amount=sourceItem.stackCount;
+      if (spaceLeft < amount) {
         targetItem.stackCount=InventorySystem.MAX_STACK;
         sourceItem.stackCount-=spaceLeft;
         return true;
       }
  else {
         targetItem.stackCount+=sourceItem.stackCount;
-        sendToTransferSlot(EntityRef.NULL,(byte)0);
+        sendToTransferSlot(null,(byte)0);
         return true;
       }
     }
  else {
       int spaceLeft=InventorySystem.MAX_STACK - targetItem.stackCount;
-      if (spaceLeft > amount) {
+      amount=(byte)Math.min(amount,sourceItem.stackCount);
+      amount=(byte)Math.min(amount,spaceLeft);
+      if (spaceLeft > 0) {
         targetItem.stackCount+=amount;
-        if (sourceItem.stackCount > amount) {
-          sourceItem.stackCount-=amount;
-        }
- else {
-          sendToTransferSlot(EntityRef.NULL,(byte)0);
+        sourceItem.stackCount-=amount;
+        if (sourceItem.stackCount == 0) {
+          sendToTransferSlot(null,(byte)0);
         }
         return true;
       }

@@ -1,45 +1,15 @@
 {
+  for (  ComponentSystem system : componentSystemManager.iterateAll()) {
+    system.initialise();
+  }
+  Iterator<EntityRef> iterator=entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
+  if (iterator.hasNext()) {
+    CoreRegistry.get(LocalPlayer.class).setEntity(iterator.next());
+  }
   Mouse.setGrabbed(false);
   playBackgroundMusic();
-  GUIManager.getInstance().getWindowById("main").setVisible(true);
-  GUIManager.getInstance().getWindowById("config").setVisible(false);
-  GUIManager.getInstance().getWindowById("videoOptions").setVisible(false);
-  GUIManager.getInstance().getWindowById("selectWorld").setVisible(false);
-  GUIManager.getInstance().getWindowById("generate_world").setVisible(false);
-  GUIManager.getInstance().setFocusedWindow("main");
-  UIStateButton graphicsQualityButton=(UIStateButton)_configMenuVideo.getElementById("graphicsQualityButton");
-  UISlider fovSlider=(UISlider)_configMenuVideo.getElementById("fovSlider");
-  UIStateButton viewingDistanceButton=(UIStateButton)_configMenuVideo.getElementById("viewingDistanceButton");
-  UIStateButton animateGrassButton=(UIStateButton)_configMenuVideo.getElementById("animateGrassButton");
-  UIStateButton reflectiveWaterButton=(UIStateButton)_configMenuVideo.getElementById("reflectiveWaterButton");
-  UIStateButton blurIntensityButton=(UIStateButton)_configMenuVideo.getElementById("blurIntensityButton");
-  UIStateButton bobbingButton=(UIStateButton)_configMenuVideo.getElementById("bobbingButton");
-  UISlider soundSlider=(UISlider)_configMenuAudio.getElementById("soundVolumeSlider");
-  UISlider musicSlider=(UISlider)_configMenuAudio.getElementById("musicVolumeSlider");
-  fovSlider.setValue((int)Config.getInstance().getFov());
-  viewingDistanceButton.setState(Config.getInstance().getActiveViewingDistanceId());
-  blurIntensityButton.setState(Config.getInstance().getBlurIntensity());
-  soundSlider.setValue(Config.getInstance().getSoundVolume());
-  musicSlider.setValue(Config.getInstance().getMusicVolume());
-  if (Config.getInstance().isEnablePostProcessingEffects() && Config.getInstance().isFlickeringLight())   graphicsQualityButton.setState(2);
- else   if (!Config.getInstance().isEnablePostProcessingEffects() && Config.getInstance().isFlickeringLight())   graphicsQualityButton.setState(1);
- else   graphicsQualityButton.setState(0);
-  if (Config.getInstance().isAnimatedGrass()) {
-    animateGrassButton.setState(1);
-  }
- else {
-    animateGrassButton.setState(0);
-  }
-  if (Config.getInstance().isComplexWater()) {
-    reflectiveWaterButton.setState(1);
-  }
- else {
-    reflectiveWaterButton.setState(0);
-  }
-  if (Config.getInstance().isCameraBobbing()) {
-    bobbingButton.setState(1);
-  }
- else {
-    bobbingButton.setState(0);
-  }
+  _configMenuVideo.setup();
+  _configMenuAudio.setup();
+  _configMenuControls.setup();
+  GUIManager.getInstance().setFocusedWindow("menuMain");
 }

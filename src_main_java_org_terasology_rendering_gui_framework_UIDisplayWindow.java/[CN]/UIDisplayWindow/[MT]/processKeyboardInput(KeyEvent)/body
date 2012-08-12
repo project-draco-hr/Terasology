@@ -1,0 +1,13 @@
+{
+  if (!isVisible() || !_modal)   return;
+  if (closeKeys != null) {
+    for (    int key : closeKeys) {
+      if (key == event.getKey() && event.isDown()) {
+        close(true);
+        event.consume();
+        return;
+      }
+    }
+  }
+  super.processKeyboardInput(event);
+}

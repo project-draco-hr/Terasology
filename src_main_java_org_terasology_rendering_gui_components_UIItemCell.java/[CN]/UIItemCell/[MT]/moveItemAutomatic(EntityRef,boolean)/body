@@ -15,7 +15,7 @@
             }
  else {
               targetItem.stackCount+=sourceItem.stackCount;
-              sendToTransferSlot(EntityRef.NULL,(byte)0);
+              sendToTransferSlot(null,(byte)0);
             }
           }
         }
@@ -29,10 +29,12 @@
       if (freeSlot != -1) {
         sourceItem.container=targetEntity;
         targetInventory.itemSlots.set(freeSlot,getFromTransferSlot());
-        sendToTransferSlot(EntityRef.NULL,(byte)0);
+        sendToTransferSlot(null,(byte)0);
       }
  else {
-        if (dropOnFull)         dropitem();
+        if (dropOnFull) {
+          dropitem();
+        }
       }
     }
     targetEntity.saveComponent(targetInventory);

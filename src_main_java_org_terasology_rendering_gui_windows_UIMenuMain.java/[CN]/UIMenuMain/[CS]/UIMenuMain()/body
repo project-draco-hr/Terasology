@@ -1,4 +1,5 @@
 {
+  setModal(true);
   maximize();
   _title=new UIGraphicsElement(AssetManager.loadTexture("engine:terasology"));
   _title.setVisible(true);
@@ -8,12 +9,30 @@
   _exitButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _exitButton.getLabel().setText("Exit Terasology");
   _exitButton.setVisible(true);
+  _exitButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      CoreRegistry.get(GameEngine.class).shutdown();
+    }
+  }
+);
   _configButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _configButton.getLabel().setText("Settings");
   _configButton.setVisible(true);
+  _configButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuConfig"));
+    }
+  }
+);
   _singlePlayerButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _singlePlayerButton.getLabel().setText("Single player");
   _singlePlayerButton.setVisible(true);
+  _singlePlayerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("selectWorld"));
+    }
+  }
+);
   _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:menuBackground"));
   _overlay.setVisible(true);
   addDisplayElement(_overlay);
@@ -22,6 +41,5 @@
   addDisplayElement(_configButton,"configButton");
   addDisplayElement(_exitButton,"exitButton");
   addDisplayElement(_singlePlayerButton,"singlePlayerButton");
-  setModal(true);
   layout();
 }

@@ -1,0 +1,13 @@
+{
+  if (!isVisible() || !_modal)   return;
+  if (closeBinds != null) {
+    for (    String key : closeBinds) {
+      if (key.equals(event.getId()) && event.isDown()) {
+        close(true);
+        event.consume();
+        return;
+      }
+    }
+  }
+  super.processBindButton(event);
+}
