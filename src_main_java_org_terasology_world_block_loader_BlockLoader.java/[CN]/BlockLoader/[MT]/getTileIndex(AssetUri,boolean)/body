@@ -2,15 +2,5 @@
   if (tileIndexes.containsKey(uri)) {
     return tileIndexes.get(uri);
   }
-  Tile tile=(Tile)AssetManager.tryLoad(uri);
-  if (tile != null) {
-    int index=tiles.size();
-    tiles.add(tile);
-    tileIndexes.put(uri,index);
-    return index;
-  }
- else   if (warnOnError) {
-    logger.warning("Unable to resolve block tile '" + uri + "'");
-  }
-  return 0;
+  return indexTile(uri,warnOnError);
 }

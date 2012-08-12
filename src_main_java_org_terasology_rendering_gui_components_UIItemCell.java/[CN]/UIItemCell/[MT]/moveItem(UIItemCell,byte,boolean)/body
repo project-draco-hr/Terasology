@@ -1,0 +1,20 @@
+{
+  EntityRef item=getFromTransferSlot();
+  InventoryComponent ownerInventory=ownerEntity.getComponent(InventoryComponent.class);
+  if (item.exists()) {
+    boolean success=false;
+    if (!success) {
+      success=moveItemPlace(targetCell,amount);
+    }
+    if (!success) {
+      success=moveItemMerge(targetCell,amount);
+    }
+    if (!success) {
+      success=moveItemSwap(targetCell);
+    }
+    if (!success && dropOnFail) {
+      dropitem();
+    }
+    ownerEntity.saveComponent(ownerInventory);
+  }
+}

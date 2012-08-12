@@ -1,0 +1,17 @@
+{
+  AssetUri tileUri=getDefaultTile(blockDef,uri);
+  Map<BlockPart,AssetUri> tileUris=Maps.newEnumMap(BlockPart.class);
+  for (  BlockPart part : BlockPart.values()) {
+    tileUris.put(part,tileUri);
+  }
+  if (blockDef.tiles != null) {
+    for (    BlockPart part : BlockPart.values()) {
+      String partTile=blockDef.tiles.map.get(part);
+      if (partTile != null) {
+        tileUri=new AssetUri(AssetType.BLOCK_TILE,blockDef.tiles.map.get(part));
+        tileUris.put(part,tileUri);
+      }
+    }
+  }
+  return tileUris;
+}

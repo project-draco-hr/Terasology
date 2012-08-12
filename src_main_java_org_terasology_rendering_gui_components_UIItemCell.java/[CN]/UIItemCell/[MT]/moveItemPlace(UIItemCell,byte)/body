@@ -1,0 +1,31 @@
+{
+  EntityRef item=getFromTransferSlot();
+  InventoryComponent ownerInventory=ownerEntity.getComponent(InventoryComponent.class);
+  ItemComponent sourceItem=item.getComponent(ItemComponent.class);
+  if (!ownerInventory.itemSlots.get(targetCell.slot).exists()) {
+    if (amount == 0) {
+      sourceItem.container=ownerEntity;
+      ownerInventory.itemSlots.set(targetCell.slot,item);
+      sendToTransferSlot(EntityRef.NULL,(byte)0);
+      return true;
+    }
+ else {
+      EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+      EntityRef copy=entityManager.copy(item);
+      ItemComponent copyItem=copy.getComponent(ItemComponent.class);
+      if (sourceItem.stackCount > amount) {
+        sourceItem.stackCount-=amount;
+        copyItem.stackCount=amount;
+        copyItem.container=ownerEntity;
+        ownerInventory.itemSlots.set(targetCell.slot,copy);
+        return true;
+      }
+ else {
+        ownerInventory.itemSlots.set(targetCell.slot,item);
+        sendToTransferSlot(EntityRef.NULL,(byte)0);
+        return true;
+      }
+    }
+  }
+  return false;
+}

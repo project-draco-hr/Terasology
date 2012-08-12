@@ -5,13 +5,21 @@
     }
     cells.clear();
     setVisible(true);
-    setSize(new Vector2f(cols * (cellSize.x + cellMargin.x),rows * (cellSize.y + cellMargin.y)));
-    int size=Math.min(entityInventory.itemSlots.size(),cols * rows);
-    for (int i=0; i < size; ++i) {
+    setSize(new Vector2f(cols * (cellSize.x + cellMargin.x),(entityInventory.itemSlots.size() / cols) * (cellSize.y + cellMargin.y)));
+    int start=0;
+    int end=entityInventory.itemSlots.size();
+    if (slotStart != -1) {
+      start=slotStart;
+    }
+    if (slotEnd != -1) {
+      end=slotEnd;
+    }
+    for (int i=start; i < end; ++i) {
       UIItemCell cell=new UIItemCell(entity,cellSize);
       cell.setItem(entityInventory.itemSlots.get(i),i);
       cell.setSize(cellSize);
-      cell.setPosition(new Vector2f((i % cols) * (cellSize.x + cellMargin.x),(i / cols) * (cellSize.y + cellMargin.y)));
+      cell.setConnected(connectedEntity);
+      cell.setPosition(new Vector2f(((i - start) % cols) * (cellSize.x + cellMargin.x),((i - start) / cols) * (cellSize.y + cellMargin.y)));
       cell.setVisible(true);
       cells.add(cell);
       addDisplayElement(cell);

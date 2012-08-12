@@ -1,7 +1,16 @@
 {
-  ByteBuffer[] data=new ByteBuffer[NUM_MIPMAPS];
-  for (int i=0; i < NUM_MIPMAPS; ++i) {
+  int numMipMaps=getNumMipmaps();
+  ByteBuffer[] data=new ByteBuffer[numMipMaps];
+  for (int i=0; i < numMipMaps; ++i) {
     BufferedImage image=generateAtlas(i);
+    if (i == 0) {
+      try {
+        ImageIO.write(image,"png",new File(PathManager.getInstance().getScreensPath(),"tiles.png"));
+      }
+ catch (      IOException e) {
+        e.printStackTrace();
+      }
+    }
     ByteArrayOutputStream bos=new ByteArrayOutputStream();
     try {
       ImageIO.write(image,"png",bos);
@@ -15,7 +24,7 @@
       logger.severe("Failed to write in-memory image");
     }
   }
-  Texture terrainTex=new Texture(data,Block.ATLAS_SIZE_IN_PX,Block.ATLAS_SIZE_IN_PX,Texture.WrapMode.Clamp,Texture.FilterMode.Nearest);
+  Texture terrainTex=new Texture(data,atlasSize,atlasSize,Texture.WrapMode.Clamp,Texture.FilterMode.Nearest);
   AssetManager.getInstance().addAssetTemporary(new AssetUri(AssetType.TEXTURE,"engine:terrain"),terrainTex);
   Material terrainMat=new Material(new AssetUri(AssetType.MATERIAL,"engine:terrain"),AssetManager.loadShader("engine:block"));
   terrainMat.setTexture("textureAtlas",terrainTex);
