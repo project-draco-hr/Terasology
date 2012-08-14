@@ -7,7 +7,7 @@
   desiredVelocity.scale(maxSpeed);
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(movementComp.getVelocity());
-  velocityDiff.scale(Math.min(GhostInertia * delta,1.0f));
+  velocityDiff.scale(Math.min(GHOST_INERTIA * delta,1.0f));
   movementComp.getVelocity().add(velocityDiff);
   Vector3f worldPos=location.getWorldPosition();
   Vector3f deltaPos=new Vector3f(movementComp.getVelocity());
