@@ -1,24 +1,3 @@
 {
-  UIDisplayWindow window=getWindowById(windowId);
-  if (window == null) {
-    return;
-  }
-  _renderer.removeDisplayElement(window);
-  if (_windowsById.containsValue(window)) {
-    for (    String key : _windowsById.keySet()) {
-      if (_windowsById.get(key).equals(window)) {
-        _windowsById.remove(key);
-        break;
-      }
-    }
-  }
-  if (_focusedWindow == window) {
-    _focusedWindow=null;
-  }
-  if (_lastFocused == window) {
-    _lastFocused=null;
-  }
- else {
-    _focusedWindow=_lastFocused;
-  }
+  removeWindow(getWindowById(windowId));
 }

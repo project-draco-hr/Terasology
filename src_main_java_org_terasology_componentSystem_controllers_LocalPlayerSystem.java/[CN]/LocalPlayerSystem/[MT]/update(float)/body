@@ -4,9 +4,8 @@
   LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
   CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
   LocationComponent location=entity.getComponent(LocationComponent.class);
-  PlayerComponent playerComponent=entity.getComponent(PlayerComponent.class);
   if (localPlayerComponent.isDead) {
-    if (!checkRespawn(delta,entity,localPlayerComponent,characterMovementComponent,location,playerComponent))     return;
+    return;
   }
   updateMovement(localPlayerComponent,characterMovementComponent,location);
   Quat4f lookRotation=new Quat4f();

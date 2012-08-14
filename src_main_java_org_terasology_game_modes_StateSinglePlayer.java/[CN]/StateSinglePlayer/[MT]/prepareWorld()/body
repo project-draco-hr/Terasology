@@ -1,5 +1,6 @@
 {
   UIScreenLoading loadingScreen=GUIManager.getInstance().addWindow(new UIScreenLoading(),"engine:loadingScreen");
+  GUIManager.getInstance().setFocusedWindow(loadingScreen);
   Display.update();
   Timer timer=CoreRegistry.get(Timer.class);
   long startTime=timer.getTimeInMs();
@@ -33,6 +34,11 @@
     renderUserInterface();
     updateUserInterface();
     Display.update();
+  }
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+  LocalPlayerComponent localPlayerComponent=playerEntity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComponent.isDead) {
+    playerEntity.send(new RespawnEvent());
   }
   GUIManager.getInstance().removeWindow(loadingScreen);
   worldRenderer.initPortal();

@@ -6,17 +6,13 @@
   if (setTopWindow == null) {
     return;
   }
-  if (_focusedWindow != null && _focusedWindow.isVisible()) {
-    _lastFocused=_focusedWindow;
+  if (_currentFocused != null && _currentFocused.isVisible()) {
+    _lastFocused=_currentFocused;
     if (_lastFocused != null && _lastFocused.isMaximized() && setTopWindow.isMaximized()) {
       _lastFocused.setVisible(false);
     }
   }
-  _focusedWindow=setTopWindow;
-  if (!_focusedWindow.isMaximized()) {
-    _renderer.changeElementDepth(windowPosition,_renderer.getDisplayElements().size() - 1);
-  }
-  if (!_focusedWindow.isVisible()) {
-    _focusedWindow.setVisible(true);
-  }
+  _currentFocused=setTopWindow;
+  _currentFocused.setVisible(true);
+  _renderer.changeElementDepth(windowPosition,_renderer.getDisplayElements().size() - 1);
 }

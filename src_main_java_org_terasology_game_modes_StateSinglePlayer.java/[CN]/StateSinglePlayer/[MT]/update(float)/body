@@ -8,18 +8,4 @@
   if (worldRenderer != null && shouldUpdateWorld()) {
     worldRenderer.update(delta);
   }
-  boolean dead=true;
-  for (  EntityRef entity : entityManager.iteratorEntities(LocalPlayerComponent.class)) {
-    dead=entity.getComponent(LocalPlayerComponent.class).isDead;
-  }
-  if (dead) {
-    if (GUIManager.getInstance().getWindowById("engine:statusScreen") == null) {
-      UIScreenStatus statusScreen=GUIManager.getInstance().addWindow(new UIScreenStatus(),"engine:statusScreen");
-      statusScreen.updateStatus("Sorry! Seems like you have died :-(");
-      statusScreen.setVisible(true);
-    }
-  }
- else {
-    GUIManager.getInstance().removeWindow("engine:statusScreen");
-  }
 }
