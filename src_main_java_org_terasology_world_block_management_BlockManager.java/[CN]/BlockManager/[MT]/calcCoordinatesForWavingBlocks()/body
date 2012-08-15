@@ -1,9 +1,17 @@
 {
   FloatBuffer buffer=BufferUtils.createFloatBuffer(32);
   int counter=0;
-  for (  Block b : blocksByUri.values()) {
-    if (b.isWaving()) {
-      Vector2f pos=b.getTextureAtlasPos(BlockPart.TOP);
+  for (  BlockFamily b : familyByUri.values()) {
+    if (b.getArchetypeBlock().isWaving()) {
+      Vector2f pos=b.getArchetypeBlock().getTextureAtlasPos(BlockPart.TOP);
+      buffer.put(pos.x);
+      buffer.put(pos.y);
+      counter++;
+    }
+  }
+  for (  BlockFamily b : partiallyRegisteredFamilies.values()) {
+    if (b.getArchetypeBlock().isWaving()) {
+      Vector2f pos=b.getArchetypeBlock().getTextureAtlasPos(BlockPart.TOP);
       buffer.put(pos.x);
       buffer.put(pos.y);
       counter++;

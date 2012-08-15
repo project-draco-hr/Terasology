@@ -1,0 +1,52 @@
+{
+  logger.log(Level.INFO,"Loading Blocks...");
+  LoadBlockDefinitionResults result=new LoadBlockDefinitionResults();
+  for (  AssetUri blockDefUri : AssetManager.list(AssetType.BLOCK_DEFINITION)) {
+    try {
+      JsonElement rawJson=readJson(blockDefUri);
+      if (rawJson != null) {
+        JsonObject blockDefJson=rawJson.getAsJsonObject();
+        if (blockDefJson.has("template") && blockDefJson.get("template").getAsBoolean()) {
+          continue;
+        }
+        logger.log(Level.INFO,"Loading " + blockDefUri);
+        BlockDefinition blockDef=loadBlockDefinition(inheritData(blockDefUri,blockDefJson));
+        if (isShapelessBlockFamily(blockDef)) {
+          indexTile(getDefaultTile(blockDef,blockDefUri),true);
+          result.shapelessDefinitions.add(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()));
+        }
+ else {
+          if (blockDef.liquid) {
+            blockDef.rotation=BlockDefinition.RotationType.NONE;
+            blockDef.shapes.clear();
+            blockDef.shape="";
+          }
+          if (blockDef.shapes.isEmpty()) {
+switch (blockDef.rotation) {
+case ALIGNTOSURFACE:
+              result.families.add(processAlignToSurfaceFamily(blockDefUri,blockDefJson));
+            break;
+case HORIZONTAL:
+          result.families.add(processHorizontalBlockFamily(blockDefUri,blockDef));
+        break;
+default :
+      result.families.add(processSingleBlockFamily(blockDefUri,blockDef));
+    break;
+}
+}
+ else {
+result.families.addAll(processMultiBlockFamily(blockDefUri,blockDef));
+}
+}
+}
+}
+ catch (JsonParseException e) {
+logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
+}
+catch (NullPointerException e) {
+logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
+}
+}
+result.shapelessDefinitions.addAll(loadAutoBlocks());
+return result;
+}

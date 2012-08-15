@@ -1,7 +1,7 @@
 {
   float vertDist=riseAmount + stepHeight;
   float steppedUpDist=0;
-  SweepCallback callback=sweep(position,new Vector3f(position.x,position.y + vertDist + VERTICAL_PENETRATION_LEEWAY,position.z),collider,VERTICAL_PENETRATION_LEEWAY);
+  SweepCallback callback=sweep(position,new Vector3f(position.x,position.y + vertDist + VERTICAL_PENETRATION_LEEWAY,position.z),collider,-1.0f,VERTICAL_PENETRATION_LEEWAY);
   if (callback.hasHit()) {
     float actualDist=Math.max(0,((vertDist + VERTICAL_PENETRATION_LEEWAY) * callback.closestHitFraction) - VERTICAL_PENETRATION_LEEWAY);
     position.y+=actualDist;

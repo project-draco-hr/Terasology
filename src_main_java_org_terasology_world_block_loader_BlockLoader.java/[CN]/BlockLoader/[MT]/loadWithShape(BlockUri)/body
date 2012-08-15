@@ -1,0 +1,31 @@
+{
+  BlockShape shape=cubeShape;
+  if (uri.hasShape()) {
+    AssetUri shapeUri=uri.getShapeUri();
+    if (!shapeUri.isValid()) {
+      return null;
+    }
+    shape=(BlockShape)AssetManager.load(shapeUri);
+    if (shape == null) {
+      return null;
+    }
+  }
+  AssetUri blockDefUri=new AssetUri(AssetType.BLOCK_DEFINITION,uri.getPackage(),uri.getFamily());
+  BlockDefinition def;
+  if (AssetManager.getInstance().getAssetURLs(blockDefUri).isEmpty()) {
+    def=new BlockDefinition();
+  }
+ else {
+    def=loadBlockDefinition(inheritData(blockDefUri,readJson(blockDefUri).getAsJsonObject()));
+  }
+  def.shape=(shape.getURI().getSimpleString());
+  if (shape.isCollisionSymmetric()) {
+    Block block=constructSingleBlock(blockDefUri,def);
+    return new SymmetricFamily(uri,block);
+  }
+ else {
+    Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+    constructHorizontalBlocks(blockDefUri,def,blockMap);
+    return new HorizontalBlockFamily(uri,blockMap);
+  }
+}

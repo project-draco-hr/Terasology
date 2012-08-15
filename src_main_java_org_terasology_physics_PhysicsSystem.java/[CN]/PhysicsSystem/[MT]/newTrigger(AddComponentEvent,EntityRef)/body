@@ -1,13 +1,3 @@
 {
-  LocationComponent location=entity.getComponent(LocationComponent.class);
-  TriggerComponent trigger=entity.getComponent(TriggerComponent.class);
-  ConvexShape shape=getShapeFor(entity);
-  if (shape != null) {
-    float scale=location.getWorldScale();
-    shape.setLocalScaling(new Vector3f(scale,scale,scale));
-    List<CollisionGroup> detectGroups=Lists.newArrayList(trigger.detectGroups);
-    PairCachingGhostObject triggerObj=physics.createCollider(location.getWorldPosition(),shape,Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.SENSOR),detectGroups,CollisionFlags.NO_CONTACT_RESPONSE);
-    triggerObj.setUserPointer(entity);
-    entityTriggers.put(entity,triggerObj);
-  }
+  createTrigger(entity);
 }

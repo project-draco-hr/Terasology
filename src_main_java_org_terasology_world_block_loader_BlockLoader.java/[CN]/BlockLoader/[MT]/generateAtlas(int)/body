@@ -1,6 +1,7 @@
 {
-  int size=Block.ATLAS_SIZE_IN_PX / (1 << mipMapLevel);
-  int textureSize=Block.TEXTURE_SIZE_IN_PX / (1 << mipMapLevel);
+  int size=atlasSize / (1 << mipMapLevel);
+  int textureSize=tileSize / (1 << mipMapLevel);
+  int tilesPerDim=atlasSize / tileSize;
   BufferedImage result=new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
   Graphics g=result.getGraphics();
   if (tiles.size() > MAX_TILES) {
@@ -8,8 +9,8 @@
   }
   for (int index=0; index < tiles.size() && index < MAX_TILES; ++index) {
     Tile tile=tiles.get(index);
-    int posX=(index) % Block.ATLAS_ELEMENTS_PER_ROW_AND_COLUMN;
-    int posY=(index) / Block.ATLAS_ELEMENTS_PER_ROW_AND_COLUMN;
+    int posX=(index) % tilesPerDim;
+    int posY=(index) / tilesPerDim;
     g.drawImage(tile.getImage().getScaledInstance(textureSize,textureSize,Image.SCALE_SMOOTH),posX * textureSize,posY * textureSize,null);
   }
   return result;

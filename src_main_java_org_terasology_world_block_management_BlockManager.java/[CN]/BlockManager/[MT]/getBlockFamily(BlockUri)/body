@@ -1,3 +1,23 @@
 {
-  return familyByUri.get(uri);
+  BlockFamily family=familyByUri.get(uri);
+  if (family == null) {
+    family=partiallyRegisteredFamilies.get(uri);
+    if (family != null) {
+      partiallyRegisteredFamilies.remove(uri);
+      registerBlockFamily(family);
+    }
+ else {
+      BlockUri shapelessUri=new BlockUri(uri.getPackage(),uri.getFamily());
+      if (shapelessBlockDefinition.contains(shapelessUri)) {
+        family=blockLoader.loadWithShape(uri);
+        if (family != null) {
+          registerBlockFamily(family);
+        }
+ else {
+          logger.severe("Failed to load shapeless def: " + uri);
+        }
+      }
+    }
+  }
+  return family;
 }
