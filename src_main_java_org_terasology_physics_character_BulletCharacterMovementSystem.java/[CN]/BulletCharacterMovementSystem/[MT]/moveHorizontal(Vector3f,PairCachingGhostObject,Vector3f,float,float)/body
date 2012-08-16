@@ -23,16 +23,22 @@
       dist-=actualDist;
       Vector3f newDir=new Vector3f(normalizedDir);
       newDir.scale(dist);
-      extractResidualMovement(callback.hitNormalWorld,newDir);
       float slope=callback.hitNormalWorld.dot(new Vector3f(0,1,0));
-      if (slope < slopeFactor) {
-        horizontalHit=true;
-        Vector3f modifiedNormal=new Vector3f(callback.hitNormalWorld);
-        modifiedNormal.y=0;
-        if (modifiedNormal.lengthSquared() > BulletGlobals.SIMD_EPSILON) {
-          modifiedNormal.normalize();
-          extractResidualMovement(modifiedNormal,newDir);
+      logger.info("Hit slope: " + slope + " <> "+ slopeFactor);
+      if (slope < slopeFactor || 1 - slope < BulletGlobals.SIMD_EPSILON) {
+        boolean stepping=checkStep(collider,position,newDir,callback,slopeFactor,stepHeight);
+        if (!stepping) {
+          horizontalHit=true;
+          Vector3f modifiedNormal=new Vector3f(callback.hitNormalWorld);
+          modifiedNormal.y=0;
+          if (modifiedNormal.lengthSquared() > BulletGlobals.SIMD_EPSILON) {
+            modifiedNormal.normalize();
+            extractResidualMovement(modifiedNormal,newDir);
+          }
         }
+      }
+ else {
+        extractResidualMovement(callback.hitNormalWorld,newDir);
       }
       float sqrDist=newDir.lengthSquared();
       if (sqrDist > BulletGlobals.SIMD_EPSILON) {
@@ -44,11 +50,17 @@
  else {
         break;
       }
-      dist=(float)Math.sqrt(sqrDist);
-      normalizedDir.set(newDir);
-      targetPos.set(normalizedDir);
-      targetPos.scale(dist + HORIZONTAL_PENETRATION_LEEWAY);
-      targetPos.add(position);
+      Vector3f horizDir=new Vector3f(newDir.x,0,newDir.z);
+      float horizLength=horizDir.length();
+      if (horizLength > BulletGlobals.SIMD_EPSILON) {
+        normalizedDir.set(newDir);
+        targetPos.set(normalizedDir);
+        targetPos.scale((dist / horizLength) + HORIZONTAL_PENETRATION_LEEWAY);
+        targetPos.add(position);
+      }
+ else {
+        break;
+      }
     }
  else {
       normalizedDir.scale(dist);
