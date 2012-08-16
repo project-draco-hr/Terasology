@@ -1,7 +1,8 @@
 {
   EntityRef item=getFromTransferSlot();
   ItemComponent sourceItem=item.getComponent(ItemComponent.class);
-  ItemComponent targetItem=targetCell.ownerInventory.itemSlots.get(targetCell.slot).getComponent(ItemComponent.class);
+  InventoryComponent targetInventory=targetCell.getOwnerEntity().getComponent(InventoryComponent.class);
+  ItemComponent targetItem=targetInventory.itemSlots.get(targetCell.slot).getComponent(ItemComponent.class);
   if (targetItem.stackId.equals(sourceItem.stackId) && !targetItem.stackId.isEmpty() && !sourceItem.stackId.isEmpty()) {
     if (amount == 0) {
       int spaceLeft=InventorySystem.MAX_STACK - targetItem.stackCount;

@@ -6,6 +6,7 @@
   targetItem.container=sourceItem.container;
   sendToTransferSlot(targetCell,(byte)0);
   sourceItem.container=targetCell.ownerEntity;
-  targetCell.ownerInventory.itemSlots.set(targetCell.slot,item);
+  InventoryComponent targetInventory=targetCell.getOwnerEntity().getComponent(InventoryComponent.class);
+  targetInventory.itemSlots.set(targetCell.slot,item);
   return true;
 }

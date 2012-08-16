@@ -1,10 +1,11 @@
 {
   EntityRef item=getFromTransferSlot();
   ItemComponent sourceItem=item.getComponent(ItemComponent.class);
-  if (!targetCell.ownerInventory.itemSlots.get(targetCell.slot).exists()) {
+  InventoryComponent targetInventory=targetCell.getOwnerEntity().getComponent(InventoryComponent.class);
+  if (!targetInventory.itemSlots.get(targetCell.slot).exists()) {
     if (amount == 0) {
       sourceItem.container=targetCell.ownerEntity;
-      targetCell.ownerInventory.itemSlots.set(targetCell.slot,item);
+      targetInventory.itemSlots.set(targetCell.slot,item);
       sendToTransferSlot(null,(byte)0);
       return true;
     }
@@ -17,11 +18,11 @@
         sourceItem.stackCount-=amount;
         copyItem.stackCount=amount;
         copyItem.container=targetCell.ownerEntity;
-        targetCell.ownerInventory.itemSlots.set(targetCell.slot,copy);
+        targetInventory.itemSlots.set(targetCell.slot,copy);
         return true;
       }
  else {
-        targetCell.ownerInventory.itemSlots.set(targetCell.slot,item);
+        targetInventory.itemSlots.set(targetCell.slot,item);
         sendToTransferSlot(null,(byte)0);
         return true;
       }
