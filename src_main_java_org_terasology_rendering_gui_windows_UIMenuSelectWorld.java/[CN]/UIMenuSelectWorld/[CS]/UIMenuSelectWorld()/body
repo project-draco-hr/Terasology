@@ -3,10 +3,6 @@
   maximize();
   _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:menuBackground"));
   _overlay.setVisible(true);
-  _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,320f));
-  _window.center();
-  _window.setModal(true);
-  GUIManager.getInstance().addWindow(_window,"generate_world");
   _list=new UIList(new Vector2f(512f,256f));
   _list.setVisible(true);
   _list.addDoubleClickListener(new ClickListener(){
@@ -35,8 +31,11 @@
   _deleteFromList.setVisible(true);
   _createNewWorld.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      GUIManager.getInstance().setFocusedWindow(_window);
+      UIDialogCreateNewWorld _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,320f));
+      _window.center();
       _window.clearInputControls();
+      GUIManager.getInstance().addWindow(_window,"generate_world");
+      GUIManager.getInstance().setFocusedWindow(_window);
       UIInput inputWorldName=(UIInput)_window.getElementById("inputWorldTitle");
       inputWorldName.setValue(_window.getWorldName());
     }
