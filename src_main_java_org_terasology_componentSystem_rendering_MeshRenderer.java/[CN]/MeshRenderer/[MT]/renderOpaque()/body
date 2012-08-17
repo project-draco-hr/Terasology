@@ -25,7 +25,13 @@
       if (!batch) {
         MeshComponent meshComp=entity.getComponent(MeshComponent.class);
         LocationComponent location=entity.getComponent(LocationComponent.class);
-        if (location == null || meshComp.mesh == null)         continue;
+        if (location == null || meshComp.mesh == null) {
+          continue;
+        }
+        if (meshComp.mesh.isDisposed()) {
+          logger.log(Level.SEVERE,"Found disposed mesh");
+          continue;
+        }
         location.getWorldRotation(worldRot);
         location.getWorldPosition(worldPos);
         float worldScale=location.getWorldScale();

@@ -1,10 +1,10 @@
 {
-  componentLibrary=new ComponentLibraryImpl();
-  componentLibrary.registerTypeHandler(Vector3f.class,new Vector3fTypeHandler());
-  componentLibrary.registerComponentClass(IntegerComponent.class);
-  componentLibrary.registerComponentClass(StringComponent.class);
-  componentLibrary.registerComponentClass(GetterSetterComponent.class);
-  prefabManager=new PojoPrefabManager(componentLibrary);
-  entityManager=new PojoEntityManager(componentLibrary,prefabManager);
+  EntitySystemBuilder builder=new EntitySystemBuilder();
+  entityManager=builder.build();
+  entityManager.getComponentLibrary().registerComponentClass(GetterSetterComponent.class);
+  entityManager.getComponentLibrary().registerComponentClass(StringComponent.class);
+  entityManager.getComponentLibrary().registerComponentClass(IntegerComponent.class);
   entityPersisterHelper=new EntityPersisterHelperImpl(entityManager);
+  componentLibrary=entityManager.getComponentLibrary();
+  prefabManager=entityManager.getPrefabManager();
 }

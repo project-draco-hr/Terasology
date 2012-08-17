@@ -1,0 +1,13 @@
+{
+  if (!freedIds.contains(id)) {
+    EntityRef entity=createEntityRef(id);
+    for (    Component c : components) {
+      store.put(id,c);
+    }
+    if (eventSystem != null) {
+      eventSystem.send(entity,AddComponentEvent.newInstance());
+    }
+    return entity;
+  }
+  return EntityRef.NULL;
+}

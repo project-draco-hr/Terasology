@@ -6,7 +6,9 @@
   Prefab prefab=prefabManager.createPrefab("Test");
   prefab.setComponent(new StringComponent("Value"));
   EntityRef entity=entityManager.create(prefab);
-  entity.getComponent(StringComponent.class).value="New";
+  StringComponent comp=entity.getComponent(StringComponent.class);
+  comp.value="New";
+  entity.saveComponent(comp);
   EntityData.Entity entityData=entityPersisterHelper.serializeEntity(entity);
   entityManager.clear();
   EntityRef result=entityPersisterHelper.deserializeEntity(entityData);

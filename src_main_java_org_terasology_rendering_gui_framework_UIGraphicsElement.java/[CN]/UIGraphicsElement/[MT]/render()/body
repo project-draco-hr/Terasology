@@ -1,5 +1,9 @@
 {
   if (_mesh == null)   return;
+  if (_mesh.isDisposed()) {
+    logger.severe("Disposed mesh encountered!");
+    return;
+  }
   ShaderManager.getInstance().enableDefaultTextured();
   glBindTexture(GL11.GL_TEXTURE_2D,texture != null ? texture.getId() : 0);
   glMatrixMode(GL_TEXTURE);
