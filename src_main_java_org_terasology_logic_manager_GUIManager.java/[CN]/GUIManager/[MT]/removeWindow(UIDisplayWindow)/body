@@ -2,21 +2,11 @@
   if (window == null) {
     return;
   }
-  _renderer.removeDisplayElement(window);
-  for (  String key : _windowsById.keySet()) {
-    if (_windowsById.get(key).equals(window)) {
-      _windowsById.remove(key);
+  renderer.removeDisplayElement(window);
+  for (  String key : windowsById.keySet()) {
+    if (windowsById.get(key).equals(window)) {
+      windowsById.remove(key);
       break;
     }
   }
-  if (_currentFocused == window) {
-    _currentFocused=null;
-  }
-  if (_lastFocused == window) {
-    _lastFocused=null;
-  }
- else {
-    _currentFocused=_lastFocused;
-  }
-  setMouseMovement(isConsumingInput());
 }

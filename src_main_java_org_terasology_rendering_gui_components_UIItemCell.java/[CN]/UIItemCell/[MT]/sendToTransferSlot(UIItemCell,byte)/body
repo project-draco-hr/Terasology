@@ -3,19 +3,14 @@
     CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PlayerComponent.class).transferSlot=EntityRef.NULL;
   }
  else {
-    if (amount == 0) {
-      if (getItemEntity().exists()) {
-        reset();
+    EntityRef target=getFromTransferSlot();
+    ItemComponent targetItem=target.getComponent(ItemComponent.class);
+    ItemComponent sourceItem=sourceCell.itemEntity.getComponent(ItemComponent.class);
+    if (sourceCell.itemEntity.exists()) {
+      if (amount == 0) {
+        amount=sourceItem.stackCount;
       }
-      CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PlayerComponent.class).transferSlot=sourceCell.itemEntity;
-      InventoryComponent sourceInventory=sourceCell.getOwnerEntity().getComponent(InventoryComponent.class);
-      sourceInventory.itemSlots.set(sourceInventory.itemSlots.indexOf(sourceCell.itemEntity),EntityRef.NULL);
-    }
- else     if (amount > 0 && amount <= InventorySystem.MAX_STACK) {
-      EntityRef target=getFromTransferSlot();
-      ItemComponent targetItem=target.getComponent(ItemComponent.class);
-      ItemComponent sourceItem=sourceCell.itemEntity.getComponent(ItemComponent.class);
-      if (target.exists() && sourceCell.itemEntity.exists()) {
+      if (target.exists()) {
         if (targetItem.stackId.equals(sourceItem.stackId) && !targetItem.stackId.isEmpty() && !sourceItem.stackId.isEmpty()) {
           int spaceLeft=InventorySystem.MAX_STACK - targetItem.stackCount;
           amount=(byte)Math.min(amount,sourceItem.stackCount);
@@ -30,7 +25,7 @@
           }
         }
       }
- else       if (sourceCell.itemEntity.exists()) {
+ else {
         amount=(byte)Math.min(amount,sourceItem.stackCount);
         if (sourceItem.stackCount > amount) {
           EntityManager entityManager=CoreRegistry.get(EntityManager.class);
