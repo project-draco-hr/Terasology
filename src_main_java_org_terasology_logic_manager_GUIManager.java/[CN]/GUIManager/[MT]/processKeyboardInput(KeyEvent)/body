@@ -1,9 +1,9 @@
 {
-  if (_currentFocused != null && _currentFocused.isModal() && _currentFocused.isVisible()) {
-    _currentFocused.processKeyboardInput(event);
+  if (renderer.getWindowFocused() != null && renderer.getWindowFocused().isModal() && renderer.getWindowFocused().isVisible()) {
+    renderer.getWindowFocused().processKeyboardInput(event);
     return;
   }
-  List<UIDisplayElement> screens=Lists.newArrayList(_renderer.getDisplayElements());
+  List<UIDisplayElement> screens=Lists.newArrayList(renderer.getDisplayElements());
   for (  UIDisplayElement screen : screens) {
     if (!((UIDisplayWindow)screen).isModal()) {
       screen.processKeyboardInput(event);
