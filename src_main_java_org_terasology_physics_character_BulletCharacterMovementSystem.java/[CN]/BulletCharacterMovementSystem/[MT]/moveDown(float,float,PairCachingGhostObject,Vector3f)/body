@@ -1,30 +1,30 @@
 {
-  float stepDist=steppedUpAmount - fallAmount + stepDownAmount;
-  float remainingDist=stepDist;
-  Vector3f currentPos=new Vector3f(position);
+  float remainingDist=-dist;
   Vector3f targetPos=new Vector3f(position);
   targetPos.y-=remainingDist + VERTICAL_PENETRATION_LEEWAY;
-  Vector3f normalizedDir=new Vector3f(targetPos);
-  normalizedDir.sub(currentPos);
-  normalizedDir.normalize();
+  Vector3f normalizedDir=new Vector3f(0,-1,0);
   boolean hit=false;
   int iteration=0;
   while (remainingDist > BulletGlobals.SIMD_EPSILON && iteration++ < 10) {
-    SweepCallback callback=sweep(currentPos,targetPos,collider,-1.0f,VERTICAL_PENETRATION);
+    SweepCallback callback=sweep(position,targetPos,collider,-1.0f,VERTICAL_PENETRATION);
     float actualDist=Math.max(0,(remainingDist + VERTICAL_PENETRATION_LEEWAY) * callback.closestHitFraction - VERTICAL_PENETRATION_LEEWAY);
     Vector3f expectedMove=new Vector3f(targetPos);
-    expectedMove.sub(currentPos);
+    expectedMove.sub(position);
     if (expectedMove.lengthSquared() > BulletGlobals.SIMD_EPSILON) {
       expectedMove.normalize();
       expectedMove.scale(actualDist);
-      currentPos.add(expectedMove);
+      position.add(expectedMove);
+    }
+    remainingDist-=actualDist;
+    if (remainingDist < BulletGlobals.SIMD_EPSILON) {
+      break;
     }
     if (callback.hasHit()) {
-      hit=true;
-      Vector3f contactPoint=null;
-      contactPoint=callback.hitPointWorld;
-      Vector3f normal=callback.hitNormalWorld;
-      if (contactPoint != null) {
+      Vector3f contactPoint=callback.hitPointWorld;
+      float originalSlope=callback.hitNormalWorld.dot(new Vector3f(0,1,0));
+      if (originalSlope < slopeFactor) {
+        float slope=1;
+        boolean foundSlope=false;
         Vector3f fromWorld=new Vector3f(contactPoint);
         fromWorld.y+=0.2f;
         Vector3f toWorld=new Vector3f(contactPoint);
@@ -32,12 +32,28 @@
         CollisionWorld.ClosestRayResultCallback rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
         CollisionWorld.rayTestSingle(new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f)),new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f)),callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),callback.hitCollisionObject.getWorldTransform(new Transform()),rayResult);
         if (rayResult.hasHit()) {
-          normal=rayResult.hitNormalWorld;
+          foundSlope=true;
+          slope=Math.min(slope,(rayResult.hitNormalWorld.dot(new Vector3f(0,1,0))));
         }
-        if (normal.dot(new Vector3f(0,1,0)) < slopeFactor) {
+        Vector3f secondTraceOffset=new Vector3f(callback.hitNormalWorld);
+        secondTraceOffset.y=0;
+        secondTraceOffset.normalize();
+        secondTraceOffset.scale(CHECK_FORWARD_DIST);
+        fromWorld.add(secondTraceOffset);
+        toWorld.add(secondTraceOffset);
+        rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
+        CollisionWorld.rayTestSingle(new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f)),new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f)),callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),callback.hitCollisionObject.getWorldTransform(new Transform()),rayResult);
+        if (rayResult.hasHit()) {
+          foundSlope=true;
+          slope=Math.min(slope,(rayResult.hitNormalWorld.dot(new Vector3f(0,1,0))));
+        }
+        if (!foundSlope) {
+          slope=originalSlope;
+        }
+        if (slope < slopeFactor) {
           remainingDist-=actualDist;
           expectedMove.set(targetPos);
-          expectedMove.sub(currentPos);
+          expectedMove.sub(position);
           extractResidualMovement(callback.hitNormalWorld,expectedMove);
           float sqrDist=expectedMove.lengthSquared();
           if (sqrDist > BulletGlobals.SIMD_EPSILON) {
@@ -51,11 +67,16 @@
             hit=true;
             break;
           }
+          if (expectedMove.y > -BulletGlobals.SIMD_EPSILON) {
+            hit=true;
+            break;
+          }
           normalizedDir.set(expectedMove);
-          expectedMove.scale(((float)Math.sqrt(sqrDist) + HORIZONTAL_PENETRATION_LEEWAY));
-          targetPos.add(currentPos,expectedMove);
+          expectedMove.scale(-remainingDist / expectedMove.y + HORIZONTAL_PENETRATION_LEEWAY);
+          targetPos.add(position,expectedMove);
         }
  else {
+          hit=true;
           break;
         }
       }
@@ -71,22 +92,5 @@
   if (iteration >= 10) {
     hit=true;
   }
-  if (!hit) {
-    if (stepDownAmount > 0) {
-      moveDown(fallAmount - steppedUpAmount,0,0,slopeFactor,collider,position);
-    }
- else {
-      position.set(currentPos);
-    }
-    return false;
-  }
- else {
-    if (stepDownAmount > 0) {
-      moveDown(fallAmount - steppedUpAmount,0,0,slopeFactor,collider,position);
-    }
- else {
-      position.set(currentPos);
-    }
-    return true;
-  }
+  return hit;
 }

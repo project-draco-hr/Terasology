@@ -5,10 +5,10 @@
     maxSpeed*=movementComp.runFactor;
   }
   desiredVelocity.scale(maxSpeed);
-  desiredVelocity.y-=UnderwaterGravity;
+  desiredVelocity.y-=UNDERWATER_GRAVITY;
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(movementComp.getVelocity());
-  velocityDiff.scale(Math.min(UnderwaterInertia * delta,1.0f));
+  velocityDiff.scale(Math.min(UNDERWATER_INERTIA * delta,1.0f));
   movementComp.getVelocity().x+=velocityDiff.x;
   movementComp.getVelocity().y+=velocityDiff.y;
   movementComp.getVelocity().z+=velocityDiff.z;
@@ -18,7 +18,7 @@
   }
   Vector3f moveDelta=new Vector3f(movementComp.getVelocity());
   moveDelta.scale(delta);
-  MoveResult moveResult=move(location.getWorldPosition(),moveDelta,0,-1,movementComp.collider);
+  MoveResult moveResult=move(location.getWorldPosition(),moveDelta,0,0,-1,movementComp.collider);
   Vector3f distanceMoved=new Vector3f(moveResult.finalPosition);
   distanceMoved.sub(location.getWorldPosition());
   location.setWorldPosition(moveResult.finalPosition);

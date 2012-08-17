@@ -1,7 +1,9 @@
 {
   for (  EntityRef entity : entityManager.iteratorEntities(CharacterMovementComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
-    if (!worldProvider.isBlockActive(location.getWorldPosition()))     continue;
+    if (!worldProvider.isBlockActive(location.getWorldPosition())) {
+      continue;
+    }
     CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
     if (movementComp.collider == null) {
       float height=(movementComp.height - 2 * movementComp.radius) * location.getWorldScale();
