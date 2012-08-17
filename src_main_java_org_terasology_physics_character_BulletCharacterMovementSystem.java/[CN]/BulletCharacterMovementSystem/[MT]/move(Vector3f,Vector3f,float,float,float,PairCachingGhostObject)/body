@@ -8,6 +8,17 @@
     result.hitTop=moveDelta.y - moveUp(moveDelta.y,collider,position) > BulletGlobals.SIMD_EPSILON;
   }
   result.hitHoriz=moveHorizontal(new Vector3f(moveDelta.x,0,moveDelta.z),collider,position,slopeFactor,stepHeight);
-  result.hitBottom=moveDown((moveDelta.y < 0) ? moveDelta.y : 0,steppedUpDist,0,slopeFactor,collider,position);
+  if (moveDelta.y < 0 || steppedUpDist > 0) {
+    float dist=(moveDelta.y < 0) ? moveDelta.y : 0;
+    dist-=steppedUpDist;
+    result.hitBottom=moveDown(dist,slopeFactor,collider,position);
+  }
+  if (!result.hitBottom && stepDownHeight > 0) {
+    Vector3f tempPos=new Vector3f(position);
+    result.hitBottom=moveDown(-stepDownHeight,slopeFactor,collider,tempPos);
+    if (result.hitBottom) {
+      position.set(tempPos);
+    }
+  }
   return result;
 }

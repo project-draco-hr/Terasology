@@ -1,13 +1,16 @@
 {
   float remainingFraction=1.0f;
   float dist=horizMove.length();
-  if (dist < BulletGlobals.SIMD_EPSILON)   return false;
+  if (dist < BulletGlobals.SIMD_EPSILON) {
+    return false;
+  }
   boolean horizontalHit=false;
   Vector3f normalizedDir=Vector3fUtil.safeNormalize(horizMove,new Vector3f());
   Vector3f targetPos=new Vector3f(normalizedDir);
   targetPos.scale(dist + HORIZONTAL_PENETRATION_LEEWAY);
   targetPos.add(position);
   int iteration=0;
+  Vector3f lastHitNormal=new Vector3f(0,1,0);
   while (remainingFraction >= 0.01f && iteration++ < 10) {
     SweepCallback callback=sweep(position,targetPos,collider,slopeFactor,HORIZONTAL_PENETRATION);
     float actualDist=Math.max(0,(dist + HORIZONTAL_PENETRATION_LEEWAY) * callback.closestHitFraction - HORIZONTAL_PENETRATION_LEEWAY);
@@ -24,21 +27,29 @@
       Vector3f newDir=new Vector3f(normalizedDir);
       newDir.scale(dist);
       float slope=callback.hitNormalWorld.dot(new Vector3f(0,1,0));
-      logger.info("Hit slope: " + slope + " <> "+ slopeFactor);
       if (slope < slopeFactor || 1 - slope < BulletGlobals.SIMD_EPSILON) {
         boolean stepping=checkStep(collider,position,newDir,callback,slopeFactor,stepHeight);
         if (!stepping) {
           horizontalHit=true;
-          Vector3f modifiedNormal=new Vector3f(callback.hitNormalWorld);
-          modifiedNormal.y=0;
-          if (modifiedNormal.lengthSquared() > BulletGlobals.SIMD_EPSILON) {
-            modifiedNormal.normalize();
-            extractResidualMovement(modifiedNormal,newDir);
+          Vector3f newHorizDir=new Vector3f(newDir.x,0,newDir.z);
+          Vector3f horizNormal=new Vector3f(callback.hitNormalWorld.x,0,callback.hitNormalWorld.z);
+          if (horizNormal.lengthSquared() > BulletGlobals.SIMD_EPSILON) {
+            horizNormal.normalize();
+            if (lastHitNormal.dot(horizNormal) > BulletGlobals.SIMD_EPSILON) {
+              break;
+            }
+            lastHitNormal.set(horizNormal);
+            extractResidualMovement(horizNormal,newHorizDir);
           }
+          newDir.set(newHorizDir);
         }
       }
  else {
+        Vector3f newHorizDir=new Vector3f(newDir.x,0,newDir.z);
         extractResidualMovement(callback.hitNormalWorld,newDir);
+        Vector3f modHorizDir=new Vector3f(newDir);
+        modHorizDir.y=0;
+        newDir.scale(newHorizDir.length() / modHorizDir.length());
       }
       float sqrDist=newDir.lengthSquared();
       if (sqrDist > BulletGlobals.SIMD_EPSILON) {
@@ -50,17 +61,11 @@
  else {
         break;
       }
-      Vector3f horizDir=new Vector3f(newDir.x,0,newDir.z);
-      float horizLength=horizDir.length();
-      if (horizLength > BulletGlobals.SIMD_EPSILON) {
-        normalizedDir.set(newDir);
-        targetPos.set(normalizedDir);
-        targetPos.scale((dist / horizLength) + HORIZONTAL_PENETRATION_LEEWAY);
-        targetPos.add(position);
-      }
- else {
-        break;
-      }
+      dist=(float)Math.sqrt(sqrDist);
+      normalizedDir.set(newDir);
+      targetPos.set(normalizedDir);
+      targetPos.scale(dist + HORIZONTAL_PENETRATION_LEEWAY);
+      targetPos.add(position);
     }
  else {
       normalizedDir.scale(dist);
