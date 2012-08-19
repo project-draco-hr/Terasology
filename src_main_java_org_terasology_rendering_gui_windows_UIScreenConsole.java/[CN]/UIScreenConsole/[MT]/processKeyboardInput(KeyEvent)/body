@@ -1,6 +1,9 @@
 {
   super.processKeyboardInput(event);
   if (!isVisible())   return;
+  if (!event.isDown()) {
+    return;
+  }
 switch (event.getKey()) {
 case Keyboard.KEY_BACK:
     int length=_consoleInput.length() - 1;
@@ -19,7 +22,7 @@ case Keyboard.KEY_DOWN:
 rotateRingBuffer(-1);
 break;
 default :
-char c=Keyboard.getEventCharacter();
+char c=event.getKeyCharacter();
 if (!Character.isISOControl(c)) {
 _consoleInput.append(c);
 }

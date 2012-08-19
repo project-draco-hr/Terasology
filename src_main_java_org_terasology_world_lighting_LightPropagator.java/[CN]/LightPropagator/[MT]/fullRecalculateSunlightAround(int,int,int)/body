@@ -1,0 +1,49 @@
+{
+  int top=Math.min(Chunk.SIZE_Y - 2,blockY + Chunk.MAX_LIGHT - 2);
+  Region3i region=Region3i.createFromMinMax(new Vector3i(blockX - Chunk.MAX_LIGHT + 1,0,blockZ - Chunk.MAX_LIGHT + 1),new Vector3i(blockX + Chunk.MAX_LIGHT - 1,top,blockZ + Chunk.MAX_LIGHT - 1));
+  short[] tops=new short[region.size().x * region.size().z];
+  for (int x=0; x < region.size().x; x++) {
+    for (int z=0; z < region.size().z; z++) {
+      int y=top;
+      byte aboveLight=worldView.getSunlight(x + region.min().x,y + 1,z + region.min().z);
+      Block lastBlock=BlockManager.getInstance().getAir();
+      if (aboveLight == Chunk.MAX_LIGHT) {
+        for (; y >= 0; y--) {
+          Block block=worldView.getBlock(x + region.min().x,y,z + region.min().z);
+          if (LightingUtil.canSpreadLightOutOf(lastBlock,Side.BOTTOM) && LightingUtil.canSpreadLightInto(block,Side.TOP) && LightingUtil.doesSunlightRetainsFullStrengthIn(block)) {
+            worldView.setSunlight(x + region.min().x,y,z + region.min().z,Chunk.MAX_LIGHT);
+            lastBlock=block;
+          }
+ else {
+            break;
+          }
+        }
+      }
+      tops[x + region.size().x * z]=(short)y;
+      for (; y >= 0; y--) {
+        worldView.setSunlight(x + region.min().x,y,z + region.min().z,(byte)0);
+      }
+    }
+  }
+  for (int x=0; x < region.size().x; x++) {
+    for (int z=0; z < region.size().z; z++) {
+      if (tops[x + region.size().x * z] > 0) {
+        propagateSunlightFrom(region.min().x + x,tops[x + region.size().x * z] + 1,region.min().z + z,Side.BOTTOM);
+      }
+      for (int y=tops[x + region.size().x * z]; y >= 0; y--) {
+        if (x <= 0 || tops[(x - 1) + region.size().x * z] < y) {
+          propagateSunlightFrom(region.min().x + x - 1,y,region.min().z + z,Side.RIGHT);
+        }
+        if (x >= region.size().x - 1 || tops[(x + 1) + region.size().x * z] < y) {
+          propagateSunlightFrom(region.min().x + x + 1,y,region.min().z + z,Side.LEFT);
+        }
+        if (z <= 0 || tops[x + region.size().x * (z - 1)] < y) {
+          propagateSunlightFrom(region.min().x + x,y,region.min().z + z - 1,Side.BACK);
+        }
+        if (z >= region.size().z - 1 || tops[x + region.size().x * (z + 1)] < y) {
+          propagateSunlightFrom(region.min().x + x,y,region.min().z + z + 1,Side.FRONT);
+        }
+      }
+    }
+  }
+}

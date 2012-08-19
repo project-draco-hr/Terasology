@@ -1,0 +1,11 @@
+{
+  byte lightLevel=worldView.getLight(blockX,blockY,blockZ);
+  Vector3i adjSide=new Vector3i(blockX,blockY,blockZ);
+  adjSide.add(side.getVector3i());
+  Block block=worldView.getBlock(blockX,blockY,blockZ);
+  Block adjBlock=worldView.getBlock(adjSide);
+  if (lightLevel > 1 && worldView.getLight(adjSide) < lightLevel - 1 && LightingUtil.canSpreadLightOutOf(block,side) && LightingUtil.canSpreadLightInto(adjBlock,side.reverse())) {
+    worldView.setLight(adjSide,(byte)(lightLevel - 1));
+    pushLight(adjSide.x,adjSide.y,adjSide.z,(byte)(lightLevel - 1));
+  }
+}

@@ -1,0 +1,36 @@
+{
+  if (newBlock.isTranslucent() && oldBlock.isTranslucent()) {
+    return PropagationComparison.IDENTICAL;
+  }
+ else   if (newBlock.isTranslucent()) {
+    for (    Side side : Side.values()) {
+      if (oldBlock.isFullSide(side)) {
+        return PropagationComparison.MORE_PERMISSIVE;
+      }
+    }
+    return PropagationComparison.IDENTICAL;
+  }
+ else   if (oldBlock.isTranslucent()) {
+    for (    Side side : Side.values()) {
+      if (newBlock.isFullSide(side)) {
+        return PropagationComparison.MORE_RESTRICTED;
+      }
+    }
+    return PropagationComparison.IDENTICAL;
+  }
+ else {
+    boolean permit=false;
+    for (    Side side : Side.values()) {
+      boolean newBlocked=newBlock.isFullSide(side);
+      boolean oldBlocked=oldBlock.isFullSide(side);
+      if (newBlocked && !oldBlocked) {
+        return PropagationComparison.MORE_RESTRICTED;
+      }
+      permit=oldBlocked && !newBlocked;
+    }
+    if (permit) {
+      return PropagationComparison.MORE_PERMISSIVE;
+    }
+    return PropagationComparison.IDENTICAL;
+  }
+}
