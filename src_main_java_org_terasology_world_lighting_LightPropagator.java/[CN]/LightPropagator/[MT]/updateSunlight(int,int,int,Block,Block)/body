@@ -1,0 +1,17 @@
+{
+  PropagationComparison changeType=LightingUtil.compareLightingPropagation(type,oldType);
+switch (changeType) {
+case MORE_PERMISSIVE:
+    byte light=pullSunlight(x,y,z,type);
+  worldView.setSunlight(x,y,z,light);
+if (light > 1) {
+  return pushSunlight(x,y,z,light);
+}
+break;
+case MORE_RESTRICTED:
+return clearSunlight(x,y,z);
+default :
+return Region3i.EMPTY;
+}
+return Region3i.EMPTY;
+}
