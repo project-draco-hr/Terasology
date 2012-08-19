@@ -1,11 +1,12 @@
 {
+  setBackgroundImage("engine:loadingbackground");
   setModal(true);
-  setVisible(true);
-  _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:loadingBackground"));
-  _overlay.setVisible(true);
-  _progressBar=new UIProgressBar(new Vector2f(256f,15f));
+  maximize();
+  background=new UIGraphicsElement(AssetManager.loadTexture("engine:menuBackground"));
+  background.setVisible(true);
+  _progressBar=new UIProgressBar();
   _progressBar.setVisible(true);
-  addDisplayElement(_overlay);
+  addDisplayElement(background);
   addDisplayElement(_progressBar);
   layout();
 }
