@@ -1,0 +1,26 @@
+{
+  UIGraphicsElement frame=frames.get(side);
+  if (frame == null) {
+    return;
+  }
+  if (side.equals("top")) {
+    frame.setPosition(new Vector2f(targetOrigin.x + width.w,targetOrigin.y));
+    frame.setSize(new Vector2f(targetSize.x - width.w - width.y,width.x));
+    frame.setVisible(true);
+  }
+ else   if (side.equals("bottom")) {
+    frame.setPosition(new Vector2f(targetOrigin.x + width.w,targetOrigin.y + targetSize.y - width.z));
+    frame.setSize(new Vector2f(targetSize.x - width.w - width.y,width.z));
+    frame.setVisible(true);
+  }
+ else   if (side.equals("right")) {
+    frame.setPosition(new Vector2f(targetOrigin.x + targetSize.x - width.y,targetOrigin.y + width.x));
+    frame.setSize(new Vector2f(width.y,targetSize.y - width.x - width.z));
+    frame.setVisible(true);
+  }
+ else   if (side.equals("left")) {
+    frame.setPosition(new Vector2f(targetOrigin.x,targetOrigin.y + width.x));
+    frame.setSize(new Vector2f(width.w,targetSize.y - width.x - width.z));
+    frame.setVisible(true);
+  }
+}
