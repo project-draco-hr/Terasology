@@ -1,15 +1,15 @@
 {
-  float sliderPos=pos - getPosition().x - _slider.getSize().x / 2;
+  float sliderPos=pos - getPosition().x - slider.getSize().x / 2;
   if (sliderPos < 0) {
     sliderPos=0;
   }
- else   if (sliderPos > (getSize().x - _slider.getSize().x)) {
-    sliderPos=getSize().x - _slider.getSize().x;
+ else   if (sliderPos > (getSize().x - slider.getSize().x)) {
+    sliderPos=getSize().x - slider.getSize().x;
   }
-  _slider.getPosition().set(sliderPos,0);
+  slider.getPosition().set(sliderPos,0);
   int newValue=posToValue(sliderPos);
-  if (newValue != _currentValue) {
-    _currentValue=newValue;
+  if (newValue != currentValue) {
+    currentValue=newValue;
     notifyChangedListeners();
   }
 }

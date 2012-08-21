@@ -1,31 +1,31 @@
 {
   setSize(size);
-  _text=text;
-  _value=value;
-  _label=new UIText();
-  _label.setVisible(true);
-  _label.setColor(Color.lightGray);
-  _label.setPosition(new Vector2f((getPosition().x + _padding.x),(getPosition().y + _padding.y)));
-  _label.setText(_text);
-  if (getSize().x < _label.getTextWidth()) {
-    setSize(new Vector2f(_label.getTextWidth(),getSize().y));
+  this.text=text;
+  this.value=value;
+  label=new UIText();
+  label.setVisible(true);
+  label.setColor(Color.lightGray);
+  label.setPosition(new Vector2f((getPosition().x + padding.x),(getPosition().y + padding.y)));
+  label.setText(text);
+  if (getSize().x < label.getTextWidth()) {
+    setSize(new Vector2f(label.getTextWidth(),getSize().y));
   }
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
-      if (!_isSelected) {
-        _label.setColor(Color.lightGray);
+      if (!isSelected) {
+        label.setColor(Color.lightGray);
       }
     }
     @Override public void hover(    UIDisplayElement element){
     }
     @Override public void enter(    UIDisplayElement element){
-      if (!_isSelected) {
-        _label.setColor(Color.orange);
+      if (!isSelected) {
+        label.setColor(Color.orange);
       }
     }
     @Override public void move(    UIDisplayElement element){
     }
   }
 );
-  addDisplayElement(_label);
+  addDisplayElement(label);
 }

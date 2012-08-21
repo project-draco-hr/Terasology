@@ -5,20 +5,19 @@
   setNormalState(new Vector2f(0f,0f),new Vector2f(256f,30f));
   setHoverState(new Vector2f(0f,30f),new Vector2f(256f,30f));
   setPressedState(new Vector2f(0f,60f),new Vector2f(256f,30f));
-  setBackgroundImageSource(states.get("normal")[0],states.get("normal")[1]);
-  setBackgroundImageTarget(new Vector2f(0f,0f),size);
+  setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
       if (_buttonType == eButtonType.TOGGLE) {
         if (_toggleState) {
-          setBackgroundImageSource(states.get("pressed")[0],states.get("pressed")[1]);
+          setBackgroundImage(states.get("pressed")[0],states.get("pressed")[1]);
         }
  else {
-          setBackgroundImageSource(states.get("normal")[0],states.get("normal")[1]);
+          setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
         }
       }
  else {
-        setBackgroundImageSource(states.get("normal")[0],states.get("normal")[1]);
+        setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
       }
     }
     @Override public void hover(    UIDisplayElement element){
@@ -26,7 +25,7 @@
     @Override public void enter(    UIDisplayElement element){
       AudioManager.play(new AssetUri(AssetType.SOUND,"engine:click"),1.0f);
       if (_buttonType == eButtonType.NORMAL) {
-        setBackgroundImageSource(states.get("hover")[0],states.get("hover")[1]);
+        setBackgroundImage(states.get("hover")[0],states.get("hover")[1]);
       }
     }
     @Override public void move(    UIDisplayElement element){
@@ -36,23 +35,23 @@
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
       if (_buttonType == eButtonType.NORMAL) {
-        setBackgroundImageSource(states.get("normal")[0],states.get("normal")[1]);
+        setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
       }
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
       if (intersect) {
         if (_buttonType == eButtonType.TOGGLE) {
           if (_toggleState) {
-            setBackgroundImageSource(states.get("normal")[0],states.get("normal")[1]);
+            setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
             _toggleState=false;
           }
  else {
-            setBackgroundImageSource(states.get("pressed")[0],states.get("pressed")[1]);
+            setBackgroundImage(states.get("pressed")[0],states.get("pressed")[1]);
             _toggleState=true;
           }
         }
  else {
-          setBackgroundImageSource(states.get("pressed")[0],states.get("pressed")[1]);
+          setBackgroundImage(states.get("pressed")[0],states.get("pressed")[1]);
         }
       }
     }

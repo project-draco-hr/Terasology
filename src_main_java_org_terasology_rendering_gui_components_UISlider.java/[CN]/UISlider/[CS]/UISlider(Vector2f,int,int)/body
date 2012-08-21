@@ -1,20 +1,18 @@
 {
   setSize(size);
-  _min=min;
-  _max=max;
-  _currentValue=Integer.MAX_VALUE;
-  setBackgroundImage("engine:gui_menu");
-  setBackgroundImageSource(new Vector2f(0f,0f),new Vector2f(256f,30f));
-  setBackgroundImageTarget(new Vector2f(0f,0f),size);
+  this.minValue=min;
+  this.maxValue=max;
+  currentValue=Integer.MAX_VALUE;
+  setBackgroundImage("engine:gui_menu",new Vector2f(0f,0f),new Vector2f(256f,30f));
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
-      setBackgroundImageSource(new Vector2f(0f,0f),new Vector2f(256f,30f));
+      setBackgroundImage(new Vector2f(0f,0f),new Vector2f(256f,30f));
     }
     @Override public void hover(    UIDisplayElement element){
     }
     @Override public void enter(    UIDisplayElement element){
       AudioManager.play(new AssetUri(AssetType.SOUND,"engine:click"),1.0f);
-      setBackgroundImageSource(new Vector2f(0f,30f),null);
+      setBackgroundImage(new Vector2f(0f,30f),null);
     }
     @Override public void move(    UIDisplayElement element){
       if (isFocused()) {
@@ -25,7 +23,7 @@
 );
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
-      setBackgroundImageSource(new Vector2f(0f,0f),null);
+      setBackgroundImage(new Vector2f(0f,0f),null);
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
       if (intersect)       changeSlider(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x);
@@ -34,14 +32,14 @@
     }
   }
 );
-  _slider=new UIGraphicsElement(AssetManager.loadTexture("engine:gui_menu"));
-  _slider.setParent(this);
-  _slider.setVisible(true);
-  _slider.setPosition(new Vector2f(0,0));
-  _slider.setTextureOrigin(new Vector2f(0f,60f));
-  _slider.setTextureSize(new Vector2f(256f,30f));
-  _slider.setSize(new Vector2f(16f,getSize().y));
-  _slider.addMouseButtonListener(new MouseButtonListener(){
+  slider=new UIGraphicsElement(AssetManager.loadTexture("engine:gui_menu"));
+  slider.setParent(this);
+  slider.setVisible(true);
+  slider.setPosition(new Vector2f(0,0));
+  slider.setTextureOrigin(new Vector2f(0f,60f));
+  slider.setTextureSize(new Vector2f(256f,30f));
+  slider.setSize(new Vector2f(16f,getSize().y));
+  slider.addMouseButtonListener(new MouseButtonListener(){
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
       setFocus(null);
     }
@@ -54,9 +52,9 @@
     }
   }
 );
-  _label=new UIText("");
-  _label.setVisible(true);
-  addDisplayElement(_slider);
-  addDisplayElement(_label);
+  label=new UIText("");
+  label.setVisible(true);
+  addDisplayElement(slider);
+  addDisplayElement(label);
   calcRange();
 }
