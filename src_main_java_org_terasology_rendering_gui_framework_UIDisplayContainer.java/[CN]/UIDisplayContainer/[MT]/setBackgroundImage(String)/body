@@ -1,0 +1,15 @@
+{
+  UIStyleBackgroundImage style=getStyle(UIStyleBackgroundImage.class);
+  if (style == null) {
+    style=new UIStyleBackgroundImage(AssetManager.loadTexture(texture));
+    style.setTextureOrigin(new Vector2f(0f,0f));
+    style.setTextureSize(new Vector2f(style.getTexture().getWidth(),style.getTexture().getHeight()));
+    style.setVisible(true);
+    addStyle(style,true);
+  }
+ else {
+    if (!style.getTexture().getURI().toString().equals("texture:" + texture)) {
+      style.setTexture(AssetManager.loadTexture(texture));
+    }
+  }
+}

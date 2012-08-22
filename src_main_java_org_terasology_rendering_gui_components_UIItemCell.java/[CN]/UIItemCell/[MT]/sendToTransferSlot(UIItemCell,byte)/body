@@ -60,5 +60,8 @@
   if (sourceCell != null) {
     InventoryComponent sourceInventory=sourceCell.getOwnerEntity().getComponent(InventoryComponent.class);
     sourceCell.ownerEntity.saveComponent(sourceInventory);
+    if (!sourceCell.itemEntity.exists() && sourceCell.itemLabel.isVisible()) {
+      sourceCell.setLabelVisibility(false);
+    }
   }
 }

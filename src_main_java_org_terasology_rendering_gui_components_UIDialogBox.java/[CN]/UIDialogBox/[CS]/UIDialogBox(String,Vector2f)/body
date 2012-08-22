@@ -1,33 +1,35 @@
 {
   super();
   setSize(size);
-  _title=new UIWindowTitle(new Vector2f(getSize().x * 0.55f,19f),title);
-  _title.setVisible(true);
-  _title.getPosition().x=(getPosition().x + size.x / 2f) - _title.getSize().x / 2;
-  _title.setTitle(title);
-  _title.addMouseButtonListener(new MouseButtonListener(){
+  setBackgroundImage("engine:gui_menu",new Vector2f(260f,92f),new Vector2f(168f,76f));
+  setBorderImage("engine:gui_menu",new Vector2f(256f,90f),new Vector2f(175f,88f),new Vector4f(4f,4f,4f,4f));
+  container=new UIDialogBackground(new Vector2f(titleWidth,19f),title);
+  container.setVisible(true);
+  container.getPosition().set((getPosition().x + size.x / 2f) - container.getSize().x / 2,5f);
+  container.setTitle(title);
+  container.addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
     }
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
-      _dragged=false;
-      _prevMousePos=null;
+      dragged=false;
+      prevMousePos=null;
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
       if (intersect) {
-        _dragged=true;
-        if (_prevMousePos == null) {
-          _prevMousePos=new Vector2f(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        dragged=true;
+        if (prevMousePos == null) {
+          prevMousePos=new Vector2f(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
         }
       }
     }
   }
 );
-  _title.addMouseMoveListener(new MouseMoveListener(){
+  container.addMouseMoveListener(new MouseMoveListener(){
     @Override public void move(    UIDisplayElement element){
-      if (_dragged) {
+      if (dragged) {
         Vector2f mousePos=new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY());
-        drag(new Vector2f(_prevMousePos.x - mousePos.x,_prevMousePos.y - mousePos.y));
-        _prevMousePos=new Vector2f(mousePos);
+        drag(new Vector2f(prevMousePos.x - mousePos.x,prevMousePos.y - mousePos.y));
+        prevMousePos=new Vector2f(mousePos);
       }
     }
     @Override public void leave(    UIDisplayElement element){
@@ -38,17 +40,20 @@
     }
   }
 );
-  _close=new UIButton(new Vector2f(19f,19f),UIButton.eButtonType.NORMAL);
-  _close.getPosition().x=getSize().x - 25f;
-  _close.setVisible(true);
-  _close.getLabel().setText("");
-  _close.addClickListener(new ClickListener(){
+  closeButton=new UIButton(new Vector2f(19f,19f),UIButton.eButtonType.NORMAL);
+  closeButton.getPosition().set(getSize().x - closeButton.getSize().x - 2,2);
+  closeButton.setVisible(true);
+  closeButton.getLabel().setText("");
+  closeButton.setTexture("engine:gui_menu");
+  closeButton.setNormalState(new Vector2f(73f,155f),new Vector2f(19f,19f));
+  closeButton.setHoverState(new Vector2f(54f,155f),new Vector2f(19f,19f));
+  closeButton.setPressedState(new Vector2f(92f,155f),new Vector2f(19f,19f));
+  closeButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      close(true);
+      close();
     }
   }
 );
-  windowStyleSetup();
-  addDisplayElement(_close);
-  addDisplayElement(_title);
+  addDisplayElement(closeButton);
+  addDisplayElement(container);
 }

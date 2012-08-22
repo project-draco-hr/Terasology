@@ -1,4 +1,5 @@
 {
+  setBackgroundImage("engine:loadingbackground");
   setModal(true);
   setCloseBinds(new String[]{});
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
@@ -8,8 +9,6 @@
   _title.setSize(new Vector2f(512f,128f));
   _version=new UIText("Audio Settings");
   _version.setVisible(true);
-  _overlay=new UIImageOverlay(AssetManager.loadTexture("engine:loadingBackground"));
-  _overlay.setVisible(true);
   _soundOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
   _soundOptionSlider.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
@@ -41,7 +40,6 @@
     }
   }
 );
-  addDisplayElement(_overlay);
   addDisplayElement(_title);
   addDisplayElement(_version);
   addDisplayElement(_soundOptionSlider,"soundVolumeSlider");

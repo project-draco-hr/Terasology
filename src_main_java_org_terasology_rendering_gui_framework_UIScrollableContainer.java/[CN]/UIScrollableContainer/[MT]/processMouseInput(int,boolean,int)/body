@@ -1,0 +1,10 @@
+{
+  if (!isVisible())   return;
+  if (!intersects(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()))) {
+    button=-1;
+  }
+  super.processMouseInput(button,state,wheelMoved);
+  for (int i=0; i < _displayElements.size(); i++) {
+    _displayElements.get(i).processMouseInput(button,state,wheelMoved);
+  }
+}

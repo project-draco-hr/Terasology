@@ -1,0 +1,26 @@
+{
+  if (scrollbar != null) {
+    if (getDisplayElements().size() > 0) {
+      min=Float.MAX_VALUE;
+      max=Float.MIN_VALUE;
+      calcMinMax(container.getDisplayElements());
+      contentHeight=max - min;
+    }
+    if (contentHeight > getSize().y) {
+      isScrollable=true;
+      float diff=contentHeight - getSize().y;
+      multiplier=(diff / getSize().y) + 1;
+      scrollbar.getSize().y=getSize().y / multiplier;
+      if (enableScrollbar) {
+        scrollbar.setVisible(true);
+      }
+      moveScrollbar(scrollbar.calcAbsolutePosition().y);
+    }
+ else {
+      isScrollable=false;
+      scrollbar.setVisible(false);
+      moveScrollbar(0f);
+    }
+    layout();
+  }
+}

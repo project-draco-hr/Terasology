@@ -1,12 +1,11 @@
 {
   setSize(size);
   setCrop(true);
-  setStyle("background-image","engine:gui_menu 256/512 30/512 0 90/512");
+  setBackgroundImage("engine:gui_menu",new Vector2f(0f,90f),new Vector2f(256f,30f));
   addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (!isDisabled()) {
         setFocus(_inputObj);
-        setStyle("background-position","0 120/512");
         if (_inputValue.length() > 0 && _inputText.getTextWidth() > 0) {
           Vector2f absolutePosition=_inputText.calcAbsolutePosition();
           float positionRelativeElement=absolutePosition.x + _inputText.getTextWidth() - new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x;
@@ -36,7 +35,6 @@
 );
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
-      setStyle("background-position","0 90/512");
     }
     @Override public void hover(    UIDisplayElement element){
     }
@@ -49,10 +47,15 @@
 );
   addFocusListener(new FocusListener(){
     @Override public void focusOn(    UIDisplayElement element){
-      if (!isDisabled())       _textCursor.setVisible(true);
+      if (!isDisabled()) {
+        _textCursor.setVisible(true);
+      }
+      setBorderSolid(2,0xFA,0xAA,0x00,1.0f);
+      layout();
     }
     @Override public void focusOff(    UIDisplayElement element){
       _textCursor.setVisible(false);
+      removeBorderSolid();
     }
   }
 );

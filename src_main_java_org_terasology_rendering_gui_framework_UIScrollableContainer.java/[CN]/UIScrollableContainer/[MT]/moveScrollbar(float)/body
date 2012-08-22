@@ -1,0 +1,12 @@
+{
+  float scrollbarPos=pos - getPosition().y - scrollbarPressedOffset;
+  if (scrollbarPos < 0) {
+    scrollbarPos=0;
+  }
+  if (scrollbarPos > (getSize().y - scrollbar.getSize().y)) {
+    scrollbarPos=getSize().y - scrollbar.getSize().y;
+  }
+  scrollbar.getPosition().y=scrollbarPos;
+  container.getPosition().y=-multiplier * scrollbar.getPosition().y;
+  notifyScrollListeners();
+}

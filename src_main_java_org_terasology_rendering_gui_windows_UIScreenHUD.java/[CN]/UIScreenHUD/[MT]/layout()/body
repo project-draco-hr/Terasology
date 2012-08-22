@@ -1,7 +1,12 @@
 {
   super.layout();
-  if (_healthBar != null) {
-    _healthBar.setPosition(new Vector2f(_toolbar.getPosition().x,_toolbar.getPosition().y - _toolbar.getSize().y + 8f));
-    _crosshair.setPosition(new Vector2f((Display.getWidth() / 2) - (_crosshair.getSize().x / 2),(Display.getHeight() / 2) - (_crosshair.getSize().y / 2)));
+  if (toolbar != null) {
+    toolbar.centerHorizontally();
+    toolbar.getPosition().y=Display.getHeight() - toolbar.getSize().y;
+    crosshair.setPosition(new Vector2f((Display.getWidth() / 2) - (crosshair.getSize().x / 2),(Display.getHeight() / 2) - (crosshair.getSize().y / 2)));
+    for (int i=0; i < 10; i++) {
+      _hearts[i].getPosition().x=toolbar.getPosition().x + i * (_hearts[i].getSize().x + 2f);
+      _hearts[i].getPosition().y=toolbar.getPosition().y - _hearts[i].getSize().y - 2f;
+    }
   }
 }
