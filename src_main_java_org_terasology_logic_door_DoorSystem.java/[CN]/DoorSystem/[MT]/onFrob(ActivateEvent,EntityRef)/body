@@ -1,0 +1,15 @@
+{
+  DoorComponent door=entity.getComponent(DoorComponent.class);
+  Side oldDirection=(door.isOpen) ? door.openDirection : door.closedDirection;
+  Side newDirection=(door.isOpen) ? door.closedDirection : door.openDirection;
+  BlockRegionComponent regionComp=entity.getComponent(BlockRegionComponent.class);
+  worldProvider.setBlock(regionComp.region.min(),door.bottomBlockFamily.getBlockFor(newDirection,Side.TOP),door.bottomBlockFamily.getBlockFor(oldDirection,Side.TOP));
+  worldProvider.setBlock(regionComp.region.max(),door.topBlockFamily.getBlockFor(newDirection,Side.TOP),door.topBlockFamily.getBlockFor(oldDirection,Side.TOP));
+  Sound sound=(door.isOpen) ? door.closeSound : door.openSound;
+  if (sound != null) {
+    LocationComponent loc=entity.getComponent(LocationComponent.class);
+    AudioManager.play(sound,loc.getWorldPosition(),10,1);
+  }
+  door.isOpen=!door.isOpen;
+  entity.saveComponent(door);
+}

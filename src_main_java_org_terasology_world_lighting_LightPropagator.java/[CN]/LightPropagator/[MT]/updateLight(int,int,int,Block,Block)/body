@@ -3,7 +3,7 @@
   byte lum=type.getLuminance();
   PropagationComparison changeType=LightingUtil.compareLightingPropagation(type,oldType);
   if (changeType == PropagationComparison.MORE_RESTRICTED || (lum < oldType.getLuminance() && currentLight == oldType.getLuminance())) {
-    return clearLight(x,y,z,currentLight);
+    return clearLight(x,y,z,currentLight,type);
   }
  else   if (changeType == PropagationComparison.MORE_PERMISSIVE) {
     byte newLight=pullLight(x,y,z,lum,type);

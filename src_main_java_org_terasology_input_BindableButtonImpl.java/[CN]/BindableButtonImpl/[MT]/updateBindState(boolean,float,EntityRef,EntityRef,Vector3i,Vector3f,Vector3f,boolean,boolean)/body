@@ -1,0 +1,32 @@
+{
+  if (pressed) {
+    activeInputs++;
+    if (activeInputs == 1 && mode.isActivatedOnPress()) {
+      lastActivateTime=timer.getTimeInMs();
+      if (!keyConsumed) {
+        keyConsumed=triggerOnPress(delta,target);
+      }
+      if (!keyConsumed) {
+        buttonEvent.prepare(id,ButtonState.DOWN,delta);
+        buttonEvent.setTarget(target,targetBlockPos,hitPosition,hitNormal);
+        localPlayer.send(buttonEvent);
+        keyConsumed=buttonEvent.isConsumed();
+      }
+    }
+  }
+ else   if (activeInputs != 0) {
+    activeInputs--;
+    if (activeInputs == 0 && mode.isActivatedOnRelease()) {
+      if (!keyConsumed) {
+        keyConsumed=triggerOnRelease(delta,target);
+      }
+      if (!keyConsumed) {
+        buttonEvent.prepare(id,ButtonState.UP,delta);
+        buttonEvent.setTarget(target,targetBlockPos,hitPosition,hitNormal);
+        localPlayer.send(buttonEvent);
+        keyConsumed=buttonEvent.isConsumed();
+      }
+    }
+  }
+  return keyConsumed;
+}

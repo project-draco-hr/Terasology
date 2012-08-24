@@ -1,4 +1,7 @@
 {
-  EntityRef result=blockComponentLookup.get(blockPosition);
-  return (result == null) ? EntityRef.NULL : result;
+  EntityRef result=blockRegionLookup.get(blockPosition);
+  if (result == null) {
+    return getBlockEntityAt(blockPosition);
+  }
+  return result;
 }

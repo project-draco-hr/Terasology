@@ -16,17 +16,16 @@
     newTarget=hitInfo.getEntity();
     hitPosition=hitInfo.getHitPoint();
     hitNormal=hitInfo.getHitNormal();
-    BlockComponent blockComp=newTarget.getComponent(BlockComponent.class);
-    if (blockComp != null) {
-      newBlockPos=new Vector3i(blockComp.getPosition());
+    if (hitInfo.isWorldHit()) {
+      newBlockPos=new Vector3i(hitInfo.getBlockPosition());
     }
   }
   if (!Objects.equal(target,newTarget) || lostTarget) {
     EntityRef oldTarget=target;
-    target=newTarget;
-    targetBlockPos=newBlockPos;
     oldTarget.send(new CameraOutEvent());
-    target.send(new CameraOverEvent());
-    localPlayer.getEntity().send(new CameraTargetChangedEvent(oldTarget,target));
+    newTarget.send(new CameraOverEvent());
+    localPlayer.getEntity().send(new CameraTargetChangedEvent(oldTarget,newTarget));
   }
+  target=newTarget;
+  targetBlockPos=newBlockPos;
 }

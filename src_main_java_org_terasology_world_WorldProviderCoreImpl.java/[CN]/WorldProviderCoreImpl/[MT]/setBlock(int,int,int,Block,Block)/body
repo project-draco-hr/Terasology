@@ -1,7 +1,7 @@
 {
   Vector3i blockPos=new Vector3i(x,y,z);
   WorldView worldView;
-  if (type.isTranslucent() != oldType.isTranslucent() || type.getLuminance() != oldType.getLuminance()) {
+  if (LightingUtil.compareLightingPropagation(type,oldType) != PropagationComparison.IDENTICAL || type.getLuminance() != oldType.getLuminance()) {
     worldView=WorldView.createSubviewAroundBlock(blockPos,Chunk.MAX_LIGHT + 1,chunkProvider);
   }
  else {

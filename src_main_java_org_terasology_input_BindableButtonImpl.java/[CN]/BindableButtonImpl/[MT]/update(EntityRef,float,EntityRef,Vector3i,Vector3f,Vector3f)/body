@@ -1,0 +1,14 @@
+{
+  long time=timer.getTimeInMs();
+  if (repeating && getState() == ButtonState.DOWN && mode.isActivatedOnPress() && time - lastActivateTime > repeatTime) {
+    lastActivateTime=time;
+    if (!GUIManager.getInstance().isConsumingInput()) {
+      boolean consumed=triggerOnRepeat(delta,target);
+      if (!consumed) {
+        buttonEvent.prepare(id,ButtonState.REPEAT,delta);
+        buttonEvent.setTarget(target,targetBlockPos,hitPosition,hitNormal);
+        localPlayer.send(buttonEvent);
+      }
+    }
+  }
+}

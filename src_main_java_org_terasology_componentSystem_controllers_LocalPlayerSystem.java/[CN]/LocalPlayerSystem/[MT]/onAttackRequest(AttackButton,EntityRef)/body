@@ -6,7 +6,7 @@
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
   if (localPlayerComp.isDead)   return;
   EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
-  attack(event.getTarget(),entity,selectedItemEntity);
+  attack(event.getTarget(),entity,selectedItemEntity,event.getTargetBlockPosition());
   lastInteraction=timer.getTimeInMs();
   localPlayerComp.handAnimation=0.5f;
   entity.saveComponent(localPlayerComp);

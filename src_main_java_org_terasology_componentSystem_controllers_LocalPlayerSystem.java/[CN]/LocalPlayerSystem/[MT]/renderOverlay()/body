@@ -1,12 +1,14 @@
 {
   if (Config.getInstance().isPlacingBox()) {
     EntityRef target=cameraTargetSystem.getTarget();
+    Vector3i blockPos=cameraTargetSystem.getTargetBlockPosition();
     AABB aabb=null;
     BlockComponent blockComp=target.getComponent(BlockComponent.class);
-    if (blockComp != null) {
-      Block block=worldProvider.getBlock(blockComp.getPosition());
+    BlockRegionComponent blockRegion=target.getComponent(BlockRegionComponent.class);
+    if (blockComp != null || blockRegion != null) {
+      Block block=worldProvider.getBlock(blockPos);
       if (block.isTargetable()) {
-        aabb=block.getBounds(blockComp.getPosition());
+        aabb=block.getBounds(blockPos);
       }
     }
  else {

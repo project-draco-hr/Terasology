@@ -1,16 +1,7 @@
 {
-  EntityRef blockEntity=blockComponentLookup.get(blockPosition);
-  if (blockEntity == null || !blockEntity.exists()) {
-    Block block=getBlock(blockPosition.x,blockPosition.y,blockPosition.z);
-    blockEntity=entityManager.create(block.getEntityPrefab());
-    if (block.isEntityTemporary()) {
-      tempBlocks.add(blockEntity);
-    }
-    blockEntity.addComponent(new LocationComponent(blockPosition.toVector3f()));
-    blockEntity.addComponent(new BlockComponent(blockPosition,block.isEntityTemporary()));
-    if (block.isDestructible()) {
-      blockEntity.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
-    }
+  EntityRef entity=getEntityAt(blockPosition);
+  if (!entity.exists()) {
+    return getOrCreateBlockEntityAt(blockPosition);
   }
-  return blockEntity;
+  return entity;
 }

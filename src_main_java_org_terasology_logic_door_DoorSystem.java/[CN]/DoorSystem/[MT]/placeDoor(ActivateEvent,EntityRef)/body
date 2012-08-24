@@ -1,0 +1,66 @@
+{
+  DoorComponent door=entity.getComponent(DoorComponent.class);
+  BlockComponent targetBlockComp=event.getTarget().getComponent(BlockComponent.class);
+  if (targetBlockComp == null) {
+    event.cancel();
+    return;
+  }
+  Vector3f horizDir=new Vector3f(event.getDirection());
+  horizDir.y=0;
+  Side facingDir=Side.inDirection(horizDir);
+  if (!facingDir.isHorizontal()) {
+    event.cancel();
+    return;
+  }
+  Vector3f offset=new Vector3f(event.getHitPosition());
+  offset.sub(targetBlockComp.getPosition().toVector3f());
+  Side offsetDir=Side.inDirection(offset);
+  Vector3i primePos=new Vector3i(targetBlockComp.getPosition());
+  primePos.add(offsetDir.getVector3i());
+  Block primeBlock=worldProvider.getBlock(primePos);
+  if (!primeBlock.isReplacementAllowed()) {
+    event.cancel();
+    return;
+  }
+  Block belowBlock=worldProvider.getBlock(primePos.x,primePos.y - 1,primePos.z);
+  Block aboveBlock=worldProvider.getBlock(primePos.x,primePos.y + 1,primePos.z);
+  Vector3i bottomBlockPos=null;
+  Block bottomBlock=null;
+  Vector3i topBlockPos=null;
+  Block topBlock=null;
+  if (belowBlock.isReplacementAllowed()) {
+    bottomBlockPos=new Vector3i(primePos.x,primePos.y - 1,primePos.z);
+    bottomBlock=belowBlock;
+    topBlockPos=primePos;
+    topBlock=primeBlock;
+  }
+ else   if (aboveBlock.isReplacementAllowed()) {
+    bottomBlockPos=primePos;
+    bottomBlock=primeBlock;
+    topBlockPos=new Vector3i(primePos.x,primePos.y + 1,primePos.z);
+    topBlock=aboveBlock;
+  }
+ else {
+    event.cancel();
+    return;
+  }
+  Side attachSide=determineAttachSide(facingDir,offsetDir,bottomBlockPos,topBlockPos);
+  if (attachSide == null) {
+    event.cancel();
+    return;
+  }
+  worldProvider.setBlock(bottomBlockPos,door.bottomBlockFamily.getBlockFor(facingDir.reverse(),Side.TOP),bottomBlock);
+  worldProvider.setBlock(topBlockPos,door.topBlockFamily.getBlockFor(facingDir.reverse(),Side.TOP),topBlock);
+  EntityRef newDoor=entityManager.copy(entity);
+  newDoor.addComponent(new BlockRegionComponent(Region3i.createBounded(bottomBlockPos,topBlockPos)));
+  Vector3f doorCenter=bottomBlockPos.toVector3f();
+  doorCenter.y+=0.5f;
+  newDoor.addComponent(new LocationComponent(doorCenter));
+  DoorComponent newDoorComp=newDoor.getComponent(DoorComponent.class);
+  newDoorComp.closedDirection=facingDir.reverse();
+  newDoorComp.openDirection=attachSide.reverse();
+  newDoorComp.isOpen=false;
+  newDoor.saveComponent(newDoorComp);
+  newDoor.removeComponent(ItemComponent.class);
+  AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"),0.5f);
+}

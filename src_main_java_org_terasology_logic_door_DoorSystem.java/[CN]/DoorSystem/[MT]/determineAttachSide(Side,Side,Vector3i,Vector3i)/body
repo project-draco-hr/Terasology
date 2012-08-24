@@ -1,0 +1,21 @@
+{
+  Side attachSide=null;
+  if (offsetDir.isHorizontal()) {
+    if (canAttachTo(topBlockPos,offsetDir.reverse()) && canAttachTo(bottomBlockPos,offsetDir.reverse())) {
+      attachSide=offsetDir.reverse();
+    }
+  }
+  if (attachSide == null) {
+    Side clockwise=facingDir.rotateClockwise(1);
+    if (canAttachTo(topBlockPos,clockwise) && canAttachTo(bottomBlockPos,clockwise)) {
+      attachSide=clockwise;
+    }
+  }
+  if (attachSide == null) {
+    Side anticlockwise=facingDir.rotateClockwise(-1);
+    if (canAttachTo(topBlockPos,anticlockwise) && canAttachTo(bottomBlockPos,anticlockwise)) {
+      attachSide=anticlockwise;
+    }
+  }
+  return attachSide;
+}
