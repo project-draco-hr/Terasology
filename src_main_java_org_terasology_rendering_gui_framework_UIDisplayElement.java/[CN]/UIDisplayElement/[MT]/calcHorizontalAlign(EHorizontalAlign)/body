@@ -1,0 +1,22 @@
+{
+  if (align == EHorizontalAlign.LEFT) {
+    return 0f;
+  }
+ else   if (align == EHorizontalAlign.CENTER) {
+    if (positionType == EPositionType.RELATIVE && parent != null) {
+      return parent.getSize().x / 2 - size.x / 2;
+    }
+ else     if (positionType == EPositionType.ABSOLUTE) {
+      return Display.getWidth() / 2 - size.x / 2;
+    }
+  }
+ else   if (align == EHorizontalAlign.RIGHT) {
+    if (positionType == EPositionType.RELATIVE && parent != null) {
+      return parent.getSize().x - size.x;
+    }
+ else     if (positionType == EPositionType.ABSOLUTE) {
+      return Display.getWidth() - size.x;
+    }
+  }
+  return 0f;
+}

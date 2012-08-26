@@ -1,0 +1,70 @@
+{
+  setSize(size);
+  opened=false;
+  baseInput=new UIInput(size);
+  baseInput.setVisible(true);
+  baseInput.setDisabled(true);
+  baseInput.addMouseButtonListener(new MouseButtonListener(){
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+      System.out.println("!");
+      if (intersect) {
+        opened=!opened;
+      }
+ else       if (!baseList.intersects(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()))) {
+        opened=false;
+      }
+      baseList.setVisible(opened);
+      baseButton.setToggleState(opened);
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+    }
+  }
+);
+  baseInput.addMouseMoveListener(new MouseMoveListener(){
+    @Override public void leave(    UIDisplayElement element){
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+      AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"));
+    }
+    @Override public void move(    UIDisplayElement element){
+    }
+  }
+);
+  baseButton=new UIButton(new Vector2f(18f,20f),UIButton.eButtonType.TOGGLE);
+  baseButton.setVisible(true);
+  baseButton.setPosition(new Vector2f(size.x - baseButton.getSize().x,size.y / 2 - baseButton.getSize().y / 2));
+  baseButton.getLabel().setText("");
+  baseButton.setTexture("engine:gui_menu");
+  baseButton.setNormalState(new Vector2f(432f,0f),new Vector2f(18f,18f));
+  baseButton.setPressedState(new Vector2f(432f,18f),new Vector2f(18f,18f));
+  baseButton.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      opened=baseButton.getToggleState();
+      baseList.setVisible(opened);
+    }
+  }
+);
+  baseList=new UIList(listSize);
+  baseList.setPosition(new Vector2f(1f,size.y - 1f));
+  baseList.setBorderSolid(1f,0x00,0x00,0x00,1.0f);
+  baseList.setBackgroundColor(0xFF,0xFF,0xFF,1.0f);
+  baseList.setVisible(false);
+  baseList.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      if (baseList.getSelectedItem() != null) {
+        baseInput.setValue(baseList.getSelectedItem().getText());
+      }
+      opened=false;
+      baseList.setVisible(opened);
+      baseButton.setToggleState(false);
+    }
+  }
+);
+  addDisplayElement(baseInput);
+  addDisplayElement(baseButton);
+  addDisplayElement(baseList);
+}

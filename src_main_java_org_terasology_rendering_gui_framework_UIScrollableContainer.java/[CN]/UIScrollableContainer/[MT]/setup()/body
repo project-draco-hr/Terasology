@@ -3,8 +3,8 @@
   }
 ;
   container.setVisible(true);
-  scrollbar=new UIGraphicsElement(AssetManager.loadTexture("engine:gui_menu"));
-  scrollbar.setCroped(false);
+  scrollbar=new UIImage(AssetManager.loadTexture("engine:gui_menu"));
+  scrollbar.setCrop(false);
   scrollbar.setTextureOrigin(new Vector2f(0f,0f));
   scrollbar.setTextureSize(new Vector2f(60f,15f));
   scrollbar.setSize(new Vector2f(15f,60f));
@@ -42,7 +42,7 @@
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
       if (wheel != 0 && enableScrolling && isScrollable && intersect) {
-        moveScrollbar(scrollbar.calcAbsolutePosition().y - (wheel / 10));
+        moveScrollbar(scrollbar.getAbsolutePosition().y - (wheel / 10));
       }
     }
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){

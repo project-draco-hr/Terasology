@@ -6,7 +6,7 @@
   if (scrollbarPos > (getSize().y - scrollbar.getSize().y)) {
     scrollbarPos=getSize().y - scrollbar.getSize().y;
   }
-  scrollbar.getPosition().y=scrollbarPos;
-  container.getPosition().y=-multiplier * scrollbar.getPosition().y;
+  scrollbar.setPosition(new Vector2f(scrollbar.getPosition().x,scrollbarPos));
+  container.setPosition(new Vector2f(container.getPosition().x,-multiplier * scrollbar.getPosition().y));
   notifyScrollListeners();
 }

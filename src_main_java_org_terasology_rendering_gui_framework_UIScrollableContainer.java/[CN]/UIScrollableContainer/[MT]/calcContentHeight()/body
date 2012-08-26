@@ -10,11 +10,11 @@
       isScrollable=true;
       float diff=contentHeight - getSize().y;
       multiplier=(diff / getSize().y) + 1;
-      scrollbar.getSize().y=getSize().y / multiplier;
+      scrollbar.setSize(new Vector2f(scrollbar.getSize().x,getSize().y / multiplier));
       if (enableScrollbar) {
         scrollbar.setVisible(true);
       }
-      moveScrollbar(scrollbar.calcAbsolutePosition().y);
+      moveScrollbar(scrollbar.getAbsolutePosition().y);
     }
  else {
       isScrollable=false;

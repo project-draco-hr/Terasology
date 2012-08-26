@@ -1,0 +1,28 @@
+{
+  final UIListItem newItem=new UIListItem(new Vector2f(getSize().x,(32f)),text,value);
+  newItem.setVisible(true);
+  if (items.size() > 0) {
+    newItem.setPosition(items.get(0).getPosition());
+  }
+  newItem.setPosition(new Vector2f(0f,32f * items.size()));
+  newItem.setFixed(false);
+  newItem.addClickListener(new ClickListener(){
+    private long _lastTime=System.currentTimeMillis();
+    private int _lastButton=-1;
+    @Override public void click(    UIDisplayElement element,    int button){
+      if ((System.currentTimeMillis() - _lastTime) < 200 && _lastButton == button) {
+        notifyDoubleClickListeners();
+      }
+      _lastTime=System.currentTimeMillis();
+      _lastButton=button;
+      UIListItem item=(UIListItem)element;
+      if (_selectedItem != null)       _selectedItem.setSelected(false);
+      _selectedItem=item;
+      _selectedItem.setSelected(true);
+      notifyChangedListeners();
+    }
+  }
+);
+  items.add(newItem);
+  addDisplayElement(newItem);
+}

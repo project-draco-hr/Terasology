@@ -1,0 +1,34 @@
+{
+  float[] width=new float[columns];
+  for (int i=0; i < elements.size(); i++) {
+    if (!(elements.get(i) instanceof UIStyle)) {
+      width[i % columns]=Math.max(width[i % columns],elements.get(i).getSize().x);
+    }
+  }
+  for (int i=0; i < width.length; i++) {
+    width[i]+=(margin.w + margin.y);
+  }
+  if (minCellWidth > 0) {
+    for (int i=0; i < width.length; i++) {
+      if (width[i] < minCellWidth) {
+        width[i]=minCellWidth;
+      }
+    }
+  }
+  if (equalWidth) {
+    float max=width[0];
+    for (int i=0; i < width.length; i++) {
+      if (width[i] > max) {
+        max=width[i];
+      }
+    }
+    for (int i=0; i < width.length; i++) {
+      width[i]=max;
+    }
+  }
+  size.x=0f;
+  for (int i=0; i < width.length; i++) {
+    size.x+=width[i];
+  }
+  return width;
+}

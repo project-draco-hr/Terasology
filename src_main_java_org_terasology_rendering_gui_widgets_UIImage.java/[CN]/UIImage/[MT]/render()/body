@@ -1,0 +1,35 @@
+{
+  if (mesh == null)   return;
+  if (mesh.isDisposed()) {
+    logger.severe("Disposed mesh encountered!");
+    return;
+  }
+  if (texture != null) {
+    ShaderManager.getInstance().enableDefaultTextured();
+    glBindTexture(GL11.GL_TEXTURE_2D,texture != null ? texture.getId() : 0);
+    glMatrixMode(GL_TEXTURE);
+    glPushMatrix();
+    glTranslatef(textureOrigin.x,textureOrigin.y,0.0f);
+    glScalef(textureSize.x,textureSize.y,1.0f);
+    glMatrixMode(GL11.GL_MODELVIEW);
+    glPushMatrix();
+    if (rotate > 0f) {
+      glRotatef(rotate,0f,0f,1f);
+    }
+    glScalef(getSize().x,getSize().y,1.0f);
+    mesh.render();
+    glPopMatrix();
+    glMatrixMode(GL_TEXTURE);
+    glPopMatrix();
+    glMatrixMode(GL11.GL_MODELVIEW);
+  }
+ else {
+    glPushMatrix();
+    if (rotate > 0f) {
+      glRotatef(rotate,0f,0f,1f);
+    }
+    glScalef(getSize().x,getSize().y,0.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+}

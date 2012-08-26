@@ -3,7 +3,6 @@
   setModal(true);
   maximize();
   list=new UIList(new Vector2f(512f,256f));
-  list.setVisible(true);
   list.setBorderSolid(2f,0x1E,0x1E,0x1E,1.0f);
   list.setBackgroundImage("engine:gui_menu",new Vector2f(264f,18f),new Vector2f(159f,63f));
   list.setBorderImage("engine:gui_menu",new Vector2f(256f,0f),new Vector2f(175f,88f),new Vector4f(16f,7f,7f,7f));
@@ -13,36 +12,33 @@
     }
   }
 );
+  list.setHorizontalAlign(EHorizontalAlign.CENTER);
+  list.setPosition(new Vector2f(0f,230f));
+  list.setVisible(true);
   goToBack=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
-  goToBack.getLabel().setText("Go back");
-  goToBack.setVisible(true);
+  goToBack.getLabel().setText("Back");
   goToBack.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuMain"));
     }
   }
 );
+  goToBack.setHorizontalAlign(EHorizontalAlign.CENTER);
+  goToBack.setPosition(new Vector2f(0f,600f));
+  goToBack.setVisible(true);
   loadFromList=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
   loadFromList.getLabel().setText("Load");
-  loadFromList.setVisible(true);
-  createNewWorld=new UIButton(new Vector2f(192f,32f),UIButton.eButtonType.NORMAL);
-  createNewWorld.getLabel().setText("Create new world");
-  createNewWorld.setVisible(true);
-  deleteFromList=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
-  deleteFromList.getLabel().setText("Delete");
-  deleteFromList.setVisible(true);
-  createNewWorld.addClickListener(new ClickListener(){
+  loadFromList.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      UIDialogCreateNewWorld _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,320f));
-      _window.center();
-      _window.clearInputControls();
-      GUIManager.getInstance().addWindow(_window,"generate_world");
-      GUIManager.getInstance().setFocusedWindow(_window);
-      UIInput inputWorldName=(UIInput)_window.getElementById("inputWorldTitle");
-      inputWorldName.setValue(_window.getWorldName());
+      loadSelectedWorld();
     }
   }
 );
+  loadFromList.setHorizontalAlign(EHorizontalAlign.CENTER);
+  loadFromList.setPosition(new Vector2f(30f,505f));
+  loadFromList.setVisible(true);
+  deleteFromList=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
+  deleteFromList.getLabel().setText("Delete");
   deleteFromList.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (list.getSelectedItem() == null) {
@@ -61,17 +57,28 @@
     }
   }
 );
-  loadFromList.addClickListener(new ClickListener(){
+  deleteFromList.setHorizontalAlign(EHorizontalAlign.CENTER);
+  deleteFromList.setPosition(new Vector2f(196f,505f));
+  deleteFromList.setVisible(true);
+  createNewWorld=new UIButton(new Vector2f(192f,32f),UIButton.eButtonType.NORMAL);
+  createNewWorld.getLabel().setText("Create new world");
+  createNewWorld.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      loadSelectedWorld();
+      UIDialogCreateNewWorld _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,320f));
+      GUIManager.getInstance().addWindow(_window,"generate_world");
+      GUIManager.getInstance().setFocusedWindow(_window);
+      UIInput inputWorldName=(UIInput)_window.getElementById("inputWorldTitle");
+      inputWorldName.setValue(_window.getWorldName());
     }
   }
 );
+  createNewWorld.setHorizontalAlign(EHorizontalAlign.CENTER);
+  createNewWorld.setPosition(new Vector2f(-166f,505f));
+  createNewWorld.setVisible(true);
   fillList();
   addDisplayElement(list,"list");
   addDisplayElement(loadFromList,"loadFromListButton");
   addDisplayElement(goToBack,"goToBackButton");
   addDisplayElement(createNewWorld,"createWorldButton");
   addDisplayElement(deleteFromList,"deleteFromListButton");
-  layout();
 }
