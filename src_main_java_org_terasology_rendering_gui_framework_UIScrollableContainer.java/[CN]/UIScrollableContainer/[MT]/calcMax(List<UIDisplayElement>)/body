@@ -1,16 +1,11 @@
 {
-  float elementMin;
   float elementMax;
   for (  UIDisplayElement element : displayElements) {
     if (element.isVisible() && !(element instanceof UIStyle) && element != scrollbar) {
       if (element instanceof UIDisplayContainer) {
-        calcMinMax(((UIDisplayContainer)element).getDisplayElements());
+        calcMax(((UIDisplayContainer)element).getDisplayElements());
       }
-      elementMin=element.getAbsolutePosition().y;
       elementMax=element.getAbsolutePosition().y + element.getSize().y;
-      if (elementMin < min) {
-        min=elementMin;
-      }
       if (elementMax > max) {
         max=elementMax;
       }

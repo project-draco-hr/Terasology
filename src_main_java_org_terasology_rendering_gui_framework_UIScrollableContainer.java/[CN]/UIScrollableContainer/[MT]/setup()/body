@@ -1,7 +1,6 @@
 {
-  container=new UIDisplayContainer(){
-  }
-;
+  container=new UIComposite();
+  container.setSize("100%","100%");
   container.setVisible(true);
   scrollbar=new UIImage(AssetManager.loadTexture("engine:gui_menu"));
   scrollbar.setCrop(false);
@@ -9,7 +8,6 @@
   scrollbar.setTextureSize(new Vector2f(60f,15f));
   scrollbar.setSize(new Vector2f(15f,60f));
   scrollbar.setVisible(false);
-  scrollbar.setPosition(new Vector2f(getSize().x - scrollbar.getSize().x,0f));
   scrollbar.addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
     }
@@ -51,8 +49,6 @@
     }
   }
 );
-  getDisplayElements().add(container);
-  getDisplayElements().add(scrollbar);
-  container.setParent(this);
-  scrollbar.setParent(this);
+  super.addDisplayElement(container);
+  super.addDisplayElement(scrollbar);
 }
