@@ -4,10 +4,14 @@
   setCloseBinds(new String[]{});
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
   maximize();
-  _title=new UIGraphicsElement(AssetManager.loadTexture("engine:terasology"));
+  _title=new UIImage(AssetManager.loadTexture("engine:terasology"));
+  _title.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _title.setPosition(new Vector2f(0f,128f));
   _title.setVisible(true);
   _title.setSize(new Vector2f(512f,128f));
   _version=new UIText("Audio Settings");
+  _version.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _version.setPosition(new Vector2f(0f,230f));
   _version.setVisible(true);
   _soundOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
   _soundOptionSlider.addChangedListener(new ChangedListener(){
@@ -19,6 +23,8 @@
     }
   }
 );
+  _soundOptionSlider.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _soundOptionSlider.setPosition(new Vector2f(0f,300f));
   _soundOptionSlider.setVisible(true);
   _musicOptionSlider=new UISlider(new Vector2f(256f,32f),0,100);
   _musicOptionSlider.addChangedListener(new ChangedListener(){
@@ -30,20 +36,23 @@
     }
   }
 );
+  _musicOptionSlider.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _musicOptionSlider.setPosition(new Vector2f(0f,300f + 40f));
   _musicOptionSlider.setVisible(true);
   _backToConfigMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _backToConfigMenuButton.getLabel().setText("Back");
-  _backToConfigMenuButton.setVisible(true);
   _backToConfigMenuButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuConfig"));
     }
   }
 );
+  _backToConfigMenuButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _backToConfigMenuButton.setPosition(new Vector2f(0f,300f + 7 * 40f));
+  _backToConfigMenuButton.setVisible(true);
   addDisplayElement(_title);
   addDisplayElement(_version);
-  addDisplayElement(_soundOptionSlider,"soundVolumeSlider");
-  addDisplayElement(_musicOptionSlider,"musicVolumeSlider");
-  addDisplayElement(_backToConfigMenuButton,"backToConfigMenuButton");
-  layout();
+  addDisplayElement(_soundOptionSlider);
+  addDisplayElement(_musicOptionSlider);
+  addDisplayElement(_backToConfigMenuButton);
 }

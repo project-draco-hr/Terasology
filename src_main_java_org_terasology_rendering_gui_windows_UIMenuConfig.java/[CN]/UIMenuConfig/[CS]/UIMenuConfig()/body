@@ -2,13 +2,19 @@
   setBackgroundImage("engine:loadingbackground");
   setModal(true);
   maximize();
-  _title=new UIGraphicsElement(AssetManager.loadTexture("engine:terasology"));
+  _title=new UIImage(AssetManager.loadTexture("engine:terasology"));
+  _title.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _title.setPosition(new Vector2f(0f,128f));
   _title.setVisible(true);
   _title.setSize(new Vector2f(512f,128f));
   _version=new UIText("Settings");
+  _version.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _version.setPosition(new Vector2f(0f,230f));
   _version.setVisible(true);
   _videoButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _videoButton.getLabel().setText("Video");
+  _videoButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _videoButton.setPosition(new Vector2f(0f,300f));
   _videoButton.setVisible(true);
   _videoButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
@@ -18,6 +24,8 @@
 );
   _audioButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _audioButton.getLabel().setText("Audio");
+  _audioButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _audioButton.setPosition(new Vector2f(0f,300f + 40f));
   _audioButton.setVisible(true);
   _audioButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
@@ -27,6 +35,8 @@
 );
   _controlsButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _controlsButton.getLabel().setText("Controls");
+  _controlsButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _controlsButton.setPosition(new Vector2f(0f,300f + 2 * 40f));
   _controlsButton.setVisible(true);
   _controlsButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
@@ -36,6 +46,8 @@
 );
   _modsButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _modsButton.getLabel().setText("Mods");
+  _modsButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _modsButton.setPosition(new Vector2f(0f,300f + 3 * 40f));
   _modsButton.setVisible(true);
   _modsButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
@@ -45,6 +57,8 @@
 );
   _backToMainMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
   _backToMainMenuButton.getLabel().setText("Return to Main Menu");
+  _backToMainMenuButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  _backToMainMenuButton.setPosition(new Vector2f(0f,300f + 7 * 40f));
   _backToMainMenuButton.setVisible(true);
   _backToMainMenuButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
@@ -54,10 +68,9 @@
 );
   addDisplayElement(_title);
   addDisplayElement(_version);
-  addDisplayElement(_videoButton,"videoButton");
-  addDisplayElement(_audioButton,"audioButton");
-  addDisplayElement(_controlsButton,"controlsButton");
-  addDisplayElement(_modsButton,"modsButton");
-  addDisplayElement(_backToMainMenuButton,"backToMainMenuButton");
-  layout();
+  addDisplayElement(_videoButton);
+  addDisplayElement(_audioButton);
+  addDisplayElement(_controlsButton);
+  addDisplayElement(_modsButton);
+  addDisplayElement(_backToMainMenuButton);
 }
