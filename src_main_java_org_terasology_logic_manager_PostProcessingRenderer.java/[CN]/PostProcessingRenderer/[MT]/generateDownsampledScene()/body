@@ -8,8 +8,12 @@
     PostProcessingRenderer.getInstance().getFBO("scene" + size).bind();
     glViewport(0,0,size,size);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (i == 4)     PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
- else     PostProcessingRenderer.getInstance().getFBO("scene" + sizePrev).bindTexture();
+    if (i == 4) {
+      PostProcessingRenderer.getInstance().getFBO("scene").bindTexture();
+    }
+ else {
+      PostProcessingRenderer.getInstance().getFBO("scene" + sizePrev).bindTexture();
+    }
     renderFullQuad();
     PostProcessingRenderer.getInstance().getFBO("scene" + size).unbind();
   }
