@@ -1,0 +1,18 @@
+{
+  glPushMatrix();
+  glLoadIdentity();
+  glTranslatef(getAbsolutePosition().x,getAbsolutePosition().y,0);
+  glLineWidth(width);
+  glBegin(GL11.GL_LINES);
+  glColor4f(color.x,color.y,color.z,color.w);
+  glVertex2f(getPosition().x,getPosition().y);
+  glVertex2f(getPosition().x + getSize().x,getPosition().y);
+  glVertex2f(getPosition().x + getSize().x,getPosition().y);
+  glVertex2f(getPosition().x + getSize().x,getPosition().y + getSize().y);
+  glVertex2f(getPosition().x + getSize().x,getPosition().y + getSize().y);
+  glVertex2f(getPosition().x,getPosition().y + getSize().y);
+  glVertex2f(getPosition().x,getPosition().y + getSize().y);
+  glVertex2f(getPosition().x,getPosition().y);
+  glEnd();
+  glPopMatrix();
+}

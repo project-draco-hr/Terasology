@@ -1,0 +1,42 @@
+{
+  x=x.replace(" ","").toLowerCase();
+  y=y.replace(" ","").toLowerCase();
+  float posX=0;
+  float posY=0;
+  try {
+    if (x.matches("^\\d+(\\.\\d+)?%$")) {
+      posX=Float.valueOf(x.substring(0,x.length() - 1));
+      unitPositionX=EUnitType.PERCENTAGE;
+    }
+ else     if (x.matches("^\\d+(\\.\\d+)?px$")) {
+      posX=Float.valueOf(x.substring(0,x.length() - 2));
+      unitPositionX=EUnitType.PIXEL;
+    }
+ else     if (x.matches("^\\d+(\\.\\d+)?$")) {
+      posX=Float.valueOf(x);
+      unitPositionX=EUnitType.PIXEL;
+    }
+  }
+ catch (  NumberFormatException e) {
+    e.printStackTrace();
+  }
+  try {
+    if (y.matches("^\\d+(\\.\\d+)?%$")) {
+      posY=Float.valueOf(y.substring(0,y.length() - 1));
+      unitPositionY=EUnitType.PERCENTAGE;
+    }
+ else     if (y.matches("^\\d+(\\.\\d+)?px$")) {
+      posY=Float.valueOf(y.substring(0,y.length() - 2));
+      unitPositionY=EUnitType.PIXEL;
+    }
+ else     if (y.matches("^\\d+(\\.\\d+)?$")) {
+      posY=Float.valueOf(y);
+      unitPositionY=EUnitType.PIXEL;
+    }
+  }
+ catch (  NumberFormatException e) {
+    e.printStackTrace();
+  }
+  this.size.set(posX,posY);
+  this.sizeOriginal.set(posX,posY);
+}

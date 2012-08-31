@@ -1,0 +1,14 @@
+{
+  float elementMax;
+  for (  UIDisplayElement element : displayElements) {
+    if (element.isVisible() && !(element instanceof UIStyle) && element != scrollbar) {
+      if (element instanceof UIDisplayContainer) {
+        calcMax(((UIDisplayContainer)element).getDisplayElements());
+      }
+      elementMax=element.getAbsolutePosition().y + element.getSize().y;
+      if (elementMax > max) {
+        max=elementMax;
+      }
+    }
+  }
+}

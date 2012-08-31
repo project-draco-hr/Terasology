@@ -1,0 +1,54 @@
+{
+  container=new UIComposite();
+  container.setSize("100%","100%");
+  container.setVisible(true);
+  scrollbar=new UIImage(AssetManager.loadTexture("engine:gui_menu"));
+  scrollbar.setCrop(false);
+  scrollbar.setTextureOrigin(new Vector2f(0f,0f));
+  scrollbar.setTextureSize(new Vector2f(60f,15f));
+  scrollbar.setSize(new Vector2f(15f,60f));
+  scrollbar.setVisible(false);
+  scrollbar.addMouseButtonListener(new MouseButtonListener(){
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+      scrolling=false;
+      scrollbarPressedOffset=0f;
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (intersect && enableScrolling) {
+        scrolling=true;
+        scrollbarPressedOffset=Display.getHeight() - Mouse.getY() - scrollbar.getPosition().y- getPosition().y;
+      }
+    }
+  }
+);
+  scrollbar.addMouseMoveListener(new MouseMoveListener(){
+    @Override public void move(    UIDisplayElement element){
+      if (scrolling && enableScrolling) {
+        moveScrollbar(Display.getHeight() - Mouse.getY());
+      }
+    }
+    @Override public void leave(    UIDisplayElement element){
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+    }
+  }
+);
+  addMouseButtonListener(new MouseButtonListener(){
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+      if (wheel != 0 && enableScrolling && isScrollable && intersect) {
+        moveScrollbar(scrollbar.getAbsolutePosition().y - (wheel / 10));
+      }
+    }
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+    }
+  }
+);
+  super.addDisplayElement(container);
+  super.addDisplayElement(scrollbar);
+}

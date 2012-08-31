@@ -5,8 +5,12 @@
   PostProcessingRenderer.getInstance().getFBO("sceneBloom" + id).bind();
   glViewport(0,0,256,256);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  if (id == 0)   PostProcessingRenderer.getInstance().getFBO("sceneHighPass").bindTexture();
- else   PostProcessingRenderer.getInstance().getFBO("sceneBloom" + (id - 1)).bindTexture();
+  if (id == 0) {
+    PostProcessingRenderer.getInstance().getFBO("sceneHighPass").bindTexture();
+  }
+ else {
+    PostProcessingRenderer.getInstance().getFBO("sceneBloom" + (id - 1)).bindTexture();
+  }
   renderFullQuad();
   PostProcessingRenderer.getInstance().getFBO("sceneBloom" + id).unbind();
   glViewport(0,0,Display.getWidth(),Display.getHeight());

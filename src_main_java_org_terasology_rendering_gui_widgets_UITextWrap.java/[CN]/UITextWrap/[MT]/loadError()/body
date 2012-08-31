@@ -1,0 +1,12 @@
+{
+  Gson gson=new Gson();
+  String helpFile=PathManager.getInstance().getDataPath() + File.separator + "data"+ File.separator+ "console"+ File.separator+ "error.json";
+  JsonReader reader=new JsonReader(new FileReader(helpFile));
+  reader.beginArray();
+  text="";
+  while (reader.hasNext()) {
+    text+=gson.fromJson(reader,String.class) + newLine;
+  }
+  reader.endArray();
+  reader.close();
+}

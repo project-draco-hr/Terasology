@@ -1,14 +1,22 @@
 {
+  setBackgroundColor(0x00,0x00,0x00,0.75f);
   setModal(true);
+  maximize();
   setCloseBinds(new String[]{FrobButton.ID});
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
-  background=new UIGraphicsElement(AssetManager.loadTexture("engine:containerWindow"));
-  background.getTextureSize().set(new Vector2f(256f / 256f,231f / 256f));
-  background.getTextureOrigin().set(new Vector2f(0.0f,0.0f));
+  background=new UIImage(AssetManager.loadTexture("engine:containerWindow"));
+  background.setTextureSize(new Vector2f(256f,231f));
+  background.setTextureOrigin(new Vector2f(0.0f,0.0f));
+  background.setHorizontalAlign(EHorizontalAlign.CENTER);
+  background.setVerticalAlign(EVerticalAlign.CENTER);
   background.setVisible(true);
   playerInventory=new UIItemContainer(4);
+  playerInventory.setHorizontalAlign(EHorizontalAlign.CENTER);
+  playerInventory.setVerticalAlign(EVerticalAlign.CENTER);
   playerInventory.setVisible(true);
   containerInventory=new UIItemContainer(4);
+  containerInventory.setHorizontalAlign(EHorizontalAlign.CENTER);
+  containerInventory.setVerticalAlign(EVerticalAlign.CENTER);
   containerInventory.setVisible(true);
   addDisplayElement(background);
   addDisplayElement(playerInventory);

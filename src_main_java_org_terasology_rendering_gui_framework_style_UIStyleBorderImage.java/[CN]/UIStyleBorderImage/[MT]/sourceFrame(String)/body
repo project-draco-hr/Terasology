@@ -1,0 +1,30 @@
+{
+  if (!side.equals("top") && !side.equals("bottom") && !side.equals("right")&& !side.equals("left")) {
+    return;
+  }
+  UIImage frame;
+  if (frames.containsKey(side)) {
+    frame=frames.get(side);
+  }
+ else {
+    frame=new UIImage(texture);
+  }
+  if (side.equals("top")) {
+    frame.setTextureOrigin(new Vector2f(sourceOrigin.x + width.w,sourceOrigin.y));
+    frame.setTextureSize(new Vector2f(sourceSize.x - width.w - width.y,width.x));
+  }
+ else   if (side.equals("bottom")) {
+    frame.setTextureOrigin(new Vector2f(sourceOrigin.x + width.w,sourceOrigin.y + sourceSize.y - width.z));
+    frame.setTextureSize(new Vector2f(sourceSize.x - width.w - width.y,width.z));
+  }
+ else   if (side.equals("right")) {
+    frame.setTextureOrigin(new Vector2f(sourceOrigin.x + sourceSize.x - width.y,sourceOrigin.y + width.x));
+    frame.setTextureSize(new Vector2f(width.y,sourceSize.y - width.x - width.z));
+  }
+ else   if (side.equals("left")) {
+    frame.setTextureOrigin(new Vector2f(sourceOrigin.x,sourceOrigin.y + width.x));
+    frame.setTextureSize(new Vector2f(width.w,sourceSize.y - width.x - width.z));
+  }
+  addDisplayElement(frame);
+  frames.put(side,frame);
+}

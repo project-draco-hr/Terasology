@@ -1,0 +1,31 @@
+{
+  setSize(size);
+  this.text=text;
+  this.value=value;
+  label=new UIText();
+  label.setVisible(true);
+  label.setColor(Color.lightGray);
+  label.setPosition(new Vector2f((getPosition().x + padding.x),(getPosition().y + padding.y)));
+  label.setText(text);
+  if (getSize().x < label.getTextWidth()) {
+    setSize(new Vector2f(label.getTextWidth(),getSize().y));
+  }
+  addMouseMoveListener(new MouseMoveListener(){
+    @Override public void leave(    UIDisplayElement element){
+      if (!isSelected) {
+        label.setColor(Color.lightGray);
+      }
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+      if (!isSelected) {
+        label.setColor(Color.orange);
+      }
+    }
+    @Override public void move(    UIDisplayElement element){
+    }
+  }
+);
+  addDisplayElement(label);
+}

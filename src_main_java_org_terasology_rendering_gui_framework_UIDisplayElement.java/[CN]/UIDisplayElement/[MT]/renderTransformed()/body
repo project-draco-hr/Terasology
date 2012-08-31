@@ -1,9 +1,18 @@
 {
   ShaderManager.getInstance().enableDefault();
   if (isVisible()) {
-    glPushMatrix();
-    glTranslatef(getPosition().x,getPosition().y,0);
-    render();
-    glPopMatrix();
+    if (positionType == EPositionType.RELATIVE) {
+      glPushMatrix();
+      glTranslatef(getPosition().x,getPosition().y,0);
+      render();
+      glPopMatrix();
+    }
+ else     if (positionType == EPositionType.ABSOLUTE) {
+      glPushMatrix();
+      glLoadIdentity();
+      glTranslatef(getPosition().x,getPosition().y,0);
+      render();
+      glPopMatrix();
+    }
   }
 }

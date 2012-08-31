@@ -1,0 +1,15 @@
+{
+  UIStyleBorderImage style=getStyle(UIStyleBorderImage.class);
+  if (style == null) {
+    style=new UIStyleBorderImage(AssetManager.loadTexture(texture));
+    style.setBorderSource(origin,size,borderSize);
+    style.setVisible(true);
+    addStyle(style,false);
+  }
+ else {
+    if (!style.getTexture().getURI().toString().equals("texture:" + texture)) {
+      style.setTexture(AssetManager.loadTexture(texture));
+    }
+    style.setBorderSource(origin,size,borderSize);
+  }
+}

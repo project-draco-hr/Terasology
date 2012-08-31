@@ -1,0 +1,67 @@
+{
+  if (sourceCell == null) {
+    CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PlayerComponent.class).transferSlot=EntityRef.NULL;
+  }
+ else {
+    EntityRef target=getFromTransferSlot();
+    ItemComponent targetItem=target.getComponent(ItemComponent.class);
+    ItemComponent sourceItem=sourceCell.itemEntity.getComponent(ItemComponent.class);
+    if (sourceCell.itemEntity.exists()) {
+      if (amount == 0) {
+        amount=sourceItem.stackCount;
+      }
+      if (target.exists()) {
+        if (targetItem.stackId.equals(sourceItem.stackId) && !targetItem.stackId.isEmpty() && !sourceItem.stackId.isEmpty()) {
+          int spaceLeft=InventorySystem.MAX_STACK - targetItem.stackCount;
+          amount=(byte)Math.min(amount,sourceItem.stackCount);
+          amount=(byte)Math.min(amount,spaceLeft);
+          if (spaceLeft > 0) {
+            targetItem.stackCount+=amount;
+            sourceItem.stackCount-=amount;
+          }
+          if (sourceItem.stackCount == 0) {
+            InventoryComponent sourceInventory=sourceCell.getOwnerEntity().getComponent(InventoryComponent.class);
+            sourceInventory.itemSlots.set(sourceInventory.itemSlots.indexOf(sourceCell.itemEntity),EntityRef.NULL);
+          }
+        }
+      }
+ else {
+        amount=(byte)Math.min(amount,sourceItem.stackCount);
+        if (sourceItem.stackCount > amount) {
+          EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+          EntityRef copy=entityManager.copy(sourceCell.itemEntity);
+          ItemComponent copyItem=copy.getComponent(ItemComponent.class);
+          sourceItem.stackCount-=amount;
+          copyItem.stackCount=amount;
+          copyItem.container=sourceCell.ownerEntity;
+          CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PlayerComponent.class).transferSlot=copy;
+        }
+ else {
+          CoreRegistry.get(LocalPlayer.class).getEntity().getComponent(PlayerComponent.class).transferSlot=sourceCell.itemEntity;
+          InventoryComponent sourceInventory=sourceCell.getOwnerEntity().getComponent(InventoryComponent.class);
+          sourceInventory.itemSlots.set(sourceInventory.itemSlots.indexOf(sourceCell.itemEntity),EntityRef.NULL);
+        }
+      }
+    }
+  }
+  if (getFromTransferSlot().exists()) {
+    GUIManager.getInstance().getFocusedWindow().removeDisplayElement(transferIcon);
+    GUIManager.getInstance().getFocusedWindow().addDisplayElement(transferIcon,"transferIcon");
+    GUIManager.getInstance().getFocusedWindow().removeWindowListener(windowListener);
+    GUIManager.getInstance().getFocusedWindow().addWindowListener(windowListener);
+    transferIcon.setItemEntity(getFromTransferSlot());
+    transferIcon.setVisible(true);
+  }
+ else {
+    GUIManager.getInstance().getFocusedWindow().removeDisplayElement(transferIcon);
+    transferIcon.setItemEntity(EntityRef.NULL);
+    transferIcon.setVisible(false);
+  }
+  if (sourceCell != null) {
+    InventoryComponent sourceInventory=sourceCell.getOwnerEntity().getComponent(InventoryComponent.class);
+    sourceCell.ownerEntity.saveComponent(sourceInventory);
+    if (!sourceCell.itemEntity.exists() && sourceCell.itemLabel.isVisible()) {
+      sourceCell.setLabelVisibility(false);
+    }
+  }
+}

@@ -1,30 +1,30 @@
 {
-  boolean testCrop=false;
+  boolean allowsCrop=false;
   int cropX=0;
   int cropY=0;
   int cropWidth=0;
   int cropHeight=0;
   if (!isVisible())   return;
-  if (_crop) {
-    cropX=(int)calcAbsolutePosition().x - (int)(_cropMargin.w);
-    cropY=Display.getHeight() - (int)calcAbsolutePosition().y - (int)getSize().y- (int)_cropMargin.z;
-    cropWidth=(int)getSize().x + (int)_cropMargin.y;
-    cropHeight=(int)getSize().y + (int)_cropMargin.x;
+  if (cropContainer) {
+    cropX=(int)getAbsolutePosition().x - (int)(cropMargin.w);
+    cropY=Display.getHeight() - (int)getAbsolutePosition().y - (int)getSize().y- (int)cropMargin.z;
+    cropWidth=(int)getSize().x + (int)cropMargin.y;
+    cropHeight=(int)getSize().y + (int)cropMargin.x;
     glEnable(GL_SCISSOR_TEST);
     glScissor(cropX,cropY,cropWidth,cropHeight);
   }
-  for (int i=0; i < _displayElements.size(); i++) {
-    testCrop=_crop && !_displayElements.get(i).isCroped();
-    if (testCrop) {
+  for (int i=0; i < displayElements.size(); i++) {
+    allowsCrop=cropContainer && !displayElements.get(i).isCrop();
+    if (allowsCrop) {
       glDisable(GL_SCISSOR_TEST);
     }
-    _displayElements.get(i).renderTransformed();
-    if (testCrop) {
+    displayElements.get(i).renderTransformed();
+    if (allowsCrop) {
       glEnable(GL_SCISSOR_TEST);
       glScissor(cropX,cropY,cropWidth,cropHeight);
     }
   }
-  if (_crop) {
+  if (cropContainer) {
     glDisable(GL_SCISSOR_TEST);
   }
 }

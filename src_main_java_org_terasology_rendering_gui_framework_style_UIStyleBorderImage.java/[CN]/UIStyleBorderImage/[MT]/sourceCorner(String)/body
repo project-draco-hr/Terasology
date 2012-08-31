@@ -1,0 +1,30 @@
+{
+  if (!side.equals("top-left") && !side.equals("top-right") && !side.equals("bottom-left")&& !side.equals("bottom-right")) {
+    return;
+  }
+  UIImage corner;
+  if (corners.containsKey(side)) {
+    corner=corners.get(side);
+  }
+ else {
+    corner=new UIImage(texture);
+  }
+  if (side.equals("top-left")) {
+    corner.setTextureOrigin(new Vector2f(sourceOrigin.x,sourceOrigin.y));
+    corner.setTextureSize(new Vector2f(width.w,width.x));
+  }
+ else   if (side.equals("top-right")) {
+    corner.setTextureOrigin(new Vector2f(sourceOrigin.x + sourceSize.x - width.y,sourceOrigin.y));
+    corner.setTextureSize(new Vector2f(width.y,width.x));
+  }
+ else   if (side.equals("bottom-left")) {
+    corner.setTextureOrigin(new Vector2f(sourceOrigin.x,sourceOrigin.y + sourceSize.y - width.z));
+    corner.setTextureSize(new Vector2f(width.w,width.z));
+  }
+ else   if (side.equals("bottom-right")) {
+    corner.setTextureOrigin(new Vector2f(sourceOrigin.x + sourceSize.x - width.y,sourceOrigin.y + sourceSize.y - width.z));
+    corner.setTextureSize(new Vector2f(width.y,width.z));
+  }
+  addDisplayElement(corner);
+  corners.put(side,corner);
+}
