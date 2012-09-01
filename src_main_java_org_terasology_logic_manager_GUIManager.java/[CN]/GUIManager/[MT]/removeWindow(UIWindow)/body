@@ -1,12 +1,9 @@
 {
   if (window == null) {
-    return;
+    logger.log(Level.INFO,"GUIManager: Can't remove null reference");
   }
-  renderer.removeDisplayElement(window);
-  for (  String key : windowsById.keySet()) {
-    if (windowsById.get(key).equals(window)) {
-      windowsById.remove(key);
-      break;
-    }
+ else {
+    logger.log(Level.INFO,"GUIManager: Remove window by reference with ID \"" + window.getId() + "\"");
+    renderer.removeDisplayElement(window);
   }
 }

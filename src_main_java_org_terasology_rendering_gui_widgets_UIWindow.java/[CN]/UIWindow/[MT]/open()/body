@@ -1,3 +1,9 @@
 {
+  if (!isVisible()) {
+    notifyWindowListeners(EWindowEvent.OPEN);
+    setFocus(null);
+    clearInputControls();
+  }
   setVisible(true);
+  GUIManager.getInstance().checkMouseGrabbing();
 }

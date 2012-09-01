@@ -1,4 +1,5 @@
 {
+  setId("selectWorld");
   setBackgroundImage("engine:menubackground");
   setModal(true);
   maximize();
@@ -19,7 +20,7 @@
   goToBack.getLabel().setText("Back");
   goToBack.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuMain"));
+      GUIManager.getInstance().openWindow("main");
     }
   }
 );
@@ -64,9 +65,7 @@
   createNewWorld.getLabel().setText("Create new world");
   createNewWorld.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      UIDialogCreateNewWorld _window=new UIDialogCreateNewWorld("Create new world",new Vector2f(512f,320f));
-      GUIManager.getInstance().addWindow(_window,"generate_world");
-      GUIManager.getInstance().setFocusedWindow(_window);
+      GUIManager.getInstance().openWindow("createWorld");
     }
   }
 );
