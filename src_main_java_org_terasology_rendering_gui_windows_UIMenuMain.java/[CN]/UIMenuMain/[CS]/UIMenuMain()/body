@@ -50,4 +50,21 @@
   addDisplayElement(_configButton);
   addDisplayElement(_exitButton);
   addDisplayElement(_singlePlayerButton);
+  final UITextWrapNew text=new UITextWrapNew(new Vector2f(400,430));
+  text.setText("Weit hinten, hinter den Wortbergen, fern der L?nder \n\nVokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen Sie in Buchstabhausen an der K?ste des Semantik, eines gro?en Sprachozeans. Ein kleines B?chlein namens Duden flie?t durch ihren Ort und versorgt sie mit den n?tigen Regelialien. Es ist ein paradiesmatisches Land, in dem einem gebratene Satzteile in den Mund fliegen. Nicht einmal von der allm?chtigen Interpunktion werden die Blindtexte beherrscht ein geradezu unorthographisches Leben. Eines Tages aber beschlo? eine kleine Zeile Blindtext, ihr Name war Lorem Ipsum, hinaus zu gehen in die weite Grammatik. Der gro?e Oxmox riet ihr davon ab, da es dort wimmele von b?sen Kommata, wilden Fragezeichen und hinterh?ltigen Semikoli, doch das Blindtextchen lie? sich nicht beirren. Es packte seine sieben Versalien, schob sich sein Initial in den G?rtel und machte sich auf den Weg. Als es die ersten H?gel des Kursivgebirges erklommen hatte, warf es einen letzten Blick zur?ck auf die Skyline seiner Heimatstadt Buchstabhausen, die Headline von Alphabetdorf und die Subline seiner eigenen Stra?e, der Zeilengasse. Wehm?tig lief ihm eine rhetorische Frage ?ber die Wange, dann setzte es seinen Weg fort. Unterwegs traf es eine Copy. Die Copy warnte das Blindtextchen, da, wo sie herk?me w?re sie test test test test test test test");
+  text.setPosition(new Vector2f(20,20));
+  text.setVisible(true);
+  UIButton b=new UIButton(new Vector2f(32f,32f),UIButton.eButtonType.NORMAL);
+  b.getLabel().setText("!");
+  b.setPosition(new Vector2f(450f,20f));
+  b.setVisible(true);
+  b.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      if (button == 0)       text.appendText(" test test test test test test test test test test test");
+ else       text.setText(text.getText().substring(0,text.getText().length() - 5));
+    }
+  }
+);
+  addDisplayElement(text);
+  addDisplayElement(b);
 }

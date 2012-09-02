@@ -3,9 +3,9 @@
   String helpFile=PathManager.getInstance().getDataPath() + File.separator + "data"+ File.separator+ "console"+ File.separator+ "error.json";
   JsonReader reader=new JsonReader(new FileReader(helpFile));
   reader.beginArray();
-  text="";
+  text=new StringBuilder();
   while (reader.hasNext()) {
-    text+=gson.fromJson(reader,String.class) + StringConstants.NEW_LINE;
+    text.append(gson.fromJson(reader,String.class) + "\n");
   }
   reader.endArray();
   reader.close();

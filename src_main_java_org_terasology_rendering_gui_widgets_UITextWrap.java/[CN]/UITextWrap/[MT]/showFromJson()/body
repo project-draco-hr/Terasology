@@ -20,10 +20,10 @@
   String helpFile=PathManager.getInstance().getDataPath() + File.separator + "data"+ File.separator+ "console"+ File.separator+ "consolelog.json";
   JsonReader reader=new JsonReader(new FileReader(helpFile));
   reader.beginArray();
-  text="";
+  text=new StringBuilder();
   while (reader.hasNext()) {
     if (counter > beginpos && counter < endpos) {
-      text+=gson.fromJson(reader,String.class);
+      text.append(gson.fromJson(reader,String.class));
     }
  else {
       gson.fromJson(reader,String.class);

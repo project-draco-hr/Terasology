@@ -6,10 +6,10 @@
     @Override public void click(    UIDisplayElement element,    int button){
       if (!isDisabled()) {
         setFocus(_inputObj);
-        if (_inputValue.length() > 0 && _inputText.getTextWidth() > 0) {
+        if (_inputValue.length() > 0 && _inputText.getSize().x > 0) {
           Vector2f absolutePosition=_inputText.getAbsolutePosition();
-          float positionRelativeElement=absolutePosition.x + _inputText.getTextWidth() - new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x;
-          float averageSymbols=_inputText.getTextWidth() / _inputValue.length();
+          float positionRelativeElement=absolutePosition.x + _inputText.getSize().x - new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()).x;
+          float averageSymbols=_inputText.getSize().x / _inputValue.length();
           int pos=Math.abs((int)(positionRelativeElement / averageSymbols) - _inputValue.length());
           if (pos > _inputValue.length()) {
             pos=_inputValue.length();

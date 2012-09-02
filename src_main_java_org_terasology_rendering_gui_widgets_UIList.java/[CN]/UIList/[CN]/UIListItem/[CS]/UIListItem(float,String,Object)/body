@@ -1,5 +1,5 @@
 {
-  setSize(size);
+  setSize("100%",height + "px");
   this.text=text;
   this.value=value;
   label=new UIText();
@@ -7,8 +7,8 @@
   label.setColor(Color.lightGray);
   label.setPosition(new Vector2f((getPosition().x + padding.x),(getPosition().y + padding.y)));
   label.setText(text);
-  if (getSize().x < label.getTextWidth()) {
-    setSize(new Vector2f(label.getTextWidth(),getSize().y));
+  if (getSize().x < label.getSize().x) {
+    setSize(new Vector2f(label.getSize().x,getSize().y));
   }
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){

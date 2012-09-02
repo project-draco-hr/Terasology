@@ -1,0 +1,10 @@
+{
+  boolean scrollbarVisibility=isScrollbarVisible();
+  this.text.setText(wrapText(text));
+  this.originalText=new StringBuilder(text);
+  calcContentHeight();
+  if (scrollbarVisibility != isScrollbarVisible()) {
+    setText(originalText.toString());
+  }
+  notifyChangedListeners();
+}

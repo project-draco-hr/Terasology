@@ -1,17 +1,19 @@
 {
   if (scrollbar != null) {
+    container.setSize(getSize());
     if (container.getDisplayElements().size() > 0) {
       max=0;
       calcMax(container.getDisplayElements());
-      contentHeight=max - container.getAbsolutePosition().y;
+      contentHeight=max - container.getAbsolutePosition().y + margin.x + margin.z;
     }
-    if (contentHeight > getSize().y) {
+    if (enableScrolling && contentHeight > getSize().y) {
       isScrollable=true;
       float diff=contentHeight - getSize().y;
       multiplier=(diff / getSize().y) + 1;
+      scrollbar.setSize(new Vector2f(scrollbarWidth,getSize().y / multiplier));
       if (enableScrollbar) {
-        scrollbar.setSize(new Vector2f(scrollbar.getSize().x,getSize().y / multiplier));
         scrollbar.setVisible(true);
+        container.setSize(new Vector2f(container.getSize().x - scrollbarWidth,container.getSize().y));
       }
       moveScrollbar(scrollbar.getAbsolutePosition().y);
     }

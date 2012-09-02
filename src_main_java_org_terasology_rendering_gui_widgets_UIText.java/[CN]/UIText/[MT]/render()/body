@@ -1,9 +1,12 @@
 {
+  super.render();
   PerformanceMonitor.startActivity("Render UIText");
   ShaderManager.getInstance().enableDefaultTextured();
-  _workaroundTexture.bind();
-  if (shadowed)   font.drawString(_shadowOffset.x,_shadowOffset.y,text,shadowColor);
-  font.drawString(0,0,text,color);
+  workaroundTexture.bind();
+  if (shadowed) {
+    font.drawString(shadowOffset.x,shadowOffset.y,text.toString(),shadowColor);
+  }
+  font.drawString(0,0,text.toString(),color);
   glDisable(GL11.GL_TEXTURE_2D);
   PerformanceMonitor.endActivity();
 }
