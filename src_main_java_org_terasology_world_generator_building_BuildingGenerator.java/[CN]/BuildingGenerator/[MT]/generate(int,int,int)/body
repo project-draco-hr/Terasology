@@ -1,0 +1,38 @@
+{
+  System.out.println("Starting generation ...");
+  Shape axiom=system.getInitialAxiom();
+  axiom.setDimension(width,height,depth);
+  Tree root=new TreeNode(axiom);
+  List<TreeNode> activeNodes=new ArrayList<TreeNode>();
+  activeNodes.add((TreeNode)root);
+  while (!activeNodes.isEmpty()) {
+    for (    TreeNode t : activeNodes) {
+      List<Shape> successors=new ArrayList<Shape>();
+      Shape s=t.getShape();
+      System.out.println("Active shape: \n" + s.toString());
+      if (s instanceof ShapeSymbol) {
+        Shape selectedRule=selectRule((ShapeSymbol)s);
+        selectedRule.setDimension(s.getDimension());
+        selectedRule.setPosition(s.getPosition());
+        selectedRule.setCoordinateSystem(s.getCoordinateSystem());
+        successors.add(selectedRule);
+      }
+ else       if (s instanceof ComplexRule) {
+        ComplexRule c=(ComplexRule)s;
+        successors=c.getElements();
+      }
+      t.setActive(false);
+      for (      Shape succ : successors) {
+        if (succ instanceof TerminalShape) {
+          t.add(new TreeLeaf((TerminalShape)succ));
+        }
+ else {
+          t.add(new TreeNode(succ));
+        }
+      }
+    }
+    activeNodes=root.findActiveNodes();
+  }
+  BlockCollection building=root.derive();
+  return building;
+}
