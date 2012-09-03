@@ -1,0 +1,14 @@
+{
+  List<Shape> elements=new ArrayList<Shape>();
+  for (  SplitArg arg : args) {
+switch (arg.getType()) {
+case WALLS:
+      elements.addAll(getWallElements(arg.getShape()));
+    break;
+case INNER:
+  elements.add(getInnerElement(arg.getShape()));
+break;
+}
+}
+return elements;
+}
