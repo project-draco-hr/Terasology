@@ -1,0 +1,20 @@
+{
+  if (pos < 0) {
+    pos=0;
+  }
+ else   if (pos > getText().length()) {
+    pos=getText().length();
+  }
+  if (pos != cursorPosition) {
+    Vector2f newPos=new Vector2f((calcTextWidth(text.getText().substring(0,pos))) / 2f,-1f);
+    cursor.setPosition(newPos);
+    if ((cursor.getPosition().x + text.getPosition().x / 2 + padding.y) > (getSize().x / 2f)) {
+      moveText(-(cursor.getPosition().x * 2 - getSize().x + padding.y + padding.y));
+    }
+ else     if ((cursor.getPosition().x + text.getPosition().x / 2) < 0) {
+      moveText(-cursor.getPosition().x * 2);
+    }
+    cursorPosition=pos;
+    notifySelectionChangedListeners();
+  }
+}

@@ -1,0 +1,19 @@
+{
+  Vector2f textAbsPos=text.getAbsolutePosition();
+  mousePos=new Vector2f(Math.max(mousePos.x,textAbsPos.x),Math.max(mousePos.y,textAbsPos.y));
+  Vector2f relative=new Vector2f(mousePos.x - textAbsPos.x,mousePos.y - textAbsPos.y);
+  if (mousePos.x >= (textAbsPos.x + text.getSize().x)) {
+    return text.getText().length();
+  }
+ else   if (mousePos.x <= textAbsPos.x) {
+    return 0;
+  }
+ else {
+    for (int i=0; i <= text.getText().length(); i++) {
+      if (calcTextWidth(text.getText().substring(0,i)) >= relative.x) {
+        return i;
+      }
+    }
+  }
+  return 0;
+}

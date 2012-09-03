@@ -1,0 +1,14 @@
+{
+  if (!isVisible()) {
+    return;
+  }
+  glPushMatrix();
+  glColor4f(color.r,color.g,color.b,color.a);
+  glBegin(GL_QUADS);
+  glVertex2f(getPosition().x,getPosition().y);
+  glVertex2f(getPosition().x + getSize().x,getPosition().y);
+  glVertex2f(getPosition().x + getSize().x,getPosition().y + getSize().y);
+  glVertex2f(getPosition().x,getPosition().y + getSize().y);
+  glEnd();
+  glPopMatrix();
+}

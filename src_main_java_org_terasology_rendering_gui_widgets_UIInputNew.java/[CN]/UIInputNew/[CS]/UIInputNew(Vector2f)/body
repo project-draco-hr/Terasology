@@ -1,0 +1,59 @@
+{
+  setSize(size);
+  setCropContainer(true);
+  addMouseButtonListener(new MouseButtonListener(){
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+      selection=false;
+      if (intersect && !isDisabled()) {
+        selectionEnd=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
+        setFocus(UIInputNew.this);
+      }
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (intersect && !isDisabled()) {
+        selection=true;
+        selectionStart=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        selectionEnd=selectionStart;
+        selectionRectangle.updateSelection(selectionStart,selectionEnd);
+        setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
+      }
+    }
+  }
+);
+  addMouseMoveListener(new MouseMoveListener(){
+    @Override public void move(    UIDisplayElement element){
+      if (selection) {
+        selectionEnd=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        setCursorToTextPosition(selectionEnd);
+      }
+    }
+    @Override public void leave(    UIDisplayElement element){
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+    }
+  }
+);
+  addSelectionChangedListener(new SelectionChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      selectionRectangle.updateSelection(selectionStart,selectionEnd);
+    }
+  }
+);
+  text=new UIText();
+  text.setPosition(new Vector2f(5f,0f));
+  text.setVerticalAlign(EVerticalAlign.CENTER);
+  text.setColor(Color.black);
+  text.setVisible(true);
+  cursor=new UITextCursor(cursorSize);
+  cursor.setVisible(true);
+  selectionRectangle=new UISelection();
+  addDisplayElement(text);
+  text.addDisplayElement(cursor);
+  text.addDisplayElement(selectionRectangle);
+  setCursorToTextPosition(cursorPosition);
+}

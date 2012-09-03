@@ -1,0 +1,73 @@
+{
+  if (isFocused()) {
+    if (event.getKey() == Keyboard.KEY_BACK && event.isDown()) {
+      if (text.getText().length() > 0) {
+        if (selectionStart != selectionEnd) {
+          deleteSelection();
+        }
+ else         if (cursorPosition > 0) {
+          text.replaceText(cursorPosition - 1,cursorPosition,"");
+          setCursorToTextPosition(cursorPosition - 1);
+        }
+      }
+    }
+    if (event.getKey() == Keyboard.KEY_DELETE && event.isDown()) {
+      if (text.getText().length() > 0) {
+        if (selectionStart != selectionEnd) {
+          deleteSelection();
+        }
+ else         if (cursorPosition < text.getText().length()) {
+          text.replaceText(cursorPosition,cursorPosition + 1,"");
+          setCursorToTextPosition(cursorPosition);
+        }
+      }
+    }
+ else     if (event.getKey() == Keyboard.KEY_LEFT && event.isDown()) {
+      if (ctrlKeyPressed) {
+        setCursorToTextPosition(getNextSpace(true));
+      }
+ else {
+        setCursorToTextPosition(cursorPosition - 1);
+      }
+    }
+ else     if (event.getKey() == Keyboard.KEY_RIGHT && event.isDown()) {
+      if (ctrlKeyPressed) {
+        setCursorToTextPosition(getNextSpace(false));
+      }
+ else {
+        setCursorToTextPosition(cursorPosition + 1);
+      }
+    }
+ else     if (event.getKey() == Keyboard.KEY_LCONTROL || event.getKey() == Keyboard.KEY_RCONTROL) {
+      ctrlKeyPressed=event.isDown();
+    }
+ else     if (ctrlKeyPressed && event.getKey() == Keyboard.KEY_X && event.isDown()) {
+      setClipboard(getSelection());
+      deleteSelection();
+    }
+ else     if (ctrlKeyPressed && event.getKey() == Keyboard.KEY_C && event.isDown()) {
+      setClipboard(getSelection());
+    }
+ else     if (ctrlKeyPressed && event.getKey() == Keyboard.KEY_V && event.isDown()) {
+      if (selectionStart != selectionEnd) {
+        deleteSelection();
+      }
+      String clipboard=removeUnsupportedChars(getClipboard());
+      text.insertText(cursorPosition,clipboard);
+      setCursorToTextPosition(cursorPosition + clipboard.length());
+    }
+ else     if (ctrlKeyPressed && event.getKey() == Keyboard.KEY_A && event.isDown()) {
+      setSelection(0,text.getText().length());
+    }
+ else     if (event.isDown()) {
+      char c=Keyboard.getEventCharacter();
+      if (validateChar(c)) {
+        if (selectionStart != selectionEnd) {
+          deleteSelection();
+        }
+        text.insertText(cursorPosition,String.valueOf(c));
+        setCursorToTextPosition(cursorPosition + 1);
+      }
+    }
+  }
+}
