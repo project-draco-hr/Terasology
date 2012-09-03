@@ -1,0 +1,16 @@
+{
+  BlockCollection collection=new BlockCollection();
+  for (int x=position.x; x < position.x + dimension.x; x++) {
+    for (int y=position.y; y < position.y + dimension.y; y++) {
+      for (int z=position.z; z < position.z + dimension.z; z++) {
+        BlockPosition blockPosition=new BlockPosition(x,y,z);
+        collection.addBlock(blockPosition,BlockManager.getInstance().getBlock(uri));
+      }
+    }
+  }
+  Shape retVal=new TerminalShape(collection);
+  retVal.setPosition(position);
+  retVal.setCoordinateSystem(coordinateSystem);
+  retVal.setDimension(dimension);
+  return Arrays.asList(retVal);
+}
