@@ -1,4 +1,10 @@
 {
-  this.text.insertText(offset,text);
+  boolean scrollbarVisibility=isScrollbarVisible();
+  StringBuilder str=new StringBuilder(getText());
+  setText(str.insert(offset,text).toString());
+  calcContentHeight();
+  if (scrollbarVisibility != isScrollbarVisible()) {
+    setText(getText());
+  }
   notifyChangedListeners();
 }

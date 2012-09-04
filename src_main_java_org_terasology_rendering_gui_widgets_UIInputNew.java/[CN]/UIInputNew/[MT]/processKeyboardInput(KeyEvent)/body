@@ -6,7 +6,8 @@
           deleteSelection();
         }
  else         if (cursorPosition > 0) {
-          text.replaceText(cursorPosition - 1,cursorPosition,"");
+          int pos=getWrapOffset(cursorPosition);
+          replaceText(pos - 1,pos,"");
           setCursorToTextPosition(cursorPosition - 1);
         }
       }
@@ -17,14 +18,15 @@
           deleteSelection();
         }
  else         if (cursorPosition < text.getText().length()) {
-          text.replaceText(cursorPosition,cursorPosition + 1,"");
+          int pos=getWrapOffset(cursorPosition);
+          replaceText(pos,pos + 1,"");
           setCursorToTextPosition(cursorPosition);
         }
       }
     }
  else     if (event.getKey() == Keyboard.KEY_LEFT && event.isDown()) {
       if (ctrlKeyPressed) {
-        setCursorToTextPosition(getNextSpace(true));
+        setCursorToTextPosition(findNextChar(cursorPosition,' ',true));
       }
  else {
         setCursorToTextPosition(cursorPosition - 1);
@@ -32,7 +34,7 @@
     }
  else     if (event.getKey() == Keyboard.KEY_RIGHT && event.isDown()) {
       if (ctrlKeyPressed) {
-        setCursorToTextPosition(getNextSpace(false));
+        setCursorToTextPosition(findNextChar(cursorPosition,' ',false));
       }
  else {
         setCursorToTextPosition(cursorPosition + 1);
@@ -53,7 +55,7 @@
         deleteSelection();
       }
       String clipboard=removeUnsupportedChars(getClipboard());
-      text.insertText(cursorPosition,clipboard);
+      insertText(getWrapOffset(cursorPosition),clipboard);
       setCursorToTextPosition(cursorPosition + clipboard.length());
     }
  else     if (ctrlKeyPressed && event.getKey() == Keyboard.KEY_A && event.isDown()) {
@@ -65,7 +67,7 @@
         if (selectionStart != selectionEnd) {
           deleteSelection();
         }
-        text.insertText(cursorPosition,String.valueOf(c));
+        insertText(getWrapOffset(cursorPosition),String.valueOf(c));
         setCursorToTextPosition(cursorPosition + 1);
       }
     }

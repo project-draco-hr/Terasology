@@ -1,6 +1,6 @@
 {
   if (selectionStart != selectionEnd) {
-    text.replaceText(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd),"");
+    replaceText(Math.min(getWrapOffset(selectionStart),getWrapOffset(selectionEnd)),Math.max(getWrapOffset(selectionStart),getWrapOffset(selectionEnd)),"");
     selectionEnd=selectionStart;
     selectionRectangle.updateSelection(selectionStart,selectionEnd);
     setCursorToTextPosition(Math.min(selectionStart,selectionEnd));
