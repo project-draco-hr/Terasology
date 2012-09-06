@@ -10,7 +10,6 @@
       if (intersect && !isDisabled()) {
         selectionEnd=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
         setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
-        setFocus(UIInputNew.this);
       }
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
@@ -20,6 +19,7 @@
         selectionEnd=selectionStart;
         selectionRectangle.updateSelection(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd));
         setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
+        setFocus(UIInputNew.this);
       }
     }
   }
@@ -45,12 +45,24 @@
     }
   }
 );
+  addFocusListener(new FocusListener(){
+    @Override public void focusOn(    UIDisplayElement element){
+      if (!isDisabled()) {
+        cursor.setVisible(true);
+        selectionRectangle.fadeSelection(false);
+      }
+    }
+    @Override public void focusOff(    UIDisplayElement element){
+      cursor.setVisible(false);
+      selectionRectangle.fadeSelection(true);
+    }
+  }
+);
   text=new UIText();
   text.setVerticalAlign(EVerticalAlign.CENTER);
   text.setColor(Color.black);
   text.setVisible(true);
   cursor=new UITextCursor(cursorSize);
-  cursor.setVisible(true);
   selectionRectangle=new UISelection();
   addDisplayElement(text);
   text.addDisplayElement(selectionRectangle);
