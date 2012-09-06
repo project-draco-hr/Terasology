@@ -1,5 +1,24 @@
 {
-  this.text.insert(offset,text);
-  setSize(new Vector2f(getTextWidth(),getTextHeight()));
-  notifyChangedListeners();
+  int prevWraps=getWrapOffset(cursorPosition);
+  int currentWraps;
+  int diff;
+  boolean scrollbarVisibility=isScrollbarVisible();
+  StringBuilder str=new StringBuilder(getText());
+  if (maxLength > 0) {
+    if (str.length() >= maxLength) {
+      return 0;
+    }
+    if (str.length() + text.length() > maxLength) {
+      text=text.substring(0,maxLength - str.length());
+    }
+  }
+  setText(str.insert(offset,text).toString());
+  calcContentHeight();
+  if (scrollbarVisibility != isScrollbarVisible()) {
+    setText(getText());
+  }
+  currentWraps=getWrapOffset(cursorPosition);
+  diff=currentWraps - prevWraps;
+  cursorPosition=cursorPosition - diff;
+  return text.length();
 }

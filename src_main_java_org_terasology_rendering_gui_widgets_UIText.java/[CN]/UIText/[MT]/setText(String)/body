@@ -1,5 +1,15 @@
 {
-  this.text=new StringBuilder(text);
-  setSize(new Vector2f(getTextWidth(),getTextHeight()));
+  boolean scrollbarVisibility=isScrollbarVisible();
+  if (maxLength > 0) {
+    if (text.length() > maxLength) {
+      text=text.substring(0,maxLength);
+    }
+  }
+  this.text.setText(wrapText(text));
+  calcContentHeight();
+  if (scrollbarVisibility != isScrollbarVisible()) {
+    setText(getText());
+  }
   notifyChangedListeners();
+  return text.length();
 }
