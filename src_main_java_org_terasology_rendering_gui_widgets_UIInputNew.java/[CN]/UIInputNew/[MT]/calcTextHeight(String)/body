@@ -1,9 +1,12 @@
 {
-  if (text.trim().isEmpty()) {
-    text="t";
+  if (!text.isEmpty() && (text.charAt(text.length() - 1) == '\n' || text.charAt(text.length() - 1) == ' ')) {
+    text+="i";
   }
-  if (text.charAt(text.length() - 1) == '\n') {
-    text+="t";
+  if (!text.isEmpty() && text.charAt(0) == '\n') {
+    text="i" + text;
+  }
+  if (text.isEmpty()) {
+    text="i";
   }
   return this.text.getFont().getHeight(text);
 }

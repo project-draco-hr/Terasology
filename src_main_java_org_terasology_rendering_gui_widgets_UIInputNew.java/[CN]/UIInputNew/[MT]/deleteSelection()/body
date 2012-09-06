@@ -1,10 +1,10 @@
 {
   if (selectionStart != selectionEnd) {
     replaceText(Math.min(getWrapOffset(selectionStart),getWrapOffset(selectionEnd)),Math.max(getWrapOffset(selectionStart),getWrapOffset(selectionEnd)),"");
+    int cursorTo=Math.min(selectionStart,selectionEnd);
     selectionEnd=selectionStart;
     selectionRectangle.updateSelection(selectionStart,selectionEnd);
-    setCursorToTextPosition(Math.min(selectionStart,selectionEnd));
-    notifyChangedListeners();
+    setCursorToTextPosition(cursorTo);
     notifySelectionChangedListeners();
   }
 }

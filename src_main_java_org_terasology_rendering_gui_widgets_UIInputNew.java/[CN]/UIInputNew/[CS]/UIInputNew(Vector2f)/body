@@ -1,7 +1,7 @@
 {
   setSize(size);
   setCropContainer(true);
-  setPadding(new Vector4f(5f,5f,5f,5f));
+  setPadding(new Vector4f(0f,5f,0f,5f));
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
     }
@@ -18,7 +18,7 @@
         selection=true;
         selectionStart=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
         selectionEnd=selectionStart;
-        selectionRectangle.updateSelection(selectionStart,selectionEnd);
+        selectionRectangle.updateSelection(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd));
         setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
       }
     }
@@ -41,7 +41,7 @@
 );
   addSelectionChangedListener(new SelectionChangedListener(){
     @Override public void changed(    UIDisplayElement element){
-      selectionRectangle.updateSelection(selectionStart,selectionEnd);
+      selectionRectangle.updateSelection(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd));
     }
   }
 );
@@ -53,7 +53,7 @@
   cursor.setVisible(true);
   selectionRectangle=new UISelection();
   addDisplayElement(text);
-  text.addDisplayElement(cursor);
   text.addDisplayElement(selectionRectangle);
+  text.addDisplayElement(cursor);
   setCursorToTextPosition(cursorPosition);
 }

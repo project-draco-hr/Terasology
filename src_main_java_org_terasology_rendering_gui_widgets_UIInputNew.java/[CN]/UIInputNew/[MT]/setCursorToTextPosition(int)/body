@@ -11,12 +11,12 @@
     cursor.setPosition(newPos);
     if (isMultiLine()) {
       if ((cursor.getSize().y + cursor.getPosition().y - getScrollPosition() / 2) > (getSize().y / 2f)) {
-        float additionalSpacing=getPadding().z + getPadding().x;
-        scrollTo(getScrollPosition() - (getSize().y / 2 - (cursor.getSize().y / 2 + cursor.getPosition().y - getScrollPosition() / 2)) + additionalSpacing);
+        float additionalSpacing=getPadding().z + 5f;
+        scrollTo(cursor.getPosition().y * 2 + cursor.getSize().y - getSize().y + additionalSpacing);
       }
- else       if (cursor.getPosition().y + text.getParent().getPosition().y / 2 < 0) {
-        float additionalSpacing=getPadding().x;
-        scrollTo(getScrollPosition() + cursor.getPosition().y + text.getParent().getPosition().y / 2 - additionalSpacing);
+ else       if (cursor.getPosition().y - getScrollPosition() / 2 < 0) {
+        float additionalSpacing=getPadding().x + 5f;
+        scrollTo(cursor.getPosition().y * 2 - additionalSpacing);
       }
     }
  else {

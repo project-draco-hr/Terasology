@@ -1,14 +1,16 @@
 {
-  if (!isVisible()) {
+  if (!isVisible() || rectangles.size() == 0) {
     return;
   }
   glPushMatrix();
   glColor4f(color.r,color.g,color.b,color.a);
   glBegin(GL_QUADS);
-  glVertex2f(getPosition().x,getPosition().y);
-  glVertex2f(getPosition().x + getSize().x,getPosition().y);
-  glVertex2f(getPosition().x + getSize().x,getPosition().y + getSize().y);
-  glVertex2f(getPosition().x,getPosition().y + getSize().y);
+  for (  Vector2f[] rect : rectangles) {
+    glVertex2f(rect[0].x,rect[0].y);
+    glVertex2f(rect[0].x + rect[1].x,rect[0].y);
+    glVertex2f(rect[0].x + rect[1].x,rect[0].y + rect[1].y);
+    glVertex2f(rect[0].x,rect[0].y + rect[1].y);
+  }
   glEnd();
   glPopMatrix();
 }
