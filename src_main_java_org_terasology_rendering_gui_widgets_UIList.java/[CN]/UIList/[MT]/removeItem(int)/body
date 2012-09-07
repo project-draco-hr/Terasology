@@ -1,4 +1,10 @@
 {
-  removeDisplayElement(items.get(index));
-  items.remove(index);
+  list.removeDisplayElement(getItems().get(index));
+  if (index < getItemCount()) {
+    select(index);
+  }
+ else   if (index > 0) {
+    select(index - 1);
+  }
+  layout();
 }

@@ -1,19 +1,10 @@
 {
-  setSize("100%",height + "px");
-  this.text=text;
+  setSize("100%","32px");
   this.value=value;
-  label=new UILabel();
-  label.setVisible(true);
-  label.setColor(Color.lightGray);
-  label.setPosition(new Vector2f((getPosition().x + padding.x),(getPosition().y + padding.y)));
-  label.setText(text);
-  if (getSize().x < label.getSize().x) {
-    setSize(new Vector2f(label.getSize().x,getSize().y));
-  }
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
       if (!isSelected) {
-        label.setColor(Color.lightGray);
+        label.setColor(color);
       }
     }
     @Override public void hover(    UIDisplayElement element){
@@ -27,5 +18,11 @@
     }
   }
 );
+  label=new UILabel();
+  label.setPosition(new Vector2f(5f,0f));
+  label.setColor(color);
+  label.setVerticalAlign(EVerticalAlign.CENTER);
+  label.setText(text);
+  label.setVisible(true);
   addDisplayElement(label);
 }
