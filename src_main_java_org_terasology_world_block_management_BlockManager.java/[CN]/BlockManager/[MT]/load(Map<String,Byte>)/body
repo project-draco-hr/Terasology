@@ -6,7 +6,12 @@
   nextId=idByUri.size();
   BlockLoader.LoadBlockDefinitionResults blockDefinitions=blockLoader.loadBlockDefinitions();
   for (  BlockFamily family : blockDefinitions.families) {
-    registerBlockFamily(family);
+    if (knownBlockMappings.containsKey(family.getURI().toString())) {
+      registerBlockFamily(family);
+    }
+ else {
+      addBlockFamily(family);
+    }
   }
   for (  BlockUri shapelessFamily : blockDefinitions.shapelessDefinitions) {
     shapelessBlockDefinition.add(shapelessFamily);

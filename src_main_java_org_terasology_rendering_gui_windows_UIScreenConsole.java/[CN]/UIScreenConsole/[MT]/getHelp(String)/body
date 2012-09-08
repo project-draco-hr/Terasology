@@ -5,13 +5,13 @@
     if (split[1].equals("commandList")) {
       HashMap<String,String> commandhelp=groovyhelpmanager.getHelpCommands();
       String[] commandlist=groovyhelpmanager.getGroovyCommands();
-      String retval="Available commands :" + newLine + newLine;
+      String retval="Available commands :" + StringConstants.NEW_LINE + StringConstants.NEW_LINE;
       for (int i=0; i < commandlist.length; i++) {
         if (commandhelp.containsKey(commandlist[i])) {
-          retval+=commandlist[i].toString() + " \t: " + commandhelp.get(commandlist[i]).toString()+ newLine;
+          retval+=commandlist[i].toString() + " \t: " + commandhelp.get(commandlist[i]).toString()+ StringConstants.NEW_LINE;
         }
  else {
-          retval+=commandlist[i].toString() + " : undocumented" + newLine;
+          retval+=commandlist[i].toString() + " : undocumented" + StringConstants.NEW_LINE;
         }
       }
       setHelpText(retval);
@@ -27,20 +27,9 @@
       ArrayList<Prefab> prefabs=groovyhelpmanager.getItems();
       Iterator<Prefab> it=prefabs.iterator();
       while (it.hasNext()) {
-        tempval+="item = " + it.next().getName() + newLine;
+        tempval+="item = " + it.next().getName() + StringConstants.NEW_LINE;
       }
       setHelpText(tempval);
-      return;
-    }
-    if (split[1].equals("blockList")) {
-      StringBuilder stringBuilder=new StringBuilder();
-      for (      BlockFamily blockFamily : BlockManager.getInstance().listBlockFamilies()) {
-        stringBuilder.append(blockFamily.getDisplayName());
-        stringBuilder.append(" - ");
-        stringBuilder.append(blockFamily.getURI().toString());
-        stringBuilder.append(newLine);
-      }
-      setHelpText(stringBuilder.toString());
       return;
     }
     showError();
