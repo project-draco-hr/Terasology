@@ -1,0 +1,15 @@
+{
+  if (quantity < 1)   return "Here, have these zero (0) items just like you wanted.";
+  BlockItemFactory factory=new BlockItemFactory(CoreRegistry.get(EntityManager.class));
+  EntityRef item=factory.newInstance(blockFamily,quantity);
+  if (!item.exists()) {
+    return "Unknown block or item.";
+  }
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+  playerEntity.send(new ReceiveItemEvent(item));
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  if (itemComp != null && !itemComp.container.exists()) {
+    item.destroy();
+  }
+  return "Success";
+}

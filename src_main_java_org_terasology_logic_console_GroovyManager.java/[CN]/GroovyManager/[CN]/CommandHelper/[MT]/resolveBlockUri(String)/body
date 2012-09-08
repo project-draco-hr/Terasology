@@ -1,0 +1,18 @@
+{
+  List<BlockUri> matches=Lists.newArrayList();
+  BlockUri straightUri=new BlockUri(uri);
+  if (straightUri.isValid()) {
+    if (BlockManager.getInstance().hasBlockFamily(straightUri)) {
+      matches.add(straightUri);
+    }
+  }
+ else {
+    for (    String packageName : AssetManager.listPackages()) {
+      BlockUri modUri=new BlockUri(packageName,uri);
+      if (BlockManager.getInstance().hasBlockFamily(modUri)) {
+        matches.add(modUri);
+      }
+    }
+  }
+  return matches;
+}
