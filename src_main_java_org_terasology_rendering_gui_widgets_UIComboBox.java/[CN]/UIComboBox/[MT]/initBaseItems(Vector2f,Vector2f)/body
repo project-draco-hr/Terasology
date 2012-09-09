@@ -1,7 +1,8 @@
 {
   setSize(size);
   opened=false;
-  baseInput=new UIText(size);
+  baseInput=new UIText();
+  baseInput.setSize(size);
   baseInput.setVisible(true);
   baseInput.setBackgroundColor(0xFF,0xFF,0xFF,1.0f);
   baseInput.setBorderSolid(1,0x00,0x00,0x00,1.0f);
@@ -59,7 +60,7 @@
   baseList.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       if (baseList.getSelection() != null) {
-        baseInput.setText(baseList.getSelection().getText());
+        baseInput.setText(((UIListItemText)baseList.getSelection()).getText());
       }
       opened=false;
       baseList.setVisible(opened);

@@ -1,0 +1,19 @@
+{
+  super.layout();
+  if (isWrap) {
+    if (positionType == EPositionType.RELATIVE && getParent() != null) {
+      if (lastSize.x != getParent().getSize().x || lastSize.y != getParent().getSize().y) {
+        lastSize.x=getParent().getSize().x;
+        lastSize.y=getParent().getSize().y;
+        setText(getText());
+      }
+    }
+ else     if (positionType == EPositionType.ABSOLUTE) {
+      if (lastSize.x != Display.getWidth() || lastSize.y != Display.getHeight()) {
+        lastSize.x=Display.getWidth();
+        lastSize.y=Display.getHeight();
+        setText(getText());
+      }
+    }
+  }
+}

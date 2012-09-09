@@ -1,0 +1,33 @@
+{
+  try {
+    String helpFile=PathManager.getInstance().getDataPath() + File.separator + "data"+ File.separator+ "chat"+ File.separator+ "commands.json";
+    FileReader reader=new FileReader(helpFile);
+    Gson gson=new Gson();
+    JsonParser parser=new JsonParser();
+    JsonArray Jarray=parser.parse(reader).getAsJsonArray();
+    Command cmd;
+    for (    JsonElement obj : Jarray) {
+      cmd=gson.fromJson(obj,Command.class);
+      if (!cmd.getController().isEmpty() && cmd.getPremission() != -1 && !cmd.getName().isEmpty()) {
+        if (cmd.loadController(controllers)) {
+          if (cmd.methodExists()) {
+            commands.add(cmd);
+          }
+        }
+      }
+    }
+  }
+ catch (  JsonSyntaxException e) {
+    e.printStackTrace();
+  }
+catch (  FileNotFoundException e) {
+    e.printStackTrace();
+  }
+  Comparator<Command> comp=new Comparator<CommandManager.Command>(){
+    @Override public int compare(    Command o1,    Command o2){
+      return o1.getName().compareTo(o2.getName());
+    }
+  }
+;
+  Collections.sort(commands,comp);
+}

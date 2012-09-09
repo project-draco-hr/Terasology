@@ -19,7 +19,7 @@
       }
       float y=0;
       for (int j=0; j < (int)Math.floor(i / columns); j++) {
-        y+=cellHeight[(int)Math.floor(i / columns)];
+        y+=cellHeight[(int)Math.floor(j / columns)];
       }
       if (verticalCellAlign == EVerticalAlign.TOP) {
         y+=padding.x;
@@ -34,5 +34,10 @@
       elements.get(i).setVisible(true);
     }
   }
-  container.setSize(size);
+  if (container.getUnitSizeX() != EUnitType.PIXEL) {
+    container.setSize("",size.y + "px");
+  }
+ else {
+    container.setSize(size);
+  }
 }

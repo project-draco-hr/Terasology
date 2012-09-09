@@ -1,5 +1,14 @@
 {
-  this.text=new StringBuilder(text);
-  setSize(new Vector2f(getTextWidth(),getTextHeight()));
+  this.text=new StringBuilder(wrapText(text));
+  if (isWrap) {
+    String unitX="px";
+    if (unitSizeX == EUnitType.PERCENTAGE) {
+      unitX="%";
+    }
+    setSize(sizeOriginal.x + unitX,(calcTextHeight(this.text.toString()) + margin.x + margin.z) + "px");
+  }
+ else {
+    setSize(new Vector2f(calcTextWidth(this.text.toString()) + margin.y + margin.w,calcTextHeight(this.text.toString()) + margin.x + margin.z));
+  }
   notifyChangedListeners();
 }

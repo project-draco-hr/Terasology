@@ -1,0 +1,72 @@
+{
+  addKeyListener(keyListener);
+  addMouseButtonListener(new MouseButtonListener(){
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+    }
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+      selection=false;
+      if (intersect && !isDisabled()) {
+        selectionEnd=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
+      }
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (intersect && !isDisabled()) {
+        selection=true;
+        selectionStart=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        selectionEnd=selectionStart;
+        selectionRectangle.updateSelection(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd));
+        setCursorToTextPosition(toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY())));
+        setFocus(UIText.this);
+      }
+    }
+  }
+);
+  addMouseMoveListener(new MouseMoveListener(){
+    @Override public void move(    UIDisplayElement element){
+      if (selection) {
+        selectionEnd=toTextPosition(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()));
+        setCursorToTextPosition(selectionEnd);
+      }
+    }
+    @Override public void leave(    UIDisplayElement element){
+    }
+    @Override public void hover(    UIDisplayElement element){
+    }
+    @Override public void enter(    UIDisplayElement element){
+    }
+  }
+);
+  addSelectionChangedListener(new SelectionChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      selectionRectangle.updateSelection(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd));
+    }
+  }
+);
+  addFocusListener(new FocusListener(){
+    @Override public void focusOn(    UIDisplayElement element){
+      if (!isDisabled()) {
+        cursor.setVisible(true);
+        selectionRectangle.fadeSelection(false);
+        setCursorPosition(cursorPosition);
+      }
+    }
+    @Override public void focusOff(    UIDisplayElement element){
+      cursor.setVisible(false);
+      selectionRectangle.fadeSelection(true);
+    }
+  }
+);
+  text=new UILabel();
+  text.setVerticalAlign(EVerticalAlign.CENTER);
+  text.setColor(Color.black);
+  text.setVisible(true);
+  cursor=new UITextCursor(cursorSize);
+  selectionRectangle=new UISelection();
+  addDisplayElement(text);
+  text.addDisplayElement(selectionRectangle);
+  text.addDisplayElement(cursor);
+  setPadding(new Vector4f(0f,5f,0f,5f));
+  setMultiLine(false);
+  setBackgroundColor(150,0,0,0.3f);
+}

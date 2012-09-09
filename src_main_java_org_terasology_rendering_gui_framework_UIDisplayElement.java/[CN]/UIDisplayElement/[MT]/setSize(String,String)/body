@@ -1,41 +1,45 @@
 {
   width=width.replace(" ","").toLowerCase();
   height=height.replace(" ","").toLowerCase();
-  float widthValue=0;
-  float heightValue=0;
-  try {
-    if (width.matches("^\\d+(\\.\\d+)?%$")) {
-      widthValue=Float.valueOf(width.substring(0,width.length() - 1));
-      unitSizeX=EUnitType.PERCENTAGE;
+  float widthValue=sizeOriginal.x;
+  float heightValue=sizeOriginal.x;
+  if (width != null) {
+    try {
+      if (width.matches("^\\d+(\\.\\d+)?%$")) {
+        widthValue=Float.valueOf(width.substring(0,width.length() - 1));
+        unitSizeX=EUnitType.PERCENTAGE;
+      }
+ else       if (width.matches("^\\d+(\\.\\d+)?px$")) {
+        widthValue=Float.valueOf(width.substring(0,width.length() - 2));
+        unitSizeX=EUnitType.PIXEL;
+      }
+ else       if (width.matches("^\\d+(\\.\\d+)?$")) {
+        widthValue=Float.valueOf(width);
+        unitSizeX=EUnitType.PIXEL;
+      }
     }
- else     if (width.matches("^\\d+(\\.\\d+)?px$")) {
-      widthValue=Float.valueOf(width.substring(0,width.length() - 2));
-      unitSizeX=EUnitType.PIXEL;
-    }
- else     if (width.matches("^\\d+(\\.\\d+)?$")) {
-      widthValue=Float.valueOf(width);
-      unitSizeX=EUnitType.PIXEL;
-    }
-  }
- catch (  NumberFormatException e) {
-    e.printStackTrace();
-  }
-  try {
-    if (height.matches("^\\d+(\\.\\d+)?%$")) {
-      heightValue=Float.valueOf(height.substring(0,height.length() - 1));
-      unitSizeY=EUnitType.PERCENTAGE;
-    }
- else     if (height.matches("^\\d+(\\.\\d+)?px$")) {
-      heightValue=Float.valueOf(height.substring(0,height.length() - 2));
-      unitSizeY=EUnitType.PIXEL;
-    }
- else     if (height.matches("^\\d+(\\.\\d+)?$")) {
-      heightValue=Float.valueOf(height);
-      unitSizeY=EUnitType.PIXEL;
+ catch (    NumberFormatException e) {
+      e.printStackTrace();
     }
   }
- catch (  NumberFormatException e) {
-    e.printStackTrace();
+  if (height != null) {
+    try {
+      if (height.matches("^\\d+(\\.\\d+)?%$")) {
+        heightValue=Float.valueOf(height.substring(0,height.length() - 1));
+        unitSizeY=EUnitType.PERCENTAGE;
+      }
+ else       if (height.matches("^\\d+(\\.\\d+)?px$")) {
+        heightValue=Float.valueOf(height.substring(0,height.length() - 2));
+        unitSizeY=EUnitType.PIXEL;
+      }
+ else       if (height.matches("^\\d+(\\.\\d+)?$")) {
+        heightValue=Float.valueOf(height);
+        unitSizeY=EUnitType.PIXEL;
+      }
+    }
+ catch (    NumberFormatException e) {
+      e.printStackTrace();
+    }
   }
   this.size.set(widthValue,heightValue);
   this.sizeOriginal.set(widthValue,heightValue);

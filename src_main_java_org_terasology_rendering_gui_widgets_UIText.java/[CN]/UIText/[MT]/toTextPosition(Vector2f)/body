@@ -2,47 +2,29 @@
   Vector2f textAbsPos=text.getAbsolutePosition();
   mousePos=new Vector2f(Math.max(mousePos.x,textAbsPos.x),Math.max(mousePos.y,textAbsPos.y));
   Vector2f relative=new Vector2f(mousePos.x - textAbsPos.x,mousePos.y - textAbsPos.y);
-  if (isMultiLine()) {
-    if (mousePos.y >= (textAbsPos.y + getSize().y + getScrollPosition())) {
-      return text.getText().length();
-    }
- else     if (mousePos.y <= textAbsPos.y) {
-      return 0;
-    }
- else {
-      for (int i=0; i < text.getText().length(); ) {
-        if (calcTextHeight(text.getText().substring(0,i)) >= relative.y) {
-          if (relative.x <= 0) {
-            return i;
-          }
-          for (int j=i; j < text.getText().length(); j++) {
-            if (calcTextWidth(text.getText().substring(i,j)) > relative.x || text.getText().charAt(j) == '\n') {
-              return j;
-            }
- else             if (j == text.getText().length() - 1) {
-              return j + 1;
-            }
-          }
-        }
-        i=findNextChar(i,'\n',false);
-      }
-      return text.getText().length();
-    }
+  if (mousePos.y >= (textAbsPos.y + getSize().y + getScrollPosition())) {
+    return text.getText().length();
+  }
+ else   if (mousePos.y <= textAbsPos.y) {
+    return 0;
   }
  else {
-    if (mousePos.x >= (textAbsPos.x + text.getSize().x)) {
-      return text.getText().length();
-    }
- else     if (mousePos.x <= textAbsPos.x) {
-      return 0;
-    }
- else {
-      for (int i=0; i <= text.getText().length(); i++) {
-        if (calcTextWidth(text.getText().substring(0,i)) >= relative.x) {
+    for (int i=0; i < text.getText().length(); ) {
+      if (calcTextHeight(text.getText().substring(0,i)) >= relative.y) {
+        if (relative.x <= 0) {
           return i;
         }
+        for (int j=i; j < text.getText().length(); j++) {
+          if (calcTextWidth(text.getText().substring(i,j)) > relative.x || text.getText().charAt(j) == '\n') {
+            return j;
+          }
+ else           if (j == text.getText().length() - 1) {
+            return j + 1;
+          }
+        }
       }
+      i=findNextChar(i,'\n',false);
     }
+    return text.getText().length();
   }
-  return 0;
 }

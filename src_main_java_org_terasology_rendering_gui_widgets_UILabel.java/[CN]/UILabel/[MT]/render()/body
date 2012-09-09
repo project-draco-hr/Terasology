@@ -4,9 +4,9 @@
   ShaderManager.getInstance().enableDefaultTextured();
   workaroundTexture.bind();
   if (enableShadow) {
-    font.drawString(shadowOffset.x,shadowOffset.y,text.toString(),shadowColor);
+    font.drawString(shadowOffset.x + margin.w,shadowOffset.y + margin.x,text.toString(),shadowColor);
   }
-  font.drawString(0,0,text.toString(),color);
+  font.drawString(margin.w,margin.x,text.toString(),color);
   glDisable(GL11.GL_TEXTURE_2D);
   PerformanceMonitor.endActivity();
 }

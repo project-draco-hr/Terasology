@@ -5,4 +5,32 @@
     }
   }
 );
+  addKeyListener(new KeyListener(){
+    @Override public void key(    UIDisplayElement element,    KeyEvent event){
+      if (closeKeys != null) {
+        for (        int key : closeKeys) {
+          if (key == event.getKey() && event.isDown()) {
+            setVisible(false);
+            event.consume();
+            return;
+          }
+        }
+      }
+    }
+  }
+);
+  addBindKeyListener(new BindKeyListener(){
+    @Override public void key(    UIDisplayElement element,    BindButtonEvent event){
+      if (closeBinds != null) {
+        for (        String key : closeBinds) {
+          if (key.equals(event.getId()) && event.isDown()) {
+            setVisible(false);
+            event.consume();
+            return;
+          }
+        }
+      }
+    }
+  }
+);
 }

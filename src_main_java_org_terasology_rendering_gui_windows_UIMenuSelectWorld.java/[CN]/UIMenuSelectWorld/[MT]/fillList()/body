@@ -17,7 +17,9 @@
     try {
       WorldInfo info=WorldInfo.load(worldManifest);
       if (!info.getTitle().isEmpty()) {
-        list.addItem(info.getTitle(),info);
+        UIListItemText item=new UIListItemText(info.getTitle(),info);
+        item.setPadding(new Vector4f(10f,5f,10f,5f));
+        list.addItem(item);
       }
     }
  catch (    IOException e) {

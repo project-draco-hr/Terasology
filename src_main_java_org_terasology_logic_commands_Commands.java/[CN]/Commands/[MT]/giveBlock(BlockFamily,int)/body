@@ -1,0 +1,11 @@
+{
+  if (quantity < 1)   return;
+  BlockItemFactory factory=new BlockItemFactory(CoreRegistry.get(EntityManager.class));
+  EntityRef item=factory.newInstance(blockFamily,quantity);
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+  playerEntity.send(new ReceiveItemEvent(item));
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  if (itemComp != null && !itemComp.container.exists()) {
+    item.destroy();
+  }
+}
