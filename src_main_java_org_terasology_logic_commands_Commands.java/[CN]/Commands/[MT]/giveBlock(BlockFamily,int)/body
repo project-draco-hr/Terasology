@@ -1,7 +1,14 @@
 {
-  if (quantity < 1)   return;
+  if (quantity < 1) {
+    ChatManager.getInstance().addMessage("Here, have these zero (0) items just like you wanted",EChatScope.PRIVATE);
+    return;
+  }
   BlockItemFactory factory=new BlockItemFactory(CoreRegistry.get(EntityManager.class));
   EntityRef item=factory.newInstance(blockFamily,quantity);
+  if (!item.exists()) {
+    ChatManager.getInstance().addMessage("Unknown block or item",EChatScope.PRIVATE);
+    return;
+  }
   EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
   playerEntity.send(new ReceiveItemEvent(item));
   ItemComponent itemComp=item.getComponent(ItemComponent.class);

@@ -13,12 +13,16 @@
   str=str.substring(commandEndIndex).trim();
   String[] params=str.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
   String paramsStr="";
-  int paramsCount=params.length - 1;
+  int paramsCount=0;
   for (  String s : params) {
+    if (s.trim().isEmpty()) {
+      continue;
+    }
     if (!paramsStr.isEmpty()) {
       paramsStr+=",";
     }
     paramsStr+=s;
+    paramsCount++;
   }
   if (paramsCount == 0) {
     paramsStr="()";
