@@ -1,6 +1,6 @@
 {
   commandManager=CommandManager.getInstance();
-  ChatManager.getInstance().subscribe(chatSubscription);
+  MessageManager.getInstance().subscribe(chatSubscription);
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
   setCloseBinds(new String[]{ConsoleButton.ID});
   setId("chat");
@@ -28,7 +28,7 @@
         if (event.getKey() == Keyboard.KEY_RETURN) {
           String message=inputBox.getText().trim();
           inputBox.deleteText();
-          ChatManager.getInstance().addMessage(message);
+          MessageManager.getInstance().addMessage(message);
           addHistory(message);
           if (message.startsWith(commandPrefix)) {
             message=message.substring(1);
@@ -68,7 +68,7 @@
                 }
                 commandMatches+=cmd.getName();
               }
-              ChatManager.getInstance().addMessage(commandMatches);
+              MessageManager.getInstance().addMessage(commandMatches);
             }
           }
         }

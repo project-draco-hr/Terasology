@@ -1,19 +1,19 @@
 {
   List<BlockUri> resolvedBlockUris=resolveBlockUri(uri);
   if (resolvedBlockUris.isEmpty()) {
-    ChatManager.getInstance().addMessage("No block found for '" + uri + "'",EChatScope.PRIVATE);
+    MessageManager.getInstance().addMessage("No block found for '" + uri + "'",EChatScope.PRIVATE);
     return;
   }
  else   if (resolvedBlockUris.size() > 1) {
     StringBuilder builder=new StringBuilder();
     builder.append("Non-unique block name, possible matches: ");
     Joiner.on(", ").appendTo(builder,resolvedBlockUris);
-    ChatManager.getInstance().addMessage(builder.toString(),EChatScope.PRIVATE);
+    MessageManager.getInstance().addMessage(builder.toString(),EChatScope.PRIVATE);
     return;
   }
   List<AssetUri> resolvedShapeUris=resolveShapeUri(shapeUri);
   if (resolvedShapeUris.isEmpty()) {
-    ChatManager.getInstance().addMessage("No shape found for '" + shapeUri + "'",EChatScope.PRIVATE);
+    MessageManager.getInstance().addMessage("No shape found for '" + shapeUri + "'",EChatScope.PRIVATE);
     return;
   }
  else   if (resolvedShapeUris.size() > 1) {
@@ -33,5 +33,5 @@
     giveBlock(BlockManager.getInstance().getBlockFamily(blockUri),quantity);
     return;
   }
-  ChatManager.getInstance().addMessage("Invalid block or shape",EChatScope.PRIVATE);
+  MessageManager.getInstance().addMessage("Invalid block or shape",EChatScope.PRIVATE);
 }
