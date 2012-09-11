@@ -57,14 +57,21 @@
   baseList.setBorderSolid(1f,0x00,0x00,0x00,1.0f);
   baseList.setBackgroundColor(0xFF,0xFF,0xFF,1.0f);
   baseList.setVisible(false);
-  baseList.addChangedListener(new ChangedListener(){
+  baseList.addSelectionChangedListener(new SelectionChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       if (baseList.getSelection() != null) {
-        baseInput.setText(((UIListItemText)baseList.getSelection()).getText());
+        baseInput.setText((baseList.getSelection()).getText());
       }
       opened=false;
       baseList.setVisible(opened);
       baseButton.setToggleState(false);
+      notifySelectionChangedListeners();
+    }
+  }
+);
+  baseList.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      notifyChangedListeners();
     }
   }
 );

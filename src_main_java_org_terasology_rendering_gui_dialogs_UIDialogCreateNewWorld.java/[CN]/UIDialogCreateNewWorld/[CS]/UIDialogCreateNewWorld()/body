@@ -25,15 +25,15 @@
   _chunkGeneratorLabel.setSize(new Vector2f(0f,16f));
   _chunkGeneratorLabel.setVisible(true);
   _chunkGenerator=new UIComboBox(new Vector2f(176f,22f),new Vector2f(176f,48f));
-  UIListItemText item=new UIListItemText("Normal",new Integer(0));
-  item.setColor(Color.black);
+  UIListItem item=new UIListItem("Normal",new Integer(0));
+  item.setTextColor(Color.black);
   item.setPadding(new Vector4f(5f,5f,5f,5f));
   _chunkGenerator.addItem(item);
-  item=new UIListItemText("Flat",new Integer(1));
-  item.setColor(Color.black);
+  item=new UIListItem("Flat",new Integer(1));
+  item.setTextColor(Color.black);
   item.setPadding(new Vector4f(5f,5f,5f,5f));
   _chunkGenerator.addItem(item);
-  _chunkGenerator.setSelectedItemIndex(0);
+  _chunkGenerator.select(0);
   _chunkGenerator.setVisible(true);
   _inputWorldTitleLabel.setPosition(new Vector2f(15f,32f));
   _inputWorldTitle.setPosition(new Vector2f(_inputWorldTitleLabel.getPosition().x,_inputWorldTitleLabel.getPosition().y + _inputWorldTitleLabel.getSize().y + 8f));
@@ -69,7 +69,7 @@
         Config.getInstance().setWorldTitle(getWorldName());
       }
       List<String> chunkList=new ArrayList<String>();
-switch (_chunkGenerator.getSelectedItemIndex()) {
+switch (_chunkGenerator.getSelectionIndex()) {
 case 1:
         chunkList.add(FlatTerrainGenerator.class.getName());
       chunkList.add(FloraGenerator.class.getName());
