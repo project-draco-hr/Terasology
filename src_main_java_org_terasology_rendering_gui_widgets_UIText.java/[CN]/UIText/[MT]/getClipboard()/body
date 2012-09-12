@@ -1,0 +1,14 @@
+{
+  Transferable t=Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+  try {
+    if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+      String text=(String)t.getTransferData(DataFlavor.stringFlavor);
+      return text;
+    }
+  }
+ catch (  UnsupportedFlavorException e) {
+  }
+catch (  IOException e) {
+  }
+  return "";
+}

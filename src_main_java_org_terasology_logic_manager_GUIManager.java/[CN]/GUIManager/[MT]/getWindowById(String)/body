@@ -1,8 +1,8 @@
 {
-  if (windowsById.containsKey(windowId)) {
-    return windowsById.get(windowId);
+  for (  UIDisplayElement window : renderer.getDisplayElements()) {
+    if (window.getId().equals(windowId)) {
+      return (UIWindow)window;
+    }
   }
- else {
-    return null;
-  }
+  return null;
 }

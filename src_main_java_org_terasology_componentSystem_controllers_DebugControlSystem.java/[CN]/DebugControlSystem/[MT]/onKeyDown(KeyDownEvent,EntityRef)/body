@@ -18,11 +18,8 @@ case Keyboard.KEY_K:
 entity.send(new DamageEvent(9999,null));
 break;
 case Keyboard.KEY_H:
-if (GUIManager.getInstance().getWindowById("engine:hud").isVisible()) {
-GUIManager.getInstance().getWindowById("engine:hud").close();
-}
- else {
-GUIManager.getInstance().getWindowById("engine:hud").open();
+for (UIDisplayElement element : GUIManager.getInstance().getWindowById("hud").getDisplayElements()) {
+element.setVisible(!element.isVisible());
 }
 event.consume();
 break;
@@ -38,6 +35,7 @@ toggleViewingDistance();
 event.consume();
 break;
 case Keyboard.KEY_F4:
+metrics=(UIScreenMetrics)GUIManager.getInstance().openWindow("metrics");
 metrics.toggleMode();
 event.consume();
 break;

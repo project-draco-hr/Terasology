@@ -1,0 +1,22 @@
+{
+  item.addClickListener(new ClickListener(){
+    private long lastTime=System.currentTimeMillis();
+    private int lastButton=-1;
+    @Override public void click(    UIDisplayElement element,    int button){
+      if (!isDisabled) {
+        if ((System.currentTimeMillis() - lastTime) < 200 && lastButton == button) {
+          notifyDoubleClickListeners();
+        }
+        lastTime=System.currentTimeMillis();
+        lastButton=button;
+        select(getItemIndex(item));
+      }
+    }
+  }
+);
+  item.setDisabled(isDisabled);
+  item.setVisible(true);
+  list.addDisplayElementToPosition(index,item);
+  layout();
+  notifyChangedListeners();
+}

@@ -1,0 +1,20 @@
+{
+  if (!isVisible() || rectangles.size() == 0) {
+    return;
+  }
+  glPushMatrix();
+  float alpha=color.a;
+  if (fade) {
+    alpha=Math.max(0,alpha - 0.5f);
+  }
+  glColor4f(color.r,color.g,color.b,alpha);
+  glBegin(GL_QUADS);
+  for (  Vector2f[] rect : rectangles) {
+    glVertex2f(rect[0].x,rect[0].y);
+    glVertex2f(rect[0].x + rect[1].x,rect[0].y);
+    glVertex2f(rect[0].x + rect[1].x,rect[0].y + rect[1].y);
+    glVertex2f(rect[0].x,rect[0].y + rect[1].y);
+  }
+  glEnd();
+  glPopMatrix();
+}

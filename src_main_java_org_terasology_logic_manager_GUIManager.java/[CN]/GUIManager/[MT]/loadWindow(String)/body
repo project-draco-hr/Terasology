@@ -1,0 +1,68 @@
+{
+  UIWindow window=getWindowById(windowId);
+  if (window != null) {
+    logger.log(Level.INFO,"GUIManager: Window with ID \"" + windowId + "\" already loaded.");
+    return getWindowById(windowId);
+  }
+  if (windowId.equals("main")) {
+    window=new UIMenuMain();
+  }
+ else   if (windowId.equals("singleplayer")) {
+    window=new UIMenuSingleplayer();
+  }
+ else   if (windowId.equals("config")) {
+    window=new UIMenuConfig();
+  }
+ else   if (windowId.equals("config:video")) {
+    window=new UIMenuConfigVideo();
+  }
+ else   if (windowId.equals("config:audio")) {
+    window=new UIMenuConfigAudio();
+  }
+ else   if (windowId.equals("config:controls")) {
+    window=new UIMenuConfigControls();
+  }
+ else   if (windowId.equals("config:mods")) {
+    window=new UIMenuConfigMods();
+  }
+ else   if (windowId.equals("loading")) {
+    window=new UIScreenLoading();
+  }
+ else   if (windowId.equals("book")) {
+    window=new UIScreenBook();
+  }
+ else   if (windowId.equals("container")) {
+    window=new UIScreenContainer();
+  }
+ else   if (windowId.equals("createWorld")) {
+    window=new UIDialogCreateNewWorld();
+  }
+ else   if (windowId.equals("metrics")) {
+    window=new UIScreenMetrics();
+  }
+ else   if (windowId.equals("death")) {
+    window=new UIScreenDeath();
+  }
+ else   if (windowId.equals("pause")) {
+    window=new UIMenuPause();
+  }
+ else   if (windowId.equals("inventory")) {
+    window=new UIScreenInventory();
+  }
+ else   if (windowId.equals("chat")) {
+    window=new UIScreenChat();
+  }
+ else   if (windowId.equals("hud")) {
+    window=new UIScreenHUD();
+  }
+ else   if (windowId.equals("minionBehaviour")) {
+    window=new UIMinionBehaviourMenu();
+  }
+  if (window == null) {
+    logger.log(Level.INFO,"GUIManager: Couldn't load window by ID \"" + windowId + "\"");
+  }
+ else {
+    logger.log(Level.INFO,"GUIManager: Loaded window of type " + window.getClass().getName());
+  }
+  return addWindow(window);
+}

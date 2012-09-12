@@ -1,0 +1,20 @@
+{
+  if (start != end) {
+    rectangles.clear();
+    int nextLine;
+    Vector2f pos;
+    for (int i=start; i < end; ) {
+      nextLine=findNextChar(i,'\n',false);
+      pos=toDisplayPosition(i);
+      pos.x=pos.x * 2;
+      pos.y=pos.y * 2 - cursor.getSize().y;
+      Vector2f size=new Vector2f(calcTextWidth(text.getText().substring(i,Math.min(end,nextLine))),cursor.getSize().y);
+      rectangles.add(new Vector2f[]{pos,size});
+      i=nextLine;
+    }
+    selectionRectangle.setVisible(true);
+  }
+ else {
+    selectionRectangle.setVisible(false);
+  }
+}
