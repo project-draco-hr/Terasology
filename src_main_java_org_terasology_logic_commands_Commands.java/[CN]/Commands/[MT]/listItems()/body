@@ -1,0 +1,13 @@
+{
+  StringBuilder items=new StringBuilder();
+  PrefabManager prefMan=CoreRegistry.get(PrefabManager.class);
+  Iterator<Prefab> it=prefMan.listPrefabs().iterator();
+  while (it.hasNext()) {
+    Prefab prefab=it.next();
+    if (!items.toString().isEmpty()) {
+      items.append("\n");
+    }
+    items.append(prefab.getName());
+  }
+  MessageManager.getInstance().addMessage(items.toString(),EMessageScope.PRIVATE);
+}

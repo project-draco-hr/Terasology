@@ -1,0 +1,11 @@
+{
+  StringBuilder msg=new StringBuilder();
+  List<Command> commands=CommandManager.getInstance().getCommandList();
+  for (  Command cmd : commands) {
+    if (!msg.toString().isEmpty()) {
+      msg.append("\n");
+    }
+    msg.append(cmd.getName() + " - " + cmd.getShortDescription());
+  }
+  MessageManager.getInstance().addMessage(msg.toString(),EMessageScope.PRIVATE);
+}

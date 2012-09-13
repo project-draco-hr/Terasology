@@ -1,0 +1,20 @@
+{
+  if (list.getItemCount() < 1) {
+    GUIManager.getInstance().showMessage("Error","You did not create a world yet!");
+    return;
+  }
+  if (list.getSelection() == null) {
+    GUIManager.getInstance().showMessage("Error","Please choose a world!");
+    return;
+  }
+  try {
+    WorldInfo info=(WorldInfo)list.getSelection().getValue();
+    Config.getInstance().setDefaultSeed(info.getSeed());
+    Config.getInstance().setWorldTitle(info.getTitle());
+    Config.getInstance().setChunkGenerator(info.getChunkGenerators());
+    CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(info));
+  }
+ catch (  Exception e) {
+    GUIManager.getInstance().showMessage("Error","Failed reading world data object. Sorry.");
+  }
+}

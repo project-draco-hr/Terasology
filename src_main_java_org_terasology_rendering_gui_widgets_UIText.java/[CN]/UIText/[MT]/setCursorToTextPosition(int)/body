@@ -1,0 +1,33 @@
+{
+  if (index < 0) {
+    index=0;
+  }
+ else   if (index > text.getText().length()) {
+    index=text.getText().length();
+  }
+  if (index != cursorPosition) {
+    Vector2f newPos=toDisplayPosition(index);
+    newPos.y=newPos.y - cursorSize.y / 2;
+    cursor.setPosition(newPos);
+    if (isMultiLine()) {
+      if ((cursor.getSize().y + cursor.getPosition().y - getScrollPosition() / 2) > (getSize().y / 2f)) {
+        float additionalSpacing=getPadding().z + 5f;
+        scrollTo(cursor.getPosition().y * 2 + cursor.getSize().y - getSize().y + additionalSpacing);
+      }
+ else       if (cursor.getPosition().y - getScrollPosition() / 2 < 0) {
+        float additionalSpacing=getPadding().x + 5f;
+        scrollTo(cursor.getPosition().y * 2 - additionalSpacing);
+      }
+    }
+ else {
+      if ((cursor.getPosition().x + text.getPosition().x / 2 + getPadding().y) > (getSize().x / 2f)) {
+        text.setPosition(new Vector2f(-(cursor.getPosition().x * 2 - getSize().x + getPadding().y + getPadding().w),0f));
+      }
+ else       if ((cursor.getPosition().x + text.getPosition().x / 2) < 0) {
+        text.setPosition(new Vector2f(-cursor.getPosition().x * 2,0f));
+      }
+    }
+    cursorPosition=index;
+    notifySelectionChangedListeners();
+  }
+}

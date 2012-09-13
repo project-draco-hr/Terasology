@@ -1,0 +1,83 @@
+{
+  setId("singleplayer");
+  setBackgroundImage("engine:menubackground");
+  setModal(true);
+  maximize();
+  list=new UIList();
+  list.setSize(new Vector2f(512f,256f));
+  list.setPadding(new Vector4f(10f,5f,10f,5f));
+  list.setBorderSolid(2f,0x1E,0x1E,0x1E,1.0f);
+  list.setBackgroundImage("engine:gui_menu",new Vector2f(264f,18f),new Vector2f(159f,63f));
+  list.setBorderImage("engine:gui_menu",new Vector2f(256f,0f),new Vector2f(175f,88f),new Vector4f(16f,7f,7f,7f));
+  list.addDoubleClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      loadSelectedWorld();
+    }
+  }
+);
+  list.setHorizontalAlign(EHorizontalAlign.CENTER);
+  list.setPosition(new Vector2f(0f,230f));
+  list.setVisible(true);
+  goToBack=new UIButton(new Vector2f(256f,32f),UIButton.eButtonType.NORMAL);
+  goToBack.getLabel().setText("Back");
+  goToBack.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      GUIManager.getInstance().openWindow("main");
+    }
+  }
+);
+  goToBack.setHorizontalAlign(EHorizontalAlign.CENTER);
+  goToBack.setPosition(new Vector2f(0f,600f));
+  goToBack.setVisible(true);
+  loadFromList=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
+  loadFromList.getLabel().setText("Load");
+  loadFromList.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      loadSelectedWorld();
+    }
+  }
+);
+  loadFromList.setHorizontalAlign(EHorizontalAlign.CENTER);
+  loadFromList.setPosition(new Vector2f(30f,505f));
+  loadFromList.setVisible(true);
+  deleteFromList=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
+  deleteFromList.getLabel().setText("Delete");
+  deleteFromList.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      if (list.getSelection() == null) {
+        GUIManager.getInstance().showMessage("Error","Please choose a world first.");
+        return;
+      }
+      try {
+        WorldInfo worldInfo=(WorldInfo)list.getSelection().getValue();
+        File world=PathManager.getInstance().getWorldSavePath(worldInfo.getTitle());
+        WorldUtil.deleteWorld(world);
+        list.removeItem(list.getSelectionIndex());
+      }
+ catch (      Exception e) {
+        GUIManager.getInstance().showMessage("Error","Failed deleting world data object. Sorry.");
+      }
+    }
+  }
+);
+  deleteFromList.setHorizontalAlign(EHorizontalAlign.CENTER);
+  deleteFromList.setPosition(new Vector2f(196f,505f));
+  deleteFromList.setVisible(true);
+  createNewWorld=new UIButton(new Vector2f(192f,32f),UIButton.eButtonType.NORMAL);
+  createNewWorld.getLabel().setText("Create new world");
+  createNewWorld.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      GUIManager.getInstance().openWindow("createWorld");
+    }
+  }
+);
+  createNewWorld.setHorizontalAlign(EHorizontalAlign.CENTER);
+  createNewWorld.setPosition(new Vector2f(-166f,505f));
+  createNewWorld.setVisible(true);
+  fillList();
+  addDisplayElement(list);
+  addDisplayElement(loadFromList);
+  addDisplayElement(goToBack);
+  addDisplayElement(createNewWorld);
+  addDisplayElement(deleteFromList);
+}

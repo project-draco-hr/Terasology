@@ -1,8 +1,11 @@
 {
   setSize(size);
   opened=false;
-  baseInput=new UIInput(size);
+  baseInput=new UIText();
+  baseInput.setSize(size);
   baseInput.setVisible(true);
+  baseInput.setBackgroundColor(0xFF,0xFF,0xFF,1.0f);
+  baseInput.setBorderSolid(1,0x00,0x00,0x00,1.0f);
   baseInput.setDisabled(true);
   baseInput.addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
@@ -33,7 +36,7 @@
     }
   }
 );
-  baseButton=new UIButton(new Vector2f(18f,20f),UIButton.eButtonType.TOGGLE);
+  baseButton=new UIButton(new Vector2f(20f,22f),UIButton.eButtonType.TOGGLE);
   baseButton.setVisible(true);
   baseButton.setPosition(new Vector2f(size.x - baseButton.getSize().x,size.y / 2 - baseButton.getSize().y / 2));
   baseButton.getLabel().setText("");
@@ -44,22 +47,31 @@
     @Override public void changed(    UIDisplayElement element){
       opened=baseButton.getToggleState();
       baseList.setVisible(opened);
+      setFocus(UIComboBox.this);
     }
   }
 );
-  baseList=new UIList(listSize);
-  baseList.setPosition(new Vector2f(1f,size.y - 1f));
+  baseList=new UIList();
+  baseList.setSize(listSize);
+  baseList.setPosition(new Vector2f(0f,size.y));
   baseList.setBorderSolid(1f,0x00,0x00,0x00,1.0f);
   baseList.setBackgroundColor(0xFF,0xFF,0xFF,1.0f);
   baseList.setVisible(false);
-  baseList.addChangedListener(new ChangedListener(){
+  baseList.addSelectionChangedListener(new SelectionChangedListener(){
     @Override public void changed(    UIDisplayElement element){
-      if (baseList.getSelectedItem() != null) {
-        baseInput.setValue(baseList.getSelectedItem().getText());
+      if (baseList.getSelection() != null) {
+        baseInput.setText((baseList.getSelection()).getText());
       }
       opened=false;
       baseList.setVisible(opened);
       baseButton.setToggleState(false);
+      notifySelectionChangedListeners();
+    }
+  }
+);
+  baseList.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      notifyChangedListeners();
     }
   }
 );

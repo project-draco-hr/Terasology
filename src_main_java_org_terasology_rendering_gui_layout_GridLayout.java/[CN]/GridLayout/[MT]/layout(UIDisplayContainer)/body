@@ -9,30 +9,35 @@
         x+=cellWidth[j % columns];
       }
       if (horizontalCellAlign == EHorizontalAlign.LEFT) {
-        x+=margin.w;
+        x+=padding.w;
       }
  else       if (horizontalCellAlign == EHorizontalAlign.CENTER) {
         x+=cellWidth[i % columns] / 2 - elements.get(i).getSize().x / 2;
       }
  else       if (horizontalCellAlign == EHorizontalAlign.RIGHT) {
-        x+=cellWidth[i % columns] - elements.get(i).getSize().x + margin.y;
+        x+=cellWidth[i % columns] - elements.get(i).getSize().x + padding.y;
       }
       float y=0;
       for (int j=0; j < (int)Math.floor(i / columns); j++) {
-        y+=cellHeight[(int)Math.floor(i / columns)];
+        y+=cellHeight[(int)Math.floor(j / columns)];
       }
       if (verticalCellAlign == EVerticalAlign.TOP) {
-        y+=margin.x;
+        y+=padding.x;
       }
  else       if (verticalCellAlign == EVerticalAlign.CENTER) {
         y+=cellHeight[(int)Math.floor(i / columns)] / 2 - elements.get(i).getSize().y / 2;
       }
  else       if (verticalCellAlign == EVerticalAlign.BOTTOM) {
-        y+=cellHeight[(int)Math.floor(i / columns)] - elements.get(i).getSize().y - margin.z;
+        y+=cellHeight[(int)Math.floor(i / columns)] - elements.get(i).getSize().y - padding.z;
       }
       elements.get(i).setPosition(new Vector2f(x,y));
       elements.get(i).setVisible(true);
     }
   }
-  container.setSize(size);
+  if (container.getUnitSizeX() != EUnitType.PIXEL) {
+    container.setSize("",size.y + "px");
+  }
+ else {
+    container.setSize(size);
+  }
 }

@@ -1,4 +1,5 @@
 {
+  setId("config:controls");
   setBackgroundImage("engine:loadingbackground");
   setModal(true);
   maximize();
@@ -17,7 +18,7 @@
   title.setHorizontalAlign(EHorizontalAlign.CENTER);
   title.setPosition(new Vector2f(0f,28f));
   title.setVisible(true);
-  subtitle=new UIText("Control Settings");
+  subtitle=new UILabel("Control Settings");
   subtitle.setHorizontalAlign(EHorizontalAlign.CENTER);
   subtitle.setPosition(new Vector2f(0f,128f));
   subtitle.setVisible(true);
@@ -28,7 +29,7 @@
   _backToConfigMenuButton.setVisible(true);
   _backToConfigMenuButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      GUIManager.getInstance().setFocusedWindow(GUIManager.getInstance().getWindowById("menuConfig"));
+      GUIManager.getInstance().openWindow("config");
     }
   }
 );
@@ -137,67 +138,67 @@
     }
   }
 );
-  ForwardButtontext=new UIText("Forward");
+  ForwardButtontext=new UILabel("Forward");
   ForwardButtontext.setVisible(true);
-  BackwardButtontext=new UIText("Backward");
+  BackwardButtontext=new UILabel("Backward");
   BackwardButtontext.setVisible(true);
-  RightButtontext=new UIText("Right");
+  RightButtontext=new UILabel("Right");
   RightButtontext.setVisible(true);
-  LeftButtontext=new UIText("Left");
+  LeftButtontext=new UILabel("Left");
   LeftButtontext.setVisible(true);
-  UsehelditemButtontext=new UIText("Use Item");
+  UsehelditemButtontext=new UILabel("Use Item");
   UsehelditemButtontext.setVisible(true);
-  AttackButtontext=new UIText("Attack");
+  AttackButtontext=new UILabel("Attack");
   AttackButtontext.setVisible(true);
-  ToolnextButtontext=new UIText("Next Item");
+  ToolnextButtontext=new UILabel("Next Item");
   ToolnextButtontext.setVisible(true);
-  ToolprevButtontext=new UIText("Previous Item");
+  ToolprevButtontext=new UILabel("Previous Item");
   ToolprevButtontext.setVisible(true);
-  ActivateButtontext=new UIText("Activate");
+  ActivateButtontext=new UILabel("Activate");
   ActivateButtontext.setVisible(true);
-  JumpButtontext=new UIText("Jump");
+  JumpButtontext=new UILabel("Jump");
   JumpButtontext.setVisible(true);
-  RunButtontext=new UIText("Run");
+  RunButtontext=new UILabel("Run");
   RunButtontext.setVisible(true);
-  CrouchButtontext=new UIText("Crouch");
+  CrouchButtontext=new UILabel("Crouch");
   CrouchButtontext.setVisible(true);
-  InventoryButtontext=new UIText("Inventory");
+  InventoryButtontext=new UILabel("Inventory");
   InventoryButtontext.setVisible(true);
-  PauseButtontext=new UIText("Pause");
+  PauseButtontext=new UILabel("Pause");
   PauseButtontext.setVisible(true);
-  HideguiButtontext=new UIText("Hide HUD");
+  HideguiButtontext=new UILabel("Hide HUD");
   HideguiButtontext.setVisible(true);
-  MinionmodeButtontext=new UIText("Minion mode");
+  MinionmodeButtontext=new UILabel("Minion mode");
   MinionmodeButtontext.setVisible(true);
-  ConsoleButtontext=new UIText("Console");
+  ConsoleButtontext=new UILabel("Console");
   ConsoleButtontext.setVisible(true);
-  Toolslot1Buttontext=new UIText("Hotkey 1");
+  Toolslot1Buttontext=new UILabel("Hotkey 1");
   Toolslot1Buttontext.setVisible(true);
-  Toolslot2Buttontext=new UIText("Hotkey 2");
+  Toolslot2Buttontext=new UILabel("Hotkey 2");
   Toolslot2Buttontext.setVisible(true);
-  Toolslot3Buttontext=new UIText("Hotkey 3");
+  Toolslot3Buttontext=new UILabel("Hotkey 3");
   Toolslot3Buttontext.setVisible(true);
-  Toolslot4Buttontext=new UIText("Hotkey 4");
+  Toolslot4Buttontext=new UILabel("Hotkey 4");
   Toolslot4Buttontext.setVisible(true);
-  Toolslot5Buttontext=new UIText("Hotkey 5");
+  Toolslot5Buttontext=new UILabel("Hotkey 5");
   Toolslot5Buttontext.setVisible(true);
-  Toolslot6Buttontext=new UIText("Hotkey 6");
+  Toolslot6Buttontext=new UILabel("Hotkey 6");
   Toolslot6Buttontext.setVisible(true);
-  Toolslot7Buttontext=new UIText("Hotkey 7");
+  Toolslot7Buttontext=new UILabel("Hotkey 7");
   Toolslot7Buttontext.setVisible(true);
-  Toolslot8Buttontext=new UIText("Hotkey 8");
+  Toolslot8Buttontext=new UILabel("Hotkey 8");
   Toolslot8Buttontext.setVisible(true);
-  Toolslot9Buttontext=new UIText("Hotkey 9");
+  Toolslot9Buttontext=new UILabel("Hotkey 9");
   Toolslot9Buttontext.setVisible(true);
   GridLayout layout=new GridLayout(4);
-  layout.setMargin(new Vector4f(0f,20f,0f,20f));
+  layout.setPadding(new Vector4f(0f,20f,0f,20f));
   container=new UIComposite();
   container.setHorizontalAlign(EHorizontalAlign.CENTER);
   container.setPosition(new Vector2f(0f,170f));
   container.setLayout(layout);
   container.setVisible(true);
   layout=new GridLayout(2);
-  layout.setMargin(new Vector4f(5f,5f,5f,5f));
+  layout.setPadding(new Vector4f(5f,5f,5f,5f));
   layout.setVerticalCellAlign(EVerticalAlign.CENTER);
   group1=new UIComposite();
   group1.setLayout(layout);
@@ -273,4 +274,5 @@
   addDisplayElement(MouseSensitivity);
   addDisplayElement(defaultButton);
   addDisplayElement(_backToConfigMenuButton);
+  setup();
 }

@@ -1,0 +1,29 @@
+{
+  boolean valid=false;
+  if (c >= 'a' && c < 'z' + 1) {
+    valid=true;
+  }
+ else   if (c >= 'A' && c < 'Z' + 1) {
+    valid=true;
+  }
+ else   if (c >= '0' && c < '9' + 1) {
+    valid=true;
+  }
+ else {
+    if (isMultiLine()) {
+      for (      char ch : multiLineSecialCharacters) {
+        if (ch == c) {
+          valid=true;
+          break;
+        }
+      }
+    }
+    for (    char ch : specialCharacters) {
+      if (ch == c) {
+        valid=true;
+        break;
+      }
+    }
+  }
+  return valid;
+}

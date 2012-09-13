@@ -1,0 +1,13 @@
+{
+  final List<String> activities=new ArrayList<String>();
+  final List<Double> values=new ArrayList<Double>();
+  sortMetrics(metrics,activities,values);
+  for (int i=0; i < lines.size() && i < activities.size(); ++i) {
+    UILabel line=lines.get(i);
+    line.setVisible(true);
+    line.setText(String.format("%s: %.2fms",activities.get(i),values.get(i)));
+  }
+  for (int i=activities.size(); i < lines.size(); ++i) {
+    lines.get(i).setVisible(false);
+  }
+}
