@@ -1,0 +1,13 @@
+{
+  LocationComponent loc=new LocationComponent();
+  loc.setLocalPosition(rootBone.getLocalPosition());
+  EntityRef boneEntity=entityManager.create(loc);
+  LocationComponent parentLoc=toEntity.getComponent(LocationComponent.class);
+  parentLoc.addChild(boneEntity,toEntity);
+  toEntity.saveComponent(parentLoc);
+  skeletalMesh.boneEntities.add(boneEntity);
+  for (  Bone child : rootBone.getChildren()) {
+    addBoneEntities(child,boneEntity,skeletalMesh);
+  }
+  return boneEntity;
+}

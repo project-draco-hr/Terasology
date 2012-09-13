@@ -1,0 +1,23 @@
+{
+  BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
+  MD5 md5=new MD5();
+  String line=readToLine(reader,"MD5Version ");
+  md5.version=Integer.parseInt(line.split(" ",3)[1]);
+  line=readToLine(reader,"commandline ");
+  Matcher commandlineMatch=commandLinePattern.matcher(line);
+  if (commandlineMatch.matches()) {
+    md5.commandline=commandlineMatch.group(1);
+  }
+  line=readToLine(reader,"numJoints ");
+  md5.numJoints=Integer.parseInt(line.split(" ",3)[1]);
+  line=readToLine(reader,"numMeshes ");
+  md5.numMeshes=Integer.parseInt(line.split(" ",3)[1]);
+  readToLine(reader,"joints {");
+  readJoints(reader,md5);
+  md5.meshes=new MD5Mesh[md5.numMeshes];
+  for (int i=0; i < md5.numMeshes; ++i) {
+    readToLine(reader,"mesh {");
+    md5.meshes[i]=readMesh(reader,md5);
+  }
+  return md5;
+}

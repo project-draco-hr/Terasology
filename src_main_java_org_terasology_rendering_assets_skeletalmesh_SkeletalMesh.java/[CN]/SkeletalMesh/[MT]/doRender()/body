@@ -1,0 +1,15 @@
+{
+  List<Vector3f> verts=getBindPoseVertexPositions();
+  FloatBuffer vertBuffer=BufferUtils.createFloatBuffer(verts.size() * 3);
+  for (  Vector3f vert : verts) {
+    vertBuffer.put(vert.x);
+    vertBuffer.put(vert.y);
+    vertBuffer.put(vert.z);
+  }
+  vertBuffer.flip();
+  VertexBufferObjectManager.getInstance().bufferVboData(vboPosBuffer,vertBuffer,GL15.GL_DYNAMIC_DRAW);
+  GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,vboPosBuffer);
+  glVertexPointer(3,GL_FLOAT,3 * 4,0);
+  GL11.glDrawElements(GL11.GL_TRIANGLES,indices.size(),GL_UNSIGNED_INT,0);
+  GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+}

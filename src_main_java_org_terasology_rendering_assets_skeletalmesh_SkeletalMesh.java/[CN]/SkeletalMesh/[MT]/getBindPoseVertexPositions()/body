@@ -1,0 +1,17 @@
+{
+  List<Vector3f> results=Lists.newArrayList();
+  for (int i=0; i < vertexStartWeights.size(); ++i) {
+    Vector3f vertexPos=new Vector3f();
+    for (int weightIndexOffset=0; weightIndexOffset < vertexWeightCounts.get(i); ++weightIndexOffset) {
+      int weightIndex=vertexStartWeights.get(i) + weightIndexOffset;
+      BoneWeight weight=weights.get(weightIndex);
+      Bone bone=bones.get(weight.getBoneIndex());
+      Vector3f current=QuaternionUtil.quatRotate(bone.getObjectRotation(),weight.getPosition(),new Vector3f());
+      current.add(bone.getObjectPosition());
+      current.scale(weight.getBias());
+      vertexPos.add(current);
+    }
+    results.add(vertexPos);
+  }
+  return results;
+}

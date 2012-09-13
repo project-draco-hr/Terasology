@@ -1,0 +1,12 @@
+{
+  SkeletalMeshComponent skeleton=entity.getComponent(SkeletalMeshComponent.class);
+  if (skeleton.mesh == null) {
+    return;
+  }
+  if (skeleton.boneEntities == null) {
+    skeleton.boneEntities=Lists.newArrayList();
+    EntityRef rootBone=addBoneEntities(skeleton.mesh.getRootBone(),entity,skeleton);
+    skeleton.rootBone=rootBone;
+  }
+  entity.saveComponent(skeleton);
+}

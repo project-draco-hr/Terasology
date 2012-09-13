@@ -1,5 +1,8 @@
 {
   loc=new LocationComponent();
+  entity=mock(EntityRef.class);
+  when(entity.getComponent(LocationComponent.class)).thenReturn(loc);
+  when(entity.exists()).thenReturn(true);
   QuaternionUtil.setEuler(yawRotation,TeraMath.DEG_TO_RAD * 90,0,0);
   QuaternionUtil.setEuler(pitchRotation,0,TeraMath.DEG_TO_RAD * 45,0);
   pitchYaw.mul(yawRotation,pitchRotation);
