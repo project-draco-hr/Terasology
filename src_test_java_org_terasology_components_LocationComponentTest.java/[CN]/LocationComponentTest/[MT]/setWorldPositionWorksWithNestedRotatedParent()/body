@@ -1,0 +1,23 @@
+{
+  LocationComponent first=new LocationComponent();
+  EntityRef firstEntity=mock(EntityRef.class);
+  when(firstEntity.getComponent(LocationComponent.class)).thenReturn(first);
+  when(firstEntity.exists()).thenReturn(true);
+  LocationComponent second=new LocationComponent();
+  EntityRef secondEntity=mock(EntityRef.class);
+  when(secondEntity.getComponent(LocationComponent.class)).thenReturn(second);
+  when(secondEntity.exists()).thenReturn(true);
+  LocationComponent third=new LocationComponent();
+  EntityRef thirdEntity=mock(EntityRef.class);
+  when(thirdEntity.getComponent(LocationComponent.class)).thenReturn(third);
+  when(thirdEntity.exists()).thenReturn(true);
+  first.setLocalRotation(yawRotation);
+  second.setLocalPosition(new Vector3f(1,0,0));
+  first.addChild(secondEntity,firstEntity);
+  TeraAssert.assertEquals(new Vector3f(0,0,-1),second.getWorldPosition(),0.000001f);
+  second.setLocalRotation(pitchRotation);
+  second.addChild(thirdEntity,secondEntity);
+  TeraAssert.assertEquals(new Vector3f(0,0,-1),third.getWorldPosition(),0.000001f);
+  third.setLocalPosition(new Vector3f(0,0,1));
+  TeraAssert.assertEquals(new Vector3f(0.5f * (float)Math.sqrt(2),-0.5f * (float)Math.sqrt(2),-1),third.getWorldPosition(),0.000001f);
+}

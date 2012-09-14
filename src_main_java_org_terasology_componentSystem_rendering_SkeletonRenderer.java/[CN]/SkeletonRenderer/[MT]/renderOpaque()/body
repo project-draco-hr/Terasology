@@ -5,7 +5,7 @@
   Vector3f worldPos=new Vector3f();
   Matrix4f matrix=new Matrix4f();
   Transform trans=new Transform();
-  Transform normTrans=new Transform();
+  Quat4f inverseWorldRot=new Quat4f();
   glPushMatrix();
   glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
   for (  EntityRef entity : entityManager.iteratorEntities(SkeletalMeshComponent.class,LocationComponent.class)) {
@@ -21,6 +21,7 @@
     FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
     LocationComponent location=entity.getComponent(LocationComponent.class);
     location.getWorldRotation(worldRot);
+    inverseWorldRot.inverse(worldRot);
     location.getWorldPosition(worldPos);
     float worldScale=location.getWorldScale();
     matrix.set(worldRot,worldPos,worldScale);
@@ -31,7 +32,30 @@
     mBuffer.flip();
     glMultMatrix(mBuffer);
     skeletalMesh.material.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
-    skeletalMesh.mesh.render();
+    List<Vector3f> bonePositions=Lists.newArrayListWithCapacity(skeletalMesh.mesh.getVertexCount());
+    List<Quat4f> boneRotations=Lists.newArrayListWithCapacity(skeletalMesh.mesh.getVertexCount());
+    for (    Bone bone : skeletalMesh.mesh.bones()) {
+      EntityRef boneEntity=skeletalMesh.boneEntities.get(bone.getName());
+      if (boneEntity == null) {
+        boneEntity=EntityRef.NULL;
+      }
+      LocationComponent boneLocation=boneEntity.getComponent(LocationComponent.class);
+      if (boneLocation != null) {
+        Vector3f pos=boneLocation.getWorldPosition();
+        pos.sub(worldPos);
+        QuaternionUtil.quatRotate(inverseWorldRot,pos,pos);
+        bonePositions.add(pos);
+        Quat4f rot=new Quat4f();
+        rot.mul(inverseWorldRot,boneLocation.getWorldRotation());
+        boneRotations.add(rot);
+      }
+ else {
+        logger.warning("Unable to resolve bone \"" + bone.getName() + "\"");
+        bonePositions.add(new Vector3f());
+        boneRotations.add(new Quat4f());
+      }
+    }
+    skeletalMesh.mesh.render(bonePositions,boneRotations);
     glPopMatrix();
   }
   glPopMatrix();

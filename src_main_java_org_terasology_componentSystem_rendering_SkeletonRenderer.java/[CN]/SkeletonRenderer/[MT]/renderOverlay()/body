@@ -1,20 +1,2 @@
 {
-  ShaderManager.getInstance().enableDefault();
-  Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  glPushMatrix();
-  glColor4f(1.0f,1.0f,1.0f,1.0f);
-  glDisable(GL11.GL_TEXTURE_2D);
-  glLineWidth(2);
-  glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
-  for (  EntityRef entity : entityManager.iteratorEntities(SkeletalMeshComponent.class,LocationComponent.class)) {
-    SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
-    renderBone(skeletalMesh.rootBone);
-  }
-  glColor4f(1.0f,0.0f,1.0f,1.0f);
-  for (  EntityRef entity : entityManager.iteratorEntities(SkeletalMeshComponent.class,LocationComponent.class)) {
-    SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
-    renderBoneOrientation(skeletalMesh.rootBone);
-  }
-  glEnable(GL11.GL_TEXTURE_2D);
-  glPopMatrix();
 }
