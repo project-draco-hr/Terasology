@@ -47,14 +47,14 @@
     @Override public void focusOn(    UIDisplayElement element){
       if (!isDisabled()) {
         cursor.setVisible(true);
-        cursor.getAnimation(AnimateOpacity.class).start();
+        cursor.getAnimation(AnimationOpacity.class).start();
         selectionRectangle.fadeSelection(false);
         setCursorPosition(cursorPosition);
       }
     }
     @Override public void focusOff(    UIDisplayElement element){
       cursor.setVisible(false);
-      cursor.getAnimation(AnimateOpacity.class).stop();
+      cursor.getAnimation(AnimationOpacity.class).stop();
       selectionRectangle.fadeSelection(true);
     }
   }
@@ -69,8 +69,8 @@
   cursor.setColor(new Color(0,0,0));
   cursor.setPosition(new Vector2f(getPosition().x,getPosition().y));
   cursor.setVisible(false);
-  cursor.setAnimation(new AnimateOpacity(0f,1f,5f));
-  cursor.getAnimation(AnimateOpacity.class).setRepeat(true);
+  cursor.setAnimation(new AnimationOpacity(0f,1f,5f));
+  cursor.getAnimation(AnimationOpacity.class).setRepeat(true);
   addDisplayElement(text);
   text.addDisplayElement(selectionRectangle);
   text.addDisplayElement(cursor);
