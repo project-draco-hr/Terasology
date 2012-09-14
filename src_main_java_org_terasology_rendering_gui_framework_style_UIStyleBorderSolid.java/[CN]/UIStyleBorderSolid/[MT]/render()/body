@@ -1,3 +1,35 @@
 {
-  renderSolid();
+  glPushMatrix();
+  glLoadIdentity();
+  glTranslatef(getAbsolutePosition().x,getAbsolutePosition().y,0);
+  glColor4f(color.r,color.g,color.b,color.a);
+  if (width.x > 0) {
+    glLineWidth(width.x);
+    glBegin(GL11.GL_LINES);
+    glVertex2f(getPosition().x + width.w,getPosition().y + width.x / 2f);
+    glVertex2f(getPosition().x + getSize().x - width.y,getPosition().y + width.x / 2f);
+    glEnd();
+  }
+  if (width.y > 0) {
+    glLineWidth(width.y);
+    glBegin(GL11.GL_LINES);
+    glVertex2f(getPosition().x + getSize().x - width.y / 2f,getPosition().y + width.y % 2);
+    glVertex2f(getPosition().x + getSize().x - width.y / 2f,getPosition().y + getSize().y + width.y % 2);
+    glEnd();
+  }
+  if (width.z > 0) {
+    glLineWidth(width.x);
+    glBegin(GL11.GL_LINES);
+    glVertex2f(getPosition().x + width.w,getPosition().y + getSize().y - width.z / 2f);
+    glVertex2f(getPosition().x + getSize().x - width.y,getPosition().y + getSize().y - width.z / 2f);
+    glEnd();
+  }
+  if (width.w > 0) {
+    glLineWidth(width.w);
+    glBegin(GL11.GL_LINES);
+    glVertex2f(getPosition().x + width.w / 2f,getPosition().y + width.z % 2);
+    glVertex2f(getPosition().x + width.w / 2f,getPosition().y + getSize().y + width.z % 2);
+    glEnd();
+  }
+  glPopMatrix();
 }

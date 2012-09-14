@@ -2,6 +2,14 @@
   if (!visible && isVisible()) {
     setFocus(null);
   }
+  if (!isVisible() && visible) {
+    notifyWindowListeners(EWindowEvent.OPEN);
+    setAnimation(new AnimateOpacity(0f,1f,5f));
+    getAnimation(AnimateOpacity.class).start();
+  }
+ else   if (isVisible() && !visible) {
+    notifyWindowListeners(EWindowEvent.CLOSE);
+  }
   super.setVisible(visible);
   GUIManager.getInstance().checkMouseGrabbing();
 }

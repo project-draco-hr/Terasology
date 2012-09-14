@@ -1,0 +1,44 @@
+{
+  List<UIDisplayElement> allElements=container.getDisplayElements();
+  List<UIDisplayElement> elements=new ArrayList<UIDisplayElement>();
+  for (  UIDisplayElement element : allElements) {
+    if (!(element instanceof UIStyle)) {
+      elements.add(element);
+    }
+  }
+  cellWidth=calcCellWidth(elements);
+  cellHeight=calcCellHeight(elements);
+  for (int i=0; i < elements.size(); i++) {
+    float x=0;
+    for (int j=0; (j < (i % columns)); j++) {
+      x+=cellWidth[j % columns];
+    }
+    if (horizontalCellAlign == EHorizontalAlign.LEFT) {
+      x+=padding.w;
+    }
+ else     if (horizontalCellAlign == EHorizontalAlign.CENTER) {
+      x+=cellWidth[i % columns] / 2 - elements.get(i).getSize().x / 2;
+    }
+ else     if (horizontalCellAlign == EHorizontalAlign.RIGHT) {
+      x+=cellWidth[i % columns] - elements.get(i).getSize().x + padding.y;
+    }
+    float y=0;
+    for (int j=0; j < (int)Math.floor(i / columns); j++) {
+      y+=cellHeight[(int)Math.floor(j / columns)];
+    }
+    if (verticalCellAlign == EVerticalAlign.TOP) {
+      y+=padding.x;
+    }
+ else     if (verticalCellAlign == EVerticalAlign.CENTER) {
+      y+=cellHeight[(int)Math.floor(i / columns)] / 2 - elements.get(i).getSize().y / 2;
+    }
+ else     if (verticalCellAlign == EVerticalAlign.BOTTOM) {
+      y+=cellHeight[(int)Math.floor(i / columns)] - elements.get(i).getSize().y - padding.z;
+    }
+    elements.get(i).setPosition(new Vector2f(x,y));
+    elements.get(i).setVisible(true);
+  }
+  if (fitSize) {
+    container.setSize(size);
+  }
+}
