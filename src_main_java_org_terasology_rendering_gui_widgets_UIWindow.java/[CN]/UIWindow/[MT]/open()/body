@@ -1,10 +1,8 @@
 {
-  if (!isVisible()) {
-    notifyWindowListeners(EWindowEvent.OPEN);
-    setFocus(null);
-  }
   setVisible(true);
-  setAnimation(new AnimateOpacity(0f,1f,5f));
-  getAnimation(AnimateOpacity.class).start();
+  setFocus(this);
+  setAnimation(new AnimationOpacity(0f,1f,10f));
+  getAnimation(AnimationOpacity.class).start();
+  GUIManager.getInstance().openWindow(this);
   GUIManager.getInstance().checkMouseGrabbing();
 }
