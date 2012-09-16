@@ -1,0 +1,82 @@
+{
+  glMatrixMode(GL_TEXTURE);
+  glPushMatrix();
+  glTranslatef(stripPosition.x / shadow.getWidth(),stripPosition.y / shadow.getHeight(),0.0f);
+  glScalef(sectorSize.x / shadow.getWidth(),sectorSize.y / shadow.getHeight(),1.0f);
+  glMatrixMode(GL11.GL_MODELVIEW);
+  if (width.x > 0) {
+    glPushMatrix();
+    glRotatef(90f,0f,0f,1f);
+    glTranslatef(-width.x,-getSize().x + offset[1],0f);
+    glScalef(width.x,getSize().x - offset[0] - offset[1],1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  if (width.y > 0) {
+    glPushMatrix();
+    glRotatef(180f,0f,0f,1f);
+    glTranslatef(-getSize().x - width.y,-getSize().y + offset[3],0f);
+    glScalef(width.y,getSize().y - offset[2] - offset[3],1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  if (width.z > 0) {
+    glPushMatrix();
+    glRotatef(-90f,0f,0f,1f);
+    glTranslatef(-getSize().y - width.z,offset[4],0f);
+    glScalef(width.z,getSize().x - offset[4] - offset[5],1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  if (width.w > 0) {
+    glPushMatrix();
+    glRotatef(0f,0f,0f,1f);
+    glTranslatef(-width.w,offset[6],0f);
+    glScalef(width.w,getSize().y - offset[6] - offset[7],1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  glMatrixMode(GL_TEXTURE);
+  glPopMatrix();
+  glMatrixMode(GL11.GL_MODELVIEW);
+  glMatrixMode(GL_TEXTURE);
+  glPushMatrix();
+  glTranslatef(outerCornerPosition.x,outerCornerPosition.y,0.0f);
+  glScalef(sectorSize.x / shadow.getWidth(),sectorSize.y / shadow.getHeight(),1.0f);
+  glMatrixMode(GL11.GL_MODELVIEW);
+  if (width.x > 0 && width.w > 0) {
+    glPushMatrix();
+    glRotatef(0f,0f,0f,1f);
+    glTranslatef(-width.w,-width.x,0f);
+    glScalef(width.w,width.x,1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  if (width.x > 0 && width.y > 0) {
+    glPushMatrix();
+    glRotatef(90f,0f,0f,1f);
+    glTranslatef(-width.x,-getSize().x - width.y,0f);
+    glScalef(width.x,width.y,1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  if (width.z > 0 && width.w > 0) {
+    glPushMatrix();
+    glRotatef(-90f,0f,0f,1f);
+    glTranslatef(-getSize().y - width.z,-width.w,0f);
+    glScalef(width.z,width.w,1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  if (width.y > 0 && width.z > 0) {
+    glPushMatrix();
+    glRotatef(-180f,0f,0f,1f);
+    glTranslatef(-getSize().x - width.y,-getSize().y - width.z,0f);
+    glScalef(width.y,width.z,1.0f);
+    mesh.render();
+    glPopMatrix();
+  }
+  glMatrixMode(GL_TEXTURE);
+  glPopMatrix();
+  glMatrixMode(GL11.GL_MODELVIEW);
+}

@@ -1,0 +1,16 @@
+{
+  if (mesh == null)   return;
+  if (mesh.isDisposed()) {
+    return;
+  }
+  if (shadow != null) {
+    ShaderManager.getInstance().enableDefaultTextured();
+    glBindTexture(GL11.GL_TEXTURE_2D,shadow.getId());
+    if (direction == EShadowDirection.INSIDE) {
+      renderInside();
+    }
+ else     if (direction == EShadowDirection.OUTSIDE) {
+      renderOutside();
+    }
+  }
+}
