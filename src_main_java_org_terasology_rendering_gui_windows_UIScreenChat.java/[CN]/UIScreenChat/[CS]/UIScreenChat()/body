@@ -6,11 +6,11 @@
   setId("chat");
   setModal(true);
   maximize();
-  addWindowListener(new WindowListener(){
-    @Override public void open(    UIDisplayElement element){
-      setFocus(inputBox);
-    }
-    @Override public void close(    UIDisplayElement element){
+  addVisibilityListener(new VisibilityListener(){
+    @Override public void changed(    UIDisplayElement element,    boolean visibility){
+      if (visibility) {
+        setFocus(inputBox);
+      }
     }
   }
 );
