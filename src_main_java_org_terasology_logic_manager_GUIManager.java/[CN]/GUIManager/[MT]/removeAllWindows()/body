@@ -1,4 +1,9 @@
 {
   logger.log(Level.INFO,"GUIManager: Remove all windows");
+  for (  UIDisplayElement window : renderer.getDisplayElements()) {
+    if (window instanceof UIWindow) {
+      ((UIWindow)window).shutdown();
+    }
+  }
   renderer.removeAllDisplayElements();
 }

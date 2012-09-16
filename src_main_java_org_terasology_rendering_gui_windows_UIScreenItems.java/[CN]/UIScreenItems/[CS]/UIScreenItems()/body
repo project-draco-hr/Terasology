@@ -16,6 +16,20 @@
   container.setLayout(layout);
   container.setPadding(new Vector4f(12f,12f,12f,12f));
   container.setVisible(true);
+  addWindowListener(new WindowListener(){
+    @Override public void shutdown(    UIDisplayElement element){
+      EntityRef item;
+      for (      UIItemCell cell : cells) {
+        item=cell.getItemEntity();
+        if (item.exists()) {
+          item.destroy();
+        }
+      }
+    }
+    @Override public void initialise(    UIDisplayElement element){
+    }
+  }
+);
   fillInventoryCells();
   addDisplayElement(container);
 }
