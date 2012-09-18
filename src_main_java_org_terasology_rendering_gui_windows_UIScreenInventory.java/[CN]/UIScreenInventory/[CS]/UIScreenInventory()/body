@@ -8,8 +8,8 @@
   addVisibilityListener(new VisibilityListener(){
     @Override public void changed(    UIDisplayElement element,    boolean visibility){
       if (visibility) {
-        toolbar.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity(),0,8);
-        inventory.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity(),9);
+        toolbar.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity(),0,9);
+        inventory.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity(),10);
         GUIManager.getInstance().getWindowById("hud").getElementById("leftGearWheel").setVisible(false);
         GUIManager.getInstance().getWindowById("hud").getElementById("rightGearWheel").setVisible(false);
         inventory.setPosition(new Vector2f(toolbar.getAbsolutePosition().x,Display.getHeight() + 5f));
@@ -36,14 +36,14 @@
     }
   }
 );
-  toolbar=new UIItemContainer(9);
+  CoreRegistry.get(GameType.class).onCreateInventoryHook(this);
+  toolbar=new UIItemContainer(10);
   toolbar.setVisible(true);
   toolbar.setHorizontalAlign(EHorizontalAlign.CENTER);
   toolbar.setVerticalAlign(EVerticalAlign.BOTTOM);
   toolbar.setCellMargin(new Vector2f(0f,0f));
   toolbar.setBorderImage("engine:inventory",new Vector2f(0f,84f),new Vector2f(169f,83f),new Vector4f(4f,4f,4f,4f));
-  inventory=new UIItemContainer(9);
-  inventory.setPosition(new Vector2f(0f,Display.getHeight() + 5f));
+  inventory=new UIItemContainer(10);
   inventory.setVisible(true);
   inventory.setCellMargin(new Vector2f(0f,0f));
   inventory.setBorderImage("engine:inventory",new Vector2f(0f,84f),new Vector2f(169f,61f),new Vector4f(5f,4f,3f,4f));
