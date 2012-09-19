@@ -1,0 +1,21 @@
+{
+  if (button == -1) {
+    if (!consumed) {
+      for (      MouseButtonListener listener : mouseButtonListeners) {
+        listener.wheel(this,wheel,intersect);
+      }
+    }
+  }
+ else   if (state) {
+    if (!consumed) {
+      for (      MouseButtonListener listener : mouseButtonListeners) {
+        listener.down(this,button,intersect);
+      }
+    }
+  }
+ else {
+    for (    MouseButtonListener listener : mouseButtonListeners) {
+      listener.up(this,button,intersect);
+    }
+  }
+}

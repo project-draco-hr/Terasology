@@ -1,8 +1,10 @@
 {
 switch (type) {
 case ENTER:
-    for (    MouseMoveListener listener : mouseListeners) {
-      listener.enter(this);
+    if (!consumed) {
+      for (      MouseMoveListener listener : mouseListeners) {
+        listener.enter(this);
+      }
     }
   break;
 case LEAVE:
@@ -11,8 +13,10 @@ for (MouseMoveListener listener : mouseListeners) {
 }
 break;
 case HOVER:
+if (!consumed) {
 for (MouseMoveListener listener : mouseListeners) {
 listener.hover(this);
+}
 }
 break;
 case MOVE:

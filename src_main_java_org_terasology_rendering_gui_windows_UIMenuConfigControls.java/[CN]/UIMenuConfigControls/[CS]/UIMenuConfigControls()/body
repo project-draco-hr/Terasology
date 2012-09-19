@@ -3,6 +3,43 @@
   setBackgroundImage("engine:loadingbackground");
   setModal(true);
   maximize();
+  addMouseButtonListener(new MouseButtonListener(){
+    @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
+      if (editButton != null) {
+        int key=-1;
+        if (wheel > 0)         key=259;
+ else         if (wheel < 0)         key=260;
+        if (key != -1) {
+          changeButton(editButton,key);
+          editButton=null;
+        }
+      }
+    }
+    @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
+    }
+    @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
+      if (editButton != null) {
+        int key=-1;
+        if (button == 0)         key=256;
+ else         if (button == 1)         key=257;
+ else         if (button == 2)         key=258;
+        if (key != -1) {
+          changeButton(editButton,key);
+          editButton=null;
+        }
+      }
+    }
+  }
+);
+  addKeyListener(new KeyListener(){
+    @Override public void key(    UIDisplayElement element,    KeyEvent event){
+      if (editButton != null) {
+        changeButton(editButton,event.getKey());
+        editButton=null;
+      }
+    }
+  }
+);
   ClickListener editButtonClick=new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (editButton == null) {
