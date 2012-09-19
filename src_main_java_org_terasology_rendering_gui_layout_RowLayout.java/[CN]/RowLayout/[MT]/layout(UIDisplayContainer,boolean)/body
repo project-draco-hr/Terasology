@@ -1,0 +1,53 @@
+{
+  List<UIDisplayElement> allElements=container.getDisplayElements();
+  List<UIDisplayElement> elements=new ArrayList<UIDisplayElement>();
+  for (  UIDisplayElement element : allElements) {
+    if (element.isVisible() && !(element instanceof Style)) {
+      elements.add(element);
+    }
+  }
+  Vector2f[] cellSize=calcCellSize(elements);
+  if (wrap) {
+    if (container.getSize().x > 0) {
+      int lastWrap=0;
+      List<Float> rowSizeY=new ArrayList<Float>();
+      for (int i=0; i < cellSize.length; i++) {
+        float x=0f;
+        for (int j=lastWrap; j < i; j++) {
+          x+=cellSize[j].x;
+        }
+        float y=0f;
+        for (int j=0; j < rowSizeY.size(); j++) {
+          y+=rowSizeY.get(j);
+        }
+        elements.get(i).setPosition(new Vector2f(x,y));
+        if ((x + cellSize[i].x) > container.getSize().x) {
+          float max=0f;
+          for (int j=lastWrap; j < i; j++) {
+            max=Math.max(max,cellSize[j].y);
+          }
+          rowSizeY.add(max);
+          lastWrap=i;
+          i--;
+        }
+      }
+    }
+  }
+ else {
+    for (int i=0; i < cellSize.length; i++) {
+      float x=0f;
+      for (int j=0; j < i; j++) {
+        x+=cellSize[j].x;
+      }
+      elements.get(i).setPosition(new Vector2f(x,0f));
+    }
+    if (fitSize) {
+      Vector2f size=new Vector2f(0f,0f);
+      for (int i=0; i < cellSize.length; i++) {
+        size.x+=cellSize[i].x;
+        size.y=Math.max(size.y,cellSize[i].y);
+      }
+      container.setSize(size);
+    }
+  }
+}

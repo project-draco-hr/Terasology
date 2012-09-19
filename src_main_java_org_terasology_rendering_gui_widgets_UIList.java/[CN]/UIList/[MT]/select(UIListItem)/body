@@ -1,0 +1,13 @@
+{
+  List<UIListItem> items=getItems();
+  if (items.contains(item)) {
+    if (item != selection && !isDisabled) {
+      if (selection != null) {
+        selection.setSelected(false);
+      }
+      item.setSelected(true);
+      selection=item;
+      notifySelectionListeners();
+    }
+  }
+}

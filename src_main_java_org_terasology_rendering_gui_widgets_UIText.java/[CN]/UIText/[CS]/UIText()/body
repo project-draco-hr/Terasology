@@ -37,7 +37,7 @@
     }
   }
 );
-  addSelectionChangedListener(new SelectionListener(){
+  addSelectionListener(new SelectionListener(){
     @Override public void changed(    UIDisplayElement element){
       selectionRectangle.updateSelection(Math.min(selectionStart,selectionEnd),Math.max(selectionStart,selectionEnd));
     }
@@ -47,14 +47,12 @@
     @Override public void focusOn(    UIDisplayElement element){
       if (!isDisabled()) {
         cursor.setVisible(true);
-        cursor.getAnimation(AnimationOpacity.class).start();
         selectionRectangle.fadeSelection(false);
         setCursorPosition(cursorPosition);
       }
     }
     @Override public void focusOff(    UIDisplayElement element){
       cursor.setVisible(false);
-      cursor.getAnimation(AnimationOpacity.class).stop();
       selectionRectangle.fadeSelection(true);
     }
   }
@@ -63,19 +61,14 @@
   text.setVerticalAlign(EVerticalAlign.CENTER);
   text.setColor(Color.black);
   text.setVisible(true);
+  cursor=new UITextCursor(cursorSize);
   selectionRectangle=new UISelection();
-  cursor=new UIImage();
-  cursor.setSize(new Vector2f(1,16f));
-  cursor.setColor(new Color(0,0,0));
-  cursor.setPosition(new Vector2f(getPosition().x,getPosition().y));
-  cursor.setVisible(false);
-  cursor.setAnimation(new AnimationOpacity(0f,1f,5f));
-  cursor.getAnimation(AnimationOpacity.class).setRepeat(true);
   addDisplayElement(text);
   text.addDisplayElement(selectionRectangle);
   text.addDisplayElement(cursor);
   setPadding(new Vector4f(0f,5f,0f,5f));
   setBackgroundColor(new Color(255,255,255));
-  setShadow(new Vector4f(0f,3f,3f,0f),EShadowDirection.OUTSIDE,1f);
+  setShadow(new Vector4f(0f,4f,4f,0f),EShadowDirection.OUTSIDE,1f);
+  setBorderSolid(new Vector4f(1f,1f,1f,1f),new Color(0,0,0));
   setMultiLine(false);
 }

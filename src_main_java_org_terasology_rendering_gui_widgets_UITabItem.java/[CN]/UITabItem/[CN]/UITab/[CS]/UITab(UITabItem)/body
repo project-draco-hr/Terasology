@@ -1,0 +1,29 @@
+{
+  this.tabItem=tabItem;
+  setBackgroundColor(new Color(200,200,150));
+  select(false);
+  addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      UITabFolder folder=getTabItem().getTabFolder();
+      if (folder != null) {
+        folder.select(getTabItem());
+      }
+    }
+  }
+);
+  RowLayout layout=new RowLayout();
+  layout.setSpacingHorizontal(5);
+  label=new UILabel();
+  label.setColor(Color.black);
+  label.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      calcSizePosition();
+    }
+  }
+);
+  label.setVisible(true);
+  image=new UIImage();
+  image.setVisible(false);
+  addDisplayElement(label);
+  addDisplayElement(image);
+}
