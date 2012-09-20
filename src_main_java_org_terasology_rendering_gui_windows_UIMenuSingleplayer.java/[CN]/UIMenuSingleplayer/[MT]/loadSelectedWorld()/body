@@ -9,6 +9,12 @@
   }
   try {
     WorldInfo info=(WorldInfo)list.getSelection().getValue();
+    try {
+      CoreRegistry.put(GameType.class,(GameType)Class.forName(info.getGameType().substring(6)).newInstance());
+    }
+ catch (    Exception e) {
+      CoreRegistry.put(GameType.class,new SurvivalType());
+    }
     Config.getInstance().setDefaultSeed(info.getSeed());
     Config.getInstance().setWorldTitle(info.getTitle());
     Config.getInstance().setChunkGenerator(info.getChunkGenerators());
