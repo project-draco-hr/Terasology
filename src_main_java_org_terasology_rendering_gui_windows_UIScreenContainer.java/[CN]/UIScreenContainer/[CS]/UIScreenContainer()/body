@@ -5,6 +5,15 @@
   maximize();
   setCloseBinds(new String[]{FrobButton.ID});
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
+  addVisibilityListener(new VisibilityListener(){
+    @Override public void changed(    UIDisplayElement element,    boolean visibility){
+      if (!visibility) {
+        GUIManager.getInstance().getWindowById("hud").getElementById("leftGearWheel").setVisible(true);
+        GUIManager.getInstance().getWindowById("hud").getElementById("rightGearWheel").setVisible(true);
+      }
+    }
+  }
+);
   playerToolbar=new UIItemContainer(10);
   playerToolbar.setVisible(true);
   playerToolbar.setHorizontalAlign(EHorizontalAlign.CENTER);
@@ -25,11 +34,17 @@
   leftGearWheel.setTextureOrigin(new Vector2f(121.0f,168.0f));
   leftGearWheel.setTextureSize(new Vector2f(27.0f,27.0f));
   leftGearWheel.setVisible(true);
+  leftGearWheel.setHorizontalAlign(EHorizontalAlign.CENTER);
+  leftGearWheel.setVerticalAlign(EVerticalAlign.BOTTOM);
+  leftGearWheel.setPosition(new Vector2f(leftGearWheel.getPosition().x - 240f,leftGearWheel.getPosition().y - 4f));
   rightGearWheel=new UIImage(AssetManager.loadTexture("engine:inventory"));
   rightGearWheel.setSize(new Vector2f(36f,36f));
   rightGearWheel.setTextureOrigin(new Vector2f(121.0f,168.0f));
   rightGearWheel.setTextureSize(new Vector2f(27.0f,27.0f));
   rightGearWheel.setVisible(true);
+  rightGearWheel.setHorizontalAlign(EHorizontalAlign.CENTER);
+  rightGearWheel.setVerticalAlign(EVerticalAlign.BOTTOM);
+  rightGearWheel.setPosition(new Vector2f(rightGearWheel.getPosition().x + 240f,rightGearWheel.getPosition().y - 4f));
   addDisplayElement(rightGearWheel);
   addDisplayElement(leftGearWheel);
   addDisplayElement(playerInventory);

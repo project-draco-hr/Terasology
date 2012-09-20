@@ -12,14 +12,18 @@
         inventory.setEntity(CoreRegistry.get(LocalPlayer.class).getEntity(),10);
         GUIManager.getInstance().getWindowById("hud").getElementById("leftGearWheel").setVisible(false);
         GUIManager.getInstance().getWindowById("hud").getElementById("rightGearWheel").setVisible(false);
-        inventory.setPosition(new Vector2f(toolbar.getAbsolutePosition().x,Display.getHeight() + 5f));
+        layout();
+        inventory.setPosition(new Vector2f(Display.getWidth() / 2 - inventory.getSize().x / 2,Display.getHeight() + 5f));
         inventory.setAnimation(new AnimationMove(new Vector2f(Display.getWidth() / 2 - inventory.getSize().x / 2,Display.getHeight() - 192f),20f));
         inventory.getAnimation(AnimationMove.class).start();
         leftGearWheel.setAnimation(new AnimationRotate(-120f,10f));
         leftGearWheel.getAnimation(AnimationRotate.class).start();
         rightGearWheel.setAnimation(new AnimationRotate(120f,10f));
         rightGearWheel.getAnimation(AnimationRotate.class).start();
-        layout();
+      }
+ else {
+        GUIManager.getInstance().getWindowById("hud").getElementById("leftGearWheel").setVisible(true);
+        GUIManager.getInstance().getWindowById("hud").getElementById("rightGearWheel").setVisible(true);
       }
     }
   }
@@ -52,11 +56,17 @@
   leftGearWheel.setTextureOrigin(new Vector2f(121.0f,168.0f));
   leftGearWheel.setTextureSize(new Vector2f(27.0f,27.0f));
   leftGearWheel.setVisible(true);
+  leftGearWheel.setHorizontalAlign(EHorizontalAlign.CENTER);
+  leftGearWheel.setVerticalAlign(EVerticalAlign.BOTTOM);
+  leftGearWheel.setPosition(new Vector2f(leftGearWheel.getPosition().x - 240f,leftGearWheel.getPosition().y - 4f));
   rightGearWheel=new UIImage(AssetManager.loadTexture("engine:inventory"));
   rightGearWheel.setSize(new Vector2f(36f,36f));
   rightGearWheel.setTextureOrigin(new Vector2f(121.0f,168.0f));
   rightGearWheel.setTextureSize(new Vector2f(27.0f,27.0f));
   rightGearWheel.setVisible(true);
+  rightGearWheel.setHorizontalAlign(EHorizontalAlign.CENTER);
+  rightGearWheel.setVerticalAlign(EVerticalAlign.BOTTOM);
+  rightGearWheel.setPosition(new Vector2f(rightGearWheel.getPosition().x + 240f,rightGearWheel.getPosition().y - 4f));
   addDisplayElement(rightGearWheel);
   addDisplayElement(leftGearWheel);
   addDisplayElement(inventory);
