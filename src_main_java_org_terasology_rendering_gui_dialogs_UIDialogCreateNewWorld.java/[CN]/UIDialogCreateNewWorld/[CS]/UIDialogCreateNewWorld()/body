@@ -1,5 +1,5 @@
 {
-  super(new Vector2f(512f,320f));
+  super(new Vector2f(512f,376f));
   setModal(true);
   setTitle("Create new world");
   _inputSeed=new UIText();
@@ -17,12 +17,27 @@
   _inputWorldTitleLabel.setColor(Color.darkGray);
   _inputWorldTitleLabel.setSize(new Vector2f(0f,16f));
   _inputWorldTitleLabel.setVisible(true);
+  typeOfGameLabel=new UILabel("Choose type of game:");
+  typeOfGameLabel.setColor(Color.darkGray);
+  typeOfGameLabel.setSize(new Vector2f(0f,16f));
+  typeOfGameLabel.setVisible(true);
+  typeOfGame=new UIComboBox(new Vector2f(176f,22f),new Vector2f(176f,50f));
+  UIListItem item=new UIListItem(new SurvivalType().getName(),new SurvivalType());
+  item.setTextColor(Color.black);
+  item.setPadding(new Vector4f(5f,5f,5f,5f));
+  typeOfGame.addItem(item);
+  item=new UIListItem(new FreeStyleType().getName(),new FreeStyleType());
+  item.setTextColor(Color.black);
+  item.setPadding(new Vector4f(5f,5f,5f,5f));
+  typeOfGame.addItem(item);
+  typeOfGame.select(0);
+  typeOfGame.setVisible(true);
   _chunkGeneratorLabel=new UILabel("Choose Chunk Generator:");
   _chunkGeneratorLabel.setColor(Color.darkGray);
   _chunkGeneratorLabel.setSize(new Vector2f(0f,16f));
   _chunkGeneratorLabel.setVisible(true);
   _chunkGenerator=new UIComboBox(new Vector2f(176f,22f),new Vector2f(176f,48f));
-  UIListItem item=new UIListItem("Normal",new Integer(0));
+  item=new UIListItem("Normal",new Integer(0));
   item.setTextColor(Color.black);
   item.setPadding(new Vector4f(5f,5f,5f,5f));
   _chunkGenerator.addItem(item);
@@ -36,7 +51,9 @@
   _inputWorldTitle.setPosition(new Vector2f(_inputWorldTitleLabel.getPosition().x,_inputWorldTitleLabel.getPosition().y + _inputWorldTitleLabel.getSize().y + 8f));
   _inputSeedLabel.setPosition(new Vector2f(_inputWorldTitle.getPosition().x,_inputWorldTitle.getPosition().y + _inputWorldTitle.getSize().y + 16f));
   _inputSeed.setPosition(new Vector2f(_inputSeedLabel.getPosition().x,_inputSeedLabel.getPosition().y + _inputSeedLabel.getSize().y + 8f));
-  _chunkGeneratorLabel.setPosition(new Vector2f(_inputSeed.getPosition().x,_inputSeed.getPosition().y + _inputSeed.getSize().y + 16f));
+  typeOfGameLabel.setPosition(new Vector2f(_inputSeed.getPosition().x,_inputSeed.getPosition().y + _inputSeed.getSize().y + 16f));
+  typeOfGame.setPosition(new Vector2f(typeOfGameLabel.getPosition().x,typeOfGameLabel.getPosition().y + typeOfGameLabel.getSize().y + 8f));
+  _chunkGeneratorLabel.setPosition(new Vector2f(typeOfGame.getPosition().x,typeOfGame.getPosition().y + typeOfGame.getSize().y + 16f));
   _chunkGenerator.setPosition(new Vector2f(_chunkGeneratorLabel.getPosition().x,_chunkGeneratorLabel.getPosition().y + _chunkGeneratorLabel.getSize().y + 8f));
   _okButton=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
   _okButton.getLabel().setText("Play");
@@ -52,6 +69,7 @@
         GUIManager.getInstance().showMessage("Error","A World with this name already exists");
         return;
       }
+      CoreRegistry.put(GameType.class,(GameType)typeOfGame.getSelection().getValue());
       if (_inputSeed.getText().length() > 0) {
         Config.getInstance().setDefaultSeed(_inputSeed.getText());
       }
@@ -82,7 +100,7 @@ break;
 }
 String[] chunksListArr=chunkList.toArray(new String[chunkList.size()]);
 Config.getInstance().setChunkGenerator(chunksListArr);
-CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(new WorldInfo(Config.getInstance().getWorldTitle(),Config.getInstance().getDefaultSeed(),Config.getInstance().getDayNightLengthInMs() / 4,chunksListArr)));
+CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(new WorldInfo(Config.getInstance().getWorldTitle(),Config.getInstance().getDefaultSeed(),Config.getInstance().getDayNightLengthInMs() / 4,chunksListArr,CoreRegistry.get(GameType.class).getClass().toString())));
 }
 }
 );
@@ -104,4 +122,6 @@ addDisplayElement(_chunkGeneratorLabel);
 addDisplayElement(_okButton);
 addDisplayElement(_cancelButton);
 addDisplayElement(_chunkGenerator);
+addDisplayElement(typeOfGame);
+addDisplayElement(typeOfGameLabel);
 }
