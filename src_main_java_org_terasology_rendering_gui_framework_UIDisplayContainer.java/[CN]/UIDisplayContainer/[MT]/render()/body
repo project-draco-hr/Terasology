@@ -13,6 +13,19 @@
     glEnable(GL_SCISSOR_TEST);
     glScissor(cropX,cropY,cropWidth,cropHeight);
   }
+  UIDisplayElement styleElement;
+  for (  Style style : styles) {
+    styleElement=((UIDisplayElement)style);
+    allowsCrop=cropContainer && !styleElement.isCrop();
+    if (allowsCrop) {
+      glDisable(GL_SCISSOR_TEST);
+    }
+    styleElement.renderTransformed();
+    if (allowsCrop) {
+      glEnable(GL_SCISSOR_TEST);
+      glScissor(cropX,cropY,cropWidth,cropHeight);
+    }
+  }
   for (int i=0; i < displayElements.size(); i++) {
     allowsCrop=cropContainer && !displayElements.get(i).isCrop();
     if (allowsCrop) {
