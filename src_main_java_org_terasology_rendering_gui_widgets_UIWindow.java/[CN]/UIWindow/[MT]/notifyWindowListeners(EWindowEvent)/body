@@ -1,13 +1,12 @@
 {
-  ArrayList<WindowListener> listeners=(ArrayList<WindowListener>)windowListeners.clone();
-  if (event == EWindowEvent.OPEN) {
-    for (    WindowListener listener : listeners) {
-      listener.open(this);
+  if (event == EWindowEvent.INITIALISE) {
+    for (    WindowListener listener : windowListeners) {
+      listener.initialise(this);
     }
   }
- else   if (event == EWindowEvent.CLOSE) {
-    for (    WindowListener listener : listeners) {
-      listener.close(this);
+ else   if (event == EWindowEvent.SHUTDOWN) {
+    for (    WindowListener listener : windowListeners) {
+      listener.shutdown(this);
     }
   }
 }

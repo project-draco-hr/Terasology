@@ -1,6 +1,11 @@
 {
   ShaderManager.getInstance().enableDefault();
   if (isVisible()) {
+    for (    Animation animation : animations) {
+      if (animation.isStarted()) {
+        animation.renderBegin();
+      }
+    }
     if (positionType == EPositionType.RELATIVE) {
       glPushMatrix();
       glTranslatef(getPosition().x,getPosition().y,0);
@@ -13,6 +18,11 @@
       glTranslatef(getPosition().x,getPosition().y,0);
       render();
       glPopMatrix();
+    }
+    for (    Animation animation : animations) {
+      if (animation.isStarted()) {
+        animation.renderEnd();
+      }
     }
   }
 }

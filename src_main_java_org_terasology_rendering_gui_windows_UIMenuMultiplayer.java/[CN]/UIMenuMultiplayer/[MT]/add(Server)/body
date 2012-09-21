@@ -1,0 +1,30 @@
+{
+  UIListItem item=new UIListItem("",server);
+  GridLayout layout=new GridLayout(1);
+  layout.setCellPadding(new Vector4f(5f,5f,5f,10f));
+  UIComposite composite=new UIComposite();
+  composite.setSize("100%","0px");
+  composite.setLayout(layout);
+  composite.setVisible(true);
+  UILabel label=new UILabel(server.getName());
+  label.setId("serverName");
+  label.setVisible(true);
+  composite.addDisplayElement(label);
+  label=new UILabel(server.getIp());
+  label.setId("serverIp");
+  label.setColor(Color.lightGray);
+  label.setVisible(true);
+  composite.addDisplayElement(label);
+  UIImage connectionImage=new UIImage(AssetManager.loadTexture("engine:icons"));
+  connectionImage.setTextureOrigin(new Vector2f(0f,56f));
+  connectionImage.setTextureSize(new Vector2f(9f,7f));
+  connectionImage.setSize(new Vector2f(27f,21f));
+  connectionImage.setPosition(new Vector2f(-50f,0f));
+  connectionImage.setHorizontalAlign(EHorizontalAlign.RIGHT);
+  connectionImage.setVerticalAlign(EVerticalAlign.CENTER);
+  connectionImage.setVisible(true);
+  connectionImage.setId("connectionImage");
+  item.addDisplayElement(composite);
+  item.addDisplayElement(connectionImage);
+  list.addItem(item);
+}

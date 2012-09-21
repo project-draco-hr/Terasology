@@ -2,9 +2,13 @@
   logger.log(Level.INFO,"GUIManager: Open and foucs window by ID \"" + windowId + "\"");
   UIWindow window=getWindowById(windowId);
   if (window == null) {
-    return openWindow(loadWindow(windowId));
+    window=loadWindow(windowId);
+    if (window != null) {
+      window.open();
+    }
   }
  else {
-    return openWindow(window);
+    window.open();
   }
+  return window;
 }

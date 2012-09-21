@@ -1,0 +1,25 @@
+{
+  Vector2f direction=new Vector2f();
+  direction.sub(distination,target.getPosition());
+  if (isRepeat() && (moveFrom == null || moveFrom.equals(new Vector2f(0f,0f)))) {
+    moveFrom=new Vector2f(target.getAbsolutePosition());
+  }
+  float distance=direction.length();
+  if (distance > speed) {
+    direction.normalize();
+    direction.scale(speed);
+    Vector2f newPosition=target.getPosition();
+    newPosition.add(direction);
+  }
+ else {
+    target.setPosition(distination);
+    if (isRepeat()) {
+      Vector2f swap=new Vector2f(distination);
+      distination=new Vector2f(moveFrom);
+      moveFrom=swap;
+    }
+ else {
+      stop();
+    }
+  }
+}

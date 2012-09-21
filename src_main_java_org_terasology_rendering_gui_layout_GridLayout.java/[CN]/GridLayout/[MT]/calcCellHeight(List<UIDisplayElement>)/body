@@ -2,12 +2,10 @@
   int rows=(int)Math.max(1f,Math.ceil(((float)elements.size() / (float)columns)));
   float[] height=new float[rows];
   for (int i=0; i < elements.size(); i++) {
-    if (!(elements.get(i) instanceof UIStyle)) {
-      height[(int)Math.floor(i / columns)]=Math.max(height[(int)Math.floor(i / columns)],elements.get(i).getSize().y);
-    }
+    height[(int)Math.floor(i / columns)]=Math.max(height[(int)Math.floor(i / columns)],elements.get(i).getSize().y);
   }
   for (int i=0; i < height.length; i++) {
-    height[i]+=(padding.x + padding.z);
+    height[i]+=(cellPadding.x + cellPadding.z);
   }
   if (minCellHeight > 0) {
     for (int i=0; i < height.length; i++) {

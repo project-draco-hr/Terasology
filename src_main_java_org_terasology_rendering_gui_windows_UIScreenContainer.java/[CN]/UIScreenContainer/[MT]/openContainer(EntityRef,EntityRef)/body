@@ -1,11 +1,20 @@
 {
   this.container=container;
   this.creature=creature;
-  playerInventory.setEntity(creature);
+  playerToolbar.setEntity(creature,0,9);
+  playerInventory.setEntity(creature,10);
   containerInventory.setEntity(container);
+  playerToolbar.setConnected(container);
   playerInventory.setConnected(container);
   containerInventory.setConnected(creature);
-  background.setSize(new Vector2f(2 * (CENTER_BORDER + OUTER_BORDER) + playerInventory.getSize().x + containerInventory.getSize().x,0.8f * Display.getHeight()));
-  containerInventory.setPosition(new Vector2f(CENTER_BORDER + containerInventory.getSize().x / 2,0f));
-  playerInventory.setPosition(new Vector2f(-(CENTER_BORDER + playerInventory.getSize().x / 2),0f));
+  GUIManager.getInstance().getWindowById("hud").getElementById("leftGearWheel").setVisible(false);
+  GUIManager.getInstance().getWindowById("hud").getElementById("rightGearWheel").setVisible(false);
+  layout();
+  playerInventory.setPosition(new Vector2f(Display.getWidth() / 2 - playerInventory.getSize().x / 2,Display.getHeight() + 5f));
+  playerInventory.setAnimation(new AnimationMove(new Vector2f(Display.getWidth() / 2 - playerInventory.getSize().x / 2,Display.getHeight() - 192f),20f));
+  playerInventory.getAnimation(AnimationMove.class).start();
+  leftGearWheel.setAnimation(new AnimationRotate(-120f,10f));
+  leftGearWheel.getAnimation(AnimationRotate.class).start();
+  rightGearWheel.setAnimation(new AnimationRotate(120f,10f));
+  rightGearWheel.getAnimation(AnimationRotate.class).start();
 }

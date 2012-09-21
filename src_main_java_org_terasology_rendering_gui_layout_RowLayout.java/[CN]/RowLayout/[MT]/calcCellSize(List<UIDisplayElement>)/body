@@ -1,0 +1,22 @@
+{
+  Vector2f[] cellSize=new Vector2f[elements.size()];
+  for (int i=0; i < cellSize.length; i++) {
+    cellSize[i]=new Vector2f(0f,0f);
+  }
+  for (int i=0; i < cellSize.length; i++) {
+    cellSize[i].x=elements.get(i).getSize().x + spacingHorizontal;
+    cellSize[i].y=elements.get(i).getSize().y + spacingVertical;
+  }
+  if (equalWidth) {
+    float max=cellSize[0].x;
+    for (int i=0; i < cellSize.length; i++) {
+      if (cellSize[i].x > max) {
+        max=cellSize[i].x;
+      }
+    }
+    for (int i=0; i < cellSize.length; i++) {
+      cellSize[i].x=max;
+    }
+  }
+  return cellSize;
+}
