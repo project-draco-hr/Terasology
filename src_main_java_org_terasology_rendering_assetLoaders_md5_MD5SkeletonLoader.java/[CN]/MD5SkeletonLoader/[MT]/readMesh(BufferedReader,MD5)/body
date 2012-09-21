@@ -1,0 +1,50 @@
+{
+  MD5Mesh mesh=new MD5Mesh();
+  String line=MD5ParserCommon.readToLine(reader,"numverts ");
+  mesh.numVertices=Integer.parseInt(line.trim().split(" ",3)[1]);
+  mesh.vertexList=new MD5Vertex[mesh.numVertices];
+  for (int i=0; i < mesh.numVertices; ++i) {
+    line=MD5ParserCommon.readNextLine(reader);
+    Matcher matcher=vertPatten.matcher(line);
+    if (!matcher.find()) {
+      throw new IOException("Invalid vertex line \"" + line + "\"");
+    }
+    int index=Integer.parseInt(matcher.group(1));
+    MD5Vertex vert=new MD5Vertex();
+    vert.uv=MD5ParserCommon.readUV(matcher.group(2),matcher.group(3));
+    vert.startWeight=Integer.parseInt(matcher.group(4));
+    vert.countWeight=Integer.parseInt(matcher.group(5));
+    mesh.vertexList[index]=vert;
+  }
+  line=MD5ParserCommon.readToLine(reader,"numtris ");
+  mesh.numTriangles=Integer.parseInt(line.trim().split(" ",3)[1]);
+  mesh.indexList=new int[mesh.numTriangles * 3];
+  for (int i=0; i < mesh.numTriangles; ++i) {
+    line=MD5ParserCommon.readNextLine(reader);
+    Matcher matcher=triPattern.matcher(line);
+    if (!matcher.find()) {
+      throw new IOException("Invalid triangle line \"" + line + "\"");
+    }
+    int triIndex=Integer.parseInt(matcher.group(1));
+    mesh.indexList[3 * triIndex]=Integer.parseInt(matcher.group(2));
+    mesh.indexList[3 * triIndex + 1]=Integer.parseInt(matcher.group(3));
+    mesh.indexList[3 * triIndex + 2]=Integer.parseInt(matcher.group(4));
+  }
+  line=MD5ParserCommon.readToLine(reader,"numweights ");
+  mesh.numWeights=Integer.parseInt(line.trim().split(" ",3)[1]);
+  mesh.weightList=new MD5Weight[mesh.numWeights];
+  for (int i=0; i < mesh.numWeights; ++i) {
+    line=MD5ParserCommon.readNextLine(reader);
+    Matcher matcher=weightPattern.matcher(line);
+    if (!matcher.find()) {
+      throw new IOException("Invalid weight line \"" + line + "\"");
+    }
+    int weightIndex=Integer.parseInt(matcher.group(1));
+    MD5Weight weight=new MD5Weight();
+    weight.jointIndex=Integer.parseInt(matcher.group(2));
+    weight.bias=Float.parseFloat(matcher.group(3));
+    weight.position=MD5ParserCommon.readVector3f(matcher.group(4),matcher.group(5),matcher.group(6));
+    mesh.weightList[weightIndex]=weight;
+  }
+  return mesh;
+}

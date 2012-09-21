@@ -1,0 +1,22 @@
+{
+  md5.frames=new MD5Frame[md5.numFrames];
+  for (int i=0; i < md5.numFrames; ++i) {
+    String frameStart=MD5ParserCommon.readToLine(reader,"frame ");
+    Matcher frameStartMatcher=frameStartPattern.matcher(frameStart);
+    if (!frameStartMatcher.find()) {
+      throw new IOException("Invalid frame line: \"" + frameStart + "\"");
+    }
+    int frameIndex=Integer.parseInt(frameStartMatcher.group(1));
+    MD5Frame frame=new MD5Frame();
+    frame.components=new float[md5.numAnimatedComponents];
+    int componentsRead=0;
+    while (componentsRead < md5.numAnimatedComponents) {
+      String line=MD5ParserCommon.readNextLine(reader);
+      String[] components=line.trim().split("\\s+");
+      for (      String component : components) {
+        frame.components[componentsRead++]=Float.parseFloat(component);
+      }
+    }
+    md5.frames[frameIndex]=frame;
+  }
+}
