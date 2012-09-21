@@ -1,0 +1,46 @@
+{
+  try {
+    MD5 md5=parse(stream);
+    SkeletalMesh skeleton=new SkeletalMesh(uri);
+    List<Bone> bones=Lists.newArrayListWithCapacity(md5.numJoints);
+    for (int i=0; i < md5.numJoints; ++i) {
+      MD5Joint joint=md5.joints[i];
+      Bone bone=new Bone(i,joint.name,joint.position,joint.orientation);
+      bones.add(bone);
+      if (joint.parent != -1) {
+        bones.get(joint.parent).addChild(bone);
+      }
+      skeleton.addBone(bone);
+    }
+    if (md5.meshes.length > 0) {
+      MD5Mesh mesh=md5.meshes[0];
+      List<BoneWeight> boneWeights=Lists.newArrayListWithCapacity(mesh.numWeights);
+      for (      MD5Weight weight : mesh.weightList) {
+        boneWeights.add(new BoneWeight(weight.position,weight.bias,weight.jointIndex));
+      }
+      skeleton.setWeights(boneWeights);
+      List<Vector2f> uvs=Lists.newArrayList();
+      TIntList vertexStartWeight=new TIntArrayList(mesh.numVertices);
+      TIntList vertexWeightCount=new TIntArrayList(mesh.numVertices);
+      for (      MD5Vertex vert : mesh.vertexList) {
+        uvs.add(vert.uv);
+        vertexStartWeight.add(vert.startWeight);
+        vertexWeightCount.add(vert.countWeight);
+      }
+      skeleton.setVertexWeights(vertexStartWeight,vertexWeightCount);
+      skeleton.setUvs(uvs);
+      TIntList indices=new TIntArrayList(mesh.indexList.length);
+      for (int i=0; i < mesh.numTriangles; ++i) {
+        indices.add(mesh.indexList[i * 3]);
+        indices.add(mesh.indexList[i * 3 + 2]);
+        indices.add(mesh.indexList[i * 3 + 1]);
+      }
+      skeleton.setIndices(indices);
+      skeleton.calculateNormals();
+    }
+    return skeleton;
+  }
+ catch (  NumberFormatException e) {
+    throw new IOException("Error parsing " + uri.toString(),e);
+  }
+}

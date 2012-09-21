@@ -1,3 +1,6 @@
 {
-  return EntityData.Value.newBuilder().addString(value.getURI().getSimpleString()).build();
+  if (value != null && value.getURI() != null) {
+    return EntityData.Value.newBuilder().addString(value.getURI().getSimpleString()).build();
+  }
+  return null;
 }

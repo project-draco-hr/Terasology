@@ -1,0 +1,13 @@
+{
+  for (int i=0; i < boneNames.size(); ++i) {
+    Bone bone=mesh.getBone(boneNames.get(i));
+    boolean hasParent=boneParent.get(i) != -1;
+    if (hasParent && (bone.getParent() == null || !bone.getParent().getName().equals(boneNames.get(boneParent.get(i))))) {
+      return false;
+    }
+ else     if (!hasParent && bone.getParent() != null) {
+      return false;
+    }
+  }
+  return true;
+}

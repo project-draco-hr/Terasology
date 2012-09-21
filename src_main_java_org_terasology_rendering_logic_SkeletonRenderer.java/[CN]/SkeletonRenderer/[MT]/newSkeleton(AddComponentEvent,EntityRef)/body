@@ -1,0 +1,24 @@
+{
+  SkeletalMeshComponent skeleton=entity.getComponent(SkeletalMeshComponent.class);
+  if (skeleton.mesh == null) {
+    return;
+  }
+  if (skeleton.boneEntities == null) {
+    skeleton.boneEntities=Maps.newHashMap();
+    for (    Bone bone : skeleton.mesh.bones()) {
+      LocationComponent loc=new LocationComponent();
+      loc.setLocalPosition(bone.getLocalPosition());
+      loc.setLocalRotation(bone.getLocalRotation());
+      EntityRef boneEntity=entityManager.create(loc);
+      EntityRef parent=(bone.getParent() != null) ? skeleton.boneEntities.get(bone.getParent().getName()) : entity;
+      LocationComponent parentLoc=parent.getComponent(LocationComponent.class);
+      parentLoc.addChild(boneEntity,parent);
+      parent.saveComponent(parentLoc);
+      if (bone.getParent() == null) {
+        skeleton.rootBone=boneEntity;
+      }
+      skeleton.boneEntities.put(bone.getName(),boneEntity);
+    }
+    entity.saveComponent(skeleton);
+  }
+}

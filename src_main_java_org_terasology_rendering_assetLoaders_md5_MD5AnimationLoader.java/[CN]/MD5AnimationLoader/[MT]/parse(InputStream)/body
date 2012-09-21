@@ -1,0 +1,27 @@
+{
+  BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
+  MD5 md5=new MD5();
+  String line=MD5ParserCommon.readToLine(reader,"MD5Version ");
+  md5.version=Integer.parseInt(line.split(" ",3)[1]);
+  line=MD5ParserCommon.readToLine(reader,"commandline ");
+  Matcher commandlineMatch=commandLinePattern.matcher(line);
+  if (commandlineMatch.matches()) {
+    md5.commandline=commandlineMatch.group(1);
+  }
+  line=MD5ParserCommon.readToLine(reader,"numFrames ");
+  md5.numFrames=Integer.parseInt(line.split(" ",3)[1]);
+  line=MD5ParserCommon.readToLine(reader,"numJoints ");
+  md5.numJoints=Integer.parseInt(line.split(" ",3)[1]);
+  line=MD5ParserCommon.readToLine(reader,"frameRate ");
+  md5.frameRate=Integer.parseInt(line.split(" ",3)[1]);
+  line=MD5ParserCommon.readToLine(reader,"numAnimatedComponents ");
+  md5.numAnimatedComponents=Integer.parseInt(line.split(" ",3)[1]);
+  MD5ParserCommon.readToLine(reader,"hierarchy {");
+  readHierarchy(reader,md5);
+  MD5ParserCommon.readToLine(reader,"bounds {");
+  readBounds(reader,md5);
+  MD5ParserCommon.readToLine(reader,"baseframe {");
+  readBaseFrames(reader,md5);
+  readFrames(reader,md5);
+  return md5;
+}

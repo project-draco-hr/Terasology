@@ -1,0 +1,10 @@
+{
+  Vector3f pos=new Vector3f(objectSpacePos);
+  if (parent != null) {
+    pos.sub(parent.getObjectPosition());
+    Quat4f inverseParentRot=new Quat4f();
+    inverseParentRot.inverse(parent.getObjectRotation());
+    QuaternionUtil.quatRotate(inverseParentRot,pos,pos);
+  }
+  return pos;
+}

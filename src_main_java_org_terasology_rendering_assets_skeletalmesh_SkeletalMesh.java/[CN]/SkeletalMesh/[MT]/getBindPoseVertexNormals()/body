@@ -1,0 +1,9 @@
+{
+  List<Vector3f> positions=Lists.newArrayListWithCapacity(bones.size());
+  List<Quat4f> rotations=Lists.newArrayListWithCapacity(bones().size());
+  for (  Bone bone : bones) {
+    positions.add(bone.getObjectPosition());
+    rotations.add(bone.getObjectRotation());
+  }
+  return getVertexNormals(positions,rotations);
+}

@@ -1,0 +1,35 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(SkeletalMeshComponent.class,LocationComponent.class)) {
+    SkeletalMeshComponent skeletalMeshComp=entity.getComponent(SkeletalMeshComponent.class);
+    if (skeletalMeshComp.animation != null && skeletalMeshComp.animation.getFrameCount() > 0) {
+      skeletalMeshComp.animationTime+=delta * skeletalMeshComp.animationRate;
+      float framePos=skeletalMeshComp.animationTime / skeletalMeshComp.animation.getTimePerFrame();
+      if (skeletalMeshComp.loop) {
+        while ((int)framePos >= skeletalMeshComp.animation.getFrameCount()) {
+          framePos-=skeletalMeshComp.animation.getFrameCount();
+          skeletalMeshComp.animationTime-=skeletalMeshComp.animation.getTimePerFrame() * skeletalMeshComp.animation.getFrameCount();
+        }
+        int frameId=(int)framePos;
+        MeshAnimationFrame frameA=skeletalMeshComp.animation.getFrame(frameId);
+        MeshAnimationFrame frameB=skeletalMeshComp.animation.getFrame((frameId + 1) % skeletalMeshComp.animation.getFrameCount());
+        updateSkeleton(skeletalMeshComp,frameA,frameB,framePos - frameId);
+      }
+ else {
+        if ((int)framePos >= skeletalMeshComp.animation.getFrameCount()) {
+          updateSkeleton(skeletalMeshComp,skeletalMeshComp.animation.getFrame(skeletalMeshComp.animation.getFrameCount() - 1),skeletalMeshComp.animation.getFrame(skeletalMeshComp.animation.getFrameCount() - 1),1.0f);
+          MeshAnimation animation=skeletalMeshComp.animation;
+          skeletalMeshComp.animationTime=0;
+          skeletalMeshComp.animation=null;
+          entity.send(new AnimEndEvent(animation));
+        }
+ else {
+          int frameId=(int)framePos;
+          MeshAnimationFrame frameA=skeletalMeshComp.animation.getFrame(frameId);
+          MeshAnimationFrame frameB=(frameId + 1 >= skeletalMeshComp.animation.getFrameCount()) ? frameA : skeletalMeshComp.animation.getFrame(frameId + 1);
+          updateSkeleton(skeletalMeshComp,frameA,frameB,framePos - frameId);
+        }
+      }
+      entity.saveComponent(skeletalMeshComp);
+    }
+  }
+}

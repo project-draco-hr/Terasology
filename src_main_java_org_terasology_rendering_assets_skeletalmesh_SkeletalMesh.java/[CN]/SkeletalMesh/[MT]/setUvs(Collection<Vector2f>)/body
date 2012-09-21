@@ -1,0 +1,12 @@
+{
+  this.uvs.clear();
+  this.uvs.addAll(uvs);
+  FloatBuffer uvBuffer=BufferUtils.createFloatBuffer(uvs.size() * 2);
+  for (  Vector2f uv : uvs) {
+    uvBuffer.put(uv.x);
+    uvBuffer.put(uv.y);
+  }
+  uvBuffer.flip();
+  vboUVBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  VertexBufferObjectManager.getInstance().bufferVboData(vboUVBuffer,uvBuffer,GL15.GL_STATIC_DRAW);
+}

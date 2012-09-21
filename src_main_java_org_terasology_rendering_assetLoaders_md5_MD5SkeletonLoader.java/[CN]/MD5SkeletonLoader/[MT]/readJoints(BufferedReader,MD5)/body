@@ -1,0 +1,17 @@
+{
+  md5.joints=new MD5Joint[md5.numJoints];
+  for (int i=0; i < md5.numJoints; ++i) {
+    String line=MD5ParserCommon.readNextLine(reader);
+    Matcher matcher=jointPattern.matcher(line);
+    if (!matcher.find()) {
+      throw new IOException("Invalid joint line: \"" + line + "\"");
+    }
+    MD5Joint joint=new MD5Joint();
+    joint.name=matcher.group(1);
+    joint.parent=Integer.parseInt(matcher.group(2));
+    joint.position=MD5ParserCommon.readVector3fAndCorrect(matcher.group(3),matcher.group(4),matcher.group(5));
+    joint.orientation=MD5ParserCommon.readQuat4f(matcher.group(6),matcher.group(7),matcher.group(8));
+    md5.joints[i]=joint;
+    logger.log(Level.FINE,"Read joint: " + joint.name);
+  }
+}

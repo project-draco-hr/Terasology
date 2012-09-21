@@ -1,0 +1,14 @@
+{
+  List<Component> components=Lists.newArrayList();
+  for (  Component component : prefab.listComponents()) {
+    Component newComp=componentLibrary.copy(component);
+    components.add(newComp);
+    if (newComp instanceof LocationComponent) {
+      LocationComponent loc=(LocationComponent)newComp;
+      loc.setWorldPosition(position);
+      loc.setWorldRotation(rotation);
+    }
+  }
+  components.add(new EntityInfoComponent(prefab.getName()));
+  return create(components);
+}

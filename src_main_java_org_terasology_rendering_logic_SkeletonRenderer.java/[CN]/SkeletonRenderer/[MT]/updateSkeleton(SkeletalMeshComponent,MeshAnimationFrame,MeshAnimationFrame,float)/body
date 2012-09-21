@@ -1,0 +1,19 @@
+{
+  Vector3f newPos=new Vector3f();
+  Quat4f newRot=new Quat4f();
+  for (int i=0; i < skeletalMeshComp.animation.getBoneCount(); ++i) {
+    EntityRef boneEntity=skeletalMeshComp.boneEntities.get(skeletalMeshComp.animation.getBoneName(i));
+    if (boneEntity == null) {
+      continue;
+    }
+    LocationComponent boneLoc=boneEntity.getComponent(LocationComponent.class);
+    if (boneLoc != null) {
+      newPos.interpolate(frameA.getPosition(i),frameB.getPosition(i),interpolationVal);
+      boneLoc.setLocalPosition(newPos);
+      newRot.interpolate(frameA.getRotation(i),frameB.getRotation(i),interpolationVal);
+      newRot.normalize();
+      boneLoc.setLocalRotation(newRot);
+      boneEntity.saveComponent(boneLoc);
+    }
+  }
+}

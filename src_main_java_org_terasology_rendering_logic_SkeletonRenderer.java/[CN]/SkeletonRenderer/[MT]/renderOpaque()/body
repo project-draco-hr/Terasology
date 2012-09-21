@@ -1,0 +1,62 @@
+{
+  boolean carryingTorch=CoreRegistry.get(LocalPlayer.class).isCarryingTorch();
+  Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
+  Quat4f worldRot=new Quat4f();
+  Vector3f worldPos=new Vector3f();
+  Matrix4f matrix=new Matrix4f();
+  Transform trans=new Transform();
+  Quat4f inverseWorldRot=new Quat4f();
+  glPushMatrix();
+  glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
+  for (  EntityRef entity : entityManager.iteratorEntities(SkeletalMeshComponent.class,LocationComponent.class)) {
+    SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
+    if (skeletalMesh.mesh == null || skeletalMesh.material == null) {
+      continue;
+    }
+    skeletalMesh.material.enable();
+    skeletalMesh.material.setInt("carryingTorch",carryingTorch ? 1 : 0);
+    skeletalMesh.material.setFloat("light",1);
+    skeletalMesh.material.bindTextures();
+    float[] openglMat=new float[16];
+    FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    location.getWorldRotation(worldRot);
+    inverseWorldRot.inverse(worldRot);
+    location.getWorldPosition(worldPos);
+    float worldScale=location.getWorldScale();
+    matrix.set(worldRot,worldPos,worldScale);
+    trans.set(matrix);
+    glPushMatrix();
+    trans.getOpenGLMatrix(openglMat);
+    mBuffer.put(openglMat);
+    mBuffer.flip();
+    glMultMatrix(mBuffer);
+    skeletalMesh.material.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
+    List<Vector3f> bonePositions=Lists.newArrayListWithCapacity(skeletalMesh.mesh.getVertexCount());
+    List<Quat4f> boneRotations=Lists.newArrayListWithCapacity(skeletalMesh.mesh.getVertexCount());
+    for (    Bone bone : skeletalMesh.mesh.bones()) {
+      EntityRef boneEntity=skeletalMesh.boneEntities.get(bone.getName());
+      if (boneEntity == null) {
+        boneEntity=EntityRef.NULL;
+      }
+      LocationComponent boneLocation=boneEntity.getComponent(LocationComponent.class);
+      if (boneLocation != null) {
+        Vector3f pos=boneLocation.getWorldPosition();
+        pos.sub(worldPos);
+        QuaternionUtil.quatRotate(inverseWorldRot,pos,pos);
+        bonePositions.add(pos);
+        Quat4f rot=new Quat4f();
+        rot.mul(inverseWorldRot,boneLocation.getWorldRotation());
+        boneRotations.add(rot);
+      }
+ else {
+        logger.warning("Unable to resolve bone \"" + bone.getName() + "\"");
+        bonePositions.add(new Vector3f());
+        boneRotations.add(new Quat4f());
+      }
+    }
+    skeletalMesh.mesh.render(bonePositions,boneRotations);
+    glPopMatrix();
+  }
+  glPopMatrix();
+}

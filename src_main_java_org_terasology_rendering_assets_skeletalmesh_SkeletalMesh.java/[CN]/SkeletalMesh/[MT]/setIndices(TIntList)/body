@@ -1,0 +1,8 @@
+{
+  this.indices=new TIntArrayList(indices);
+  IntBuffer indexBuffer=BufferUtils.createIntBuffer(indices.size());
+  indexBuffer.put(indices.toArray());
+  indexBuffer.flip();
+  vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  VertexBufferObjectManager.getInstance().bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
+}

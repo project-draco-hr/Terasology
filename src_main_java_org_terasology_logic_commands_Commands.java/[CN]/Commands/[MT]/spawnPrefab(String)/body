@@ -1,11 +1,12 @@
 {
   Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
   Vector3f spawnPos=camera.getPosition();
-  Vector3f offset=camera.getViewingDirection();
-  offset.scale(3);
+  Vector3f offset=new Vector3f(camera.getViewingDirection());
+  offset.scale(2);
   spawnPos.add(offset);
+  Quat4f rotation=QuaternionUtil.shortestArcQuat(new Vector3f(0,0,1),camera.getViewingDirection(),new Quat4f());
   Prefab prefab=CoreRegistry.get(PrefabManager.class).getPrefab(prefabName);
   if (prefab != null && prefab.getComponent(LocationComponent.class) != null) {
-    CoreRegistry.get(EntityManager.class).create(prefab,spawnPos);
+    CoreRegistry.get(EntityManager.class).create(prefab,spawnPos,rotation);
   }
 }

@@ -1,0 +1,13 @@
+{
+  md5.baseFramePosition=new Vector3f[md5.numJoints];
+  md5.baseFrameOrientation=new Vector3f[md5.numJoints];
+  for (int i=0; i < md5.numJoints; ++i) {
+    String line=MD5ParserCommon.readNextLine(reader);
+    Matcher matcher=doubleVectorPattern.matcher(line);
+    if (!matcher.find()) {
+      throw new IOException("Invalid base frame line: \"" + line + "\"");
+    }
+    md5.baseFramePosition[i]=MD5ParserCommon.readVector3f(matcher.group(1),matcher.group(2),matcher.group(3));
+    md5.baseFrameOrientation[i]=MD5ParserCommon.readVector3f(matcher.group(4),matcher.group(5),matcher.group(6));
+  }
+}

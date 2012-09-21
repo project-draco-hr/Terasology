@@ -1,0 +1,9 @@
+{
+  Quat4f rot=new Quat4f(rotation);
+  if (parent != null) {
+    Quat4f inverseParentRot=new Quat4f();
+    inverseParentRot.inverse(parent.getObjectRotation());
+    rot.mul(inverseParentRot,rot);
+  }
+  return rot;
+}
