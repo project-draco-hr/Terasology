@@ -41,13 +41,16 @@
     }
     onChanged();
   }
+  if (other.hasPersisted()) {
+    setPersisted(other.getPersisted());
+  }
   if (other.hasName()) {
     setName(other.getName());
   }
   if (!other.parentName_.isEmpty()) {
     if (parentName_.isEmpty()) {
       parentName_=other.parentName_;
-      bitField0_=(bitField0_ & ~0x00000010);
+      bitField0_=(bitField0_ & ~0x00000020);
     }
  else {
       ensureParentNameIsMutable();

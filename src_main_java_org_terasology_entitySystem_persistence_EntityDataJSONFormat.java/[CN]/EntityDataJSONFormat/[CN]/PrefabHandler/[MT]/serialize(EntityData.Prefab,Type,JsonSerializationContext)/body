@@ -6,6 +6,9 @@
   if (src.getParentNameCount() > 0) {
     result.add("parent",context.serialize(src.getParentNameList()));
   }
+  if (src.hasPersisted()) {
+    result.addProperty("persisted",src.getPersisted());
+  }
   for (  EntityData.Component component : src.getComponentList()) {
     result.add(component.getType(),context.serialize(component));
   }

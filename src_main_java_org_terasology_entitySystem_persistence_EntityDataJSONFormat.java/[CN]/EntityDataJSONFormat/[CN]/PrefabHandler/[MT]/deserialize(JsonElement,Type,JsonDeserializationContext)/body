@@ -16,7 +16,10 @@
         }
       }
     }
- else {
+ else     if (name.equals("persisted")) {
+      prefab.setPersisted(entry.getValue().getAsBoolean());
+    }
+ else     if (entry.getValue().isJsonObject()) {
       EntityData.Component.Builder component=context.deserialize(entry.getValue(),EntityData.Component.Builder.class);
       component.setType(entry.getKey());
       prefab.addComponent(component);
