@@ -1,10 +1,10 @@
 {
   if (!isVisible())   return consumed;
-  if (mouseListeners.size() > 0 || mouseButtonListeners.size() > 0 || clickListeners.size() > 0) {
+  if (mouseMoveListeners.size() > 0 || mouseButtonListeners.size() > 0 || clickListeners.size() > 0 || doubleClickListeners.size() > 0) {
     if (intersects(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()))) {
       if (!croped) {
         if (lastMouseState == EMouseEvents.ENTER && (consumed || croped)) {
-          notifyMouseListeners(EMouseEvents.LEAVE,consumed);
+          notifyMouseMoveListeners(EMouseEvents.LEAVE,consumed);
           lastMouseState=EMouseEvents.LEAVE;
         }
         if (button != -1 && state && !mouseIsDown) {
@@ -20,12 +20,18 @@
           notifyClickListeners(button,consumed);
           notifyMouseButtonListeners(button,false,wheelMoved,true,consumed);
           mouseIsDown=false;
+          if ((System.currentTimeMillis() - lastTime) < doubleClickTimeout && lastButton == button) {
+            notifyDoubleClickListeners(button);
+            System.out.println("double click! " + this);
+          }
+          lastTime=System.currentTimeMillis();
+          lastButton=button;
           if (!consumed && consumeEvents) {
             consumed=true;
           }
         }
         if (lastMouseState == EMouseEvents.LEAVE || lastMouseState == null) {
-          notifyMouseListeners(EMouseEvents.ENTER,consumed);
+          notifyMouseMoveListeners(EMouseEvents.ENTER,consumed);
           if (!consumed) {
             lastMouseState=EMouseEvents.ENTER;
             if (consumeEvents) {
@@ -36,7 +42,7 @@
         if (wheelMoved != 0) {
           notifyMouseButtonListeners(-1,false,wheelMoved,true,consumed);
         }
-        notifyMouseListeners(EMouseEvents.HOVER,consumed);
+        notifyMouseMoveListeners(EMouseEvents.HOVER,consumed);
         if (!consumed) {
           lastMouseState=EMouseEvents.ENTER;
           if (consumeEvents) {
@@ -46,7 +52,7 @@
       }
  else {
         if (lastMouseState == EMouseEvents.ENTER) {
-          notifyMouseListeners(EMouseEvents.LEAVE,consumed);
+          notifyMouseMoveListeners(EMouseEvents.LEAVE,consumed);
           lastMouseState=EMouseEvents.LEAVE;
         }
       }
@@ -63,13 +69,13 @@
         notifyMouseButtonListeners(-1,false,wheelMoved,false,consumed);
       }
       if (lastMouseState == EMouseEvents.ENTER || lastMouseState == null) {
-        notifyMouseListeners(EMouseEvents.LEAVE,consumed);
+        notifyMouseMoveListeners(EMouseEvents.LEAVE,consumed);
         lastMouseState=EMouseEvents.LEAVE;
       }
     }
   }
-  if (mouseListeners.size() > 0 && button == -1 && wheelMoved == 0) {
-    notifyMouseListeners(EMouseEvents.MOVE,consumed);
+  if (mouseMoveListeners.size() > 0 && button == -1 && wheelMoved == 0) {
+    notifyMouseMoveListeners(EMouseEvents.MOVE,consumed);
   }
   return consumed;
 }

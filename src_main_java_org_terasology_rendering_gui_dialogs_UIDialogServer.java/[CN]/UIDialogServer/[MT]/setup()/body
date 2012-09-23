@@ -40,8 +40,7 @@
     @Override public void click(    UIDisplayElement element,    int button){
       server.setName(inputName.getText());
       server.setIp(inputIp.getText());
-      setReturnValue(server);
-      close();
+      closeDialog(EReturnCode.OK,server);
     }
   }
 );
@@ -50,8 +49,7 @@
   cancelButton.setVisible(true);
   cancelButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      setReturnValue(null);
-      close();
+      closeDialog(EReturnCode.CANCEL,null);
     }
   }
 );
