@@ -1,18 +1,16 @@
 {
-  value=0;
-  setSize(new Vector2f(256f,15f));
   setBackgroundImage("engine:gui_menu",new Vector2f(0f,175f),new Vector2f(256f,15f));
   label=new UILabel();
-  label.setColor(Color.black);
-  label.setCrop(false);
   label.setHorizontalAlign(EHorizontalAlign.CENTER);
-  label.setPosition(new Vector2f(0f,getSize().y + 2));
   label.setColor(Color.white);
+  label.setCrop(false);
   label.setVisible(true);
-  progressLine=new UIProgressLine(new Vector2f(248f,9f));
-  progressLine.setVisible(true);
+  progressLine=new UIProgressLine();
   progressLine.setPosition(new Vector2f(4f,3f));
-  progressLine.updateProgress();
-  addDisplayElement(label);
+  progressLine.updateProgress(minValue,maxValue - minValue);
+  progressLine.setVisible(true);
+  progressLine.addDisplayElement(label);
   addDisplayElement(progressLine);
+  setTextPosition(labelPosition);
+  calcRange();
 }

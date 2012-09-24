@@ -1,3 +1,10 @@
 {
   this.parent=parent;
+  while (!(parent instanceof UIWindow)) {
+    if (parent == null) {
+      break;
+    }
+    parent=parent.getWindow();
+  }
+  setWindow((UIWindow)parent);
 }
