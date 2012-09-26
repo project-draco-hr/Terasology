@@ -1,0 +1,14 @@
+{
+  StringBuilder builder=new StringBuilder();
+  for (  ShapeSymbol key : rules.keySet()) {
+    List<Shape> l=rules.get(key);
+    builder.append(key.toString() + " ::- ");
+    builder.append(l.get(0).toString());
+    for (int i=1; i < l.size(); i++) {
+      builder.append(" | " + l.get(i).toString());
+    }
+    builder.append("\n");
+  }
+  builder.append(";");
+  return builder.toString();
+}
