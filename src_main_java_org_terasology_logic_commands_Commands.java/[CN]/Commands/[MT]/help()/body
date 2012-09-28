@@ -1,11 +1,11 @@
 {
   StringBuilder msg=new StringBuilder();
-  List<Command> commands=CommandManager.getInstance().getCommandList();
-  for (  Command cmd : commands) {
+  List<CommandInfo> commands=CoreRegistry.get(CommandManager.class).getCommandList();
+  for (  CommandInfo cmd : commands) {
     if (!msg.toString().isEmpty()) {
       msg.append("\n");
     }
-    msg.append(cmd.getName() + " - " + cmd.getShortDescription());
+    msg.append(cmd.getUsageMessage() + " - " + cmd.getShortDescription());
   }
   MessageManager.getInstance().addMessage(msg.toString(),EMessageScope.PRIVATE);
 }

@@ -1,0 +1,17 @@
+{
+  super(uri,Arrays.asList(categories));
+  for (  Side side : Side.values()) {
+    Block block=blocks.get(side);
+    if (block != null) {
+      this.blocks.put(side,block);
+      block.setBlockFamily(this);
+      block.setUri(new BlockUri(uri,side.name()));
+    }
+  }
+  if (this.blocks.containsKey(Side.TOP)) {
+    archetype=this.blocks.get(Side.TOP);
+  }
+ else {
+    archetype=this.blocks.get(Side.FRONT);
+  }
+}

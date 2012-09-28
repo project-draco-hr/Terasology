@@ -1,31 +1,31 @@
 {
-  try {
-    String helpFile=PathManager.getInstance().getDataPath() + File.separator + "data"+ File.separator+ "chat"+ File.separator+ "commands.json";
-    FileReader reader=new FileReader(helpFile);
-    Gson gson=new Gson();
-    JsonParser parser=new JsonParser();
-    JsonArray Jarray=parser.parse(reader).getAsJsonArray();
-    Command cmd;
-    for (    JsonElement obj : Jarray) {
-      cmd=gson.fromJson(obj,Command.class);
-      if (!cmd.getController().isEmpty() && cmd.getPremission() != -1 && !cmd.getName().isEmpty()) {
-        if (cmd.loadController(controllers)) {
-          if (cmd.methodExists()) {
-            commands.add(cmd);
-          }
-        }
+  Predicate<String> filter=new FilterBuilder().include(".*");
+  Reflections reflections=new Reflections(new ConfigurationBuilder().filterInputsBy(filter).setScanners(new SubTypesScanner().filterResultsBy(filter),new MethodAnnotationsScanner().filterResultsBy(filter)).setUrls(Arrays.asList(ClasspathHelper.forClass(CommandManager.class))));
+  for (  Class<? extends CommandProvider> providerClass : reflections.getSubTypesOf(CommandProvider.class)) {
+    try {
+      CommandProvider provider=providerClass.newInstance();
+      Predicate<? super Method> predicate=Predicates.<Method>and(withModifier(Modifier.PUBLIC),withAnnotation(Command.class));
+      Set<Method> commandMethods=Reflections.getAllMethods(providerClass,predicate);
+      for (      Method method : commandMethods) {
+        CommandInfo command=new CommandInfo(method,provider);
+        commands.add(command);
+        commandLookup.put(command.getName(),command.getParameterCount(),command);
       }
     }
+ catch (    InstantiationException e) {
+      logger.log(Level.SEVERE,"Failed to instantiate command provider " + providerClass.getName(),e);
+    }
+catch (    IllegalAccessException e) {
+      logger.log(Level.SEVERE,"Failed to instantiate command provider " + providerClass.getName(),e);
+    }
   }
- catch (  JsonSyntaxException e) {
-    e.printStackTrace();
-  }
-catch (  FileNotFoundException e) {
-    e.printStackTrace();
-  }
-  Comparator<Command> comp=new Comparator<CommandManager.Command>(){
-    @Override public int compare(    Command o1,    Command o2){
-      return o1.getName().compareTo(o2.getName());
+  Comparator<CommandInfo> comp=new Comparator<CommandInfo>(){
+    @Override public int compare(    CommandInfo o1,    CommandInfo o2){
+      int nameComp=o1.getName().compareTo(o2.getName());
+      if (nameComp == 0) {
+        return o1.getParameterCount() - o2.getParameterCount();
+      }
+      return nameComp;
     }
   }
 ;

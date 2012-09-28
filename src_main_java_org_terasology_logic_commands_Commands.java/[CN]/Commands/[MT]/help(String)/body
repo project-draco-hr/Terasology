@@ -1,28 +1,31 @@
 {
-  Command cmd=CommandManager.getInstance().getCommand(command);
-  if (cmd == null) {
+  Collection<CommandInfo> cmdCollection=CoreRegistry.get(CommandManager.class).getCommand(command);
+  if (cmdCollection.isEmpty()) {
     MessageManager.getInstance().addMessage("No help available for command '" + command + "'. Unknown command.",EMessageScope.PRIVATE);
   }
  else {
     StringBuilder msg=new StringBuilder();
-    msg.append("=====================================================================================================================");
-    msg.append("\n" + cmd.getName());
-    for (    String param : cmd.getParameter()) {
-      msg.append(" <" + param + ">");
-    }
-    if (!cmd.getShortDescription().isEmpty()) {
-      msg.append(" - " + cmd.getShortDescription());
-    }
-    if (!cmd.getLongDescription().isEmpty()) {
-      msg.append("\n\n" + cmd.getLongDescription());
-    }
-    if (cmd.getExamples().length > 0) {
-      msg.append("\n\nExamples:");
-      for (      String example : cmd.getExamples()) {
-        msg.append("\n" + example);
+    for (    CommandInfo cmd : cmdCollection) {
+      msg.append("=====================================================================================================================");
+      msg.append(StringConstants.NEW_LINE);
+      msg.append(cmd.getUsageMessage());
+      msg.append(StringConstants.NEW_LINE);
+      msg.append("=====================================================================================================================");
+      msg.append(StringConstants.NEW_LINE);
+      if (!cmd.getHelpText().isEmpty()) {
+        msg.append(cmd.getHelpText());
+        msg.append(StringConstants.NEW_LINE);
+        msg.append("=====================================================================================================================");
+        msg.append(StringConstants.NEW_LINE);
       }
+ else       if (!cmd.getShortDescription().isEmpty()) {
+        msg.append(cmd.getShortDescription());
+        msg.append(StringConstants.NEW_LINE);
+        msg.append("=====================================================================================================================");
+        msg.append(StringConstants.NEW_LINE);
+      }
+      msg.append(StringConstants.NEW_LINE);
     }
-    msg.append("\n=====================================================================================================================");
     MessageManager.getInstance().addMessage(msg.toString(),EMessageScope.PRIVATE);
   }
 }
