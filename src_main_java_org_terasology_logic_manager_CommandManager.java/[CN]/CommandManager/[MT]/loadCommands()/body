@@ -1,6 +1,12 @@
 {
-  Predicate<String> filter=new FilterBuilder().include(".*");
-  Reflections reflections=new Reflections(new ConfigurationBuilder().filterInputsBy(filter).setScanners(new SubTypesScanner().filterResultsBy(filter),new MethodAnnotationsScanner().filterResultsBy(filter)).setUrls(Arrays.asList(ClasspathHelper.forClass(CommandManager.class))));
+  Set<URL> classpathURLs=Sets.newHashSet();
+  List<ClassLoader> classLoaders=Lists.newArrayList();
+  classpathURLs.add(ClasspathHelper.forClass(CommandManager.class));
+  for (  Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
+    classpathURLs.add(mod.getModClasspathUrl());
+    classLoaders.add(mod.getClassLoader());
+  }
+  Reflections reflections=new Reflections(new ConfigurationBuilder().setScanners(new SubTypesScanner(),new MethodAnnotationsScanner()).setUrls(classpathURLs).addClassLoaders(classLoaders));
   for (  Class<? extends CommandProvider> providerClass : reflections.getSubTypesOf(CommandProvider.class)) {
     try {
       CommandProvider provider=providerClass.newInstance();

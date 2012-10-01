@@ -10,8 +10,9 @@
   while (lister.hasMoreElements()) {
     ZipEntry entry=lister.nextElement();
     String entryPath=entry.getName();
+    logger.log(Level.INFO,"Found " + entryPath);
     if (entryPath.startsWith(basePath)) {
-      String key=entryPath.substring(basePath.length());
+      String key=entryPath.substring(basePath.length() + 1);
       AssetUri uri=getUri(key);
       if (uri == null || !uri.isValid())       continue;
       logger.info("Discovered resource " + uri);
