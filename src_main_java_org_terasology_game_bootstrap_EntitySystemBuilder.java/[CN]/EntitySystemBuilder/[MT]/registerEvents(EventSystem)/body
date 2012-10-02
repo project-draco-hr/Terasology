@@ -1,7 +1,10 @@
 {
-  Reflections reflections=new Reflections("org.terasology");
-  Set<Class<? extends Event>> eventTypes=reflections.getSubTypesOf(Event.class);
-  for (  Class<? extends Event> eventType : eventTypes) {
-    eventSystem.registerEvent("engine:" + eventType.getSimpleName(),eventType);
+  registerEvents("engine",eventSystem,new Reflections("org.terasology"));
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  if (modManager != null) {
+    for (    Mod mod : modManager.getActiveMods()) {
+      Reflections reflections=new Reflections(new ConfigurationBuilder().addClassLoader(mod.getClassLoader()).addUrls(mod.getModClasspathUrl()));
+      registerEvents(mod.getModInfo().getId(),eventSystem,reflections);
+    }
   }
 }

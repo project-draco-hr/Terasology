@@ -1,0 +1,10 @@
+{
+  Set<URL> classpathURLs=Sets.newHashSet();
+  List<ClassLoader> classLoaders=Lists.newArrayList();
+  classpathURLs.add(ClasspathHelper.forClass(getClass()));
+  for (  Mod mod : getActiveMods()) {
+    classpathURLs.add(mod.getModClasspathUrl());
+    classLoaders.add(mod.getClassLoader());
+  }
+  return new ConfigurationBuilder().addClassLoaders(classLoaders).addUrls(classpathURLs);
+}
