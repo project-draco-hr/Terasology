@@ -18,9 +18,7 @@
   cameraTargetSystem=new CameraTargetSystem();
   CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
   componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
-  inputSystem=new InputSystem();
-  CoreRegistry.put(InputSystem.class,inputSystem);
-  componentSystemManager.register(inputSystem,"engine:InputSystem");
+  initInput(modManager);
   componentSystemManager.loadEngineSystems();
   for (  Mod mod : modManager.getActiveMods()) {
     componentSystemManager.loadModSystems(mod);

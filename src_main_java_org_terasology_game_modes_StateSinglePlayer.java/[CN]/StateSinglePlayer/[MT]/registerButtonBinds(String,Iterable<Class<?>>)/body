@@ -1,0 +1,40 @@
+{
+  String prefix=packageName.toLowerCase(Locale.ENGLISH) + ":";
+  for (  Class registerBindClass : classes) {
+    RegisterBindButton info=(RegisterBindButton)registerBindClass.getAnnotation(RegisterBindButton.class);
+    String id=prefix + info.id();
+    if (BindButtonEvent.class.isAssignableFrom(registerBindClass)) {
+      try {
+        BindableButton bindButton=inputSystem.registerBindButton(id,info.description(),(BindButtonEvent)registerBindClass.newInstance());
+        bindButton.setMode(info.mode());
+        bindButton.setRepeating(info.repeating());
+        for (        Annotation annotation : registerBindClass.getAnnotations()) {
+          if (annotation instanceof DefaultBinding) {
+            DefaultBinding defaultBinding=(DefaultBinding)annotation;
+switch (defaultBinding.type()) {
+case KEY:
+              inputSystem.linkBindButtonToKey(defaultBinding.id(),id);
+            break;
+case MOUSE_BUTTON:
+          inputSystem.linkBindButtonToMouse(defaultBinding.id(),id);
+        break;
+case MOUSE_WHEEL:
+      inputSystem.linkBindButtonToMouseWheel(defaultBinding.id(),id);
+    break;
+}
+}
+}
+logger.log(Level.INFO,"Registered button bind: " + id);
+}
+ catch (InstantiationException e) {
+logger.log(Level.SEVERE,"Failed to register button bind \"" + id + "\"",e);
+}
+catch (IllegalAccessException e) {
+logger.log(Level.SEVERE,"Failed to register button bind \"" + id + "\"",e);
+}
+}
+ else {
+logger.log(Level.WARNING,"Failed to register button bind \"" + id + "\", does not extend BindButtonEvent");
+}
+}
+}
