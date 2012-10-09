@@ -2,13 +2,11 @@
   inputSystem=new InputSystem();
   CoreRegistry.put(InputSystem.class,inputSystem);
   componentSystemManager.register(inputSystem,"engine:InputSystem");
-  Reflections engineReflection=new Reflections("org.terasology");
-  registerButtonBinds("engine",engineReflection.getTypesAnnotatedWith(RegisterBindButton.class));
-  registerAxisBinds("engine",engineReflection.getTypesAnnotatedWith(RegisterBindAxis.class));
+  registerButtonBinds("engine",modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  registerAxisBinds("engine",modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
   for (  Mod mod : modManager.getActiveMods()) {
-    Reflections reflections=new Reflections(new ConfigurationBuilder().addClassLoader(mod.getClassLoader()).addUrls(mod.getModClasspathUrl()).setScanners(new TypeAnnotationsScanner()));
-    registerButtonBinds(mod.getModInfo().getId(),reflections.getTypesAnnotatedWith(RegisterBindButton.class));
-    registerAxisBinds(mod.getModInfo().getId(),reflections.getTypesAnnotatedWith(RegisterBindAxis.class));
+    registerButtonBinds(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+    registerAxisBinds(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
   }
   for (int i=0; i < 9; ++i) {
     String inventorySlotBind="engine:toolbarSlot" + i;

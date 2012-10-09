@@ -1,10 +1,10 @@
 {
-  ModManager modManager=new ModManager();
+  ModManager modManager=CoreRegistry.get(ModManager.class);
   for (  Mod mod : modManager.getMods()) {
     mod.setEnabled(true);
   }
   modManager.saveModSelectionToConfig();
-  CoreRegistry.put(ModManager.class,modManager);
+  modManager.applyActiveMods();
   AssetManager.getInstance().clear();
   BlockManager.getInstance().load(worldInfo.getBlockIdMap());
   cacheTextures();
@@ -19,9 +19,9 @@
   CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
   componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
   initInput(modManager);
-  componentSystemManager.loadEngineSystems();
+  componentSystemManager.loadSystems("engine",modManager.getEngineReflections());
   for (  Mod mod : modManager.getActiveMods()) {
-    componentSystemManager.loadModSystems(mod);
+    componentSystemManager.loadSystems(mod.getModInfo().getId(),mod.getReflections());
   }
   CoreRegistry.put(WorldPersister.class,new WorldPersister(entityManager));
   loadPrefabs();

@@ -1,10 +1,7 @@
 {
-  registerEvents("engine",eventSystem,new Reflections("org.terasology"));
   ModManager modManager=CoreRegistry.get(ModManager.class);
-  if (modManager != null) {
-    for (    Mod mod : modManager.getActiveMods()) {
-      Reflections reflections=new Reflections(new ConfigurationBuilder().addClassLoader(mod.getClassLoader()).addUrls(mod.getModClasspathUrl()));
-      registerEvents(mod.getModInfo().getId(),eventSystem,reflections);
-    }
+  registerEvents("engine",eventSystem,modManager.getEngineReflections());
+  for (  Mod mod : modManager.getActiveMods()) {
+    registerEvents(mod.getModInfo().getId(),eventSystem,mod.getReflections());
   }
 }
