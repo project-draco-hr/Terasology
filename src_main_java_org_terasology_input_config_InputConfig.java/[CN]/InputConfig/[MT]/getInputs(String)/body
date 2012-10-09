@@ -1,0 +1,19 @@
+{
+  List<Input> result=Lists.newArrayList();
+  for (  String inputId : inputMap.get(id)) {
+    inputId=inputId.toUpperCase(Locale.ENGLISH);
+    if (inputId.startsWith("KEY_")) {
+      int keyIndex=Keyboard.getKeyIndex(inputId);
+      if (keyIndex != Keyboard.KEY_NONE) {
+        result.add(new Input(InputType.KEY,keyIndex));
+      }
+    }
+ else     if (inputId.startsWith("MOUSE_")) {
+      MouseInput input=MouseInput.parse(inputId);
+      if (input != MouseInput.MOUSE_NONE) {
+        result.add(input.getInput());
+      }
+    }
+  }
+  return result;
+}
