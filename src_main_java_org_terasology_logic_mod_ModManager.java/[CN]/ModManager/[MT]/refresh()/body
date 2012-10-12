@@ -60,11 +60,20 @@ catch (        JsonIOException e) {
       logger.log(Level.SEVERE,"Invalid mod file: " + modFile,e);
     }
   }
+  List<URL> urls=Lists.newArrayList();
+  for (  Mod mod : getMods()) {
+    urls.add(mod.getModClasspathUrl());
+  }
+  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  for (  Mod mod : getMods()) {
+    mod.setInactiveClassLoader(allModClassLoader);
+  }
+  activeModClassLoader=null;
+  allReflections=null;
   for (  String activeModId : Config.getInstance().getActiveMods()) {
     Mod mod=mods.get(activeModId);
     if (mod != null) {
       mod.setEnabled(true);
     }
   }
-  activeModClassLoader=null;
 }

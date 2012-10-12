@@ -1,0 +1,10 @@
+{
+  JsonObject result=new JsonObject();
+  List<String> keys=Lists.newArrayList(src.data.keySet());
+  Collections.sort(keys);
+  for (  String packageName : keys) {
+    JsonElement map=context.serialize(src.data.get(packageName),Multimap.class);
+    result.add(packageName,map);
+  }
+  return result;
+}

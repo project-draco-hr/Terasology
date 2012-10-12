@@ -1,6 +1,13 @@
 {
   if (reflections == null) {
-    reflections=new Reflections(new ConfigurationBuilder().addClassLoader(classLoader).addUrls(getModClasspathUrl()).setScanners(new TypeAnnotationsScanner(),new SubTypesScanner()));
+    ConfigurationBuilder configurationBuilder=new ConfigurationBuilder().addUrls(getModClasspathUrl()).setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
+    if (activeClassLoader != null) {
+      configurationBuilder.addClassLoader(activeClassLoader);
+    }
+ else {
+      configurationBuilder.addClassLoader(inactiveClassLoader);
+    }
+    reflections=new Reflections(configurationBuilder);
   }
   return reflections;
 }

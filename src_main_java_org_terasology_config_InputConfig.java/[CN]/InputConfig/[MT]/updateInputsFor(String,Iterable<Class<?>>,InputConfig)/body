@@ -1,0 +1,10 @@
+{
+  for (  Class<?> buttonEvent : classes) {
+    if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
+      RegisterBindButton info=(RegisterBindButton)buttonEvent.getAnnotation(RegisterBindButton.class);
+      if (!config.hasInputs(packageName,info.id())) {
+        addBind(packageName,config,buttonEvent,info);
+      }
+    }
+  }
+}

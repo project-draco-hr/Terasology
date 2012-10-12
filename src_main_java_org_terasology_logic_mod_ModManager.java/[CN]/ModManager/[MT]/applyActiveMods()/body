@@ -5,7 +5,7 @@
   }
   activeModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
   for (  Mod mod : getActiveMods()) {
-    mod.setClassLoader(activeModClassLoader);
+    mod.setActiveClassLoader(activeModClassLoader);
   }
   activeModReflections=new Reflections(new ConfigurationBuilder().addClassLoader(getClass().getClassLoader()).addClassLoader(activeModClassLoader));
   activeModReflections.merge(getEngineReflections());

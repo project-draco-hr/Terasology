@@ -19,7 +19,7 @@
   CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
   componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
   initInput(modManager);
-  componentSystemManager.loadSystems("engine",modManager.getEngineReflections());
+  componentSystemManager.loadSystems(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections());
   for (  Mod mod : modManager.getActiveMods()) {
     componentSystemManager.loadSystems(mod.getModInfo().getId(),mod.getReflections());
   }

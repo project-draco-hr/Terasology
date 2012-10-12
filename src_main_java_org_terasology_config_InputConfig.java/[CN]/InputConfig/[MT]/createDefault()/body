@@ -1,0 +1,9 @@
+{
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  InputConfig config=new InputConfig();
+  addDefaultsFor(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class),config);
+  for (  Mod mod : modManager.getMods()) {
+    addDefaultsFor(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class),config);
+  }
+  return config;
+}
