@@ -10,7 +10,7 @@
     final Field usrPathsField=ClassLoader.class.getDeclaredField("usr_paths");
     usrPathsField.setAccessible(true);
     List<String> paths=new ArrayList<String>(Arrays.asList((String[])usrPathsField.get(null)));
-    if (paths.contains(libPath)) {
+    if (paths.contains(libPath.getAbsolutePath())) {
       return;
     }
     paths.add(0,libPath.getAbsolutePath());

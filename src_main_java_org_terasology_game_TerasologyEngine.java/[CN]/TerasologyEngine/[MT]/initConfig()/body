@@ -1,0 +1,16 @@
+{
+  if (org.terasology.config.Config.getConfigFile().exists()) {
+    org.terasology.config.Config config;
+    try {
+      config=org.terasology.config.Config.load(org.terasology.config.Config.getConfigFile());
+    }
+ catch (    IOException e) {
+      logger.log(Level.SEVERE,"Failed to load config",e);
+      config=new org.terasology.config.Config();
+    }
+    CoreRegistry.put(org.terasology.config.Config.class,config);
+  }
+ else {
+    CoreRegistry.put(org.terasology.config.Config.class,new org.terasology.config.Config());
+  }
+}
