@@ -6,27 +6,16 @@
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
       if (editButton != null) {
-        int key=-1;
-        if (wheel > 0)         key=259;
- else         if (wheel < 0)         key=260;
-        if (key != -1) {
-          changeButton(editButton,key);
-          editButton=null;
-        }
+        changeButton(editButton,new Input(InputType.MOUSE_WHEEL,wheel));
+        editButton=null;
       }
     }
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
       if (editButton != null) {
-        int key=-1;
-        if (button == 0)         key=256;
- else         if (button == 1)         key=257;
- else         if (button == 2)         key=258;
-        if (key != -1) {
-          changeButton(editButton,key);
-          editButton=null;
-        }
+        changeButton(editButton,new Input(InputType.MOUSE_BUTTON,button));
+        editButton=null;
       }
     }
   }
@@ -34,7 +23,7 @@
   addKeyListener(new KeyListener(){
     @Override public void key(    UIDisplayElement element,    KeyEvent event){
       if (editButton != null) {
-        changeButton(editButton,event.getKey());
+        changeButton(editButton,new Input(InputType.KEY,event.getKey()));
         editButton=null;
       }
     }
@@ -59,100 +48,42 @@
   subtitle.setHorizontalAlign(EHorizontalAlign.CENTER);
   subtitle.setPosition(new Vector2f(0f,128f));
   subtitle.setVisible(true);
-  _backToConfigMenuButton=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
-  _backToConfigMenuButton.getLabel().setText("Back");
-  _backToConfigMenuButton.setHorizontalAlign(EHorizontalAlign.CENTER);
-  _backToConfigMenuButton.setPosition(new Vector2f(306f,570f));
-  _backToConfigMenuButton.setVisible(true);
-  _backToConfigMenuButton.addClickListener(new ClickListener(){
+  backToConfigMenuButton=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
+  backToConfigMenuButton.getLabel().setText("Back");
+  backToConfigMenuButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  backToConfigMenuButton.setPosition(new Vector2f(306f,570f));
+  backToConfigMenuButton.setVisible(true);
+  backToConfigMenuButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       GUIManager.getInstance().openWindow("config");
     }
   }
 );
-  ForwardButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  ForwardButton.addClickListener(editButtonClick);
-  ForwardButton.setVisible(true);
-  BackwardButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  BackwardButton.addClickListener(editButtonClick);
-  BackwardButton.setVisible(true);
-  RightButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  RightButton.addClickListener(editButtonClick);
-  RightButton.setVisible(true);
-  LeftButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  LeftButton.addClickListener(editButtonClick);
-  LeftButton.setVisible(true);
-  AttackButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  AttackButton.addClickListener(editButtonClick);
-  AttackButton.setVisible(true);
-  ConsoleButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  ConsoleButton.addClickListener(editButtonClick);
-  ConsoleButton.setVisible(true);
-  CrouchButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  CrouchButton.addClickListener(editButtonClick);
-  CrouchButton.setVisible(true);
-  ActivateButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  ActivateButton.addClickListener(editButtonClick);
-  ActivateButton.setVisible(true);
-  HideguiButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  HideguiButton.addClickListener(editButtonClick);
-  HideguiButton.setVisible(true);
-  InventoryButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  InventoryButton.addClickListener(editButtonClick);
-  InventoryButton.setVisible(true);
-  JumpButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  JumpButton.addClickListener(editButtonClick);
-  JumpButton.setVisible(true);
-  MinionmodeButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  MinionmodeButton.addClickListener(editButtonClick);
-  MinionmodeButton.setVisible(true);
-  PauseButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  PauseButton.addClickListener(editButtonClick);
-  PauseButton.setVisible(true);
-  RunButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  RunButton.addClickListener(editButtonClick);
-  RunButton.setVisible(true);
-  ToolnextButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  ToolnextButton.addClickListener(editButtonClick);
-  ToolnextButton.setVisible(true);
-  ToolprevButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  ToolprevButton.addClickListener(editButtonClick);
-  ToolprevButton.setVisible(true);
-  Toolslot1Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot1Button.addClickListener(editButtonClick);
-  Toolslot1Button.setVisible(true);
-  Toolslot2Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot2Button.addClickListener(editButtonClick);
-  Toolslot2Button.setVisible(true);
-  Toolslot3Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot3Button.addClickListener(editButtonClick);
-  Toolslot3Button.setVisible(true);
-  Toolslot4Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot4Button.addClickListener(editButtonClick);
-  Toolslot4Button.setVisible(true);
-  Toolslot5Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot5Button.addClickListener(editButtonClick);
-  Toolslot5Button.setVisible(true);
-  Toolslot6Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot6Button.addClickListener(editButtonClick);
-  Toolslot6Button.setVisible(true);
-  Toolslot7Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot7Button.addClickListener(editButtonClick);
-  Toolslot7Button.setVisible(true);
-  Toolslot8Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot8Button.addClickListener(editButtonClick);
-  Toolslot8Button.setVisible(true);
-  Toolslot9Button=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  Toolslot9Button.addClickListener(editButtonClick);
-  Toolslot9Button.setVisible(true);
-  UsehelditemButton=new UIButton(new Vector2f(64f,32f),UIButton.eButtonType.NORMAL);
-  UsehelditemButton.addClickListener(editButtonClick);
-  UsehelditemButton.setVisible(true);
-  MouseSensitivity=new UISlider(new Vector2f(256f,32f),20,150);
-  MouseSensitivity.setHorizontalAlign(EHorizontalAlign.CENTER);
-  MouseSensitivity.setPosition(new Vector2f(-245f,570f));
-  MouseSensitivity.setVisible(true);
-  MouseSensitivity.addChangedListener(new ChangedListener(){
+  GridLayout buttonGroupLayout=new GridLayout(2);
+  buttonGroupLayout.setCellPadding(new Vector4f(5f,5f,5f,5f));
+  buttonGroupLayout.setVerticalCellAlign(EVerticalAlign.CENTER);
+  for (int i=0; i < buttonGroups.length; ++i) {
+    buttonGroups[i]=new UIComposite();
+    buttonGroups[i].setLayout(buttonGroupLayout);
+    buttonGroups[i].setVisible(true);
+  }
+  for (  ButtonDefinition def : buttonDefs) {
+    UIButton button=new UIButton(new Vector2f(96f,32f),UIButton.eButtonType.NORMAL);
+    button.setUserData(def.bindId);
+    button.addClickListener(editButtonClick);
+    button.setVisible(true);
+    inputButtons.add(button);
+    UILabel label=new UILabel(def.displayText);
+    label.setVisible(true);
+    inputLabels.add(label);
+    buttonGroups[def.group].addDisplayElement(label);
+    buttonGroups[def.group].addDisplayElement(button);
+  }
+  mouseSensitivity=new UISlider(new Vector2f(256f,32f),20,150);
+  mouseSensitivity.setHorizontalAlign(EHorizontalAlign.CENTER);
+  mouseSensitivity.setPosition(new Vector2f(-245f,570f));
+  mouseSensitivity.setVisible(true);
+  mouseSensitivity.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       UISlider slider=(UISlider)element;
       slider.setText("Mouse Sensitivity: " + String.valueOf(slider.getValue()));
@@ -160,7 +91,7 @@
     }
   }
 );
-  MouseSensitivity.setValue((int)(Config.getInstance().getMouseSens() * 1000));
+  mouseSensitivity.setValue((int)(Config.getInstance().getMouseSens() * 1000));
   defaultButton=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
   defaultButton.getLabel().setText("Default");
   defaultButton.setHorizontalAlign(EHorizontalAlign.CENTER);
@@ -168,65 +99,13 @@
   defaultButton.setVisible(true);
   defaultButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      InputConfig.getInstance().loadDefaultConfig();
+      CoreRegistry.get(org.terasology.config.Config.class).getInputConfig().setInputs(InputConfig.createDefault());
       Config.getInstance().setMouseSens(0.075f);
       setup();
-      MouseSensitivity.setValue((int)(Config.getInstance().getMouseSens() * 1000));
+      mouseSensitivity.setValue((int)(Config.getInstance().getMouseSens() * 1000));
     }
   }
 );
-  ForwardButtontext=new UILabel("Forward");
-  ForwardButtontext.setVisible(true);
-  BackwardButtontext=new UILabel("Backward");
-  BackwardButtontext.setVisible(true);
-  RightButtontext=new UILabel("Right");
-  RightButtontext.setVisible(true);
-  LeftButtontext=new UILabel("Left");
-  LeftButtontext.setVisible(true);
-  UsehelditemButtontext=new UILabel("Use Item");
-  UsehelditemButtontext.setVisible(true);
-  AttackButtontext=new UILabel("Attack");
-  AttackButtontext.setVisible(true);
-  ToolnextButtontext=new UILabel("Next Item");
-  ToolnextButtontext.setVisible(true);
-  ToolprevButtontext=new UILabel("Previous Item");
-  ToolprevButtontext.setVisible(true);
-  ActivateButtontext=new UILabel("Activate");
-  ActivateButtontext.setVisible(true);
-  JumpButtontext=new UILabel("Jump");
-  JumpButtontext.setVisible(true);
-  RunButtontext=new UILabel("Run");
-  RunButtontext.setVisible(true);
-  CrouchButtontext=new UILabel("Crouch");
-  CrouchButtontext.setVisible(true);
-  InventoryButtontext=new UILabel("Inventory");
-  InventoryButtontext.setVisible(true);
-  PauseButtontext=new UILabel("Pause");
-  PauseButtontext.setVisible(true);
-  HideguiButtontext=new UILabel("Hide HUD");
-  HideguiButtontext.setVisible(true);
-  MinionmodeButtontext=new UILabel("Minion mode");
-  MinionmodeButtontext.setVisible(true);
-  ConsoleButtontext=new UILabel("Console");
-  ConsoleButtontext.setVisible(true);
-  Toolslot1Buttontext=new UILabel("Hotkey 1");
-  Toolslot1Buttontext.setVisible(true);
-  Toolslot2Buttontext=new UILabel("Hotkey 2");
-  Toolslot2Buttontext.setVisible(true);
-  Toolslot3Buttontext=new UILabel("Hotkey 3");
-  Toolslot3Buttontext.setVisible(true);
-  Toolslot4Buttontext=new UILabel("Hotkey 4");
-  Toolslot4Buttontext.setVisible(true);
-  Toolslot5Buttontext=new UILabel("Hotkey 5");
-  Toolslot5Buttontext.setVisible(true);
-  Toolslot6Buttontext=new UILabel("Hotkey 6");
-  Toolslot6Buttontext.setVisible(true);
-  Toolslot7Buttontext=new UILabel("Hotkey 7");
-  Toolslot7Buttontext.setVisible(true);
-  Toolslot8Buttontext=new UILabel("Hotkey 8");
-  Toolslot8Buttontext.setVisible(true);
-  Toolslot9Buttontext=new UILabel("Hotkey 9");
-  Toolslot9Buttontext.setVisible(true);
   GridLayout layout=new GridLayout(4);
   layout.setCellPadding(new Vector4f(0f,20f,0f,20f));
   container=new UIComposite();
@@ -234,82 +113,14 @@
   container.setPosition(new Vector2f(0f,170f));
   container.setLayout(layout);
   container.setVisible(true);
-  layout=new GridLayout(2);
-  layout.setCellPadding(new Vector4f(5f,5f,5f,5f));
-  layout.setVerticalCellAlign(EVerticalAlign.CENTER);
-  group1=new UIComposite();
-  group1.setLayout(layout);
-  group1.setVisible(true);
-  group1.addDisplayElement(ForwardButtontext);
-  group1.addDisplayElement(ForwardButton);
-  group1.addDisplayElement(BackwardButtontext);
-  group1.addDisplayElement(BackwardButton);
-  group1.addDisplayElement(LeftButtontext);
-  group1.addDisplayElement(LeftButton);
-  group1.addDisplayElement(RightButtontext);
-  group1.addDisplayElement(RightButton);
-  group1.addDisplayElement(AttackButtontext);
-  group1.addDisplayElement(AttackButton);
-  group1.addDisplayElement(UsehelditemButtontext);
-  group1.addDisplayElement(UsehelditemButton);
-  group1.addDisplayElement(ToolnextButtontext);
-  group1.addDisplayElement(ToolnextButton);
-  group1.addDisplayElement(ToolprevButtontext);
-  group1.addDisplayElement(ToolprevButton);
-  group2=new UIComposite();
-  group2.setLayout(layout);
-  group2.setVisible(true);
-  group2.addDisplayElement(ActivateButtontext);
-  group2.addDisplayElement(ActivateButton);
-  group2.addDisplayElement(InventoryButtontext);
-  group2.addDisplayElement(InventoryButton);
-  group2.addDisplayElement(JumpButtontext);
-  group2.addDisplayElement(JumpButton);
-  group2.addDisplayElement(RunButtontext);
-  group2.addDisplayElement(RunButton);
-  group2.addDisplayElement(CrouchButtontext);
-  group2.addDisplayElement(CrouchButton);
-  group2.addDisplayElement(PauseButtontext);
-  group2.addDisplayElement(PauseButton);
-  group2.addDisplayElement(ConsoleButtontext);
-  group2.addDisplayElement(ConsoleButton);
-  group3=new UIComposite();
-  group3.setLayout(layout);
-  group3.setVisible(true);
-  group3.addDisplayElement(HideguiButtontext);
-  group3.addDisplayElement(HideguiButton);
-  group3.addDisplayElement(MinionmodeButtontext);
-  group3.addDisplayElement(MinionmodeButton);
-  group4=new UIComposite();
-  group4.setLayout(layout);
-  group4.setVisible(true);
-  group4.addDisplayElement(Toolslot1Buttontext);
-  group4.addDisplayElement(Toolslot1Button);
-  group4.addDisplayElement(Toolslot2Buttontext);
-  group4.addDisplayElement(Toolslot2Button);
-  group4.addDisplayElement(Toolslot3Buttontext);
-  group4.addDisplayElement(Toolslot3Button);
-  group4.addDisplayElement(Toolslot4Buttontext);
-  group4.addDisplayElement(Toolslot4Button);
-  group4.addDisplayElement(Toolslot5Buttontext);
-  group4.addDisplayElement(Toolslot5Button);
-  group4.addDisplayElement(Toolslot6Buttontext);
-  group4.addDisplayElement(Toolslot6Button);
-  group4.addDisplayElement(Toolslot7Buttontext);
-  group4.addDisplayElement(Toolslot7Button);
-  group4.addDisplayElement(Toolslot8Buttontext);
-  group4.addDisplayElement(Toolslot8Button);
-  group4.addDisplayElement(Toolslot9Buttontext);
-  group4.addDisplayElement(Toolslot9Button);
   addDisplayElement(title);
   addDisplayElement(subtitle);
   addDisplayElement(container);
-  container.addDisplayElement(group1);
-  container.addDisplayElement(group2);
-  container.addDisplayElement(group3);
-  container.addDisplayElement(group4);
-  addDisplayElement(MouseSensitivity);
+  for (  UIComposite group : buttonGroups) {
+    container.addDisplayElement(group);
+  }
+  addDisplayElement(mouseSensitivity);
   addDisplayElement(defaultButton);
-  addDisplayElement(_backToConfigMenuButton);
+  addDisplayElement(backToConfigMenuButton);
   setup();
 }
