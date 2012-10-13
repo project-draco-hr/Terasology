@@ -6,11 +6,11 @@
   _okButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (_inputWorldTitle.getText().isEmpty()) {
-        GUIManager.getInstance().showMessage("Error","Please enter a world name");
+        getGUIManager().showMessage("Error","Please enter a world name");
         return;
       }
  else       if ((new File(PathManager.getInstance().getWorldSavePath(_inputWorldTitle.getText()),WorldInfo.DEFAULT_FILE_NAME)).exists()) {
-        GUIManager.getInstance().showMessage("Error","A World with this name already exists");
+        getGUIManager().showMessage("Error","A World with this name already exists");
         return;
       }
       CoreRegistry.put(GameType.class,(GameType)typeOfGame.getSelection().getValue());

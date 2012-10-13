@@ -13,15 +13,6 @@
   chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
   worldRenderer=new WorldRenderer(worldInfo,chunkGeneratorManager,entityManager,localPlayerSys);
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
-  Iterator<EntityRef> worldEntityIterator=entityManager.iteratorEntities(WorldComponent.class).iterator();
-  if (worldEntityIterator.hasNext()) {
-    worldRenderer.getChunkProvider().setWorldEntity(worldEntityIterator.next());
-  }
- else {
-    EntityRef worldEntity=entityManager.create();
-    worldEntity.addComponent(new WorldComponent());
-    worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
-  }
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
   CoreRegistry.put(WorldProvider.class,worldRenderer.getWorldProvider());
   CoreRegistry.put(LocalPlayer.class,new LocalPlayer(EntityRef.NULL));
@@ -39,6 +30,15 @@
  catch (    IOException e) {
       logger.log(Level.SEVERE,"Failed to load entity data",e);
     }
+  }
+  Iterator<EntityRef> worldEntityIterator=entityManager.iteratorEntities(WorldComponent.class).iterator();
+  if (worldEntityIterator.hasNext()) {
+    worldRenderer.getChunkProvider().setWorldEntity(worldEntityIterator.next());
+  }
+ else {
+    EntityRef worldEntity=entityManager.create();
+    worldEntity.addComponent(new WorldComponent());
+    worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
   }
   prepareWorld();
 }

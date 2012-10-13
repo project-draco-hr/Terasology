@@ -21,7 +21,7 @@
   goToBack.getLabel().setText("Back");
   goToBack.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      GUIManager.getInstance().openWindow("main");
+      getGUIManager().openWindow("main");
     }
   }
 );
@@ -44,7 +44,7 @@
   deleteFromList.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
       if (list.getSelection() == null) {
-        GUIManager.getInstance().showMessage("Error","Please choose a world first.");
+        getGUIManager().showMessage("Error","Please choose a world first.");
         return;
       }
       try {
@@ -54,7 +54,7 @@
         list.removeItem(list.getSelectionIndex());
       }
  catch (      Exception e) {
-        GUIManager.getInstance().showMessage("Error","Failed deleting world data object. Sorry.");
+        getGUIManager().showMessage("Error","Failed deleting world data object. Sorry.");
       }
     }
   }
