@@ -36,18 +36,23 @@
     try {
       WorldInfo info=WorldInfo.load(worldManifest);
       if (!info.getTitle().isEmpty()) {
-        try {
-          typeGame=((GameType)Class.forName(info.getGameType().substring(6)).newInstance()).getName();
-        }
- catch (        Exception e) {
-        }
+        typeGame=((GameType)Class.forName(info.getGameType().substring(6)).newInstance()).getName();
         UIListItem item=new UIListItem(info.getTitle() + "(" + typeGame+ ")\n"+ date.format(new java.util.Date(new File(file.getAbsolutePath(),"entity.dat").lastModified())).toString(),info);
         item.setPadding(new Vector4f(10f,5f,10f,5f));
         list.addItem(item);
       }
     }
  catch (    IOException e) {
-      logger.log(Level.SEVERE,"Failed reading world data object. Sorry.",e);
+      logger.error("Failed reading world data object.",e);
+    }
+catch (    ClassNotFoundException e) {
+      logger.error("Failed reading world data object.",e);
+    }
+catch (    IllegalAccessException e) {
+      logger.error("Failed reading world data object.",e);
+    }
+catch (    InstantiationException e) {
+      logger.error("Failed reading world data object.",e);
     }
   }
 }

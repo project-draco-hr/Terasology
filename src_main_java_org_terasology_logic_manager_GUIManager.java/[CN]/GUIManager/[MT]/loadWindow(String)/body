@@ -1,22 +1,22 @@
 {
   UIWindow window=getWindowById(windowId);
   if (window != null) {
-    logger.log(Level.INFO,"GUIManager: Window with ID \"" + windowId + "\" already loaded.");
+    logger.warn("Window with ID \"{}\" already loaded.",windowId);
     return window;
   }
   Class<? extends UIWindow> windowClass=registeredWindows.get(windowId);
   if (windowClass != null) {
-    logger.log(Level.INFO,"GUIManager: Loading window with ID \"" + windowId + "\".");
+    logger.debug("Loading window with ID \"{}\".",windowId);
     try {
       return addWindow(windowClass.newInstance());
     }
  catch (    InstantiationException e) {
-      logger.severe("Failed to load window " + windowId + ", no default constructor");
+      logger.error("Failed to load window {}, no default constructor",windowId);
     }
 catch (    IllegalAccessException e) {
-      logger.severe("Failed to load window " + windowId + ", no default constructor");
+      logger.error("Failed to load window {}, no default constructor",windowId);
     }
   }
-  logger.warning("Unable to load window \"" + windowId + "\", unknown id");
+  logger.warn("Unable to load window \"{}\", unknown id",windowId);
   return null;
 }

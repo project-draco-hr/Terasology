@@ -1,12 +1,12 @@
 {
   if (window == null) {
-    logger.log(Level.INFO,"GUIManager: Can't open window by null reference");
+    logger.warn("Can't open window: null");
   }
  else {
     if (!renderer.getDisplayElements().contains(window)) {
       addWindow(window);
     }
-    logger.log(Level.INFO,"GUIManager: Open and focus window by reference with ID \"" + window.getId() + "\"");
+    logger.debug("Open and focus window by reference with ID \"{}\"");
     renderer.setWindowFocus(window);
   }
   return window;

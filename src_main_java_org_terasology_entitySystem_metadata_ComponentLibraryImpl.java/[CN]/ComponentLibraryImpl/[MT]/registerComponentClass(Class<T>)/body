@@ -3,7 +3,7 @@
     componentClass.getConstructor();
   }
  catch (  NoSuchMethodException e) {
-    logger.log(Level.SEVERE,String.format("Unable to register component class %s: Default Constructor Required",componentClass.getSimpleName()));
+    logger.error("Unable to register component class {}: Default Constructor Required",componentClass.getSimpleName());
     return;
   }
   ComponentMetadata<T> info=new ComponentMetadata<T>(componentClass);
@@ -12,7 +12,7 @@
     field.setAccessible(true);
     TypeHandler typeHandler=getHandlerFor(field.getGenericType(),0);
     if (typeHandler == null) {
-      logger.log(Level.SEVERE,"Unsupported field type in component type " + componentClass.getSimpleName() + ", "+ field.getName()+ " : "+ field.getGenericType());
+      logger.error("Unsupported field type in component type {}, {} : {}",componentClass.getSimpleName(),field.getName(),field.getGenericType());
     }
  else {
       info.addField(new FieldMetadata(field,componentClass,typeHandler));

@@ -11,17 +11,17 @@
         for (        Input input : config.getInputs(id)) {
           inputSystem.linkBindButtonToInput(input,id);
         }
-        logger.log(Level.INFO,"Registered button bind: " + id);
+        logger.debug("Registered button bind: {}",id);
       }
  catch (      InstantiationException e) {
-        logger.log(Level.SEVERE,"Failed to register button bind \"" + id + "\"",e);
+        logger.error("Failed to register button bind \"{}\"",e);
       }
 catch (      IllegalAccessException e) {
-        logger.log(Level.SEVERE,"Failed to register button bind \"" + id + "\"",e);
+        logger.error("Failed to register button bind \"{}\"",e);
       }
     }
  else {
-      logger.log(Level.WARNING,"Failed to register button bind \"" + id + "\", does not extend BindButtonEvent");
+      logger.error("Failed to register button bind \"{}\", does not extend BindButtonEvent",id);
     }
   }
 }

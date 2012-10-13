@@ -7,7 +7,7 @@
   if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
     worldInfo.setSeed(random.randomCharacterString(16));
   }
-  logger.log(Level.INFO,"World seed: \"{0}\"",worldInfo.getSeed());
+  logger.info("World seed: \"{0}\"",worldInfo.getSeed());
   ChunkGeneratorManager chunkGeneratorManager=ChunkGeneratorManagerImpl.buildChunkGenerator(Arrays.asList(worldInfo.getChunkGenerators()));
   chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
   chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
@@ -28,7 +28,7 @@
       CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);
     }
  catch (    IOException e) {
-      logger.log(Level.SEVERE,"Failed to load entity data",e);
+      logger.error("Failed to load entity data",e);
     }
   }
   Iterator<EntityRef> worldEntityIterator=entityManager.iteratorEntities(WorldComponent.class).iterator();

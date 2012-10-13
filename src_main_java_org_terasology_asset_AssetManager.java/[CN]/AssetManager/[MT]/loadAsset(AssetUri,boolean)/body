@@ -5,7 +5,7 @@
   List<URL> urls=getAssetURLs(uri);
   if (urls.size() == 0) {
     if (logErrors) {
-      logger.log(Level.WARNING,"Unable to resolve asset: " + uri);
+      logger.warn("Unable to resolve asset: {}",uri);
     }
     return null;
   }
@@ -26,11 +26,11 @@
       if (asset != null) {
         assetCache.put(uri,asset);
       }
-      logger.log(Level.INFO,"Loaded " + uri);
+      logger.debug("Loaded {}",uri);
       return asset;
     }
  catch (    IOException ioe) {
-      logger.log(Level.SEVERE,"Error reading asset " + uri,ioe);
+      logger.error("Error reading asset {}",uri,ioe);
       return null;
     }
  finally {
@@ -39,11 +39,11 @@
           stream.close();
         }
  catch (        IOException innerException) {
-          logger.log(Level.SEVERE,"Error closing stream for " + uri,innerException);
+          logger.error("Error closing stream for {}",uri,innerException);
         }
       }
     }
   }
-  logger.log(Level.WARNING,"Unable to resolve asset: " + uri);
+  logger.warn("Unable to resolve asset: {}",uri);
   return null;
 }

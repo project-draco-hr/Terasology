@@ -5,7 +5,7 @@
     WorldInfo.save(new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),WorldInfo.DEFAULT_FILE_NAME),worldInfo);
   }
  catch (  IOException e) {
-    _logger.log(Level.SEVERE,"Failed to save world manifest");
+    logger.error("Failed to save world manifest",e);
   }
   AudioManager.getInstance().stopAllSounds();
   chunkStore.dispose();
@@ -21,6 +21,6 @@
     fileOut.close();
   }
  catch (  IOException e) {
-    _logger.log(Level.SEVERE,"Error saving chunks",e);
+    logger.error("Error saving chunks",e);
   }
 }

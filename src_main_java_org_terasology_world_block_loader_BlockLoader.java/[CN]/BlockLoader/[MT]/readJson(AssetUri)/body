@@ -7,14 +7,14 @@
       return parser.parse(reader);
     }
  else {
-      logger.severe("Failed to load block definition '" + blockDefUri + "'");
+      logger.error("Failed to load block definition '{}'",blockDefUri);
     }
   }
  catch (  JsonParseException e) {
-    logger.log(Level.WARNING,"Failed to parse block definition '" + blockDefUri + "'",e);
+    logger.error("Failed to parse block definition '{}'",blockDefUri,e);
   }
 catch (  IOException e) {
-    logger.log(Level.WARNING,"Failed to load block definition '" + blockDefUri + "'",e);
+    logger.error("Failed to load block definition '{}'",blockDefUri,e);
   }
  finally {
     if (stream != null) {
@@ -22,7 +22,7 @@ catch (  IOException e) {
         stream.close();
       }
  catch (      IOException e) {
-        logger.log(Level.SEVERE,"Failed to close stream",e);
+        logger.error("Failed to close stream",e);
       }
     }
   }

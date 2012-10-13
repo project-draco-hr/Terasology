@@ -4,13 +4,13 @@
       file.close();
     }
  catch (    IOException e) {
-      logger.log(Level.WARNING,"Failed to close streaming sound: " + getURI(),e);
+      logger.warn("Failed to close streaming sound: {}",getURI(),e);
     }
   }
   try {
     file=new OggReader(audioSource.openStream());
   }
  catch (  IOException e) {
-    logger.log(Level.SEVERE,"Failed to load streaming sound: " + getURI(),e);
+    logger.error("Failed to load streaming sound: {}",getURI(),e);
   }
 }
