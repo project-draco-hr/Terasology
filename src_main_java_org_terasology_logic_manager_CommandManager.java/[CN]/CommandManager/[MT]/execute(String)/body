@@ -24,29 +24,26 @@
     paramsStr+=s;
     paramsCount++;
   }
-  if (paramsCount == 0) {
-    paramsStr="()";
-  }
-  Command cmd=getCommand(commandName);
+  CommandInfo cmd=commandLookup.get(commandName,paramsCount);
   if (cmd == null) {
-    MessageManager.getInstance().addMessage("Unknown command '" + commandName + "'");
+    if (commandLookup.containsRow(commandName)) {
+      MessageManager.getInstance().addMessage("Incorrect number of parameters");
+    }
+ else {
+      MessageManager.getInstance().addMessage("Unknown command '" + commandName + "'");
+    }
     return false;
   }
-  if (paramsCount > cmd.getParameter().length) {
-    MessageManager.getInstance().addMessage(cmd.getUseMessage());
-    MessageManager.getInstance().addMessage("To many parameters for command '" + commandName + "'");
-    return false;
-  }
-  String executeString=bindName + "." + cmd.getName()+ " "+ paramsStr;
-  logger.log(Level.INFO,"Execute command '" + executeString + "'");
+  String executeString=paramsStr;
+  logger.log(Level.INFO,"Execute command with params '" + paramsStr + "'");
   try {
-    cmd.methodExecute(executeString);
+    cmd.methodExecute(paramsStr);
     return true;
   }
  catch (  Exception e) {
-    MessageManager.getInstance().addMessage(cmd.getUseMessage());
+    MessageManager.getInstance().addMessage(cmd.getUsageMessage());
     MessageManager.getInstance().addMessage("Error executing command '" + commandName + "'.");
-    e.printStackTrace();
+    logger.log(Level.WARNING,"Failed to run command",e);
     return false;
   }
 }

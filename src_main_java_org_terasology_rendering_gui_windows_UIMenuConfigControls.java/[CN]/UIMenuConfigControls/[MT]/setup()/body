@@ -1,28 +1,13 @@
 {
-  ForwardButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyForward()));
-  BackwardButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyBackward()));
-  RightButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyRight()));
-  LeftButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyLeft()));
-  AttackButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyAttack()));
-  ConsoleButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyConsole()));
-  CrouchButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyCrouch()));
-  ActivateButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyFrob()));
-  HideguiButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyHidegui()));
-  InventoryButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyInventory()));
-  JumpButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyJump()));
-  MinionmodeButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyMinionmode()));
-  PauseButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyPause()));
-  RunButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyRun()));
-  ToolnextButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolnext()));
-  ToolprevButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolprev()));
-  Toolslot1Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot1()));
-  Toolslot2Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot2()));
-  Toolslot3Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot3()));
-  Toolslot4Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot4()));
-  Toolslot5Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot5()));
-  Toolslot6Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot6()));
-  Toolslot7Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot7()));
-  Toolslot8Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot8()));
-  Toolslot9Button.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyToolslot9()));
-  UsehelditemButton.getLabel().setText(keyToStrShort(InputConfig.getInstance().getKeyUsehelditem()));
+  InputConfig inputConfig=CoreRegistry.get(org.terasology.config.Config.class).getInputConfig();
+  for (  UIButton button : inputButtons) {
+    String bindId=button.getUserData().toString();
+    Collection<Input> inputs=inputConfig.getInputs(bindId);
+    if (inputs.size() > 0) {
+      button.getLabel().setText(inputs.iterator().next().toShortString());
+    }
+ else {
+      button.getLabel().setText("");
+    }
+  }
 }

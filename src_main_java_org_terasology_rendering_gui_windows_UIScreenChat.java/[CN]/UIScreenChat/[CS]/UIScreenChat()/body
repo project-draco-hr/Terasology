@@ -1,8 +1,8 @@
 {
-  commandManager=CommandManager.getInstance();
+  commandManager=CoreRegistry.get(CommandManager.class);
   MessageManager.getInstance().subscribe(chatSubscription);
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
-  setCloseBinds(new String[]{ConsoleButton.ID});
+  setCloseBinds(new String[]{"engine:console"});
   setId("chat");
   setModal(true);
   maximize();
@@ -48,9 +48,9 @@
           String message=inputBox.getText().trim();
           if (message.startsWith(commandPrefix)) {
             String commandName=message.substring(1);
-            List<Command> commands=commandManager.getCommandList();
-            List<Command> matches=new ArrayList<Command>();
-            for (            Command cmd : commands) {
+            List<CommandInfo> commands=commandManager.getCommandList();
+            List<CommandInfo> matches=new ArrayList<CommandInfo>();
+            for (            CommandInfo cmd : commands) {
               if (cmd.getName().regionMatches(0,commandName,0,commandName.length())) {
                 matches.add(cmd);
               }
@@ -61,7 +61,7 @@
             }
  else             if (matches.size() > 1) {
               String commandMatches="";
-              for (              Command cmd : matches) {
+              for (              CommandInfo cmd : matches) {
                 if (!commandMatches.isEmpty()) {
                   commandMatches+=" ";
                 }

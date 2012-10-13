@@ -1,5 +1,6 @@
 {
-  Reflections reflections=new Reflections("org.terasology");
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  Reflections reflections=modManager.getActiveModReflections();
   Set<Class<? extends Component>> componentTypes=reflections.getSubTypesOf(Component.class);
   for (  Class<? extends Component> componentType : componentTypes) {
     library.registerComponentClass(componentType);

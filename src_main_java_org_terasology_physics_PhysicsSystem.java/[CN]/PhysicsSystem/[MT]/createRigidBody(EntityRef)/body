@@ -10,6 +10,7 @@
     RigidBodyConstructionInfo info=new RigidBodyConstructionInfo(rigidBody.mass,new EntityMotionState(entity),shape,fallInertia);
     RigidBody collider=new RigidBody(info);
     collider.setUserPointer(entity);
+    updateKinematicSettings(rigidBody,collider);
     RigidBody oldBody=entityRigidBodies.put(entity,collider);
     physics.addRigidBody(collider,Lists.<CollisionGroup>newArrayList(rigidBody.collisionGroup),rigidBody.collidesWith);
     if (oldBody != null) {

@@ -1,0 +1,16 @@
+{
+  inputString=inputString.toUpperCase(Locale.ENGLISH);
+  if (inputString.startsWith("KEY_")) {
+    int id=Keyboard.getKeyIndex(inputString.substring(4));
+    if (id != Keyboard.KEY_NONE) {
+      return new Input(InputType.KEY,id);
+    }
+  }
+ else {
+    MouseInput mouseInput=MouseInput.parse(inputString);
+    if (mouseInput != MouseInput.MOUSE_NONE) {
+      return mouseInput.getInput();
+    }
+  }
+  return new Input();
+}

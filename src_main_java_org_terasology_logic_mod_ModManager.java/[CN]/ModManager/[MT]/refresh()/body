@@ -8,12 +8,12 @@
     }
   }
 )) {
-    File modInfoFile=new File(modFile.getPath(),"mod.txt");
+    File modInfoFile=new File(modFile,"mod.txt");
     if (modInfoFile.exists()) {
       try {
         ModInfo modInfo=gson.fromJson(new FileReader(modInfoFile),ModInfo.class);
         if (!mods.containsKey(modInfo.getId())) {
-          mods.put(modInfo.getId(),new Mod(modFile,modInfo,new DirectorySource(modInfo.getId(),modFile)));
+          mods.put(modInfo.getId(),new Mod(modFile,modInfo,new DirectorySource(modInfo.getId(),new File(modFile,ASSETS_SUBDIRECTORY))));
           logger.info("Discovered mod: " + modInfo.getDisplayName());
         }
  else {
@@ -30,7 +30,7 @@ catch (      JsonIOException e) {
   }
   for (  File modFile : modPath.listFiles(new FileFilter(){
     @Override public boolean accept(    File pathname){
-      return pathname.isFile() && pathname.getName().endsWith(".zip");
+      return pathname.isFile() && (pathname.getName().endsWith(".zip") || pathname.getName().endsWith(".jar"));
     }
   }
 )) {
@@ -41,7 +41,7 @@ catch (      JsonIOException e) {
         try {
           ModInfo modInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry)),ModInfo.class);
           if (!mods.containsKey(modInfo.getId())) {
-            mods.put(modInfo.getId(),new Mod(modFile,modInfo,new ArchiveSource(modInfo.getId(),modFile)));
+            mods.put(modInfo.getId(),new Mod(modFile,modInfo,new ArchiveSource(modInfo.getId(),modFile,ASSETS_SUBDIRECTORY)));
             logger.info("Discovered mod: " + modInfo.getDisplayName());
           }
  else {
@@ -60,6 +60,16 @@ catch (        JsonIOException e) {
       logger.log(Level.SEVERE,"Invalid mod file: " + modFile,e);
     }
   }
+  List<URL> urls=Lists.newArrayList();
+  for (  Mod mod : getMods()) {
+    urls.add(mod.getModClasspathUrl());
+  }
+  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  for (  Mod mod : getMods()) {
+    mod.setInactiveClassLoader(allModClassLoader);
+  }
+  activeModClassLoader=null;
+  allReflections=null;
   for (  String activeModId : Config.getInstance().getActiveMods()) {
     Mod mod=mods.get(activeModId);
     if (mod != null) {

@@ -1,11 +1,13 @@
 {
   Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+  String[] categories=new String[0];
   if (blockDefJson.has("top")) {
     JsonObject topDefJson=blockDefJson.getAsJsonObject("top");
     blockDefJson.remove("top");
     mergeJsonInto(blockDefJson,topDefJson);
     BlockDefinition topDef=loadBlockDefinition(topDefJson);
     blockMap.put(Side.TOP,constructSingleBlock(blockDefUri,topDef));
+    categories=getCategories(topDef);
   }
   if (blockDefJson.has("sides")) {
     JsonObject sideDefJson=blockDefJson.getAsJsonObject("sides");
@@ -13,6 +15,7 @@
     mergeJsonInto(blockDefJson,sideDefJson);
     BlockDefinition sideDef=loadBlockDefinition(sideDefJson);
     constructHorizontalBlocks(blockDefUri,sideDef,blockMap);
+    categories=getCategories(sideDef);
   }
   if (blockDefJson.has("bottom")) {
     JsonObject bottomDefJson=blockDefJson.getAsJsonObject("bottom");
@@ -20,6 +23,7 @@
     mergeJsonInto(blockDefJson,bottomDefJson);
     BlockDefinition bottomDef=loadBlockDefinition(bottomDefJson);
     blockMap.put(Side.BOTTOM,constructSingleBlock(blockDefUri,bottomDef));
+    categories=getCategories(bottomDef);
   }
-  return new AlignToSurfaceFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockMap);
+  return new AlignToSurfaceFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockMap,categories);
 }

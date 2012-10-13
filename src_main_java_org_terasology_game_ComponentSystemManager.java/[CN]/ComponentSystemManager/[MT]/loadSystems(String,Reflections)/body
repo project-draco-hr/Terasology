@@ -1,0 +1,22 @@
+{
+  Set<Class<?>> systems=reflections.getTypesAnnotatedWith(RegisterComponentSystem.class);
+  for (  Class<?> system : systems) {
+    if (!ComponentSystem.class.isAssignableFrom(system)) {
+      logger.log(Level.WARNING,String.format("Cannot load %s, must be a subclass of ComponentSystem",system.getSimpleName()));
+      continue;
+    }
+    RegisterComponentSystem registerInfo=system.getAnnotation(RegisterComponentSystem.class);
+    String id=packageName + ":" + system.getSimpleName();
+    try {
+      ComponentSystem newSystem=(ComponentSystem)system.newInstance();
+      register(newSystem,id);
+      logger.log(Level.INFO,"Loaded " + id);
+    }
+ catch (    InstantiationException e) {
+      logger.log(Level.SEVERE,"Failed to load system " + id,e);
+    }
+catch (    IllegalAccessException e) {
+      logger.log(Level.SEVERE,"Failed to load system " + id,e);
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  MinionControllerComponent minionController=entity.getComponent(MinionControllerComponent.class);
+  if (minionController.minionMode) {
+switch (event.getState()) {
+case DOWN:
+      minionMenu=(UIMinionBehaviourMenu)guiManager.openWindow(BEHAVIOUR_MENU);
+    break;
+case UP:
+  minionMenu.setVisible(false);
+updateBehaviour(entity);
+break;
+default :
+break;
+}
+event.consume();
+}
+}

@@ -1,0 +1,16 @@
+{
+  StringBuilder stringBuilder=new StringBuilder();
+  for (  String category : BlockManager.getInstance().getBlockCategories()) {
+    stringBuilder.append(category);
+    stringBuilder.append(StringConstants.NEW_LINE);
+    stringBuilder.append("-----------");
+    stringBuilder.append(StringConstants.NEW_LINE);
+    List<BlockUri> categoryBlocks=sortItems(BlockManager.getInstance().getBlockFamiliesWithCategory(category));
+    for (    BlockUri uri : categoryBlocks) {
+      stringBuilder.append(uri.toString());
+      stringBuilder.append(StringConstants.NEW_LINE);
+    }
+    stringBuilder.append(StringConstants.NEW_LINE);
+  }
+  MessageManager.getInstance().addMessage(stringBuilder.toString(),EMessageScope.PRIVATE);
+}

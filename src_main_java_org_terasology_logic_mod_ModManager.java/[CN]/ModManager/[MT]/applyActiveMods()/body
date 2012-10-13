@@ -1,0 +1,15 @@
+{
+  List<URL> urls=Lists.newArrayList();
+  for (  Mod mod : getActiveMods()) {
+    urls.add(mod.getModClasspathUrl());
+  }
+  activeModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  for (  Mod mod : getActiveMods()) {
+    mod.setActiveClassLoader(activeModClassLoader);
+  }
+  activeModReflections=new Reflections(new ConfigurationBuilder().addClassLoader(getClass().getClassLoader()).addClassLoader(activeModClassLoader));
+  activeModReflections.merge(getEngineReflections());
+  for (  Mod mod : getActiveMods()) {
+    activeModReflections.merge(mod.getReflections());
+  }
+}

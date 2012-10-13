@@ -1,0 +1,14 @@
+{
+  if (allReflections == null) {
+    List<URL> urls=Lists.newArrayList();
+    for (    Mod mod : getMods()) {
+      urls.add(mod.getModClasspathUrl());
+    }
+    allReflections=new Reflections(new ConfigurationBuilder().addUrls(urls).addClassLoader(allModClassLoader).addClassLoader(getClass().getClassLoader()));
+    allReflections.merge(getEngineReflections());
+    for (    Mod mod : getMods()) {
+      allReflections.merge(mod.getReflections());
+    }
+  }
+  return allReflections;
+}

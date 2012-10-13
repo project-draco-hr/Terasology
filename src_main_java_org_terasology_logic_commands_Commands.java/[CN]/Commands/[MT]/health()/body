@@ -2,6 +2,6 @@
   LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
   HealthComponent health=localPlayer.getEntity().getComponent(HealthComponent.class);
   health.currentHealth=health.maxHealth;
-  localPlayer.getEntity().send(new HealthChangedEvent(localPlayer.getEntity(),health.currentHealth,health.maxHealth));
+  localPlayer.getEntity().send(new FullHealthEvent(localPlayer.getEntity(),health.maxHealth));
   localPlayer.getEntity().saveComponent(health);
 }

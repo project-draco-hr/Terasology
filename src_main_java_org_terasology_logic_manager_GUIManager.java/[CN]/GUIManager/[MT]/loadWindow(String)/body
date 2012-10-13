@@ -2,70 +2,21 @@
   UIWindow window=getWindowById(windowId);
   if (window != null) {
     logger.log(Level.INFO,"GUIManager: Window with ID \"" + windowId + "\" already loaded.");
-    return getWindowById(windowId);
+    return window;
   }
-  if (windowId.equals("main")) {
-    window=new UIMenuMain();
+  Class<? extends UIWindow> windowClass=registeredWindows.get(windowId);
+  if (windowClass != null) {
+    logger.log(Level.INFO,"GUIManager: Loading window with ID \"" + windowId + "\".");
+    try {
+      return addWindow(windowClass.newInstance());
+    }
+ catch (    InstantiationException e) {
+      logger.severe("Failed to load window " + windowId + ", no default constructor");
+    }
+catch (    IllegalAccessException e) {
+      logger.severe("Failed to load window " + windowId + ", no default constructor");
+    }
   }
- else   if (windowId.equals("singleplayer")) {
-    window=new UIMenuSingleplayer();
-  }
- else   if (windowId.equals("multiplayer")) {
-    window=new UIMenuMultiplayer();
-  }
- else   if (windowId.equals("config")) {
-    window=new UIMenuConfig();
-  }
- else   if (windowId.equals("config:video")) {
-    window=new UIMenuConfigVideo();
-  }
- else   if (windowId.equals("config:audio")) {
-    window=new UIMenuConfigAudio();
-  }
- else   if (windowId.equals("config:controls")) {
-    window=new UIMenuConfigControls();
-  }
- else   if (windowId.equals("config:mods")) {
-    window=new UIMenuConfigMods();
-  }
- else   if (windowId.equals("loading")) {
-    window=new UIScreenLoading();
-  }
- else   if (windowId.equals("book")) {
-    window=new UIScreenBook();
-  }
- else   if (windowId.equals("container")) {
-    window=new UIScreenContainer();
-  }
- else   if (windowId.equals("metrics")) {
-    window=new UIScreenMetrics();
-  }
- else   if (windowId.equals("death")) {
-    window=new UIScreenDeath();
-  }
- else   if (windowId.equals("pause")) {
-    window=new UIMenuPause();
-  }
- else   if (windowId.equals("inventory")) {
-    window=new UIScreenInventory();
-  }
- else   if (windowId.equals("chat")) {
-    window=new UIScreenChat();
-  }
- else   if (windowId.equals("hud")) {
-    window=new UIScreenHUD();
-  }
- else   if (windowId.equals("minionBehaviour")) {
-    window=new UIMinionBehaviourMenu();
-  }
- else   if (windowId.equals("itemList")) {
-    window=new UIScreenItems();
-  }
-  if (window == null) {
-    logger.log(Level.INFO,"GUIManager: Couldn't load window by ID \"" + windowId + "\"");
-  }
- else {
-    logger.log(Level.INFO,"GUIManager: Loaded window of type " + window.getClass().getName());
-  }
-  return addWindow(window);
+  logger.warning("Unable to load window \"" + windowId + "\", unknown id");
+  return null;
 }

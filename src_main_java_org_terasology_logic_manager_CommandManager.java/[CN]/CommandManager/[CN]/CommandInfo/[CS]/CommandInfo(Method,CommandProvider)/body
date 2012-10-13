@@ -1,0 +1,17 @@
+{
+  this.provider=provider;
+  this.name=method.getName();
+  this.parameterNames=new String[method.getParameterTypes().length];
+  for (int i=0; i < method.getParameterTypes().length; ++i) {
+    parameterNames[i]=method.getParameterTypes()[i].toString();
+    for (    Annotation paramAnnot : method.getParameterAnnotations()[i]) {
+      if (paramAnnot instanceof CommandParam) {
+        parameterNames[i]=((CommandParam)paramAnnot).name();
+        break;
+      }
+    }
+  }
+  Command commandAnnotation=method.getAnnotation(Command.class);
+  this.shortDescription=commandAnnotation.shortDescription();
+  this.helpText=commandAnnotation.helpText();
+}
