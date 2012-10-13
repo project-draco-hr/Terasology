@@ -14,10 +14,10 @@
         ModInfo modInfo=gson.fromJson(new FileReader(modInfoFile),ModInfo.class);
         if (!mods.containsKey(modInfo.getId())) {
           mods.put(modInfo.getId(),new Mod(modFile,modInfo,new DirectorySource(modInfo.getId(),new File(modFile,ASSETS_SUBDIRECTORY))));
-          logger.info("Discovered mod: " + modInfo.getDisplayName());
+          logger.info("Discovered mod: {}",modInfo.getDisplayName());
         }
  else {
-          logger.info("Discovered duplicate mod: " + modInfo.getDisplayName() + ", skipping");
+          logger.info("Discovered duplicate mod: {}, skipping",modInfo.getDisplayName());
         }
       }
  catch (      FileNotFoundException e) {
@@ -64,7 +64,7 @@ catch (        JsonIOException e) {
   for (  Mod mod : getMods()) {
     urls.add(mod.getModClasspathUrl());
   }
-  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
   for (  Mod mod : getMods()) {
     mod.setInactiveClassLoader(allModClassLoader);
   }

@@ -4,7 +4,7 @@
     logger.error("Cannot register handler {}, must be public",handler.getClass().getName());
     return;
   }
-  logger.info("Registering event handler " + handlerClass.getName());
+  logger.debug("Registering event handler " + handlerClass.getName());
   for (  Method method : handlerClass.getMethods()) {
     ReceiveEvent receiveEventAnnotation=method.getAnnotation(ReceiveEvent.class);
     if (receiveEventAnnotation != null) {
@@ -13,7 +13,7 @@
       }
       Class<?>[] types=method.getParameterTypes();
       if (types.length == 2 && Event.class.isAssignableFrom(types[0]) && EntityRef.class.isAssignableFrom(types[1])) {
-        logger.info("Found method: " + method.toString());
+        logger.debug("Found method: " + method.toString());
         ReflectedEventHandlerInfo handlerInfo=new ReflectedEventHandlerInfo(handler,method,receiveEventAnnotation.priority(),receiveEventAnnotation.components());
         for (        Class<? extends Component> c : receiveEventAnnotation.components()) {
           addEventHandler((Class<? extends Event>)types[0],handlerInfo,c);

@@ -4,7 +4,7 @@
     for (    Mod mod : getMods()) {
       urls.add(mod.getModClasspathUrl());
     }
-    allReflections=new Reflections(new ConfigurationBuilder().addUrls(urls).addClassLoader(allModClassLoader).addClassLoader(getClass().getClassLoader()));
+    allReflections=new Reflections(new ConfigurationBuilder().addUrls(urls).addUrls(ClasspathHelper.forPackage("org.terasology",getClass().getClassLoader())).addClassLoader(allModClassLoader).addClassLoader(getClass().getClassLoader()));
     allReflections.merge(getEngineReflections());
     for (    Mod mod : getMods()) {
       allReflections.merge(mod.getReflections());

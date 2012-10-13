@@ -3,7 +3,7 @@
   for (  Mod mod : getActiveMods()) {
     urls.add(mod.getModClasspathUrl());
   }
-  activeModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  activeModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
   for (  Mod mod : getActiveMods()) {
     mod.setActiveClassLoader(activeModClassLoader);
   }
