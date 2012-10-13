@@ -1,7 +1,7 @@
 {
   ComponentMetadata<?> componentMetadata=componentLibrary.getMetadata(component.getClass());
   if (componentMetadata == null) {
-    logger.log(Level.SEVERE,"Unregistered component type: " + component.getClass());
+    logger.error("Unregistered component type: {}",component.getClass());
     return null;
   }
   EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
@@ -20,10 +20,10 @@
       componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
     }
  catch (    IllegalAccessException e) {
-      logger.log(Level.SEVERE,"Exception during serializing component type: " + component.getClass(),e);
+      logger.error("Exception during serializing component type: {}",component.getClass(),e);
     }
 catch (    InvocationTargetException e) {
-      logger.log(Level.SEVERE,"Exception during serializing component type: " + component.getClass(),e);
+      logger.error("Exception during serializing component type: {}",component.getClass(),e);
     }
   }
   return componentMessage.build();

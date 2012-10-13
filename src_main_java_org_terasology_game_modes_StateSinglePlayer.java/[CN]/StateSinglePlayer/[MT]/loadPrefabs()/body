@@ -1,7 +1,7 @@
 {
   EntityPersisterHelper persisterHelper=new EntityPersisterHelperImpl(entityManager);
   for (  AssetUri prefabURI : AssetManager.list(AssetType.PREFAB)) {
-    logger.info("Loading prefab " + prefabURI);
+    logger.debug("Loading prefab " + prefabURI);
     try {
       InputStream stream=AssetManager.assetStream(prefabURI);
       if (stream != null) {
@@ -13,11 +13,11 @@
         }
       }
  else {
-        logger.severe("Failed to load prefab '" + prefabURI + "'");
+        logger.warn("Failed to load prefab '{}'",prefabURI);
       }
     }
  catch (    IOException e) {
-      logger.log(Level.WARNING,"Failed to load prefab '" + prefabURI + "'",e);
+      logger.error("Failed to load prefab '{}'",prefabURI,e);
     }
   }
 }

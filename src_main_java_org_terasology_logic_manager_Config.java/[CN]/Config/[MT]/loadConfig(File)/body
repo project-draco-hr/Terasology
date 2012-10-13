@@ -1,7 +1,7 @@
 {
   Configuration.Setting.Builder setting=Configuration.Setting.newBuilder();
   if (file.exists()) {
-    logger.log(Level.INFO,"Using config file: " + file);
+    logger.debug("Using config file: {}",file);
     try {
       FileInputStream fis=new FileInputStream(file);
       InputStreamReader isr=new InputStreamReader(fis);
@@ -9,7 +9,7 @@
       isr.close();
     }
  catch (    Exception e) {
-      logger.log(Level.WARNING,"Could not load config file " + file,e);
+      logger.error("Could not load config file {}",file,e);
       return false;
     }
   }

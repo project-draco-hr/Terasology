@@ -14,17 +14,17 @@
         ModInfo modInfo=gson.fromJson(new FileReader(modInfoFile),ModInfo.class);
         if (!mods.containsKey(modInfo.getId())) {
           mods.put(modInfo.getId(),new Mod(modFile,modInfo,new DirectorySource(modInfo.getId(),new File(modFile,ASSETS_SUBDIRECTORY))));
-          logger.info("Discovered mod: " + modInfo.getDisplayName());
+          logger.info("Discovered mod: {}",modInfo.getDisplayName());
         }
  else {
-          logger.info("Discovered duplicate mod: " + modInfo.getDisplayName() + ", skipping");
+          logger.info("Discovered duplicate mod: {}, skipping",modInfo.getDisplayName());
         }
       }
  catch (      FileNotFoundException e) {
-        logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+        logger.warn("Failed to load mod manifest for mod at {}",modFile,e);
       }
 catch (      JsonIOException e) {
-        logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+        logger.warn("Failed to load mod manifest for mod at {}",modFile,e);
       }
     }
   }
@@ -49,22 +49,22 @@ catch (      JsonIOException e) {
           }
         }
  catch (        FileNotFoundException e) {
-          logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+          logger.warn("Failed to load mod manifest for mod at {}",modFile,e);
         }
 catch (        JsonIOException e) {
-          logger.log(Level.WARNING,"Failed to load mod manifest for mod at " + modFile,e);
+          logger.warn("Failed to load mod manifest for mod at {}",modFile,e);
         }
       }
     }
  catch (    IOException e) {
-      logger.log(Level.SEVERE,"Invalid mod file: " + modFile,e);
+      logger.error("Invalid mod file: {}",modFile,e);
     }
   }
   List<URL> urls=Lists.newArrayList();
   for (  Mod mod : getMods()) {
     urls.add(mod.getModClasspathUrl());
   }
-  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
   for (  Mod mod : getMods()) {
     mod.setInactiveClassLoader(allModClassLoader);
   }

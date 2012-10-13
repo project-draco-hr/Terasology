@@ -1,14 +1,16 @@
 {
   if (LWJGLUtil.DEBUG) {
     System.setOut(new PrintStream(System.out){
+      private Logger logger=LoggerFactory.getLogger("org.lwjgl");
       @Override public void print(      final String message){
-        Logger.getLogger("").info(message);
+        logger.info(message);
       }
     }
 );
     System.setErr(new PrintStream(System.err){
+      private Logger logger=LoggerFactory.getLogger("org.lwjgl");
       @Override public void print(      final String message){
-        Logger.getLogger("").severe(message);
+        logger.error(message);
       }
     }
 );
@@ -20,12 +22,51 @@
     }
   }
   try {
+    java.util.logging.Logger.getLogger("").getHandlers()[0].setLevel(Level.FINE);
+    java.util.logging.Logger.getLogger("").setLevel(Level.FINE);
+    java.util.logging.Logger.getLogger("").getHandlers()[0].setFormatter(new Formatter(){
+      DateFormat dateFormat=new SimpleDateFormat("MM-dd HH:mm:ss");
+      @Override public String format(      LogRecord record){
+        String thrownMessage="";
+        if (record.getThrown() != null) {
+          try {
+            StringWriter sw=new StringWriter();
+            PrintWriter pw=new PrintWriter(sw);
+            record.getThrown().printStackTrace(pw);
+            pw.close();
+            thrownMessage=sw.toString();
+          }
+ catch (          Exception ex) {
+          }
+        }
+        return String.format("[%s] (%s)\t%s:%s() - %s (Thread: %d)\n%s",record.getLevel().getLocalizedName(),dateFormat.format(new Date(record.getMillis())),record.getLoggerName(),record.getSourceMethodName(),formatMessage(record),record.getThreadID(),thrownMessage);
+      }
+    }
+);
     FileHandler fh=new FileHandler(new File(dirPath,"Terasology.log").getAbsolutePath(),false);
     fh.setLevel(Level.INFO);
-    fh.setFormatter(new SimpleFormatter());
-    Logger.getLogger("").addHandler(fh);
+    fh.setFormatter(new Formatter(){
+      DateFormat dateFormat=new SimpleDateFormat("MM-dd HH:mm:ss");
+      @Override public String format(      LogRecord record){
+        String thrownMessage="";
+        if (record.getThrown() != null) {
+          try {
+            StringWriter sw=new StringWriter();
+            PrintWriter pw=new PrintWriter(sw);
+            record.getThrown().printStackTrace(pw);
+            pw.close();
+            thrownMessage=sw.toString();
+          }
+ catch (          Exception ex) {
+          }
+        }
+        return String.format("[%s] (%s)\t%s - %s\n%s",record.getLevel().getLocalizedName(),dateFormat.format(new Date(record.getMillis())),record.getLoggerName(),record.getSourceMethodName(),formatMessage(record),thrownMessage);
+      }
+    }
+);
+    java.util.logging.Logger.getLogger("").addHandler(fh);
   }
  catch (  IOException ex) {
-    logger.log(Level.WARNING,ex.toString(),ex);
+    logger.error("Failed to set up logging to file",ex);
   }
 }

@@ -6,7 +6,7 @@
       properties.load(inStream);
     }
  catch (    final IOException e) {
-      logger.log(Level.SEVERE,"Loading " + VERSION_INFO_FILE,e);
+      logger.error("Loading {} failed",VERSION_INFO_FILE,e);
     }
  finally {
       try {
@@ -15,7 +15,7 @@
         }
       }
  catch (      final IOException e) {
-        logger.log(Level.SEVERE,"Closing " + VERSION_INFO_FILE,e);
+        logger.error("Closing {} failed",VERSION_INFO_FILE,e);
       }
     }
   }
@@ -27,7 +27,6 @@
   gitCommit=properties.getProperty(GIT_COMMIT,DEFAULT_VALUE);
   dateTime=properties.getProperty(DATE_TIME,DEFAULT_VALUE);
   final StringBuilder toStringBuilder=new StringBuilder();
-  toStringBuilder.append(this.getClass().getName());
   toStringBuilder.append("[");
   toStringBuilder.append(BUILD_NUMBER);
   toStringBuilder.append("=");

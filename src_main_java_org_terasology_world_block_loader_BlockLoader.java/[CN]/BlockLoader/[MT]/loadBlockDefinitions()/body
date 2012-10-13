@@ -1,5 +1,5 @@
 {
-  logger.log(Level.INFO,"Loading Blocks...");
+  logger.info("Loading Blocks...");
   LoadBlockDefinitionResults result=new LoadBlockDefinitionResults();
   for (  AssetUri blockDefUri : AssetManager.list(AssetType.BLOCK_DEFINITION)) {
     try {
@@ -9,7 +9,7 @@
         if (blockDefJson.has("template") && blockDefJson.get("template").getAsBoolean()) {
           continue;
         }
-        logger.log(Level.INFO,"Loading " + blockDefUri);
+        logger.debug("Loading {}",blockDefUri);
         BlockDefinition blockDef=loadBlockDefinition(inheritData(blockDefUri,blockDefJson));
         if (isShapelessBlockFamily(blockDef)) {
           indexTile(getDefaultTile(blockDef,blockDefUri),true);
@@ -41,10 +41,10 @@ result.families.addAll(processMultiBlockFamily(blockDefUri,blockDef));
 }
 }
  catch (JsonParseException e) {
-logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
+logger.error("Failed to load block '{}'",blockDefUri,e);
 }
 catch (NullPointerException e) {
-logger.log(Level.SEVERE,"Failed to load block '" + blockDefUri + "'",e);
+logger.error("Failed to load block '{}'",blockDefUri,e);
 }
 }
 result.shapelessDefinitions.addAll(loadAutoBlocks());

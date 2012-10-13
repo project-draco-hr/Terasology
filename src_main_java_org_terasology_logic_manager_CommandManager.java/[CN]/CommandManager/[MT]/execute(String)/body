@@ -35,7 +35,7 @@
     return false;
   }
   String executeString=paramsStr;
-  logger.log(Level.INFO,"Execute command with params '" + paramsStr + "'");
+  logger.debug("Execute command with params '{}'");
   try {
     cmd.methodExecute(paramsStr);
     return true;
@@ -43,7 +43,7 @@
  catch (  Exception e) {
     MessageManager.getInstance().addMessage(cmd.getUsageMessage());
     MessageManager.getInstance().addMessage("Error executing command '" + commandName + "'.");
-    logger.log(Level.WARNING,"Failed to run command",e);
+    logger.warn("Failed to execute command",e);
     return false;
   }
 }

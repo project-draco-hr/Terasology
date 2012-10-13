@@ -10,12 +10,14 @@
   while (lister.hasMoreElements()) {
     ZipEntry entry=lister.nextElement();
     String entryPath=entry.getName();
-    logger.log(Level.INFO,"Found " + entryPath);
+    logger.debug("Found {}",entryPath);
     if (entryPath.startsWith(basePath)) {
       String key=entryPath.substring(basePath.length() + 1);
       AssetUri uri=getUri(key);
-      if (uri == null || !uri.isValid())       continue;
-      logger.info("Discovered resource " + uri);
+      if (uri == null || !uri.isValid()) {
+        continue;
+      }
+      logger.debug("Discovered resource {}",uri);
       URL url=new URL("jar:file:" + file.getAbsolutePath() + "!/"+ entryPath);
       addItem(uri,url);
     }

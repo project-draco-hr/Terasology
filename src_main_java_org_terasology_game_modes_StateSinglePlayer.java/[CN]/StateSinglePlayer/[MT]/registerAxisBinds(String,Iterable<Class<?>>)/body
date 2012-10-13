@@ -7,27 +7,27 @@
       BindableButton positiveButton=inputSystem.getBindButton(info.positiveButton());
       BindableButton negativeButton=inputSystem.getBindButton(info.negativeButton());
       if (positiveButton == null) {
-        logger.log(Level.WARNING,"Failed to register axis \"" + id + "\", missing positive button \""+ info.positiveButton()+ "\"");
+        logger.warn("Failed to register axis \"{}\", missing positive button \"{}\"",id,info.positiveButton());
         continue;
       }
       if (negativeButton == null) {
-        logger.log(Level.WARNING,"Failed to register axis \"" + id + "\", missing negative button \""+ info.negativeButton()+ "\"");
+        logger.warn("Failed to register axis \"{}\", missing negative button \"{}\"",id,info.negativeButton());
         continue;
       }
       try {
         BindableAxis bindAxis=inputSystem.registerBindAxis(id,(BindAxisEvent)registerBindClass.newInstance(),positiveButton,negativeButton);
         bindAxis.setSendEventMode(info.eventMode());
-        logger.log(Level.INFO,"Registered axis bind: " + id);
+        logger.debug("Registered axis bind: {}",id);
       }
  catch (      InstantiationException e) {
-        logger.log(Level.SEVERE,"Failed to register axis bind \"" + id + "\"",e);
+        logger.error("Failed to register axis bind \"{}\"",id,e);
       }
 catch (      IllegalAccessException e) {
-        logger.log(Level.SEVERE,"Failed to register axis bind \"" + id + "\"",e);
+        logger.error("Failed to register axis bind \"{}\"",id,e);
       }
     }
  else {
-      logger.log(Level.WARNING,"Failed to register axis bind \"" + id + "\", does not extend BindAxisEvent");
+      logger.error("Failed to register axis bind \"{}\", does not extend BindAxisEvent",id);
     }
   }
 }

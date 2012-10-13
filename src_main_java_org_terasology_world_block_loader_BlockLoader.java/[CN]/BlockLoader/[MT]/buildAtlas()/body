@@ -8,7 +8,7 @@
         ImageIO.write(image,"png",new File(PathManager.getInstance().getScreensPath(),"tiles.png"));
       }
  catch (      IOException e) {
-        e.printStackTrace();
+        logger.warn("Failed to write atlas");
       }
     }
     ByteArrayOutputStream bos=new ByteArrayOutputStream();
@@ -21,7 +21,7 @@
       data[i]=buf;
     }
  catch (    IOException e) {
-      logger.severe("Failed to write in-memory image");
+      logger.error("Failed to create atlas texture");
     }
   }
   Texture terrainTex=new Texture(data,atlasSize,atlasSize,Texture.WrapMode.Clamp,Texture.FilterMode.Nearest);

@@ -4,13 +4,13 @@
   GL20.glAttachShader(shaderProgram,vertexProgram);
   GL20.glLinkProgram(shaderProgram);
   if (GL20.glGetProgram(shaderProgram,GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
-    logger.log(Level.WARNING,"Failed to link shader {0}.",GL20.glGetProgramInfoLog(shaderProgram,GL20.GL_LINK_STATUS));
+    logger.error("Failed to link shader {}.",GL20.glGetProgramInfoLog(shaderProgram,GL20.GL_LINK_STATUS));
     GL20.glDeleteProgram(shaderProgram);
     return 0;
   }
   GL20.glValidateProgram(shaderProgram);
   if (GL20.glGetProgram(shaderProgram,GL20.GL_VALIDATE_STATUS) == GL11.GL_FALSE) {
-    logger.log(Level.WARNING,"Failed to validate shader {0}.",GL20.glGetProgramInfoLog(shaderProgram,GL20.GL_VALIDATE_STATUS));
+    logger.error("Failed to validate shader {}.",GL20.glGetProgramInfoLog(shaderProgram,GL20.GL_VALIDATE_STATUS));
     GL20.glDeleteProgram(shaderProgram);
     return 0;
   }

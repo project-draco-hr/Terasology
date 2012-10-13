@@ -5,18 +5,7 @@
       return enumType.cast(resultValue);
     }
  catch (    IllegalArgumentException iae) {
-      if (enumType == ItemComponent.UsageType.class) {
-        if (value.equals("OnUser")) {
-          return enumType.cast(ItemComponent.UsageType.ON_USER);
-        }
- else         if (value.equals("OnBlock")) {
-          return enumType.cast(ItemComponent.UsageType.ON_BLOCK);
-        }
- else         if (value.equals("InDirection")) {
-          return enumType.cast(ItemComponent.UsageType.IN_DIRECTION);
-        }
-      }
-      logger.log(Level.WARNING,"Unable to deserialize enum: ",iae);
+      logger.warn("Unable to deserialize enum {}",enumType,iae);
     }
   }
   return null;
