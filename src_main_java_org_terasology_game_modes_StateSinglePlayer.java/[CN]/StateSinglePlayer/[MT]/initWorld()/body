@@ -18,9 +18,7 @@
   CoreRegistry.put(LocalPlayer.class,new LocalPlayer(EntityRef.NULL));
   CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
   CoreRegistry.put(BulletPhysics.class,worldRenderer.getBulletRenderer());
-  for (  ComponentSystem system : componentSystemManager.iterateAll()) {
-    system.initialise();
-  }
+  componentSystemManager.initialise();
   File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),ENTITY_DATA_FILE);
   entityManager.clear();
   if (entityDataFile.exists()) {
