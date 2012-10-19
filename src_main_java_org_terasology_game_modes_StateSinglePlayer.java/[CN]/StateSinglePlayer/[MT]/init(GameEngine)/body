@@ -1,10 +1,5 @@
 {
-  ModManager modManager=CoreRegistry.get(ModManager.class);
-  for (  Mod mod : modManager.getMods()) {
-    mod.setEnabled(true);
-  }
-  modManager.saveModSelectionToConfig();
-  modManager.applyActiveMods();
+  ModManager modManager=initModManager();
   AssetManager.getInstance().clear();
   BlockManager.getInstance().load(worldInfo.getBlockIdMap());
   cacheTextures();

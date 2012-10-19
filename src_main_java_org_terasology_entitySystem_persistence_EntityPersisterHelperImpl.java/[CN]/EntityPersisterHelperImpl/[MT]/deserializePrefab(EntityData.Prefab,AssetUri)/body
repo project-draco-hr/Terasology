@@ -1,0 +1,25 @@
+{
+  String name=uri.getSimpleString();
+  Prefab prefab=prefabManager.createPrefab(name);
+  prefab.setPersisted(prefabData.getPersisted());
+  for (  String parentName : prefabData.getParentNameList()) {
+    int packageSplit=parentName.indexOf(':');
+    if (packageSplit == -1) {
+      parentName=uri.getPackage() + ":" + parentName;
+    }
+    Prefab parent=prefabManager.getPrefab(parentName);
+    if (parent == null) {
+      logger.error("Missing parent prefab (need to fix parent serialization)");
+    }
+ else {
+      prefab.addParent(parent);
+    }
+  }
+  for (  EntityData.Component componentData : prefabData.getComponentList()) {
+    Component component=deserializeComponent(componentData);
+    if (component != null) {
+      prefab.setComponent(component);
+    }
+  }
+  return prefab;
+}

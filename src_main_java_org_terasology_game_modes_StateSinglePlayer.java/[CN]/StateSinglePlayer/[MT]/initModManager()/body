@@ -1,0 +1,14 @@
+{
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  for (  Mod mod : modManager.getMods()) {
+    mod.setEnabled(false);
+  }
+  for (  String modName : worldInfo.getModConfiguration().listMods()) {
+    Mod mod=modManager.getMod(modName);
+    if (mod != null) {
+      mod.setEnabled(true);
+    }
+  }
+  modManager.applyActiveMods();
+  return modManager;
+}
