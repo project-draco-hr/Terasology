@@ -1,5 +1,9 @@
 {
-  WorldInfo worldInfo=new WorldInfo(title,seed,getTime(),chunkGenerators,CoreRegistry.get(GameType.class).getClass().toString());
+  ModConfig modConfig=new ModConfig();
+  for (  Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
+    modConfig.addMod(mod.getModInfo().getId());
+  }
+  WorldInfo worldInfo=new WorldInfo(title,seed,getTime(),chunkGenerators,CoreRegistry.get(GameType.class).getClass().toString(),modConfig);
   worldInfo.setBlockIdMap(BlockManager.getInstance().getBlockIdMap());
   return worldInfo;
 }

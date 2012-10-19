@@ -1,34 +1,34 @@
 {
-  _okButton=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
-  _okButton.getLabel().setText("Play");
-  _okButton.setPosition(new Vector2f(getSize().x / 2 - _okButton.getSize().x - 16f,getSize().y - _okButton.getSize().y - 10));
-  _okButton.setVisible(true);
-  _okButton.addClickListener(new ClickListener(){
+  okButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  okButton.getLabel().setText("Play");
+  okButton.setPosition(new Vector2f(getSize().x / 2 - okButton.getSize().x - 16f,getSize().y - okButton.getSize().y - 10));
+  okButton.setVisible(true);
+  okButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      if (_inputWorldTitle.getText().isEmpty()) {
+      if (inputWorldTitle.getText().isEmpty()) {
         getGUIManager().showMessage("Error","Please enter a world name");
         return;
       }
- else       if ((new File(PathManager.getInstance().getWorldSavePath(_inputWorldTitle.getText()),WorldInfo.DEFAULT_FILE_NAME)).exists()) {
+ else       if ((new File(PathManager.getInstance().getWorldSavePath(inputWorldTitle.getText()),WorldInfo.DEFAULT_FILE_NAME)).exists()) {
         getGUIManager().showMessage("Error","A World with this name already exists");
         return;
       }
       CoreRegistry.put(GameType.class,(GameType)typeOfGame.getSelection().getValue());
-      if (_inputSeed.getText().length() > 0) {
-        Config.getInstance().setDefaultSeed(_inputSeed.getText());
+      if (inputSeed.getText().length() > 0) {
+        org.terasology.logic.manager.Config.getInstance().setDefaultSeed(inputSeed.getText());
       }
  else {
         FastRandom random=new FastRandom();
-        Config.getInstance().setDefaultSeed(random.randomCharacterString(32));
+        org.terasology.logic.manager.Config.getInstance().setDefaultSeed(random.randomCharacterString(32));
       }
-      if (_inputWorldTitle.getText().length() > 0) {
-        Config.getInstance().setWorldTitle(_inputWorldTitle.getText());
+      if (inputWorldTitle.getText().length() > 0) {
+        org.terasology.logic.manager.Config.getInstance().setWorldTitle(inputWorldTitle.getText());
       }
  else {
-        Config.getInstance().setWorldTitle(getWorldName());
+        org.terasology.logic.manager.Config.getInstance().setWorldTitle(getWorldName());
       }
       List<String> chunkList=new ArrayList<String>();
-switch (_chunkGenerator.getSelectionIndex()) {
+switch (chunkGenerator.getSelectionIndex()) {
 case 1:
         chunkList.add(FlatTerrainGenerator.class.getName());
       chunkList.add(FloraGenerator.class.getName());
@@ -43,21 +43,23 @@ chunkList.add(ForestGenerator.class.getName());
 break;
 }
 String[] chunksListArr=chunkList.toArray(new String[chunkList.size()]);
-Config.getInstance().setChunkGenerator(chunksListArr);
-CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(new WorldInfo(Config.getInstance().getWorldTitle(),Config.getInstance().getDefaultSeed(),Config.getInstance().getDayNightLengthInMs() / 4,chunksListArr,CoreRegistry.get(GameType.class).getClass().toString())));
+org.terasology.logic.manager.Config.getInstance().setChunkGenerator(chunksListArr);
+CoreRegistry.get(Config.class).getDefaultModConfig().copy(modConfig);
+CoreRegistry.get(Config.class).save();
+CoreRegistry.get(GameEngine.class).changeState(new StateSinglePlayer(new WorldInfo(org.terasology.logic.manager.Config.getInstance().getWorldTitle(),org.terasology.logic.manager.Config.getInstance().getDefaultSeed(),org.terasology.logic.manager.Config.getInstance().getDayNightLengthInMs() / 4,chunksListArr,CoreRegistry.get(GameType.class).getClass().toString(),modConfig)));
 }
 }
 );
-_cancelButton=new UIButton(new Vector2f(128f,32f),UIButton.eButtonType.NORMAL);
-_cancelButton.setPosition(new Vector2f(_okButton.getPosition().x + _okButton.getSize().x + 16f,_okButton.getPosition().y));
-_cancelButton.getLabel().setText("Cancel");
-_cancelButton.setVisible(true);
-_cancelButton.addClickListener(new ClickListener(){
+cancelButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+cancelButton.setPosition(new Vector2f(okButton.getPosition().x + okButton.getSize().x + 16f,okButton.getPosition().y));
+cancelButton.getLabel().setText("Cancel");
+cancelButton.setVisible(true);
+cancelButton.addClickListener(new ClickListener(){
 @Override public void click(UIDisplayElement element,int button){
 close();
 }
 }
 );
-parent.addDisplayElement(_okButton);
-parent.addDisplayElement(_cancelButton);
+parent.addDisplayElement(okButton);
+parent.addDisplayElement(cancelButton);
 }
