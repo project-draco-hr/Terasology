@@ -1,3 +1,27 @@
 {
-  return Lists.newArrayList(value.getDoubleList());
+  if (value.getDoubleCount() > 0) {
+    return Lists.newArrayList(value.getDoubleList());
+  }
+ else   if (value.getFloatCount() > 0) {
+    List<Double> result=Lists.newArrayListWithCapacity(value.getFloatCount());
+    for (int i=0; i < value.getFloatCount(); ++i) {
+      result.add((double)value.getFloat(i));
+    }
+    return result;
+  }
+ else   if (value.getIntegerCount() > 0) {
+    List<Double> result=Lists.newArrayListWithCapacity(value.getIntegerCount());
+    for (int i=0; i < value.getIntegerCount(); ++i) {
+      result.add((double)value.getInteger(i));
+    }
+    return result;
+  }
+ else   if (value.getLongCount() > 0) {
+    List<Double> result=Lists.newArrayListWithCapacity(value.getLongCount());
+    for (int i=0; i < value.getLongCount(); ++i) {
+      result.add((double)value.getLong(i));
+    }
+    return result;
+  }
+  return Lists.newArrayList();
 }
