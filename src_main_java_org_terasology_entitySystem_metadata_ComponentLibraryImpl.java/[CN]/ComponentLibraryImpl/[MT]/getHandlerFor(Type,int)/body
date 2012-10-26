@@ -14,8 +14,9 @@
     return new EnumTypeHandler(typeClass);
   }
  else   if (List.class.isAssignableFrom(typeClass)) {
-    if (type instanceof ParameterizedType && ((ParameterizedType)type).getActualTypeArguments().length > 0) {
-      TypeHandler innerHandler=getHandlerFor(((ParameterizedType)type).getActualTypeArguments()[0],depth);
+    Type parameter=getTypeParameter(type,0);
+    if (parameter != null) {
+      TypeHandler innerHandler=getHandlerFor(parameter,depth);
       if (innerHandler != null) {
         return new ListTypeHandler(innerHandler);
       }
@@ -23,14 +24,24 @@
     logger.error("List field is not parameterized, or holds unsupported type");
     return null;
   }
+ else   if (Set.class.isAssignableFrom(typeClass)) {
+    Type parameter=getTypeParameter(type,0);
+    if (parameter != null) {
+      TypeHandler innerHandler=getHandlerFor(parameter,depth);
+      if (innerHandler != null) {
+        return new SetTypeHandler(innerHandler);
+      }
+    }
+    logger.error("Set field is not parameterized, or holds unsupported type");
+    return null;
+  }
  else   if (Map.class.isAssignableFrom(typeClass)) {
-    if (type instanceof ParameterizedType) {
-      Type[] types=((ParameterizedType)type).getActualTypeArguments();
-      if (types.length > 1 && String.class.equals(types[0])) {
-        TypeHandler valueHandler=getHandlerFor(types[1],depth);
-        if (valueHandler != null) {
-          return new StringMapTypeHandler(valueHandler);
-        }
+    Type keyParameter=getTypeParameter(type,0);
+    Type contentsParameter=getTypeParameter(type,1);
+    if (keyParameter != null && contentsParameter != null && String.class == keyParameter) {
+      TypeHandler valueHandler=getHandlerFor(contentsParameter,depth);
+      if (valueHandler != null) {
+        return new StringMapTypeHandler(valueHandler);
       }
     }
     logger.error("Map field is not parameterized, does not have a String key, or holds unsupported values");
@@ -40,7 +51,7 @@
   }
  else   if (depth <= MAX_SERIALIZATION_DEPTH && !Modifier.isAbstract(typeClass.getModifiers()) && !typeClass.isLocalClass() && !(typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
     try {
-      Constructor constructor=typeClass.getConstructor();
+      typeClass.getConstructor();
     }
  catch (    NoSuchMethodException e) {
       logger.error("Unable to register field of type {}: no publicly accessible default constructor",typeClass.getSimpleName());

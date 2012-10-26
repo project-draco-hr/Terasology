@@ -1,12 +1,12 @@
 {
   List<T> result=Lists.newArrayListWithCapacity(value.getStringCount());
   for (  String item : value.getStringList()) {
-    try {
-      Enum resultValue=Enum.valueOf(enumType,item);
-      result.add(enumType.cast(resultValue));
+    T enumItem=caseInsensitiveLookup.get(item.toLowerCase(Locale.ENGLISH));
+    if (enumItem == null) {
+      logger.warn("Unknown enum value: '{}' for enum {}",item,enumType.getSimpleName());
     }
- catch (    IllegalArgumentException iae) {
-      logger.warn("Unable to deserialize enum {}",enumType,iae);
+ else {
+      result.add(enumItem);
     }
   }
   return result;

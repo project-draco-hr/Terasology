@@ -1,12 +1,10 @@
 {
   if (value.getStringCount() > 0) {
-    try {
-      Enum resultValue=Enum.valueOf(enumType,value.getString(0));
-      return enumType.cast(resultValue);
+    T result=caseInsensitiveLookup.get(value.getString(0).toLowerCase(Locale.ENGLISH));
+    if (result == null) {
+      logger.warn("Unknown enum value: '{}' for enum {}",value.getString(0),enumType.getSimpleName());
     }
- catch (    IllegalArgumentException iae) {
-      logger.warn("Unable to deserialize enum {}",enumType,iae);
-    }
+    return result;
   }
   return null;
 }

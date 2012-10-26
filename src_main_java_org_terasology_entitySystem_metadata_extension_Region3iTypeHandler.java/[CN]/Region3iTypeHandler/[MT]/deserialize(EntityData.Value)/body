@@ -1,0 +1,19 @@
+{
+  Vector3i min=null;
+  Vector3i size=null;
+  for (  EntityData.NameValue item : value.getNameValueList()) {
+    if (!item.hasName() || !item.hasValue()) {
+      continue;
+    }
+ else     if (item.getName().equals("min")) {
+      min=vector3iTypeHandler.deserialize(item.getValue());
+    }
+ else     if (item.getName().equals("size")) {
+      size=vector3iTypeHandler.deserialize(item.getValue());
+    }
+  }
+  if (min != null && size != null) {
+    return Region3i.createFromMinAndSize(min,size);
+  }
+  return null;
+}
