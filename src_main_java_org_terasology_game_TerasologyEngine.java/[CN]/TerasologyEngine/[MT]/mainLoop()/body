@@ -1,6 +1,5 @@
 {
   PerformanceMonitor.startActivity("Other");
-  GameState state;
   while (running && !Display.isCloseRequested()) {
     if (!Display.isActive()) {
       try {
@@ -13,22 +12,21 @@
       continue;
     }
     processStateChanges();
-    state=stateStack.peek();
-    if (state == null) {
+    if (currentState == null) {
       shutdown();
       break;
     }
     timer.tick();
     PerformanceMonitor.startActivity("Main Update");
-    state.update(timer.getDelta());
+    currentState.update(timer.getDelta());
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Render");
-    state.render();
+    currentState.render();
     Display.update();
     Display.sync(60);
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Input");
-    state.handleInput(timer.getDelta());
+    currentState.handleInput(timer.getDelta());
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Audio");
     AudioManager.getInstance().update();

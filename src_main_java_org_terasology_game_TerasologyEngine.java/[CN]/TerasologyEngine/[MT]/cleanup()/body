@@ -1,6 +1,9 @@
 {
   logger.info("Shutting down Terasology...");
   Config.getInstance().saveConfig(new File(PathManager.getInstance().getWorldPath(),"last.cfg"));
-  doPurgeStates();
+  if (currentState != null) {
+    currentState.dispose();
+    currentState=null;
+  }
   terminateThreads();
 }

@@ -1,6 +1,6 @@
 {
-  for (  StateChangeFunction func : pendingStateChanges) {
-    func.enact();
+  if (pendingState != null) {
+    switchState(pendingState);
+    pendingState=null;
   }
-  pendingStateChanges.clear();
 }

@@ -1,0 +1,26 @@
+{
+  if (!info.startsWith("info ")) {
+    throw new IOException("Failed to load '" + uri + "' - missing info line");
+  }
+  FontHeader header=new FontHeader();
+  header.face=findString(facePattern,info);
+  header.size=findInteger(sizePattern,info);
+  header.bold=findBool(boldPattern,info);
+  header.italic=findBool(italicPattern,info);
+  header.charset=findString(charsetPatten,info);
+  header.unicode=findBool(unicodePatten,info);
+  header.stretchH=findInteger(stretchHPattern,info);
+  header.smooth=findBool(smoothPattern,info);
+  header.aa=findBool(aaPattern,info);
+  header.outline=findBool(outlinePattern,info);
+  Matcher paddingMatcher=paddingPattern.matcher(info);
+  if (paddingMatcher.find()) {
+    header.padding.set(Integer.parseInt(paddingMatcher.group(1)),Integer.parseInt(paddingMatcher.group(2)),Integer.parseInt(paddingMatcher.group(3)),Integer.parseInt(paddingMatcher.group(4)));
+  }
+  Matcher spacingMatcher=spacingPattern.matcher(info);
+  if (spacingMatcher.find()) {
+    header.spacingX=Integer.parseInt(spacingMatcher.group(1));
+    header.spacingY=Integer.parseInt(spacingMatcher.group(2));
+  }
+  return header;
+}

@@ -1,0 +1,20 @@
+{
+  Matcher matcher=charPattern.matcher(charInfo);
+  if (matcher.matches()) {
+    FontChar result=new FontChar();
+    result.id=Integer.parseInt(matcher.group(1));
+    result.x=Integer.parseInt(matcher.group(2));
+    result.y=Integer.parseInt(matcher.group(3));
+    result.width=Integer.parseInt(matcher.group(4));
+    result.height=Integer.parseInt(matcher.group(5));
+    result.xOffset=Integer.parseInt(matcher.group(6));
+    result.yOffset=Integer.parseInt(matcher.group(7));
+    result.xAdvance=Integer.parseInt(matcher.group(8));
+    result.page=Integer.parseInt(matcher.group(9));
+    result.channel=Integer.parseInt(matcher.group(10));
+    return result;
+  }
+ else {
+    throw new IOException("Failed to parse '" + uri + "' - invalid char line '"+ charInfo+ "'");
+  }
+}

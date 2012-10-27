@@ -1,0 +1,17 @@
+{
+  if (!commonLine.startsWith("common ")) {
+    throw new IOException("Failed to load '" + uri + "' - missing common line");
+  }
+  FontCommon common=new FontCommon();
+  common.lineHeight=findInteger(lineHeightPattern,commonLine);
+  common.base=findInteger(basePattern,commonLine);
+  common.scaleW=findInteger(scaleWPattern,commonLine);
+  common.scaleH=findInteger(scaleHPattern,commonLine);
+  common.pages=findInteger(pagesPattern,commonLine);
+  common.packed=findBool(packedPattern,commonLine);
+  common.alphaChannel=findInteger(alphaChannelPattern,commonLine);
+  common.redChannel=findInteger(redChannelPattern,commonLine);
+  common.greenChannel=findInteger(greenChannelPattern,commonLine);
+  common.blueChannel=findInteger(blueChannelPattern,commonLine);
+  return common;
+}

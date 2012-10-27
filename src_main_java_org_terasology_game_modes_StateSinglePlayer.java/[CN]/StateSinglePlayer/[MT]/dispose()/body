@@ -1,4 +1,16 @@
 {
+  eventSystem.process();
+  for (  ComponentSystem system : componentSystemManager.iterateAll()) {
+    system.shutdown();
+  }
+  guiManager.closeAllWindows();
+  try {
+    CoreRegistry.get(WorldPersister.class).save(new File(PathManager.getInstance().getWorldSavePath(CoreRegistry.get(WorldProvider.class).getTitle()),ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
+  }
+ catch (  IOException e) {
+    logger.error("Failed to save entities",e);
+  }
+  entityManager.clear();
   if (worldRenderer != null) {
     worldRenderer.dispose();
     worldRenderer=null;

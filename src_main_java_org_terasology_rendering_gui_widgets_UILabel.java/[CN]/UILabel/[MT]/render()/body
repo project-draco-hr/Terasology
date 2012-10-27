@@ -2,11 +2,10 @@
   super.render();
   PerformanceMonitor.startActivity("Render UIText");
   ShaderManager.getInstance().enableDefaultTextured();
-  workaroundTexture.bind();
   if (enableShadow) {
-    font.drawString(shadowOffset.x + margin.w,shadowOffset.y + margin.x,text.toString(),shadowColor);
+    font.drawString(TeraMath.floorToInt(shadowOffset.x + margin.w),TeraMath.floorToInt(1 + shadowOffset.y + margin.x),text.toString(),shadowColor);
   }
-  font.drawString(margin.w,margin.x,text.toString(),color);
+  font.drawString(TeraMath.floorToInt(margin.w),TeraMath.floorToInt(margin.x),text.toString(),color);
   glDisable(GL11.GL_TEXTURE_2D);
   PerformanceMonitor.endActivity();
 }
