@@ -1,0 +1,15 @@
+{
+  logger.info("Activating PortalSystem!");
+  PortalComponent portal=entity.getComponent(PortalComponent.class);
+  BlockComponent block=entity.getComponent(BlockComponent.class);
+  if (entity.hasComponent(SpawnerComponent.class)) {
+    logger.info("Found a portal with a spawner, so removing it");
+    entity.removeComponent(SpawnerComponent.class);
+  }
+ else {
+    logger.info("Found a portal withOUT a spawner, so adding one");
+    SpawnerComponent spawner=new SpawnerComponent();
+    entity.addComponent(spawner);
+    entity.saveComponent(spawner);
+  }
+}
