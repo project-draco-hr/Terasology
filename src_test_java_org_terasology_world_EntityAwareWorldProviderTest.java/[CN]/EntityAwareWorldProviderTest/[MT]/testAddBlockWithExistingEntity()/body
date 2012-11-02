@@ -1,0 +1,20 @@
+{
+  Prefab prefab=prefabManager.createPrefab(PREFAB_URI);
+  prefab.setComponent(new StringComponent());
+  Block persistentEntityBlock=new Block();
+  persistentEntityBlock.setEntityMode(BlockEntityMode.PERSISTENT);
+  persistentEntityBlock.setEntityPrefab(PREFAB_URI);
+  BlockManager.getInstance().addBlockFamily(new SymmetricFamily(new BlockUri("unittest:block"),persistentEntityBlock));
+  EntityRef entity=entityManager.create(prefab);
+  StringComponent comp=entity.getComponent(StringComponent.class);
+  comp.value="hi";
+  entity.saveComponent(comp);
+  assertTrue(worldProvider.setBlock(0,0,0,persistentEntityBlock,BlockManager.getInstance().getAir(),entity));
+  List<EntityRef> blockEntities=Lists.newArrayList(entityManager.iteratorEntities(BlockComponent.class));
+  assertEquals(1,blockEntities.size());
+  assertEquals(blockEntities.get(0),entity);
+  assertNotNull(blockEntities.get(0).getComponent(StringComponent.class));
+  assertEquals("hi",blockEntities.get(0).getComponent(StringComponent.class).value);
+  assertNotNull(blockEntities.get(0).getComponent(BlockComponent.class));
+  assertFalse(blockEntities.get(0).getComponent(BlockComponent.class).temporary);
+}

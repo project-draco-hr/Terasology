@@ -1,0 +1,15 @@
+{
+  Vector3i pos=new Vector3i(x,y,z);
+  Block old=blocks.get(pos);
+  if (old == null) {
+    if (oldType == air) {
+      blocks.put(pos,type);
+      return true;
+    }
+  }
+ else   if (old == oldType) {
+    blocks.put(pos,type);
+    return true;
+  }
+  return false;
+}

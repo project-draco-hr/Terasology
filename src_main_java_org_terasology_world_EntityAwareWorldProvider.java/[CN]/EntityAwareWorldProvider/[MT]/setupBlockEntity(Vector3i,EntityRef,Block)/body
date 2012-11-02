@@ -1,0 +1,7 @@
+{
+  blockEntity.addComponent(new LocationComponent(blockPosition.toVector3f()));
+  blockEntity.addComponent(new BlockComponent(blockPosition,block.getEntityMode() == BlockEntityMode.ON_INTERACTION));
+  if (block.isDestructible()) {
+    blockEntity.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
+  }
+}

@@ -5,11 +5,9 @@
   Block block=type.getBlockFor(surfaceDirection,secondaryDirection);
   if (block == null)   return false;
   if (canPlaceBlock(block,targetBlock,placementPos)) {
-    if (worldProvider.setBlock(placementPos,block,worldProvider.getBlock(placementPos))) {
+    if (blockEntityRegistry.setBlock(placementPos,block,worldProvider.getBlock(placementPos),blockItem.placedEntity)) {
       AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"),0.5f);
       if (blockItem.placedEntity.exists()) {
-        blockItem.placedEntity.addComponent(new BlockComponent(placementPos,false));
-        blockItem.placedEntity.addComponent(new HealthComponent(type.getArchetypeBlock().getHardness(),2.0f,1.0f));
         blockItem.placedEntity=EntityRef.NULL;
       }
       return true;
