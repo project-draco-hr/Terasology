@@ -1,0 +1,18 @@
+{
+  if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
+    FastRandom random=new FastRandom();
+    worldInfo.setSeed(random.randomCharacterString(16));
+  }
+  logger.info("World seed: \"{}\"",worldInfo.getSeed());
+  ChunkGeneratorManager chunkGeneratorManager=ChunkGeneratorManagerImpl.buildChunkGenerator(Arrays.asList(worldInfo.getChunkGenerators()));
+  chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
+  chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
+  WorldRenderer worldRenderer=new WorldRenderer(worldInfo,chunkGeneratorManager,CoreRegistry.get(EntityManager.class),CoreRegistry.get(LocalPlayerSystem.class));
+  CoreRegistry.put(WorldRenderer.class,worldRenderer);
+  CoreRegistry.put(WorldProvider.class,worldRenderer.getWorldProvider());
+  CoreRegistry.put(LocalPlayer.class,new LocalPlayer(EntityRef.NULL));
+  CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
+  CoreRegistry.put(BulletPhysics.class,worldRenderer.getBulletRenderer());
+  CoreRegistry.get(WorldProvider.class).setTime(worldInfo.getTime());
+  return true;
+}

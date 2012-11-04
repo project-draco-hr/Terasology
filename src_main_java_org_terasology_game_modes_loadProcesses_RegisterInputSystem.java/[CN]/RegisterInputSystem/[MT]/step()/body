@@ -1,0 +1,22 @@
+{
+  ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  LocalPlayerSystem localPlayerSystem=new LocalPlayerSystem();
+  componentSystemManager.register(localPlayerSystem,"engine:localPlayerSystem");
+  CoreRegistry.put(LocalPlayerSystem.class,localPlayerSystem);
+  CameraTargetSystem cameraTargetSystem=new CameraTargetSystem();
+  CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
+  componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
+  InputSystem inputSystem=new InputSystem();
+  InputConfig inputConfig=CoreRegistry.get(Config.class).getInputConfig();
+  CoreRegistry.put(InputSystem.class,inputSystem);
+  componentSystemManager.register(inputSystem,"engine:InputSystem");
+  registerButtonBinds(inputSystem,ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class),inputConfig);
+  registerAxisBinds(inputSystem,ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
+  for (  Mod mod : modManager.getActiveMods()) {
+    registerButtonBinds(inputSystem,mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class),inputConfig);
+    registerAxisBinds(inputSystem,mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
+  }
+  registerToolbarShortcuts(inputSystem,inputConfig);
+  return true;
+}

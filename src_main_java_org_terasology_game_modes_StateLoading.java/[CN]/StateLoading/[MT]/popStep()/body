@@ -1,0 +1,10 @@
+{
+  current=null;
+  currentExpectedSteps=0;
+  while (currentExpectedSteps == 0 && !loadProcesses.isEmpty()) {
+    current=loadProcesses.remove();
+    logger.debug(current.getMessage());
+    currentExpectedSteps=current.begin();
+  }
+  completedSteps=0;
+}

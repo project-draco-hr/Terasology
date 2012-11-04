@@ -1,0 +1,8 @@
+{
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+  LocalPlayerComponent localPlayerComponent=playerEntity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComponent.isDead) {
+    playerEntity.send(new RespawnEvent());
+  }
+  return true;
+}
