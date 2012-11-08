@@ -49,18 +49,24 @@
     event.cancel();
     return;
   }
-  worldProvider.setBlock(bottomBlockPos,door.bottomBlockFamily.getBlockFor(facingDir.reverse(),Side.TOP),bottomBlock);
-  worldProvider.setBlock(topBlockPos,door.topBlockFamily.getBlockFor(facingDir.reverse(),Side.TOP),topBlock);
+  Side closedSide=facingDir.reverse();
+  if (closedSide == attachSide || closedSide.reverse() == attachSide) {
+    closedSide=attachSide.rotateClockwise(1);
+  }
+  worldProvider.setBlock(bottomBlockPos,door.bottomBlockFamily.getBlockFor(closedSide,Side.TOP),bottomBlock);
+  worldProvider.setBlock(topBlockPos,door.topBlockFamily.getBlockFor(closedSide,Side.TOP),topBlock);
   EntityRef newDoor=entityManager.copy(entity);
   newDoor.addComponent(new BlockRegionComponent(Region3i.createBounded(bottomBlockPos,topBlockPos)));
   Vector3f doorCenter=bottomBlockPos.toVector3f();
   doorCenter.y+=0.5f;
   newDoor.addComponent(new LocationComponent(doorCenter));
   DoorComponent newDoorComp=newDoor.getComponent(DoorComponent.class);
-  newDoorComp.closedDirection=facingDir.reverse();
+  newDoorComp.closedDirection=closedSide;
   newDoorComp.openDirection=attachSide.reverse();
   newDoorComp.isOpen=false;
   newDoor.saveComponent(newDoorComp);
   newDoor.removeComponent(ItemComponent.class);
   AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"),0.5f);
+  logger.info("Closed Direction: {}",newDoorComp.closedDirection);
+  logger.info("Open Direction: {}",newDoorComp.openDirection);
 }
