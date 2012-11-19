@@ -14,8 +14,13 @@
   }
   logger.info("Count of entities with a SpawnerComponent: {}",entityManager.getComponentCount(SpawnerComponent.class));
   for (  EntityRef entity : entityManager.iteratorEntities(SpawnerComponent.class,BlockComponent.class)) {
-    logger.info("Found a spawner: " + entity);
+    logger.info("Found a spawner: {}",entity);
     SpawnerComponent spawnComp=entity.getComponent(SpawnerComponent.class);
+    int spawnTypes=spawnComp.types.size();
+    if (spawnTypes == 0) {
+      logger.warn("Spawner has no types, sad - stopping this loop iteration early :-(");
+      continue;
+    }
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
     if (currentMobs < maxMobs) {
       Vector3f pos=blockComp.getPosition().toVector3f();
