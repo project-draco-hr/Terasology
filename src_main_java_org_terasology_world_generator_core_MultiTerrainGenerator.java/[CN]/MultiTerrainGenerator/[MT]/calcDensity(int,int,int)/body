@@ -8,10 +8,12 @@
   double mIntens=TeraMath.clamp(1.0 - distanceToMountainBiome.length() * 3.0);
   double densityMountains=calcMountainDensity(x,y,z) * mIntens;
   double densityHills=calcHillDensity(x,y,z) * (1.0 - mIntens);
-  int plateauArea;
+  double plateauArea;
   double flatten, f1, f2;
-  int ratio=(counter / maxInt);
-  plateauArea=Chunk.SIZE_Y - Chunk.SIZE_Y / (10 * ((1 - TeraMath.fastAbs(ratio)) * 8));
+  double ratio=(counter / maxInt);
+  if (ratio == 0 || ratio == -1)   ratio+=0.000000001;
+ else   if (ratio == 1)   ratio-=0.000000001;
+  plateauArea=Chunk.SIZE_Y - Chunk.SIZE_Y / (10 * ((TeraMath.fastAbs(ratio)) * 8));
   f1=(1.0 / (plateauArea * plateauArea)) * (y - plateauArea) * (y - plateauArea);
   plateauArea=(int)(Chunk.SIZE_Y * 0.10);
   f2=TeraMath.clamp(((Chunk.SIZE_Y - 16) - y) / plateauArea);
