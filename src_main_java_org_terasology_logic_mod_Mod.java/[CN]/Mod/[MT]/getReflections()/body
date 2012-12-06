@@ -1,13 +1,16 @@
 {
   if (reflections == null) {
-    ConfigurationBuilder configurationBuilder=new ConfigurationBuilder().addUrls(getModClasspathUrl()).setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
-    if (activeClassLoader != null) {
-      configurationBuilder.addClassLoader(activeClassLoader);
-    }
+    URL url=getModClasspathUrl();
+    if (url != null) {
+      ConfigurationBuilder configurationBuilder=new ConfigurationBuilder().addUrls(url).setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
+      if (activeClassLoader != null) {
+        configurationBuilder.addClassLoader(activeClassLoader);
+      }
  else {
-      configurationBuilder.addClassLoader(inactiveClassLoader);
+        configurationBuilder.addClassLoader(inactiveClassLoader);
+      }
+      reflections=new Reflections(configurationBuilder);
     }
-    reflections=new Reflections(configurationBuilder);
   }
   return reflections;
 }

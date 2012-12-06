@@ -2,12 +2,16 @@
   if (allReflections == null) {
     List<URL> urls=Lists.newArrayList();
     for (    Mod mod : getMods()) {
-      urls.add(mod.getModClasspathUrl());
+      if (mod.isCodeMod()) {
+        urls.add(mod.getModClasspathUrl());
+      }
     }
     allReflections=new Reflections(new ConfigurationBuilder().addUrls(urls).addUrls(ClasspathHelper.forPackage("org.terasology",getClass().getClassLoader())).addClassLoader(allModClassLoader).addClassLoader(getClass().getClassLoader()));
     allReflections.merge(getEngineReflections());
     for (    Mod mod : getMods()) {
-      allReflections.merge(mod.getReflections());
+      if (mod.isCodeMod()) {
+        allReflections.merge(mod.getReflections());
+      }
     }
   }
   return allReflections;

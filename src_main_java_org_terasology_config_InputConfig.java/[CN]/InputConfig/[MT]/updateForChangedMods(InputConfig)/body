@@ -2,7 +2,9 @@
   ModManager modManager=CoreRegistry.get(ModManager.class);
   updateInputsFor(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class),config);
   for (  Mod mod : modManager.getMods()) {
-    updateInputsFor(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class),config);
+    if (mod.isCodeMod()) {
+      updateInputsFor(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class),config);
+    }
   }
   for (int i=0; i < 10; ++i) {
     if (!config.hasInputs(ModManager.ENGINE_PACKAGE,"toolbarSlot" + i)) {
