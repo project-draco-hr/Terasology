@@ -1,0 +1,9 @@
+{
+  PrefabManager prefabManager=entityManager.getPrefabManager();
+  Prefab prefab=prefabManager.createPrefab("myprefab");
+  StringComponent testComponent=new StringComponent();
+  prefab.setComponent(testComponent);
+  EntityRef test1=entityManager.create("myprefab");
+  EntityRef test2=entityManager.create("myprefab");
+  assertFalse(test1.getComponent(StringComponent.class) == (test2.getComponent(StringComponent.class)));
+}
