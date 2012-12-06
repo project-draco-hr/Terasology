@@ -1,0 +1,9 @@
+{
+  ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  componentSystemManager.loadSystems(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections());
+  for (  Mod mod : modManager.getActiveMods()) {
+    componentSystemManager.loadSystems(mod.getModInfo().getId(),mod.getReflections());
+  }
+  return true;
+}

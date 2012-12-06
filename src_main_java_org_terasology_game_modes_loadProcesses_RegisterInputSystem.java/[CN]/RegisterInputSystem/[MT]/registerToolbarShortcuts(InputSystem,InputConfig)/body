@@ -1,0 +1,14 @@
+{
+  for (int i=0; i < 10; ++i) {
+    String inventorySlotBind="engine:toolbarSlot" + i;
+    inputSystem.registerBindButton(inventorySlotBind,"Inventory Slot " + (i + 1),new ToolbarSlotButton(i));
+    if (inputConfig.hasInputs(inventorySlotBind)) {
+      for (      Input input : inputConfig.getInputs(inventorySlotBind)) {
+        inputSystem.linkBindButtonToInput(input,inventorySlotBind);
+      }
+    }
+ else {
+      inputSystem.linkBindButtonToKey(Keyboard.KEY_1 + i,inventorySlotBind);
+    }
+  }
+}
