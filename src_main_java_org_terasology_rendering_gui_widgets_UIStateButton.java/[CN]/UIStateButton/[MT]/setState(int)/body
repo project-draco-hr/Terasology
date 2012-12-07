@@ -1,9 +1,9 @@
 {
-  if (_states.size() > 0) {
+  if (states.size() > 0) {
     if (stateID < 0)     stateID=0;
-    if (stateID >= _states.size())     stateID=_states.size() - 1;
-    getLabel().setText(_states.get(stateID).first);
-    _currentState=stateID;
-    if (_states.get(stateID).second != null)     _states.get(stateID).second.action(this);
+    if (stateID >= states.size())     stateID=states.size() - 1;
+    getLabel().setText(states.get(stateID).name);
+    currentState=stateID;
+    if (states.get(stateID).action != null)     states.get(stateID).action.action(this);
   }
 }

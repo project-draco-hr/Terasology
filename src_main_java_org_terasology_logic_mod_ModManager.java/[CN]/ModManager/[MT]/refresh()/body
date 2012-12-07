@@ -42,8 +42,9 @@ catch (      JsonIOException e) {
         try {
           ModInfo modInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry)),ModInfo.class);
           if (!mods.containsKey(modInfo.getId())) {
-            mods.put(modInfo.getId(),new Mod(modFile,modInfo,new ArchiveSource(modInfo.getId(),modFile,ASSETS_SUBDIRECTORY)));
-            logger.info("Discovered mod: " + modInfo.getDisplayName());
+            Mod mod=new Mod(modFile,modInfo,new ArchiveSource(modInfo.getId(),modFile,ASSETS_SUBDIRECTORY));
+            mods.put(modInfo.getId(),mod);
+            logger.info("Discovered mod: {} (hasCode = {})",modInfo.getDisplayName(),mod.isCodeMod());
           }
  else {
             logger.info("Discovered duplicate mod: " + modInfo.getDisplayName() + ", skipping");
