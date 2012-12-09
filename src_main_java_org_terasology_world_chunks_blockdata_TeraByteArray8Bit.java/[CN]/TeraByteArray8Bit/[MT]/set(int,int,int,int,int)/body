@@ -1,0 +1,11 @@
+{
+  if (!contains(x,y,z))   throw new IndexOutOfBoundsException();
+  if (value < 0 || value > 255 || expected < 0 || expected > 255)   throw new IllegalArgumentException();
+  int pos=pos(x,y,z);
+  int old=data[pos] & 0xFF;
+  if (old == expected) {
+    data[pos]=(byte)value;
+    return true;
+  }
+  return false;
+}

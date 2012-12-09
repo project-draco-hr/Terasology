@@ -1,0 +1,23 @@
+{
+  if (!contains(x,y,z))   throw new IndexOutOfBoundsException();
+  if (value < 0 || value > 15 || expected < 0 || expected > 15)   throw new IllegalArgumentException();
+  int pos=pos(x,y,z);
+  if (pos < sizeXYZHalf) {
+    int raw=data[pos] & 0xFF;
+    byte old=(byte)((raw & 0x0F) & 0xFF);
+    if (old == expected) {
+      int tmp=value & 0xFF;
+      data[pos]=(byte)((tmp & 0x0F) | (raw & 0xF0));
+      return true;
+    }
+    return false;
+  }
+  int raw=data[pos % sizeXYZHalf] & 0xFF;
+  byte old=(byte)(raw >> 4);
+  if (old == expected) {
+    int tmp=value & 0xFF;
+    data[pos % sizeXYZHalf]=(byte)((raw & 0x0F) | (tmp << 4) & 0xFF);
+    return true;
+  }
+  return false;
+}
