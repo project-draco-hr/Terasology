@@ -1,0 +1,14 @@
+{
+  Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  Vector3f spawnPos=camera.getPosition();
+  Vector3f offset=camera.getViewingDirection();
+  offset.scale(3);
+  spawnPos.add(offset);
+  Block block=BlockManager.getInstance().getBlock(blockName);
+  if (block == null)   return;
+  WorldProvider provider=CoreRegistry.get(WorldProvider.class);
+  if (provider != null) {
+    Block oldBlock=provider.getBlock(spawnPos);
+    provider.setBlock((int)spawnPos.x,(int)spawnPos.y,(int)spawnPos.z,block,oldBlock);
+  }
+}
