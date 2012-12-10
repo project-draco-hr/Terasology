@@ -1,0 +1,12 @@
+{
+  MinionControllerComponent minionController=entity.getComponent(MinionControllerComponent.class);
+  if (minionController == null) {
+    return EntityRef.NULL;
+  }
+  MinionBarComponent minionbar=entity.getComponent(MinionBarComponent.class);
+  if (minionbar == null) {
+    return EntityRef.NULL;
+  }
+  EntityRef minion=minionbar.minionSlots.get(minionController.selectedMinion);
+  return minion;
+}

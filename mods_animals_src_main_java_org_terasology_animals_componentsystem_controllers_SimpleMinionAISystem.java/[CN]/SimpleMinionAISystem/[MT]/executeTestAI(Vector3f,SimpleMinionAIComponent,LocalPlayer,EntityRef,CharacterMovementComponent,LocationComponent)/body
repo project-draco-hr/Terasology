@@ -1,0 +1,51 @@
+{
+  if (!ai.locked) {
+    List<Vector3f> targets=ai.movementTargets;
+    List<Vector3f> pathTargets=ai.pathTargets;
+    if ((targets == null) || (targets.size() < 1)) {
+      return;
+    }
+    Vector3f currentTarget;
+    if ((pathTargets != null) && (pathTargets.size() > 0)) {
+      currentTarget=pathTargets.get(0);
+    }
+ else {
+      currentTarget=targets.get(0);
+    }
+    if (ai.previousTarget != ai.movementTargets.get(0)) {
+      ai.locked=true;
+      ai.pathTargets=aStarPathing.findPath(worldPos,new Vector3f(currentTarget));
+      if (ai.pathTargets == null) {
+        MinionSystem minionSystem=new MinionSystem();
+        MinionMessage messagetosend=new MinionMessage(MinionMessagePriority.Debug,"test","testdesc","testcont",entity,localPlayer.getEntity());
+        entity.send(new MinionMessageEvent(messagetosend));
+        ai.movementTargets.remove(0);
+      }
+    }
+    ai.locked=false;
+    if ((ai.pathTargets != null) && (ai.pathTargets.size() > 0)) {
+      pathTargets=ai.pathTargets;
+      ai.previousTarget=targets.get(0);
+      currentTarget=pathTargets.get(0);
+    }
+    worldPos.y=worldPos.y - (worldPos.y % 1) + 0.5f;
+    Vector3f dist=new Vector3f(worldPos);
+    dist.sub(currentTarget);
+    double distanceToTarget=dist.length();
+    if (distanceToTarget < 0.1d) {
+      if ((ai.pathTargets != null) && (ai.pathTargets.size() > 0)) {
+        ai.pathTargets.remove(0);
+        entity.saveComponent(ai);
+      }
+ else {
+        if (ai.movementTargets.size() > 0) {
+          ai.movementTargets.remove(0);
+        }
+        ai.previousTarget=null;
+        entity.saveComponent(ai);
+      }
+      return;
+    }
+    setMovement(currentTarget,worldPos,entity,moveComp,location);
+  }
+}

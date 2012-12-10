@@ -1,0 +1,9 @@
+{
+  MinionControllerComponent minionController=entity.getComponent(MinionControllerComponent.class);
+  minionController.minionMode=!minionController.minionMode;
+  if (!minionController.minionMode) {
+    guiManager.closeWindow(BEHAVIOUR_MENU);
+  }
+  entity.saveComponent(minionController);
+  event.consume();
+}

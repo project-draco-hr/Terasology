@@ -1,0 +1,48 @@
+{
+  BlockComponent blockComp=target.getComponent(BlockComponent.class);
+  if (blockComp == null) {
+    return;
+  }
+  SimpleMinionAIComponent minionai=minion.getComponent(SimpleMinionAIComponent.class);
+  MinionComponent minionComp=minion.getComponent(MinionComponent.class);
+  if (minionai == null || minionComp == null) {
+    return;
+  }
+  Vector3i centerPos=blockComp.getPosition();
+  Vector3f centerPosf=new Vector3f(centerPos.x,centerPos.y + 0.5f,centerPos.z);
+  minionai.followingPlayer=false;
+switch (minionComp.minionBehaviour) {
+case Follow:
+{
+      minionai.movementTarget=centerPosf;
+      minion.saveComponent(minionai);
+      break;
+    }
+case Move:
+{
+    minionai.movementTargets.add(centerPosf);
+    minion.saveComponent(minionai);
+    break;
+  }
+case Gather:
+{
+  minionai.gatherTargets.add(centerPosf);
+  minion.saveComponent(minionai);
+  break;
+}
+case Patrol:
+{
+minionai.patrolTargets.add(centerPosf);
+minion.saveComponent(minionai);
+break;
+}
+case Test:
+{
+minionai.movementTargets.add(centerPosf);
+minion.saveComponent(minionai);
+break;
+}
+default :
+break;
+}
+}
