@@ -8,6 +8,7 @@
       Constructor<?> c=Class.forName(generator).getConstructor(classParm);
       chunkGenerator=(BaseChunkGenerator)c.newInstance(objectParm);
       if (chunkGenerator instanceof ForestGenerator) {
+        new DefaultGenerators((ForestGenerator)chunkGenerator);
       }
       chunkGeneratorManager.registerChunkGenerator(chunkGenerator);
     }
