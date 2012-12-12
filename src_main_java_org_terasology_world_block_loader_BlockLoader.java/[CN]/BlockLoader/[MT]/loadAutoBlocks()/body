@@ -1,7 +1,7 @@
 {
   logger.debug("Loading Auto Blocks...");
   List<ShapelessFamily> result=Lists.newArrayList();
-  for (  AssetUri blockTileUri : AssetManager.list(AssetType.BLOCK_TILE)) {
+  for (  AssetUri blockTileUri : Assets.list(AssetType.BLOCK_TILE)) {
     if (AssetManager.getInstance().getAssetURLs(blockTileUri).get(0).getPath().contains(AUTO_BLOCK_URL_FRAGMENT)) {
       BlockUri uri=new BlockUri(blockTileUri.getPackage(),blockTileUri.getAssetName());
       result.add(new ShapelessFamily(uri));

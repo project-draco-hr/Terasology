@@ -2,7 +2,7 @@
   List<BlockFamily> result=Lists.newArrayList();
   for (  String shapeString : blockDef.shapes) {
     AssetUri shapeUri=new AssetUri(AssetType.SHAPE,shapeString);
-    BlockShape shape=(BlockShape)AssetManager.load(shapeUri);
+    BlockShape shape=(BlockShape)Assets.get(shapeUri);
     if (shape != null) {
       BlockUri familyUri;
       if (shape.equals(cubeShape)) {
