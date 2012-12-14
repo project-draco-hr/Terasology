@@ -24,5 +24,12 @@
   if (provider != null) {
     Block oldBlock=provider.getBlock((int)spawnPos.x,(int)spawnPos.y,(int)spawnPos.z);
     provider.setBlock((int)spawnPos.x,(int)spawnPos.y,(int)spawnPos.z,blockFamily.getArchetypeBlock(),oldBlock);
+    StringBuilder builder=new StringBuilder();
+    builder.append(blockFamily.getArchetypeBlock());
+    builder.append(" block placed at position (");
+    builder.append((int)spawnPos.x).append((int)spawnPos.y).append((int)spawnPos.z).append(")");
+    MessageManager.getInstance().addMessage(builder.toString());
+    return;
   }
+  MessageManager.getInstance().addMessage("Sorry, something went wrong!");
 }
