@@ -3,16 +3,13 @@
   if (tick - lastTick < timeBetweenSpawns) {
     return;
   }
-  logger.info("Going to do stuff");
   lastTick=tick;
   int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * maxMobsPerSpawner + maxMobsPerSpawner;
   int currentMobs=entityManager.getComponentCount(SimpleAIComponent.class);
-  logger.info("Mob count: {}/{}",currentMobs,maxMobs);
   if (currentMobs >= maxMobs) {
     logger.info("Too many mobs! Returning early");
     return;
   }
-  logger.info("Count of entities with a SpawnerComponent: {}",entityManager.getComponentCount(SpawnerComponent.class));
   for (  EntityRef entity : entityManager.iteratorEntities(SpawnerComponent.class,BlockComponent.class)) {
     logger.info("Found a spawner: {}",entity);
     SpawnerComponent spawnComp=entity.getComponent(SpawnerComponent.class);
@@ -27,7 +24,6 @@
       logger.info("Going to spawn something at {}",pos);
       String chosenSpawnerType=spawnComp.types.get(random.randomIntAbs(spawnComp.types.size()));
       Set randomType=typeLists.get(chosenSpawnerType);
-      logger.info("Picked random type {} which returned {} prefabs",chosenSpawnerType,randomType.size());
       if (randomType.size() == 0) {
         logger.warn("That type wasn't found, sad :-( Won't spawn anything this time");
         return;
