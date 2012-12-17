@@ -1,9 +1,4 @@
 {
-  Preconditions.checkArgument(amount >= 0 && amount < 16);
-  int raw=light.get(x,y,z);
-  int old=raw >> 4;
-  if (old == amount)   return false;
-  int val=(byte)((raw & 0x0F) | (amount << 4));
-  light.set(x,y,z,val);
-  return true;
+  Preconditions.checkArgument(amount >= 0 && amount <= 15);
+  return sunlight.set(x,y,z,amount) != amount;
 }

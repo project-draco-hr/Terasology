@@ -9,9 +9,10 @@
     data[pos]=(byte)((tmp & 0x0F) | (raw & 0xF0));
     return old;
   }
-  int raw=data[pos % sizeXYZHalf] & 0xFF;
+  pos=pos - sizeXYZHalf;
+  int raw=data[pos] & 0xFF;
   int tmp=value & 0xFF;
   byte old=(byte)(raw >> 4);
-  data[pos % sizeXYZHalf]=(byte)((raw & 0x0F) | (tmp << 4) & 0xFF);
+  data[pos]=(byte)((raw & 0x0F) | (tmp << 4) & 0xFF);
   return old;
 }

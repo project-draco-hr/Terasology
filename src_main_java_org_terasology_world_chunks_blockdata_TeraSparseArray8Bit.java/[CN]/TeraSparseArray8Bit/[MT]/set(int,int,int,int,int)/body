@@ -3,6 +3,14 @@
   if (value < -128 || value > 127)   throw new IllegalArgumentException("Parameter 'value' has to be in the range of -128 - 127 (" + value + ")");
   if (expected < -128 || expected > 127)   throw new IllegalArgumentException("Parameter 'expected' has to be in the range of -128 - 127 (" + value + ")");
   if (value == expected)   return true;
+  if (inflated == null) {
+    if (value == fill)     return value == expected;
+ else {
+      this.inflated=new byte[sizeY][];
+      this.deflated=new byte[sizeY];
+      Arrays.fill(deflated,fill);
+    }
+  }
   byte[] data=inflated[y];
   int pos=z * sizeX + x;
   if (data != null) {

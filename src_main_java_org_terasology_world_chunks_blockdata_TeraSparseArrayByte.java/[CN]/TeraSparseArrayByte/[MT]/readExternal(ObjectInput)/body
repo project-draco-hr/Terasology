@@ -1,5 +1,11 @@
 {
   readExternalHeader(in);
+  if (!in.readBoolean()) {
+    inflated=null;
+    deflated=null;
+    fill=in.readByte();
+    return;
+  }
   inflated=new byte[sizeY][];
   deflated=new byte[sizeY];
   int count=in.readInt();

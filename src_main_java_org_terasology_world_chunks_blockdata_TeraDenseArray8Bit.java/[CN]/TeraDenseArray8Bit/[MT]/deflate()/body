@@ -22,7 +22,18 @@
       inflated[y]=tmp;
     }
   }
-  if (packed >= 5) {
+  if (packed == sizeY) {
+    byte first=deflated[0];
+    boolean packable=true;
+    for (int i=1; i < sizeY; i++) {
+      if (deflated[i] != first) {
+        packable=false;
+        break;
+      }
+    }
+    if (packable)     return new TeraSparseArray8Bit(sizeX,sizeY,sizeZ,first);
+  }
+  if (packed >= 4) {
     return new TeraSparseArray8Bit(sizeX,sizeY,sizeZ,inflated,deflated);
   }
   return this;

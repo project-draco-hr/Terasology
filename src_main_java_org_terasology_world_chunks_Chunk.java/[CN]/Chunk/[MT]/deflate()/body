@@ -1,0 +1,21 @@
+{
+  lock();
+  try {
+    int blocksSize=blocks.getEstimatedMemoryConsumptionInBytes();
+    int sunlightSize=sunlight.getEstimatedMemoryConsumptionInBytes();
+    int lightSize=light.getEstimatedMemoryConsumptionInBytes();
+    int liquidSize=liquid.getEstimatedMemoryConsumptionInBytes();
+    blocks=blocks.deflate();
+    sunlight=sunlight.deflate();
+    light=light.deflate();
+    liquid=liquid.deflate();
+    double blocksPercent=100d - (100d / blocksSize * blocks.getEstimatedMemoryConsumptionInBytes());
+    double sunlightPercent=100d - (100d / sunlightSize * sunlight.getEstimatedMemoryConsumptionInBytes());
+    double lightPercent=100d - (100d / lightSize * light.getEstimatedMemoryConsumptionInBytes());
+    double liquidPercent=100d - (100d / liquidSize * liquid.getEstimatedMemoryConsumptionInBytes());
+    logger.info(String.format("chunk (%d, %d, %d) was deflated: blocks-deflated-by=%s%%, sunlight-deflated-by=%s%%, light-deflated-by=%s%%, liquid-deflated-by=%s%%",pos.x,pos.y,pos.z,fpercent.format(blocksPercent),fpercent.format(sunlightPercent),fpercent.format(lightPercent),fpercent.format(liquidPercent)));
+  }
+  finally {
+    unlock();
+  }
+}
