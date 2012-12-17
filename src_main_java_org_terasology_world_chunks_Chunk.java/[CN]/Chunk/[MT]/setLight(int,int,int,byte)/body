@@ -1,4 +1,9 @@
 {
-  byte oldValue=(byte)light.set(x,y,z,amount);
-  return (oldValue != amount);
+  Preconditions.checkArgument(amount >= 0 && amount < 16);
+  int raw=light.get(x,y,z);
+  int old=raw & 0x0F;
+  if (old == amount)   return false;
+  int val=(byte)(raw & 0xF0) | (amount & 0x0F);
+  light.set(x,y,z,val);
+  return true;
 }

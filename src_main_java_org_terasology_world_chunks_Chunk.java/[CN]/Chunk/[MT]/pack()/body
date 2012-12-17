@@ -1,11 +1,17 @@
 {
   lock();
   try {
-    TeraArray packed=blocks.pack();
-    if (packed != blocks) {
-      double bp=100d - (100d / blocks.getEstimatedMemoryConsumptionInBytes() * packed.getEstimatedMemoryConsumptionInBytes());
-      System.out.println(String.format("packed chunk (%d, %d, %d), blocks-reduced-by=%s%%",pos.x,pos.y,pos.z,fpercent.format(bp)));
-      blocks=packed;
+    TeraArray packedBlocks=blocks.pack();
+    TeraArray packedLight=light.pack();
+    if (packedBlocks != blocks || packedLight != light) {
+      double bp=100d - (100d / blocks.getEstimatedMemoryConsumptionInBytes() * packedBlocks.getEstimatedMemoryConsumptionInBytes());
+      double bl=100d - (100d / light.getEstimatedMemoryConsumptionInBytes() * packedLight.getEstimatedMemoryConsumptionInBytes());
+      System.out.println(String.format("chunk (%d, %d, %d) was packed: blocks-reduced-by=%s%%, light-reduced-by=%s%%",pos.x,pos.y,pos.z,fpercent.format(bp),fpercent.format(bl)));
+      blocks=packedBlocks;
+      light=packedLight;
+    }
+ else {
+      System.out.println(String.format("chunk (%d, %d, %d) was not packed",pos.x,pos.y,pos.z));
     }
   }
   finally {
