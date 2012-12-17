@@ -1,0 +1,21 @@
+{
+  writeExternalHeader(out);
+  int count=0;
+  for (int y=0; y < sizeY; y++) {
+    if (inflated[y] != null)     ++count;
+  }
+  out.writeInt(count);
+  for (int y=0; y < sizeY; y++) {
+    byte[] values=inflated[y];
+    if (values != null) {
+      out.writeInt(y);
+      for (int i=0; i < sizeXZ; i++) {
+        out.writeByte(values[i]);
+      }
+    }
+  }
+  for (int y=0; y < sizeY; y++) {
+    if (inflated[y] == null)     out.writeByte(0);
+ else     out.writeByte(deflated[y]);
+  }
+}

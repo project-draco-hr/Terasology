@@ -1,3 +1,7 @@
 {
+  Preconditions.checkNotNull(chunkState);
+  if (chunkState != getChunkState() && chunkState == State.COMPLETE) {
+    pack();
+  }
   this.chunkState=chunkState;
 }

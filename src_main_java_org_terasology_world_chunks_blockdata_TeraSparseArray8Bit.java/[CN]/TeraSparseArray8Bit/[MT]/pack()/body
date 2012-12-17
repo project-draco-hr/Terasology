@@ -1,0 +1,33 @@
+{
+  byte[][] inf=new byte[sizeY][];
+  byte[] def=new byte[sizeY];
+  int alreadyPacked=0, newPacked=0;
+  System.arraycopy(deflated,0,def,0,sizeY);
+  for (int y=0; y < sizeY; y++) {
+    byte[] values=inflated[y];
+    if (values != null) {
+      byte first=values[0];
+      boolean packable=true;
+      for (int i=1; i < sizeXZ; i++) {
+        if (values[i] != first) {
+          packable=false;
+          break;
+        }
+      }
+      if (packable) {
+        def[y]=first;
+        ++newPacked;
+      }
+ else {
+        inf[y]=new byte[sizeY];
+        System.arraycopy(values,0,inf[y],0,sizeXZ);
+        def[y]=0;
+      }
+    }
+ else {
+      ++alreadyPacked;
+    }
+  }
+  if (newPacked > 0)   return new TeraSparseArray8Bit(sizeX,sizeY,sizeZ,inf,def);
+  return this;
+}

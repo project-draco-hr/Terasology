@@ -1,0 +1,20 @@
+{
+  if (!contains(x,y,z))   throw new IndexOutOfBoundsException();
+  if (value < 0 || value > 255)   throw new IllegalArgumentException();
+  byte[] data=inflated[y];
+  int pos=z * sizeX + x;
+  if (data != null) {
+    int old=data[pos] & 0xFF;
+    data[pos]=(byte)value;
+    return old;
+  }
+  byte old=deflated[y];
+  if (old == (byte)value) {
+    return value;
+  }
+  data=new byte[sizeXZ];
+  Arrays.fill(data,old);
+  data[pos]=(byte)value;
+  inflated[y]=data;
+  return old;
+}
