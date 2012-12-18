@@ -13,7 +13,15 @@
       try {
         ModInfo modInfo=gson.fromJson(new FileReader(modInfoFile),ModInfo.class);
         if (!mods.containsKey(modInfo.getId())) {
-          Mod mod=new Mod(modFile,modInfo,new DirectorySource(modInfo.getId(),new File(modFile,ASSETS_SUBDIRECTORY)));
+          File assetLocation=new File(modFile,ASSETS_SUBDIRECTORY);
+          AssetSource source;
+          if (assetLocation.exists() && assetLocation.isDirectory()) {
+            source=new DirectorySource(modInfo.getId(),assetLocation);
+          }
+ else {
+            source=new NullSource(modInfo.getId());
+          }
+          Mod mod=new Mod(modFile,modInfo,source);
           mods.put(modInfo.getId(),mod);
           logger.info("Discovered mod: {} (hasCode = {})",modInfo.getDisplayName(),mod.isCodeMod());
         }

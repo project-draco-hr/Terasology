@@ -7,7 +7,9 @@
       }
     }
  else {
-      return modRoot.toURI().toURL();
+      if (modRoot.getAbsolutePath().endsWith(".jar")) {
+        return modRoot.toURI().toURL();
+      }
     }
   }
  catch (  MalformedURLException e) {

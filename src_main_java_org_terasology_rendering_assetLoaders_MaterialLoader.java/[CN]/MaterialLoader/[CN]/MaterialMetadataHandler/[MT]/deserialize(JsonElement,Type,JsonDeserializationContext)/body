@@ -9,7 +9,7 @@
     for (    Map.Entry<String,JsonElement> prop : params.entrySet()) {
       if (prop.getValue().isJsonPrimitive()) {
         if (prop.getValue().getAsJsonPrimitive().isString()) {
-          Texture texture=AssetManager.loadTexture(prop.getValue().getAsString());
+          Texture texture=Assets.getTexture(prop.getValue().getAsString());
           if (texture != null) {
             metadata.textures.put(prop.getKey(),texture);
           }

@@ -1,14 +1,14 @@
 {
   StyleBorderImage style=getStyle(StyleBorderImage.class);
   if (style == null) {
-    style=new StyleBorderImage(AssetManager.loadTexture(texture));
+    style=new StyleBorderImage(Assets.getTexture(texture));
     style.setBorderSource(origin,size,borderSize);
     style.setVisible(true);
     addStyle(style);
   }
  else {
     if (!style.getTexture().getURI().toString().equals("texture:" + texture)) {
-      style.setTexture(AssetManager.loadTexture(texture));
+      style.setTexture(Assets.getTexture(texture));
     }
     style.setBorderSource(origin,size,borderSize);
   }
