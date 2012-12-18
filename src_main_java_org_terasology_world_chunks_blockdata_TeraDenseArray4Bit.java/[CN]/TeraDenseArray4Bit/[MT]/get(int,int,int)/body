@@ -1,10 +1,9 @@
 {
   if (!contains(x,y,z))   throw new IndexOutOfBoundsException("Index out of bounds (" + x + ", "+ y+ ", "+ z+ ")");
-  int pos=pos(x,y,z);
-  if (pos < sizeXYZHalf) {
-    int raw=data[pos] & 0xFF;
-    return (byte)((raw & 0x0F) & 0xFF);
+  int row=y * getSizeXZHalf(), pos=pos(x,z);
+  if (pos < getSizeXZHalf()) {
+    return TeraArrays.getHi(data[row + pos]);
   }
-  int raw=data[pos - sizeXYZHalf] & 0xFF;
-  return (byte)(raw >> 4);
+  pos=pos - getSizeXZHalf();
+  return TeraArrays.getLo(data[row + pos]);
 }

@@ -1,25 +1,6 @@
 {
   readExternalHeader(in);
-  if (!in.readBoolean()) {
-    inflated=null;
-    deflated=null;
-    fill=in.readByte();
-    return;
-  }
-  inflated=new byte[sizeY][];
-  deflated=new byte[sizeY];
-  int count=in.readInt();
-  Preconditions.checkArgument(count <= sizeY);
-  for (int i=0; i < count; i++) {
-    int y=in.readInt();
-    Preconditions.checkArgument(y <= sizeY);
-    byte[] values=new byte[sizeXZ];
-    for (int j=0; j < sizeXZ; j++) {
-      values[j]=in.readByte();
-    }
-    inflated[y]=values;
-  }
-  for (int y=0; y < sizeY; y++) {
-    deflated[y]=in.readByte();
-  }
+  inflated=(byte[][])in.readObject();
+  deflated=(byte[])in.readObject();
+  fill=in.readByte();
 }
