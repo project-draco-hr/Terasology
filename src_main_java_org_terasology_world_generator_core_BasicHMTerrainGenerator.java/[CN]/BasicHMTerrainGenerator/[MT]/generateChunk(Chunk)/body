@@ -11,7 +11,7 @@
       WorldBiomeProvider.Biome type=biomeProvider.getBiomeAt(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
       double interpolatedHeight=lerp(x / (double)Chunk.SIZE_X,lerp(z / (double)Chunk.SIZE_Z,p10,p11),lerp(z / (double)Chunk.SIZE_Z,p00,p01));
       double threshold=Math.floor(interpolatedHeight);
-      for (int y=Chunk.SIZE_Y; y >= 0; y--) {
+      for (int y=Chunk.SIZE_Y - 1; y >= 0; y--) {
         if (y == 0) {
           c.setBlock(x,y,z,mantle);
           break;
