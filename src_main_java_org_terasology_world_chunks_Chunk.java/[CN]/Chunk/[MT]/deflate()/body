@@ -6,10 +6,11 @@
     int lightSize=light.getEstimatedMemoryConsumptionInBytes();
     int liquidSize=liquid.getEstimatedMemoryConsumptionInBytes();
     int totalSize=blocksSize + sunlightSize + lightSize+ liquidSize;
-    blocks=blocks.deflate();
-    sunlight=sunlight.deflate();
-    light=light.deflate();
-    liquid=liquid.deflate();
+    final TeraDeflator def=new TeraStandardDeflator();
+    blocks=def.deflate(blocks);
+    sunlight=def.deflate(sunlight);
+    light=def.deflate(light);
+    liquid=def.deflate(liquid);
     int blocksReduced=blocks.getEstimatedMemoryConsumptionInBytes();
     int sunlightReduced=sunlight.getEstimatedMemoryConsumptionInBytes();
     int lightReduced=light.getEstimatedMemoryConsumptionInBytes();
