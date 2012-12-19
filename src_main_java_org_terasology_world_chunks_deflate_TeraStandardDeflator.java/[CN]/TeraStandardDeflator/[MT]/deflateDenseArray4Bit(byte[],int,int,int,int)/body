@@ -33,7 +33,7 @@
     }
     if (packable)     return new TeraSparseArray4Bit(sizeX,sizeY,sizeZ,first);
   }
-  if (packed >= 4) {
+  if (packed > DEFLATE_MINIMUM_4BIT) {
     return new TeraSparseArray4Bit(sizeX,sizeY,sizeZ,inflated,deflated);
   }
   return null;
