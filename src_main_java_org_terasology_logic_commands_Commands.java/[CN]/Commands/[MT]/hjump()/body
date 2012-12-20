@@ -1,0 +1,10 @@
+{
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  HealthComponent health=localPlayer.getEntity().getComponent(HealthComponent.class);
+  CharacterMovementComponent move=localPlayer.getEntity().getComponent(CharacterMovementComponent.class);
+  move.jumpSpeed=75f;
+  health.fallingDamageSpeedThreshold=85f;
+  health.excessSpeedDamageMultiplier=2f;
+  localPlayer.getEntity().saveComponent(health);
+  localPlayer.getEntity().saveComponent(move);
+}

@@ -1,26 +1,40 @@
 {
   tick+=delta * 1000;
-  if (tick - lastTick < timeBetweenSpawns) {
-    return;
-  }
-  lastTick=tick;
-  int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * maxMobsPerSpawner + maxMobsPerSpawner;
-  int currentMobs=entityManager.getComponentCount(SimpleAIComponent.class);
-  if (currentMobs >= maxMobs) {
-    logger.info("Too many mobs! Returning early");
-    return;
-  }
   for (  EntityRef entity : entityManager.iteratorEntities(SpawnerComponent.class,BlockComponent.class)) {
-    logger.info("Found a spawner: {}",entity);
     SpawnerComponent spawnComp=entity.getComponent(SpawnerComponent.class);
+    if (spawnComp.lastTick > tick)     spawnComp.lastTick=tick;
+    if (tick - spawnComp.lastTick < spawnComp.timeBetweenSpawns) {
+      return;
+    }
+    spawnComp.lastTick=tick;
+    int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * spawnComp.maxMobsPerSpawner + spawnComp.maxMobsPerSpawner;
+    int currentMobs=entityManager.getComponentCount(SimpleAIComponent.class) + entityManager.getComponentCount(HierarchicalAIComponent.class);
+    if (currentMobs >= maxMobs) {
+      logger.info("Too many mobs! Returning early");
+      return;
+    }
     int spawnTypes=spawnComp.types.size();
     if (spawnTypes == 0) {
       logger.warn("Spawner has no types, sad - stopping this loop iteration early :-(");
       continue;
     }
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+    Vector3f pos=blockComp.getPosition().toVector3f();
+    if (spawnComp.needsPlayer) {
+      LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+      if (localPlayer != null) {
+        Vector3f dist=new Vector3f(pos);
+        dist.sub(localPlayer.getPosition());
+        double distanceToPlayer=dist.lengthSquared();
+        if (distanceToPlayer > spawnComp.playerNeedRange) {
+          continue;
+        }
+      }
+    }
     if (currentMobs < maxMobs) {
-      Vector3f pos=blockComp.getPosition().toVector3f();
+      if (spawnComp.rangedSpawning) {
+        pos=new Vector3f(pos.x + random.randomFloat() * spawnComp.range,pos.y,pos.z + random.randomFloat() * spawnComp.range);
+      }
       logger.info("Going to spawn something at {}",pos);
       String chosenSpawnerType=spawnComp.types.get(random.randomIntAbs(spawnComp.types.size()));
       Set randomType=typeLists.get(chosenSpawnerType);
@@ -32,7 +46,7 @@
       Object[] randomPrefabs=randomType.toArray();
       Prefab chosenPrefab=(Prefab)randomPrefabs[anotherRandomIndex];
       logger.info("Picked index {} of types {} which is a {}",anotherRandomIndex,chosenSpawnerType,chosenPrefab);
-      factory.generateGelatinousCube(pos,chosenPrefab);
+      factory.generate(pos,chosenPrefab);
       currentMobs++;
     }
   }
