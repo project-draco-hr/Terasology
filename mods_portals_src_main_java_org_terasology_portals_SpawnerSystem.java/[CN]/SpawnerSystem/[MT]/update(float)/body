@@ -1,14 +1,21 @@
 {
   tick+=delta * 1000;
+  if (tick - classLastTick < 1000) {
+    return;
+  }
+  classLastTick=tick;
   for (  EntityRef entity : entityManager.iteratorEntities(SpawnerComponent.class,BlockComponent.class)) {
     SpawnerComponent spawnComp=entity.getComponent(SpawnerComponent.class);
-    if (spawnComp.lastTick > tick)     spawnComp.lastTick=tick;
+    if (spawnComp.lastTick > tick) {
+      spawnComp.lastTick=tick;
+    }
     if (tick - spawnComp.lastTick < spawnComp.timeBetweenSpawns) {
       return;
     }
     spawnComp.lastTick=tick;
-    int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * spawnComp.maxMobsPerSpawner + spawnComp.maxMobsPerSpawner;
+    int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * spawnComp.maxMobsPerSpawner;
     int currentMobs=entityManager.getComponentCount(SimpleAIComponent.class) + entityManager.getComponentCount(HierarchicalAIComponent.class);
+    logger.info("Mob count: {}/{}",currentMobs,maxMobs);
     if (currentMobs >= maxMobs) {
       logger.info("Too many mobs! Returning early");
       return;
@@ -27,6 +34,7 @@
         dist.sub(localPlayer.getPosition());
         double distanceToPlayer=dist.lengthSquared();
         if (distanceToPlayer > spawnComp.playerNeedRange) {
+          logger.warn("Spawner too far from player");
           continue;
         }
       }
@@ -35,19 +43,18 @@
       if (spawnComp.rangedSpawning) {
         pos=new Vector3f(pos.x + random.randomFloat() * spawnComp.range,pos.y,pos.z + random.randomFloat() * spawnComp.range);
       }
-      logger.info("Going to spawn something at {}",pos);
       String chosenSpawnerType=spawnComp.types.get(random.randomIntAbs(spawnComp.types.size()));
       Set randomType=typeLists.get(chosenSpawnerType);
+      logger.info("Picked random type {} which returned {} prefabs",chosenSpawnerType,randomType.size());
       if (randomType.size() == 0) {
-        logger.warn("That type wasn't found, sad :-( Won't spawn anything this time");
+        logger.warn("Type {} wasn't found, sad :-( Won't spawn anything this time",chosenSpawnerType);
         return;
       }
       int anotherRandomIndex=random.randomIntAbs(randomType.size());
       Object[] randomPrefabs=randomType.toArray();
       Prefab chosenPrefab=(Prefab)randomPrefabs[anotherRandomIndex];
-      logger.info("Picked index {} of types {} which is a {}",anotherRandomIndex,chosenSpawnerType,chosenPrefab);
+      logger.info("Picked index {} of types {} which is a {}, to spawn at {}",anotherRandomIndex,chosenSpawnerType,chosenPrefab,pos);
       factory.generate(pos,chosenPrefab);
-      currentMobs++;
     }
   }
 }
