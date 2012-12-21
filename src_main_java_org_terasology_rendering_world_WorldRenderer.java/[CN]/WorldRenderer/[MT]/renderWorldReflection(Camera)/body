@@ -1,13 +1,13 @@
 {
   PerformanceMonitor.startActivity("Render Sky");
   camera.lookThroughNormalized();
-  _skysphere.render();
+  skysphere.render();
   camera.lookThrough();
   glEnable(GL_LIGHT0);
-  for (  Chunk c : _renderQueueChunksOpaque)   renderChunk(c,ChunkMesh.RENDER_PHASE.OPAQUE,camera);
+  for (  Chunk c : renderQueueChunksOpaque)   renderChunk(c,ChunkMesh.RENDER_PHASE.OPAQUE,camera);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  for (  Chunk c : _renderQueueChunksSortedBillboards)   renderChunk(c,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
+  for (  Chunk c : renderQueueChunksSortedBillboards)   renderChunk(c,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
   glDisable(GL_BLEND);
   glDisable(GL_LIGHT0);
 }

@@ -1,27 +1,27 @@
 {
   PerformanceMonitor.startActivity("Cameras");
   animateSpawnCamera(delta);
-  _spawnCamera.update(delta);
+  spawnCamera.update(delta);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Tick");
   updateTick(delta);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Chunk Cache");
-  _chunkProvider.update();
+  chunkProvider.update();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Close Chunks");
   updateChunksInProximity(false);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Skysphere");
-  _skysphere.update(delta);
+  skysphere.update(delta);
   PerformanceMonitor.endActivity();
-  if (_activeCamera != null) {
-    _activeCamera.update(delta);
+  if (activeCamera != null) {
+    activeCamera.update(delta);
   }
   PerformanceMonitor.startActivity("Fire Events");
-  _worldTimeEventManager.fireWorldTimeEvents();
+  worldTimeEventManager.fireWorldTimeEvents();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Physics Renderer");
-  _bulletPhysics.update(delta);
+  bulletPhysics.update(delta);
   PerformanceMonitor.endActivity();
 }

@@ -1,6 +1,6 @@
 {
-  if (_player == null || !_player.isValid())   return;
-  PlayerComponent player=_player.getEntity().getComponent(PlayerComponent.class);
+  if (player == null || !player.isValid())   return;
+  PlayerComponent player=this.player.getEntity().getComponent(PlayerComponent.class);
   Vector3f cameraPosition=new Vector3f(player.spawnPosition);
   cameraPosition.y+=32;
   cameraPosition.x+=Math.sin(getTick() * 0.0005f) * 32f;
@@ -16,6 +16,6 @@
     cameraDirection.set(playerToCamera);
   }
   cameraDirection.normalize();
-  _spawnCamera.getPosition().set(cameraPosition);
-  _spawnCamera.getViewingDirection().set(cameraDirection);
+  spawnCamera.getPosition().set(cameraPosition);
+  spawnCamera.getViewingDirection().set(cameraDirection);
 }

@@ -16,13 +16,13 @@
   PerformanceMonitor.startActivity("Render Post-Processing");
   PostProcessingRenderer.getInstance().renderScene();
   PerformanceMonitor.endActivity();
-  if (_cameraMode == CAMERA_MODE.PLAYER) {
+  if (cameraMode == CAMERA_MODE.PLAYER) {
     glClear(GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
     glLoadIdentity();
-    _activeCamera.loadProjectionMatrix(80f);
+    activeCamera.loadProjectionMatrix(80f);
     PerformanceMonitor.startActivity("Render First Person");
-    for (    RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
+    for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
       renderer.renderFirstPerson();
     }
     PerformanceMonitor.endActivity();

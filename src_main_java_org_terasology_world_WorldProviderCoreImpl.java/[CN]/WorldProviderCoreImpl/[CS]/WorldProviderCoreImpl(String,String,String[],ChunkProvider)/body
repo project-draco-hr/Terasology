@@ -10,6 +10,7 @@
   this.chunkGenerators=chunkGenerators;
   this.biomeProvider=new WorldBiomeProviderImpl(seed);
   this.chunkProvider=chunkProvider;
+  CoreRegistry.put(ChunkProvider.class,chunkProvider);
   Timer timer=CoreRegistry.get(Timer.class);
   if (timer != null) {
     timeOffset=-timer.getTimeInMs() + Config.getInstance().getInitialTimeOffsetInMs();

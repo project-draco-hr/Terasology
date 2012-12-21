@@ -1,0 +1,13 @@
+{
+  Chunk chunk=getChunk(pos);
+  if (chunk == null || chunk.getChunkState() != Chunk.State.COMPLETE) {
+    return false;
+  }
+  for (  Vector3i adjPos : Region3i.createFromCenterExtents(pos,LOCAL_REGION_EXTENTS)) {
+    Chunk adjChunk=getChunk(adjPos);
+    if (adjChunk == null || adjChunk.getChunkState() != Chunk.State.COMPLETE) {
+      return false;
+    }
+  }
+  return true;
+}

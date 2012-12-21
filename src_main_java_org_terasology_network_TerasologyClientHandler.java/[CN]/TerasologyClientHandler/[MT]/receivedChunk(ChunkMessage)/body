@@ -1,0 +1,8 @@
+{
+  TeraArray blocks=new TeraArray(Chunk.SIZE_X,Chunk.SIZE_Y,Chunk.SIZE_Z,chunkInfo.getBlockData().toByteArray());
+  TeraSmartArray sunlight=new TeraSmartArray(Chunk.SIZE_X,Chunk.SIZE_Y,Chunk.SIZE_Z,chunkInfo.getSunlightData().toByteArray());
+  TeraSmartArray light=new TeraSmartArray(Chunk.SIZE_X,Chunk.SIZE_Y,Chunk.SIZE_Z,chunkInfo.getLightData().toByteArray());
+  TeraSmartArray liquid=new TeraSmartArray(Chunk.SIZE_X,Chunk.SIZE_Y,Chunk.SIZE_Z,chunkInfo.getLiquidData().toByteArray());
+  Chunk chunk=new Chunk(NetworkUtil.convert(chunkInfo.getPos()),blocks,sunlight,light,liquid);
+  networkSystem.receiveChunk(chunk);
+}

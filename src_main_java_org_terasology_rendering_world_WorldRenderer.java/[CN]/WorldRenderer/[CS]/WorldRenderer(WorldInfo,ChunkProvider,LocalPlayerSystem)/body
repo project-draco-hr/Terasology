@@ -1,0 +1,16 @@
+{
+  this.chunkProvider=chunkProvider;
+  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,this.chunkProvider));
+  CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
+  CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
+  worldProvider=new WorldProviderWrapper(entityWorldProvider);
+  bulletPhysics=new BulletPhysics(worldProvider);
+  chunkTesselator=new ChunkTessellator(worldProvider.getBiomeProvider());
+  skysphere=new Skysphere(this);
+  chunkUpdateManager=new ChunkUpdateManager(chunkTesselator,worldProvider);
+  worldTimeEventManager=new WorldTimeEventManager(worldProvider);
+  blockGrid=new BlockGrid();
+  localPlayerSystem.setPlayerCamera(defaultCamera);
+  systemManager=CoreRegistry.get(ComponentSystemManager.class);
+  initTimeEvents();
+}

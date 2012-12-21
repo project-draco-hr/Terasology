@@ -1,0 +1,10 @@
+{
+  if (mode != NetworkMode.NONE) {
+    allChannels.close().awaitUninterruptibly();
+    factory.releaseExternalResources();
+    logger.info("Network shutdown");
+    mode=NetworkMode.NONE;
+    serverInfo=null;
+    remoteWorldProvider=null;
+  }
+}

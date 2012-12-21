@@ -1,0 +1,15 @@
+{
+  if (networkSystem.getServerInfo() != null) {
+    worldInfo.setTitle(networkSystem.getServerInfo().getWorldName());
+    Map<String,Byte> blockMap=Maps.newHashMap();
+    for (    NetData.BlockMapping mapping : networkSystem.getServerInfo().getBlockMappingList()) {
+      blockMap.put(mapping.getBlockName(),(byte)mapping.getBlockId());
+    }
+    worldInfo.setBlockIdMap(blockMap);
+    worldInfo.setTime(networkSystem.getServerInfo().getTime());
+    return true;
+  }
+ else {
+    return false;
+  }
+}

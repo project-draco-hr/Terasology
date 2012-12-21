@@ -1,4 +1,18 @@
 {
-  NetData.ServerMessage message=(NetData.ServerMessage)e.getMessage();
-  logger.trace("Received message: {}",message.getConnection().getName());
+  NetMessage message=(NetMessage)e.getMessage();
+switch (message.getType()) {
+case SERVER_INFO:
+    receivedServerInfo(message.getServerInfo());
+  break;
+case CONSOLE:
+MessageManager.getInstance().addMessage(message.getConsole().getMessage());
+break;
+case CHUNK:
+receivedChunk(message.getChunkInfo());
+break;
+case INVALIDATE_CHUNK:
+invalidateChunk(message.getInvalidateChunk());
+break;
+}
+logger.debug("Received message: {}",message.getType());
 }

@@ -7,7 +7,20 @@
   ChunkGeneratorManager chunkGeneratorManager=ChunkGeneratorManagerImpl.buildChunkGenerator(Arrays.asList(worldInfo.getChunkGenerators()));
   chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
   chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
-  WorldRenderer worldRenderer=new WorldRenderer(worldInfo,chunkGeneratorManager,CoreRegistry.get(EntityManager.class),CoreRegistry.get(LocalPlayerSystem.class));
+  ChunkStore chunkStore=null;
+  File f=new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),worldInfo.getTitle() + ".dat");
+  if (f.exists()) {
+    try {
+      chunkStore=ChunkStoreGZip.load(f);
+    }
+ catch (    IOException e) {
+      logger.error("Failed to load chunk store",e);
+    }
+  }
+  if (chunkStore == null) {
+    chunkStore=new ChunkStoreGZip();
+  }
+  WorldRenderer worldRenderer=new WorldRenderer(worldInfo,new LocalChunkProvider(chunkStore,chunkGeneratorManager),CoreRegistry.get(LocalPlayerSystem.class));
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
   CoreRegistry.put(WorldProvider.class,worldRenderer.getWorldProvider());
   CoreRegistry.put(LocalPlayer.class,new LocalPlayer(EntityRef.NULL));

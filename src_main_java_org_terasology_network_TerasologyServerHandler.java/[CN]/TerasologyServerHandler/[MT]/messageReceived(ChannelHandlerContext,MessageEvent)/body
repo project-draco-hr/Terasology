@@ -1,4 +1,13 @@
 {
-  NetData.ClientMessage message=(NetData.ClientMessage)e.getMessage();
-  logger.trace("Received message: {}",message.getConnection().getName());
+  NetMessage message=(NetMessage)e.getMessage();
+switch (message.getType()) {
+case CLIENT_CONNECT:
+    receivedConnect(message.getClientConnect());
+  break;
+case CONSOLE:
+networkSystem.sendChatMessage(message.getConsole().getMessage());
+MessageManager.getInstance().addMessage(message.getConsole().getMessage(),MessageManager.EMessageScope.PRIVATE);
+break;
+}
+logger.debug("Received message: {}",message.getType());
 }

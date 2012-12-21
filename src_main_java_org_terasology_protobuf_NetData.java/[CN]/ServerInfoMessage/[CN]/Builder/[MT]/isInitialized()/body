@@ -1,0 +1,16 @@
+{
+  for (int i=0; i < getModuleCount(); i++) {
+    if (!getModule(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getBlockMappingCount(); i++) {
+    if (!getBlockMapping(i).isInitialized()) {
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
+  return true;
+}

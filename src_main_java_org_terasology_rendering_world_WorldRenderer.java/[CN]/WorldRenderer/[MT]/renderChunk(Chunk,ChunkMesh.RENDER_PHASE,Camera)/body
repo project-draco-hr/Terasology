@@ -12,16 +12,16 @@
         if (Config.getInstance().isRenderChunkBoundingBoxes()) {
           AABBRenderer aabbRenderer=new AABBRenderer(chunk.getSubMeshAABB(i));
           aabbRenderer.renderLocally(1f);
-          _statRenderedTriangles+=12;
+          statRenderedTriangles+=12;
         }
         shader.enable();
         chunk.getMesh()[i].render(phase);
-        _statRenderedTriangles+=chunk.getMesh()[i].triangleCount();
+        statRenderedTriangles+=chunk.getMesh()[i].triangleCount();
       }
     }
     GL11.glPopMatrix();
   }
  else {
-    _statChunkNotReady++;
+    statChunkNotReady++;
   }
 }

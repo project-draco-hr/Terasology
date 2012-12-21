@@ -1,0 +1,42 @@
+{
+  for (int i=0; i < REQUEST_CHUNK_THREADS; ++i) {
+    reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.EXIT,Region3i.EMPTY));
+  }
+  for (int i=0; i < CHUNK_PROCESSING_THREADS; ++i) {
+    chunkTasksQueue.offer(new ShutdownTask());
+  }
+  reviewThreads.shutdown();
+  chunkProcessingThreads.shutdown();
+  try {
+    if (!reviewThreads.awaitTermination(1,TimeUnit.SECONDS)) {
+      logger.warn("Timed out awaiting chunk review thread termination");
+    }
+    if (!chunkProcessingThreads.awaitTermination(1,TimeUnit.SECONDS)) {
+      logger.warn("Timed out awaiting chunk processing thread termination");
+    }
+  }
+ catch (  InterruptedException e) {
+    logger.warn("Interrupted awaiting chunk thread termination");
+  }
+  for (  Chunk chunk : nearCache.values()) {
+    farStore.put(chunk);
+    chunk.dispose();
+  }
+  nearCache.clear();
+  farStore.dispose();
+  String title=CoreRegistry.get(WorldProvider.class).getTitle();
+  File chunkFile=new File(PathManager.getInstance().getWorldSavePath(title),title + ".dat");
+  try {
+    FileOutputStream fileOut=new FileOutputStream(chunkFile);
+    BufferedOutputStream bos=new BufferedOutputStream(fileOut);
+    ObjectOutputStream out=new ObjectOutputStream(bos);
+    out.writeObject(farStore);
+    out.close();
+    bos.flush();
+    bos.close();
+    fileOut.close();
+  }
+ catch (  IOException e) {
+    logger.error("Error saving chunks",e);
+  }
+}

@@ -1,0 +1,84 @@
+{
+  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
+  while (true) {
+    int tag=input.readTag();
+switch (tag) {
+case 0:
+      this.setUnknownFields(unknownFields.build());
+    onChanged();
+  return this;
+default :
+{
+  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
+    this.setUnknownFields(unknownFields.build());
+    onChanged();
+    return this;
+  }
+  break;
+}
+case 8:
+{
+int rawValue=input.readEnum();
+org.terasology.protobuf.NetData.NetMessage.Type value=org.terasology.protobuf.NetData.NetMessage.Type.valueOf(rawValue);
+if (value == null) {
+  unknownFields.mergeVarintField(1,rawValue);
+}
+ else {
+  bitField0_|=0x00000001;
+  type_=value;
+}
+break;
+}
+case 18:
+{
+org.terasology.protobuf.NetData.ChunkMessage.Builder subBuilder=org.terasology.protobuf.NetData.ChunkMessage.newBuilder();
+if (hasChunkInfo()) {
+subBuilder.mergeFrom(getChunkInfo());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setChunkInfo(subBuilder.buildPartial());
+break;
+}
+case 26:
+{
+org.terasology.protobuf.NetData.InvalidateChunkMessage.Builder subBuilder=org.terasology.protobuf.NetData.InvalidateChunkMessage.newBuilder();
+if (hasInvalidateChunk()) {
+subBuilder.mergeFrom(getInvalidateChunk());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setInvalidateChunk(subBuilder.buildPartial());
+break;
+}
+case 122:
+{
+org.terasology.protobuf.NetData.ClientConnectMessage.Builder subBuilder=org.terasology.protobuf.NetData.ClientConnectMessage.newBuilder();
+if (hasClientConnect()) {
+subBuilder.mergeFrom(getClientConnect());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setClientConnect(subBuilder.buildPartial());
+break;
+}
+case 130:
+{
+org.terasology.protobuf.NetData.ConsoleMessage.Builder subBuilder=org.terasology.protobuf.NetData.ConsoleMessage.newBuilder();
+if (hasConsole()) {
+subBuilder.mergeFrom(getConsole());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setConsole(subBuilder.buildPartial());
+break;
+}
+case 138:
+{
+org.terasology.protobuf.NetData.ServerInfoMessage.Builder subBuilder=org.terasology.protobuf.NetData.ServerInfoMessage.newBuilder();
+if (hasServerInfo()) {
+subBuilder.mergeFrom(getServerInfo());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setServerInfo(subBuilder.buildPartial());
+break;
+}
+}
+}
+}

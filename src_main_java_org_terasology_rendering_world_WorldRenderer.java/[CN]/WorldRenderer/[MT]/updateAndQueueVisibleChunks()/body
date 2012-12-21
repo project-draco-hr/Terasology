@@ -1,17 +1,17 @@
 {
-  _statDirtyChunks=0;
-  _statVisibleChunks=0;
-  _statIgnoredPhases=0;
-  for (int i=0; i < _chunksInProximity.size(); i++) {
-    Chunk c=_chunksInProximity.get(i);
+  statDirtyChunks=0;
+  statVisibleChunks=0;
+  statIgnoredPhases=0;
+  for (int i=0; i < chunksInProximity.size(); i++) {
+    Chunk c=chunksInProximity.get(i);
     ChunkMesh[] mesh=c.getMesh();
     if (isChunkVisible(c) && isChunkValidForRender(c)) {
-      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.OPAQUE) > 0)       _renderQueueChunksOpaque.add(c);
- else       _statIgnoredPhases++;
-      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.WATER_AND_ICE) > 0)       _renderQueueChunksSortedWater.add(c);
- else       _statIgnoredPhases++;
-      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0 && i < MAX_BILLBOARD_CHUNKS)       _renderQueueChunksSortedBillboards.add(c);
- else       _statIgnoredPhases++;
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.OPAQUE) > 0)       renderQueueChunksOpaque.add(c);
+ else       statIgnoredPhases++;
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.WATER_AND_ICE) > 0)       renderQueueChunksSortedWater.add(c);
+ else       statIgnoredPhases++;
+      if (triangleCount(mesh,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT) > 0 && i < MAX_BILLBOARD_CHUNKS)       renderQueueChunksSortedBillboards.add(c);
+ else       statIgnoredPhases++;
       if (i < MAX_ANIMATED_CHUNKS)       c.setAnimated(true);
  else       c.setAnimated(false);
       if (c.getPendingMesh() != null) {
@@ -27,10 +27,10 @@
         c.setPendingMesh(null);
       }
       if ((c.isDirty() || mesh == null) && isChunkValidForRender(c)) {
-        _statDirtyChunks++;
-        _chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
+        statDirtyChunks++;
+        chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UPDATE_TYPE.DEFAULT);
       }
-      _statVisibleChunks++;
+      statVisibleChunks++;
     }
  else     if (i > Config.getInstance().getMaxChunkVBOs()) {
       if (mesh != null) {

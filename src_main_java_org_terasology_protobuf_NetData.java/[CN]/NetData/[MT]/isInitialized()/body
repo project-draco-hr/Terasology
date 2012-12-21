@@ -1,0 +1,32 @@
+{
+  byte isInitialized=memoizedIsInitialized;
+  if (isInitialized != -1)   return isInitialized == 1;
+  if (!hasType()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  if (hasClientConnect()) {
+    if (!getClientConnect().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasConsole()) {
+    if (!getConsole().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasServerInfo()) {
+    if (!getServerInfo().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  memoizedIsInitialized=1;
+  return true;
+}

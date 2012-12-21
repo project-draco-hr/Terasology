@@ -1,22 +1,14 @@
 {
-  loadProcesses.add(new RegisterMods(worldInfo));
-  loadProcesses.add(new CacheTextures());
-  loadProcesses.add(new RegisterBlocks(worldInfo));
-  loadProcesses.add(new CacheBlocks());
-  loadProcesses.add(new InitialiseEntitySystem());
-  loadProcesses.add(new LoadPrefabs());
-  loadProcesses.add(new RegisterInputSystem());
-  loadProcesses.add(new RegisterSystems());
-  loadProcesses.add(new InitialiseCommandSystem());
-  loadProcesses.add(new InitialiseWorld(worldInfo));
-  loadProcesses.add(new InitialiseSystems());
-  loadProcesses.add(new LoadEntities(worldInfo));
-  loadProcesses.add(new CreateWorldEntity());
-  loadProcesses.add(new PrepareLocalWorld());
-  loadProcesses.add(new PrepareWorld());
-  loadProcesses.add(new RespawnPlayer());
-  popStep();
-  GUIManager guiManager=CoreRegistry.get(GUIManager.class);
-  loadingScreen=(UIScreenLoading)guiManager.openWindow("loading");
-  loadingScreen.updateStatus(current.getMessage(),completedSteps / (currentExpectedSteps * 100f));
+switch (netMode) {
+case CLIENT:
+    initClient();
+  break;
+default :
+initHost();
+break;
+}
+popStep();
+GUIManager guiManager=CoreRegistry.get(GUIManager.class);
+loadingScreen=(UIScreenLoading)guiManager.openWindow("loading");
+loadingScreen.updateStatus(current.getMessage(),completedSteps / (currentExpectedSteps * 100f));
 }

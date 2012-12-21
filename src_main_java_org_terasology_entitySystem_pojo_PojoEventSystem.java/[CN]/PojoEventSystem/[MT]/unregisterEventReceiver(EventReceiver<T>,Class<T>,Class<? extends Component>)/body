@@ -1,0 +1,12 @@
+{
+  Multimap<Class<? extends Component>,EventHandlerInfo> eventHandlerMap=componentSpecificHandlers.get(eventClass);
+  if (eventHandlerMap != null) {
+    ReceiverEventHandlerInfo testReceiver=new ReceiverEventHandlerInfo<T>(eventReceiver,0,componentTypes);
+    for (    Class<? extends Component> c : componentTypes) {
+      eventHandlerMap.remove(c,testReceiver);
+      for (      Class<? extends Event> childType : childEvents.get(eventClass)) {
+        eventHandlerMap.remove(childType,testReceiver);
+      }
+    }
+  }
+}

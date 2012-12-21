@@ -1,7 +1,8 @@
 {
+  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   PerformanceMonitor.startActivity("Other");
   while (running && !Display.isCloseRequested()) {
-    if (!Display.isActive()) {
+    if (!Display.isActive() && CoreRegistry.get(NetworkSystem.class).getMode() == NetworkMode.NONE) {
       try {
         Thread.sleep(1000);
       }
@@ -17,6 +18,9 @@
       break;
     }
     timer.tick();
+    PerformanceMonitor.startActivity("Network Update");
+    networkSystem.update();
+    PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Main Update");
     currentState.update(timer.getDelta());
     PerformanceMonitor.endActivity();

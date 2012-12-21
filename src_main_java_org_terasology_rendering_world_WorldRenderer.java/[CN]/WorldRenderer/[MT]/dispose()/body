@@ -1,6 +1,6 @@
 {
-  _worldProvider.dispose();
-  WorldInfo worldInfo=_worldProvider.getWorldInfo();
+  worldProvider.dispose();
+  WorldInfo worldInfo=worldProvider.getWorldInfo();
   try {
     WorldInfo.save(new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),WorldInfo.DEFAULT_FILE_NAME),worldInfo);
   }
@@ -8,19 +8,4 @@
     logger.error("Failed to save world manifest",e);
   }
   AudioManager.getInstance().stopAllSounds();
-  chunkStore.dispose();
-  File chunkFile=new File(PathManager.getInstance().getWorldSavePath(_worldProvider.getTitle()),_worldProvider.getTitle() + ".dat");
-  try {
-    FileOutputStream fileOut=new FileOutputStream(chunkFile);
-    BufferedOutputStream bos=new BufferedOutputStream(fileOut);
-    ObjectOutputStream out=new ObjectOutputStream(bos);
-    out.writeObject(chunkStore);
-    out.close();
-    bos.flush();
-    bos.close();
-    fileOut.close();
-  }
- catch (  IOException e) {
-    logger.error("Error saving chunks",e);
-  }
 }

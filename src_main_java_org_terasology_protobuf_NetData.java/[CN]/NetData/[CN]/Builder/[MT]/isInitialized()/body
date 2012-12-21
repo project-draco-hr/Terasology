@@ -1,0 +1,24 @@
+{
+  if (!hasType()) {
+    return false;
+  }
+  if (hasClientConnect()) {
+    if (!getClientConnect().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasConsole()) {
+    if (!getConsole().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasServerInfo()) {
+    if (!getServerInfo().isInitialized()) {
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
+  return true;
+}
