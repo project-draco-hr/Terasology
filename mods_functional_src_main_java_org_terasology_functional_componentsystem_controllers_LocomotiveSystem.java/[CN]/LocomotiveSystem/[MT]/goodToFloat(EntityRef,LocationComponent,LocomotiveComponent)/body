@@ -1,0 +1,27 @@
+{
+  Vector3f top_position=location.getWorldPosition();
+  Vector3f bottom_position=location.getWorldPosition();
+  top_position.y+=.12f;
+  bottom_position.y-=.12f;
+  Block top_block=worldProvider.getBlock(top_position);
+  Block bottom_block=worldProvider.getBlock(bottom_position);
+  loco.shouldMove=top_block.isPenetrable() && !top_block.isLiquid() && bottom_block.isLiquid()&& standingOn(entity);
+  if (!loco.shouldMove) {
+    loco.currentVelocity.x=0;
+    loco.currentVelocity.y=0;
+    loco.currentVelocity.z=0;
+  }
+  if ((!top_block.isLiquid() && !bottom_block.isLiquid()) && top_block.isPenetrable() && bottom_block.isPenetrable()) {
+    loco.currentVelocity.x=0;
+    loco.currentVelocity.y-=GRAVITY;
+    loco.currentVelocity.z=0;
+    loco.shouldMove=false;
+  }
+  if ((top_block.isLiquid() && bottom_block.isLiquid()) && top_block.isPenetrable() && bottom_block.isPenetrable()) {
+    loco.currentVelocity.x=0;
+    loco.currentVelocity.y+=UNDERWATER_GRAVITY;
+    loco.currentVelocity.z=0;
+    loco.shouldMove=false;
+  }
+  return loco.shouldMove;
+}

@@ -1,0 +1,26 @@
+{
+  EntityRef entity=null;
+switch (index) {
+case 0:
+{
+      entity=entityManager.create("functional:train");
+      break;
+    }
+case 1:
+{
+    entity=entityManager.create("functional:boat");
+    break;
+  }
+default :
+entity=entityManager.create("functional:train");
+}
+if (entity == null) {
+return null;
+}
+LocationComponent loc=entity.getComponent(LocationComponent.class);
+if (loc != null) {
+loc.setWorldPosition(position);
+entity.saveComponent(loc);
+}
+return entity;
+}

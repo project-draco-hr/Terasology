@@ -1,0 +1,13 @@
+{
+  Vector3f position=location.getWorldPosition();
+  position.add(distanceMoved);
+  location.setWorldPosition(position);
+  entity.saveComponent(location);
+  if (loco.shouldMove) {
+    distanceMoved.scale(1f);
+    Vector3f player_position=player_location.getWorldPosition();
+    player_position.add(distanceMoved);
+    player_location.setWorldPosition(player_position);
+    localPlayer.getEntity().saveComponent(player_location);
+  }
+}
