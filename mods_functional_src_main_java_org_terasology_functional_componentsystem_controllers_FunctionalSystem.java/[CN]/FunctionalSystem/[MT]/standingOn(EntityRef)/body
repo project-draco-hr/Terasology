@@ -1,5 +1,5 @@
 {
-  HitResult hit=physics.rayTrace(localPlayer.getPosition(),new Vector3f(0,-1,0),1.6f * 0.25f);
-  boolean standingOn=hit.isHit() && hit.getEntity() == entity;
-  return standingOn;
+  BoxShapeComponent boxshape=localPlayer.getEntity().getComponent(BoxShapeComponent.class);
+  HitResult hit=physics.rayTrace(localPlayer.getPosition(),new Vector3f(0,-1,0),boxshape.extents.y);
+  return hit.isHit() && hit.getEntity() == entity;
 }

@@ -6,22 +6,27 @@
       continue;
     }
     FunctionalComponent loco=entity.getComponent(FunctionalComponent.class);
-    if (loco.collider == null) {
-      BoxShapeComponent shape=entity.getComponent(BoxShapeComponent.class);
-      BoxShape box=new BoxShape(shape.extents);
-      loco.collider=physics.createCollider(location.getWorldPosition(),box,Lists.<CollisionGroup>newArrayList(loco.collisionGroup),loco.collidesWith,CollisionFlags.CHARACTER_OBJECT);
-      loco.collider.setUserPointer(entity);
-      continue;
-    }
+    logger.info("loco {}",loco.getLocomotiveType());
     if (!localPlayer.isValid())     return;
-    if (loco.locomotiveType == FunctionalComponent.LocomotiveType.Boat) {
-      goodToFloat(entity,location,loco);
-      floating(delta,entity,location,loco);
-    }
- else     if (loco.locomotiveType == FunctionalComponent.LocomotiveType.Train) {
-      goodToSlide(entity,location,loco);
-      sliding(delta,entity,location,loco);
-    }
     entity.saveComponent(loco);
+    if (standingOn(entity)) {
+      logger.info("Player standing on functional");
+      Vector3f movementDirection=localPlayer.getViewDirection();
+      float speed=movementDirection.length();
+      movementDirection=new Vector3f(movementDirection.x,0,movementDirection.z);
+      movementDirection.normalize();
+      movementDirection.scale(speed);
+      Vector3f desiredVelocity=new Vector3f(movementDirection);
+      desiredVelocity.scale(loco.getMaximumSpeed());
+      CharacterMovementComponent movement=entity.getComponent(CharacterMovementComponent.class);
+      movement.setDrive(desiredVelocity);
+      entity.saveComponent(movement);
+    }
+ else {
+      logger.info("Player left functional");
+      CharacterMovementComponent movement=entity.getComponent(CharacterMovementComponent.class);
+      movement.setDrive(new Vector3f(0,0,0));
+      entity.saveComponent(movement);
+    }
   }
 }
