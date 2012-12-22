@@ -1,0 +1,9 @@
+{
+  FunctionalComponent functionalItem=item.getComponent(FunctionalComponent.class);
+  Side surfaceDir=Side.inDirection(event.getHitNormal());
+  Side secondaryDirection=TeraMath.getSecondaryPlacementDirection(event.getDirection(),event.getHitNormal());
+  logger.info("Placing Functional objects");
+  Vector3f newPosition=new Vector3f(localPlayer.getPosition().x + localPlayer.getViewDirection().x * 1.5f,localPlayer.getPosition().y + localPlayer.getViewDirection().y * 1.5f,localPlayer.getPosition().z + localPlayer.getViewDirection().z * 1.5f);
+  EntityRef functionalEntity=locomotiveFactory.generateLocomotiveCube(newPosition,functionalItem.getId());
+  functionalEntity.send(new ImpulseEvent(new Vector3f(localPlayer.getViewDirection().x,localPlayer.getViewDirection().y,localPlayer.getViewDirection().z)));
+}

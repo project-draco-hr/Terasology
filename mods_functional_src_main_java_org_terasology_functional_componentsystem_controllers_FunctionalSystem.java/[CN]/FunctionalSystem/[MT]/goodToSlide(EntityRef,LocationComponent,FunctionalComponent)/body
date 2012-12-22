@@ -1,0 +1,24 @@
+{
+  Vector3f top_position=location.getWorldPosition();
+  Vector3f middle_position=location.getWorldPosition();
+  Vector3f bottom_position=location.getWorldPosition();
+  top_position.y+=.12f;
+  middle_position.y-=.08f;
+  bottom_position.y-=.12f;
+  Block top_block=worldProvider.getBlock(top_position);
+  Block middle_block=worldProvider.getBlock(middle_position);
+  Block bottom_block=worldProvider.getBlock(bottom_position);
+  loco.shouldMove=top_block.isPenetrable() && middle_block.isPenetrable() && standingOn(entity);
+  if (!loco.shouldMove) {
+    loco.currentVelocity.x=0;
+    loco.currentVelocity.y=0;
+    loco.currentVelocity.z=0;
+  }
+  if (!middle_block.isPenetrable() || !bottom_block.isPenetrable()) {
+    loco.currentVelocity.x=0;
+    loco.currentVelocity.y=1f;
+    loco.currentVelocity.z=0;
+    loco.shouldMove=false;
+  }
+  return loco.shouldMove;
+}

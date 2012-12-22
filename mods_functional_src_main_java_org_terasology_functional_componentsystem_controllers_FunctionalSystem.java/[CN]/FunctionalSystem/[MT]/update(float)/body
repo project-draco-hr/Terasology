@@ -1,0 +1,27 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(FunctionalComponent.class,LocationComponent.class)) {
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    Vector3f worldPos=location.getWorldPosition();
+    if (!worldProvider.isBlockActive(worldPos)) {
+      continue;
+    }
+    FunctionalComponent loco=entity.getComponent(FunctionalComponent.class);
+    if (loco.collider == null) {
+      BoxShapeComponent shape=entity.getComponent(BoxShapeComponent.class);
+      BoxShape box=new BoxShape(shape.extents);
+      loco.collider=physics.createCollider(location.getWorldPosition(),box,Lists.<CollisionGroup>newArrayList(loco.collisionGroup),loco.collidesWith,CollisionFlags.CHARACTER_OBJECT);
+      loco.collider.setUserPointer(entity);
+      continue;
+    }
+    if (!localPlayer.isValid())     return;
+    if (loco.locomotiveType == FunctionalComponent.LocomotiveType.Boat) {
+      goodToFloat(entity,location,loco);
+      floating(delta,entity,location,loco);
+    }
+ else     if (loco.locomotiveType == FunctionalComponent.LocomotiveType.Train) {
+      goodToSlide(entity,location,loco);
+      sliding(delta,entity,location,loco);
+    }
+    entity.saveComponent(loco);
+  }
+}
