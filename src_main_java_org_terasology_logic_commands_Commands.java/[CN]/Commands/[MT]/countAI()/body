@@ -1,0 +1,13 @@
+{
+  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+  int i=0;
+  for (  EntityRef ref : entityManager.iteratorEntities(SimpleAIComponent.class)) {
+    i++;
+  }
+  MessageManager.getInstance().addMessage("Simple AIs: " + i,EMessageScope.PRIVATE);
+  i=0;
+  for (  EntityRef ref : entityManager.iteratorEntities(HierarchicalAIComponent.class)) {
+    i++;
+  }
+  MessageManager.getInstance().addMessage("Hierarchical AIs: " + i,EMessageScope.PRIVATE);
+}
