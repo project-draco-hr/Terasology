@@ -1,0 +1,9 @@
+{
+  if (standingOn(entity)) {
+    LocationComponent player_location=localPlayer.getEntity().getComponent(LocationComponent.class);
+    Vector3f location=player_location.getWorldPosition();
+    location.add(event.getDelta());
+    player_location.setWorldPosition(location);
+    localPlayer.getEntity().saveComponent(player_location);
+  }
+}
