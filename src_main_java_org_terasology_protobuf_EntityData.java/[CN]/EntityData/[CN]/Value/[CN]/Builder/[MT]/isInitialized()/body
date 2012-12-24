@@ -1,3 +1,16 @@
 {
+  for (int i=0; i < getValueCount(); i++) {
+    if (!getValue(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getNameValueCount(); i++) {
+    if (!getNameValue(i).isInitialized()) {
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
   return true;
 }

@@ -2,6 +2,21 @@
   if (!hasType()) {
     return false;
   }
+  if (hasChunkInfo()) {
+    if (!getChunkInfo().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasInvalidateChunk()) {
+    if (!getInvalidateChunk().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasBlockChange()) {
+    if (!getBlockChange().isInitialized()) {
+      return false;
+    }
+  }
   if (hasClientConnect()) {
     if (!getClientConnect().isInitialized()) {
       return false;
@@ -14,6 +29,16 @@
   }
   if (hasServerInfo()) {
     if (!getServerInfo().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasCreateEntity()) {
+    if (!getCreateEntity().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasRemoveEntity()) {
+    if (!getRemoveEntity().isInitialized()) {
       return false;
     }
   }

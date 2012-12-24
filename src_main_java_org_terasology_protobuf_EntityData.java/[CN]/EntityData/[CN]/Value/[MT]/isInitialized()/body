@@ -1,6 +1,22 @@
 {
   byte isInitialized=memoizedIsInitialized;
   if (isInitialized != -1)   return isInitialized == 1;
+  for (int i=0; i < getValueCount(); i++) {
+    if (!getValue(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getNameValueCount(); i++) {
+    if (!getNameValue(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
   memoizedIsInitialized=1;
   return true;
 }
