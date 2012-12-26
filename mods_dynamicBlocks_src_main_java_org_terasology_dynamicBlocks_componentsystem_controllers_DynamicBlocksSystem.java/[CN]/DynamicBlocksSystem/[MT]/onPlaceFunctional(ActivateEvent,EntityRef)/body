@@ -1,0 +1,9 @@
+{
+  DynamicBlockComponent functionalItem=item.getComponent(DynamicBlockComponent.class);
+  Side surfaceDir=Side.inDirection(event.getHitNormal());
+  Side secondaryDirection=TeraMath.getSecondaryPlacementDirection(event.getDirection(),event.getHitNormal());
+  Vector3f newPosition=new Vector3f(localPlayer.getPosition().x + localPlayer.getViewDirection().x * 1.5f,localPlayer.getPosition().y + localPlayer.getViewDirection().y * 1.5f,localPlayer.getPosition().z + localPlayer.getViewDirection().z * 1.5f);
+  if (worldProvider.getBlock(newPosition).isPenetrable()) {
+    EntityRef entity=dynamicFactory.generateDynamicBlock(newPosition,functionalItem.getDynamicType());
+  }
+}
