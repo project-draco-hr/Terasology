@@ -1,0 +1,10 @@
+{
+  Prefab prefab=prefabManager.createPrefab("Test");
+  prefab.setComponent(new StringComponent("Value"));
+  EntityRef entity=entityManager.create(prefab);
+  EntityData.Entity entityData=entitySerializer.serialize(entity);
+  assertEquals(entity.getId(),entityData.getId());
+  assertEquals(prefab.getName(),entityData.getParentPrefab());
+  assertEquals(0,entityData.getComponentCount());
+  assertEquals(0,entityData.getRemovedComponentCount());
+}

@@ -1,0 +1,21 @@
+{
+  final EntityData.World.Builder world=EntityData.World.newBuilder();
+  EntityRefTypeHandler.setEntityManagerMode(entityManager);
+  writeComponentTypeTable(world);
+  for (  Prefab prefab : prefabManager.listPrefabs()) {
+    world.addPrefab(prefabSerializer.serialize(prefab));
+  }
+  TIntList nonPersistedIds=new TIntArrayList();
+  for (  EntityRef entity : entityManager.iteratorEntities()) {
+    if (entity.isPersisted()) {
+      world.addEntity(entitySerializer.serialize(entity));
+    }
+ else {
+      nonPersistedIds.add(entity.getId());
+    }
+  }
+  writeIdInfo(world,nonPersistedIds);
+  entitySerializer.removeComponentIdMapping();
+  prefabSerializer.removeComponentIdMapping();
+  return world.build();
+}

@@ -1,0 +1,25 @@
+{
+  entityManager.setNextId(world.getNextEntityId());
+  for (  Integer deadId : world.getFreedEntityIdList()) {
+    entityManager.getFreedIds().add(deadId);
+  }
+  Map<Class<? extends Component>,Integer> componentIdTable=Maps.newHashMap();
+  for (int index=0; index < world.getComponentClassCount(); ++index) {
+    ComponentMetadata componentMetadata=componentLibrary.getMetadata(world.getComponentClass(index));
+    if (componentMetadata != null) {
+      componentIdTable.put(componentMetadata.getType(),index);
+    }
+  }
+  entitySerializer.setComponentIdMapping(componentIdTable);
+  prefabSerializer.setComponentIdMapping(componentIdTable);
+  for (  EntityData.Prefab prefabData : world.getPrefabList()) {
+    if (!prefabManager.exists(prefabData.getName())) {
+      prefabSerializer.deserialize(prefabData);
+    }
+  }
+  for (  EntityData.Entity entityData : world.getEntityList()) {
+    entitySerializer.deserialize(entityData);
+  }
+  entitySerializer.removeComponentIdMapping();
+  prefabSerializer.removeComponentIdMapping();
+}

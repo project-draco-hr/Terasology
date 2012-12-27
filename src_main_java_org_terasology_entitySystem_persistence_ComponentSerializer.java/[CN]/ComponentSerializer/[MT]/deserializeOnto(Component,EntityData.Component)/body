@@ -1,0 +1,11 @@
+{
+  Class<? extends Component> componentClass=getComponentClass(componentData);
+  if (componentClass != null) {
+    ComponentMetadata componentMetadata=componentLibrary.getMetadata(componentClass);
+    return deserializeOnto(target,componentData,componentMetadata);
+  }
+ else {
+    logger.warn("Unable to deserialize unknown component type: {}",componentData.getType());
+  }
+  return target;
+}

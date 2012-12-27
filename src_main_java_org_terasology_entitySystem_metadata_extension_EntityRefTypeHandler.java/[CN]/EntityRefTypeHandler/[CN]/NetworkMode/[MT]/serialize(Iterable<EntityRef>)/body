@@ -1,0 +1,13 @@
+{
+  EntityData.Value.Builder result=EntityData.Value.newBuilder();
+  for (  EntityRef ref : value) {
+    NetworkComponent netComponent=ref.getComponent(NetworkComponent.class);
+    if (netComponent == null) {
+      result.addInteger(0);
+    }
+ else {
+      result.addInteger(netComponent.networkId);
+    }
+  }
+  return result.build();
+}
