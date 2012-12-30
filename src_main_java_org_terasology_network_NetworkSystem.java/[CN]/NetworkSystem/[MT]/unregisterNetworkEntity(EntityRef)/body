@@ -4,7 +4,7 @@
   if (mode == NetworkMode.SERVER) {
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.REMOVE_ENTITY).setRemoveEntity(NetData.RemoveEntityMessage.newBuilder().setNetId(netComponent.networkId).build()).build();
     for (    ClientPlayer client : clientPlayerList) {
-      client.send(message);
+      client.setNetRemoved(netComponent.networkId,message);
     }
   }
 }

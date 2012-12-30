@@ -1,6 +1,6 @@
 {
   if (componentData.hasTypeIndex()) {
-    ComponentMetadata metadata=null;
+    ClassMetadata metadata=null;
     if (!componentIdTable.isEmpty()) {
       Class<? extends Component> componentClass=componentIdTable.inverse().get(componentData.getTypeIndex());
       if (componentClass != null) {
@@ -14,7 +14,7 @@
     return (Class<? extends Component>)metadata.getType();
   }
  else   if (componentData.hasType()) {
-    ComponentMetadata metadata=componentLibrary.getMetadata(componentData.getType());
+    ClassMetadata metadata=componentLibrary.getMetadata(componentData.getType());
     if (metadata == null) {
       logger.warn("Unable to deserialize unknown component type: {}",componentData.getType());
       return null;

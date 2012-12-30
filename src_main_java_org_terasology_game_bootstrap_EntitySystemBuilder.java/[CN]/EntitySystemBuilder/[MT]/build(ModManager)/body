@@ -1,14 +1,16 @@
 {
-  ComponentLibrary library=new ComponentLibraryImpl();
+  EntitySystemLibrary library=new EntitySystemLibraryImpl();
   registerTypeHandlers(library);
-  CoreRegistry.put(ComponentLibrary.class,library);
-  PrefabManager prefabManager=new PojoPrefabManager(library);
+  CoreRegistry.put(EntitySystemLibrary.class,library);
+  CoreRegistry.put(ComponentLibrary.class,library.getComponentLibrary());
+  CoreRegistry.put(EventLibrary.class,library.getEventLibrary());
+  PrefabManager prefabManager=new PojoPrefabManager(library.getComponentLibrary());
   CoreRegistry.put(PrefabManager.class,prefabManager);
   PersistableEntityManager entityManager=new PojoEntityManager(library,prefabManager);
   entityManager.setEventSystem(new PojoEventSystem());
   CoreRegistry.put(EntityManager.class,entityManager);
   CoreRegistry.put(EventSystem.class,entityManager.getEventSystem());
-  registerComponents(library,modManager);
+  registerComponents(library.getComponentLibrary(),modManager);
   registerEvents(entityManager.getEventSystem(),modManager);
   return entityManager;
 }

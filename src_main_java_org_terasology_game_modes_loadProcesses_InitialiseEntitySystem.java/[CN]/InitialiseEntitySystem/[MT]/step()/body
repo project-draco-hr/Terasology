@@ -1,5 +1,6 @@
 {
   ModManager modManager=CoreRegistry.get(ModManager.class);
-  new EntitySystemBuilder().build(modManager);
+  PersistableEntityManager entityManager=new EntitySystemBuilder().build(modManager);
+  CoreRegistry.get(NetworkSystem.class).setEntityManager(entityManager);
   return true;
 }

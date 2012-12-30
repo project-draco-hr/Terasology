@@ -2,4 +2,8 @@
 synchronized (clientPlayerList) {
     clientPlayerList.add(client);
   }
+  for (  EntityRef netEntity : entityManager.iteratorEntities(NetworkComponent.class)) {
+    NetworkComponent netComp=netEntity.getComponent(NetworkComponent.class);
+    client.setNetInitial(netComp.networkId);
+  }
 }

@@ -1,0 +1,16 @@
+{
+  library.registerTypeHandler(BlockFamily.class,new BlockFamilyTypeHandler());
+  library.registerTypeHandler(Color4f.class,new Color4fTypeHandler());
+  library.registerTypeHandler(Quat4f.class,new Quat4fTypeHandler());
+  library.registerTypeHandler(Mesh.class,new AssetTypeHandler<Mesh>(AssetType.MESH,Mesh.class));
+  library.registerTypeHandler(Sound.class,new AssetTypeHandler<Sound>(AssetType.SOUND,Sound.class));
+  library.registerTypeHandler(Material.class,new AssetTypeHandler<Material>(AssetType.MATERIAL,Material.class));
+  library.registerTypeHandler(SkeletalMesh.class,new AssetTypeHandler<SkeletalMesh>(AssetType.SKELETON_MESH,SkeletalMesh.class));
+  library.registerTypeHandler(MeshAnimation.class,new AssetTypeHandler<MeshAnimation>(AssetType.ANIMATION,MeshAnimation.class));
+  library.registerTypeHandler(Vector3f.class,new Vector3fTypeHandler());
+  library.registerTypeHandler(Vector2f.class,new Vector2fTypeHandler());
+  Vector3iTypeHandler vector3iHandler=new Vector3iTypeHandler();
+  library.registerTypeHandler(Vector3i.class,vector3iHandler);
+  library.registerTypeHandler(CollisionGroup.class,new CollisionGroupTypeHandler());
+  library.registerTypeHandler(Region3i.class,new Region3iTypeHandler(vector3iHandler));
+}

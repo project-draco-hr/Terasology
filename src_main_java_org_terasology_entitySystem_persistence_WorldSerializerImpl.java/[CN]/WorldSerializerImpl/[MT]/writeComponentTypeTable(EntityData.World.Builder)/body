@@ -1,9 +1,9 @@
 {
   Map<Class<? extends Component>,Integer> componentIdTable=Maps.newHashMap();
-  for (  ComponentMetadata<?> componentMetadata : componentLibrary) {
+  for (  ClassMetadata<? extends Component> componentMetadata : componentLibrary) {
     int index=componentIdTable.size();
     componentIdTable.put(componentMetadata.getType(),index);
-    world.addComponentClass(ComponentUtil.getComponentClassName(componentMetadata.getType()));
+    world.addComponentClass(MetadataUtil.getComponentClassName(componentMetadata.getType()));
   }
   entitySerializer.setComponentIdMapping(componentIdTable);
   prefabSerializer.setComponentIdMapping(componentIdTable);

@@ -1,0 +1,26 @@
+{
+  List<NetData.NetMessage> messages=Lists.newArrayListWithExpectedSize(queuedMessages.size());
+  queuedMessages.drainTo(messages);
+  EntitySerializer serializer=new EntitySerializer(entityManager);
+  serializer.setIgnoringEntityId(true);
+  EntityRefTypeHandler.setNetworkMode(this);
+  for (  NetData.NetMessage message : messages) {
+switch (message.getType()) {
+case CREATE_ENTITY:
+      EntityRef newEntity=serializer.deserialize(message.getCreateEntity().getEntity());
+    registerNetworkEntity(newEntity);
+  break;
+case UPDATE_ENTITY:
+EntityRef currentEntity=getEntity(message.getUpdateEntity().getNetId());
+serializer.deserializeOnto(currentEntity,message.getUpdateEntity().getEntity());
+break;
+case REMOVE_ENTITY:
+int netId=message.getRemoveEntity().getNetId();
+EntityRef entity=getEntity(netId);
+unregisterNetworkEntity(entity);
+entity.destroy();
+break;
+}
+}
+EntityRefTypeHandler.setEntityManagerMode(entityManager);
+}

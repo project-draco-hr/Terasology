@@ -16,6 +16,11 @@ break;
 case BLOCK_CHANGED:
 blockChanged(message.getBlockChange());
 break;
+case CREATE_ENTITY:
+case UPDATE_ENTITY:
+case REMOVE_ENTITY:
+networkSystem.queueMessage(message);
+break;
 }
 logger.debug("Received message: {}",message.getType());
 }

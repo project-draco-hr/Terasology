@@ -1,0 +1,22 @@
+{
+  try {
+    forClass.getConstructor();
+  }
+ catch (  NoSuchMethodException e) {
+    logger.error("Unable to register class {}: Default Constructor Required",forClass.getSimpleName());
+    return null;
+  }
+  ClassMetadata<T> info=new ClassMetadata<T>(forClass);
+  for (  Field field : forClass.getDeclaredFields()) {
+    if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers()))     continue;
+    field.setAccessible(true);
+    TypeHandler typeHandler=getHandlerFor(field.getGenericType(),0);
+    if (typeHandler == null) {
+      logger.error("Unsupported field type in component type {}, {} : {}",forClass.getSimpleName(),field.getName(),field.getGenericType());
+    }
+ else {
+      info.addField(new FieldMetadata(field,forClass,typeHandler));
+    }
+  }
+  return info;
+}

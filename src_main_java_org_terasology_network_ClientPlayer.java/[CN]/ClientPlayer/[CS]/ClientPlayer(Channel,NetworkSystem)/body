@@ -1,0 +1,10 @@
+{
+  this.channel=channel;
+  this.networkSystem=networkSystem;
+  this.chunkProvider=CoreRegistry.get(ChunkProvider.class);
+  this.entityManager=CoreRegistry.get(EntityManager.class);
+  this.serializer=new EntitySerializer((PersistableEntityManager)entityManager);
+  serializer.setIgnoringEntityId(true);
+  this.playerEntity=entityManager.create("engine:client");
+  CoreRegistry.get(WorldProvider.class).registerListener(this);
+}

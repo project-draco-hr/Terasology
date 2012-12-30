@@ -1,0 +1,21 @@
+{
+  Set<Class<? extends Component>> presentComponents=Sets.newLinkedHashSet();
+  for (  EntityData.Component componentData : entityData.getComponentList()) {
+    Class<? extends Component> componentClass=componentSerializer.getComponentClass(componentData);
+    if (componentClass == null)     continue;
+    presentComponents.add(componentClass);
+    Component existingComponent=currentEntity.getComponent(componentClass);
+    if (existingComponent == null) {
+      currentEntity.addComponent(componentSerializer.deserialize(componentData));
+    }
+ else {
+      componentSerializer.deserializeOnto(existingComponent,componentData);
+      currentEntity.saveComponent(existingComponent);
+    }
+  }
+  for (  Component comp : currentEntity.iterateComponents()) {
+    if (!presentComponents.contains(comp) && comp.getClass() != EntityInfoComponent.class) {
+      currentEntity.removeComponent(comp.getClass());
+    }
+  }
+}
