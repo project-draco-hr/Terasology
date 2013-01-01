@@ -1,0 +1,11 @@
+{
+  clientPlayerList.add(client);
+  clientPlayerLookup.put(client.getEntity(),client);
+  if (eventSerializer != null) {
+    client.setEventSerializer(eventSerializer);
+  }
+  for (  EntityRef netEntity : entityManager.iteratorEntities(NetworkComponent.class)) {
+    NetworkComponent netComp=netEntity.getComponent(NetworkComponent.class);
+    client.setNetInitial(netComp.networkId);
+  }
+}

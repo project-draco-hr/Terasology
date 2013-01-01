@@ -1,0 +1,36 @@
+{
+  EventMetadata metadata=eventLibrary.getMetadata(event);
+  if (metadata != null && metadata.isNetworkEvent()) {
+switch (metadata.getNetworkEventType()) {
+case BROADCAST:
+      if (networkSystem.getMode() == NetworkMode.SERVER) {
+        NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+        if (netComp != null) {
+          for (          ClientPlayer client : networkSystem.getPlayers()) {
+            client.send(event,netComp.networkId);
+          }
+        }
+      }
+    break;
+case OWNER:
+  if (networkSystem.getMode() == NetworkMode.SERVER) {
+    NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+    if (netComp != null) {
+      ClientPlayer client=networkSystem.getClientFor(entity);
+      if (client != null) {
+        client.send(event,netComp.networkId);
+      }
+    }
+  }
+break;
+case SERVER:
+if (networkSystem.getMode() == NetworkMode.CLIENT) {
+NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+if (netComp != null) {
+  networkSystem.getServer().send(event,netComp.networkId);
+}
+}
+break;
+}
+}
+}

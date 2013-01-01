@@ -3,6 +3,7 @@
     pendingEvents.offer(new PendingEvent(entity,event));
   }
  else {
+    networkReplicate(entity,event);
     Set<EventHandlerInfo> selectedHandlersSet=selectEventHandlers(event.getClass(),entity);
     List<EventHandlerInfo> selectedHandlers=Lists.newArrayList(selectedHandlersSet);
     Collections.sort(selectedHandlers,priorityComparator);

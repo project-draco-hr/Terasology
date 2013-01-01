@@ -7,9 +7,18 @@
         remoteWorldProvider.receiveChunk(chunk);
       }
     }
-    for (    ClientPlayer client : clientPlayerList) {
-      client.update();
+    if (entityManager != null) {
+      if (!newClients.isEmpty()) {
+        List<ClientPlayer> newPlayers=Lists.newArrayListWithExpectedSize(newClients.size());
+        newClients.drainTo(newPlayers);
+        for (        ClientPlayer client : newPlayers) {
+          processNewClient(client);
+        }
+      }
+      for (      ClientPlayer client : clientPlayerList) {
+        client.update();
+      }
+      processMessages();
     }
-    processMessages();
   }
 }

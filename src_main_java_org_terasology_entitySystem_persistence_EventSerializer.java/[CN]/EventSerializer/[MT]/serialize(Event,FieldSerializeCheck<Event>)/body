@@ -1,0 +1,18 @@
+{
+  ClassMetadata<?> eventMetadata=eventLibrary.getMetadata(event.getClass());
+  if (eventMetadata == null) {
+    logger.error("Unregistered event type: {}",event.getClass());
+    return null;
+  }
+  EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
+  serializeEventType(event,eventData);
+  for (  FieldMetadata field : eventMetadata.iterateFields()) {
+    if (check.shouldSerializeField(field,event)) {
+      EntityData.NameValue fieldData=field.serialize(event);
+      if (fieldData != null) {
+        eventData.addField(fieldData);
+      }
+    }
+  }
+  return eventData.build();
+}

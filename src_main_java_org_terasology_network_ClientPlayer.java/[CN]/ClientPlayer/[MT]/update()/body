@@ -4,7 +4,7 @@
   while (initialIterator.hasNext()) {
     int netId=initialIterator.next();
     EntityRef entity=networkSystem.getEntity(netId);
-    EntityData.Entity entityData=serializer.serialize(entity,new NetworkFieldCheck());
+    EntityData.Entity entityData=serializer.serialize(entity,new NetworkComponentFieldCheck());
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.CREATE_ENTITY).setCreateEntity(NetData.CreateEntityMessage.newBuilder().setEntity(entityData)).build();
     send(message);
   }
@@ -12,7 +12,7 @@
   while (dirtyIterator.hasNext()) {
     int netId=dirtyIterator.next();
     EntityRef entity=networkSystem.getEntity(netId);
-    EntityData.Entity entityData=serializer.serialize(entity,false,new NetworkFieldCheck());
+    EntityData.Entity entityData=serializer.serialize(entity,false,new NetworkComponentFieldCheck());
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.UPDATE_ENTITY).setUpdateEntity(NetData.UpdateEntityMessage.newBuilder().setEntity(entityData).setNetId(netId)).build();
     send(message);
   }

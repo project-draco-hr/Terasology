@@ -1,0 +1,10 @@
+{
+  ClassMetadata<PrivateField> metadata=metadataBuilder.build(PrivateField.class);
+  assertNotNull(metadata);
+  assertEquals(1,metadata.size());
+  FieldMetadata fieldMetadata=metadata.getField("name");
+  assertNotNull(fieldMetadata);
+  assertEquals(String.class,fieldMetadata.getType());
+  assertEquals("name",fieldMetadata.getName());
+  assertNotNull(metadata.newInstance());
+}

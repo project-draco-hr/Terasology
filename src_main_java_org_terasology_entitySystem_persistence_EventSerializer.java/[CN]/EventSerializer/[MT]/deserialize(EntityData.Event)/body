@@ -1,0 +1,12 @@
+{
+  Class<? extends Event> eventClass=getEventClass(eventData);
+  if (eventClass != null) {
+    ClassMetadata<? extends Event> eventMetadata=eventLibrary.getMetadata(eventClass);
+    Event event=eventMetadata.newInstance();
+    return deserializeOnto(event,eventData,eventMetadata);
+  }
+ else {
+    logger.warn("Unable to deserialize unknown event type: {}",eventData.getType());
+  }
+  return null;
+}

@@ -1,0 +1,14 @@
+{
+  if (this.entityManager != null) {
+    this.entityManager.unsubscribe(this);
+  }
+  this.entityManager=entityManager;
+  this.entityManager.subscribe(this);
+  eventSerializer=new EventSerializer(entitySystemLibrary.getEventLibrary());
+  if (server != null) {
+    server.setEventSerializer(eventSerializer);
+  }
+  for (  ClientPlayer client : clientPlayerList) {
+    client.setEventSerializer(eventSerializer);
+  }
+}

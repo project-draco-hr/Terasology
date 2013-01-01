@@ -1,3 +1,19 @@
 {
-  return serializationHandler.serialize(field);
+  try {
+    Object rawValue=getValue(event);
+    if (rawValue == null) {
+      return null;
+    }
+    EntityData.Value value=serializeValue(rawValue);
+    if (value != null) {
+      return EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build();
+    }
+  }
+ catch (  IllegalAccessException e) {
+    logger.error("Exception during serializing of {}",event.getClass(),e);
+  }
+catch (  InvocationTargetException e) {
+    logger.error("Exception during serializing of {}",event.getClass(),e);
+  }
+  return null;
 }

@@ -20,6 +20,11 @@ EntityRef entity=getEntity(netId);
 unregisterNetworkEntity(entity);
 entity.destroy();
 break;
+case EVENT:
+Event event=eventSerializer.deserialize(message.getEvent().getEvent());
+EntityRef target=getEntity(message.getEvent().getTargetId());
+target.send(event);
+break;
 }
 }
 EntityRefTypeHandler.setEntityManagerMode(entityManager);

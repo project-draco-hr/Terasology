@@ -1,11 +1,14 @@
 {
   try {
-    return clazz.newInstance();
+    return constructor.newInstance();
   }
  catch (  InstantiationException e) {
     logger.error("Exception instantiating type: {}",clazz,e);
   }
 catch (  IllegalAccessException e) {
+    logger.error("Exception instantiating type: {}",clazz,e);
+  }
+catch (  InvocationTargetException e) {
     logger.error("Exception instantiating type: {}",clazz,e);
   }
   return null;
