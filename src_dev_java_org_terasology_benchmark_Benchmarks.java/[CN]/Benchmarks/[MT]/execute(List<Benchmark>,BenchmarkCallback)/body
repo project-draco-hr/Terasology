@@ -1,0 +1,18 @@
+{
+  Preconditions.checkNotNull(benchmarks);
+  final List<BenchmarkResult> results=new LinkedList<BenchmarkResult>();
+  final int benchmarkCount=benchmarks.size();
+  try {
+    int benchmarkIndex=1;
+    for (    Benchmark benchmark : benchmarks) {
+      Preconditions.checkNotNull(benchmark);
+      BenchmarkResult result=execute(benchmark,benchmarkIndex,benchmarkCount,callback);
+      results.add(result);
+      benchmarkIndex++;
+    }
+  }
+ catch (  Exception e) {
+    if (callback != null)     callback.fatal(e);
+  }
+  return results;
+}
