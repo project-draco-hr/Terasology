@@ -14,6 +14,7 @@
   deltaPos.scale(delta);
   worldPos.add(deltaPos);
   location.setWorldPosition(worldPos);
+  if (deltaPos.length() > 0)   entity.send(new MovedEvent(deltaPos,worldPos));
   movementComp.collider.setWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),worldPos,1.0f)));
   if (movementComp.faceMovementDirection && movementComp.getVelocity().lengthSquared() > 0.01f) {
     float yaw=(float)Math.atan2(movementComp.getVelocity().x,movementComp.getVelocity().z);
