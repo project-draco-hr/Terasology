@@ -1,0 +1,20 @@
+{
+  int row=y * getSizeXZHalf(), pos=pos(x,z);
+  if (pos < getSizeXZHalf()) {
+    byte raw=data[row + pos];
+    byte old=TeraArrays.getHi(raw);
+    if (old == expected) {
+      data[row + pos]=TeraArrays.setHi(raw,value);
+      return true;
+    }
+    return false;
+  }
+  pos=pos - getSizeXZHalf();
+  byte raw=data[row + pos];
+  byte old=TeraArrays.getLo(raw);
+  if (old == expected) {
+    data[row + pos]=TeraArrays.setLo(raw,value);
+    return true;
+  }
+  return false;
+}

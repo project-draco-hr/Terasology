@@ -1,0 +1,29 @@
+{
+  lock();
+  try {
+    int blocksSize=blocks.getEstimatedMemoryConsumptionInBytes();
+    int sunlightSize=sunlight.getEstimatedMemoryConsumptionInBytes();
+    int lightSize=light.getEstimatedMemoryConsumptionInBytes();
+    int liquidSize=liquid.getEstimatedMemoryConsumptionInBytes();
+    int totalSize=blocksSize + sunlightSize + lightSize+ liquidSize;
+    final TeraDeflator def=new TeraStandardDeflator();
+    blocks=def.deflate(blocks);
+    sunlight=def.deflate(sunlight);
+    light=def.deflate(light);
+    liquid=def.deflate(liquid);
+    int blocksReduced=blocks.getEstimatedMemoryConsumptionInBytes();
+    int sunlightReduced=sunlight.getEstimatedMemoryConsumptionInBytes();
+    int lightReduced=light.getEstimatedMemoryConsumptionInBytes();
+    int liquidReduced=liquid.getEstimatedMemoryConsumptionInBytes();
+    int totalReduced=blocksReduced + sunlightReduced + lightReduced+ liquidReduced;
+    double blocksPercent=100d - (100d / blocksSize * blocksReduced);
+    double sunlightPercent=100d - (100d / sunlightSize * sunlightReduced);
+    double lightPercent=100d - (100d / lightSize * lightReduced);
+    double liquidPercent=100d - (100d / liquidSize * liquidReduced);
+    double totalPercent=100d - (100d / totalSize * totalReduced);
+    logger.info(String.format("chunk (%d, %d, %d): size-before: %s bytes, size-after: %s bytes, total-deflated-by: %s%%, blocks-deflated-by=%s%%, sunlight-deflated-by=%s%%, light-deflated-by=%s%%, liquid-deflated-by=%s%%",pos.x,pos.y,pos.z,fsize.format(totalSize),fsize.format(totalReduced),fpercent.format(totalPercent),fpercent.format(blocksPercent),fpercent.format(sunlightPercent),fpercent.format(lightPercent),fpercent.format(liquidPercent)));
+  }
+  finally {
+    unlock();
+  }
+}
