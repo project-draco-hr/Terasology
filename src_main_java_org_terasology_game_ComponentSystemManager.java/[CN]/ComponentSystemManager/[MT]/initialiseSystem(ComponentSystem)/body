@@ -1,0 +1,15 @@
+{
+  for (  Field field : Reflections.getAllFields(system.getClass(),Reflections.withAnnotation(In.class))) {
+    Object value=CoreRegistry.get(field.getType());
+    if (value != null) {
+      try {
+        field.setAccessible(true);
+        field.set(system,value);
+      }
+ catch (      IllegalAccessException e) {
+        logger.error("Failed to inject value {} into field {} of system {}",value,field,system,e);
+      }
+    }
+  }
+  system.initialise();
+}

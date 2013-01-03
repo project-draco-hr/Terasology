@@ -1,0 +1,136 @@
+{
+  setId("joinserver");
+  setBackgroundImage("engine:menubackground");
+  setModal(true);
+  maximize();
+  list=new UIList();
+  list.setSize(new Vector2f(512f,256f));
+  list.setHorizontalAlign(EHorizontalAlign.CENTER);
+  list.setPosition(new Vector2f(0f,230f));
+  list.setPadding(new Vector4f(10f,5f,10f,5f));
+  list.setBackgroundImage("engine:gui_menu",new Vector2f(264f,18f),new Vector2f(159f,63f));
+  list.setBorderImage("engine:gui_menu",new Vector2f(256f,0f),new Vector2f(175f,88f),new Vector4f(16f,7f,7f,7f));
+  list.addDoubleClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+    }
+  }
+);
+  list.setVisible(true);
+  buttonContainer=new UIComposite();
+  GridLayout layout=new GridLayout(3);
+  layout.setCellPadding(new Vector4f(5f,5f,5f,5f));
+  buttonContainer.setLayout(layout);
+  buttonContainer.setHorizontalAlign(EHorizontalAlign.CENTER);
+  buttonContainer.setPosition(new Vector2f(0f,500f));
+  buttonContainer.setVisible(true);
+  addServerButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  addServerButton.getLabel().setText("Add");
+  addServerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      UIDialogServer dialog=new UIDialogServer();
+      dialog.addDialogListener(new DialogListener(){
+        @Override public void close(        UIDisplayElement dialog,        EReturnCode returnCode,        Object returnValue){
+          if (returnCode == EReturnCode.OK && returnValue != null) {
+            add((ServerInfo)returnValue);
+            CoreRegistry.get(Config.class).getServerConfig().add((ServerInfo)returnValue);
+          }
+        }
+      }
+);
+      dialog.open();
+    }
+  }
+);
+  addServerButton.setVisible(true);
+  editServerButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  editServerButton.getLabel().setText("Edit");
+  editServerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      final UIListItem item=list.getSelection();
+      if (item != null) {
+        final ServerInfo serverInfo=(ServerInfo)item.getValue();
+        UIDialogServer dialog=new UIDialogServer(serverInfo.getName(),serverInfo.getAddress());
+        dialog.addDialogListener(new DialogListener(){
+          @Override public void close(          UIDisplayElement dialog,          EReturnCode returnCode,          Object returnValue){
+            if (returnCode == EReturnCode.OK && returnValue != null) {
+              ServerInfo result=(ServerInfo)returnValue;
+              serverInfo.setName(result.getName());
+              serverInfo.setAddress(result.getAddress());
+              ((UILabel)item.getElementById("serverName")).setText(serverInfo.getName());
+              ((UILabel)item.getElementById("serverIp")).setText(serverInfo.getAddress());
+            }
+          }
+        }
+);
+        dialog.open();
+      }
+    }
+  }
+);
+  editServerButton.setVisible(true);
+  deleteServerButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  deleteServerButton.getLabel().setText("Delete");
+  deleteServerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      if (list.getSelection() != null) {
+        ServerInfo info=(ServerInfo)list.getSelection().getValue();
+        CoreRegistry.get(Config.class).getServerConfig().remove(info);
+        list.removeItem(list.getSelectionIndex());
+      }
+    }
+  }
+);
+  deleteServerButton.setVisible(true);
+  joinServerButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  joinServerButton.getLabel().setText("Join");
+  joinServerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      saveServerList();
+      if (list.getSelection() != null && list.getSelection().getValue() != null) {
+        ServerInfo server=(ServerInfo)list.getSelection().getValue();
+        CoreRegistry.get(GameEngine.class).changeState(new StateLoading(server.getAddress(),TerasologyConstants.DEFAULT_PORT));
+      }
+    }
+  }
+);
+  joinServerButton.setVisible(true);
+  directjoinServerButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  directjoinServerButton.getLabel().setText("Direct Join");
+  directjoinServerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+    }
+  }
+);
+  directjoinServerButton.setVisible(true);
+  refreshServerButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  refreshServerButton.getLabel().setText("Refresh");
+  refreshServerButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      loadServerList();
+    }
+  }
+);
+  refreshServerButton.setVisible(true);
+  backButton=new UIButton(new Vector2f(160f,32f),UIButton.ButtonType.NORMAL);
+  backButton.getLabel().setText("Back");
+  backButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      saveServerList();
+      getGUIManager().openWindow("main");
+    }
+  }
+);
+  backButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  backButton.setPosition(new Vector2f(0f,600f));
+  backButton.setVisible(true);
+  loadServerList();
+  addDisplayElement(list);
+  addDisplayElement(buttonContainer);
+  addDisplayElement(backButton);
+  buttonContainer.addDisplayElement(addServerButton);
+  buttonContainer.addDisplayElement(deleteServerButton);
+  buttonContainer.addDisplayElement(editServerButton);
+  buttonContainer.addDisplayElement(joinServerButton);
+  buttonContainer.addDisplayElement(directjoinServerButton);
+  buttonContainer.addDisplayElement(refreshServerButton);
+}
