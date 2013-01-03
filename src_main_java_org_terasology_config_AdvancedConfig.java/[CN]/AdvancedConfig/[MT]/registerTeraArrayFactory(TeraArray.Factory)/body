@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(factory,"Parameter 'factory' must not be null");
+  final String name=factory.getName();
+  Preconditions.checkNotNull(name,"Factory:getName() must not return null");
+  Preconditions.checkArgument(!name.isEmpty(),"Factory:getName() must not return an empty string");
+  Preconditions.checkArgument(name.equals(name.trim()),"Factory:getName() contains illegal whitespaces ('" + name + "')");
+  Preconditions.checkState(!teraArrayRegistry.containsKey(name),"A factory named '" + name + "' already exists");
+  teraArrayRegistry.put(name,factory);
+  logger.debug("Registered tera array factory: {}",name);
+}
