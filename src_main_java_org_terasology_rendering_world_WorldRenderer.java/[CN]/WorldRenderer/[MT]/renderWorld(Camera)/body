@@ -47,12 +47,14 @@
       }
     }
   }
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render Overlays");
   for (  RenderSystem renderer : _systemManager.iterateRenderSubscribers()) {
     renderer.renderOverlay();
   }
+  PerformanceMonitor.endActivity();
   glDisable(GL_BLEND);
   if (headUnderWater)   glEnable(GL11.GL_CULL_FACE);
   if (_wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
   glDisable(GL_LIGHT0);
-  PerformanceMonitor.endActivity();
 }
