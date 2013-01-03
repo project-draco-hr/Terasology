@@ -1,15 +1,13 @@
 {
   resetStats();
   updateAndQueueVisibleChunks();
-  if (Config.getInstance().isComplexWater()) {
-    PostProcessingRenderer.getInstance().beginRenderReflectedScene();
-    glCullFace(GL11.GL_FRONT);
-    getActiveCamera().setReflected(true);
-    renderWorldReflection(getActiveCamera());
-    getActiveCamera().setReflected(false);
-    glCullFace(GL11.GL_BACK);
-    PostProcessingRenderer.getInstance().endRenderReflectedScene();
-  }
+  PostProcessingRenderer.getInstance().beginRenderReflectedScene();
+  glCullFace(GL11.GL_FRONT);
+  getActiveCamera().setReflected(true);
+  renderWorldReflection(getActiveCamera());
+  getActiveCamera().setReflected(false);
+  glCullFace(GL11.GL_BACK);
+  PostProcessingRenderer.getInstance().endRenderReflectedScene();
   PostProcessingRenderer.getInstance().beginRenderScene();
   renderWorld(getActiveCamera());
   PostProcessingRenderer.getInstance().endRenderScene();

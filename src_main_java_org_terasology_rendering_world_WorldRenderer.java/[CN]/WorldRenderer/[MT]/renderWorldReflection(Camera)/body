@@ -2,13 +2,15 @@
   PerformanceMonitor.startActivity("Render World (Reflection)");
   camera.lookThroughNormalized();
   _skysphere.render();
-  camera.lookThrough();
-  glEnable(GL_LIGHT0);
-  for (  Chunk c : _renderQueueChunksOpaque)   renderChunk(c,ChunkMesh.RENDER_PHASE.OPAQUE,camera);
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  for (  Chunk c : _renderQueueChunksSortedBillboards)   renderChunk(c,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
-  glDisable(GL_BLEND);
-  glDisable(GL_LIGHT0);
+  if (Config.getInstance().isComplexWater()) {
+    camera.lookThrough();
+    glEnable(GL_LIGHT0);
+    for (    Chunk c : _renderQueueChunksOpaque)     renderChunk(c,ChunkMesh.RENDER_PHASE.OPAQUE,camera);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    for (    Chunk c : _renderQueueChunksSortedBillboards)     renderChunk(c,ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
+    glDisable(GL_BLEND);
+    glDisable(GL_LIGHT0);
+  }
   PerformanceMonitor.endActivity();
 }
