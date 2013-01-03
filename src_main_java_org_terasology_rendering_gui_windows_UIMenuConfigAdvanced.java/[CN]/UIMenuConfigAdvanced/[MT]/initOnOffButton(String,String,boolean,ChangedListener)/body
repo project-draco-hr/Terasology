@@ -1,0 +1,23 @@
+{
+  final GridLayout layout=new GridLayout(1);
+  layout.setCellPadding(new Vector4f(2f,2f,2f,2f));
+  final UIComposite comp=new UIComposite();
+  comp.setLayout(layout);
+  comp.setVisible(true);
+  comp.setId(id);
+  final UIButton button=new UIButton(new Vector2f(256f,32f),ButtonType.TOGGLE);
+  button.setVisible(true);
+  button.setId(id + ":button");
+  button.setToggleState(state);
+  button.getLabel().setText(label + ": " + (state ? "On" : "Off"));
+  button.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      UIButton b=(UIButton)element;
+      b.getLabel().setText(label + ": " + (b.getToggleState() ? "On" : "Off"));
+    }
+  }
+);
+  button.addChangedListener(listener);
+  comp.addDisplayElement(button);
+  return comp;
+}

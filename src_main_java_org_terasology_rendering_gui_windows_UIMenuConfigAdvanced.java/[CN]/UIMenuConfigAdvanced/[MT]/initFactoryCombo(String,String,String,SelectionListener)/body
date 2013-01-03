@@ -1,0 +1,28 @@
+{
+  final GridLayout layout=new GridLayout(1);
+  layout.setCellPadding(new Vector4f(2f,2f,2f,2f));
+  final UIComposite comp=new UIComposite();
+  comp.setLayout(layout);
+  comp.setVisible(true);
+  comp.setId(id);
+  UILabel label=new UILabel();
+  label.setText(title);
+  label.setVisible(true);
+  label.setId(id + ":label");
+  final UIComboBox combo=new UIComboBox(new Vector2f(256f,32f),new Vector2f(256f,96f));
+  combo.setVisible(true);
+  combo.setId(id + ":combo");
+  String[] factories=AdvancedConfig.getTeraArrayFactories();
+  for (  String factory : factories) {
+    String name=factory.substring(factory.lastIndexOf('.') + 1);
+    UIListItem item=new UIListItem(name,factory);
+    item.setTextColor(Color.black);
+    item.setPadding(new Vector4f(2f,2f,2f,2f));
+    combo.addItem(item);
+    if (factory.equals(selectedFactory))     combo.select(item);
+  }
+  combo.addSelectionListener(listener);
+  comp.addDisplayElement(label);
+  comp.addDisplayElement(combo);
+  return comp;
+}

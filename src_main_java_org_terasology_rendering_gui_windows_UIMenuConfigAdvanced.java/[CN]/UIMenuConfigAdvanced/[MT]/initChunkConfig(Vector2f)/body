@@ -1,0 +1,52 @@
+{
+  final GridLayout layout=new GridLayout(2);
+  layout.setCellPadding(new Vector4f(2f,2f,2f,2f));
+  final UIComposite comp=new UIComposite();
+  comp.setPosition(pos);
+  comp.setHorizontalAlign(EHorizontalAlign.CENTER);
+  comp.setLayout(layout);
+  comp.setVisible(true);
+  comp.addDisplayElement(initFactoryCombo("Default class for block data","block",config.getBlocksFactoryName(),new SelectionListener(){
+    @Override public void changed(    UIDisplayElement element){
+      config.setBlocksFactory((String)((UIComboBox)element).getSelection().getValue());
+    }
+  }
+));
+  comp.addDisplayElement(initFactoryCombo("Default class for sunlight data","sunlight",config.getSunlightFactoryName(),new SelectionListener(){
+    @Override public void changed(    UIDisplayElement element){
+      config.setSunlightFactory((String)((UIComboBox)element).getSelection().getValue());
+    }
+  }
+));
+  comp.addDisplayElement(initFactoryCombo("Default class for light data","light",config.getLightFactoryName(),new SelectionListener(){
+    @Override public void changed(    UIDisplayElement element){
+      config.setLightFactory((String)((UIComboBox)element).getSelection().getValue());
+    }
+  }
+));
+  comp.addDisplayElement(initFactoryCombo("Default class for liquid data","liquid",config.getLiquidFactoryName(),new SelectionListener(){
+    @Override public void changed(    UIDisplayElement element){
+      config.setLiquidFactory((String)((UIComboBox)element).getSelection().getValue());
+    }
+  }
+));
+  comp.addDisplayElement(initOnOffButton("Runtime Chunk Compression","chunkDeflation",config.isChunkDeflationEnabled(),new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      UIButton b=(UIButton)element;
+      config.setChunkDeflationEnabled(b.getToggleState());
+    }
+  }
+));
+  comp.addDisplayElement(initOnOffButton("Log Chunk Compression","chunkDeflationLogging",config.isChunkDeflationLoggingEnabled(),new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      UIButton b=(UIButton)element;
+      config.setChunkDeflationLoggingEnabled(b.getToggleState());
+    }
+  }
+));
+  comp.orderDisplayElementTop(comp.getElementById("liquid"));
+  comp.orderDisplayElementTop(comp.getElementById("light"));
+  comp.orderDisplayElementTop(comp.getElementById("sunlight"));
+  comp.orderDisplayElementTop(comp.getElementById("block"));
+  return comp;
+}
