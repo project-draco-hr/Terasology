@@ -1,0 +1,33 @@
+{
+  final short[][] inflated=array.inflated;
+  if (inflated == null) {
+    out.writeBoolean(false);
+    out.writeShort(array.fill);
+  }
+ else {
+    final short[] deflated=array.deflated;
+    final int sizeY=array.getSizeY();
+    final int rowlen=array.getSizeXZ();
+    out.writeBoolean(true);
+    int rows=0;
+    for (    final short[] row : inflated) {
+      if (row != null)       rows++;
+    }
+    out.writeInt(rows);
+    for (int index=0; index < sizeY; index++) {
+      final short[] row=inflated[index];
+      if (row == null) {
+        continue;
+      }
+      Preconditions.checkState(row.length == rowlen,"Unexpected row length in sparse array of type " + array.getClass().getName() + ", should be "+ rowlen+ " but is "+ row.length);
+      out.writeInt(index);
+      for (      final short b : row) {
+        out.writeShort(b);
+      }
+    }
+    for (int index=0; index < sizeY; index++) {
+      if (inflated[index] == null)       out.writeShort(deflated[index]);
+ else       out.writeShort(0);
+    }
+  }
+}

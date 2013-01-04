@@ -1,0 +1,15 @@
+{
+  Preconditions.checkNotNull(array,"The parameter 'array' must not be null");
+  Preconditions.checkNotNull(out,"The parameter 'out' must not be null");
+  final DataOutputStream dout=new DataOutputStream(out);
+  try {
+    dout.writeInt(array.sizeX);
+    dout.writeInt(array.sizeY);
+    dout.writeInt(array.sizeZ);
+    internalSerialize(array,dout);
+    dout.flush();
+  }
+  finally {
+    dout.close();
+  }
+}

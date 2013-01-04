@@ -1,0 +1,9 @@
+{
+  final byte[] data=array.data;
+  final int length=in.readInt();
+  Preconditions.checkNotNull(data);
+  if (data.length != length)   throw new IOException("The size of the array (" + data.length + ") does not match the size of the stored data ("+ length+ ")");
+  for (int i=0; i < length; i++) {
+    data[i]=in.readByte();
+  }
+}

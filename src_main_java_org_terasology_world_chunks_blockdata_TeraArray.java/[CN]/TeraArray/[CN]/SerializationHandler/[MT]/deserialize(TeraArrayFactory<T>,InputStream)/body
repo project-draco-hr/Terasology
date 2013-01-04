@@ -1,0 +1,16 @@
+{
+  Preconditions.checkNotNull(factory,"The parameter 'factory' must not be null");
+  Preconditions.checkNotNull(in,"The parameter 'in' must not be null");
+  final DataInputStream din=new DataInputStream(in);
+  try {
+    int sizeX=din.readInt();
+    int sizeY=din.readInt();
+    int sizeZ=din.readInt();
+    T array=Preconditions.checkNotNull(factory.create(sizeX,sizeY,sizeZ),"TeraArrayFactory<T>:create(int, int, int) must not return null");
+    internalDeserialize(array,din);
+    return array;
+  }
+  finally {
+    din.close();
+  }
+}
