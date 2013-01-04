@@ -1,7 +1,8 @@
 {
-  blocks=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  sunlight=new TeraDenseArray4Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  light=new TeraDenseArray4Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  liquid=new TeraDenseArray4Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  AdvancedConfig config=CoreRegistry.get(org.terasology.config.Config.class).getAdvancedConfig();
+  blocks=config.getBlocksFactory().create(this);
+  sunlight=config.getSunlightFactory().create(this);
+  light=config.getLightFactory().create(this);
+  liquid=config.getLiquidFactory().create(this);
   dirty=true;
 }

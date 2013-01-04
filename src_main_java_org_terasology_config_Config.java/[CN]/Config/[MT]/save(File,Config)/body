@@ -1,7 +1,7 @@
 {
   FileWriter writer=new FileWriter(toFile);
   try {
-    new GsonBuilder().registerTypeAdapter(InputConfig.class,new InputConfig.Handler()).registerTypeAdapter(Multimap.class,new MultimapHandler<Input>(Input.class)).registerTypeAdapter(Input.class,new InputHandler()).setPrettyPrinting().create().toJson(config,writer);
+    new GsonBuilder().registerTypeAdapter(InputConfig.class,new InputConfig.Handler()).registerTypeAdapter(Multimap.class,new MultimapHandler<Input>(Input.class)).registerTypeAdapter(Input.class,new InputHandler()).registerTypeAdapter(AdvancedConfig.class,new AdvancedConfig.Handler()).setPrettyPrinting().create().toJson(config,writer);
   }
   finally {
     writer.close();

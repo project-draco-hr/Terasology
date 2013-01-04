@@ -1,0 +1,37 @@
+{
+  setId("config:advanced");
+  setBackgroundImage("engine:loadingbackground");
+  setModal(true);
+  maximize();
+  config=CoreRegistry.get(org.terasology.config.Config.class).getAdvancedConfig();
+  title=new UIImage(Assets.getTexture("engine:terasology"));
+  title.setHorizontalAlign(EHorizontalAlign.CENTER);
+  title.setPosition(new Vector2f(0f,28f));
+  title.setVisible(true);
+  title.setSize(new Vector2f(512f,128f));
+  subtitle=new UILabel("Advanced Settings");
+  subtitle.setHorizontalAlign(EHorizontalAlign.CENTER);
+  subtitle.setPosition(new Vector2f(0f,128f));
+  subtitle.setVisible(true);
+  warning=new UILabel("Warning! Only change these settings if you know what you do!");
+  warning.setHorizontalAlign(EHorizontalAlign.CENTER);
+  warning.setPosition(new Vector2f(0f,148f));
+  warning.setVisible(true);
+  chunkConfig=initChunkConfig(new Vector2f(0f,200f));
+  backToConfigMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.ButtonType.NORMAL);
+  backToConfigMenuButton.getLabel().setText("Back");
+  backToConfigMenuButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+  backToConfigMenuButton.setPosition(new Vector2f(0f,300f + 7 * 40f));
+  backToConfigMenuButton.setVisible(true);
+  backToConfigMenuButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      getGUIManager().openWindow("config");
+    }
+  }
+);
+  addDisplayElement(title);
+  addDisplayElement(subtitle);
+  addDisplayElement(warning);
+  addDisplayElement(chunkConfig);
+  addDisplayElement(backToConfigMenuButton);
+}
