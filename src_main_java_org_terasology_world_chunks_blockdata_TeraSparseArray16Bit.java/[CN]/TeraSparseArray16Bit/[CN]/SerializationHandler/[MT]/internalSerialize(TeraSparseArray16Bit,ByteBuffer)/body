@@ -1,0 +1,23 @@
+{
+  final short[][] inf=array.inflated;
+  if (inf == null) {
+    buffer.put((byte)0);
+    buffer.putShort(array.fill);
+  }
+ else {
+    buffer.put((byte)1);
+    final int sizeY=array.getSizeY(), rowSize=array.getSizeXZ();
+    final short[] def=array.deflated;
+    for (int y=0; y < sizeY; y++) {
+      final short[] row=inf[y];
+      if (row == null) {
+        buffer.put((byte)0);
+        buffer.putShort(def[y]);
+      }
+ else {
+        buffer.put((byte)1);
+        putRow(row,rowSize,buffer);
+      }
+    }
+  }
+}
