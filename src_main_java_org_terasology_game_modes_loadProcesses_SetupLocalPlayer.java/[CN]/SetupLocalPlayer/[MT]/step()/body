@@ -1,0 +1,17 @@
+{
+  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+  EntityRef client=entityManager.create("engine:client");
+  CoreRegistry.get(LocalPlayer.class).setClientEntity(client);
+  EntityRef clientInfo=entityManager.create("engine:clientInfo");
+  DisplayInformationComponent displayInfo=clientInfo.getComponent(DisplayInformationComponent.class);
+  if (displayInfo != null) {
+    displayInfo.name=CoreRegistry.get(Config.class).getPlayerConfig().getName();
+    clientInfo.saveComponent(displayInfo);
+  }
+  ClientComponent clientComp=client.getComponent(ClientComponent.class);
+  if (clientComp != null) {
+    clientComp.clientInfo=clientInfo;
+    client.saveComponent(clientComp);
+  }
+  return true;
+}

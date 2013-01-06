@@ -1,0 +1,9 @@
+{
+  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
+  EntityRef client=new NetEntityRef(networkSystem.getServerInfo().getClientId(),networkSystem);
+  if (client.exists()) {
+    CoreRegistry.get(LocalPlayer.class).setClientEntity(client);
+    return true;
+  }
+  return false;
+}

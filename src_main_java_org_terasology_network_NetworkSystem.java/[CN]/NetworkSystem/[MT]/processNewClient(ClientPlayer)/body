@@ -1,4 +1,7 @@
 {
+  logger.info("New client connected: {}",client.getName());
+  client.setConnected();
+  logger.info("New client entity: {}",client.getEntity());
   clientPlayerList.add(client);
   clientPlayerLookup.put(client.getEntity(),client);
   if (eventSerializer != null) {
@@ -6,6 +9,15 @@
   }
   for (  EntityRef netEntity : entityManager.iteratorEntities(NetworkComponent.class)) {
     NetworkComponent netComp=netEntity.getComponent(NetworkComponent.class);
-    client.setNetInitial(netComp.networkId);
-  }
+switch (netComp.replicateMode) {
+case OWNER:
+      if (client.equals(getClientFor(netEntity))) {
+        client.setNetInitial(netComp.networkId);
+      }
+    break;
+default :
+  client.setNetInitial(netComp.networkId);
+break;
+}
+}
 }

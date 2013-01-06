@@ -4,9 +4,6 @@ switch (message.getType()) {
 case SERVER_INFO:
     receivedServerInfo(message.getServerInfo());
   break;
-case CONSOLE:
-MessageManager.getInstance().addMessage(message.getConsole().getMessage());
-break;
 case CHUNK:
 receivedChunk(message.getChunkInfo());
 break;
@@ -19,8 +16,10 @@ break;
 case CREATE_ENTITY:
 case UPDATE_ENTITY:
 case REMOVE_ENTITY:
-case EVENT:
 networkSystem.queueMessage(message);
+break;
+case EVENT:
+server.queueEvent(message.getEvent());
 break;
 }
 logger.debug("Received message: {}",message.getType());

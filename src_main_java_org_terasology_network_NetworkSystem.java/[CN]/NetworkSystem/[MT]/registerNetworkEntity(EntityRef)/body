@@ -10,8 +10,18 @@
   }
   netIdToEntityId.put(netComponent.networkId,entity.getId());
   if (mode == NetworkMode.SERVER) {
-    for (    ClientPlayer client : clientPlayerList) {
-      client.setNetInitial(netComponent.networkId);
+switch (netComponent.replicateMode) {
+case OWNER:
+      ClientPlayer clientPlayer=getClientFor(entity);
+    if (clientPlayer != null) {
+      clientPlayer.setNetInitial(netComponent.networkId);
     }
-  }
+  break;
+default :
+for (ClientPlayer client : clientPlayerList) {
+  client.setNetInitial(netComponent.networkId);
+}
+break;
+}
+}
 }

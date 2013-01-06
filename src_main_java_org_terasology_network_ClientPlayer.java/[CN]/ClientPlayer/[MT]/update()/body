@@ -3,8 +3,9 @@
   TIntIterator initialIterator=netInitial.iterator();
   while (initialIterator.hasNext()) {
     int netId=initialIterator.next();
+    netRelevant.add(netId);
     EntityRef entity=networkSystem.getEntity(netId);
-    EntityData.Entity entityData=serializer.serialize(entity,new NetworkComponentFieldCheck());
+    EntityData.Entity entityData=entitySerializer.serialize(entity,new NetworkComponentFieldCheck());
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.CREATE_ENTITY).setCreateEntity(NetData.CreateEntityMessage.newBuilder().setEntity(entityData)).build();
     send(message);
   }
@@ -12,11 +13,12 @@
   while (dirtyIterator.hasNext()) {
     int netId=dirtyIterator.next();
     EntityRef entity=networkSystem.getEntity(netId);
-    EntityData.Entity entityData=serializer.serialize(entity,false,new NetworkComponentFieldCheck());
+    EntityData.Entity entityData=entitySerializer.serialize(entity,false,new NetworkComponentFieldCheck());
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.UPDATE_ENTITY).setUpdateEntity(NetData.UpdateEntityMessage.newBuilder().setEntity(entityData).setNetId(netId)).build();
     send(message);
   }
   netInitial.clear();
   netDirty.clear();
-  EntityRefTypeHandler.setEntityManagerMode((PersistableEntityManager)entityManager);
+  processEvents();
+  EntityRefTypeHandler.setEntityManagerMode(entityManager);
 }

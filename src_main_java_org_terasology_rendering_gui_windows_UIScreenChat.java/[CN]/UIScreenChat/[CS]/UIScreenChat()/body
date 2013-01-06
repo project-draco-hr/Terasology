@@ -1,6 +1,5 @@
 {
   commandManager=CoreRegistry.get(CommandManager.class);
-  MessageManager.getInstance().subscribe(chatSubscription);
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
   setCloseBinds(new String[]{"engine:console"});
   setId("chat");
@@ -27,14 +26,13 @@
         if (event.getKey() == Keyboard.KEY_RETURN) {
           String message=inputBox.getText().trim();
           inputBox.deleteText();
-          MessageManager.getInstance().addMessage(message);
           addHistory(message);
           if (message.startsWith(commandPrefix)) {
             message=message.substring(1);
             commandManager.execute(message);
           }
  else {
-            CoreRegistry.get(NetworkSystem.class).sendChatMessage(message);
+            CoreRegistry.get(LocalPlayer.class).getClientEntity().send(new SendChatMessage(message));
           }
         }
  else         if (event.getKey() == Keyboard.KEY_UP) {
@@ -90,5 +88,9 @@
   messageList.setVisible(true);
   addDisplayElement(inputBox);
   addDisplayElement(messageList);
+  for (  Message message : MessageManager.getInstance()) {
+    addHistory(message.getMessage());
+  }
+  MessageManager.getInstance().subscribe(chatSubscription);
   startMessage();
 }

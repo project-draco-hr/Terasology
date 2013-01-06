@@ -1,7 +1,10 @@
 {
-  DisplayInformationComponent displayInfo=playerEntity.getComponent(DisplayInformationComponent.class);
-  if (displayInfo != null) {
-    return displayInfo.name;
+  ClientComponent clientComp=playerEntity.getComponent(ClientComponent.class);
+  if (clientComp != null) {
+    DisplayInformationComponent displayInfo=clientComp.clientInfo.getComponent(DisplayInformationComponent.class);
+    if (displayInfo != null) {
+      return displayInfo.name;
+    }
   }
-  return "Unknown";
+  return name;
 }

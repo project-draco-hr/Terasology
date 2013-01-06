@@ -1,7 +1,11 @@
 {
-  DisplayInformationComponent displayInfo=playerEntity.getComponent(DisplayInformationComponent.class);
-  if (displayInfo != null) {
-    displayInfo.name=name;
-    playerEntity.saveComponent(displayInfo);
+  this.name=name;
+  ClientComponent client=playerEntity.getComponent(ClientComponent.class);
+  if (client != null) {
+    DisplayInformationComponent displayInfo=client.clientInfo.getComponent(DisplayInformationComponent.class);
+    if (displayInfo != null) {
+      displayInfo.name=name;
+      client.clientInfo.saveComponent(displayInfo);
+    }
   }
 }

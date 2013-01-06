@@ -5,10 +5,7 @@ case CLIENT_CONNECT:
     receivedConnect(message.getClientConnect());
   break;
 case EVENT:
-receivedEvent(message);
-case CONSOLE:
-networkSystem.sendChatMessage(message.getConsole().getMessage());
-MessageManager.getInstance().addMessage(message.getConsole().getMessage(),MessageManager.EMessageScope.PRIVATE);
+receivedEvent(message.getEvent());
 break;
 }
 logger.debug("Received message: {}",message.getType());

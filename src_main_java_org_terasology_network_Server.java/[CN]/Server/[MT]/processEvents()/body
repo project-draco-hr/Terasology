@@ -1,0 +1,15 @@
+{
+  List<NetData.EventMessage> messages=Lists.newArrayListWithExpectedSize(queuedEvents.size());
+  queuedEvents.drainTo(messages);
+  for (  NetData.EventMessage message : messages) {
+    Event event=eventSerializer.deserialize(message.getEvent());
+    logger.info("Received event {} for target {}",event,message.getTargetId());
+    EntityRef target=networkSystem.getEntity(message.getTargetId());
+    if (target.exists()) {
+      target.send(event);
+    }
+ else {
+      queuedEvents.offer(message);
+    }
+  }
+}

@@ -1,12 +1,12 @@
 {
   if (quantity < 1) {
-    MessageManager.getInstance().addMessage("Here, have these zero (0) items just like you wanted",EMessageScope.PRIVATE);
+    MessageManager.getInstance().addMessage("Here, have these zero (0) items just like you wanted");
     return;
   }
   BlockItemFactory factory=new BlockItemFactory(CoreRegistry.get(EntityManager.class));
   EntityRef item=factory.newInstance(blockFamily,quantity);
   if (!item.exists()) {
-    MessageManager.getInstance().addMessage("Unknown block or item",EMessageScope.PRIVATE);
+    MessageManager.getInstance().addMessage("Unknown block or item");
     return;
   }
   EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
@@ -15,5 +15,5 @@
   if (itemComp != null && !itemComp.container.exists()) {
     item.destroy();
   }
-  MessageManager.getInstance().addMessage("You received " + quantity + " blocks of "+ blockFamily.getDisplayName(),EMessageScope.PRIVATE);
+  MessageManager.getInstance().addMessage("You received " + quantity + " blocks of "+ blockFamily.getDisplayName());
 }

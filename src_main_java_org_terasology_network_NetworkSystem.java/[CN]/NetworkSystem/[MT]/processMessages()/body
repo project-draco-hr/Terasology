@@ -8,7 +8,7 @@
 switch (message.getType()) {
 case CREATE_ENTITY:
       EntityRef newEntity=serializer.deserialize(message.getCreateEntity().getEntity());
-    logger.debug("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).networkId);
+    logger.info("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).networkId);
   registerNetworkEntity(newEntity);
 break;
 case UPDATE_ENTITY:
