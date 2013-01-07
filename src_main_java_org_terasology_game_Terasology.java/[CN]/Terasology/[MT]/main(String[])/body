@@ -1,12 +1,13 @@
 {
   try {
     PathManager.getInstance().determineRootPath(true);
+    TerasologyEngine engine=new TerasologyEngine();
     engine.init();
     engine.run(new StateMainMenu());
     engine.dispose();
   }
  catch (  Throwable t) {
-    logger.error("Uncaught Exception",t);
+    LoggerFactory.getLogger(Terasology.class).error("Uncaught Exception",t);
   }
   System.exit(0);
 }
