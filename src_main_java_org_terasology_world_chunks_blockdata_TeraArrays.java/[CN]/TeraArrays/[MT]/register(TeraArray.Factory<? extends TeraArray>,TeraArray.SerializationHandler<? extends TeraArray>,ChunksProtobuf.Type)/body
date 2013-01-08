@@ -1,0 +1,22 @@
+{
+  Preconditions.checkNotNull(factory,"The parameter 'factory' must not be null");
+  Preconditions.checkNotNull(handler,"The parameter 'handler' must not be null");
+  Preconditions.checkNotNull(protobufType,"The parameter 'protobufType' must not be null");
+  if (protobufType != ChunksProtobuf.Type.Unknown)   Preconditions.checkArgument(!arrayTypeToClass.containsKey(protobufType),"The supplied protobuf type is already registered: " + protobufType);
+  final Class<? extends TeraArray> cls=factory.getArrayClass();
+  Preconditions.checkNotNull(cls,"The method TeraArray.Factory<TeraArray>:getArrayClass() of parameter 'factory' must not return null");
+  Preconditions.checkArgument(handler.canHandle(cls),"The supplied handler cannot handle the supplied array class: " + cls.getName());
+  Preconditions.checkState(!arrayHandlers.containsKey(cls),"There is already a serialization handler for the supplied array class: " + cls.getName());
+  Preconditions.checkState(!arrayFactories.containsKey(cls),"There is already a factory for the supplied array class: " + cls.getName());
+  arrayHandlers.put(cls,handler);
+  arrayFactories.put(cls,factory);
+  if (protobufType != ChunksProtobuf.Type.Unknown) {
+    arrayClassToType.put(cls,protobufType);
+    arrayTypeToClass.put(protobufType,cls);
+  }
+ else {
+    final String name=cls.getName();
+    Preconditions.checkState(!arrayNameToClass.containsKey(name),"There is already a name entry for the supplied array class: " + cls.getName());
+    arrayNameToClass.put(name,cls);
+  }
+}

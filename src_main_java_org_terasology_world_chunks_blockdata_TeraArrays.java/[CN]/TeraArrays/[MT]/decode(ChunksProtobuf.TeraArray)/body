@@ -1,0 +1,18 @@
+{
+  Preconditions.checkNotNull(message);
+  final ChunksProtobuf.Type t=message.getType();
+  final ByteString data=Preconditions.checkNotNull(message.getData(),"Illformed protobuf message. ChunksProtobuf.TeraArray:getData() must not return null");
+  final Class<? extends TeraArray> cls;
+  if (t == ChunksProtobuf.Type.Unknown) {
+    final String name=message.getClassName();
+    Preconditions.checkNotNull(name,"Illformed protobuf message. ChunksProtobuf.TeraArray:getClassName() must not return null");
+    cls=arrayNameToClass.get(name);
+    Preconditions.checkNotNull(cls,"Unable to decode protobuf message. No array class found for name: " + name);
+  }
+ else {
+    cls=arrayTypeToClass.get(t);
+    Preconditions.checkNotNull(cls,"Unable to decode protobuf message. No array class found for type: " + t);
+  }
+  final TeraArray.SerializationHandler handler=Preconditions.checkNotNull(arrayHandlers.get(cls),"Unable to decode protobuf message. No serialization handler found for array class: " + cls.getName());
+  return handler.deserialize(data.asReadOnlyByteBuffer());
+}
