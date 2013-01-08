@@ -1,10 +1,12 @@
 {
   NetworkComponent netComponent=entity.getComponent(NetworkComponent.class);
-  netIdToEntityId.remove(netComponent.networkId);
-  if (mode == NetworkMode.SERVER) {
-    NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.REMOVE_ENTITY).setRemoveEntity(NetData.RemoveEntityMessage.newBuilder().setNetId(netComponent.networkId).build()).build();
-    for (    ClientPlayer client : clientPlayerList) {
-      client.setNetRemoved(netComponent.networkId,message);
+  if (netComponent != null) {
+    netIdToEntityId.remove(netComponent.networkId);
+    if (mode == NetworkMode.SERVER) {
+      NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.REMOVE_ENTITY).setRemoveEntity(NetData.RemoveEntityMessage.newBuilder().setNetId(netComponent.networkId).build()).build();
+      for (      ClientPlayer client : clientPlayerList) {
+        client.setNetRemoved(netComponent.networkId,message);
+      }
     }
   }
 }

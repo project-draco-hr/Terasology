@@ -1,0 +1,12 @@
+{
+  ClassMetadata<T> info;
+  try {
+    info=new ClassMetadata<T>(forClass,names);
+  }
+ catch (  NoSuchMethodException e) {
+    logger.error("Unable to register class {}: Default Constructor Required",forClass.getSimpleName(),e);
+    return null;
+  }
+  populateFields(forClass,info);
+  return info;
+}

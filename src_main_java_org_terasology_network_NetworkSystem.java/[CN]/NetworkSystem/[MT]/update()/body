@@ -1,13 +1,6 @@
 {
   if (mode != NetworkMode.NONE) {
     if (entityManager != null) {
-      if (remoteWorldProvider != null) {
-        List<Chunk> chunks=Lists.newArrayListWithExpectedSize(chunkQueue.size());
-        chunkQueue.drainTo(chunks);
-        for (        Chunk chunk : chunks) {
-          remoteWorldProvider.receiveChunk(chunk);
-        }
-      }
       if (!newClients.isEmpty()) {
         List<ClientPlayer> newPlayers=Lists.newArrayListWithExpectedSize(newClients.size());
         newClients.drainTo(newPlayers);
@@ -21,7 +14,6 @@
       if (server != null) {
         server.update();
       }
-      processMessages();
     }
   }
 }

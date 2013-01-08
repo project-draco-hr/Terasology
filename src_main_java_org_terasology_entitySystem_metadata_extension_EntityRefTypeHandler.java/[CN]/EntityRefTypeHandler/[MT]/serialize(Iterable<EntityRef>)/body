@@ -1,3 +1,12 @@
 {
-  return mode.get().serialize(value);
+  EntityData.Value.Builder result=EntityData.Value.newBuilder();
+  for (  EntityRef ref : value) {
+    if (!ref.exists()) {
+      result.addInteger(0);
+    }
+ else {
+      result.addInteger((ref).getId());
+    }
+  }
+  return result.build();
 }

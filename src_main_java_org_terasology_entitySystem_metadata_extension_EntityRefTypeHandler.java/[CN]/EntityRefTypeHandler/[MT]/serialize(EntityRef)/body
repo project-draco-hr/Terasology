@@ -1,3 +1,6 @@
 {
-  return mode.get().serialize(value);
+  if (value.exists()) {
+    return EntityData.Value.newBuilder().addInteger((value).getId()).build();
+  }
+  return null;
 }

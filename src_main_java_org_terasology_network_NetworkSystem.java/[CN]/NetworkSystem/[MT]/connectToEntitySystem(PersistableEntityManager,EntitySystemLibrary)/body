@@ -4,12 +4,24 @@
   }
   this.entityManager=entityManager;
   this.entityManager.subscribe(this);
-  eventSerializer=new EventSerializer(entitySystemLibrary.getEventLibrary());
-  if (server != null) {
-    server.setEventSerializer(eventSerializer);
-    server.setEntityManager(entityManager);
+  TypeHandlerLibraryBuilder builder=new TypeHandlerLibraryBuilder();
+  for (  Map.Entry<Class<?>,TypeHandler<?>> entry : library.getTypeHandlerLibrary()) {
+    builder.addRaw(entry.getKey(),entry.getValue());
   }
-  for (  ClientPlayer client : clientPlayerList) {
-    client.setEventSerializer(eventSerializer);
+  builder.add(EntityRef.class,new NetEntityRefTypeHandler(this));
+  this.entitySystemLibrary=new EntitySystemLibraryImpl(builder.build());
+  EventLibrary eventLibrary=entitySystemLibrary.getEventLibrary();
+  for (  ClassMetadata<? extends Event> eventMetadata : library.getEventLibrary()) {
+    eventLibrary.register(eventMetadata.getType(),eventMetadata.getNames());
+  }
+  ComponentLibrary componentLibrary=entitySystemLibrary.getComponentLibrary();
+  for (  ClassMetadata<? extends Component> componentMetadata : library.getComponentLibrary()) {
+    componentLibrary.register(componentMetadata.getType(),componentMetadata.getNames());
+  }
+  eventSerializer=new EventSerializer(eventLibrary);
+  entitySerializer=new EntitySerializer(entityManager,componentLibrary);
+  entitySerializer.setIgnoringEntityId(true);
+  if (server != null) {
+    server.connectToEntitySystem(entityManager,entitySerializer,eventSerializer);
   }
 }

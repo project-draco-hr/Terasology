@@ -1,7 +1,10 @@
 {
-  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl();
+  TypeHandlerLibrary lib=new TypeHandlerLibraryBuilder().build();
+  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl(lib);
   compLibrary=entitySystemLibrary.getComponentLibrary();
-  entityManager=new PojoEntityManager(entitySystemLibrary,new PojoPrefabManager(compLibrary));
+  entityManager=new PojoEntityManager();
+  entityManager.setEntitySystemLibrary(entitySystemLibrary);
+  entityManager.setPrefabManager(new PojoPrefabManager(compLibrary));
   eventSystem=new PojoEventSystem(entitySystemLibrary.getEventLibrary(),mock(NetworkSystem.class));
   entityManager.setEventSystem(eventSystem);
   entity=entityManager.create();

@@ -1,7 +1,13 @@
 {
+  if (remoteWorldProvider != null) {
+    List<Chunk> chunks=Lists.newArrayListWithExpectedSize(chunkQueue.size());
+    chunkQueue.drainTo(chunks);
+    for (    Chunk chunk : chunks) {
+      remoteWorldProvider.receiveChunk(chunk);
+    }
+  }
   if (entityManager != null) {
-    EntityRefTypeHandler.setNetworkMode(networkSystem);
+    processMessages();
     processEvents();
-    EntityRefTypeHandler.setEntityManagerMode(entityManager);
   }
 }

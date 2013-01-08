@@ -1,0 +1,30 @@
+{
+  if (awaitingConnectMessage) {
+    awaitingConnectMessage=false;
+    this.entitySerializer=entitySerializer;
+    this.eventSerializer=eventSerializer;
+    playerEntity=entityManager.create("engine:client");
+    playerEntity.addComponent(new LocationComponent());
+    CoreRegistry.get(EventSystem.class).registerEventReceiver(this,ChunkUnloadedEvent.class,WorldComponent.class);
+    chunkProvider.addRegionEntity(playerEntity,7,this);
+    EntityRef clientInfo=entityManager.create("engine:clientInfo");
+    DisplayInformationComponent displayInfo=clientInfo.getComponent(DisplayInformationComponent.class);
+    displayInfo.name=name;
+    clientInfo.saveComponent(displayInfo);
+    ClientComponent clientComponent=playerEntity.getComponent(ClientComponent.class);
+    clientComponent.clientInfo=clientInfo;
+    playerEntity.saveComponent(clientComponent);
+    NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
+    WorldProvider world=CoreRegistry.get(WorldProvider.class);
+    serverInfoMessageBuilder.setTime(world.getTime());
+    serverInfoMessageBuilder.setWorldName(world.getTitle());
+    for (    Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
+      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(mod.getModInfo().getId()).build());
+    }
+    for (    Map.Entry<String,Byte> blockMapping : BlockManager.getInstance().getBlockIdMap().entrySet()) {
+      serverInfoMessageBuilder.addBlockMapping(NetData.BlockMapping.newBuilder().setBlockId(blockMapping.getValue()).setBlockName(blockMapping.getKey()));
+    }
+    serverInfoMessageBuilder.setClientId(playerEntity.getComponent(NetworkComponent.class).networkId);
+    send(NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.SERVER_INFO).setServerInfo(serverInfoMessageBuilder.build()).build());
+  }
+}

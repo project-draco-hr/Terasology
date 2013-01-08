@@ -1,3 +1,7 @@
 {
-  return mode.get().deserializeList(value);
+  List<EntityRef> result=Lists.newArrayListWithCapacity(value.getIntegerCount());
+  for (  Integer item : value.getIntegerList()) {
+    result.add(entityManager.createEntityRefWithId(item));
+  }
+  return result;
 }
