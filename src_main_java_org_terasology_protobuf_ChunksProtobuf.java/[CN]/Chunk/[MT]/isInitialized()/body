@@ -1,6 +1,22 @@
 {
   byte isInitialized=memoizedIsInitialized;
   if (isInitialized != -1)   return isInitialized == 1;
+  if (!hasX()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  if (!hasY()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  if (!hasZ()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  if (!hasState()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
   if (hasBlock()) {
     if (!getBlock().isInitialized()) {
       memoizedIsInitialized=0;

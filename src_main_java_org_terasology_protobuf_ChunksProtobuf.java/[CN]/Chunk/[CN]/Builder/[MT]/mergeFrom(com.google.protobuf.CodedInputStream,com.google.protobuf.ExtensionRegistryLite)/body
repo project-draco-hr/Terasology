@@ -16,17 +16,48 @@ default :
   }
   break;
 }
-case 10:
+case 8:
+{
+bitField0_|=0x00000001;
+x_=input.readSInt32();
+break;
+}
+case 16:
+{
+bitField0_|=0x00000002;
+y_=input.readSInt32();
+break;
+}
+case 24:
+{
+bitField0_|=0x00000004;
+z_=input.readSInt32();
+break;
+}
+case 32:
+{
+int rawValue=input.readEnum();
+org.terasology.protobuf.ChunksProtobuf.State value=org.terasology.protobuf.ChunksProtobuf.State.valueOf(rawValue);
+if (value == null) {
+unknownFields.mergeVarintField(4,rawValue);
+}
+ else {
+bitField0_|=0x00000008;
+state_=value;
+}
+break;
+}
+case 42:
 {
 org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
 if (hasBlock()) {
-  subBuilder.mergeFrom(getBlock());
+subBuilder.mergeFrom(getBlock());
 }
 input.readMessage(subBuilder,extensionRegistry);
 setBlock(subBuilder.buildPartial());
 break;
 }
-case 18:
+case 50:
 {
 org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
 if (hasSunlight()) {
@@ -36,7 +67,7 @@ input.readMessage(subBuilder,extensionRegistry);
 setSunlight(subBuilder.buildPartial());
 break;
 }
-case 26:
+case 58:
 {
 org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
 if (hasLight()) {
@@ -46,7 +77,7 @@ input.readMessage(subBuilder,extensionRegistry);
 setLight(subBuilder.buildPartial());
 break;
 }
-case 34:
+case 66:
 {
 org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
 if (hasLiquid()) {
