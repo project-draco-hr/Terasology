@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(protobufType,"The parameter 'protobufType' must not be null");
+  lock.readLock().lock();
+  try {
+    return arrayTypes.get(protobufType);
+  }
+  finally {
+    lock.readLock().unlock();
+  }
+}

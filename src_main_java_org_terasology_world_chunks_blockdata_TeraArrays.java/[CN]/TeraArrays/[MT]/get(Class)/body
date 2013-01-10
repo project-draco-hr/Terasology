@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(arrayClass,"The parameter 'arrayClass' must not be null");
+  lock.readLock().lock();
+  try {
+    return arrayClasses.get(arrayClass);
+  }
+  finally {
+    lock.readLock().unlock();
+  }
+}

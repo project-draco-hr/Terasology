@@ -1,18 +1,18 @@
 {
-  Preconditions.checkNotNull(message);
-  final ChunksProtobuf.Type t=message.getType();
-  final ByteString data=Preconditions.checkNotNull(message.getData(),"Illformed protobuf message. ChunksProtobuf.TeraArray:getData() must not return null");
-  final Class<? extends TeraArray> cls;
-  if (t == ChunksProtobuf.Type.Unknown) {
-    final String name=message.getClassName();
-    Preconditions.checkNotNull(name,"Illformed protobuf message. ChunksProtobuf.TeraArray:getClassName() must not return null");
-    cls=arrayNameToClass.get(name);
-    Preconditions.checkNotNull(cls,"Unable to decode protobuf message. No array class found for name: " + name);
+  Preconditions.checkNotNull(message,"The parameter 'message' must not be null");
+  if (!message.hasType())   throw new UnsupportedOperationException("Illformed protobuf message. Missing type information.");
+  final ChunksProtobuf.Type type=message.getType();
+  final Entry entry;
+  if (type == ChunksProtobuf.Type.Unknown) {
+    if (!message.hasClassName())     throw new UnsupportedOperationException("Illformed protobuf message. Missing class name.");
+    entry=get(message.getClassName());
+    if (entry == null)     throw new UnsupportedOperationException("Unable to decode protobuf message. No entry found for class name: " + message.getClassName());
   }
  else {
-    cls=arrayTypeToClass.get(t);
-    Preconditions.checkNotNull(cls,"Unable to decode protobuf message. No array class found for type: " + t);
+    entry=get(type);
+    if (entry == null)     throw new UnsupportedOperationException("Unable to decode protobuf message. No entry found for type: " + type);
   }
-  final TeraArray.SerializationHandler handler=Preconditions.checkNotNull(arrayHandlers.get(cls),"Unable to decode protobuf message. No serialization handler found for array class: " + cls.getName());
-  return handler.deserialize(data.asReadOnlyByteBuffer());
+  if (!message.hasData())   throw new UnsupportedOperationException("Illformed protobuf message. Missing byte sequence.");
+  final ByteString data=message.getData();
+  return entry.handler.deserialize(data.asReadOnlyByteBuffer());
 }

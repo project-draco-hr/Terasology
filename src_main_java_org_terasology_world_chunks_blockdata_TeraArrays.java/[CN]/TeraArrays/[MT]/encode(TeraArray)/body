@@ -1,13 +1,12 @@
 {
   Preconditions.checkNotNull(array,"The parameter 'array' must not be null");
-  final Class<? extends TeraArray> cls=array.getClass();
+  final Entry entry=get(array.getClass());
+  if (entry == null)   throw new UnsupportedOperationException("Unable to encode the supplied array of class: " + array.getClass().getName());
   final ChunksProtobuf.TeraArray.Builder b=ChunksProtobuf.TeraArray.newBuilder();
-  final ChunksProtobuf.Type t=Preconditions.checkNotNull(getProtobufType(cls),"The method TeraArray:getProtobufType() must not return null");
-  final TeraArray.SerializationHandler handler=Preconditions.checkNotNull(getSerializationHandler(cls),"No serialization handler found for tera array of class: " + cls.getName());
-  final ByteBuffer buf=handler.serialize(array,null);
+  final ByteBuffer buf=entry.handler.serialize(array,null);
   buf.rewind();
   b.setData(ByteString.copyFrom(buf));
-  b.setType(t);
-  if (t == ChunksProtobuf.Type.Unknown)   b.setClassName(cls.getName());
+  b.setType(entry.protobufType);
+  if (entry.protobufType == ChunksProtobuf.Type.Unknown)   b.setClassName(entry.arrayClassName);
   return b.build();
 }
