@@ -2,6 +2,6 @@
   Vector3i chunkPos=TeraMath.calcChunkPos(pos);
   if (relevantChunks.contains(chunkPos)) {
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.BLOCK_CHANGED).setBlockChange(NetData.BlockChangeMessage.newBuilder().setPos(NetworkUtil.convert(pos)).setNewBlock(newBlock.getId()).build()).build();
-    channel.write(message);
+    send(message);
   }
 }

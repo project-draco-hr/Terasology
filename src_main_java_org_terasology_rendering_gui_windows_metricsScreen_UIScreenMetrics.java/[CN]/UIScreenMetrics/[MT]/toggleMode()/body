@@ -1,0 +1,7 @@
+{
+  currentMode=(currentMode + 1) % modes.size();
+  while (!modes.get(currentMode).isAvailable()) {
+    currentMode=(currentMode + 1) % modes.size();
+  }
+  PerformanceMonitor.setEnabled(modes.get(currentMode).isPerformanceManagerMode());
+}

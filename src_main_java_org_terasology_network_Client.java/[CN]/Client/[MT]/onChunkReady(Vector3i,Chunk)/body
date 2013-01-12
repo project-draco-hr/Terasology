@@ -2,6 +2,6 @@
   if (relevantChunks.add(pos)) {
     logger.debug("Sending chunk: {}",pos);
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.CHUNK).setChunkInfo(chunk.getChunkData()).build();
-    channel.write(message);
+    send(message);
   }
 }

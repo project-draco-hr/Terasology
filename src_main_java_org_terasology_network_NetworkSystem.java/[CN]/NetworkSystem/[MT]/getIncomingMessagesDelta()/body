@@ -1,0 +1,16 @@
+{
+switch (mode) {
+case SERVER:
+    int total=0;
+  for (  Client client : clientList) {
+    total+=client.getReceivedMessagesSinceLastCall();
+  }
+return total;
+case CLIENT:
+if (server != null) {
+return server.getReceivedMessagesSinceLastCall();
+}
+default :
+return 0;
+}
+}

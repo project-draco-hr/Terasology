@@ -2,6 +2,6 @@
   if (netRelevant.contains(targetId)) {
     logger.info("Sending: {}",event);
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.EVENT).setEvent(NetData.EventMessage.newBuilder().setTargetId(targetId).setEvent(eventSerializer.serialize(event,EVENT_FIELD_CHECK))).build();
-    channel.write(message);
+    send(message);
   }
 }

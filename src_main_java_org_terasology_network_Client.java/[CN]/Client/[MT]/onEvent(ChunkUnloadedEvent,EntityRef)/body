@@ -1,6 +1,6 @@
 {
   if (relevantChunks.remove(event.getChunkPos())) {
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.INVALIDATE_CHUNK).setInvalidateChunk(NetData.InvalidateChunkMessage.newBuilder().setPos(NetworkUtil.convert(event.getChunkPos())).build()).build();
-    channel.write(message);
+    send(message);
   }
 }
