@@ -4,7 +4,9 @@
     entity.setId(entityRef.getId());
   }
   for (  Component component : entityRef.iterateComponents()) {
-    if (component.getClass().equals(EntityInfoComponent.class))     continue;
+    if (!componentSerializeCheck.serialize(componentLibrary.getMetadata(component.getClass()))) {
+      continue;
+    }
     EntityData.Component componentData=componentSerializer.serialize(component,fieldCheck);
     if (componentData != null) {
       entity.addComponent(componentData);

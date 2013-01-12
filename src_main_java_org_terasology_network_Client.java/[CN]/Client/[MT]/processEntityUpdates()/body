@@ -1,0 +1,10 @@
+{
+  List<NetData.UpdateEntityMessage> messages=Lists.newArrayListWithExpectedSize(queuedEntityUpdates.size());
+  queuedEntityUpdates.drainTo(messages);
+  for (  NetData.UpdateEntityMessage message : messages) {
+    EntityRef currentEntity=networkSystem.getEntity(message.getNetId());
+    if (networkSystem.getOwner(currentEntity) == this) {
+      entitySerializer.deserializeOnto(currentEntity,message.getEntity(),false,new ServerComponentFieldCheck(true));
+    }
+  }
+}

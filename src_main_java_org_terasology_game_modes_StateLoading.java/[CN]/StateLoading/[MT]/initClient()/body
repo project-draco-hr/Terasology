@@ -7,12 +7,11 @@
   loadProcesses.add(new InitialiseEntitySystem());
   loadProcesses.add(new LoadPrefabs());
   loadProcesses.add(new RegisterInputSystem());
-  loadProcesses.add(new RegisterSystems());
+  loadProcesses.add(new RegisterSystems(netMode));
   loadProcesses.add(new InitialiseCommandSystem());
   loadProcesses.add(new InitialiseRemoteWorld(worldInfo));
   loadProcesses.add(new InitialiseSystems());
-  loadProcesses.add(new PrepareLocalWorld());
-  loadProcesses.add(new PrepareWorld());
   loadProcesses.add(new SetupRemotePlayer());
-  loadProcesses.add(new RespawnPlayer());
+  loadProcesses.add(new AwaitCharacterSpawn());
+  loadProcesses.add(new PrepareWorld());
 }

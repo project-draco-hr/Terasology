@@ -2,13 +2,13 @@
   if (mode != NetworkMode.NONE) {
     if (entityManager != null) {
       if (!newClients.isEmpty()) {
-        List<ClientPlayer> newPlayers=Lists.newArrayListWithExpectedSize(newClients.size());
+        List<Client> newPlayers=Lists.newArrayListWithExpectedSize(newClients.size());
         newClients.drainTo(newPlayers);
-        for (        ClientPlayer client : newPlayers) {
+        for (        Client client : newPlayers) {
           processNewClient(client);
         }
       }
-      for (      ClientPlayer client : clientPlayerList) {
+      for (      Client client : clientList) {
         client.update();
       }
       if (server != null) {

@@ -1,0 +1,12 @@
+{
+  TIntIterator initialIterator=netInitial.iterator();
+  while (initialIterator.hasNext()) {
+    int netId=initialIterator.next();
+    netRelevant.add(netId);
+    EntityRef entity=networkSystem.getEntity(netId);
+    EntityData.Entity entityData=entitySerializer.serialize(entity,new ServerComponentFieldCheck(false));
+    NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.CREATE_ENTITY).setCreateEntity(NetData.CreateEntityMessage.newBuilder().setEntity(entityData)).build();
+    send(message);
+  }
+  netInitial.clear();
+}

@@ -6,7 +6,7 @@
   loadProcesses.add(new InitialiseEntitySystem());
   loadProcesses.add(new LoadPrefabs());
   loadProcesses.add(new RegisterInputSystem());
-  loadProcesses.add(new RegisterSystems());
+  loadProcesses.add(new RegisterSystems(netMode));
   loadProcesses.add(new InitialiseCommandSystem());
   loadProcesses.add(new InitialiseWorld(worldInfo));
   loadProcesses.add(new InitialiseSystems());
@@ -15,8 +15,7 @@
   if (netMode == NetworkMode.SERVER) {
     loadProcesses.add(new StartServer());
   }
-  loadProcesses.add(new PrepareLocalWorld());
-  loadProcesses.add(new PrepareWorld());
   loadProcesses.add(new SetupLocalPlayer());
-  loadProcesses.add(new RespawnPlayer());
+  loadProcesses.add(new AwaitCharacterSpawn());
+  loadProcesses.add(new PrepareWorld());
 }

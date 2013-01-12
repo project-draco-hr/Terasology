@@ -12,13 +12,13 @@
   if (mode == NetworkMode.SERVER) {
 switch (netComponent.replicateMode) {
 case OWNER:
-      ClientPlayer clientPlayer=getClientFor(entity);
+      Client clientPlayer=getOwner(entity);
     if (clientPlayer != null) {
       clientPlayer.setNetInitial(netComponent.networkId);
     }
   break;
 default :
-for (ClientPlayer client : clientPlayerList) {
+for (Client client : clientList) {
   client.setNetInitial(netComponent.networkId);
 }
 break;

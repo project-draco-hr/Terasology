@@ -1,0 +1,11 @@
+{
+  this.name=name;
+  ClientComponent client=clientEntity.getComponent(ClientComponent.class);
+  if (client != null) {
+    DisplayInformationComponent displayInfo=client.clientInfo.getComponent(DisplayInformationComponent.class);
+    if (displayInfo != null) {
+      displayInfo.name=name;
+      client.clientInfo.saveComponent(displayInfo);
+    }
+  }
+}

@@ -6,7 +6,9 @@
   entity.setParentPrefab(prefab.getName());
   Set<Class<? extends Component>> presentClasses=Sets.newHashSet();
   for (  Component component : entityRef.iterateComponents()) {
-    if (component.getClass().equals(EntityInfoComponent.class))     continue;
+    if (!componentSerializeCheck.serialize(componentLibrary.getMetadata(component.getClass()))) {
+      continue;
+    }
     presentClasses.add(component.getClass());
     Component prefabComponent=prefab.getComponent(component.getClass());
     EntityData.Component componentData;
@@ -21,7 +23,7 @@
     }
   }
   for (  Component prefabComponent : prefab.listComponents()) {
-    if (!presentClasses.contains(prefabComponent.getClass())) {
+    if (!presentClasses.contains(prefabComponent.getClass()) && componentSerializeCheck.serialize(componentLibrary.getMetadata(prefabComponent.getClass()))) {
       entity.addRemovedComponent(MetadataUtil.getComponentClassName(prefabComponent.getClass()));
     }
   }

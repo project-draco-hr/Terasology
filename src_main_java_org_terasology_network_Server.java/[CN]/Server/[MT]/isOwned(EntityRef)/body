@@ -1,0 +1,10 @@
+{
+  if (entity.equals(clientEntity)) {
+    return true;
+  }
+  NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+  if (netComp != null) {
+    return netComp.owner.equals(clientEntity);
+  }
+  return false;
+}

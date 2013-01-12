@@ -1,0 +1,22 @@
+{
+  try {
+    for (    EntityData.NameValue field : componentData.getFieldList()) {
+      FieldMetadata fieldInfo=componentMetadata.getField(field.getName());
+      if (fieldInfo == null || !fieldCheck.shouldDeserializeField(fieldInfo)) {
+        continue;
+      }
+      Object value=fieldInfo.deserialize(field.getValue());
+      if (value != null) {
+        fieldInfo.setValue(targetComponent,value);
+      }
+    }
+    return targetComponent;
+  }
+ catch (  InvocationTargetException e) {
+    logger.error("Exception during serializing component type: {}",targetComponent.getClass(),e);
+  }
+catch (  IllegalAccessException e) {
+    logger.error("Exception during serializing component type: {}",targetComponent.getClass(),e);
+  }
+  return targetComponent;
+}

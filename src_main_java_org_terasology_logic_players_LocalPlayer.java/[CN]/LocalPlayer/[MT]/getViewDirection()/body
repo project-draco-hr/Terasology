@@ -1,0 +1,10 @@
+{
+  LocalPlayerComponent localPlayer=getCharacterEntity().getComponent(LocalPlayerComponent.class);
+  if (localPlayer == null) {
+    return new Vector3f(0,0,-1);
+  }
+  Quat4f rot=new Quat4f();
+  QuaternionUtil.setEuler(rot,localPlayer.viewYaw,localPlayer.viewPitch,0);
+  Vector3f dir=new Vector3f(0,0,-1);
+  return QuaternionUtil.quatRotate(rot,dir,dir);
+}

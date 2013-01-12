@@ -1,17 +1,17 @@
 {
   LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
-  HealthComponent health=localPlayer.getEntity().getComponent(HealthComponent.class);
+  HealthComponent health=localPlayer.getCharacterEntity().getComponent(HealthComponent.class);
   health.currentHealth=amount;
   if (health.currentHealth >= health.maxHealth) {
     health.currentHealth=health.maxHealth;
-    localPlayer.getEntity().send(new FullHealthEvent(localPlayer.getEntity(),health.maxHealth));
+    localPlayer.getCharacterEntity().send(new FullHealthEvent(localPlayer.getCharacterEntity(),health.maxHealth));
   }
  else   if (health.currentHealth <= 0) {
     health.currentHealth=0;
-    localPlayer.getEntity().send(new NoHealthEvent(localPlayer.getEntity(),health.maxHealth));
+    localPlayer.getCharacterEntity().send(new NoHealthEvent(localPlayer.getCharacterEntity(),health.maxHealth));
   }
  else {
-    localPlayer.getEntity().send(new HealthChangedEvent(localPlayer.getEntity(),health.currentHealth,health.maxHealth));
+    localPlayer.getCharacterEntity().send(new HealthChangedEvent(localPlayer.getCharacterEntity(),health.currentHealth,health.maxHealth));
   }
-  localPlayer.getEntity().saveComponent(health);
+  localPlayer.getCharacterEntity().saveComponent(health);
 }

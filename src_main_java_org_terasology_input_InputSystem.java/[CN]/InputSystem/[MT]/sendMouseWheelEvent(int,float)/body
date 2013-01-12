@@ -1,6 +1,8 @@
 {
   MouseWheelEvent mouseWheelEvent=new MouseWheelEvent(wheelTurns,delta);
   setupTarget(mouseWheelEvent);
-  localPlayer.getEntity().send(mouseWheelEvent);
+  for (  EntityRef entity : getInputEntities()) {
+    entity.send(mouseWheelEvent);
+  }
   return mouseWheelEvent.isConsumed();
 }

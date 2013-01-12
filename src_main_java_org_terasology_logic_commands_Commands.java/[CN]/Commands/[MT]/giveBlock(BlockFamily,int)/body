@@ -9,7 +9,7 @@
     MessageManager.getInstance().addMessage("Unknown block or item");
     return;
   }
-  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getEntity();
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
   playerEntity.send(new ReceiveItemEvent(item));
   ItemComponent itemComp=item.getComponent(ItemComponent.class);
   if (itemComp != null && !itemComp.container.exists()) {

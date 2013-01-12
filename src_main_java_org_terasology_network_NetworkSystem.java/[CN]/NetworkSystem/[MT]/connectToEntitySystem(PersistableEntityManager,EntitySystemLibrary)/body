@@ -21,6 +21,7 @@
   eventSerializer=new EventSerializer(eventLibrary);
   entitySerializer=new EntitySerializer(entityManager,componentLibrary);
   entitySerializer.setIgnoringEntityId(true);
+  entitySerializer.setComponentSerializeCheck(new NetComponentSerializeCheck());
   if (server != null) {
     server.connectToEntitySystem(entityManager,entitySerializer,eventSerializer);
   }

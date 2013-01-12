@@ -12,14 +12,9 @@
   inputSystem=new InputSystem();
   CoreRegistry.put(InputSystem.class,inputSystem);
   componentSystemManager.register(inputSystem,"engine:InputSystem");
-  LocalPlayerComponent localPlayerComp=new LocalPlayerComponent();
-  CoreRegistry.put(LocalPlayerComponent.class,localPlayerComp);
-  entityManager.create(localPlayerComp);
-  CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
-  Iterator<EntityRef> iterator=entityManager.iteratorEntities(LocalPlayerComponent.class).iterator();
-  if (iterator.hasNext()) {
-    CoreRegistry.get(LocalPlayer.class).setEntity(iterator.next());
-  }
+  EntityRef localPlayerEntity=entityManager.create(new ClientComponent());
+  LocalPlayer localPlayer=CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
+  localPlayer.setClientEntity(localPlayerEntity);
   componentSystemManager.initialise();
   playBackgroundMusic();
   guiManager.openWindow("main");

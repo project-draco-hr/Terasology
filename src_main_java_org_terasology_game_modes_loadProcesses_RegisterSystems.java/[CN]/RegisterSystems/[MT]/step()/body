@@ -1,10 +1,10 @@
 {
   ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
   ModManager modManager=CoreRegistry.get(ModManager.class);
-  componentSystemManager.loadSystems(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections());
+  componentSystemManager.loadSystems(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections(),netMode);
   for (  Mod mod : modManager.getActiveMods()) {
     if (mod.isCodeMod()) {
-      componentSystemManager.loadSystems(mod.getModInfo().getId(),mod.getReflections());
+      componentSystemManager.loadSystems(mod.getModInfo().getId(),mod.getReflections(),netMode);
     }
   }
   return true;

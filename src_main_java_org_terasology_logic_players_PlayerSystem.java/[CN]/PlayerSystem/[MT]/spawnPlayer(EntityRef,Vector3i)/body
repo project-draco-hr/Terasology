@@ -1,0 +1,24 @@
+{
+  while (worldRenderer.getWorldProvider().getBlock(spawnPos) == BlockManager.getInstance().getAir() && spawnPos.y > 0) {
+    spawnPos.y--;
+  }
+  ClientComponent client=clientEntity.getComponent(ClientComponent.class);
+  if (client != null) {
+    PlayerFactory playerFactory=new PlayerFactory(entityManager);
+    EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z));
+    NetworkComponent netComp=playerCharacter.getComponent(NetworkComponent.class);
+    if (netComp != null) {
+      netComp.owner=clientEntity;
+      playerCharacter.saveComponent(netComp);
+    }
+    Client netClient=networkSystem.getOwner(clientEntity);
+    if (netClient != null) {
+      worldRenderer.getChunkProvider().addRegionEntity(playerCharacter,Config.getInstance().getActiveViewingDistance(),netClient);
+    }
+ else {
+      worldRenderer.getChunkProvider().addRegionEntity(playerCharacter,Config.getInstance().getActiveViewingDistance());
+    }
+    client.character=playerCharacter;
+    clientEntity.saveComponent(client);
+  }
+}

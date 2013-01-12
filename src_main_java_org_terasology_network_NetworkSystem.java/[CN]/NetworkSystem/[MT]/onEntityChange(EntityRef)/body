@@ -1,8 +1,11 @@
 {
   NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
   if (netComp != null) {
-    for (    ClientPlayer client : clientPlayerList) {
+    for (    Client client : clientList) {
       client.setNetDirty(netComp.networkId);
+    }
+    if (server != null) {
+      server.setNetDirty(netComp.networkId);
     }
   }
 }

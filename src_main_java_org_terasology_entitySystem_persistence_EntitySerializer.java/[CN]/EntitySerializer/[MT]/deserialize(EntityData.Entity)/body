@@ -11,15 +11,17 @@
     componentMap.put(EntityInfoComponent.class,new EntityInfoComponent(entityData.getParentPrefab(),true));
   }
   for (  EntityData.Component componentData : entityData.getComponentList()) {
-    Class<? extends Component> componentClass=componentSerializer.getComponentClass(componentData);
-    if (componentClass == null)     continue;
-    Component existingComponent=componentMap.get(componentClass);
+    ComponentMetadata<? extends Component> metadata=componentSerializer.getComponentMetadata(componentData);
+    if (metadata == null || !componentSerializeCheck.serialize(metadata)) {
+      continue;
+    }
+    Component existingComponent=componentMap.get(metadata.getType());
     if (existingComponent == null) {
       Component newComponent=componentSerializer.deserialize(componentData);
-      componentMap.put(componentClass,newComponent);
+      componentMap.put(metadata.getType(),newComponent);
     }
  else {
-      componentSerializer.deserializeOnto(existingComponent,componentData);
+      componentSerializer.deserializeOnto(existingComponent,componentData,FieldSerializeCheck.NullCheck.<Component>newInstance());
     }
   }
   if (ignoringEntityId) {

@@ -7,7 +7,7 @@ case BROADCAST:
       if (networkSystem.getMode() == NetworkMode.SERVER) {
         NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
         if (netComp != null) {
-          for (          ClientPlayer client : networkSystem.getPlayers()) {
+          for (          Client client : networkSystem.getPlayers()) {
             client.send(event,netComp.networkId);
           }
         }
@@ -17,7 +17,7 @@ case OWNER:
   if (networkSystem.getMode() == NetworkMode.SERVER) {
     NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
     if (netComp != null) {
-      ClientPlayer client=networkSystem.getClientFor(entity);
+      Client client=networkSystem.getOwner(entity);
       if (client != null) {
         client.send(event,netComp.networkId);
       }
