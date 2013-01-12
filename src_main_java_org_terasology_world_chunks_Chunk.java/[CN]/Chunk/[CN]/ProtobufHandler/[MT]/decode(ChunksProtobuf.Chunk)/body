@@ -10,9 +10,10 @@
   if (!message.hasSunlightData())   throw new IllegalArgumentException("Illformed protobuf message. Missing sunlight data.");
   if (!message.hasLightData())   throw new IllegalArgumentException("Illformed protobuf message. Missing light data.");
   if (!message.hasExtraData())   throw new IllegalArgumentException("Illformed protobuf message. Missing extra data.");
-  final TeraArray blockData=TeraArrays.decode(message.getBlockData());
-  final TeraArray sunlightData=TeraArrays.decode(message.getSunlightData());
-  final TeraArray lightData=TeraArrays.decode(message.getLightData());
-  final TeraArray extraData=TeraArrays.decode(message.getExtraData());
+  final TeraArrays t=TeraArrays.getInstance();
+  final TeraArray blockData=t.decode(message.getBlockData());
+  final TeraArray sunlightData=t.decode(message.getSunlightData());
+  final TeraArray lightData=t.decode(message.getLightData());
+  final TeraArray extraData=t.decode(message.getExtraData());
   return new Chunk(pos,state,blockData,sunlightData,lightData,extraData);
 }

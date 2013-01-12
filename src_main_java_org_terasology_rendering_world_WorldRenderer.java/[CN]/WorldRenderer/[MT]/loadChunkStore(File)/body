@@ -4,10 +4,13 @@
   try {
     fileIn=new FileInputStream(file);
     in=new ObjectInputStream(fileIn);
-    ChunkStoreGZip cache=(ChunkStoreGZip)in.readObject();
-    cache.compressionQueue=Queues.newLinkedBlockingDeque();
-    cache.modifiedChunks=Maps.newConcurrentMap();
-    cache.setupThreads();
+    ChunkStore cache=(ChunkStore)in.readObject();
+    if (cache instanceof ChunkStoreGZip) {
+      ((ChunkStoreGZip)cache).setup();
+      logger.info("Using old chunk store implementation without protobuf support for compatibility.");
+    }
+ else     if (cache instanceof ChunkStoreProtobuf)     ((ChunkStoreProtobuf)cache).setup();
+ else     logger.warn("Chunk store might not have been initialized: {}",cache.getClass().getName());
     return cache;
   }
  catch (  ClassNotFoundException e) {

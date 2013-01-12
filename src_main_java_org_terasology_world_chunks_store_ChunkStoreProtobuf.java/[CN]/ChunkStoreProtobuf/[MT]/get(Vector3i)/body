@@ -10,7 +10,7 @@
     final GZIPInputStream gzIn=new GZIPInputStream(baIn);
     final CodedInputStream cIn=CodedInputStream.newInstance(gzIn);
     final ChunksProtobuf.Chunk message=ChunksProtobuf.Chunk.parseFrom(cIn);
-    c=Chunks.decode(message);
+    c=Chunks.getInstance().decode(message);
   }
  catch (  Exception e) {
     logger.error("Error loading chunk",e);

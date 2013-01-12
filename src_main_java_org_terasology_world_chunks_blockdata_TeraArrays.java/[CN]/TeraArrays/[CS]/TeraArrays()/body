@@ -1,2 +1,18 @@
 {
+  lock=new ReentrantReadWriteLock();
+  arrayClasses=Maps.newHashMap();
+  arrayTypes=Maps.newHashMap();
+  arrayNames=Maps.newHashMap();
+  lock.writeLock().lock();
+  try {
+    register(new TeraDenseArray4Bit.Factory(),Type.DenseArray4Bit);
+    register(new TeraDenseArray8Bit.Factory(),Type.DenseArray8Bit);
+    register(new TeraDenseArray16Bit.Factory(),Type.DenseArray16Bit);
+    register(new TeraSparseArray4Bit.Factory(),Type.SparseArray4Bit);
+    register(new TeraSparseArray8Bit.Factory(),Type.SparseArray8Bit);
+    register(new TeraSparseArray16Bit.Factory(),Type.SparseArray16Bit);
+  }
+  finally {
+    lock.writeLock().unlock();
+  }
 }
