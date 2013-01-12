@@ -1,0 +1,19 @@
+{
+  BlockCollection collection=new BlockCollection();
+  for (int x=0; x < Math.abs(dimension.x); x++) {
+    for (int y=0; y < Math.abs(dimension.y); y++) {
+      for (int z=0; z < Math.abs(dimension.z); z++) {
+        int _x=(dimension.x < 0) ? -x : x;
+        int _y=(dimension.y < 0) ? -y : y;
+        int _z=(dimension.z < 0) ? z : -z;
+        Vector3i pos=new Vector3i(_x,_y,_z);
+        matrix.transformPoint(pos);
+        BlockPosition blockPosition=new BlockPosition(pos.x,pos.y,pos.z);
+        collection.addBlock(blockPosition,BlockManager.getInstance().getBlock(uri));
+      }
+    }
+  }
+  Shape retVal=new TerminalShape(collection);
+  retVal.setDimension(this.dimension);
+  return Arrays.asList(retVal);
+}

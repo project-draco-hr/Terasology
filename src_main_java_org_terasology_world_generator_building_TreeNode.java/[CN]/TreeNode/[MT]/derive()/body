@@ -1,7 +1,8 @@
 {
   BlockCollection c=new BlockCollection();
   for (  Tree child : children) {
-    Shape s=child.getShape();
+    BlockCollection childCollection=child.derive();
+    c.merge(childCollection);
   }
   return c;
 }

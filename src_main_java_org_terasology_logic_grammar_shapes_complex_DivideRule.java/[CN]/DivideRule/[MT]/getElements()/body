@@ -1,0 +1,56 @@
+{
+  int remainingSize=0;
+switch (direction) {
+case X:
+    remainingSize=Math.abs(dimension.x);
+  break;
+case Y:
+remainingSize=Math.abs(dimension.y);
+break;
+case Z:
+remainingSize=Math.abs(dimension.z);
+break;
+}
+for (DivideArg arg : args) {
+if (arg.getSize().isAbsolute()) {
+remainingSize-=arg.getSize().getValue();
+}
+}
+List<Shape> elements=new ArrayList<Shape>(args.size());
+int newSize;
+float divideFactor=1;
+Matrix4i m=new Matrix4i(matrix);
+Vector3i translation=new Vector3i();
+for (DivideArg arg : args) {
+Shape s=arg.getShape().clone();
+if (arg.getSize().isAbsolute()) {
+newSize=(int)arg.getSize().getValue();
+}
+ else {
+float factor=arg.getSize().getValue() / divideFactor;
+newSize=(int)(remainingSize * factor + 0.49f);
+divideFactor*=(1 - arg.getSize().getValue());
+remainingSize-=newSize;
+}
+switch (direction) {
+case X:
+s.setDimension((dimension.x < 0) ? -newSize : newSize,dimension.y,dimension.z);
+m.translate(translation);
+m.transform(new Vector3i((dimension.x < 0) ? -newSize : newSize,0,0),translation);
+break;
+case Y:
+s.setDimension(dimension.x,(dimension.y < 0) ? -newSize : newSize,dimension.z);
+m.translate(translation);
+m.transform(new Vector3i(0,(dimension.y < 0) ? -newSize : newSize,0),translation);
+break;
+case Z:
+s.setDimension(dimension.x,dimension.y,(dimension.z < 0) ? -newSize : newSize);
+m.translate(translation);
+m.transform(new Vector3i(0,0,(dimension.z < 0) ? newSize : -newSize),translation);
+break;
+}
+s.setMatrix(m.clone());
+elements.add(s.clone());
+}
+return elements;
+}

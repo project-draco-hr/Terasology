@@ -1,8 +1,9 @@
 {
-  List<Shape> successorShapes=ruleMap.get(symbol);
+  if (!ruleMap.containsKey(symbol.getLabel()))   throw new RuntimeException("Symbol " + symbol.toString() + " not in lookup table");
+  List<Shape> successorShapes=ruleMap.get(symbol.getLabel());
   if (successorShapes == null) {
-    return null;
+    throw new RuntimeException("Symbol " + symbol.toString() + " not in lookup table");
   }
   int index=rand.nextInt(successorShapes.size());
-  return successorShapes.get(index);
+  return successorShapes.get(index).clone();
 }
