@@ -14,16 +14,19 @@
     output.writeEnum(4,state_.getNumber());
   }
   if (((bitField0_ & 0x00000010) == 0x00000010)) {
-    output.writeMessage(5,block_);
+    output.writeMessage(5,blockData_);
   }
   if (((bitField0_ & 0x00000020) == 0x00000020)) {
-    output.writeMessage(6,sunlight_);
+    output.writeMessage(6,sunlightData_);
   }
   if (((bitField0_ & 0x00000040) == 0x00000040)) {
-    output.writeMessage(7,light_);
+    output.writeMessage(7,lightData_);
   }
   if (((bitField0_ & 0x00000080) == 0x00000080)) {
-    output.writeMessage(8,liquid_);
+    output.writeMessage(8,extraData_);
+  }
+  for (int i=0; i < modData_.size(); i++) {
+    output.writeMessage(9,modData_.get(i));
   }
   extensionWriter.writeUntil(1001,output);
   getUnknownFields().writeTo(output);

@@ -12,17 +12,44 @@
   if (other.hasState()) {
     setState(other.getState());
   }
-  if (other.hasBlock()) {
-    mergeBlock(other.getBlock());
+  if (other.hasBlockData()) {
+    mergeBlockData(other.getBlockData());
   }
-  if (other.hasSunlight()) {
-    mergeSunlight(other.getSunlight());
+  if (other.hasSunlightData()) {
+    mergeSunlightData(other.getSunlightData());
   }
-  if (other.hasLight()) {
-    mergeLight(other.getLight());
+  if (other.hasLightData()) {
+    mergeLightData(other.getLightData());
   }
-  if (other.hasLiquid()) {
-    mergeLiquid(other.getLiquid());
+  if (other.hasExtraData()) {
+    mergeExtraData(other.getExtraData());
+  }
+  if (modDataBuilder_ == null) {
+    if (!other.modData_.isEmpty()) {
+      if (modData_.isEmpty()) {
+        modData_=other.modData_;
+        bitField0_=(bitField0_ & ~0x00000100);
+      }
+ else {
+        ensureModDataIsMutable();
+        modData_.addAll(other.modData_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.modData_.isEmpty()) {
+      if (modDataBuilder_.isEmpty()) {
+        modDataBuilder_.dispose();
+        modDataBuilder_=null;
+        modData_=other.modData_;
+        bitField0_=(bitField0_ & ~0x00000100);
+        modDataBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getModDataFieldBuilder() : null;
+      }
+ else {
+        modDataBuilder_.addAllMessages(other.modData_);
+      }
+    }
   }
   this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());

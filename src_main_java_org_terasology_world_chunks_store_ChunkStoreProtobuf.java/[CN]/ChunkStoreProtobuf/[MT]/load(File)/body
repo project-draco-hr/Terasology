@@ -1,0 +1,34 @@
+{
+  FileInputStream fileIn=null;
+  ObjectInputStream in=null;
+  try {
+    fileIn=new FileInputStream(file);
+    in=new ObjectInputStream(fileIn);
+    ChunkStoreProtobuf cache=(ChunkStoreProtobuf)in.readObject();
+    cache.compressionQueue=Queues.newLinkedBlockingDeque();
+    cache.modifiedChunks=Maps.newConcurrentMap();
+    cache.setupThreads();
+    return cache;
+  }
+ catch (  ClassNotFoundException e) {
+    throw new IOException("Unable to load chunk cache",e);
+  }
+ finally {
+    if (in != null) {
+      try {
+        in.close();
+      }
+ catch (      IOException e) {
+        logger.error("Failed to close input stream",e);
+      }
+    }
+    if (fileIn != null) {
+      try {
+        fileIn.close();
+      }
+ catch (      IOException e) {
+        logger.error("Failed to close input stream",e);
+      }
+    }
+  }
+}

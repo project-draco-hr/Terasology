@@ -1,0 +1,18 @@
+{
+  Preconditions.checkNotNull(message,"The parameter 'message' must not be null");
+  if (!message.hasX())   throw new IllegalArgumentException("Illformed protobuf message. Missing x coordinate.");
+  if (!message.hasY())   throw new IllegalArgumentException("Illformed protobuf message. Missing y coordinate.");
+  if (!message.hasZ())   throw new IllegalArgumentException("Illformed protobuf message. Missing z coordinate.");
+  final Vector3i pos=new Vector3i(message.getX(),message.getY(),message.getZ());
+  if (!message.hasState())   throw new IllegalArgumentException("Illformed protobuf message. Missing chunk state.");
+  final State state=State.lookup(message.getState());
+  if (!message.hasBlockData())   throw new IllegalArgumentException("Illformed protobuf message. Missing block data.");
+  if (!message.hasSunlightData())   throw new IllegalArgumentException("Illformed protobuf message. Missing sunlight data.");
+  if (!message.hasLightData())   throw new IllegalArgumentException("Illformed protobuf message. Missing light data.");
+  if (!message.hasExtraData())   throw new IllegalArgumentException("Illformed protobuf message. Missing extra data.");
+  final TeraArray blockData=TeraArrays.decode(message.getBlockData());
+  final TeraArray sunlightData=TeraArrays.decode(message.getSunlightData());
+  final TeraArray lightData=TeraArrays.decode(message.getLightData());
+  final TeraArray extraData=TeraArrays.decode(message.getExtraData());
+  return new Chunk(pos,state,blockData,sunlightData,lightData,extraData);
+}

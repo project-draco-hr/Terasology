@@ -1,6 +1,11 @@
 {
   AdvancedConfig config=AdvancedConfig.createDefault();
   JsonObject input=json.getAsJsonObject();
-  config.setBlocksFactoryDontThrow(input.get("blocksFactory").getAsString()).setSunlightFactoryDontThrow(input.get("sunlightFactory").getAsString()).setLightFactoryDontThrow(input.get("lightFactory").getAsString()).setLiquidFactoryDontThrow(input.get("liquidFactory").getAsString()).setChunkDeflationEnabled(input.get("chunkDeflationEnabled").getAsBoolean()).setChunkDeflationLoggingEnabled(input.get("chunkDeflationLoggingEnabled").getAsBoolean());
+  if (input.has("blocksFactory"))   config.setBlocksFactoryDontThrow(input.get("blocksFactory").getAsString());
+  if (input.has("sunlightFactory"))   config.setSunlightFactoryDontThrow(input.get("sunlightFactory").getAsString());
+  if (input.has("lightFactory"))   config.setLightFactoryDontThrow(input.get("lightFactory").getAsString());
+  if (input.has("extraFactory"))   config.setExtraFactoryDontThrow(input.get("extraFactory").getAsString());
+  if (input.has("chunkDeflationEnabled"))   config.setChunkDeflationEnabled(input.get("chunkDeflationEnabled").getAsBoolean());
+  if (input.has("chunkDeflationLoggingEnabled"))   config.setChunkDeflationLoggingEnabled(input.get("chunkDeflationLoggingEnabled").getAsBoolean());
   return config;
 }
