@@ -1,14 +1,25 @@
 {
-  uri=new BlockUri("engine","CobbleStone");
-  scope=new ShapeSymbol("scope");
-  scope.setDimension(2,4,6);
-  successor=new SetRule(uri);
-  successor.setDimension(2,4,6);
+  BlockManager.getInstance().addBlockFamily(new SymmetricFamily(new BlockUri("some:uri"),new Block()));
+  BlockUri uri=new BlockUri("some:uri");
+  setRule=new SetRule(uri);
+  setRule.setPosition(position);
+  setRule.setDimension(dimension);
+  negSetRule=new SetRule(uri);
+  negSetRule.setPosition(position);
+  negSetRule.setDimension(negDimension);
   collection=new BlockCollection();
-  for (int x=0; x < 2; x++) {
-    for (int y=0; y < 4; y++) {
-      for (int z=0; z < 6; z++) {
+  for (int x=position.x; x < position.x + dimension.x; x++) {
+    for (int y=position.y; y < position.y + dimension.y; y++) {
+      for (int z=position.z; z > position.z - dimension.z; z--) {
         collection.addBlock(new BlockPosition(x,y,z),BlockManager.getInstance().getBlock(uri));
+      }
+    }
+  }
+  negCollection=new BlockCollection();
+  for (int x=position.x; x < position.x + negDimension.x; x++) {
+    for (int y=position.y; y < position.y + negDimension.y; y++) {
+      for (int z=position.z; z < position.z + Math.abs(negDimension.z); z++) {
+        negCollection.addBlock(new BlockPosition(x,y,z),BlockManager.getInstance().getBlock(uri));
       }
     }
   }

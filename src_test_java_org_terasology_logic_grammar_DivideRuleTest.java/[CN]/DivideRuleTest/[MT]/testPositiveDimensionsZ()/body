@@ -1,0 +1,13 @@
+{
+  Shape expected1=succ1;
+  expected1.setDimension(2,7,(int)heightZ1);
+  Shape expected2=succ2;
+  expected2.setDimension(2,7,(int)heightZ2);
+  expected2.setPosition(0,0,-1);
+  List<Shape> elements=horizontalDivZ.getElements();
+  assertTrue("First successor must be part of the rules elements!",elements.contains(expected1));
+  assertTrue("Second successor must be contained in the elements!",elements.contains(expected2));
+  assertEquals("The must be only two successor shapes!",2,elements.size());
+  assertEquals("Wrong translation/position for successor 1!",new Vector3i(0,0,0),elements.get(elements.indexOf(expected1)).getMatrix().getTranslation());
+  assertEquals("Wrong translation/position for successor 2!",new Vector3i(0,0,-1),elements.get(elements.indexOf(expected2)).getMatrix().getTranslation());
+}
