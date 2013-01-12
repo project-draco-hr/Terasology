@@ -1,0 +1,10 @@
+{
+  int dx=_attachPos.x - collection2._attachPos.x;
+  int dy=_attachPos.y - collection2._attachPos.y;
+  int dz=_attachPos.z - collection2._attachPos.z;
+  HashMap<BlockPosition,Block> map=collection2.getBlocks();
+  for (  BlockPosition pos : map.keySet()) {
+    _blocks.put(new BlockPosition(pos.x + dx,pos.y + dy,pos.z + dz),map.get(pos));
+  }
+  logger.debug("Merging completed.");
+}
