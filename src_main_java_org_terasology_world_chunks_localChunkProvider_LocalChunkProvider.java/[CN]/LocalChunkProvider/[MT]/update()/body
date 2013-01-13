@@ -4,7 +4,17 @@
     for (    CacheRegion cacheRegion : regions) {
       cacheRegion.update();
       if (cacheRegion.isDirty()) {
+        Region3i previousRegion=cacheRegion.getCurrentRegion();
+        Region3i newRegion=cacheRegion.getRegion();
         cacheRegion.setUpToDate();
+        Iterator<Vector3i> chunkIterator=newRegion.subtract(previousRegion);
+        while (chunkIterator.hasNext()) {
+          Vector3i pos=chunkIterator.next();
+          Chunk chunk=getChunk(pos);
+          if (chunk != null && getChunk(pos).getChunkState() == Chunk.State.COMPLETE) {
+            cacheRegion.sendChunkReady(chunk);
+          }
+        }
         reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.PRODUCE,cacheRegion.getRegion().expand(new Vector3i(2,0,2))));
       }
     }
