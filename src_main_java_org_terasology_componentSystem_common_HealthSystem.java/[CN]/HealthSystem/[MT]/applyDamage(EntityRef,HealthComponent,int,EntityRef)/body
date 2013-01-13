@@ -1,3 +1,14 @@
 {
-  CoreRegistry.get(GameType.class).onPlayerDamageHook(entity,health,damageAmount,instigator);
+  if (health.currentHealth <= 0) {
+    return;
+  }
+  health.timeSinceLastDamage=0;
+  health.currentHealth-=damageAmount;
+  if (health.currentHealth <= 0) {
+    entity.send(new NoHealthEvent(instigator,health.maxHealth));
+  }
+ else {
+    entity.send(new HealthChangedEvent(instigator,health.currentHealth,health.maxHealth));
+  }
+  entity.saveComponent(health);
 }

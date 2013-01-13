@@ -13,7 +13,6 @@
         getGUIManager().showMessage("Error","A World with this name already exists");
         return;
       }
-      CoreRegistry.put(GameType.class,(GameType)typeOfGame.getSelection().getValue());
       if (inputSeed.getText().length() > 0) {
         org.terasology.logic.manager.Config.getInstance().setDefaultSeed(inputSeed.getText());
       }
@@ -58,7 +57,7 @@ String[] chunksListArr=chunkList.toArray(new String[chunkList.size()]);
 org.terasology.logic.manager.Config.getInstance().setChunkGenerator(chunksListArr);
 CoreRegistry.get(Config.class).getDefaultModConfig().copy(modConfig);
 CoreRegistry.get(Config.class).save();
-CoreRegistry.get(GameEngine.class).changeState(new StateLoading(new WorldInfo(org.terasology.logic.manager.Config.getInstance().getWorldTitle(),org.terasology.logic.manager.Config.getInstance().getDefaultSeed(),org.terasology.logic.manager.Config.getInstance().getDayNightLengthInMs() / 4,chunksListArr,CoreRegistry.get(GameType.class).getClass().toString(),modConfig),(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
+CoreRegistry.get(GameEngine.class).changeState(new StateLoading(new WorldInfo(org.terasology.logic.manager.Config.getInstance().getWorldTitle(),org.terasology.logic.manager.Config.getInstance().getDefaultSeed(),org.terasology.logic.manager.Config.getInstance().getDayNightLengthInMs() / 4,chunksListArr,modConfig),(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
 }
 }
 );

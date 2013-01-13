@@ -1,10 +1,4 @@
 {
-  Client result=clientPlayerLookup.get(entity);
-  if (result == null) {
-    NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-    if (netComp != null && netComp.owner.exists()) {
-      result=clientPlayerLookup.get(netComp.owner);
-    }
-  }
-  return result;
+  EntityRef owner=getOwnerEntity(entity);
+  return clientPlayerLookup.get(owner);
 }

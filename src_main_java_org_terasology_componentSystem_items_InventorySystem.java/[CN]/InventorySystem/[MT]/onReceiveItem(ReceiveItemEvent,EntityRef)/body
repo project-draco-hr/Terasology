@@ -37,6 +37,10 @@
       item.container=entity;
       event.getItem().saveComponent(item);
       entity.saveComponent(inventory);
+      NetworkComponent networkComponent=event.getItem().getComponent(NetworkComponent.class);
+      if (networkComponent != null) {
+        networkComponent.owner=entity;
+      }
       return;
     }
   }

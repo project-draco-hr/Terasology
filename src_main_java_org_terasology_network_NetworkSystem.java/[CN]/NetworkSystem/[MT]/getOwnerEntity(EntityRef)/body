@@ -1,0 +1,16 @@
+{
+  EntityRef owner=entity;
+  NetworkComponent ownerNetComp=entity.getComponent(NetworkComponent.class);
+  int i=0;
+  while (ownerNetComp != null && i++ < OWNER_DEPTH_LIMIT) {
+    NetworkComponent netComp=ownerNetComp.owner.getComponent(NetworkComponent.class);
+    if (netComp != null) {
+      owner=ownerNetComp.owner;
+      ownerNetComp=netComp;
+    }
+ else {
+      ownerNetComp=null;
+    }
+  }
+  return owner;
+}
