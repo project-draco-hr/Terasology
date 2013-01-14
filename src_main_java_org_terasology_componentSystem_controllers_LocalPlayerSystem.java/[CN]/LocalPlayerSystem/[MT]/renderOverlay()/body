@@ -20,8 +20,14 @@
       }
     }
     if (aabb != null) {
-      aabbRenderer.setAABB(aabb);
-      aabbRenderer.render(2f);
+      if (target.getComponent(CraftingActionComponent.class) != null) {
+        craftingGridRenderer.setAABB(aabb,target.getComponent(CraftingActionComponent.class).getCurrentLevel());
+        craftingGridRenderer.render();
+      }
+ else {
+        aabbRenderer.setAABB(aabb);
+        aabbRenderer.render(2f);
+      }
     }
   }
 }

@@ -1,0 +1,82 @@
+{
+  Vector3f cubeSize=new Vector3f(0.3f,0.3f,0.3f);
+  Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+  EntityRef target=CoreRegistry.get(CameraTargetSystem.class).getTarget();
+  boolean foundedTargetWithCraft=false;
+  boolean foundedTarget=false;
+  for (  EntityRef entity : entityManager.iteratorEntities(CraftingActionComponent.class)) {
+    AABB aabb=null;
+    CraftingActionComponent craftingActionComponent=entity.getComponent(CraftingActionComponent.class);
+    foundedTarget=false;
+    if (craftingActionComponent.getAllElements().size() == 0) {
+      continue;
+    }
+    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+    if (blockComp != null) {
+      Vector3f blockPos=new Vector3f(blockComp.getPosition().toVector3f());
+      Block block=worldProvider.getBlock(blockPos);
+      aabb=block.getBounds(blockPos);
+      if (!target.equals(EntityRef.NULL) && target.equals(entity)) {
+        if (!craftingActionComponent.possibleItem.equals(EntityRef.NULL)) {
+          foundedTargetWithCraft=true;
+          if (resultItemContainer == null) {
+            initResultItem();
+          }
+          if (!resultItemContainer.getComponent(InventoryComponent.class).itemSlots.get(0).equals(craftingActionComponent.possibleItem)) {
+            InventoryComponent inventoryComponent=resultItemContainer.getComponent(InventoryComponent.class);
+            inventoryComponent.itemSlots.set(0,craftingActionComponent.possibleItem);
+            resultItemContainer.saveComponent(inventoryComponent);
+          }
+          if (guiCraftElement == null) {
+            guiCraftElement=(UIItemContainer)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("craftElement");
+            craftingCloudBackground=CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("craftingCloudBackground");
+            craftingResultBackground=CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("craftingResultBackground");
+            craftingArrow=CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("craftingArrow");
+          }
+          Vector3i distanceToBlock=new Vector3i(blockPos);
+          distanceToTarget=distanceToBlock.distance(new Vector3i(cameraPosition));
+          renderToolTip(blockPos,craftingActionComponent.possibleItem,!craftingActionComponent.isRefinement);
+        }
+        foundedTarget=true;
+      }
+      boolean notCurrentLevel=false;
+      for (int y=0; y < 3; y++) {
+        ArrayList<EntityRef> currentItems=craftingActionComponent.getLevelElements(y);
+        notCurrentLevel=craftingActionComponent.getCurrentLevel() != y && foundedTarget;
+        if (currentItems == null) {
+          continue;
+        }
+        for (int x=0; x < 3; x++) {
+          for (int z=0; z < 3; z++) {
+            Vector3f bobOffset=new Vector3f(aabb.getMin());
+            bobOffset.add(new Vector3f(0.15f,0.15f,0.15f));
+            bobOffset.x+=x * cubeSize.x;
+            bobOffset.y+=y * cubeSize.y;
+            bobOffset.z+=z * cubeSize.z;
+            int i=x * 3 + z;
+            if (!currentItems.get(i).equals(EntityRef.NULL)) {
+              BlockItemComponent blockItem=currentItems.get(i).getComponent(BlockItemComponent.class);
+              ItemComponent heldItemComp=currentItems.get(i).getComponent(ItemComponent.class);
+              if (blockItem != null && blockItem.blockFamily != null) {
+                renderBlock(blockItem.blockFamily,bobOffset,cameraPosition,notCurrentLevel);
+              }
+ else               if (heldItemComp != null) {
+                renderIcon(heldItemComp.icon,bobOffset,cameraPosition,notCurrentLevel);
+              }
+              if (!notCurrentLevel && heldItemComp != null && foundedTarget) {
+                renderToolTipCount(bobOffset,heldItemComp.stackCount > 1 ? heldItemComp.stackCount : 1);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (guiCraftElement != null && !foundedTargetWithCraft && isGUIVisible()) {
+    guiCraftElement.setEntity(EntityRef.NULL);
+    guiCraftElement.setVisible(false);
+    craftingCloudBackground.setVisible(false);
+    craftingResultBackground.setVisible(false);
+    craftingArrow.setVisible(false);
+  }
+}

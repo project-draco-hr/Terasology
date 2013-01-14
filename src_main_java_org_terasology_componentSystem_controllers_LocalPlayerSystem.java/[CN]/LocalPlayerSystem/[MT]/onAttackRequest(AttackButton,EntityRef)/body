@@ -1,5 +1,28 @@
 {
-  if (!event.isDown() || timer.getTimeInMs() - lastInteraction < 200) {
+  if (!event.isDown() || timer.getTimeInMs() - lastInteraction < 200 / craftIncreaseDecreaseSpeed) {
+    if (!event.isDown()) {
+      craftIncreaseDecreaseSpeed=1;
+      itsCraftActionTime=false;
+      CraftingActionComponent craftingComponent=event.getTarget().getComponent(CraftingActionComponent.class);
+      if (craftingComponent != null && entity.getComponent(CharacterMovementComponent.class).isRunning) {
+        event.getTarget().send(new ChangeLevelEvent(-1,entity));
+        return;
+      }
+    }
+    return;
+  }
+  CraftingActionComponent craftingComponent=event.getTarget().getComponent(CraftingActionComponent.class);
+  if (craftingComponent != null) {
+    if (!entity.getComponent(CharacterMovementComponent.class).isRunning && timer.getTimeInMs() - lastInteraction > (200 / craftIncreaseDecreaseSpeed)) {
+      LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+      if (localPlayerComp.isDead)       return;
+      float dropPower=getDropPower();
+      event.getTarget().send(new DeleteItemEvent(dropPower / 6));
+      dontDrop=true;
+      resetDropMark();
+      lastInteraction=timer.getTimeInMs();
+      itsCraftActionTime=true;
+    }
     return;
   }
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);

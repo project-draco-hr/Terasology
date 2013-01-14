@@ -1,0 +1,24 @@
+{
+  worldProvider=CoreRegistry.get(WorldProvider.class);
+  entityManager=CoreRegistry.get(EntityManager.class);
+  PrefabManager prefMan=CoreRegistry.get(PrefabManager.class);
+  for (  Prefab prefab : prefMan.listPrefabs(CraftRecipeComponent.class)) {
+    CraftRecipeComponent recipe=prefab.getComponent(CraftRecipeComponent.class);
+    if (recipe.refinement.size() > 0) {
+      if (recipe.refinement.containsKey("instigator") && recipe.refinement.containsKey("target")) {
+        if (!entitesWithRefinement.containsKey(recipe.refinement.get("target").toLowerCase())) {
+          entitesWithRefinement.put(recipe.refinement.get("target").toLowerCase(),new HashMap<String,Prefab>());
+        }
+        entitesWithRefinement.get(recipe.refinement.get("target").toLowerCase()).put(recipe.refinement.get("instigator").toLowerCase(),prefab);
+      }
+    }
+    if (recipe.recipe.size() > 0) {
+      String key=getRecipeKey(recipe.recipe);
+      if (!entitesWithRecipes.containsKey(key)) {
+        entitesWithRecipes.put(key,new ArrayList<Prefab>());
+      }
+      entitesWithRecipes.get(key).add(prefab);
+    }
+  }
+  System.out.print("s");
+}

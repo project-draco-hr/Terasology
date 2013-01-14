@@ -1,33 +1,3 @@
 {
-  this.ownerEntity=owner;
-  setSize(size);
-  Texture guiTex=Assets.getTexture("engine:gui");
-  selectionRectangle=new UIImage(guiTex);
-  selectionRectangle.setTextureSize(new Vector2f(22f,22f));
-  selectionRectangle.setTextureOrigin(new Vector2f(1f,23f));
-  selectionRectangle.setSize(new Vector2f(getSize().x,getSize().y));
-  background=new UIImage(Assets.getTexture("engine:inventory"));
-  background.setTextureSize(new Vector2f(19f,19f));
-  background.setTextureOrigin(new Vector2f(3f,146f));
-  background.setSize(getSize());
-  background.setVisible(true);
-  background.setFixed(true);
-  itemLabel=new UILabel();
-  itemLabel.setVisible(false);
-  itemLabel.setPosition(itemLabelPosition);
-  icon=new UIItemCellIcon();
-  icon.setPosition(iconPosition);
-  icon.setVisible(true);
-  if (transferIcon == null) {
-    transferIcon=new UIItemCellIcon();
-    transferIcon.setVisible(false);
-    transferIcon.setItemEntity(EntityRef.NULL);
-  }
-  addMouseMoveListener(mouseMoveListener);
-  addMouseButtonListener(mouseButtonListener);
-  addKeyListener(keyListener);
-  addDisplayElement(background);
-  addDisplayElement(icon);
-  addDisplayElement(selectionRectangle);
-  addDisplayElement(itemLabel);
+  this(owner,size,iconPosition);
 }

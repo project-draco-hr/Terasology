@@ -1,0 +1,19 @@
+{
+  CraftingActionComponent craftingComponent=entity.getComponent(CraftingActionComponent.class);
+  if (!craftingComponent.possibleItem.equals(EntityRef.NULL)) {
+    EntityRef player=CoreRegistry.get(LocalPlayer.class).getEntity();
+    player.send(new ReceiveItemEvent(craftingComponent.possibleItem));
+    decreaseItems(entity,player);
+    checkEmptyCraftBlock(entity);
+    if (entity.exists()) {
+      EntityRef possibleCraft=tryCraft(entity);
+      if (!possibleCraft.equals(EntityRef.NULL)) {
+        craftingComponent.possibleItem=possibleCraft;
+        entity.saveComponent(craftingComponent);
+      }
+    }
+  }
+ else {
+    entity.send(new AddItemEvent(event.getTarget(),event.getInstigator()));
+  }
+}

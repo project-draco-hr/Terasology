@@ -1,0 +1,29 @@
+{
+  if (distanceToTarget >= 3.5f) {
+    if (renderFar) {
+      updateOffsetAnimation(0,0.002f,0.2f);
+      updateOffsetAnimation(1,0.001f,0.1f);
+      updateOffsetAnimation(2,0.0005f,0.05f);
+      if (isGUIVisible()) {
+        guiCraftElement.setVisible(false);
+        craftingCloudBackground.setVisible(false);
+        craftingResultBackground.setVisible(false);
+        craftingArrow.setVisible(false);
+      }
+      renderBackgroundToolTip(worldPos,mainOffset[0],null);
+      renderIconTollTip(worldPos,mainOffset[0],entity);
+      renderNail(worldPos);
+    }
+  }
+ else {
+    if (!guiCraftElement.getEntity().equals(resultItemContainer)) {
+      guiCraftElement.setEntity(resultItemContainer);
+    }
+    if (!isGUIVisible()) {
+      guiCraftElement.setVisible(true);
+      craftingCloudBackground.setVisible(true);
+      craftingResultBackground.setVisible(true);
+      craftingArrow.setVisible(true);
+    }
+  }
+}

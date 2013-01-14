@@ -14,4 +14,13 @@
   localPlayerComponent.handAnimation=Math.max(0,localPlayerComponent.handAnimation - 2.5f * delta);
   entity.saveComponent(characterMovementComponent);
   entity.saveComponent(localPlayerComponent);
+  if (toolbarChanged && cameraTargetSystem.getTarget().getComponent(CraftingActionComponent.class) == null) {
+    UIItemContainer toolbar=(UIItemContainer)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("toolbar");
+    toolbar.setEntity(localPlayer.getEntity(),0,9);
+    toolbarChanged=false;
+  }
+  UIDisplayContainer inventory=(UIDisplayContainer)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("hud:inventory");
+  if (inventory.isVisible() && timer.getTimeInMs() - lastTimeShowInventory >= 1500) {
+    inventory.setVisible(false);
+  }
 }
