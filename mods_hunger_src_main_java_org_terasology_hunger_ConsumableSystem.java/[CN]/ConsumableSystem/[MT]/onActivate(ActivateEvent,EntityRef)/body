@@ -1,0 +1,14 @@
+{
+  logger.info("Eating food: " + entity.getId());
+  BlockComponent block=entity.getComponent(BlockComponent.class);
+  ConsumableComponent consum=entity.getComponent(ConsumableComponent.class);
+  EntityRef player=event.getInstigator();
+  consum.uses-=1;
+  logger.info("Food uses:" + consum.uses + "\n");
+  player.send(new EatEvent(player,consum.filling));
+  if (consum.uses <= 0) {
+    Block currentBlock=worldProvider.getBlock(block.getPosition());
+    worldProvider.setBlock(block.getPosition(),BlockManager.getInstance().getAir(),currentBlock);
+    entity.destroy();
+  }
+}
