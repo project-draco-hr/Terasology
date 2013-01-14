@@ -2,7 +2,7 @@
   Map<Class<? extends Component>,Component> oldCache=componentCache;
   componentCache=Maps.newHashMap();
   for (  Prefab ref : this.getParents()) {
-    for (    Component component : ref.listComponents()) {
+    for (    Component component : ref.iterateComponents()) {
       componentCache.put(component.getClass(),componentLibrary.copy(component));
     }
   }

@@ -8,11 +8,15 @@
           processNewClient(client);
         }
       }
-      for (      Client client : clientList) {
-        client.update();
-      }
-      if (server != null) {
-        server.update();
+      long currentTimer=timer.getTimeInMs();
+      if (currentTimer > nextNetworkTick) {
+        nextNetworkTick+=NET_TICK_RATE;
+        for (        Client client : clientList) {
+          client.update();
+        }
+        if (server != null) {
+          server.update();
+        }
       }
     }
   }

@@ -22,7 +22,7 @@
       entity.addComponent(componentData);
     }
   }
-  for (  Component prefabComponent : prefab.listComponents()) {
+  for (  Component prefabComponent : prefab.iterateComponents()) {
     if (!presentClasses.contains(prefabComponent.getClass()) && componentSerializeCheck.serialize(componentLibrary.getMetadata(prefabComponent.getClass()))) {
       entity.addRemovedComponent(MetadataUtil.getComponentClassName(prefabComponent.getClass()));
     }

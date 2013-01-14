@@ -1,8 +1,9 @@
 {
-  NetworkSystem server=new NetworkSystem();
+  Timer timer=mock(Timer.class);
+  NetworkSystem server=new NetworkSystem(timer);
   server.host(7777);
   Thread.sleep(500);
-  NetworkSystem client=new NetworkSystem();
+  NetworkSystem client=new NetworkSystem(timer);
   client.join("localhost",7777);
   Thread.sleep(500);
   server.shutdown();
