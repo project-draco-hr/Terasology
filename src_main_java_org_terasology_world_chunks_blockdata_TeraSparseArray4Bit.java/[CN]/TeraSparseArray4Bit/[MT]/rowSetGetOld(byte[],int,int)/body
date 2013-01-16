@@ -1,13 +1,13 @@
 {
   if (pos < getSizeXZHalf()) {
     byte raw=row[pos];
-    byte old=TeraArrays.getHi(raw);
-    row[pos]=TeraArrays.setHi(raw,value);
+    byte old=TeraArrayUtils.getHi(raw);
+    row[pos]=TeraArrayUtils.setHi(raw,value);
     return old;
   }
   pos=pos - getSizeXZHalf();
   byte raw=row[pos];
-  byte old=TeraArrays.getLo(raw);
-  row[pos]=TeraArrays.setLo(raw,value);
+  byte old=TeraArrayUtils.getLo(raw);
+  row[pos]=TeraArrayUtils.setLo(raw,value);
   return old;
 }

@@ -2,14 +2,14 @@
   File f=new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),worldInfo.getTitle() + ".dat");
   if (f.exists()) {
     try {
-      chunkStore=ChunkStoreGZip.load(f);
+      chunkStore=loadChunkStore(f);
     }
  catch (    IOException e) {
       e.printStackTrace();
     }
   }
   if (chunkStore == null) {
-    chunkStore=new ChunkStoreGZip();
+    chunkStore=new ChunkStoreProtobuf();
   }
   _chunkProvider=new LocalChunkProvider(chunkStore,chunkGeneratorManager);
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,_chunkProvider));

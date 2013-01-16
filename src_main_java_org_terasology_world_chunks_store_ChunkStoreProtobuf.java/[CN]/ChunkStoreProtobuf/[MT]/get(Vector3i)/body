@@ -1,0 +1,19 @@
+{
+  Chunk c=modifiedChunks.get(id);
+  if (c != null) {
+    return new Chunk(c);
+  }
+  try {
+    final byte[] b=serializedChunks.get(id);
+    if (b == null)     return null;
+    final ByteArrayInputStream baIn=new ByteArrayInputStream(b);
+    final GZIPInputStream gzIn=new GZIPInputStream(baIn);
+    final CodedInputStream cIn=CodedInputStream.newInstance(gzIn);
+    final ChunksProtobuf.Chunk message=ChunksProtobuf.Chunk.parseFrom(cIn);
+    c=Chunks.getInstance().decode(message);
+  }
+ catch (  Exception e) {
+    logger.error("Error loading chunk",e);
+  }
+  return c;
+}

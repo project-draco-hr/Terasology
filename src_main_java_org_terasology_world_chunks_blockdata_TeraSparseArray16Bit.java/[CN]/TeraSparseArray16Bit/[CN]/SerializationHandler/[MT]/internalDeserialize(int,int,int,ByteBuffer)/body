@@ -1,0 +1,20 @@
+{
+  final byte hasData=buffer.get();
+  final TeraSparseArray16Bit array=new TeraSparseArray16Bit(sizeX,sizeY,sizeZ);
+  if (hasData == 0) {
+    array.fill=buffer.getShort();
+    return array;
+  }
+  final int rowSize=array.getSizeXZ();
+  final short[][] inf=array.inflated=new short[sizeY][];
+  final short[] def=array.deflated=new short[sizeY];
+  for (int y=0; y < sizeY; y++) {
+    final byte hasRow=buffer.get();
+    if (hasRow == 0)     def[y]=buffer.getShort();
+ else {
+      final short[] row=inf[y]=new short[rowSize];
+      getRow(row,rowSize,buffer);
+    }
+  }
+  return array;
+}

@@ -1,0 +1,9 @@
+{
+  lock.readLock().lock();
+  try {
+    return arrayTypes.keySet().toArray(new ChunksProtobuf.Type[arrayTypes.size()]);
+  }
+  finally {
+    lock.readLock().unlock();
+  }
+}

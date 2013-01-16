@@ -1,8 +1,8 @@
 {
-  AdvancedConfig config=CoreRegistry.get(org.terasology.config.Config.class).getAdvancedConfig();
-  blocks=config.getBlocksFactory().create(this);
-  sunlight=config.getSunlightFactory().create(this);
-  light=config.getLightFactory().create(this);
-  liquid=config.getLiquidFactory().create(this);
+  final Chunks c=Chunks.getInstance();
+  blockData=c.getBlockDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  sunlightData=c.getSunlightDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  lightData=c.getLightDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  extraData=c.getExtraDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
   dirty=true;
 }
