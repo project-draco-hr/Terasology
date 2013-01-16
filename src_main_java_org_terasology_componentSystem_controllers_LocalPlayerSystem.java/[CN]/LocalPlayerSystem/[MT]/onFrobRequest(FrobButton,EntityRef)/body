@@ -9,7 +9,7 @@
   if (block != null) {
     Block currentBlock=worldProvider.getBlock(block.getPosition());
     EntityManager entityManager=CoreRegistry.get(EntityManager.class);
-    if (!currentBlock.isInvisible() && !currentBlock.isLiquid() && !currentBlock.isPenetrable()) {
+    if (!currentBlock.isInvisible() && !currentBlock.isLiquid() && !currentBlock.isPenetrable()&& currentBlock.isCraftPlace()) {
       InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
       if (localPlayerComp.isDead)       return;
       EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
@@ -24,7 +24,7 @@
         blockItemComponent.placedEntity.addComponent(new CraftingActionComponent());
       }
       EntityRef placedEntity=blockItemComponent.placedEntity;
-      if (!craftEntity.equals(EntityRef.NULL)) {
+      if (craftEntity.exists()) {
         craftEntity.send(new ActivateEvent(target,selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),event.getHitPosition(),event.getHitNormal()));
         placedEntity.send(new ActivateEvent(target,selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),event.getHitPosition(),event.getHitNormal()));
         craftEntity.destroy();

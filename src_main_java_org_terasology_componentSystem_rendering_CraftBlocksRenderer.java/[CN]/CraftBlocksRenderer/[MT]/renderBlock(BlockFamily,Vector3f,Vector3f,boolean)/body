@@ -5,7 +5,7 @@
   Vector4f color=activeBlock.calcColorOffsetFor(BlockPart.CENTER,worldProvider.getBiomeProvider().getTemperatureAt(TeraMath.floorToInt(cameraPos.x),TeraMath.floorToInt(cameraPos.z)),worldProvider.getBiomeProvider().getHumidityAt(TeraMath.floorToInt(cameraPos.x),TeraMath.floorToInt(cameraPos.z)));
   shader.setFloat3("colorOffset",color.x,color.y,color.z);
   if (notCurrentLevel) {
-    shader.setFloat("necessarilyAlpha",0.3f);
+    shader.setFloat("alpha",0.3f);
   }
   shader.setInt("textured",1);
   glEnable(GL11.GL_BLEND);
@@ -25,6 +25,6 @@
   }
   glDisable(GL11.GL_BLEND);
   if (notCurrentLevel) {
-    shader.setFloat("necessarilyAlpha",0.0f);
+    shader.setFloat("alpha",1.0f);
   }
 }
