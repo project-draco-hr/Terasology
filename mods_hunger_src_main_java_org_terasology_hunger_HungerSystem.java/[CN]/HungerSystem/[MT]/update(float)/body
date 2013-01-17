@@ -1,0 +1,39 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(HungerComponent.class,HealthComponent.class)) {
+    HungerComponent hunger=entity.getComponent(HungerComponent.class);
+    HealthComponent health=entity.getComponent(HealthComponent.class);
+    if (hunger.currentContentment < 0 && hunger.timeSinceLastDamage >= hunger.waitBeetweenDamage) {
+      hunger.timeSinceLastDamage=0;
+      logger.info("Starvating " + entity.getId() + " for "+ health.maxHealth / ((11 + hunger.currentContentment) * 10) + "\n");
+      onStarvation(new StarvationEvent(health.maxHealth / ((11 + hunger.currentContentment) * 10)),entity);
+    }
+ else {
+      hunger.timeSinceLastDamage+=delta;
+    }
+    if (hunger.deregenRate == 0)     continue;
+    if (hunger.currentContentment <= -10) {
+      hunger.currentContentment=-10;
+      continue;
+    }
+    hunger.timeSinceLastEat+=delta;
+    if (hunger.timeSinceLastEat >= hunger.waitBeforeDeregen) {
+      hunger.partialDeregen+=delta * hunger.deregenRate;
+      if (hunger.partialDeregen >= 1) {
+        hunger.currentContentment=Math.min(hunger.maxContentment,hunger.currentContentment - (int)hunger.partialDeregen);
+        hunger.partialDeregen%=1f;
+        if (hunger.currentContentment == hunger.maxContentment) {
+          entity.send(new FullContentmentEvent(entity,hunger.maxContentment));
+        }
+ else {
+          if (hunger.currentContentment == 0) {
+            entity.send(new NoContentmentEvent(entity,hunger.maxContentment));
+          }
+ else {
+            entity.send(new ContentmentChangedEvent(entity,hunger.currentContentment,hunger.maxContentment));
+          }
+        }
+      }
+    }
+    entity.saveComponent(hunger);
+  }
+}

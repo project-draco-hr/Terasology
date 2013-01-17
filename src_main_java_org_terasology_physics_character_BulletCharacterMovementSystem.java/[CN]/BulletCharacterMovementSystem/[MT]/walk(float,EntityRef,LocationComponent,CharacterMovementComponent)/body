@@ -48,7 +48,7 @@
     movementComp.jump=false;
   }
   if (moveResult.hitHoriz) {
-    entity.send(new HorizontalCollisionEvent());
+    entity.send(new HorizontalCollisionEvent(location.getWorldPosition(),movementComp.getVelocity()));
   }
   if (movementComp.isGrounded) {
     movementComp.footstepDelta+=distanceMoved.length();
