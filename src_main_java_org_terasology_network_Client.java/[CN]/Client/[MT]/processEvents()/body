@@ -5,10 +5,15 @@
     Event event=eventSerializer.deserialize(message.getEvent());
     EntityRef target=networkSystem.getEntity(message.getTargetId());
     if (target.exists()) {
-      if (event instanceof NetworkEvent) {
-        ((NetworkEvent)event).setClient(clientEntity);
+      if (networkSystem.getOwner(target).equals(this)) {
+        if (event instanceof NetworkEvent) {
+          ((NetworkEvent)event).setClient(clientEntity);
+        }
+        target.send(event);
       }
-      target.send(event);
+ else {
+        logger.warn("Received event {} for non-owned entity {} from {}",event,target,this);
+      }
     }
  else {
       queuedEvents.offer(message);

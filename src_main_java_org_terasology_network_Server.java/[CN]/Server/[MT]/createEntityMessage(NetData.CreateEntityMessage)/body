@@ -1,0 +1,12 @@
+{
+  EntityRef newEntity;
+  if (message.hasBlockPos()) {
+    newEntity=blockEntityRegistry.getOrCreateBlockEntityAt(NetworkUtil.convert(message.getBlockPos()));
+    entitySerializer.deserializeOnto(newEntity,message.getEntity());
+  }
+ else {
+    newEntity=entitySerializer.deserialize(message.getEntity());
+  }
+  logger.info("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).networkId);
+  networkSystem.registerNetworkEntity(newEntity);
+}

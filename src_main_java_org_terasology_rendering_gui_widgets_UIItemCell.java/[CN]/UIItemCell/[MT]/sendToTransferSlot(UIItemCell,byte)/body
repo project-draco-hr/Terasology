@@ -1,6 +1,6 @@
 {
   if (sourceCell == null) {
-    CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(PlayerComponent.class).transferSlot=EntityRef.NULL;
+    CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(CharacterComponent.class).transferSlot=EntityRef.NULL;
   }
  else {
     EntityRef target=getFromTransferSlot();
@@ -34,10 +34,10 @@
           sourceItem.stackCount-=amount;
           copyItem.stackCount=amount;
           copyItem.container=sourceCell.ownerEntity;
-          CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(PlayerComponent.class).transferSlot=copy;
+          CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(CharacterComponent.class).transferSlot=copy;
         }
  else {
-          CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(PlayerComponent.class).transferSlot=sourceCell.itemEntity;
+          CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(CharacterComponent.class).transferSlot=sourceCell.itemEntity;
           InventoryComponent sourceInventory=sourceCell.getOwnerEntity().getComponent(InventoryComponent.class);
           sourceInventory.itemSlots.set(sourceInventory.itemSlots.indexOf(sourceCell.itemEntity),EntityRef.NULL);
         }

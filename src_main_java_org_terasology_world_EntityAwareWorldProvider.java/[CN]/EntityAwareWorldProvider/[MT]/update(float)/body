@@ -13,10 +13,18 @@
   PerformanceMonitor.startActivity("Temp Blocks Cleanup");
   for (  EntityRef entity : tempBlocks) {
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
-    if (blockComp == null || !blockComp.temporary)     continue;
+    if (blockComp == null || !blockComp.temporary) {
+      if (blockComp != null && !entity.hasComponent(NetworkComponent.class)) {
+        entity.addComponent(new NetworkComponent());
+      }
+      continue;
+    }
     HealthComponent healthComp=entity.getComponent(HealthComponent.class);
     if (healthComp == null || healthComp.currentHealth == healthComp.maxHealth) {
       entity.destroy();
+    }
+ else {
+      entity.addComponent(new NetworkComponent());
     }
   }
   tempBlocks.clear();

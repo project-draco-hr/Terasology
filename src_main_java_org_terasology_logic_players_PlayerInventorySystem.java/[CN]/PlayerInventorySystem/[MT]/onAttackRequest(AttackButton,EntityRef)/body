@@ -1,0 +1,21 @@
+{
+  if (!event.isDown() || timer.getTimeInMs() - lastInteraction < 200) {
+    return;
+  }
+  LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComp.isDead) {
+    return;
+  }
+  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+  if (event.getTarget().exists()) {
+    entity.send(new AttackTargetRequest(selectedItemEntity,event.getTarget(),event.getHitPosition()));
+  }
+ else {
+    entity.send(new AttackInDirectionRequest(selectedItemEntity,worldRenderer.getActiveCamera().getViewingDirection()));
+  }
+  lastInteraction=timer.getTimeInMs();
+  localPlayerComp.handAnimation=0.5f;
+  entity.saveComponent(localPlayerComp);
+  event.consume();
+}

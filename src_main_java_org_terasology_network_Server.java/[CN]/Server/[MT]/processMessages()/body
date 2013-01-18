@@ -4,14 +4,12 @@
   for (  NetData.NetMessage message : messages) {
 switch (message.getType()) {
 case CREATE_ENTITY:
-      EntityRef newEntity=entitySerializer.deserialize(message.getCreateEntity().getEntity());
-    logger.info("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).networkId);
-  networkSystem.registerNetworkEntity(newEntity);
-break;
+      createEntityMessage(message.getCreateEntity());
+    break;
 case UPDATE_ENTITY:
-EntityRef currentEntity=networkSystem.getEntity(message.getUpdateEntity().getNetId());
+  EntityRef currentEntity=networkSystem.getEntity(message.getUpdateEntity().getNetId());
 if (currentEntity.exists()) {
-entitySerializer.deserializeOnto(currentEntity,message.getUpdateEntity().getEntity());
+  entitySerializer.deserializeOnto(currentEntity,message.getUpdateEntity().getEntity());
 }
 break;
 case REMOVE_ENTITY:

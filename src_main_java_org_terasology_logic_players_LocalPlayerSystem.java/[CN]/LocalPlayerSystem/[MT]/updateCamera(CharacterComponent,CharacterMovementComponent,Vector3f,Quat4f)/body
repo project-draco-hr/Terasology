@@ -1,0 +1,25 @@
+{
+  Vector3d cameraPosition=new Vector3d();
+  cameraPosition.add(new Vector3d(position),new Vector3d(0,characterComponent.eyeOffset,0));
+  playerCamera.getPosition().set(cameraPosition);
+  Vector3f viewDir=new Vector3f(0,0,1);
+  QuaternionUtil.quatRotate(rotation,viewDir,playerCamera.getViewingDirection());
+  float stepDelta=charMovementComp.footstepDelta - lastStepDelta;
+  if (stepDelta < 0)   stepDelta+=charMovementComp.distanceBetweenFootsteps;
+  bobFactor+=stepDelta;
+  lastStepDelta=charMovementComp.footstepDelta;
+  if (cameraBobbing) {
+    playerCamera.setBobbingRotationOffsetFactor(calcBobbingOffset(0.0f,0.01f,2.5f));
+    playerCamera.setBobbingVerticalOffsetFactor(calcBobbingOffset((float)java.lang.Math.PI / 4f,0.025f,3f));
+  }
+ else {
+    playerCamera.setBobbingRotationOffsetFactor(0.0f);
+    playerCamera.setBobbingVerticalOffsetFactor(0.0f);
+  }
+  if (charMovementComp.isGhosting) {
+    playerCamera.extendFov(24);
+  }
+ else {
+    playerCamera.resetFov();
+  }
+}

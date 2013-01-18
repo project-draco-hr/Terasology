@@ -1,0 +1,35 @@
+{
+  int damage=1;
+  if (event.getItem().exists() && !network.getOwnerEntity(event.getItem()).equals(event.getClient())) {
+    return;
+  }
+  ItemComponent item=event.getItem().getComponent(ItemComponent.class);
+  if (item != null) {
+    damage=item.baseDamage;
+    BlockComponent blockComp=event.getTarget().getComponent(BlockComponent.class);
+    BlockRegionComponent blockRegionComponent=event.getTarget().getComponent(BlockRegionComponent.class);
+    if (blockComp != null || blockRegionComponent != null) {
+      Block block=worldProvider.getBlock(blockComp.getPosition());
+      if (item.getPerBlockDamageBonus().containsKey(block.getBlockFamily().getURI().toString())) {
+        damage+=item.getPerBlockDamageBonus().get(block.getBlockFamily().getURI().toString());
+      }
+    }
+  }
+  if (event.getTarget().exists()) {
+    LocationComponent location=character.getComponent(LocationComponent.class);
+    CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+    Vector3f targetPos=event.getTargetPosition();
+    Vector3f originPos=location.getWorldPosition();
+    originPos.y+=characterComponent.eyeOffset;
+    Vector3f direction=new Vector3f(targetPos);
+    direction.sub(originPos);
+    if (direction.lengthSquared() > characterComponent.interactionRange * characterComponent.interactionRange) {
+      return;
+    }
+    direction.normalize();
+    HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+    if (result.getEntity().equals(event.getTarget())) {
+      event.getTarget().send(new DamageEvent(damage,character));
+    }
+  }
+}

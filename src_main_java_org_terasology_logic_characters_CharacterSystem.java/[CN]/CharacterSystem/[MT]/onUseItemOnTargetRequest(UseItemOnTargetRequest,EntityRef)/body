@@ -1,0 +1,22 @@
+{
+  if (!network.getOwnerEntity(event.getItem()).equals(event.getClient())) {
+    return;
+  }
+  if (event.getTarget().exists()) {
+    LocationComponent location=character.getComponent(LocationComponent.class);
+    CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+    Vector3f targetPos=event.getTargetPosition();
+    Vector3f originPos=location.getWorldPosition();
+    originPos.y+=characterComponent.eyeOffset;
+    Vector3f direction=new Vector3f(targetPos);
+    direction.sub(originPos);
+    if (direction.lengthSquared() > characterComponent.interactionRange * characterComponent.interactionRange) {
+      return;
+    }
+    direction.normalize();
+    HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+    if (result.getEntity().equals(event.getTarget())) {
+      event.getItem().send(new ActivateEvent(event.getTarget(),character,originPos,direction,event.getTargetPosition(),result.getHitNormal()));
+    }
+  }
+}
