@@ -3,8 +3,7 @@
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
   EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
   BlockItemComponent block=selectedItemEntity.getComponent(BlockItemComponent.class);
-  CraftingActionComponent craftingComponent=event.getTarget().getComponent(CraftingActionComponent.class);
-  if (selectedItemEntity.equals(EntityRef.NULL) && craftingComponent == null) {
+  if (selectedItemEntity.equals(EntityRef.NULL)) {
     return;
   }
   if (event.getState() == ButtonState.DOWN && lastTimeThrowInteraction == 0) {
@@ -17,40 +16,33 @@
   float dropPower=getDropPower();
   crossHair.getTextureOrigin().set(new Vector2f((46f + 22f * dropPower) / 256f,23f / 256f));
   if (event.getState() == ButtonState.UP) {
-    if (dontDrop) {
-      resetDropMark();
-      dontDrop=false;
-      return;
-    }
     dropPower*=25f;
-    if (craftingComponent == null) {
-      EntityManager entityManager=CoreRegistry.get(EntityManager.class);
-      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
-      Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 1.5f,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 1.5f,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 1.5f);
-      boolean changed=false;
-      if (!selectedItemEntity.hasComponent(BlockItemComponent.class)) {
-        DroppedItemFactory droppedItemFactory=new DroppedItemFactory(entityManager);
-        EntityRef droppedItem=droppedItemFactory.newInstance(new Vector3f(newPosition),item.icon,200,selectedItemEntity);
-        if (!droppedItem.equals(EntityRef.NULL)) {
-          droppedItem.send(new ImpulseEvent(new Vector3f(playerCamera.getViewingDirection().x * dropPower,playerCamera.getViewingDirection().y * dropPower,playerCamera.getViewingDirection().z * dropPower)));
-          changed=true;
-        }
+    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+    ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+    Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 1.5f,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 1.5f,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 1.5f);
+    boolean changed=false;
+    if (!selectedItemEntity.hasComponent(BlockItemComponent.class)) {
+      DroppedItemFactory droppedItemFactory=new DroppedItemFactory(entityManager);
+      EntityRef droppedItem=droppedItemFactory.newInstance(new Vector3f(newPosition),item.icon,200,selectedItemEntity);
+      if (!droppedItem.equals(EntityRef.NULL)) {
+        droppedItem.send(new ImpulseEvent(new Vector3f(playerCamera.getViewingDirection().x * dropPower,playerCamera.getViewingDirection().y * dropPower,playerCamera.getViewingDirection().z * dropPower)));
+        changed=true;
       }
+    }
  else {
-        DroppedBlockFactory droppedBlockFactory=new DroppedBlockFactory(entityManager);
-        EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(newPosition),block.blockFamily,20);
-        if (!droppedBlock.equals(EntityRef.NULL)) {
-          droppedBlock.send(new ImpulseEvent(new Vector3f(playerCamera.getViewingDirection().x * dropPower,playerCamera.getViewingDirection().y * dropPower,playerCamera.getViewingDirection().z * dropPower)));
-          changed=true;
-        }
+      DroppedBlockFactory droppedBlockFactory=new DroppedBlockFactory(entityManager);
+      EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(newPosition),block.blockFamily,20);
+      if (!droppedBlock.equals(EntityRef.NULL)) {
+        droppedBlock.send(new ImpulseEvent(new Vector3f(playerCamera.getViewingDirection().x * dropPower,playerCamera.getViewingDirection().y * dropPower,playerCamera.getViewingDirection().z * dropPower)));
+        changed=true;
       }
-      if (changed) {
-        item.stackCount--;
-        if (item.stackCount <= 0) {
-          selectedItemEntity.destroy();
-        }
-        localPlayerComp.handAnimation=0.5f;
+    }
+    if (changed) {
+      item.stackCount--;
+      if (item.stackCount <= 0) {
+        selectedItemEntity.destroy();
       }
+      localPlayerComp.handAnimation=0.5f;
     }
     resetDropMark();
   }

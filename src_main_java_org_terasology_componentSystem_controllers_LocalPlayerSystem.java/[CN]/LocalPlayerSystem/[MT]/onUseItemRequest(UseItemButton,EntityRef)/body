@@ -1,34 +1,5 @@
 {
-  if (!event.isDown() || timer.getTimeInMs() - lastInteraction < 200 / craftIncreaseDecreaseSpeed) {
-    if (!event.isDown()) {
-      useButtonPushed=false;
-      itsCraftActionTime=false;
-      craftIncreaseDecreaseSpeed=1;
-      CraftingActionComponent craftingComponent=event.getTarget().getComponent(CraftingActionComponent.class);
-      if (craftingComponent != null && entity.getComponent(CharacterMovementComponent.class).isRunning) {
-        event.getTarget().send(new ChangeLevelEvent(1,entity));
-        return;
-      }
-    }
-    return;
-  }
-  CraftingActionComponent craftingComponent=event.getTarget().getComponent(CraftingActionComponent.class);
-  if (craftingComponent != null) {
-    useButtonPushed=true;
-    if (timer.getTimeInMs() - lastInteraction > (200 / craftIncreaseDecreaseSpeed) && !entity.getComponent(CharacterMovementComponent.class).isRunning) {
-      LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
-      if (localPlayerComp.isDead)       return;
-      InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-      UIItemContainer toolbar=(UIItemContainer)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("toolbar");
-      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool + toolbar.getSlotStart());
-      if (!selectedItemEntity.equals(EntityRef.NULL)) {
-        float dropPower=getDropPower();
-        itsCraftActionTime=true;
-        event.getTarget().send(new AddItemEvent(event.getTarget(),selectedItemEntity,dropPower / 6));
-        resetDropMark();
-        lastInteraction=timer.getTimeInMs();
-      }
-    }
+  if (!event.isDown() || timer.getTimeInMs() - lastInteraction < 200) {
     return;
   }
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);

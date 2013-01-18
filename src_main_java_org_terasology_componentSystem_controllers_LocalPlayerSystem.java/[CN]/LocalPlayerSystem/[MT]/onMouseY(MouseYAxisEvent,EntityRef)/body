@@ -1,20 +1,6 @@
 {
   LocalPlayerComponent localPlayer=entity.getComponent(LocalPlayerComponent.class);
-  if (event.getTarget().hasComponent(CraftingActionComponent.class)) {
-    event.getTarget().send(new CheckRefinementEvent(event.getTarget(),entity));
-  }
-  if (itsCraftActionTime) {
-    craftIncreaseDecreaseSpeed+=event.getValue();
-    if (craftIncreaseDecreaseSpeed > 32) {
-      craftIncreaseDecreaseSpeed=32;
-    }
-    if (craftIncreaseDecreaseSpeed < 1) {
-      craftIncreaseDecreaseSpeed=1;
-    }
-  }
- else {
-    localPlayer.viewPitch=TeraMath.clamp(localPlayer.viewPitch - event.getValue(),-89,89);
-    entity.saveComponent(localPlayer);
-    event.consume();
-  }
+  localPlayer.viewPitch=TeraMath.clamp(localPlayer.viewPitch - event.getValue(),-89,89);
+  entity.saveComponent(localPlayer);
+  event.consume();
 }
