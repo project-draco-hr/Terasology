@@ -20,9 +20,12 @@
   }
   eventSerializer=new EventSerializer(eventLibrary);
   entitySerializer=new EntitySerializer(entityManager,componentLibrary);
+  entitySerializer.setUsingFieldIds(true);
   entitySerializer.setIgnoringEntityId(true);
   entitySerializer.setComponentSerializeCheck(new NetComponentSerializeCheck());
-  this.blockEntityRegistry=blockEntityRegistry;
+  if (mode == NetworkMode.CLIENT) {
+    applySerializationTables();
+  }
   if (server != null) {
     server.connectToEntitySystem(entityManager,entitySerializer,eventSerializer,blockEntityRegistry);
   }

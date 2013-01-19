@@ -3,6 +3,7 @@
   client.connected(entityManager,entitySerializer,eventSerializer);
   clientList.add(client);
   clientPlayerLookup.put(client.getEntity(),client);
+  sendServerInfo(client);
   client.getEntity().send(new ConnectedEvent());
   logger.info("New client entity: {}",client.getEntity());
   for (  EntityRef netEntity : entityManager.iteratorEntities(NetworkComponent.class)) {

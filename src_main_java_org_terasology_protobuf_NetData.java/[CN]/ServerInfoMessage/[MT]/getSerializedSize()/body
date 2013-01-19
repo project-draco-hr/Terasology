@@ -5,20 +5,63 @@
   for (int i=0; i < module_.size(); i++) {
     size+=com.google.protobuf.CodedOutputStream.computeMessageSize(1,module_.get(i));
   }
-  for (int i=0; i < blockMapping_.size(); i++) {
-    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(2,blockMapping_.get(i));
+{
+    int dataSize=0;
+    for (int i=0; i < blockId_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(blockId_.get(i));
+    }
+    size+=dataSize;
+    if (!getBlockIdList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    blockIdMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < blockName_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(blockName_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getBlockNameList().size();
+  }
+  for (int i=0; i < component_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(4,component_.get(i));
+  }
+  for (int i=0; i < event_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(5,event_.get(i));
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < assetIds_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(assetIds_.get(i));
+    }
+    size+=dataSize;
+    if (!getAssetIdsList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    assetIdsMemoizedSerializedSize=dataSize;
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < assetUris_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(assetUris_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getAssetUrisList().size();
   }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
-    size+=com.google.protobuf.CodedOutputStream.computeInt64Size(3,time_);
-  }
-  if (((bitField0_ & 0x00000002) == 0x00000002)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(15,getVersionBytes());
   }
-  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(16,getWorldNameBytes());
   }
-  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
     size+=com.google.protobuf.CodedOutputStream.computeInt32Size(17,clientId_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    size+=com.google.protobuf.CodedOutputStream.computeInt64Size(18,time_);
   }
   size+=extensionsSerializedSize();
   size+=getUnknownFields().getSerializedSize();

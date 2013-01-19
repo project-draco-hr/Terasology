@@ -4,20 +4,43 @@
   for (int i=0; i < module_.size(); i++) {
     output.writeMessage(1,module_.get(i));
   }
-  for (int i=0; i < blockMapping_.size(); i++) {
-    output.writeMessage(2,blockMapping_.get(i));
+  if (getBlockIdList().size() > 0) {
+    output.writeRawVarint32(18);
+    output.writeRawVarint32(blockIdMemoizedSerializedSize);
+  }
+  for (int i=0; i < blockId_.size(); i++) {
+    output.writeInt32NoTag(blockId_.get(i));
+  }
+  for (int i=0; i < blockName_.size(); i++) {
+    output.writeBytes(3,blockName_.getByteString(i));
+  }
+  for (int i=0; i < component_.size(); i++) {
+    output.writeMessage(4,component_.get(i));
+  }
+  for (int i=0; i < event_.size(); i++) {
+    output.writeMessage(5,event_.get(i));
+  }
+  if (getAssetIdsList().size() > 0) {
+    output.writeRawVarint32(50);
+    output.writeRawVarint32(assetIdsMemoizedSerializedSize);
+  }
+  for (int i=0; i < assetIds_.size(); i++) {
+    output.writeInt32NoTag(assetIds_.get(i));
+  }
+  for (int i=0; i < assetUris_.size(); i++) {
+    output.writeBytes(7,assetUris_.getByteString(i));
   }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
-    output.writeInt64(3,time_);
-  }
-  if (((bitField0_ & 0x00000002) == 0x00000002)) {
     output.writeBytes(15,getVersionBytes());
   }
-  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
     output.writeBytes(16,getWorldNameBytes());
   }
-  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
     output.writeInt32(17,clientId_);
+  }
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeInt64(18,time_);
   }
   extensionWriter.writeUntil(536870912,output);
   getUnknownFields().writeTo(output);

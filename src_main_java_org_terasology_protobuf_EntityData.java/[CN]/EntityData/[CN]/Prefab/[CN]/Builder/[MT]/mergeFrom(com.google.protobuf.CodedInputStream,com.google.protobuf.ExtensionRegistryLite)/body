@@ -19,7 +19,7 @@ default :
 case 8:
 {
 bitField0_|=0x00000001;
-nameIndex_=input.readSInt32();
+nameIndex_=input.readInt32();
 break;
 }
 case 18:
@@ -32,7 +32,7 @@ break;
 case 24:
 {
 ensureParentIndexIsMutable();
-parentIndex_.add(input.readSInt32());
+parentIndex_.add(input.readInt32());
 break;
 }
 case 26:
@@ -40,7 +40,7 @@ case 26:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 while (input.getBytesUntilLimit() > 0) {
-addParentIndex(input.readSInt32());
+addParentIndex(input.readInt32());
 }
 input.popLimit(limit);
 break;

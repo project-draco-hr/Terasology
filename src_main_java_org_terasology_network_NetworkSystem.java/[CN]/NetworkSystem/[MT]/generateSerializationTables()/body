@@ -1,0 +1,22 @@
+{
+  Map<Class<? extends Component>,Integer> componentIdTable=Maps.newHashMap();
+  for (  ClassMetadata<? extends Component> componentMetadata : entitySystemLibrary.getComponentLibrary()) {
+    int index=componentIdTable.size();
+    componentIdTable.put(componentMetadata.getType(),index);
+    int fieldId=1;
+    for (    FieldMetadata field : componentMetadata.iterateFields()) {
+      componentMetadata.setFieldId(field,fieldId++);
+    }
+  }
+  entitySerializer.setComponentIdMapping(componentIdTable);
+  Map<Class<? extends Event>,Integer> eventIdTable=Maps.newHashMap();
+  for (  ClassMetadata<? extends Event> eventMetadata : entitySystemLibrary.getEventLibrary()) {
+    int index=eventIdTable.size();
+    eventIdTable.put(eventMetadata.getType(),index);
+    int fieldId=1;
+    for (    FieldMetadata field : eventMetadata.iterateFields()) {
+      eventMetadata.setFieldId(field,fieldId++);
+    }
+  }
+  eventSerializer.setIdMapping(eventIdTable);
+}

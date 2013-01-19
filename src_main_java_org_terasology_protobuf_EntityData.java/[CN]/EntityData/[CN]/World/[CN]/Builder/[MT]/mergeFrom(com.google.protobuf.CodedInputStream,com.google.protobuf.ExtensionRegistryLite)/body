@@ -39,13 +39,13 @@ break;
 case 128:
 {
 bitField0_|=0x00000008;
-nextEntityId_=input.readSInt32();
+nextEntityId_=input.readInt32();
 break;
 }
 case 136:
 {
 ensureFreedEntityIdIsMutable();
-freedEntityId_.add(input.readSInt32());
+freedEntityId_.add(input.readInt32());
 break;
 }
 case 138:
@@ -53,7 +53,7 @@ case 138:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 while (input.getBytesUntilLimit() > 0) {
-addFreedEntityId(input.readSInt32());
+addFreedEntityId(input.readInt32());
 }
 input.popLimit(limit);
 break;

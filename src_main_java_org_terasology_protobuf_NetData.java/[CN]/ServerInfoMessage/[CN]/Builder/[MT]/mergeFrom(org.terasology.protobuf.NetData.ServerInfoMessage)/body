@@ -27,35 +27,103 @@
       }
     }
   }
-  if (blockMappingBuilder_ == null) {
-    if (!other.blockMapping_.isEmpty()) {
-      if (blockMapping_.isEmpty()) {
-        blockMapping_=other.blockMapping_;
-        bitField0_=(bitField0_ & ~0x00000002);
+  if (!other.blockId_.isEmpty()) {
+    if (blockId_.isEmpty()) {
+      blockId_=other.blockId_;
+      bitField0_=(bitField0_ & ~0x00000002);
+    }
+ else {
+      ensureBlockIdIsMutable();
+      blockId_.addAll(other.blockId_);
+    }
+    onChanged();
+  }
+  if (!other.blockName_.isEmpty()) {
+    if (blockName_.isEmpty()) {
+      blockName_=other.blockName_;
+      bitField0_=(bitField0_ & ~0x00000004);
+    }
+ else {
+      ensureBlockNameIsMutable();
+      blockName_.addAll(other.blockName_);
+    }
+    onChanged();
+  }
+  if (componentBuilder_ == null) {
+    if (!other.component_.isEmpty()) {
+      if (component_.isEmpty()) {
+        component_=other.component_;
+        bitField0_=(bitField0_ & ~0x00000008);
       }
  else {
-        ensureBlockMappingIsMutable();
-        blockMapping_.addAll(other.blockMapping_);
+        ensureComponentIsMutable();
+        component_.addAll(other.component_);
       }
       onChanged();
     }
   }
  else {
-    if (!other.blockMapping_.isEmpty()) {
-      if (blockMappingBuilder_.isEmpty()) {
-        blockMappingBuilder_.dispose();
-        blockMappingBuilder_=null;
-        blockMapping_=other.blockMapping_;
-        bitField0_=(bitField0_ & ~0x00000002);
-        blockMappingBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getBlockMappingFieldBuilder() : null;
+    if (!other.component_.isEmpty()) {
+      if (componentBuilder_.isEmpty()) {
+        componentBuilder_.dispose();
+        componentBuilder_=null;
+        component_=other.component_;
+        bitField0_=(bitField0_ & ~0x00000008);
+        componentBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getComponentFieldBuilder() : null;
       }
  else {
-        blockMappingBuilder_.addAllMessages(other.blockMapping_);
+        componentBuilder_.addAllMessages(other.component_);
       }
     }
   }
-  if (other.hasTime()) {
-    setTime(other.getTime());
+  if (eventBuilder_ == null) {
+    if (!other.event_.isEmpty()) {
+      if (event_.isEmpty()) {
+        event_=other.event_;
+        bitField0_=(bitField0_ & ~0x00000010);
+      }
+ else {
+        ensureEventIsMutable();
+        event_.addAll(other.event_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.event_.isEmpty()) {
+      if (eventBuilder_.isEmpty()) {
+        eventBuilder_.dispose();
+        eventBuilder_=null;
+        event_=other.event_;
+        bitField0_=(bitField0_ & ~0x00000010);
+        eventBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getEventFieldBuilder() : null;
+      }
+ else {
+        eventBuilder_.addAllMessages(other.event_);
+      }
+    }
+  }
+  if (!other.assetIds_.isEmpty()) {
+    if (assetIds_.isEmpty()) {
+      assetIds_=other.assetIds_;
+      bitField0_=(bitField0_ & ~0x00000020);
+    }
+ else {
+      ensureAssetIdsIsMutable();
+      assetIds_.addAll(other.assetIds_);
+    }
+    onChanged();
+  }
+  if (!other.assetUris_.isEmpty()) {
+    if (assetUris_.isEmpty()) {
+      assetUris_=other.assetUris_;
+      bitField0_=(bitField0_ & ~0x00000040);
+    }
+ else {
+      ensureAssetUrisIsMutable();
+      assetUris_.addAll(other.assetUris_);
+    }
+    onChanged();
   }
   if (other.hasVersion()) {
     setVersion(other.getVersion());
@@ -65,6 +133,9 @@
   }
   if (other.hasClientId()) {
     setClientId(other.getClientId());
+  }
+  if (other.hasTime()) {
+    setTime(other.getTime());
   }
   this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());

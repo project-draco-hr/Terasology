@@ -19,7 +19,7 @@ default :
 case 8:
 {
 bitField0_|=0x00000001;
-id_=input.readSInt32();
+id_=input.readInt32();
 break;
 }
 case 18:
@@ -32,7 +32,7 @@ break;
 case 24:
 {
 ensureRemovedComponentIndexIsMutable();
-removedComponentIndex_.add(input.readSInt32());
+removedComponentIndex_.add(input.readInt32());
 break;
 }
 case 26:
@@ -40,7 +40,7 @@ case 26:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 while (input.getBytesUntilLimit() > 0) {
-addRemovedComponentIndex(input.readSInt32());
+addRemovedComponentIndex(input.readInt32());
 }
 input.popLimit(limit);
 break;

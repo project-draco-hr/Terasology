@@ -12,17 +12,5 @@
     ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);
     clientComponent.clientInfo=clientInfo;
     clientEntity.saveComponent(clientComponent);
-    NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
-    WorldProvider world=CoreRegistry.get(WorldProvider.class);
-    serverInfoMessageBuilder.setTime(world.getTime());
-    serverInfoMessageBuilder.setWorldName(world.getTitle());
-    for (    Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
-      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(mod.getModInfo().getId()).build());
-    }
-    for (    Map.Entry<String,Byte> blockMapping : BlockManager.getInstance().getBlockIdMap().entrySet()) {
-      serverInfoMessageBuilder.addBlockMapping(NetData.BlockMapping.newBuilder().setBlockId(blockMapping.getValue()).setBlockName(blockMapping.getKey()));
-    }
-    serverInfoMessageBuilder.setClientId(clientEntity.getComponent(NetworkComponent.class).networkId);
-    send(NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.SERVER_INFO).setServerInfo(serverInfoMessageBuilder.build()).build());
   }
 }

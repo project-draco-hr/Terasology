@@ -1,7 +1,13 @@
 {
   try {
     for (    EntityData.NameValue field : componentData.getFieldList()) {
-      FieldMetadata fieldInfo=componentMetadata.getField(field.getName());
+      FieldMetadata fieldInfo=null;
+      if (field.hasNameIndex()) {
+        fieldInfo=componentMetadata.getFieldById(field.getNameIndex());
+      }
+ else       if (field.hasName()) {
+        fieldInfo=componentMetadata.getField(field.getName());
+      }
       if (fieldInfo == null || !fieldCheck.shouldDeserializeField(fieldInfo)) {
         continue;
       }

@@ -1,0 +1,35 @@
+{
+  NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
+  WorldProvider world=CoreRegistry.get(WorldProvider.class);
+  serverInfoMessageBuilder.setTime(world.getTime());
+  serverInfoMessageBuilder.setWorldName(world.getTitle());
+  for (  Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
+    serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(mod.getModInfo().getId()).build());
+  }
+  for (  Map.Entry<String,Byte> blockMapping : BlockManager.getInstance().getBlockIdMap().entrySet()) {
+    serverInfoMessageBuilder.addBlockId(blockMapping.getValue());
+    serverInfoMessageBuilder.addBlockName(blockMapping.getKey());
+  }
+  Map<Class<? extends Component>,Integer> componentIdTable=entitySerializer.getComponentIdMapping();
+  for (  Map.Entry<Class<? extends Component>,Integer> componentIdMapping : componentIdTable.entrySet()) {
+    ComponentMetadata<?> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(componentIdMapping.getKey());
+    NetData.SerializationInfo.Builder info=NetData.SerializationInfo.newBuilder().setId(componentIdMapping.getValue()).setName(metadata.getName());
+    for (    FieldMetadata field : metadata.iterateFields()) {
+      info.addFieldId(field.getId());
+      info.addFieldName(field.getName());
+    }
+    serverInfoMessageBuilder.addComponent(info);
+  }
+  Map<Class<? extends Event>,Integer> eventIdTable=eventSerializer.getIdMapping();
+  for (  Map.Entry<Class<? extends Event>,Integer> eventMapping : eventIdTable.entrySet()) {
+    EventMetadata<?> metadata=entitySystemLibrary.getEventLibrary().getMetadata(eventMapping.getKey());
+    NetData.SerializationInfo.Builder info=NetData.SerializationInfo.newBuilder().setId(eventMapping.getValue()).setName(metadata.getName());
+    for (    FieldMetadata field : metadata.iterateFields()) {
+      info.addFieldId(field.getId());
+      info.addFieldName(field.getName());
+    }
+    serverInfoMessageBuilder.addEvent(info);
+  }
+  serverInfoMessageBuilder.setClientId(client.getEntity().getComponent(NetworkComponent.class).networkId);
+  client.send(NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.SERVER_INFO).setServerInfo(serverInfoMessageBuilder.build()).build());
+}

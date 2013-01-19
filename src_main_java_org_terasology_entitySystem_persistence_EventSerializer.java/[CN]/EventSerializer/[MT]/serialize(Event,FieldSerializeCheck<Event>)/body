@@ -8,7 +8,7 @@
   serializeEventType(event,eventData);
   for (  FieldMetadata field : eventMetadata.iterateFields()) {
     if (check.shouldSerializeField(field,event)) {
-      EntityData.NameValue fieldData=field.serialize(event);
+      EntityData.NameValue fieldData=field.serialize(event,false);
       if (fieldData != null) {
         eventData.addField(fieldData);
       }

@@ -23,35 +23,86 @@ input.readMessage(subBuilder,extensionRegistry);
 addModule(subBuilder.buildPartial());
 break;
 }
-case 18:
+case 16:
 {
-org.terasology.protobuf.NetData.BlockMapping.Builder subBuilder=org.terasology.protobuf.NetData.BlockMapping.newBuilder();
-input.readMessage(subBuilder,extensionRegistry);
-addBlockMapping(subBuilder.buildPartial());
+ensureBlockIdIsMutable();
+blockId_.add(input.readInt32());
 break;
 }
-case 24:
+case 18:
 {
-bitField0_|=0x00000004;
-time_=input.readInt64();
+int length=input.readRawVarint32();
+int limit=input.pushLimit(length);
+while (input.getBytesUntilLimit() > 0) {
+addBlockId(input.readInt32());
+}
+input.popLimit(limit);
+break;
+}
+case 26:
+{
+ensureBlockNameIsMutable();
+blockName_.add(input.readBytes());
+break;
+}
+case 34:
+{
+org.terasology.protobuf.NetData.SerializationInfo.Builder subBuilder=org.terasology.protobuf.NetData.SerializationInfo.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addComponent(subBuilder.buildPartial());
+break;
+}
+case 42:
+{
+org.terasology.protobuf.NetData.SerializationInfo.Builder subBuilder=org.terasology.protobuf.NetData.SerializationInfo.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addEvent(subBuilder.buildPartial());
+break;
+}
+case 48:
+{
+ensureAssetIdsIsMutable();
+assetIds_.add(input.readInt32());
+break;
+}
+case 50:
+{
+int length=input.readRawVarint32();
+int limit=input.pushLimit(length);
+while (input.getBytesUntilLimit() > 0) {
+addAssetIds(input.readInt32());
+}
+input.popLimit(limit);
+break;
+}
+case 58:
+{
+ensureAssetUrisIsMutable();
+assetUris_.add(input.readBytes());
 break;
 }
 case 122:
 {
-bitField0_|=0x00000008;
+bitField0_|=0x00000080;
 version_=input.readBytes();
 break;
 }
 case 130:
 {
-bitField0_|=0x00000010;
+bitField0_|=0x00000100;
 worldName_=input.readBytes();
 break;
 }
 case 136:
 {
-bitField0_|=0x00000020;
+bitField0_|=0x00000200;
 clientId_=input.readInt32();
+break;
+}
+case 144:
+{
+bitField0_|=0x00000400;
+time_=input.readInt64();
 break;
 }
 }

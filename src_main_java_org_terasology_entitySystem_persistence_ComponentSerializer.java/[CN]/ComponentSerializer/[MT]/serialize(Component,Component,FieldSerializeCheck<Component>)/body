@@ -15,7 +15,12 @@
         if (!Objects.equal(origValue,deltaValue)) {
           EntityData.Value value=field.serializeValue(deltaValue);
           if (value != null) {
-            componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
+            if (usingFieldIds) {
+              componentMessage.addField(EntityData.NameValue.newBuilder().setNameIndex(field.getId()).setValue(value).build());
+            }
+ else {
+              componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
+            }
             changed=true;
           }
  else {
