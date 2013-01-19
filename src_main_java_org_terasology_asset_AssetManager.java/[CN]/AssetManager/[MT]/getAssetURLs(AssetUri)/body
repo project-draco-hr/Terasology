@@ -1,7 +1,13 @@
 {
-  AssetSource source=assetSources.get(uri.getPackage());
-  if (source != null) {
-    return source.get(uri);
+  AssetSource overrideSource=overrides.get(uri);
+  if (overrideSource != null) {
+    return overrideSource.getOverride(uri);
+  }
+ else {
+    AssetSource source=assetSources.get(uri.getPackage());
+    if (source != null) {
+      return source.get(uri);
+    }
   }
   return Lists.newArrayList();
 }

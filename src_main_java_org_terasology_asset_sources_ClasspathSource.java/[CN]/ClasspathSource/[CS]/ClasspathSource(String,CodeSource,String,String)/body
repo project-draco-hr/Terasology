@@ -6,10 +6,10 @@
   try {
     File codePath=new File(url.toURI());
     if (codePath.isFile()) {
-      source=new ArchiveSource(id,codePath,basePath);
+      source=new ArchiveSource(id,codePath,baseAssetsPath,baseOverridesPath);
     }
  else {
-      source=new DirectorySource(id,new File(codePath,basePath));
+      source=new DirectorySource(id,new File(codePath,baseAssetsPath),new File(codePath,baseOverridesPath));
     }
   }
  catch (  Throwable e) {

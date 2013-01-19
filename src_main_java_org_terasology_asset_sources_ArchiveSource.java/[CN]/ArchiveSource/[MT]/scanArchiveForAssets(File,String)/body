@@ -11,8 +11,8 @@
     ZipEntry entry=lister.nextElement();
     String entryPath=entry.getName();
     logger.debug("Found {}",entryPath);
-    if (entryPath.startsWith(basePath)) {
-      String key=entryPath.substring(basePath.length() + 1);
+    if (entryPath.startsWith(assetsPath)) {
+      String key=entryPath.substring(assetsPath.length() + 1);
       AssetUri uri=getUri(key);
       if (uri == null || !uri.isValid()) {
         continue;
