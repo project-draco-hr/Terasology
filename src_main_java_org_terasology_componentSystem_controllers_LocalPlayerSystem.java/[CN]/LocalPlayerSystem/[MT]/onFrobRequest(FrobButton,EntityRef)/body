@@ -5,40 +5,6 @@
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
   if (localPlayerComp.isDead)   return;
   EntityRef target=event.getTarget();
-  BlockComponent block=target.getComponent(BlockComponent.class);
-  if (block != null) {
-    Block currentBlock=worldProvider.getBlock(block.getPosition());
-    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
-    if (!currentBlock.isInvisible() && !currentBlock.isLiquid() && !currentBlock.isPenetrable()&& currentBlock.isCraftPlace()) {
-      InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-      if (localPlayerComp.isDead)       return;
-      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
-      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
-      if (item == null) {
-        return;
-      }
-      BlockItemFactory blockFactory=new BlockItemFactory(entityManager);
-      EntityRef craftEntity=blockFactory.newInstance(BlockManager.getInstance().getBlockFamily("core:craft"));
-      BlockItemComponent blockItemComponent=craftEntity.getComponent(BlockItemComponent.class);
-      if (!blockItemComponent.placedEntity.hasComponent(CraftingActionComponent.class)) {
-        blockItemComponent.placedEntity.addComponent(new CraftingActionComponent());
-      }
-      EntityRef placedEntity=blockItemComponent.placedEntity;
-      if (craftEntity.exists()) {
-        craftEntity.send(new ActivateEvent(target,selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),event.getHitPosition(),event.getHitNormal()));
-        placedEntity.send(new ActivateEvent(target,selectedItemEntity,new Vector3f(playerCamera.getPosition()),new Vector3f(playerCamera.getViewingDirection()),event.getHitPosition(),event.getHitNormal()));
-        craftEntity.destroy();
-        if (item.stackCount <= 0) {
-          selectedItemEntity.destroy();
-        }
-      }
-      lastInteraction=timer.getTimeInMs();
-      localPlayerComp.handAnimation=0.5f;
-      entity.saveComponent(localPlayerComp);
-      event.consume();
-      return;
-    }
-  }
   event.getTarget().send(new ActivateEvent(entity,entity,playerCamera.getPosition(),playerCamera.getViewingDirection(),event.getHitPosition(),event.getHitNormal()));
   event.consume();
 }
