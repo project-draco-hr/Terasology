@@ -4,7 +4,7 @@
     return;
   }
   classLastTick=tick;
-  for (  EntityRef entity : entityManager.iteratorEntities(SpawnerComponent.class,BlockComponent.class)) {
+  for (  EntityRef entity : entityManager.iteratorEntities(SpawnerComponent.class)) {
     SpawnerComponent spawnComp=entity.getComponent(SpawnerComponent.class);
     if (spawnComp.lastTick > tick) {
       spawnComp.lastTick=tick;
@@ -13,48 +13,86 @@
       return;
     }
     spawnComp.lastTick=tick;
-    int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * spawnComp.maxMobsPerSpawner;
-    int currentMobs=entityManager.getComponentCount(SimpleAIComponent.class) + entityManager.getComponentCount(HierarchicalAIComponent.class);
-    logger.info("Mob count: {}/{}",currentMobs,maxMobs);
-    if (currentMobs >= maxMobs) {
-      logger.info("Too many mobs! Returning early");
-      return;
+    if (spawnComp.maxMobsPerSpawner > 0) {
+      int maxMobs=entityManager.getComponentCount(SpawnerComponent.class) * spawnComp.maxMobsPerSpawner;
+      int currentMobs=entityManager.getComponentCount(SimpleAIComponent.class) + entityManager.getComponentCount(HierarchicalAIComponent.class);
+      logger.info("Mob count: {}/{}",currentMobs,maxMobs);
+      if (currentMobs >= maxMobs) {
+        logger.info("Too many mobs! Returning early");
+        return;
+      }
     }
     int spawnTypes=spawnComp.types.size();
     if (spawnTypes == 0) {
       logger.warn("Spawner has no types, sad - stopping this loop iteration early :-(");
       continue;
     }
-    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
-    Vector3f pos=blockComp.getPosition().toVector3f();
-    if (spawnComp.needsPlayer) {
-      LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
-      if (localPlayer != null) {
-        Vector3f dist=new Vector3f(pos);
-        dist.sub(localPlayer.getPosition());
-        double distanceToPlayer=dist.lengthSquared();
-        if (distanceToPlayer > spawnComp.playerNeedRange) {
-          logger.warn("Spawner too far from player");
-          continue;
+    Vector3f spawnPos=new Vector3f();
+    Vector3f pos=new Vector3f();
+    if (entity.hasComponent(BlockComponent.class)) {
+      BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+      spawnPos=blockComp.getPosition().toVector3f();
+      if (spawnComp.needsPlayer) {
+        LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+        if (localPlayer != null) {
+          Vector3f dist=new Vector3f(spawnPos);
+          dist.sub(localPlayer.getPosition());
+          double distanceToPlayer=dist.lengthSquared();
+          if (distanceToPlayer > spawnComp.playerNeedRange) {
+            logger.info("Spawner {} too far from player {}<{}",entity.getId(),distanceToPlayer,spawnComp.playerNeedRange);
+            continue;
+          }
         }
       }
     }
-    if (currentMobs < maxMobs) {
-      if (spawnComp.rangedSpawning) {
-        pos=new Vector3f(pos.x + random.randomFloat() * spawnComp.range,pos.y,pos.z + random.randomFloat() * spawnComp.range);
+ else     if (entity.hasComponent(LocalPlayerComponent.class)) {
+      LocalPlayerComponent lpc=entity.getComponent(LocalPlayerComponent.class);
+      if (lpc.isDead)       return;
+      LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+      spawnPos=localPlayer.getPosition();
+      logger.info("your position" + spawnPos.x + ":"+ spawnPos.y+ ":"+ spawnPos.z);
+    }
+    if (spawnComp.rangedSpawning) {
+      int i=0, a=0;
+      do {
+        pos=new Vector3f(spawnPos.x + random.randomFloat() * spawnComp.range,spawnPos.y,spawnPos.z + random.randomFloat() * spawnComp.range);
+        if (spawnComp.minDistance != 0) {
+          Vector3f dist=new Vector3f(pos);
+          dist.sub(spawnPos);
+          if (spawnComp.minDistance > dist.lengthSquared())           continue;
+        }
+        while (worldProvider.getBlock(new Vector3f(pos.x,pos.y - 1,pos.z)).isPenetrable() && i < 30) {
+          pos=new Vector3f(pos.x,pos.y - 1,pos.z);
+          i++;
+        }
+        i=0;
+        while (!worldProvider.getBlock(new Vector3f(pos.x,pos.y,pos.z)).isPenetrable() && i < 30) {
+          pos=new Vector3f(pos.x,pos.y + 1,pos.z);
+          i++;
+        }
+        a++;
+        if (a > 10)         return;
       }
-      String chosenSpawnerType=spawnComp.types.get(random.randomIntAbs(spawnComp.types.size()));
-      Set randomType=typeLists.get(chosenSpawnerType);
-      logger.info("Picked random type {} which returned {} prefabs",chosenSpawnerType,randomType.size());
-      if (randomType.size() == 0) {
-        logger.warn("Type {} wasn't found, sad :-( Won't spawn anything this time",chosenSpawnerType);
+ while (testEnviriment(pos,1,1,1));
+    }
+ else {
+      pos=spawnPos;
+      if (!testEnviriment(pos,1,1,1)) {
+        logger.info("cannot local spawn inside terain");
         return;
       }
-      int anotherRandomIndex=random.randomIntAbs(randomType.size());
-      Object[] randomPrefabs=randomType.toArray();
-      Prefab chosenPrefab=(Prefab)randomPrefabs[anotherRandomIndex];
-      logger.info("Picked index {} of types {} which is a {}, to spawn at {}",anotherRandomIndex,chosenSpawnerType,chosenPrefab,pos);
-      factory.generate(pos,chosenPrefab);
     }
+    String chosenSpawnerType=spawnComp.types.get(random.randomIntAbs(spawnComp.types.size()));
+    Set randomType=typeLists.get(chosenSpawnerType);
+    logger.info("Picked random type {} which returned {} prefabs",chosenSpawnerType,randomType.size());
+    if (randomType.size() == 0) {
+      logger.warn("Type {} wasn't found, sad :-( Won't spawn anything this time",chosenSpawnerType);
+      return;
+    }
+    int anotherRandomIndex=random.randomIntAbs(randomType.size());
+    Object[] randomPrefabs=randomType.toArray();
+    Prefab chosenPrefab=(Prefab)randomPrefabs[anotherRandomIndex];
+    logger.info("Picked index {} of types {} which is a {}, to spawn at {}",anotherRandomIndex,chosenSpawnerType,chosenPrefab,pos);
+    factory.generate(pos,chosenPrefab);
   }
 }
