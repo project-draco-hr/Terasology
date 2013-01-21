@@ -1,0 +1,21 @@
+{
+  if (additionalOptions && cameraTargetSystem.getTarget().getComponent(CraftingActionComponent.class) != null) {
+    InventoryComponent inventory=localPlayer.getEntity().getComponent(InventoryComponent.class);
+    UIItemContainer toolbar=(UIItemContainer)guiManager.getWindowById("hud").getElementById("toolbar");
+    int slotStart=toolbar.getSlotStart();
+    int slotEnd=toolbar.getSlotEnd();
+    slotStart+=10;
+    slotEnd+=10;
+    if (slotEnd > inventory.itemSlots.size() - 1) {
+      slotStart=0;
+      slotEnd=9;
+    }
+    toolbar.setEntity(localPlayer.getEntity(),slotStart,slotEnd);
+    toolbarChanged=true;
+    showSmallInventory((slotEnd + 1) / 10);
+    event.consume();
+  }
+  if (cameraTargetSystem.getTarget().hasComponent(CraftingActionComponent.class)) {
+    cameraTargetSystem.getTarget().send(new CheckRefinementEvent(cameraTargetSystem.getTarget(),entity));
+  }
+}

@@ -1,0 +1,42 @@
+{
+  if (event.getState() != ButtonState.DOWN) {
+    return;
+  }
+  LocalPlayerComponent localPlayerComp=playerEntity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComp.isDead)   return;
+  EntityRef target=event.getTarget();
+  BlockComponent block=target.getComponent(BlockComponent.class);
+  if (block != null) {
+    Block currentBlock=worldProvider.getBlock(block.getPosition());
+    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+    if (!currentBlock.isInvisible() && !currentBlock.isLiquid() && !currentBlock.isPenetrable()&& currentBlock.isCraftPlace()) {
+      InventoryComponent inventory=playerEntity.getComponent(InventoryComponent.class);
+      if (localPlayerComp.isDead)       return;
+      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+      ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+      if (item == null) {
+        return;
+      }
+      BlockItemFactory blockFactory=new BlockItemFactory(entityManager);
+      EntityRef craftEntity=blockFactory.newInstance(BlockManager.getInstance().getBlockFamily("craft:craft"));
+      BlockItemComponent blockItemComponent=craftEntity.getComponent(BlockItemComponent.class);
+      if (!blockItemComponent.placedEntity.hasComponent(CraftingActionComponent.class)) {
+        blockItemComponent.placedEntity.addComponent(new CraftingActionComponent());
+      }
+      EntityRef placedEntity=blockItemComponent.placedEntity;
+      if (craftEntity.exists()) {
+        craftEntity.send(new ActivateEvent(target,selectedItemEntity,new Vector3f(worldRenderer.getActiveCamera().getPosition()),new Vector3f(worldRenderer.getActiveCamera().getPosition()),event.getHitPosition(),event.getHitNormal()));
+        placedEntity.send(new ActivateEvent(target,selectedItemEntity,new Vector3f(worldRenderer.getActiveCamera().getPosition()),new Vector3f(worldRenderer.getActiveCamera().getPosition()),event.getHitPosition(),event.getHitNormal()));
+        craftEntity.destroy();
+        if (item.stackCount <= 0) {
+          selectedItemEntity.destroy();
+        }
+        stateCreateBlock=statesCreateBlock.CREATED;
+      }
+      lastInteraction=timer.getTimeInMs();
+      localPlayerComp.handAnimation=0.5f;
+      playerEntity.saveComponent(localPlayerComp);
+      event.consume();
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  if (event.getTarget().hasComponent(CraftingActionComponent.class)) {
+    event.getTarget().send(new CheckRefinementEvent(event.getTarget(),entity));
+  }
+  if (itsCraftActionTime) {
+    craftIncreaseDecreaseSpeed+=event.getValue();
+    if (craftIncreaseDecreaseSpeed > 32) {
+      craftIncreaseDecreaseSpeed=32;
+    }
+    if (craftIncreaseDecreaseSpeed < 1) {
+      craftIncreaseDecreaseSpeed=1;
+    }
+    event.consume();
+  }
+}
