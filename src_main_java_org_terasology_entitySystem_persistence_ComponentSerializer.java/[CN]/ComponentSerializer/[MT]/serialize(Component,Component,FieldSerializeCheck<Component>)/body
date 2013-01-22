@@ -9,30 +9,22 @@
   boolean changed=false;
   for (  FieldMetadata field : componentMetadata.iterateFields()) {
     if (check.shouldSerializeField(field,delta)) {
-      try {
-        Object origValue=field.getValue(base);
-        Object deltaValue=field.getValue(delta);
-        if (!Objects.equal(origValue,deltaValue)) {
-          EntityData.Value value=field.serializeValue(deltaValue);
-          if (value != null) {
-            if (usingFieldIds) {
-              componentMessage.addField(EntityData.NameValue.newBuilder().setNameIndex(field.getId()).setValue(value).build());
-            }
- else {
-              componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
-            }
-            changed=true;
+      Object origValue=field.getValue(base);
+      Object deltaValue=field.getValue(delta);
+      if (!Objects.equal(origValue,deltaValue)) {
+        EntityData.Value value=field.serializeValue(deltaValue);
+        if (value != null) {
+          if (usingFieldIds) {
+            componentMessage.addField(EntityData.NameValue.newBuilder().setNameIndex(field.getId()).setValue(value).build());
           }
  else {
-            logger.error("Exception serializing component type: {}, field: {} - returned null",base.getClass(),field.getName());
+            componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
           }
+          changed=true;
         }
-      }
- catch (      IllegalAccessException e) {
-        logger.error("Exception during serializing component type: {}",base.getClass(),e);
-      }
-catch (      InvocationTargetException e) {
-        logger.error("Exception during serializing component type: {}",base.getClass(),e);
+ else {
+          logger.error("Exception serializing component type: {}, field: {} - returned null",base.getClass(),field.getName());
+        }
       }
     }
   }

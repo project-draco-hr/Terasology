@@ -1,28 +1,16 @@
 {
-  try {
-    for (    EntityData.NameValue field : componentData.getFieldList()) {
-      FieldMetadata fieldInfo=null;
-      if (field.hasNameIndex()) {
-        fieldInfo=componentMetadata.getFieldById(field.getNameIndex());
-      }
- else       if (field.hasName()) {
-        fieldInfo=componentMetadata.getField(field.getName());
-      }
-      if (fieldInfo == null || !fieldCheck.shouldDeserializeField(fieldInfo)) {
-        continue;
-      }
-      Object value=fieldInfo.deserialize(field.getValue());
-      if (value != null) {
-        fieldInfo.setValue(targetComponent,value);
-      }
+  for (  EntityData.NameValue field : componentData.getFieldList()) {
+    FieldMetadata fieldInfo=null;
+    if (field.hasNameIndex()) {
+      fieldInfo=componentMetadata.getFieldById(field.getNameIndex());
     }
-    return targetComponent;
-  }
- catch (  InvocationTargetException e) {
-    logger.error("Exception during serializing component type: {}",targetComponent.getClass(),e);
-  }
-catch (  IllegalAccessException e) {
-    logger.error("Exception during serializing component type: {}",targetComponent.getClass(),e);
+ else     if (field.hasName()) {
+      fieldInfo=componentMetadata.getField(field.getName());
+    }
+    if (fieldInfo == null || !fieldCheck.shouldDeserializeField(fieldInfo)) {
+      continue;
+    }
+    fieldInfo.deserializeOnto(targetComponent,field.getValue());
   }
   return targetComponent;
 }

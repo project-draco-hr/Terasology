@@ -1,0 +1,19 @@
+{
+  Map<Class<? extends Component>,Integer> componentIdTable=entitySerializer.getIdMapping();
+  for (  Map.Entry<Class<? extends Component>,Integer> componentIdMapping : componentIdTable.entrySet()) {
+    ByteString.Output fieldIds=ByteString.newOutput();
+    ComponentMetadata<?> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(componentIdMapping.getKey());
+    NetData.SerializationInfo.Builder info=NetData.SerializationInfo.newBuilder().setId(componentIdMapping.getValue()).setName(metadata.getName());
+    for (    FieldMetadata field : metadata.iterateFields()) {
+      try {
+        fieldIds.write(field.getId());
+        info.addFieldName(field.getName());
+      }
+ catch (      IOException e) {
+        throw new RuntimeException("Failed writing field id " + field.getId() + " for field "+ field.getName());
+      }
+    }
+    info.setFieldIds(fieldIds.toByteString());
+    serverInfoMessageBuilder.addComponent(info);
+  }
+}

@@ -1,0 +1,24 @@
+{
+  ClassMetadata<?> componentMetadata=componentLibrary.getMetadata(component.getClass());
+  if (componentMetadata == null) {
+    logger.error("Unregistered component type: {}",component.getClass());
+  }
+  try {
+    entityData.addComponentId(idTable.get(component.getClass()));
+    byte fieldCount=0;
+    for (    FieldMetadata field : componentMetadata.iterateFields()) {
+      if (fieldCheck.shouldSerializeField(field,component)) {
+        EntityData.Value fieldValue=field.serialize(component);
+        if (fieldValue != null) {
+          entityFieldIds.write(field.getId());
+          entityData.addFieldValue(fieldValue);
+          fieldCount++;
+        }
+      }
+    }
+    componentFieldCounts.write(fieldCount);
+  }
+ catch (  IOException e) {
+    logger.error("Failed to serialize component {}",componentMetadata,e);
+  }
+}

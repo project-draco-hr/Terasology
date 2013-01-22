@@ -1,0 +1,36 @@
+{
+  int fieldPos=0;
+  for (int componentIndex=0; componentIndex < entityData.getComponentIdCount(); ++componentIndex) {
+    Class<? extends Component> componentClass=idTable.inverse().get((Integer)entityData.getComponentId(componentIndex));
+    ComponentMetadata<?> metadata=componentLibrary.getMetadata(componentClass);
+    if (metadata == null) {
+      logger.warn("Skipping unknown component {}",entityData.getComponentId(componentIndex));
+      fieldPos+=UnsignedBytes.toInt(entityData.getComponentFieldCounts().byteAt(componentIndex));
+      continue;
+    }
+    if (!componentSerializeCheck.serialize(metadata)) {
+      fieldPos+=UnsignedBytes.toInt(entityData.getComponentFieldCounts().byteAt(componentIndex));
+      continue;
+    }
+    Component existingComponent=entity.getComponent(metadata.getType());
+    if (existingComponent == null) {
+      existingComponent=metadata.newInstance();
+    }
+    for (int fieldIndex=0; fieldIndex < UnsignedBytes.toInt(entityData.getComponentFieldCounts().byteAt(componentIndex)); ++fieldIndex) {
+      byte fieldId=entityData.getFieldIds().byteAt(fieldPos);
+      FieldMetadata fieldMetadata=metadata.getFieldById(fieldId);
+      if (fieldMetadata != null && fieldCheck.shouldDeserializeField(fieldMetadata)) {
+        fieldMetadata.deserializeOnto(existingComponent,entityData.getFieldValue(fieldPos));
+      }
+      fieldPos++;
+    }
+    entity.addComponent(existingComponent);
+  }
+  for (  int componentId : entityData.getRemovedComponentList()) {
+    Class<? extends Component> componentClass=idTable.inverse().get((Integer)entityData.getComponentId(componentId));
+    ComponentMetadata<?> metadata=componentLibrary.getMetadata(componentClass);
+    if (componentSerializeCheck.serialize(metadata)) {
+      entity.removeComponent(metadata.getType());
+    }
+  }
+}

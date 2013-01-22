@@ -8,7 +8,7 @@
   serializeComponentType(component,componentMessage);
   for (  FieldMetadata field : componentMetadata.iterateFields()) {
     if (check.shouldSerializeField(field,component)) {
-      EntityData.NameValue fieldData=field.serialize(component,usingFieldIds);
+      EntityData.NameValue fieldData=field.serializeNameValue(component,usingFieldIds);
       if (fieldData != null) {
         componentMessage.addField(fieldData);
       }

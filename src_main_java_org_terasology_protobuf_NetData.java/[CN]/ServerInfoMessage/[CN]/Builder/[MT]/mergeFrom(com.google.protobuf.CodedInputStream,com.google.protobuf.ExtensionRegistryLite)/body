@@ -26,7 +26,7 @@ break;
 case 16:
 {
 ensureBlockIdIsMutable();
-blockId_.add(input.readInt32());
+blockId_.add(input.readSInt32());
 break;
 }
 case 18:
@@ -34,7 +34,7 @@ case 18:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 while (input.getBytesUntilLimit() > 0) {
-addBlockId(input.readInt32());
+addBlockId(input.readSInt32());
 }
 input.popLimit(limit);
 break;

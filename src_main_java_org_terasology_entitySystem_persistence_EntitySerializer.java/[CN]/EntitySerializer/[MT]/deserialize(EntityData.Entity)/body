@@ -1,29 +1,6 @@
 {
-  Map<Class<? extends Component>,Component> componentMap=Maps.newHashMap();
-  if (entityData.hasParentPrefab() && !entityData.getParentPrefab().isEmpty() && prefabManager.exists(entityData.getParentPrefab())) {
-    Prefab prefab=prefabManager.getPrefab(entityData.getParentPrefab());
-    for (    Component component : prefab.iterateComponents()) {
-      String componentName=MetadataUtil.getComponentClassName(component.getClass());
-      if (!containsIgnoreCase(componentName,entityData.getRemovedComponentList())) {
-        componentMap.put(component.getClass(),componentLibrary.copy(component));
-      }
-    }
-    componentMap.put(EntityInfoComponent.class,new EntityInfoComponent(entityData.getParentPrefab(),true));
-  }
-  for (  EntityData.Component componentData : entityData.getComponentList()) {
-    ComponentMetadata<? extends Component> metadata=componentSerializer.getComponentMetadata(componentData);
-    if (metadata == null || !componentSerializeCheck.serialize(metadata)) {
-      continue;
-    }
-    Component existingComponent=componentMap.get(metadata.getType());
-    if (existingComponent == null) {
-      Component newComponent=componentSerializer.deserialize(componentData);
-      componentMap.put(metadata.getType(),newComponent);
-    }
- else {
-      componentSerializer.deserializeOnto(existingComponent,componentData,FieldSerializeCheck.NullCheck.<Component>newInstance());
-    }
-  }
+  Map<Class<? extends Component>,Component> componentMap=createInitialComponents(entityData);
+  deserializeOntoComponents(entityData,componentMap);
   if (ignoringEntityId) {
     return entityManager.create(componentMap.values());
   }

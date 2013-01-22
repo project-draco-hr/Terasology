@@ -1,22 +1,12 @@
 {
-  try {
-    for (    EntityData.NameValue field : eventData.getFieldList()) {
-      FieldMetadata fieldInfo=eventMetadata.getField(field.getName());
-      if (fieldInfo == null) {
-        continue;
-      }
-      Object value=fieldInfo.deserialize(field.getValue());
-      if (value != null) {
-        fieldInfo.setValue(targetEvent,value);
-      }
+  for (int i=0; i < eventData.getFieldIds().size(); ++i) {
+    byte fieldId=eventData.getFieldIds().byteAt(i);
+    FieldMetadata fieldInfo=eventMetadata.getFieldById(fieldId);
+    if (fieldInfo == null) {
+      logger.error("Unable to serialize field {}, out of bounds",fieldId);
+      continue;
     }
-    return targetEvent;
-  }
- catch (  InvocationTargetException e) {
-    logger.error("Exception during serializing event type: {}",targetEvent.getClass(),e);
-  }
-catch (  IllegalAccessException e) {
-    logger.error("Exception during serializing event type: {}",targetEvent.getClass(),e);
+    fieldInfo.deserializeOnto(targetEvent,eventData.getFieldValue(i));
   }
   return targetEvent;
 }

@@ -1,0 +1,17 @@
+{
+  Map<Class<? extends T>,Integer> result=Maps.newHashMap();
+  for (  ClassMetadata<? extends T> metadata : classLibrary) {
+    int index=result.size();
+    result.put(metadata.getType(),index);
+    int fieldId=0;
+    for (    FieldMetadata field : metadata.iterateFields()) {
+      if (fieldId >= 256) {
+        logger.error("Class {} has too many fields (>255), serialization will be incomplete",metadata.getName());
+        break;
+      }
+      metadata.setFieldId(field,(byte)fieldId);
+      fieldId++;
+    }
+  }
+  return result;
+}

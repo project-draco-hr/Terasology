@@ -1,0 +1,18 @@
+{
+  Map<Class<? extends Event>,Integer> eventIdTable=eventSerializer.getIdMapping();
+  for (  Map.Entry<Class<? extends Event>,Integer> eventMapping : eventIdTable.entrySet()) {
+    ByteString.Output fieldIds=ByteString.newOutput();
+    EventMetadata<?> metadata=entitySystemLibrary.getEventLibrary().getMetadata(eventMapping.getKey());
+    NetData.SerializationInfo.Builder info=NetData.SerializationInfo.newBuilder().setId(eventMapping.getValue()).setName(metadata.getName());
+    for (    FieldMetadata field : metadata.iterateFields()) {
+      try {
+        fieldIds.write(field.getId());
+        info.addFieldName(field.getName());
+      }
+ catch (      IOException e) {
+        throw new RuntimeException("Failed writing field id " + field.getId() + " for field "+ field.getName());
+      }
+    }
+    serverInfoMessageBuilder.addEvent(info);
+  }
+}

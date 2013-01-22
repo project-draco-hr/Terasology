@@ -1,6 +1,15 @@
 {
-  if (getter != null) {
-    return getter.invoke(obj);
+  try {
+    if (getter != null) {
+      return getter.invoke(obj);
+    }
+    return field.get(obj);
   }
-  return field.get(obj);
+ catch (  InvocationTargetException e) {
+    logger.error("Exception during access of {} from {}",field.getName(),obj.getClass(),e);
+  }
+catch (  IllegalAccessException e) {
+    logger.error("Exception during access of {} from {}",field.getName(),obj.getClass(),e);
+  }
+  return null;
 }

@@ -1,22 +1,14 @@
 {
-  if (eventData.hasTypeIndex()) {
+  if (eventData.hasType()) {
     ClassMetadata<? extends Event> metadata=null;
     if (!idTable.isEmpty()) {
-      Class<? extends Event> eventClass=idTable.inverse().get(eventData.getTypeIndex());
+      Class<? extends Event> eventClass=idTable.inverse().get(eventData.getType());
       if (eventClass != null) {
         metadata=eventLibrary.getMetadata(eventClass);
       }
     }
     if (metadata == null) {
-      logger.warn("Unable to deserialize unknown event with id: {}",eventData.getTypeIndex());
-      return null;
-    }
-    return metadata.getType();
-  }
- else   if (eventData.hasType()) {
-    ClassMetadata<? extends Event> metadata=eventLibrary.getMetadata(eventData.getType());
-    if (metadata == null) {
-      logger.warn("Unable to deserialize unknown event type: {}",eventData.getType());
+      logger.warn("Unable to deserialize unknown event with id: {}",eventData.getType());
       return null;
     }
     return metadata.getType();

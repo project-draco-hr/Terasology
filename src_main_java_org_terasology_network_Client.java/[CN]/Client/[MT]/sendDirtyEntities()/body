@@ -4,8 +4,9 @@
     int netId=dirtyIterator.next();
     EntityRef entity=networkSystem.getEntity(netId);
     boolean isOwner=networkSystem.getOwner(entity) == this;
-    EntityData.Entity entityData=entitySerializer.serialize(entity,false,new ServerComponentFieldCheck(isOwner,false));
+    EntityData.PackedEntity entityData=entitySerializer.serialize(entity,false,new ServerComponentFieldCheck(isOwner,false));
     NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.UPDATE_ENTITY).setUpdateEntity(NetData.UpdateEntityMessage.newBuilder().setEntity(entityData).setNetId(netId)).build();
     send(message);
   }
+  netDirty.clear();
 }

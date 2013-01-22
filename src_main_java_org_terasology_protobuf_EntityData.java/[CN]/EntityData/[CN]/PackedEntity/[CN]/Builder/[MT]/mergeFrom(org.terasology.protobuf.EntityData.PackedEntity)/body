@@ -1,0 +1,67 @@
+{
+  if (other == org.terasology.protobuf.EntityData.PackedEntity.getDefaultInstance())   return this;
+  if (other.hasId()) {
+    setId(other.getId());
+  }
+  if (!other.componentId_.isEmpty()) {
+    if (componentId_.isEmpty()) {
+      componentId_=other.componentId_;
+      bitField0_=(bitField0_ & ~0x00000002);
+    }
+ else {
+      ensureComponentIdIsMutable();
+      componentId_.addAll(other.componentId_);
+    }
+    onChanged();
+  }
+  if (other.hasComponentFieldCounts()) {
+    setComponentFieldCounts(other.getComponentFieldCounts());
+  }
+  if (other.hasFieldIds()) {
+    setFieldIds(other.getFieldIds());
+  }
+  if (fieldValueBuilder_ == null) {
+    if (!other.fieldValue_.isEmpty()) {
+      if (fieldValue_.isEmpty()) {
+        fieldValue_=other.fieldValue_;
+        bitField0_=(bitField0_ & ~0x00000010);
+      }
+ else {
+        ensureFieldValueIsMutable();
+        fieldValue_.addAll(other.fieldValue_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.fieldValue_.isEmpty()) {
+      if (fieldValueBuilder_.isEmpty()) {
+        fieldValueBuilder_.dispose();
+        fieldValueBuilder_=null;
+        fieldValue_=other.fieldValue_;
+        bitField0_=(bitField0_ & ~0x00000010);
+        fieldValueBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getFieldValueFieldBuilder() : null;
+      }
+ else {
+        fieldValueBuilder_.addAllMessages(other.fieldValue_);
+      }
+    }
+  }
+  if (!other.removedComponent_.isEmpty()) {
+    if (removedComponent_.isEmpty()) {
+      removedComponent_=other.removedComponent_;
+      bitField0_=(bitField0_ & ~0x00000020);
+    }
+ else {
+      ensureRemovedComponentIsMutable();
+      removedComponent_.addAll(other.removedComponent_);
+    }
+    onChanged();
+  }
+  if (other.hasParentPrefabUri()) {
+    setParentPrefabUri(other.getParentPrefabUri());
+  }
+  this.mergeExtensionFields(other);
+  this.mergeUnknownFields(other.getUnknownFields());
+  return this;
+}

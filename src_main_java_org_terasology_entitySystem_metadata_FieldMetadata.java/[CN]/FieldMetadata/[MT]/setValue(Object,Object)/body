@@ -1,8 +1,16 @@
 {
-  if (setter != null) {
-    setter.invoke(target,value);
-  }
+  try {
+    if (setter != null) {
+      setter.invoke(target,value);
+    }
  else {
-    field.set(target,value);
+      field.set(target,value);
+    }
+  }
+ catch (  InvocationTargetException e) {
+    logger.error("Exception during setting of {} from {}",field.getName(),target.getClass(),e);
+  }
+catch (  IllegalAccessException e) {
+    logger.error("Exception during setting of {} from {}",field.getName(),target.getClass(),e);
   }
 }

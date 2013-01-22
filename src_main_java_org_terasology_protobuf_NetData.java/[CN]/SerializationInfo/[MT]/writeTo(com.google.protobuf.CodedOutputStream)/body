@@ -10,12 +10,8 @@
   for (int i=0; i < fieldName_.size(); i++) {
     output.writeBytes(3,fieldName_.getByteString(i));
   }
-  if (getFieldIdList().size() > 0) {
-    output.writeRawVarint32(34);
-    output.writeRawVarint32(fieldIdMemoizedSerializedSize);
-  }
-  for (int i=0; i < fieldId_.size(); i++) {
-    output.writeInt32NoTag(fieldId_.get(i));
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeBytes(4,fieldIds_);
   }
   extensionWriter.writeUntil(536870912,output);
   getUnknownFields().writeTo(output);

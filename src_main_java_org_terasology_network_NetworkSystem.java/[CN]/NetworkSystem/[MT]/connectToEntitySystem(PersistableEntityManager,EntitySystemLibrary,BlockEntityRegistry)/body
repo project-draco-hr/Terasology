@@ -19,9 +19,7 @@
     componentLibrary.register(componentMetadata.getType(),componentMetadata.getNames());
   }
   eventSerializer=new EventSerializer(eventLibrary);
-  entitySerializer=new EntitySerializer(entityManager,componentLibrary);
-  entitySerializer.setUsingFieldIds(true);
-  entitySerializer.setIgnoringEntityId(true);
+  entitySerializer=new PackedEntitySerializer(entityManager,componentLibrary);
   entitySerializer.setComponentSerializeCheck(new NetComponentSerializeCheck());
   if (mode == NetworkMode.CLIENT) {
     applySerializationTables();

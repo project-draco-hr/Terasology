@@ -1,0 +1,16 @@
+{
+  for (  EntityData.Component componentData : entityData.getComponentList()) {
+    ComponentMetadata<? extends Component> metadata=componentSerializer.getComponentMetadata(componentData);
+    if (metadata == null || !componentSerializeCheck.serialize(metadata)) {
+      continue;
+    }
+    Component existingComponent=componentMap.get(metadata.getType());
+    if (existingComponent == null) {
+      Component newComponent=componentSerializer.deserialize(componentData);
+      componentMap.put(metadata.getType(),newComponent);
+    }
+ else {
+      componentSerializer.deserializeOnto(existingComponent,componentData,FieldSerializeCheck.NullCheck.<Component>newInstance());
+    }
+  }
+}

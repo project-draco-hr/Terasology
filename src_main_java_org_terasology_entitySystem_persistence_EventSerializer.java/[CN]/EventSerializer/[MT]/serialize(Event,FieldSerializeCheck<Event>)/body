@@ -6,13 +6,19 @@
   }
   EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
   serializeEventType(event,eventData);
+  ByteString.Output fieldIds=ByteString.newOutput();
   for (  FieldMetadata field : eventMetadata.iterateFields()) {
     if (check.shouldSerializeField(field,event)) {
-      EntityData.NameValue fieldData=field.serialize(event,false);
-      if (fieldData != null) {
-        eventData.addField(fieldData);
+      try {
+        EntityData.Value serializedValue=field.serialize(event);
+        eventData.addFieldValue(serializedValue);
+        fieldIds.write(field.getId());
+      }
+ catch (      IOException e) {
+        logger.error("Exception during serializing of {}",event.getClass(),e);
       }
     }
   }
+  eventData.setFieldIds(fieldIds.toByteString());
   return eventData.build();
 }
