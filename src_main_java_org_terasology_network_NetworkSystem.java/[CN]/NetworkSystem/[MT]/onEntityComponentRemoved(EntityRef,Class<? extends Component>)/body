@@ -1,0 +1,15 @@
+{
+  NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+  if (netComp != null) {
+    ComponentMetadata<? extends Component> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
+switch (mode) {
+case SERVER:
+      if (metadata.isReplicated()) {
+        for (        Client client : clientList) {
+          client.setComponentRemoved(netComp.networkId,component);
+        }
+      }
+    break;
+}
+}
+}

@@ -6,15 +6,10 @@ switch (mode) {
 case SERVER:
       if (metadata.isReplicated()) {
         for (        Client client : clientList) {
-          client.setNetDirty(netComp.networkId);
+          client.setComponentAdded(netComp.networkId,component);
         }
       }
     break;
-case CLIENT:
-  if (server != null && metadata.isReplicatedFromOwner() && getOwnerEntity(entity).equals(server.getEntity())) {
-    server.setNetDirty(netComp.networkId);
-  }
-break;
 }
 }
 }

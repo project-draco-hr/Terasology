@@ -8,6 +8,11 @@
       eventSystem.send(createEntityRef(entityId),ChangedComponentEvent.newInstance(),component);
     }
   }
-  notifyChangeSubscribers(getEntity(entityId),component.getClass());
+  if (oldComponent == null) {
+    notifyComponentAdded(getEntity(entityId),component.getClass());
+  }
+ else {
+    notifyComponentChanged(getEntity(entityId),component.getClass());
+  }
   return component;
 }

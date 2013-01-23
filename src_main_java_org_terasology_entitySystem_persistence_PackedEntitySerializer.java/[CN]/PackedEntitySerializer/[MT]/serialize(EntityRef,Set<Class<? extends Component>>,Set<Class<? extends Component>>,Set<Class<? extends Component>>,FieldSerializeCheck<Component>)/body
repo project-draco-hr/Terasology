@@ -1,0 +1,25 @@
+{
+  EntityData.PackedEntity.Builder entity=EntityData.PackedEntity.newBuilder();
+  ByteString.Output fieldIds=ByteString.newOutput();
+  ByteString.Output componentFieldCounts=ByteString.newOutput();
+  for (  Class<? extends Component> componentType : added) {
+    serializeComponentFull(entityRef.getComponent(componentType),false,fieldCheck,entity,fieldIds,componentFieldCounts);
+  }
+  for (  Class<? extends Component> componentType : changed) {
+    Component comp=entityRef.getComponent(componentType);
+    if (comp != null) {
+      serializeComponentFull(comp,true,fieldCheck,entity,fieldIds,componentFieldCounts);
+    }
+  }
+  for (  Class<? extends Component> componentType : removed) {
+    entity.addRemovedComponent(idTable.get(componentType));
+  }
+  entity.setFieldIds(fieldIds.toByteString());
+  entity.setComponentFieldCounts(componentFieldCounts.toByteString());
+  if (entity.getFieldIds().isEmpty()) {
+    return null;
+  }
+ else {
+    return entity.build();
+  }
+}
