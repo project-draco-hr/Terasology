@@ -1,11 +1,11 @@
 {
-  if (value.getIntegerCount() > 0) {
-    return new NetEntityRef(value.getInteger(0),networkSystem);
-  }
- else   if (value.getValueCount() > 0 && value.getValue(0).getIntegerCount() > 2) {
-    EntityData.Value vec3iData=value.getValue(0);
-    Vector3i pos=new Vector3i(vec3iData.getInteger(0),vec3iData.getInteger(1),vec3iData.getInteger(2));
+  if (value.getIntegerCount() > 2) {
+    Vector3i pos=new Vector3i(value.getInteger(0),value.getInteger(1),value.getInteger(2));
     return blockEntityRegistry.getOrCreateBlockEntityAt(pos);
+  }
+  if (value.getIntegerCount() > 0) {
+    EntityRef result=new NetEntityRef(value.getInteger(0),networkSystem);
+    return result;
   }
   return EntityRef.NULL;
 }

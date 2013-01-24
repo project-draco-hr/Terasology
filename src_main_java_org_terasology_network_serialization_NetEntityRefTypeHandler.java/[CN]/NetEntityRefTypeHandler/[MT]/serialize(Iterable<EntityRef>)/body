@@ -1,15 +1,15 @@
 {
   EntityData.Value.Builder result=EntityData.Value.newBuilder();
   for (  EntityRef ref : value) {
-    NetworkComponent netComponent=ref.getComponent(NetworkComponent.class);
-    if (netComponent != null) {
-      result.addInteger(netComponent.networkId);
+    BlockComponent blockComponent=ref.getComponent(BlockComponent.class);
+    if (blockComponent != null) {
+      Vector3i blockPos=blockComponent.getPosition();
+      result.addValue(EntityData.Value.newBuilder().addInteger(blockPos.x).addInteger(blockPos.y).addInteger(blockPos.z));
     }
  else {
-      BlockComponent blockComponent=ref.getComponent(BlockComponent.class);
-      if (blockComponent != null) {
-        Vector3i blockPos=blockComponent.getPosition();
-        result.addValue(EntityData.Value.newBuilder().addInteger(blockPos.x).addInteger(blockPos.y).addInteger(blockPos.z));
+      NetworkComponent netComponent=ref.getComponent(NetworkComponent.class);
+      if (netComponent != null) {
+        result.addInteger(netComponent.networkId);
       }
  else {
         result.addInteger(0);

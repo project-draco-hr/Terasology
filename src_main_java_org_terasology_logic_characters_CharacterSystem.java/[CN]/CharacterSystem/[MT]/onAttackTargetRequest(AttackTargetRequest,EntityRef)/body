@@ -1,8 +1,10 @@
 {
-  int damage=1;
-  if (event.getItem().exists() && !network.getOwnerEntity(event.getItem()).equals(event.getClient())) {
-    return;
+  if (event.getItem().exists()) {
+    if (!character.equals(event.getItem().getComponent(ItemComponent.class).container)) {
+      return;
+    }
   }
+  int damage=1;
   ItemComponent item=event.getItem().getComponent(ItemComponent.class);
   if (item != null) {
     damage=item.baseDamage;

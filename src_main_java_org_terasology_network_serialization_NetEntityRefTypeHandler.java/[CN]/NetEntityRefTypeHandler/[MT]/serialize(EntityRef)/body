@@ -1,14 +1,12 @@
 {
+  BlockComponent blockComponent=value.getComponent(BlockComponent.class);
+  if (blockComponent != null) {
+    Vector3i pos=blockComponent.getPosition();
+    return EntityData.Value.newBuilder().addInteger(pos.x).addInteger(pos.y).addInteger(pos.z).build();
+  }
   NetworkComponent netComponent=value.getComponent(NetworkComponent.class);
   if (netComponent != null) {
     return EntityData.Value.newBuilder().addInteger(netComponent.networkId).build();
-  }
- else {
-    BlockComponent blockComponent=value.getComponent(BlockComponent.class);
-    if (blockComponent != null) {
-      Vector3i pos=blockComponent.getPosition();
-      return EntityData.Value.newBuilder().addValue(EntityData.Value.newBuilder().addInteger(pos.x).addInteger(pos.y).addInteger(pos.z)).build();
-    }
   }
   return null;
 }

@@ -1,6 +1,8 @@
 {
-  if (!network.getOwnerEntity(event.getItem()).equals(event.getClient())) {
-    return;
+  if (event.getItem().exists()) {
+    if (!character.equals(event.getItem().getComponent(ItemComponent.class).container)) {
+      return;
+    }
   }
   LocationComponent location=character.getComponent(LocationComponent.class);
   CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
