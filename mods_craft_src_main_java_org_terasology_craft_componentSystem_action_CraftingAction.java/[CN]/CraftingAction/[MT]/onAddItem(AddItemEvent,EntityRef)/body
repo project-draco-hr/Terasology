@@ -1,0 +1,70 @@
+{
+  CraftingActionComponent craftingComponent=entity.getComponent(CraftingActionComponent.class);
+  int selectedCell=getSelectedItemFromCraftBlock(entity,craftingComponent.getCurrentLevel());
+  EntityRef entityFromPlayer=event.getInstigator();
+  EntityRef selectedEntity=craftingComponent.getCurrentLevelElements().get(selectedCell);
+  float percent=event.getPercent();
+  byte sendingCount=1;
+  byte returnedCount=0;
+  ItemComponent playerItem=entityFromPlayer.getComponent(ItemComponent.class);
+  if (playerItem == null) {
+    return;
+  }
+  if (percent > 0 && playerItem.stackCount > 1) {
+    sendingCount=(byte)Math.round(percent * playerItem.stackCount);
+    playerItem.stackCount-=sendingCount;
+    if (playerItem.stackCount < 0) {
+      playerItem.stackCount=0;
+      sendingCount--;
+    }
+  }
+ else {
+    playerItem.stackCount--;
+  }
+  ItemComponent craftItem=selectedEntity.getComponent(ItemComponent.class);
+  if (craftItem != null && craftItem.name.toLowerCase().equals(playerItem.name.toLowerCase())) {
+    if (craftItem.stackCount >= InventorySystem.MAX_STACK) {
+      return;
+    }
+    if ((craftItem.stackCount + sendingCount) > InventorySystem.MAX_STACK) {
+      returnedCount=(byte)((craftItem.stackCount + sendingCount) - InventorySystem.MAX_STACK);
+      craftItem.stackCount=InventorySystem.MAX_STACK;
+    }
+ else {
+      craftItem.stackCount+=sendingCount;
+    }
+    selectedEntity.saveComponent(craftItem);
+  }
+ else   if (selectedEntity.equals(EntityRef.NULL)) {
+    if (entityFromPlayer.getComponent(ItemComponent.class) == null) {
+      return;
+    }
+    EntityRef entityToCraftBlock=entityManager.copy(entityFromPlayer);
+    craftItem=entityToCraftBlock.getComponent(ItemComponent.class);
+    craftItem.stackCount=sendingCount;
+    entityToCraftBlock.saveComponent(craftItem);
+    craftingComponent.getCurrentLevelElements().set(selectedCell,entityToCraftBlock);
+  }
+ else {
+    EntityRef entityToCraftBlock=entityManager.copy(entityFromPlayer);
+    craftItem=entityToCraftBlock.getComponent(ItemComponent.class);
+    craftItem.stackCount=sendingCount;
+    entityToCraftBlock.saveComponent(craftItem);
+    EntityRef player=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
+    ItemComponent tItem=selectedEntity.getComponent(ItemComponent.class);
+    tItem.container=EntityRef.NULL;
+    selectedEntity.saveComponent(tItem);
+    player.send(new ReceiveItemEvent(entityManager.copy(selectedEntity)));
+    craftingComponent.getCurrentLevelElements().set(selectedCell,entityToCraftBlock);
+  }
+  playerItem.stackCount+=returnedCount;
+  if (playerItem.stackCount == 0) {
+    entityFromPlayer.destroy();
+  }
+ else {
+    entityFromPlayer.saveComponent(playerItem);
+  }
+  entity.saveComponent(craftingComponent);
+  craftingComponent.possibleItem=tryCraft(entity);
+  entity.saveComponent(craftingComponent);
+}

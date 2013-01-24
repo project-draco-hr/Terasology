@@ -1,0 +1,48 @@
+{
+  CraftingActionComponent craftingComponent=entity.getComponent(CraftingActionComponent.class);
+  int selectedCell=getSelectedItemFromCraftBlock(entity,craftingComponent.getCurrentLevel());
+  EntityRef selectedEntity=craftingComponent.getCurrentLevelElements().get(selectedCell);
+  if (selectedEntity.equals(EntityRef.NULL)) {
+    return;
+  }
+  float percent=event.getPercent();
+  byte sendingCount=1;
+  ItemComponent craftItem=selectedEntity.getComponent(ItemComponent.class);
+  if (percent > 0 && craftItem.stackCount > 1) {
+    sendingCount=(byte)Math.round(percent * craftItem.stackCount);
+    craftItem.stackCount-=sendingCount;
+    if (craftItem.stackCount < 0) {
+      craftItem.stackCount=0;
+      sendingCount--;
+    }
+  }
+ else {
+    craftItem.stackCount--;
+  }
+  EntityRef entityForPlayer=entityManager.copy(selectedEntity);
+  ItemComponent enityForPlayerItem=entityForPlayer.getComponent(ItemComponent.class);
+  enityForPlayerItem.container=EntityRef.NULL;
+  enityForPlayerItem.stackCount=sendingCount;
+  entityForPlayer.saveComponent(enityForPlayerItem);
+  EntityRef player=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
+  player.send(new ReceiveItemEvent(entityForPlayer));
+  if (craftItem.stackCount == 0) {
+    craftingComponent.deleteItem(getSelectedItemFromCraftBlock(entity,craftingComponent.getCurrentLevel()));
+    entity.saveComponent(craftingComponent);
+  }
+ else {
+    selectedEntity.saveComponent(craftItem);
+  }
+  checkEmptyCraftBlock(entity);
+  if (entity.exists()) {
+    EntityRef possibleCraft=tryCraft(entity);
+    if (!possibleCraft.equals(EntityRef.NULL)) {
+      craftingComponent.possibleItem=possibleCraft;
+      entity.saveComponent(craftingComponent);
+    }
+ else     if (!craftingComponent.possibleItem.equals(EntityRef.NULL)) {
+      craftingComponent.possibleItem=EntityRef.NULL;
+      entity.saveComponent(craftingComponent);
+    }
+  }
+}

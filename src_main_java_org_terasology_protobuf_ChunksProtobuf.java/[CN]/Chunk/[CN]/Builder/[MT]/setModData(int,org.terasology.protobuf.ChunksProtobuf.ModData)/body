@@ -1,0 +1,14 @@
+{
+  if (modDataBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureModDataIsMutable();
+    modData_.set(index,value);
+    onChanged();
+  }
+ else {
+    modDataBuilder_.setMessage(index,value);
+  }
+  return this;
+}

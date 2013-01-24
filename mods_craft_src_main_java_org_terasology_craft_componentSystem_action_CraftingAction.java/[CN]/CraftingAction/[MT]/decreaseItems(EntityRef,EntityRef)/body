@@ -1,0 +1,38 @@
+{
+  CraftingActionComponent craftingComponent=craftBlockEntity.getComponent(CraftingActionComponent.class);
+  if (craftingComponent == null) {
+    return;
+  }
+  int countLevels=craftingComponent.getAllElements().size();
+  for (int i=0; i < countLevels; i++) {
+    for (int j=0; j < CraftingActionComponent.MAX_SLOTS; j++) {
+      ArrayList<EntityRef> list=craftingComponent.getLevelElements(CraftingActionComponent.levels[i]);
+      if (list == null) {
+        continue;
+      }
+      EntityRef itemEntity=list.get(j);
+      if (itemEntity != null) {
+        ItemComponent item=itemEntity.getComponent(ItemComponent.class);
+        if (item == null) {
+          continue;
+        }
+        item.stackCount--;
+        if (item.stackCount <= 0) {
+          craftingComponent.deleteItem(i,j);
+        }
+ else {
+          itemEntity.saveComponent(item);
+        }
+      }
+    }
+  }
+  if (craftingComponent.isRefinement) {
+    LocalPlayerComponent localPlayer=playerEntity.getComponent(LocalPlayerComponent.class);
+    InventoryComponent inventory=playerEntity.getComponent(InventoryComponent.class);
+    ItemComponent instigatorItem=inventory.itemSlots.get(localPlayer.selectedTool).getComponent(ItemComponent.class);
+    instigatorItem.stackCount--;
+    if (instigatorItem.stackCount < 1) {
+      inventory.itemSlots.get(localPlayer.selectedTool).destroy();
+    }
+  }
+}

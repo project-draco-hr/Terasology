@@ -1,0 +1,9 @@
+{
+  lock.readLock().lock();
+  try {
+    return arrayNames.values().toArray(new Entry[arrayNames.size()]);
+  }
+  finally {
+    lock.readLock().unlock();
+  }
+}

@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(chunk,"The parameter 'chunk' must not be null");
+  final TeraArrays t=TeraArrays.getInstance();
+  final ChunksProtobuf.Chunk.Builder b=ChunksProtobuf.Chunk.newBuilder().setX(chunk.pos.x).setY(chunk.pos.y).setZ(chunk.pos.z).setState(chunk.chunkState.protobufState).setBlockData(t.encode(chunk.blockData)).setSunlightData(t.encode(chunk.sunlightData)).setLightData(t.encode(chunk.lightData)).setExtraData(t.encode(chunk.extraData));
+  return b.build();
+}

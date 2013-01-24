@@ -1,7 +1,7 @@
 {
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("blur");
   shader.enable();
-  shader.setFloat("radius",2.5f);
+  shader.setFloat("radius",1.5f * Config.getInstance().getBlurIntensity());
   PostProcessingRenderer.getInstance().getFBO("sceneBlur" + id).bind();
   glViewport(0,0,512,512);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

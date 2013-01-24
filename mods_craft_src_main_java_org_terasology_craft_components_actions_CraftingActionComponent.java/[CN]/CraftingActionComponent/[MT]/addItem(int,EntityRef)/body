@@ -1,0 +1,16 @@
+{
+  if (!elements.containsKey(levels[currentLevel])) {
+    ArrayList<EntityRef> list=new ArrayList<EntityRef>();
+    for (int i=0; i < MAX_SLOTS; i++) {
+      if (slot == i) {
+        list.add(entity);
+      }
+ else {
+        list.add(EntityRef.NULL);
+      }
+    }
+    elements.put(levels[currentLevel],list);
+    return;
+  }
+  elements.get(levels[currentLevel]).set(slot,entity);
+}

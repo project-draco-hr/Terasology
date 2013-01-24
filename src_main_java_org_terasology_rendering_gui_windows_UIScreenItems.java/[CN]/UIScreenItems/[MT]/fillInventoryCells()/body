@@ -18,7 +18,15 @@
         UIItemCell cell=new UIItemCell(null,cellSize);
         cell.setDrag(false);
         cell.setItemEntity(entity,0);
-        cell.setDisplayItemCount(false);
+        ItemComponent itemComponent=entity.getComponent(ItemComponent.class);
+        if (!itemComponent.stackId.isEmpty()) {
+          itemComponent.stackCount=InventorySystem.MAX_STACK;
+          cell.setDisplayItemCount(true);
+          entity.saveComponent(itemComponent);
+        }
+ else {
+          cell.setDisplayItemCount(false);
+        }
         cell.setVisible(true);
         cell.addClickListener(clickListener);
         cells.add(cell);

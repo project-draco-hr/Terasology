@@ -1,0 +1,17 @@
+{
+  lock.writeLock().lock();
+  try {
+    final Entry entry=new Entry(factory,protobufType);
+    Preconditions.checkState(!arrayClasses.containsKey(entry.arrayClass),"There is already a class entry for the supplied array class: " + entry.arrayClassName);
+    arrayClasses.put(entry.arrayClass,entry);
+    Preconditions.checkState(!arrayNames.containsKey(entry.arrayClassName),"There is already a name entry for the supplied array class: " + entry.arrayClassName);
+    arrayNames.put(entry.arrayClassName,entry);
+    if (protobufType != ChunksProtobuf.Type.Unknown) {
+      Preconditions.checkState(!arrayTypes.containsKey(protobufType),"There is already a protobuf type entry for the supplied array class: " + entry.arrayClassName);
+      arrayTypes.put(protobufType,entry);
+    }
+  }
+  finally {
+    lock.writeLock().unlock();
+  }
+}

@@ -1,8 +1,6 @@
 {
-  float lightValueSun=worldProvider.getSunlight(pos);
-  lightValueSun/=15.0f;
+  float lightValueSun=(float)Math.pow(0.76,16 - worldProvider.getSunlight(pos));
   lightValueSun*=getDaylight();
-  float lightValueBlock=worldProvider.getLight(pos);
-  lightValueBlock/=15f;
-  return (float)TeraMath.clamp(lightValueSun + lightValueBlock * (1.0 - lightValueSun));
+  float lightValueBlock=(float)Math.pow(0.76,16 - worldProvider.getLight(pos));
+  return (lightValueSun + lightValueBlock * (1.0f - lightValueSun)) + (1.0f - (float)getDaylight()) * 0.05f;
 }

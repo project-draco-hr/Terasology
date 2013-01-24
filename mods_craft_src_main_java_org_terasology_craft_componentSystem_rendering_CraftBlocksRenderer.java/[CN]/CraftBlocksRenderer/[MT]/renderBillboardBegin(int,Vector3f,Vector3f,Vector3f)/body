@@ -1,0 +1,20 @@
+{
+  glDisable(GL11.GL_CULL_FACE);
+  if (textureId >= 0) {
+    ShaderManager.getInstance().enableDefaultTextured();
+    glBindTexture(GL11.GL_TEXTURE_2D,textureId);
+  }
+  glDepthMask(false);
+  glEnable(GL11.GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glPushMatrix();
+  glTranslated(position.x,position.y,position.z);
+  glPushMatrix();
+  applyOrientation();
+  if (offset != null) {
+    glTranslatef(offset.x,offset.y,offset.z);
+  }
+  if (scale != null) {
+    glScalef(scale.x,scale.y,scale.z);
+  }
+}

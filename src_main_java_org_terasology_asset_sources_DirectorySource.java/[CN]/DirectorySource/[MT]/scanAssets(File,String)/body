@@ -1,0 +1,23 @@
+{
+  for (  File child : file.listFiles()) {
+    if (child.isDirectory()) {
+      scanAssets(child,basePath);
+    }
+ else     if (child.isFile()) {
+      String key=child.getAbsolutePath();
+      if (key.startsWith(basePath)) {
+        key=key.substring(basePath.length() + 1);
+        key=key.replace(File.separatorChar,'/');
+        AssetUri uri=getUri(key);
+        if (uri != null) {
+          try {
+            addItem(uri,child.toURI().toURL());
+          }
+ catch (          MalformedURLException e) {
+            logger.warn("Failed to load asset {}",key,e.getMessage());
+          }
+        }
+      }
+    }
+  }
+}

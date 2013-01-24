@@ -13,7 +13,8 @@
       mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].tex.get(cTex + 1));
       mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].tex.get(cTex + 2));
       float[] result=new float[3];
-      calcLightingValuesForVertexPos(worldView,vertexPos,result);
+      Vector3f normal=new Vector3f(mesh._vertexElements[j].normals.get(i),mesh._vertexElements[j].normals.get(i + 1),mesh._vertexElements[j].normals.get(i + 2));
+      calcLightingValuesForVertexPos(worldView,vertexPos,result,normal);
       mesh._vertexElements[j].finalVertices.putFloat(result[0]);
       mesh._vertexElements[j].finalVertices.putFloat(result[1]);
       mesh._vertexElements[j].finalVertices.putFloat(result[2]);
@@ -21,9 +22,9 @@
       mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].color.get(cColor + 1));
       mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].color.get(cColor + 2));
       mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].color.get(cColor + 3));
-      mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].normals.get(i));
-      mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].normals.get(i + 1));
-      mesh._vertexElements[j].finalVertices.putFloat(mesh._vertexElements[j].normals.get(i + 2));
+      mesh._vertexElements[j].finalVertices.putFloat(normal.x);
+      mesh._vertexElements[j].finalVertices.putFloat(normal.y);
+      mesh._vertexElements[j].finalVertices.putFloat(normal.z);
     }
     mesh._vertexElements[j].finalIndices=BufferUtils.createIntBuffer(mesh._vertexElements[j].indices.size());
     TIntIterator indexIterator=mesh._vertexElements[j].indices.iterator();

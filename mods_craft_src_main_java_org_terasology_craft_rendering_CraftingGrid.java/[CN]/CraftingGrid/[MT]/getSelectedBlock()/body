@@ -1,0 +1,9 @@
+{
+  Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  for (int i=0; i < cellsRender.size(); i++) {
+    if (cellsRender.get(i).getAABB().intersectRectangle(camera.getPosition(),camera.getViewingDirection())) {
+      return i;
+    }
+  }
+  return 0;
+}

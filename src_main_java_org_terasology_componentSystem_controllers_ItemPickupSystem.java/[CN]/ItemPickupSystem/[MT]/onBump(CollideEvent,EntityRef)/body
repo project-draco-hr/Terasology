@@ -1,0 +1,13 @@
+{
+  DroppedItemTypeComponent droppedItem=entity.getComponent(DroppedItemTypeComponent.class);
+  ReceiveItemEvent giveItemEvent=new ReceiveItemEvent(droppedItem.placedEntity);
+  event.getOtherEntity().send(giveItemEvent);
+  ItemComponent itemComp=droppedItem.placedEntity.getComponent(ItemComponent.class);
+  if (itemComp != null && !itemComp.container.exists()) {
+    droppedItem.placedEntity.destroy();
+  }
+ else {
+    AudioManager.play(new AssetUri(AssetType.SOUND,"engine:Loot"));
+    entity.destroy();
+  }
+}

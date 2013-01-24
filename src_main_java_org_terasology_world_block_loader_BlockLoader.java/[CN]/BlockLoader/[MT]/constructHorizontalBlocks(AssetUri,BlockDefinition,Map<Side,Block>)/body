@@ -5,6 +5,7 @@
   BlockShape shape=getShape(blockDef);
   for (  Rotation rot : Rotation.horizontalRotations()) {
     Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
+    block.setDirection(rot.rotate(Side.FRONT));
     applyShape(block,shape,tileUris,rot);
     for (    BlockPart part : BlockPart.values()) {
       block.setColorSource(part,colorSourceMap.get(part));

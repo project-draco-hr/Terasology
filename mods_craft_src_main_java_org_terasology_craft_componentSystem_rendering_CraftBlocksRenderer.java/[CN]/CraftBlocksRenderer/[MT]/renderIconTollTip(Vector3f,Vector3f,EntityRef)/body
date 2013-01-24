@@ -1,0 +1,59 @@
+{
+  ItemComponent itemComponent=entity.getComponent(ItemComponent.class);
+  if (itemComponent == null)   return;
+  WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+  Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
+  Block block=null;
+  Icon icon=null;
+  if (itemComponent.icon.isEmpty()) {
+    BlockItemComponent blockItem=entity.getComponent(BlockItemComponent.class);
+    if (blockItem != null) {
+      block=blockItem.blockFamily.getArchetypeBlock();
+    }
+  }
+ else {
+    icon=Icon.get(itemComponent.icon);
+  }
+  if (icon != null) {
+    glDisable(GL11.GL_CULL_FACE);
+    glDepthMask(false);
+    ShaderManager.getInstance().enableDefaultTextured();
+    glBindTexture(GL11.GL_TEXTURE_2D,terrainTex != null ? terrainTex.getId() : 0);
+    glEnable(GL11.GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL11.GL_ONE_MINUS_SRC_ALPHA);
+  }
+  glPushMatrix();
+  glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
+  glPushMatrix();
+  applyOrientation();
+  if (offset != null) {
+    glTranslatef(offset.x,offset.y,offset.z);
+  }
+  glScalef(0.2f,0.2f,0.2f);
+  if (block != null) {
+    GL11.glRotatef(170f,-1f,0f,0f);
+    GL11.glRotatef(-16f,0f,1f,0f);
+    block.renderWithLightValue(1.0f);
+  }
+ else {
+    float offsetX=icon.getX() * 0.0625f, offsetY=icon.getY() * 0.0625f;
+    float sizeX=icon.getX() * 0.0625f + 0.0624f, sizeY=icon.getY() * 0.0625f + 0.0624f;
+    glBegin(GL_QUADS);
+    GL11.glTexCoord2f(offsetX,sizeY);
+    GL11.glVertex3f(-0.5f,-0.5f,0.0f);
+    GL11.glTexCoord2f(sizeX,sizeY);
+    GL11.glVertex3f(0.5f,-0.5f,0.0f);
+    GL11.glTexCoord2f(sizeX,offsetY);
+    GL11.glVertex3f(0.5f,0.5f,0.0f);
+    GL11.glTexCoord2f(offsetX,offsetY);
+    GL11.glVertex3f(-0.5f,0.5f,0.0f);
+    glEnd();
+  }
+  glPopMatrix();
+  glPopMatrix();
+  if (icon != null) {
+    glDisable(GL11.GL_BLEND);
+    glDepthMask(true);
+    glEnable(GL11.GL_CULL_FACE);
+  }
+}

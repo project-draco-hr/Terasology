@@ -1,15 +1,13 @@
 {
   resetStats();
   updateAndQueueVisibleChunks();
-  if (Config.getInstance().isComplexWater()) {
-    PostProcessingRenderer.getInstance().beginRenderReflectedScene();
-    glCullFace(GL11.GL_FRONT);
-    getActiveCamera().setReflected(true);
-    renderWorldReflection(getActiveCamera());
-    getActiveCamera().setReflected(false);
-    glCullFace(GL11.GL_BACK);
-    PostProcessingRenderer.getInstance().endRenderReflectedScene();
-  }
+  PostProcessingRenderer.getInstance().beginRenderReflectedScene();
+  glCullFace(GL11.GL_FRONT);
+  getActiveCamera().setReflected(true);
+  renderWorldReflection(getActiveCamera());
+  getActiveCamera().setReflected(false);
+  glCullFace(GL11.GL_BACK);
+  PostProcessingRenderer.getInstance().endRenderReflectedScene();
   PostProcessingRenderer.getInstance().beginRenderScene();
   renderWorld(getActiveCamera());
   PostProcessingRenderer.getInstance().endRenderScene();
@@ -20,7 +18,7 @@
     glClear(GL_DEPTH_BUFFER_BIT);
     glPushMatrix();
     glLoadIdentity();
-    activeCamera.loadProjectionMatrix(80f);
+    activeCamera.loadProjectionMatrix(90f);
     PerformanceMonitor.startActivity("Render First Person");
     for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
       renderer.renderFirstPerson();

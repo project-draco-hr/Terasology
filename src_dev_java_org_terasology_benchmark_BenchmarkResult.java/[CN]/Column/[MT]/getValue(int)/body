@@ -1,0 +1,9 @@
+{
+  Preconditions.checkElementIndex(rep,reps,"Parameter 'rep'");
+  if (cache[rep] == null) {
+    String v=Preconditions.checkNotNull(getValueInternal(rep),"BenchmarkResult::Column::getValueInternal() must never return null (rep=" + rep + ")");
+    cache[rep]=v;
+    return v;
+  }
+  return cache[rep];
+}

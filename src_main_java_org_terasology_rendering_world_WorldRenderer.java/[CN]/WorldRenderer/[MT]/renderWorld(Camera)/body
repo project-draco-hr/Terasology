@@ -9,28 +9,27 @@
     renderDebugCollision(camera);
   }
   glEnable(GL_LIGHT0);
-  boolean headUnderWater;
-  headUnderWater=cameraMode == CAMERA_MODE.PLAYER && isUnderwater();
+  boolean headUnderWater=cameraMode == CAMERA_MODE.PLAYER && isUnderWater();
   if (wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-  PerformanceMonitor.startActivity("RenderOpaque");
+  PerformanceMonitor.startActivity("Render Objects (Opaque)");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderOpaque();
   }
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render ChunkOpaque");
+  PerformanceMonitor.startActivity("Render Chunks (Opaque)");
   while (renderQueueChunksOpaque.size() > 0)   renderChunk(renderQueueChunksOpaque.poll(),ChunkMesh.RENDER_PHASE.OPAQUE,camera);
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render ChunkTransparent");
+  PerformanceMonitor.startActivity("Render Chunks (Transparent)");
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   while (renderQueueChunksSortedBillboards.size() > 0)   renderChunk(renderQueueChunksSortedBillboards.poll(),ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render Transparent");
+  PerformanceMonitor.startActivity("Render Objects (Transparent)");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderTransparent();
   }
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render ChunkWaterIce");
+  PerformanceMonitor.startActivity("Render Chunks (Water, Ice)");
   if (headUnderWater) {
     glDisable(GL11.GL_CULL_FACE);
   }
@@ -47,12 +46,14 @@
       }
     }
   }
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render Overlays");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderOverlay();
   }
+  PerformanceMonitor.endActivity();
   glDisable(GL_BLEND);
   if (headUnderWater)   glEnable(GL11.GL_CULL_FACE);
   if (wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
   glDisable(GL_LIGHT0);
-  PerformanceMonitor.endActivity();
 }

@@ -1,0 +1,32 @@
+{
+  if (!isGUIInit) {
+    initCraftUI();
+    isGUIInit=true;
+  }
+  if (!localPlayer.isValid())   return;
+  EntityRef entity=localPlayer.getCharacterEntity();
+  LocalPlayerComponent localPlayerComponent=entity.getComponent(LocalPlayerComponent.class);
+  if (localPlayerComponent.isDead) {
+    return;
+  }
+  boolean craftingBlockIsTarget=cameraTargetSystem.getTarget().getComponent(CraftingActionComponent.class) != null;
+  if (toolbarChanged && !craftingBlockIsTarget) {
+    UIItemContainer toolbar=(UIItemContainer)guiManager.getWindowById("hud").getElementById("toolbar");
+    toolbar.setEntity(localPlayer.getCharacterEntity(),0,9);
+    toolbarChanged=false;
+  }
+  UIDisplayContainer inventory=(UIDisplayContainer)guiManager.getWindowById("hud").getElementById("hud:inventory");
+  if (inventory.isVisible() && timer.getTimeInMs() - lastTimeShowInventory >= 1500) {
+    inventory.setVisible(false);
+  }
+  if (craftingBlockIsTarget) {
+    if (!localPlayerSystem.getAABBRenderer().equals(craftingGridRenderer)) {
+      localPlayerSystem.setAABBRenderer(craftingGridRenderer);
+    }
+  }
+ else {
+    if (!localPlayerSystem.getAABBRenderer().equals(aabbRenderer)) {
+      localPlayerSystem.setAABBRenderer(aabbRenderer);
+    }
+  }
+}

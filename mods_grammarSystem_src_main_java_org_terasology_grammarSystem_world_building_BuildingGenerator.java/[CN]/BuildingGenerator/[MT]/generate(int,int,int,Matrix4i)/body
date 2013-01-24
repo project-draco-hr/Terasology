@@ -1,0 +1,40 @@
+{
+  logger.info("Starting structure generation with maximal dimension {}x{}x{} (width, height, depth)",width,height,depth);
+  Shape initialAxiom=system.getInitialAxiom();
+  initialAxiom.setDimension(width,height,depth);
+  initialAxiom.setMatrix(matrix);
+  Tree root=new TreeNode(initialAxiom);
+  Queue<TreeNode> activeNodes=new LinkedList<TreeNode>();
+  activeNodes.add((TreeNode)root);
+  while (!activeNodes.isEmpty()) {
+    TreeNode t=activeNodes.poll();
+    Shape s=t.getShape();
+    logger.debug("Active shape: \t {}",s.toString());
+    List<Shape> successors=new ArrayList<Shape>();
+    if (s instanceof ShapeSymbol) {
+      Shape selectedRule=selectRule((ShapeSymbol)s);
+      selectedRule.setDimension(s.getDimension());
+      selectedRule.setMatrix(s.getMatrix());
+      successors.add(selectedRule);
+    }
+ else     if (s instanceof ComplexRule) {
+      ComplexRule c=(ComplexRule)s;
+      successors=c.getElements();
+    }
+    t.setActive(false);
+    for (    Shape succ : successors) {
+      if (succ instanceof TerminalShape) {
+        t.add(new TreeLeaf((TerminalShape)succ));
+      }
+ else {
+        TreeNode tn=new TreeNode(succ);
+        t.add(tn);
+        activeNodes.offer(tn);
+      }
+    }
+    logger.debug("Active Nodes: \t {}",activeNodes);
+  }
+  BlockCollection building=root.derive();
+  logger.info("Finished generation!");
+  return building;
+}

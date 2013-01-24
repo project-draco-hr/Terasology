@@ -25,6 +25,7 @@
   Vector3f distanceMoved=new Vector3f(moveResult.finalPosition);
   distanceMoved.sub(location.getWorldPosition());
   location.setWorldPosition(moveResult.finalPosition);
+  if (distanceMoved.length() > 0)   entity.send(new MovedEvent(distanceMoved,moveResult.finalPosition));
   movementComp.collider.setWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),moveResult.finalPosition,1.0f)));
   if (moveResult.hitBottom) {
     if (!movementComp.isGrounded) {
@@ -47,7 +48,7 @@
     movementComp.jump=false;
   }
   if (moveResult.hitHoriz) {
-    entity.send(new HorizontalCollisionEvent());
+    entity.send(new HorizontalCollisionEvent(location.getWorldPosition(),movementComp.getVelocity()));
   }
   if (movementComp.isGrounded) {
     movementComp.footstepDelta+=distanceMoved.length();

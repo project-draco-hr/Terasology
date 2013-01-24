@@ -1,0 +1,13 @@
+{
+  Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  boolean catched=false;
+  for (  AABBRenderer cell : cellsRender) {
+    if (!catched && cell.getAABB().intersectRectangle(camera.getPosition(),camera.getViewingDirection())) {
+      cell.renderSolid();
+      catched=true;
+    }
+ else {
+      cell.render(1f);
+    }
+  }
+}

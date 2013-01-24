@@ -1,0 +1,17 @@
+{
+  Shape expected1=relSucc1;
+  expected1.setDimension(2,1,1);
+  Shape expected2=relSucc2;
+  expected2.setDimension(1,1,1);
+  expected2.setPosition(2,0,0);
+  Shape expected3=relSucc3;
+  expected3.setDimension(2,1,1);
+  expected3.setPosition(3,0,0);
+  List<Shape> elements=relDivide.getElements();
+  assertTrue("First element must part of the result!",elements.contains(expected1));
+  assertTrue("Second element must part of the result!",elements.contains(expected2));
+  assertTrue("Third element must part of the result!",elements.contains(expected3));
+  assertEquals("Wrong translation/position for successor 1!",new Vector3i(0,0,0),elements.get(elements.indexOf(expected1)).getMatrix().getTranslation());
+  assertEquals("Wrong translation/position for successor 2!",new Vector3i(2,0,0),elements.get(elements.indexOf(expected2)).getMatrix().getTranslation());
+  assertEquals("Wrong translation/position for successor 3!",new Vector3i(3,0,0),elements.get(elements.indexOf(expected3)).getMatrix().getTranslation());
+}

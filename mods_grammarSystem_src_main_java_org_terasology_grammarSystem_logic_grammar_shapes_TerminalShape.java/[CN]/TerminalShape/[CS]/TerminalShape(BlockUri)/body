@@ -1,0 +1,12 @@
+{
+  value=new BlockCollection();
+  for (int a=0; a < dimension.x; a++) {
+    for (int b=0; b < dimension.y; b++) {
+      for (int c=0; c < dimension.z; c++) {
+        Vector3i pos=new Vector3i(a,b,c);
+        matrix.transformPoint(pos);
+        value.addBlock(new BlockPosition(pos.x,pos.y,pos.z),BlockManager.getInstance().getBlock(blockType));
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  FileInputStream fileIn=null;
+  ObjectInputStream in=null;
+  try {
+    fileIn=new FileInputStream(file);
+    in=new ObjectInputStream(fileIn);
+    ChunkStore cache=(ChunkStore)in.readObject();
+    if (cache instanceof ChunkStoreGZip) {
+      ((ChunkStoreGZip)cache).setup();
+      logger.info("Using old chunk store implementation without protobuf support for compatibility.");
+    }
+ else     if (cache instanceof ChunkStoreProtobuf)     ((ChunkStoreProtobuf)cache).setup();
+ else     logger.warn("Chunk store might not have been initialized: {}",cache.getClass().getName());
+    return cache;
+  }
+ catch (  ClassNotFoundException e) {
+    throw new IOException("Unable to load chunk cache",e);
+  }
+ finally {
+    if (in != null) {
+      try {
+        in.close();
+      }
+ catch (      IOException e) {
+        logger.error("Failed to close input stream",e);
+      }
+    }
+    if (fileIn != null) {
+      try {
+        fileIn.close();
+      }
+ catch (      IOException e) {
+        logger.error("Failed to close input stream",e);
+      }
+    }
+  }
+}

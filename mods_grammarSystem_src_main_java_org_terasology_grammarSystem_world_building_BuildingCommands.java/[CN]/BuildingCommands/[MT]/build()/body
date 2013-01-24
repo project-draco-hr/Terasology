@@ -1,0 +1,16 @@
+{
+  MessageManager.getInstance().addMessage("Starting building a structure ...");
+  BuildingGenerator generator=setUp();
+  BlockCollection collection=generator.generate(3,12,3);
+  collection.setAttachPos(new BlockPosition(0,0,0));
+  Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  Vector3f attachPos=camera.getPosition();
+  Vector3f offset=camera.getViewingDirection();
+  offset.scale(3);
+  attachPos.add(offset);
+  WorldProvider provider=CoreRegistry.get(WorldProvider.class);
+  if (provider != null) {
+    collection.build(provider,new BlockPosition(attachPos));
+  }
+  MessageManager.getInstance().addMessage("Finished ...");
+}

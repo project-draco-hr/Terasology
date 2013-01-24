@@ -1,0 +1,40 @@
+{
+  byte isInitialized=memoizedIsInitialized;
+  if (isInitialized != -1)   return isInitialized == 1;
+  if (hasBlockData()) {
+    if (!getBlockData().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasSunlightData()) {
+    if (!getSunlightData().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasLightData()) {
+    if (!getLightData().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasExtraData()) {
+    if (!getExtraData().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getModDataCount(); i++) {
+    if (!getModData(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  memoizedIsInitialized=1;
+  return true;
+}

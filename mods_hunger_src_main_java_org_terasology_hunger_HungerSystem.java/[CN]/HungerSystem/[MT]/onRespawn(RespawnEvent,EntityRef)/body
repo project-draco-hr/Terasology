@@ -1,0 +1,8 @@
+{
+  HungerComponent hungerComponent=entity.getComponent(HungerComponent.class);
+  if (hungerComponent != null) {
+    hungerComponent.currentContentment=hungerComponent.maxContentment;
+    entity.send(new HealthChangedEvent(entity,hungerComponent.currentContentment,hungerComponent.maxContentment));
+    entity.saveComponent(hungerComponent);
+  }
+}

@@ -1,7 +1,8 @@
 {
-  blocks=new TeraArray(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  sunlight=new TeraSmartArray(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  light=new TeraSmartArray(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  liquid=new TeraSmartArray(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  setDirty(true);
+  final Chunks c=Chunks.getInstance();
+  blockData=c.getBlockDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  sunlightData=c.getSunlightDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  lightData=c.getLightDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  extraData=c.getExtraDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  dirty=true;
 }

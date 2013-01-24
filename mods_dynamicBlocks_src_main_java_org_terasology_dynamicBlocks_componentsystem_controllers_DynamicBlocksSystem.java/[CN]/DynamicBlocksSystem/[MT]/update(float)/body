@@ -1,0 +1,26 @@
+{
+  for (  EntityRef entity : entityManager.iteratorEntities(DynamicBlockComponent.class,LocationComponent.class)) {
+    DynamicBlockComponent loco=entity.getComponent(DynamicBlockComponent.class);
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    Vector3f worldPos=location.getWorldPosition();
+    if (!worldProvider.isBlockActive(worldPos))     continue;
+    if (!localPlayer.isValid())     return;
+    if (standingOn(entity)) {
+      Vector3f movementDirection=localPlayer.getViewDirection();
+      float speed=movementDirection.length();
+      movementDirection=new Vector3f(movementDirection.x,0,movementDirection.z);
+      movementDirection.normalize();
+      movementDirection.scale(speed);
+      Vector3f desiredVelocity=new Vector3f(movementDirection);
+      desiredVelocity.scale(loco.getMaximumSpeed());
+      CharacterMovementComponent movement=entity.getComponent(CharacterMovementComponent.class);
+      movement.setDrive(desiredVelocity);
+      entity.saveComponent(movement);
+    }
+ else {
+      CharacterMovementComponent movement=entity.getComponent(CharacterMovementComponent.class);
+      movement.setDrive(new Vector3f(0,0,0));
+      entity.saveComponent(movement);
+    }
+  }
+}

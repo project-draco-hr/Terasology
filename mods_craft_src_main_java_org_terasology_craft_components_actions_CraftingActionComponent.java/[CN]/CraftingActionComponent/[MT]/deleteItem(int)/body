@@ -1,0 +1,22 @@
+{
+  if (!elements.containsKey(levels[currentLevel])) {
+    return;
+  }
+  ArrayList<EntityRef> list=elements.get(levels[currentLevel]);
+  list.set(slot,EntityRef.NULL);
+  for (  String key : levels) {
+    if (!elements.containsKey(key)) {
+      continue;
+    }
+    boolean deleteLevel=true;
+    for (    EntityRef entity : elements.get(key)) {
+      if (!entity.equals(EntityRef.NULL)) {
+        deleteLevel=false;
+        break;
+      }
+    }
+    if (deleteLevel) {
+      elements.remove(key);
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  EntityRef recipe=entityManager.create(prefab.iterateComponents());
+  EntityRef result=EntityRef.NULL;
+  if (recipe.getComponent(ItemComponent.class) == null) {
+    Block recipeBlock=BlockManager.getInstance().getBlock(prefab);
+    if (recipeBlock != null) {
+      BlockItemFactory blockFactory=new BlockItemFactory(entityManager);
+      result=blockFactory.newInstance(recipeBlock.getBlockFamily(),recipe);
+    }
+  }
+ else {
+    result=recipe;
+    ItemComponent oldItem=result.getComponent(ItemComponent.class);
+    ItemComponent newItem=new ItemComponent();
+    newItem.stackCount=oldItem.stackCount;
+    newItem.container=oldItem.container;
+    newItem.name=oldItem.name;
+    newItem.baseDamage=oldItem.baseDamage;
+    newItem.consumedOnUse=oldItem.consumedOnUse;
+    newItem.icon=oldItem.icon;
+    newItem.stackId=oldItem.stackId;
+    newItem.renderWithIcon=oldItem.renderWithIcon;
+    newItem.usage=oldItem.usage;
+    result.saveComponent(newItem);
+  }
+  ItemComponent item=result.getComponent(ItemComponent.class);
+  CraftRecipeComponent recipeComponent=prefab.getComponent(CraftRecipeComponent.class);
+  item.stackCount=recipeComponent.resultCount;
+  result.saveComponent(item);
+  return result;
+}

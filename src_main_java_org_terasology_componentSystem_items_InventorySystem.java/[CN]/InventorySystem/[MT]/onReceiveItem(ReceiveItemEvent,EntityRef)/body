@@ -2,6 +2,7 @@
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
   ItemComponent item=event.getItem().getComponent(ItemComponent.class);
   if (inventory == null || item == null)   return;
+  logger.info("Receiving item {} for toolbar",item.name);
   boolean itemChanged=false;
   if (event.getSlot() == -1) {
     if (!item.stackId.isEmpty()) {

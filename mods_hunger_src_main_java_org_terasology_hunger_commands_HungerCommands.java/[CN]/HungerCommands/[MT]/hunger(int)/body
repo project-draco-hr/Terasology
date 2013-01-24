@@ -1,0 +1,17 @@
+{
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  HungerComponent hunger=localPlayer.getCharacterEntity().getComponent(HungerComponent.class);
+  hunger.currentContentment=amount;
+  if (hunger.currentContentment >= hunger.maxContentment) {
+    hunger.currentContentment=hunger.maxContentment;
+    localPlayer.getCharacterEntity().send(new FullContentmentEvent(localPlayer.getCharacterEntity(),hunger.maxContentment));
+  }
+ else   if (hunger.currentContentment <= 0) {
+    hunger.currentContentment=0;
+    localPlayer.getCharacterEntity().send(new NoContentmentEvent(localPlayer.getCharacterEntity(),hunger.maxContentment));
+  }
+ else {
+    localPlayer.getCharacterEntity().send(new ContentmentChangedEvent(localPlayer.getCharacterEntity(),hunger.currentContentment,hunger.maxContentment));
+  }
+  localPlayer.getCharacterEntity().saveComponent(hunger);
+}

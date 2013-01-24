@@ -1,0 +1,18 @@
+{
+  try {
+    final ChunksProtobuf.Chunk message=Chunks.getInstance().encode(c);
+    final ByteArrayOutputStream baOut=new ByteArrayOutputStream();
+    final GZIPOutputStream gzOut=new GZIPOutputStream(baOut);
+    final CodedOutputStream cOut=CodedOutputStream.newInstance(gzOut);
+    message.writeTo(cOut);
+    cOut.flush();
+    gzOut.close();
+    final byte[] serialized=baOut.toByteArray();
+    sizeInByte.addAndGet(serialized.length);
+    serializedChunks.put(c.getPos(),serialized);
+    modifiedChunks.remove(c.getPos(),c);
+  }
+ catch (  Exception e) {
+    logger.error("Failed saving chunk",e);
+  }
+}

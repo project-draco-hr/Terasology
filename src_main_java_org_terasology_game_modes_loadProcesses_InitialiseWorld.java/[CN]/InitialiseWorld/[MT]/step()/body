@@ -11,7 +11,7 @@
   File f=new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),worldInfo.getTitle() + ".dat");
   if (f.exists()) {
     try {
-      chunkStore=ChunkStoreGZip.load(f);
+      chunkStore=loadChunkStore(f);
     }
  catch (    IOException e) {
       logger.error("Failed to load chunk store",e);

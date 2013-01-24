@@ -1,0 +1,7 @@
+{
+  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  HungerComponent hunger=localPlayer.getCharacterEntity().getComponent(HungerComponent.class);
+  hunger.currentContentment=hunger.maxContentment;
+  localPlayer.getCharacterEntity().send(new FullContentmentEvent(localPlayer.getCharacterEntity(),hunger.maxContentment));
+  localPlayer.getCharacterEntity().saveComponent(hunger);
+}

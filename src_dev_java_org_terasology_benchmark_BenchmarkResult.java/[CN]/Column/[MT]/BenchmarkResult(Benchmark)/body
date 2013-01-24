@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(benchmark,"Parameter 'benchmark' must not be null");
+  this.benchmarkClass=benchmark.getClass();
+  this.title=benchmark.getTitle();
+  this.repetitions=Preconditions.checkNotNull(benchmark.getRepetitions());
+  Preconditions.checkArgument(repetitions.length > 0,"The length of the parameter 'repetitions' has to be greater than zero");
+  int reps=repetitions.length;
+  this.starttime=new long[reps];
+  this.runtime=new long[reps];
+}

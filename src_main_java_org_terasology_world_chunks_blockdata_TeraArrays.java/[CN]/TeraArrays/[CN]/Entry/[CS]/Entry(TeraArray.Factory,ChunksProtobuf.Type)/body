@@ -1,0 +1,8 @@
+{
+  this.factory=Preconditions.checkNotNull(factory,"The parameter 'factory' must not be null");
+  this.arrayClass=Preconditions.checkNotNull(factory.getArrayClass());
+  this.arrayClassName=arrayClass.getName();
+  this.handler=Preconditions.checkNotNull(factory.createSerializationHandler());
+  Preconditions.checkState(handler.canHandle(arrayClass));
+  this.protobufType=Preconditions.checkNotNull(protobufType,"The parameter 'protobufType' must not be null");
+}

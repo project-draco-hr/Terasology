@@ -1,0 +1,37 @@
+{
+  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
+  while (true) {
+    int tag=input.readTag();
+switch (tag) {
+case 0:
+      this.setUnknownFields(unknownFields.build());
+    onChanged();
+  return this;
+default :
+{
+  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
+    this.setUnknownFields(unknownFields.build());
+    onChanged();
+    return this;
+  }
+  break;
+}
+case 10:
+{
+bitField0_|=0x00000001;
+id_=input.readBytes();
+break;
+}
+case 18:
+{
+org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
+if (hasData()) {
+subBuilder.mergeFrom(getData());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setData(subBuilder.buildPartial());
+break;
+}
+}
+}
+}

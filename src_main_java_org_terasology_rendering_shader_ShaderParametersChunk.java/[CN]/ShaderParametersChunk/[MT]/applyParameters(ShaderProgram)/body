@@ -22,12 +22,15 @@
   program.setInt("textureWaterReflection",4);
   program.setInt("textureAtlas",0);
   program.setFloat("blockScale",1.0f);
-  if (worldRenderer != null)   program.setFloat("daylight",(float)worldRenderer.getDaylight());
+  if (worldRenderer != null) {
+    program.setFloat("daylight",(float)worldRenderer.getDaylight());
+    program.setFloat("swimming",worldRenderer.isUnderWater() ? 1.0f : 0.0f);
+  }
   if (localPlayer != null) {
     program.setInt("carryingTorch",localPlayer.isCarryingTorch() ? 1 : 0);
   }
   if (worldProvider != null) {
-    program.setFloat("time",(float)worldProvider.getTimeInDays());
+    program.setFloat("time",worldProvider.getTimeInDays());
   }
   program.setFloat1("wavingCoordinates",BlockManager.getInstance().calcCoordinatesForWavingBlocks());
   program.setFloat2("grassCoordinate",BlockManager.getInstance().calcCoordinate("engine:grass"));
