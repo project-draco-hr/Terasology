@@ -1,4 +1,4 @@
 {
-  NetData.NetMessage message=NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.EVENT).setEvent(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event,new NetworkEventFieldCheck())).setTargetId(targetId)).build();
+  NetData.NetMessage message=NetData.NetMessage.newBuilder().addEvent(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event,new NetworkEventFieldCheck())).setTargetId(targetId)).build();
   send(message);
 }

@@ -1,0 +1,36 @@
+{
+  getSerializedSize();
+  com.google.protobuf.GeneratedMessage.ExtendableMessage<org.terasology.protobuf.NetData.NetMessage>.ExtensionWriter extensionWriter=newExtensionWriter();
+  for (int i=0; i < chunkInfo_.size(); i++) {
+    output.writeMessage(2,chunkInfo_.get(i));
+  }
+  for (int i=0; i < invalidateChunk_.size(); i++) {
+    output.writeMessage(3,invalidateChunk_.get(i));
+  }
+  for (int i=0; i < blockChange_.size(); i++) {
+    output.writeMessage(4,blockChange_.get(i));
+  }
+  for (int i=0; i < createEntity_.size(); i++) {
+    output.writeMessage(5,createEntity_.get(i));
+  }
+  for (int i=0; i < removeEntity_.size(); i++) {
+    output.writeMessage(6,removeEntity_.get(i));
+  }
+  for (int i=0; i < updateEntity_.size(); i++) {
+    output.writeMessage(7,updateEntity_.get(i));
+  }
+  for (int i=0; i < event_.size(); i++) {
+    output.writeMessage(8,event_.get(i));
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    output.writeInt64(9,time_);
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    output.writeMessage(15,clientConnect_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    output.writeMessage(16,serverInfo_);
+  }
+  extensionWriter.writeUntil(536870912,output);
+  getUnknownFields().writeTo(output);
+}

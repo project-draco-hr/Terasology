@@ -1,17 +1,13 @@
 {
   NetMessage message=(NetMessage)e.getMessage();
   client.receivedMessageWithSize(message.getSerializedSize());
-switch (message.getType()) {
-case CLIENT_CONNECT:
+  if (message.hasClientConnect()) {
     receivedConnect(message.getClientConnect());
-  break;
-case EVENT:
-receivedEvent(message.getEvent());
-break;
-case UPDATE_ENTITY:
-receivedEntityUpdate(message.getUpdateEntity());
-break;
-default :
-logger.warn("Received unexpected message: {}",message.getType());
-}
+  }
+  for (  NetData.EventMessage event : message.getEventList()) {
+    receivedEvent(event);
+  }
+  for (  NetData.UpdateEntityMessage updateEntityMessage : message.getUpdateEntityList()) {
+    receivedEntityUpdate(updateEntityMessage);
+  }
 }

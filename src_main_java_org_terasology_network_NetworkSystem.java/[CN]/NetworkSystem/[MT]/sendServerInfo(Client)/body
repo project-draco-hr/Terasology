@@ -13,5 +13,5 @@
   serializeComponentInfo(serverInfoMessageBuilder);
   serializeEventInfo(serverInfoMessageBuilder);
   serverInfoMessageBuilder.setClientId(client.getEntity().getComponent(NetworkComponent.class).networkId);
-  client.send(NetData.NetMessage.newBuilder().setType(NetData.NetMessage.Type.SERVER_INFO).setServerInfo(serverInfoMessageBuilder.build()).build());
+  client.send(NetData.NetMessage.newBuilder().setTime(timer.getTimeInMs()).setServerInfo(serverInfoMessageBuilder).build());
 }

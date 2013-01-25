@@ -1,6 +1,9 @@
 {
-  sendInitialEntities();
-  sendDirtyEntities();
+  NetData.NetMessage.Builder message=NetData.NetMessage.newBuilder();
+  message.setTime(timer.getTimeInMs());
+  sendInitialEntities(message);
+  sendDirtyEntities(message);
+  send(message.build());
   processEntityUpdates();
   processEvents();
 }

@@ -1,0 +1,14 @@
+{
+  if (chunkInfoBuilder_ == null) {
+    if (value == null) {
+      throw new NullPointerException();
+    }
+    ensureChunkInfoIsMutable();
+    chunkInfo_.add(index,value);
+    onChanged();
+  }
+ else {
+    chunkInfoBuilder_.addMessage(index,value);
+  }
+  return this;
+}

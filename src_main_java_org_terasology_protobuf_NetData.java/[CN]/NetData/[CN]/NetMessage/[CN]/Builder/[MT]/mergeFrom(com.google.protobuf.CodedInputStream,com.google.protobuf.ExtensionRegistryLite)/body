@@ -1,0 +1,96 @@
+{
+  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
+  while (true) {
+    int tag=input.readTag();
+switch (tag) {
+case 0:
+      this.setUnknownFields(unknownFields.build());
+    onChanged();
+  return this;
+default :
+{
+  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
+    this.setUnknownFields(unknownFields.build());
+    onChanged();
+    return this;
+  }
+  break;
+}
+case 18:
+{
+org.terasology.protobuf.ChunksProtobuf.Chunk.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.Chunk.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addChunkInfo(subBuilder.buildPartial());
+break;
+}
+case 26:
+{
+org.terasology.protobuf.NetData.InvalidateChunkMessage.Builder subBuilder=org.terasology.protobuf.NetData.InvalidateChunkMessage.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addInvalidateChunk(subBuilder.buildPartial());
+break;
+}
+case 34:
+{
+org.terasology.protobuf.NetData.BlockChangeMessage.Builder subBuilder=org.terasology.protobuf.NetData.BlockChangeMessage.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addBlockChange(subBuilder.buildPartial());
+break;
+}
+case 42:
+{
+org.terasology.protobuf.NetData.CreateEntityMessage.Builder subBuilder=org.terasology.protobuf.NetData.CreateEntityMessage.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addCreateEntity(subBuilder.buildPartial());
+break;
+}
+case 50:
+{
+org.terasology.protobuf.NetData.RemoveEntityMessage.Builder subBuilder=org.terasology.protobuf.NetData.RemoveEntityMessage.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addRemoveEntity(subBuilder.buildPartial());
+break;
+}
+case 58:
+{
+org.terasology.protobuf.NetData.UpdateEntityMessage.Builder subBuilder=org.terasology.protobuf.NetData.UpdateEntityMessage.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addUpdateEntity(subBuilder.buildPartial());
+break;
+}
+case 66:
+{
+org.terasology.protobuf.NetData.EventMessage.Builder subBuilder=org.terasology.protobuf.NetData.EventMessage.newBuilder();
+input.readMessage(subBuilder,extensionRegistry);
+addEvent(subBuilder.buildPartial());
+break;
+}
+case 72:
+{
+bitField0_|=0x00000080;
+time_=input.readInt64();
+break;
+}
+case 122:
+{
+org.terasology.protobuf.NetData.ClientConnectMessage.Builder subBuilder=org.terasology.protobuf.NetData.ClientConnectMessage.newBuilder();
+if (hasClientConnect()) {
+subBuilder.mergeFrom(getClientConnect());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setClientConnect(subBuilder.buildPartial());
+break;
+}
+case 130:
+{
+org.terasology.protobuf.NetData.ServerInfoMessage.Builder subBuilder=org.terasology.protobuf.NetData.ServerInfoMessage.newBuilder();
+if (hasServerInfo()) {
+subBuilder.mergeFrom(getServerInfo());
+}
+input.readMessage(subBuilder,extensionRegistry);
+setServerInfo(subBuilder.buildPartial());
+break;
+}
+}
+}
+}

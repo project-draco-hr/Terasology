@@ -2,27 +2,28 @@
   List<NetData.NetMessage> messages=Lists.newArrayListWithExpectedSize(queuedMessages.size());
   queuedMessages.drainTo(messages);
   for (  NetData.NetMessage message : messages) {
-switch (message.getType()) {
-case CREATE_ENTITY:
-      createEntityMessage(message.getCreateEntity());
-    break;
-case UPDATE_ENTITY:
-  EntityRef currentEntity=networkSystem.getEntity(message.getUpdateEntity().getNetId());
-if (currentEntity.exists()) {
-  entitySerializer.deserializeOnto(currentEntity,message.getUpdateEntity().getEntity());
-}
-break;
-case REMOVE_ENTITY:
-int netId=message.getRemoveEntity().getNetId();
-EntityRef entity=networkSystem.getEntity(netId);
-networkSystem.unregisterNetworkEntity(entity);
-entity.destroy();
-break;
-case EVENT:
-Event event=eventSerializer.deserialize(message.getEvent().getEvent());
-EntityRef target=networkSystem.getEntity(message.getEvent().getTargetId());
-target.send(event);
-break;
-}
-}
+    if (message.hasTime()) {
+      timer.updateServerTime(message.getTime(),false);
+    }
+    for (    NetData.CreateEntityMessage createEntity : message.getCreateEntityList()) {
+      createEntityMessage(createEntity);
+    }
+    for (    NetData.UpdateEntityMessage updateEntity : message.getUpdateEntityList()) {
+      EntityRef currentEntity=networkSystem.getEntity(updateEntity.getNetId());
+      if (currentEntity.exists()) {
+        entitySerializer.deserializeOnto(currentEntity,updateEntity.getEntity());
+      }
+    }
+    for (    NetData.RemoveEntityMessage removeEntity : message.getRemoveEntityList()) {
+      int netId=removeEntity.getNetId();
+      EntityRef entity=networkSystem.getEntity(netId);
+      networkSystem.unregisterNetworkEntity(entity);
+      entity.destroy();
+    }
+    for (    NetData.EventMessage eventMessage : message.getEventList()) {
+      Event event=eventSerializer.deserialize(eventMessage.getEvent());
+      EntityRef target=networkSystem.getEntity(eventMessage.getTargetId());
+      target.send(event);
+    }
+  }
 }

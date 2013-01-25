@@ -1,0 +1,39 @@
+{
+  int size=memoizedSerializedSize;
+  if (size != -1)   return size;
+  size=0;
+  for (int i=0; i < chunkInfo_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(2,chunkInfo_.get(i));
+  }
+  for (int i=0; i < invalidateChunk_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(3,invalidateChunk_.get(i));
+  }
+  for (int i=0; i < blockChange_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(4,blockChange_.get(i));
+  }
+  for (int i=0; i < createEntity_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(5,createEntity_.get(i));
+  }
+  for (int i=0; i < removeEntity_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(6,removeEntity_.get(i));
+  }
+  for (int i=0; i < updateEntity_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(7,updateEntity_.get(i));
+  }
+  for (int i=0; i < event_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(8,event_.get(i));
+  }
+  if (((bitField0_ & 0x00000001) == 0x00000001)) {
+    size+=com.google.protobuf.CodedOutputStream.computeInt64Size(9,time_);
+  }
+  if (((bitField0_ & 0x00000002) == 0x00000002)) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(15,clientConnect_);
+  }
+  if (((bitField0_ & 0x00000004) == 0x00000004)) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(16,serverInfo_);
+  }
+  size+=extensionsSerializedSize();
+  size+=getUnknownFields().getSerializedSize();
+  memoizedSerializedSize=size;
+  return size;
+}

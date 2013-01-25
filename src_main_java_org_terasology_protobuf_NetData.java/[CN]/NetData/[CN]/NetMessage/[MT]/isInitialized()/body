@@ -1,0 +1,64 @@
+{
+  byte isInitialized=memoizedIsInitialized;
+  if (isInitialized != -1)   return isInitialized == 1;
+  for (int i=0; i < getChunkInfoCount(); i++) {
+    if (!getChunkInfo(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getInvalidateChunkCount(); i++) {
+    if (!getInvalidateChunk(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getBlockChangeCount(); i++) {
+    if (!getBlockChange(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getCreateEntityCount(); i++) {
+    if (!getCreateEntity(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getRemoveEntityCount(); i++) {
+    if (!getRemoveEntity(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getUpdateEntityCount(); i++) {
+    if (!getUpdateEntity(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  for (int i=0; i < getEventCount(); i++) {
+    if (!getEvent(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasClientConnect()) {
+    if (!getClientConnect().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasServerInfo()) {
+    if (!getServerInfo().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    memoizedIsInitialized=0;
+    return false;
+  }
+  memoizedIsInitialized=1;
+  return true;
+}

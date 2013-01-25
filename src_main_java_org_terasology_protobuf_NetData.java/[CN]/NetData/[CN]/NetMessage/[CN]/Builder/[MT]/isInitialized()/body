@@ -1,0 +1,51 @@
+{
+  for (int i=0; i < getChunkInfoCount(); i++) {
+    if (!getChunkInfo(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getInvalidateChunkCount(); i++) {
+    if (!getInvalidateChunk(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getBlockChangeCount(); i++) {
+    if (!getBlockChange(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getCreateEntityCount(); i++) {
+    if (!getCreateEntity(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getRemoveEntityCount(); i++) {
+    if (!getRemoveEntity(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getUpdateEntityCount(); i++) {
+    if (!getUpdateEntity(i).isInitialized()) {
+      return false;
+    }
+  }
+  for (int i=0; i < getEventCount(); i++) {
+    if (!getEvent(i).isInitialized()) {
+      return false;
+    }
+  }
+  if (hasClientConnect()) {
+    if (!getClientConnect().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasServerInfo()) {
+    if (!getServerInfo().isInitialized()) {
+      return false;
+    }
+  }
+  if (!extensionsAreInitialized()) {
+    return false;
+  }
+  return true;
+}
