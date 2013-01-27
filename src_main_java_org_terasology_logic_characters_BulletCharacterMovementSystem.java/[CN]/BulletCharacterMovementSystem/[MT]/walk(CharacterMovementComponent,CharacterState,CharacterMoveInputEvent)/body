@@ -36,6 +36,10 @@
       newState.setGrounded(true);
     }
     newState.getVelocity().y=0;
+    if (input.isJumpRequested()) {
+      newState.setGrounded(false);
+      newState.getVelocity().y+=movementComp.jumpSpeed;
+    }
   }
  else {
     if (moveResult.hitTop && newState.getVelocity().y > 0) {
