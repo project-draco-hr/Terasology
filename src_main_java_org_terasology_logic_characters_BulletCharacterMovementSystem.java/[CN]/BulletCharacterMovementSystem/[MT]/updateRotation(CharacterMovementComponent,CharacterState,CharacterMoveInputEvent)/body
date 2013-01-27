@@ -1,0 +1,10 @@
+{
+  if (movementComp.faceMovementDirection && result.getVelocity().lengthSquared() > 0.01f) {
+    float yaw=(float)Math.atan2(result.getVelocity().x,result.getVelocity().z);
+    AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
+    result.getRotation().set(axisAngle);
+  }
+ else {
+    QuaternionUtil.setEuler(result.getRotation(),TeraMath.DEG_TO_RAD * input.getYaw(),0,0);
+  }
+}

@@ -1,6 +1,5 @@
 {
   HierarchicalAIComponent ai=entity.getComponent(HierarchicalAIComponent.class);
-  CharacterMovementComponent moveComp=entity.getComponent(CharacterMovementComponent.class);
   long tempTime=CoreRegistry.get(Timer.class).getTimeInMs();
   long lastAttack=0;
   if (tempTime - ai.lastProgressedUpdateAt < ai.updateFrequency) {
@@ -8,8 +7,7 @@
     return;
   }
   long directionChangeTime=ai.moveUpdateTime, moveChangeTime=ai.moveUpdateTime, idleChangeTime=ai.idlingUpdateTime, dangerChangeTime=ai.dangerUpdateTime;
-  Vector3f drive=moveComp.getDrive();
-  drive.set(0,0,0);
+  Vector3f drive=new Vector3f();
   LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
   if (localPlayer != null) {
     Vector3f dist=new Vector3f(worldPos);
@@ -82,11 +80,9 @@
   Vector3f targetDirection=new Vector3f();
   targetDirection.sub(ai.movementTarget,worldPos);
   targetDirection.normalize();
-  moveComp.setDrive(targetDirection);
+  drive.set(targetDirection);
   float yaw=(float)Math.atan2(targetDirection.x,targetDirection.z);
-  AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
-  location.getLocalRotation().set(axisAngle);
-  entity.saveComponent(moveComp);
+  entity.send(new CharacterMoveInputEvent(0,yaw,drive,false,false));
   entity.saveComponent(location);
   ai.lastProgressedUpdateAt=CoreRegistry.get(Timer.class).getTimeInMs();
 }

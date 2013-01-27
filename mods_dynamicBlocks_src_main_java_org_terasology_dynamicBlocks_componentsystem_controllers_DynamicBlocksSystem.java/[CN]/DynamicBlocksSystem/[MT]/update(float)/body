@@ -13,14 +13,10 @@
       movementDirection.scale(speed);
       Vector3f desiredVelocity=new Vector3f(movementDirection);
       desiredVelocity.scale(loco.getMaximumSpeed());
-      CharacterMovementComponent movement=entity.getComponent(CharacterMovementComponent.class);
-      movement.setDrive(desiredVelocity);
-      entity.saveComponent(movement);
+      entity.send(new CharacterMoveInputEvent(0,0,desiredVelocity,false,false));
     }
  else {
-      CharacterMovementComponent movement=entity.getComponent(CharacterMovementComponent.class);
-      movement.setDrive(new Vector3f(0,0,0));
-      entity.saveComponent(movement);
+      entity.send(new CharacterMoveInputEvent(0,0,new Vector3f(),false,false));
     }
   }
 }

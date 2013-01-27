@@ -1,0 +1,16 @@
+{
+  if (entity.getComponent(DroppedItemTypeComponent.class) != null) {
+    return;
+  }
+  MeshComponent meshComp=entity.getComponent(MeshComponent.class);
+  if (meshComp.hideFromOwner && entity.hasComponent(LocalPlayerComponent.class)) {
+    return;
+  }
+  if (meshComp.renderType == MeshComponent.RenderType.GelatinousCube) {
+    gelatinous.add(entity);
+  }
+ else {
+    opaqueMesh.put(meshComp.material,entity);
+    opaqueEntities.put(entity,meshComp.material);
+  }
+}

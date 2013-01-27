@@ -6,8 +6,7 @@
       continue;
     }
     SimpleAIComponent ai=entity.getComponent(SimpleAIComponent.class);
-    CharacterMovementComponent moveComp=entity.getComponent(CharacterMovementComponent.class);
-    moveComp.getDrive().set(0,0,0);
+    Vector3f drive=new Vector3f();
     LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
     if (localPlayer != null) {
       Vector3f dist=new Vector3f(worldPos);
@@ -29,12 +28,12 @@
       Vector3f targetDirection=new Vector3f();
       targetDirection.sub(ai.movementTarget,worldPos);
       targetDirection.normalize();
-      moveComp.setDrive(targetDirection);
+      drive.set(targetDirection);
       float yaw=(float)Math.atan2(targetDirection.x,targetDirection.z);
       AxisAngle4f axisAngle=new AxisAngle4f(0,1,0,yaw);
       location.getLocalRotation().set(axisAngle);
-      entity.saveComponent(moveComp);
       entity.saveComponent(location);
     }
+    entity.send(new CharacterMoveInputEvent(0,0,drive,false,false));
   }
 }

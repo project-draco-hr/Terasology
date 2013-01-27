@@ -1,0 +1,11 @@
+{
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  location.setWorldPosition(state.getPosition());
+  location.setWorldRotation(state.getRotation());
+  entity.saveComponent(location);
+  CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
+  movementComp.mode=state.getMode();
+  movementComp.setVelocity(state.getVelocity());
+  movementComp.grounded=state.isGrounded();
+  entity.saveComponent(movementComp);
+}

@@ -1,0 +1,10 @@
+{
+  CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
+  CharacterState result=updatePosition(characterMovementComponent,initial,input);
+  result.setTime(input.getTime());
+  if (result.getMode() != MovementMode.GHOSTING) {
+    checkSwimming(characterMovementComponent,result);
+  }
+  updateRotation(characterMovementComponent,result,input);
+  return result;
+}

@@ -1,0 +1,25 @@
+{
+  List<Vector3f> targets=ai.patrolTargets;
+  if ((targets == null) || (targets.size() < 1)) {
+    return;
+  }
+  int patrolCounter=ai.patrolCounter;
+  Vector3f currentTarget=null;
+  if (patrolCounter < targets.size()) {
+    currentTarget=targets.get(patrolCounter);
+  }
+  if (currentTarget == null) {
+    return;
+  }
+  Vector3f dist=new Vector3f(worldPos);
+  dist.sub(currentTarget);
+  double distanceToTarget=dist.length();
+  if (distanceToTarget < 0.1d) {
+    patrolCounter++;
+    if (!(patrolCounter < targets.size()))     patrolCounter=0;
+    ai.patrolCounter=patrolCounter;
+    entity.saveComponent(ai);
+    return;
+  }
+  setMovement(currentTarget,worldPos,entity,drive);
+}
