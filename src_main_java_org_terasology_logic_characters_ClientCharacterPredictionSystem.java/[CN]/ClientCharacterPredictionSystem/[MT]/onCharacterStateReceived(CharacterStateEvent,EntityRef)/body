@@ -1,0 +1,23 @@
+{
+  if (entity.equals(localPlayer.getCharacterEntity())) {
+    logger.trace("Received new state, sequence number: {}, buffered input size {}",state.getSequenceNumber(),inputs.size());
+    authoritiveState=state;
+    Iterator<CharacterMoveInputEvent> inputIterator=inputs.iterator();
+    CharacterStateEvent newState=authoritiveState;
+    while (inputIterator.hasNext()) {
+      CharacterMoveInputEvent input=inputIterator.next();
+      if (input.getSequenceNumber() <= state.getSequenceNumber()) {
+        inputIterator.remove();
+      }
+ else {
+        newState=stepState(input,newState,entity);
+      }
+    }
+    logger.trace("Resultant input size {}",inputs.size());
+    CharacterStateEvent.setToState(entity,newState);
+    predictedState=newState;
+  }
+ else {
+    playerStates.get(entity).add(state);
+  }
+}

@@ -1,0 +1,18 @@
+{
+  float t=(float)(time - a.getTime()) / (b.getTime() - a.getTime());
+  LoggerFactory.getLogger(CharacterStateEvent.class).info("Interpolate: {}, {}, {}, {}",a.getTime(),b.getTime(),time,t);
+  Vector3f newPos=new Vector3f();
+  newPos.interpolate(a.getPosition(),b.getPosition(),t);
+  Quat4f newRot=new Quat4f();
+  newRot.interpolate(a.getRotation(),b.getRotation(),t);
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  location.setWorldPosition(newPos);
+  location.setWorldRotation(newRot);
+  entity.saveComponent(location);
+  CharacterMovementComponent movementComponent=entity.getComponent(CharacterMovementComponent.class);
+  movementComponent.mode=a.getMode();
+  movementComponent.setVelocity(a.getVelocity());
+  movementComponent.grounded=a.isGrounded();
+  entity.saveComponent(movementComponent);
+  movementComponent.collider.setInterpolationWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),newPos,1.0f)));
+}

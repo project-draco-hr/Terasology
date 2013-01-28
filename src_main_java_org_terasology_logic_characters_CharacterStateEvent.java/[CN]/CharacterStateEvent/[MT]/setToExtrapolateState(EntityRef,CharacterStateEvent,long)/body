@@ -1,0 +1,16 @@
+{
+  float t=(time - state.getTime()) * 0.0001f;
+  Vector3f newPos=new Vector3f(state.getVelocity());
+  newPos.scale(t);
+  newPos.add(state.getPosition());
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  location.setWorldPosition(newPos);
+  location.setWorldRotation(state.getRotation());
+  entity.saveComponent(location);
+  CharacterMovementComponent movementComponent=entity.getComponent(CharacterMovementComponent.class);
+  movementComponent.mode=state.getMode();
+  movementComponent.setVelocity(state.getVelocity());
+  movementComponent.grounded=state.isGrounded();
+  entity.saveComponent(movementComponent);
+  movementComponent.collider.setInterpolationWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),newPos,1.0f)));
+}
