@@ -1,16 +1,21 @@
 {
-  Set<Class<?>> systems=reflections.getTypesAnnotatedWith(RegisterComponentSystem.class);
+  Set<Class<?>> systems=reflections.getTypesAnnotatedWith(RegisterSystem.class);
   for (  Class<?> system : systems) {
     if (!ComponentSystem.class.isAssignableFrom(system)) {
       logger.error("Cannot load {}, must be a subclass of ComponentSystem",system.getSimpleName());
       continue;
     }
-    RegisterComponentSystem registerInfo=system.getAnnotation(RegisterComponentSystem.class);
+    RegisterSystem registerInfo=system.getAnnotation(RegisterSystem.class);
     if (shouldRegister(registerInfo,netMode)) {
       String id=packageName + ":" + system.getSimpleName();
       logger.debug("Registering system {}",id);
       try {
         ComponentSystem newSystem=(ComponentSystem)system.newInstance();
+        Share share=system.getAnnotation(Share.class);
+        if (share != null && share.value() != null) {
+          sharedSystems.add(share.value());
+          CoreRegistry.put((Class<Object>)share.value(),newSystem);
+        }
         register(newSystem,id);
         logger.debug("Loaded system {}",id);
       }

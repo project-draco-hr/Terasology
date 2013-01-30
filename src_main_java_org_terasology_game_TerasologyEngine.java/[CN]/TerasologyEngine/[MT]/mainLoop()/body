@@ -2,7 +2,7 @@
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   PerformanceMonitor.startActivity("Other");
   while (running && !Display.isCloseRequested()) {
-    if (!Display.isActive() && CoreRegistry.get(NetworkSystem.class).getMode() == NetworkMode.NONE) {
+    if (!Display.isActive() && currentState.isHibernationAllowed()) {
       try {
         Thread.sleep(1000);
       }
@@ -29,11 +29,11 @@
     Display.update();
     Display.sync(60);
     PerformanceMonitor.endActivity();
-    PerformanceMonitor.startActivity("Input");
-    currentState.handleInput(timer.getDelta());
-    PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Audio");
     AudioManager.getInstance().update();
+    PerformanceMonitor.endActivity();
+    PerformanceMonitor.startActivity("Input");
+    currentState.handleInput(timer.getDelta());
     PerformanceMonitor.endActivity();
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");

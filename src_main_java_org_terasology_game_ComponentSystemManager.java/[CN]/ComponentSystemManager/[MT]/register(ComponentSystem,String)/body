@@ -6,9 +6,7 @@
   if (object instanceof RenderSystem) {
     renderSubscribers.add((RenderSystem)object);
   }
-  if (object instanceof EventHandlerSystem) {
-    CoreRegistry.get(EntityManager.class).getEventSystem().registerEventHandler((EventHandlerSystem)object);
-  }
+  CoreRegistry.get(EntityManager.class).getEventSystem().registerEventHandler(object);
   namedLookup.put(name,object);
   if (initialised) {
     initialiseSystem(object);
