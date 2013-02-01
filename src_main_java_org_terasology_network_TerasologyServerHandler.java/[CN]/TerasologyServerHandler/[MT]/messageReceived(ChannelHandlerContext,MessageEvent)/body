@@ -1,13 +1,7 @@
 {
   NetMessage message=(NetMessage)e.getMessage();
-  client.receivedMessageWithSize(message.getSerializedSize());
   if (message.hasClientConnect()) {
     receivedConnect(message.getClientConnect());
   }
-  for (  NetData.EventMessage event : message.getEventList()) {
-    receivedEvent(event);
-  }
-  for (  NetData.UpdateEntityMessage updateEntityMessage : message.getUpdateEntityList()) {
-    receivedEntityUpdate(updateEntityMessage);
-  }
+  client.messageReceived(message);
 }

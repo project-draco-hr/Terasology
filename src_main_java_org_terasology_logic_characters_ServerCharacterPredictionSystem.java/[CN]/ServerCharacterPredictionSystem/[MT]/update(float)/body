@@ -1,6 +1,6 @@
 {
   if (nextSendState < timer.getTimeInMs()) {
-    for (    Map.Entry<EntityRef,CircularBuffer<CharacterStateEvent>> entry : playerStates.entrySet()) {
+    for (    Map.Entry<EntityRef,CircularBuffer<CharacterStateEvent>> entry : characterStates.entrySet()) {
       if (entry.getValue().size() > 0) {
         entry.getKey().send(entry.getValue().getLast());
       }
@@ -8,28 +8,10 @@
     nextSendState+=TIME_BETWEEN_STATE_REPLICATE;
   }
   long renderTime=timer.getTimeInMs() - RENDER_DELAY;
-  for (  Map.Entry<EntityRef,CircularBuffer<CharacterStateEvent>> entry : playerStates.entrySet()) {
+  for (  Map.Entry<EntityRef,CircularBuffer<CharacterStateEvent>> entry : characterStates.entrySet()) {
     if (entry.getKey().equals(localPlayer.getCharacterEntity())) {
       continue;
     }
-    CharacterStateEvent previous=null;
-    CharacterStateEvent next=null;
-    for (    CharacterStateEvent state : entry.getValue()) {
-      if (state.getTime() <= renderTime) {
-        previous=state;
-      }
- else {
-        next=state;
-        break;
-      }
-    }
-    if (previous != null) {
-      if (next != null) {
-        CharacterStateEvent.setToInterpolateState(entry.getKey(),previous,next,renderTime);
-      }
- else {
-        CharacterStateEvent.setToExtrapolateState(entry.getKey(),previous,renderTime);
-      }
-    }
+    setToTime(renderTime,entry.getKey(),entry.getValue());
   }
 }

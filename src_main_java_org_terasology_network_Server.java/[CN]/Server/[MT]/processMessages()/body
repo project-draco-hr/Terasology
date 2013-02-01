@@ -5,6 +5,12 @@
     if (message.hasTime()) {
       timer.updateServerTime(message.getTime(),false);
     }
+    for (    NetData.RemoveEntityMessage removeEntity : message.getRemoveEntityList()) {
+      int netId=removeEntity.getNetId();
+      EntityRef entity=networkSystem.getEntity(netId);
+      networkSystem.unregisterNetworkEntity(entity);
+      entity.destroy();
+    }
     for (    NetData.CreateEntityMessage createEntity : message.getCreateEntityList()) {
       createEntityMessage(createEntity);
     }
@@ -14,12 +20,6 @@
         logger.info("Updating entity: {}",currentEntity);
         entitySerializer.deserializeOnto(currentEntity,updateEntity.getEntity());
       }
-    }
-    for (    NetData.RemoveEntityMessage removeEntity : message.getRemoveEntityList()) {
-      int netId=removeEntity.getNetId();
-      EntityRef entity=networkSystem.getEntity(netId);
-      networkSystem.unregisterNetworkEntity(entity);
-      entity.destroy();
     }
   }
 }

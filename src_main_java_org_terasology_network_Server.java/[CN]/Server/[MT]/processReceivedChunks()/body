@@ -1,0 +1,9 @@
+{
+  if (remoteWorldProvider != null) {
+    List<Chunk> chunks=Lists.newArrayListWithExpectedSize(chunkQueue.size());
+    chunkQueue.drainTo(chunks);
+    for (    Chunk chunk : chunks) {
+      remoteWorldProvider.receiveChunk(chunk);
+    }
+  }
+}

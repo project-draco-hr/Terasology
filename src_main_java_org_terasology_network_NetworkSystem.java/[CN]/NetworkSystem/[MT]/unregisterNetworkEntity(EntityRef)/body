@@ -3,9 +3,8 @@
   if (netComponent != null) {
     netIdToEntityId.remove(netComponent.networkId);
     if (mode == NetworkMode.SERVER) {
-      NetData.NetMessage message=NetData.NetMessage.newBuilder().addRemoveEntity(NetData.RemoveEntityMessage.newBuilder().setNetId(netComponent.networkId).build()).build();
       for (      Client client : clientList) {
-        client.setNetRemoved(netComponent.networkId,message);
+        client.setNetRemoved(netComponent.networkId);
       }
     }
   }

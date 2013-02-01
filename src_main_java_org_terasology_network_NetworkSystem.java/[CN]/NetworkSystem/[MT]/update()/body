@@ -9,14 +9,16 @@
         }
       }
       long currentTimer=timer.getTimeInMs();
+      boolean netTick=false;
       if (currentTimer > nextNetworkTick) {
         nextNetworkTick+=NET_TICK_RATE;
-        for (        Client client : clientList) {
-          client.update();
-        }
-        if (server != null) {
-          server.update();
-        }
+        netTick=true;
+      }
+      for (      Client client : clientList) {
+        client.update(netTick);
+      }
+      if (server != null) {
+        server.update(netTick);
       }
     }
   }

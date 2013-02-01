@@ -1,6 +1,5 @@
 {
   if (netRelevant.contains(targetId)) {
-    NetData.NetMessage message=NetData.NetMessage.newBuilder().addEvent(NetData.EventMessage.newBuilder().setTargetId(targetId).setEvent(eventSerializer.serialize(event,EVENT_FIELD_CHECK))).build();
-    send(message);
+    queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetId(targetId).setEvent(eventSerializer.serialize(event,EVENT_FIELD_CHECK)).build());
   }
 }

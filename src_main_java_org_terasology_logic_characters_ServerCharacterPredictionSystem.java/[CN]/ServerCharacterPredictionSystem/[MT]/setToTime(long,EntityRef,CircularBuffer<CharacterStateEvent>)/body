@@ -1,0 +1,21 @@
+{
+  CharacterStateEvent previous=null;
+  CharacterStateEvent next=null;
+  for (  CharacterStateEvent state : buffer) {
+    if (state.getTime() <= renderTime) {
+      previous=state;
+    }
+ else {
+      next=state;
+      break;
+    }
+  }
+  if (previous != null) {
+    if (next != null) {
+      CharacterStateEvent.setToInterpolateState(entity,previous,next,renderTime);
+    }
+ else {
+      CharacterStateEvent.setToExtrapolateState(entity,previous,renderTime);
+    }
+  }
+}

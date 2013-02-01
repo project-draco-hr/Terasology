@@ -1,0 +1,9 @@
+{
+  List<NetData.BlockChangeMessage> blockChanges=Lists.newArrayListWithExpectedSize(queuedOutgoingBlockChanges.size());
+  queuedOutgoingBlockChanges.drainTo(blockChanges);
+  message.addAllBlockChange(blockChanges);
+  message.addAllEvent(queuedOutgoingEvents);
+  message.addAllInvalidateChunk(queuedInvalidatedChunkEvents);
+  queuedOutgoingEvents.clear();
+  queuedInvalidatedChunkEvents.clear();
+}

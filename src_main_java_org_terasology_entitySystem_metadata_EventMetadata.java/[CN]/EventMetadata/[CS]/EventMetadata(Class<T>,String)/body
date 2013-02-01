@@ -3,6 +3,7 @@
   this.uri=uri;
   if (simpleClass.getAnnotation(ServerEvent.class) != null) {
     networkEventType=NetworkEventType.SERVER;
+    lagCompensated=simpleClass.getAnnotation(ServerEvent.class).lagCompensate();
   }
  else   if (simpleClass.getAnnotation(OwnerEvent.class) != null) {
     networkEventType=NetworkEventType.OWNER;

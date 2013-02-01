@@ -1,4 +1,3 @@
 {
-  NetData.NetMessage message=NetData.NetMessage.newBuilder().addEvent(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event,FieldSerializeCheck.NullCheck.<Event>newInstance())).setTargetId(targetId)).build();
-  send(message);
+  queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event,FieldSerializeCheck.NullCheck.<Event>newInstance())).setTargetId(targetId).build());
 }

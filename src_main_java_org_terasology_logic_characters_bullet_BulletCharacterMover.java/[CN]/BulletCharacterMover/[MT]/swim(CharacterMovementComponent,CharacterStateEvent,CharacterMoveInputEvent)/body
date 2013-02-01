@@ -1,0 +1,29 @@
+{
+  Vector3f desiredVelocity=new Vector3f(input.getMovementDirection());
+  float lengthSquared=desiredVelocity.lengthSquared();
+  if (lengthSquared > 1) {
+    desiredVelocity.normalize();
+  }
+  float maxSpeed=movementComp.maxWaterSpeed;
+  if (input.isRunning()) {
+    maxSpeed*=movementComp.runFactor;
+  }
+  desiredVelocity.scale(maxSpeed);
+  desiredVelocity.y-=UNDERWATER_GRAVITY;
+  Vector3f velocityDiff=new Vector3f(desiredVelocity);
+  velocityDiff.sub(state.getVelocity());
+  velocityDiff.scale(Math.min(UNDERWATER_INERTIA * input.getDeltaMs(),1.0f));
+  state.getVelocity().x+=velocityDiff.x;
+  state.getVelocity().y+=velocityDiff.y;
+  state.getVelocity().z+=velocityDiff.z;
+  float speed=state.getVelocity().length();
+  if (speed > movementComp.maxWaterSpeed) {
+    state.getVelocity().scale((speed - 4 * (speed - movementComp.maxWaterSpeed) * input.getDeltaMs()) / speed);
+  }
+  Vector3f moveDelta=new Vector3f(state.getVelocity());
+  moveDelta.scale(input.getDeltaMs());
+  MoveResult moveResult=move(state.getPosition(),moveDelta,0,-1,movementComp.collider);
+  Vector3f distanceMoved=new Vector3f(moveResult.getFinalPosition());
+  distanceMoved.sub(state.getPosition());
+  state.getPosition().set(moveResult.getFinalPosition());
+}

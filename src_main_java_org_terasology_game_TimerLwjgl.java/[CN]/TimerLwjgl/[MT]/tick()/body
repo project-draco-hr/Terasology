@@ -1,14 +1,15 @@
 {
   long now=getRawTimeInMs();
-  delta=now - last;
-  last=now;
-  avgDelta=avgDelta * decayRate + delta * oneMinusDecayRate;
+  long newDelta=now - last.get();
+  delta.set(newDelta);
+  last.set(now);
+  avgDelta=avgDelta * DECAY_RATE + newDelta * ONE_MINUS_DECAY_RATE;
   if (desynch != 0) {
-    long diff=(long)Math.ceil(desynch * resyncTimeRate);
+    long diff=(long)Math.ceil(desynch * RESYNC_TIME_RATE);
     if (diff == 0) {
       diff=(long)Math.signum(desynch);
     }
-    serverTimeOffset+=diff;
+    serverTimeOffset.getAndAdd(diff);
     desynch-=diff;
   }
 }

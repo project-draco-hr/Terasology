@@ -1,0 +1,53 @@
+{
+  Vector3f desiredVelocity=new Vector3f(input.getMovementDirection());
+  float lengthSquared=desiredVelocity.lengthSquared();
+  if (lengthSquared > 1) {
+    desiredVelocity.normalize();
+  }
+  float maxSpeed=movementComp.maxGroundSpeed;
+  if (input.isRunning()) {
+    maxSpeed*=movementComp.runFactor;
+  }
+  if (desiredVelocity.y != 0) {
+    float speed=desiredVelocity.length();
+    desiredVelocity.y=0;
+    if (desiredVelocity.x != 0 || desiredVelocity.z != 0) {
+      desiredVelocity.normalize();
+      desiredVelocity.scale(speed);
+    }
+  }
+  desiredVelocity.scale(maxSpeed);
+  Vector3f velocityDiff=new Vector3f(desiredVelocity);
+  velocityDiff.sub(state.getVelocity());
+  velocityDiff.scale(Math.min(movementComp.groundFriction * input.getDeltaMs(),1.0f));
+  state.getVelocity().x+=velocityDiff.x;
+  state.getVelocity().z+=velocityDiff.z;
+  state.getVelocity().y=Math.max(-TERMINAL_VELOCITY,(state.getVelocity().y - GRAVITY * input.getDeltaMs()));
+  Vector3f moveDelta=new Vector3f(state.getVelocity());
+  moveDelta.scale(input.getDeltaMs());
+  MoveResult moveResult=move(state.getPosition(),moveDelta,(state.isGrounded()) ? movementComp.stepHeight : 0,movementComp.slopeFactor,movementComp.collider);
+  Vector3f distanceMoved=new Vector3f(moveResult.getFinalPosition());
+  distanceMoved.sub(state.getPosition());
+  state.getPosition().set(moveResult.getFinalPosition());
+  movementComp.collider.setWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),moveResult.getFinalPosition(),1.0f)));
+  if (moveResult.isBottomHit()) {
+    if (!state.isGrounded()) {
+      state.setGrounded(true);
+    }
+    state.getVelocity().y=0;
+    if (input.isJumpRequested()) {
+      state.setGrounded(false);
+      state.getVelocity().y+=movementComp.jumpSpeed;
+    }
+  }
+ else {
+    if (moveResult.isTopHit() && state.getVelocity().y > 0) {
+      state.getVelocity().y=-0.5f * state.getVelocity().y;
+    }
+    state.setGrounded(false);
+  }
+  if (moveResult.isHorizontalHit()) {
+  }
+  if (state.isGrounded()) {
+  }
+}
