@@ -3,7 +3,7 @@
   CharacterStateEvent result=new CharacterStateEvent(initial);
   result.setSequenceNumber(input.getSequenceNumber());
   updatePosition(characterMovementComponent,result,input);
-  result.setTime(input.getTime());
+  result.setTime(initial.getTime() + input.getDeltaMs());
   if (result.getMode() != MovementMode.GHOSTING) {
     checkSwimming(characterMovementComponent,result);
   }

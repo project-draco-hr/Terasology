@@ -11,9 +11,9 @@
   desiredVelocity.scale(maxSpeed);
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(state.getVelocity());
-  velocityDiff.scale(Math.min(GHOST_INERTIA * input.getDeltaMs(),1.0f));
+  velocityDiff.scale(Math.min(GHOST_INERTIA * input.getDelta(),1.0f));
   state.getVelocity().add(velocityDiff);
   Vector3f deltaPos=new Vector3f(state.getVelocity());
-  deltaPos.scale(input.getDeltaMs());
+  deltaPos.scale(input.getDelta());
   state.getPosition().add(deltaPos);
 }

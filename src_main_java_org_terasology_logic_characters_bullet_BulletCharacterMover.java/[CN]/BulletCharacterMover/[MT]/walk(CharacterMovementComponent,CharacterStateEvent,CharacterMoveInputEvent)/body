@@ -19,12 +19,12 @@
   desiredVelocity.scale(maxSpeed);
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(state.getVelocity());
-  velocityDiff.scale(Math.min(movementComp.groundFriction * input.getDeltaMs(),1.0f));
+  velocityDiff.scale(Math.min(movementComp.groundFriction * input.getDelta(),1.0f));
   state.getVelocity().x+=velocityDiff.x;
   state.getVelocity().z+=velocityDiff.z;
-  state.getVelocity().y=Math.max(-TERMINAL_VELOCITY,(state.getVelocity().y - GRAVITY * input.getDeltaMs()));
+  state.getVelocity().y=Math.max(-TERMINAL_VELOCITY,(state.getVelocity().y - GRAVITY * input.getDelta()));
   Vector3f moveDelta=new Vector3f(state.getVelocity());
-  moveDelta.scale(input.getDeltaMs());
+  moveDelta.scale(input.getDelta());
   MoveResult moveResult=move(state.getPosition(),moveDelta,(state.isGrounded()) ? movementComp.stepHeight : 0,movementComp.slopeFactor,movementComp.collider);
   Vector3f distanceMoved=new Vector3f(moveResult.getFinalPosition());
   distanceMoved.sub(state.getPosition());

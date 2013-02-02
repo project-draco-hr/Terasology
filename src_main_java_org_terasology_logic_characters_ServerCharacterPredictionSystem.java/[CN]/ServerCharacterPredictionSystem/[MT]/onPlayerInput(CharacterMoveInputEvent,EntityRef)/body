@@ -1,7 +1,13 @@
 {
   CircularBuffer<CharacterStateEvent> stateBuffer=characterStates.get(entity);
   CharacterStateEvent lastState=stateBuffer.getLast();
-  CharacterStateEvent newState=stepState(input,lastState,entity);
-  stateBuffer.add(newState);
-  CharacterStateEvent.setToState(entity,newState);
+  if (input.getDelta() + lastState.getTime() < timer.getTimeInMs() + MAX_INPUT_OVERFLOW) {
+    CharacterStateEvent newState=stepState(input,lastState,entity);
+    stateBuffer.add(newState);
+    CharacterStateEvent.setToState(entity,newState);
+    lastInputEvent.put(entity,input);
+  }
+ else {
+    logger.warn("Received too much input from {}, dropping input.",entity);
+  }
 }
