@@ -14,12 +14,12 @@
       }
       lagCompensated=true;
     }
-    EntityRef target=networkSystem.getEntity(eventMessage.getTargetId());
+    EntityRef target=EntityRef.NULL;
+    if (eventMessage.hasTargetId()) {
+      target=networkSystem.getEntity(eventMessage.getTargetId());
+    }
     if (target.exists()) {
       if (networkSystem.getOwner(target).equals(this)) {
-        if (event instanceof NetworkEvent) {
-          ((NetworkEvent)event).setClient(clientEntity);
-        }
         target.send(event);
       }
  else {

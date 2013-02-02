@@ -6,7 +6,9 @@
       logger.error("Unable to serialize field {}, out of bounds",fieldId);
       continue;
     }
-    fieldInfo.deserializeOnto(targetEvent,eventData.getFieldValue(i));
+    if (fieldInfo.isReplicated()) {
+      fieldInfo.deserializeOnto(targetEvent,eventData.getFieldValue(i));
+    }
   }
   return targetEvent;
 }

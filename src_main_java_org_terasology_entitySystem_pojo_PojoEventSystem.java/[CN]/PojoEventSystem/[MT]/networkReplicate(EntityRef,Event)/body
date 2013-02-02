@@ -4,33 +4,13 @@
     logger.debug("Replicating event: {}",event);
 switch (metadata.getNetworkEventType()) {
 case BROADCAST:
-      if (networkSystem.getMode() == NetworkMode.SERVER) {
-        NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-        if (netComp != null) {
-          for (          Client client : networkSystem.getPlayers()) {
-            client.send(event,netComp.networkId);
-          }
-        }
-      }
+      broadcastEvent(entity,event,metadata);
     break;
 case OWNER:
-  if (networkSystem.getMode() == NetworkMode.SERVER) {
-    NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-    if (netComp != null) {
-      Client client=networkSystem.getOwner(entity);
-      if (client != null) {
-        client.send(event,netComp.networkId);
-      }
-    }
-  }
+  sendEventToOwner(entity,event);
 break;
 case SERVER:
-if (networkSystem.getMode() == NetworkMode.CLIENT) {
-NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-if (netComp != null) {
-  networkSystem.getServer().send(event,netComp.networkId);
-}
-}
+sendEventToServer(entity,event);
 break;
 }
 }

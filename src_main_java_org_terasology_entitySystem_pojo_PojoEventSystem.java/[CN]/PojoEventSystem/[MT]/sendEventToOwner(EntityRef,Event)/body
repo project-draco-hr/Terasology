@@ -1,0 +1,11 @@
+{
+  if (networkSystem.getMode() == NetworkMode.SERVER) {
+    NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+    if (netComp != null) {
+      Client client=networkSystem.getOwner(entity);
+      if (client != null) {
+        client.send(event,entity);
+      }
+    }
+  }
+}

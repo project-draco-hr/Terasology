@@ -10,7 +10,7 @@
  else         if (timer.getTimeInMs() - state.getTime() > MAX_INPUT_UNDERFLOW) {
           CharacterMoveInputEvent lastInput=lastInputEvent.get(entry.getKey());
           if (lastInput != null) {
-            CharacterMoveInputEvent newInput=new CharacterMoveInputEvent(lastInput,MAX_INPUT_UNDERFLOW / 2);
+            CharacterMoveInputEvent newInput=new CharacterMoveInputEvent(lastInput,(int)(timer.getTimeInMs() - state.getTime()));
             onPlayerInput(newInput,entry.getKey());
           }
           entry.getKey().send(state);

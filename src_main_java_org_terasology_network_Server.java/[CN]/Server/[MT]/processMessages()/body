@@ -9,6 +9,7 @@
       int netId=removeEntity.getNetId();
       EntityRef entity=networkSystem.getEntity(netId);
       networkSystem.unregisterNetworkEntity(entity);
+      logger.info("Destroying entity: {}",entity);
       entity.destroy();
     }
     for (    NetData.CreateEntityMessage createEntity : message.getCreateEntityList()) {

@@ -1,0 +1,28 @@
+{
+  if (event.getItem().exists()) {
+    if (!character.equals(event.getItem().getComponent(NetworkComponent.class).owner)) {
+      return;
+    }
+  }
+  LocationComponent location=character.getComponent(LocationComponent.class);
+  CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+  Vector3f direction=characterComponent.getLookDirection();
+  Vector3f originPos=location.getWorldPosition();
+  originPos.y+=characterComponent.eyeOffset;
+  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+  if (result.isHit()) {
+    int damage=1;
+    ItemComponent item=event.getItem().getComponent(ItemComponent.class);
+    if (item != null) {
+      damage=item.baseDamage;
+      BlockComponent blockComp=result.getEntity().getComponent(BlockComponent.class);
+      if (blockComp != null) {
+        Block block=worldProvider.getBlock(blockComp.getPosition());
+        if (item.getPerBlockDamageBonus().containsKey(block.getBlockFamily().getURI().toString())) {
+          damage+=item.getPerBlockDamageBonus().get(block.getBlockFamily().getURI().toString());
+        }
+      }
+    }
+    result.getEntity().send(new DamageEvent(damage,character));
+  }
+}

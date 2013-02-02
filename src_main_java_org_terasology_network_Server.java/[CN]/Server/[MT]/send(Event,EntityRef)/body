@@ -1,0 +1,6 @@
+{
+  NetworkComponent netComp=target.getComponent(NetworkComponent.class);
+  if (netComp != null) {
+    queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event)).setTargetId(netComp.networkId).build());
+  }
+}

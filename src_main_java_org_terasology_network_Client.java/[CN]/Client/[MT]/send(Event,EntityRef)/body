@@ -1,0 +1,16 @@
+{
+  BlockComponent blockComp=target.getComponent(BlockComponent.class);
+  if (blockComp != null) {
+    if (relevantChunks.contains(TeraMath.calcChunkPos(blockComp.getPosition()))) {
+      queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetBlockPos(NetworkUtil.convert(blockComp.getPosition())).setEvent(eventSerializer.serialize(event)).build());
+    }
+  }
+ else {
+    NetworkComponent networkComponent=target.getComponent(NetworkComponent.class);
+    if (networkComponent != null) {
+      if (netRelevant.contains(networkComponent.networkId)) {
+        queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetId(networkComponent.networkId).setEvent(eventSerializer.serialize(event)).build());
+      }
+    }
+  }
+}

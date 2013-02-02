@@ -1,0 +1,17 @@
+{
+  if (networkSystem.getMode() == NetworkMode.SERVER) {
+    NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+    if (netComp != null || blockComp != null) {
+      EntityRef instigatorClient=EntityRef.NULL;
+      if (metadata.isSkipInstigator() && event instanceof NetworkEvent) {
+        instigatorClient=networkSystem.getOwnerEntity(((NetworkEvent)event).getInstigator());
+      }
+      for (      Client client : networkSystem.getPlayers()) {
+        if (!client.equals(instigatorClient)) {
+          client.send(event,entity);
+        }
+      }
+    }
+  }
+}

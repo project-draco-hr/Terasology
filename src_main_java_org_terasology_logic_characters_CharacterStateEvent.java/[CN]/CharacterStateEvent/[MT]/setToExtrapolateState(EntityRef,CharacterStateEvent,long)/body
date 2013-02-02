@@ -12,5 +12,9 @@
   movementComponent.setVelocity(state.getVelocity());
   movementComponent.grounded=state.isGrounded();
   entity.saveComponent(movementComponent);
+  CharacterComponent characterComponent=entity.getComponent(CharacterComponent.class);
+  characterComponent.pitch=state.pitch;
+  characterComponent.yaw=state.yaw;
+  entity.saveComponent(characterComponent);
   movementComponent.collider.setInterpolationWorldTransform(new Transform(new Matrix4f(new Quat4f(0,0,0,1),newPos,1.0f)));
 }

@@ -1,3 +1,26 @@
 {
-  return serialize(event,FieldSerializeCheck.NullCheck.<Event>newInstance());
+  ClassMetadata<?> eventMetadata=eventLibrary.getMetadata(event.getClass());
+  if (eventMetadata == null) {
+    logger.error("Unregistered event type: {}",event.getClass());
+    return null;
+  }
+  EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
+  serializeEventType(event,eventData);
+  ByteString.Output fieldIds=ByteString.newOutput();
+  for (  FieldMetadata field : eventMetadata.iterateFields()) {
+    if (field.isReplicated()) {
+      try {
+        EntityData.Value serializedValue=field.serialize(event);
+        if (serializedValue != null) {
+          eventData.addFieldValue(serializedValue);
+          fieldIds.write(field.getId());
+        }
+      }
+ catch (      IOException e) {
+        logger.error("Exception during serializing of {}",event.getClass(),e);
+      }
+    }
+  }
+  eventData.setFieldIds(fieldIds.toByteString());
+  return eventData.build();
 }
