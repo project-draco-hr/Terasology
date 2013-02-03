@@ -1,4 +1,11 @@
 {
+  addPendingRigidBodies();
+  applyPendingImpulses();
+  if (networkSystem.getMode() == NetworkMode.SERVER && timer.getTimeInMs() - TIME_BETWEEN_NETSYNCS > lastNetsync) {
+    sendSyncMessages();
+    lastNetsync=timer.getTimeInMs();
+  }
+  resynchronize(delta);
   if (skipProcessingFrames > 0) {
     skipProcessingFrames--;
     return;

@@ -2,7 +2,7 @@
   LocationComponent location=entity.getComponent(LocationComponent.class);
   RigidBodyComponent rigidBody=entity.getComponent(RigidBodyComponent.class);
   ConvexShape shape=getShapeFor(entity);
-  if (shape != null) {
+  if (location != null && rigidBody != null && shape != null) {
     float scale=location.getWorldScale();
     shape.setLocalScaling(new Vector3f(scale,scale,scale));
     Vector3f fallInertia=new Vector3f();

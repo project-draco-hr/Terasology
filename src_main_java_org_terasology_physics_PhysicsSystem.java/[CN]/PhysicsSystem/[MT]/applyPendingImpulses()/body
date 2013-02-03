@@ -1,0 +1,9 @@
+{
+  for (  Map.Entry<EntityRef,Vector3f> impulse : pendingImpulses.entrySet()) {
+    RigidBody body=entityRigidBodies.get(impulse.getKey());
+    if (body != null) {
+      body.applyCentralImpulse(impulse.getValue());
+    }
+  }
+  pendingImpulses.clear();
+}

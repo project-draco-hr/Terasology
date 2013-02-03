@@ -1,0 +1,24 @@
+{
+  Iterator<Map.Entry<EntityRef,ResynchData>> i=pendingResynch.entrySet().iterator();
+  while (i.hasNext()) {
+    Map.Entry<EntityRef,ResynchData> entry=i.next();
+    RigidBody body=entityRigidBodies.get(entry.getKey());
+    ResynchData data=entry.getValue();
+    if (body == null) {
+      i.remove();
+    }
+ else {
+      float applyDelta=delta;
+      float time=delta + data.getT();
+      if (time >= RESYNC_TIME) {
+        applyDelta-=time - RESYNC_TIME;
+        i.remove();
+      }
+      Vector3f change=new Vector3f();
+      data.positionDelta.scale(applyDelta / RESYNC_TIME,change);
+      Transform current=body.getWorldTransform(new Transform());
+      change.add(current.origin);
+      body.proceedToTransform(new Transform(new Matrix4f(current.getRotation(new Quat4f()),change,1)));
+    }
+  }
+}
