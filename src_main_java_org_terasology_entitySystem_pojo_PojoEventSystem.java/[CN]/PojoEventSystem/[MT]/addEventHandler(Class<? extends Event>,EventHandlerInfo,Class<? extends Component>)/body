@@ -1,7 +1,7 @@
 {
-  Multimap<Class<? extends Component>,EventHandlerInfo> componentMap=componentSpecificHandlers.get(type);
+  ListMultimap<Class<? extends Component>,EventHandlerInfo> componentMap=componentSpecificHandlers.get(type);
   if (componentMap == null) {
-    componentMap=HashMultimap.create();
+    componentMap=ArrayListMultimap.create();
     componentSpecificHandlers.put(type,componentMap);
   }
   componentMap.put(c,handlerInfo);
