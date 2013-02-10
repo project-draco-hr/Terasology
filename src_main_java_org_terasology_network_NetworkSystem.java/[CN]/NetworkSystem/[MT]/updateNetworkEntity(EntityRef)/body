@@ -1,18 +1,15 @@
 {
   NetworkComponent netComponent=entity.getComponent(NetworkComponent.class);
-  EntityRef lastOwner=ownerLookup.get(entity);
-  if (lastOwner == null) {
-    lastOwner=EntityRef.NULL;
-  }
-  if (!lastOwner.equals(netComponent.owner)) {
+  EntityRef lastOwnerEntity=ownerLookup.get(entity);
+  Client lastOwner=(lastOwnerEntity == null) ? null : getOwner(lastOwnerEntity);
+  Client newOwner=getOwner(netComponent.owner);
+  if (lastOwner != newOwner) {
     if (netComponent.replicateMode == NetworkComponent.ReplicateMode.OWNER) {
-      Client lastClient=getOwner(lastOwner);
-      if (lastClient != null) {
-        lastClient.setNetRemoved(netComponent.networkId);
+      if (lastOwner != null) {
+        lastOwner.setNetRemoved(netComponent.networkId);
       }
-      Client newClient=getOwner(netComponent.owner);
-      if (newClient != null) {
-        newClient.setNetInitial(netComponent.networkId);
+      if (newOwner != null) {
+        newOwner.setNetInitial(netComponent.networkId);
       }
     }
     if (!netComponent.owner.exists()) {
