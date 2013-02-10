@@ -7,7 +7,7 @@
   if (upperBlock.isSupportRequired()) {
     worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,BlockManager.getInstance().getAir(),upperBlock);
   }
-  AudioManager.play(new AssetUri(AssetType.SOUND,"engine:RemoveBlock"),0.6f);
+  entity.send(new PlaySoundEvent(Assets.getSound("engine:RemoveBlock"),0.6f));
   if (oldBlock.getEntityMode() == BlockEntityMode.PERSISTENT) {
     entity.removeComponent(HealthComponent.class);
     entity.removeComponent(BlockComponent.class);

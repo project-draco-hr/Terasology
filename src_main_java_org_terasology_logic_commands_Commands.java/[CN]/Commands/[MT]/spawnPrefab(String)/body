@@ -10,9 +10,9 @@
     dir.normalize();
   }
  else {
-    dir.set(0,0,1);
+    dir.set(Direction.FORWARD.getVector3f());
   }
-  Quat4f rotation=QuaternionUtil.shortestArcQuat(new Vector3f(0,0,1),dir,new Quat4f());
+  Quat4f rotation=QuaternionUtil.shortestArcQuat(Direction.FORWARD.getVector3f(),dir,new Quat4f());
   Prefab prefab=CoreRegistry.get(PrefabManager.class).getPrefab(prefabName);
   if (prefab != null && prefab.getComponent(LocationComponent.class) != null) {
     CoreRegistry.get(EntityManager.class).create(prefab,spawnPos,rotation);

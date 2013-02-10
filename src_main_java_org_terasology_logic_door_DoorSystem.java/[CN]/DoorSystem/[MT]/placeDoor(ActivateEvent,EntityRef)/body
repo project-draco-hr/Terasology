@@ -61,12 +61,12 @@
   doorCenter.y+=0.5f;
   newDoor.addComponent(new LocationComponent(doorCenter));
   DoorComponent newDoorComp=newDoor.getComponent(DoorComponent.class);
-  newDoorComp.closedDirection=closedSide;
-  newDoorComp.openDirection=attachSide.reverse();
+  newDoorComp.closedSide=closedSide;
+  newDoorComp.openSide=attachSide.reverse();
   newDoorComp.isOpen=false;
   newDoor.saveComponent(newDoorComp);
   newDoor.removeComponent(ItemComponent.class);
-  AudioManager.play(new AssetUri(AssetType.SOUND,"engine:PlaceBlock"),0.5f);
-  logger.info("Closed Direction: {}",newDoorComp.closedDirection);
-  logger.info("Open Direction: {}",newDoorComp.openDirection);
+  audioManager.playSound(Assets.getSound("engine:PlaceBlock"),0.5f);
+  logger.info("Closed Side: {}",newDoorComp.closedSide);
+  logger.info("Open Side: {}",newDoorComp.openSide);
 }

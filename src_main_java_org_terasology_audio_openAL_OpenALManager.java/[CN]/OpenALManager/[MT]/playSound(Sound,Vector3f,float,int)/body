@@ -1,0 +1,14 @@
+{
+  if (position != null && !checkDistance(position)) {
+    return;
+  }
+  SoundSource source=pools.get("sfx").getSource(sound,priority);
+  if (source != null) {
+    source.setAbsolute(position != null);
+    if (position != null) {
+      source.setPosition(position);
+    }
+    source.setGain(volume);
+    source.play();
+  }
+}

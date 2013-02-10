@@ -1,0 +1,9 @@
+{
+  if (position == null || this.position.equals(position)) {
+    return this;
+  }
+  this.position.set(position);
+  alSource3f(getSourceId(),AL10.AL_POSITION,position.x,position.y,position.z);
+  OpenALException.checkState("Changing sound position");
+  return this;
+}

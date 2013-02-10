@@ -1,3 +1,12 @@
 {
-  AudioManager.getInstance().initialize();
+  org.terasology.config.Config config=CoreRegistry.get(org.terasology.config.Config.class);
+  if (config.getSoundConfig().isDisableSound()) {
+    audioManager=new NullAudioManager();
+  }
+ else {
+    audioManager=new OpenALManager();
+    audioManager.setSoundVolume(config.getSoundConfig().getSoundVolume());
+    audioManager.setMusicVolume(config.getSoundConfig().getMusicVolume());
+  }
+  CoreRegistry.put(AudioManager.class,audioManager);
 }

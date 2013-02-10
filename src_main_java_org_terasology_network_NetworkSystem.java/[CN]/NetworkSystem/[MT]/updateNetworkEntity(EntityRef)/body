@@ -1,0 +1,25 @@
+{
+  NetworkComponent netComponent=entity.getComponent(NetworkComponent.class);
+  EntityRef lastOwner=ownerLookup.get(entity);
+  if (lastOwner == null) {
+    lastOwner=EntityRef.NULL;
+  }
+  if (!lastOwner.equals(netComponent.owner)) {
+    if (netComponent.replicateMode == NetworkComponent.ReplicateMode.OWNER) {
+      Client lastClient=getOwner(lastOwner);
+      if (lastClient != null) {
+        lastClient.setNetRemoved(netComponent.networkId);
+      }
+      Client newClient=getOwner(netComponent.owner);
+      if (newClient != null) {
+        newClient.setNetInitial(netComponent.networkId);
+      }
+    }
+    if (!netComponent.owner.exists()) {
+      ownerLookup.remove(entity);
+    }
+ else {
+      ownerLookup.put(entity,netComponent.owner);
+    }
+  }
+}
