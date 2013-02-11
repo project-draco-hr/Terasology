@@ -8,15 +8,7 @@
   }
   InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
   EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
-  ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
-  if (item != null && item.usage != ItemComponent.UsageType.NONE) {
-    if (event.getTarget().exists()) {
-      entity.send(new UseItemOnTargetRequest(selectedItemEntity,event.getTarget(),event.getHitPosition()));
-    }
- else {
-      entity.send(new UseItemInDirectionRequest(selectedItemEntity,worldRenderer.getActiveCamera().getViewingDirection()));
-    }
-  }
+  entity.send(new UseItemRequest(selectedItemEntity));
   lastInteraction=timer.getTimeInMs();
   localPlayerComp.handAnimation=0.5f;
   entity.saveComponent(localPlayerComp);

@@ -1,0 +1,17 @@
+{
+  if (block == null) {
+    return false;
+  }
+  Block centerBlock=worldProvider.getBlock(targetBlock.x,targetBlock.y,targetBlock.z);
+  if (!centerBlock.isAttachmentAllowed()) {
+    return false;
+  }
+  Block adjBlock=worldProvider.getBlock(blockPos.x,blockPos.y,blockPos.z);
+  if (!adjBlock.isReplacementAllowed() || adjBlock.isTargetable()) {
+    return false;
+  }
+  if (!block.isPenetrable()) {
+    return !CoreRegistry.get(BulletPhysics.class).scanArea(block.getBounds(blockPos),Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT,StandardCollisionGroup.CHARACTER)).iterator().hasNext();
+  }
+  return true;
+}
