@@ -1,0 +1,21 @@
+{
+  ItemComponent itemComp=item.getComponent(ItemComponent.class);
+  if (itemComp != null && itemComp.container.exists()) {
+    CoreRegistry.get(InventoryManager.class).removeItem(itemComp.container,item);
+  }
+  EntityRef character=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
+  CharacterComponent comp=character.getComponent(CharacterComponent.class);
+  comp.transferSlot=item;
+  character.saveComponent(comp);
+  if (item.exists()) {
+    transferIcon.setItemEntity(item);
+    getGUIManager().getFocusedWindow().removeDisplayElement(transferIcon);
+    getGUIManager().getFocusedWindow().addDisplayElement(transferIcon);
+    transferIcon.setVisible(true);
+  }
+ else {
+    transferIcon.setItemEntity(EntityRef.NULL);
+    transferIcon.setVisible(false);
+    getGUIManager().getFocusedWindow().removeDisplayElement(transferIcon);
+  }
+}

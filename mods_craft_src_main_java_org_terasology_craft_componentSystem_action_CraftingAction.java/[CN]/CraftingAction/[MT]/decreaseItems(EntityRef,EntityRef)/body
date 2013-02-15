@@ -28,11 +28,10 @@
   }
   if (craftingComponent.isRefinement) {
     LocalPlayerComponent localPlayer=playerEntity.getComponent(LocalPlayerComponent.class);
-    InventoryComponent inventory=playerEntity.getComponent(InventoryComponent.class);
-    ItemComponent instigatorItem=inventory.itemSlots.get(localPlayer.selectedTool).getComponent(ItemComponent.class);
+    ItemComponent instigatorItem=inventoryManager.getItemInSlot(playerEntity,localPlayer.selectedTool).getComponent(ItemComponent.class);
     instigatorItem.stackCount--;
     if (instigatorItem.stackCount < 1) {
-      inventory.itemSlots.get(localPlayer.selectedTool).destroy();
+      inventoryManager.getItemInSlot(playerEntity,localPlayer.selectedTool).destroy();
     }
   }
 }

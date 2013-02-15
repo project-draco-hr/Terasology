@@ -22,10 +22,9 @@
           if (resultItemContainer == null) {
             initResultItem();
           }
-          if (!resultItemContainer.getComponent(InventoryComponent.class).itemSlots.get(0).equals(craftingActionComponent.possibleItem)) {
-            InventoryComponent inventoryComponent=resultItemContainer.getComponent(InventoryComponent.class);
-            inventoryComponent.itemSlots.set(0,craftingActionComponent.possibleItem);
-            resultItemContainer.saveComponent(inventoryComponent);
+          EntityRef resultItem=inventoryManager.getItemInSlot(resultItemContainer,0);
+          if (!resultItem.equals(craftingActionComponent.possibleItem)) {
+            inventoryManager.putItemInSlot(resultItemContainer,0,craftingActionComponent.possibleItem);
           }
           if (guiCraftElement == null) {
             guiCraftElement=(UIItemContainer)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("craftElement");

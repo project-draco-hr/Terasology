@@ -1,0 +1,24 @@
+{
+  InventoryComponent inventory=inventoryEntity.getComponent(InventoryComponent.class);
+  ItemComponent itemComponent=item.getComponent(ItemComponent.class);
+  if (inventory != null && itemComponent != null && slot >= 0 && slot < inventory.itemSlots.size()) {
+    EntityRef existingItem=inventory.itemSlots.get(slot);
+    ItemComponent slotItemComponent=existingItem.getComponent(ItemComponent.class);
+    if (!itemComponent.stackId.isEmpty() && slotItemComponent != null && Objects.equal(itemComponent.stackId,slotItemComponent.stackId) && slotItemComponent.stackCount < MAX_STACK) {
+      mergeItems(itemComponent,existingItem,slotItemComponent);
+      if (itemComponent.stackCount == 0) {
+        item.destroy();
+      }
+ else {
+        item.saveComponent(itemComponent);
+      }
+      return item;
+    }
+ else {
+      removeItem(inventoryEntity,existingItem);
+      putItemInSlot(item,itemComponent,slot,inventoryEntity,inventory);
+      return existingItem;
+    }
+  }
+  return item;
+}

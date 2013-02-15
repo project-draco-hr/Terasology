@@ -10,9 +10,8 @@
     Block currentBlock=worldProvider.getBlock(block.getPosition());
     EntityManager entityManager=CoreRegistry.get(EntityManager.class);
     if (!currentBlock.isInvisible() && !currentBlock.isLiquid() && !currentBlock.isPenetrable()&& currentBlock.isCraftPlace()) {
-      InventoryComponent inventory=playerEntity.getComponent(InventoryComponent.class);
       if (localPlayerComp.isDead)       return;
-      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+      EntityRef selectedItemEntity=inventoryManager.getItemInSlot(playerEntity,localPlayerComp.selectedTool);
       ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
       if (item == null) {
         return;

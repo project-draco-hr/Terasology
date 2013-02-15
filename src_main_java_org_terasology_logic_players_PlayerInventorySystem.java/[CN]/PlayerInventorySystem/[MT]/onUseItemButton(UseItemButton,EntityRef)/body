@@ -6,8 +6,7 @@
   if (localPlayerComp.isDead) {
     return;
   }
-  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-  EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool);
+  EntityRef selectedItemEntity=inventoryManager.getItemInSlot(entity,localPlayerComp.selectedTool);
   entity.send(new UseItemRequest(selectedItemEntity));
   lastInteraction=timer.getTimeInMs();
   localPlayerComp.handAnimation=0.5f;

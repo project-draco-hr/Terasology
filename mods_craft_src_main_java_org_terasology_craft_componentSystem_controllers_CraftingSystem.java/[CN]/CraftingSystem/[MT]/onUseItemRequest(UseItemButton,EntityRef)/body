@@ -33,7 +33,7 @@
       if (localPlayerComp.isDead)       return;
       InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
       UIItemContainer toolbar=(UIItemContainer)guiManager.getWindowById("hud").getElementById("toolbar");
-      EntityRef selectedItemEntity=inventory.itemSlots.get(localPlayerComp.selectedTool + toolbar.getSlotStart());
+      EntityRef selectedItemEntity=inventoryManager.getItemInSlot(entity,localPlayerComp.selectedTool + toolbar.getSlotStart());
       if (!selectedItemEntity.equals(EntityRef.NULL)) {
         float dropPower=getDropPower();
         itsCraftActionTime=true;

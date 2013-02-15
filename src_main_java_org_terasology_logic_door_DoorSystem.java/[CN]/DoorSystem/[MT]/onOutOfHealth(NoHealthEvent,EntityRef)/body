@@ -7,11 +7,7 @@
   EntityInfoComponent entityInfo=entity.getComponent(EntityInfoComponent.class);
   if (entityInfo != null) {
     EntityRef doorItem=entityManager.create(entityInfo.parentPrefab);
-    if (event.getInstigator().exists()) {
-      event.getInstigator().send(new ReceiveItemEvent(doorItem));
-    }
-    ItemComponent itemComp=doorItem.getComponent(ItemComponent.class);
-    if (itemComp != null && !itemComp.container.exists()) {
+    if (!inventoryManager.giveItem(event.getInstigator(),doorItem)) {
       doorItem.destroy();
     }
   }

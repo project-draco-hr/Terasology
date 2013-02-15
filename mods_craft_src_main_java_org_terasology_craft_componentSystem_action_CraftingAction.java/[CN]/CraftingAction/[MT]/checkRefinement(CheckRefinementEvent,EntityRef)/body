@@ -26,7 +26,7 @@
     }
   }
   UIItemContainer toolbar=(UIItemContainer)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("toolbar");
-  ItemComponent instigatorItem=inventory.itemSlots.get(toolbar.getSlotStart() + localPlayer.selectedTool).getComponent(ItemComponent.class);
+  ItemComponent instigatorItem=inventoryManager.getItemInSlot(event.getInstigator(),toolbar.getSlotStart() + localPlayer.selectedTool).getComponent(ItemComponent.class);
   int selectedCell=getSelectedItemFromCraftBlock(entity,craftingComponent.getCurrentLevel());
   EntityRef selectedEntity=craftingComponent.getCurrentLevelElements().get(selectedCell);
   ItemComponent targetItem=selectedEntity.getComponent(ItemComponent.class);

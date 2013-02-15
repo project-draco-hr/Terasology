@@ -1,14 +1,11 @@
 {
   BlockPickupComponent blockPickupComponent=entity.getComponent(BlockPickupComponent.class);
   EntityRef blockItem=blockItemFactory.newInstance(blockPickupComponent.blockFamily,blockPickupComponent.placedEntity);
-  ReceiveItemEvent giveItemEvent=new ReceiveItemEvent(blockItem);
-  event.getOtherEntity().send(giveItemEvent);
-  ItemComponent itemComp=blockItem.getComponent(ItemComponent.class);
-  if (itemComp != null && !itemComp.container.exists()) {
-    blockItem.destroy();
-  }
- else {
+  if (inventoryManager.giveItem(event.getOtherEntity(),blockItem)) {
     event.getOtherEntity().send(new PlaySoundForOwnerEvent(Assets.getSound("engine:Loot"),1.0f));
     entity.destroy();
+  }
+ else {
+    blockItem.destroy();
   }
 }

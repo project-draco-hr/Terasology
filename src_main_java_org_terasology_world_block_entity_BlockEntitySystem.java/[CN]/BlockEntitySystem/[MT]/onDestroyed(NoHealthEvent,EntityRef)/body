@@ -20,9 +20,7 @@
  else {
       item=blockItemFactory.newInstance(oldBlock.getBlockFamily());
     }
-    event.getInstigator().send(new ReceiveItemEvent(item));
-    ItemComponent itemComp=item.getComponent(ItemComponent.class);
-    if (itemComp != null && !itemComp.container.exists()) {
+    if (!inventoryManager.giveItem(event.getInstigator(),item)) {
       item.destroy();
       EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
       block.send(new ImpulseEvent(random.randomVector3f(30)));

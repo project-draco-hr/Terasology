@@ -2,7 +2,7 @@
   CraftingActionComponent craftingComponent=entity.getComponent(CraftingActionComponent.class);
   if (!craftingComponent.possibleItem.equals(EntityRef.NULL)) {
     EntityRef player=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-    player.send(new ReceiveItemEvent(craftingComponent.possibleItem));
+    inventoryManager.giveItem(player,craftingComponent.possibleItem);
     decreaseItems(entity,player);
     checkEmptyCraftBlock(entity);
     if (entity.exists()) {

@@ -1,0 +1,13 @@
+{
+  inventory.itemSlots.set(slot,item);
+  removeItem(itemComponent.container,item);
+  itemComponent.container=inventoryEntity;
+  item.saveComponent(itemComponent);
+  inventoryEntity.saveComponent(inventory);
+  NetworkComponent networkComponent=item.getComponent(NetworkComponent.class);
+  if (networkComponent != null) {
+    networkComponent.owner=inventoryEntity;
+    item.saveComponent(networkComponent);
+  }
+  inventoryEntity.send(new ReceivedItemEvent(item,slot));
+}

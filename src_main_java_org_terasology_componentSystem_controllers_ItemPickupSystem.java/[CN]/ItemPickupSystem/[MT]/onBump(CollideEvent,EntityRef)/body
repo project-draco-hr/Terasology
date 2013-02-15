@@ -1,13 +1,5 @@
 {
-  DroppedItemTypeComponent droppedItem=entity.getComponent(DroppedItemTypeComponent.class);
-  ReceiveItemEvent giveItemEvent=new ReceiveItemEvent(droppedItem.placedEntity);
-  event.getOtherEntity().send(giveItemEvent);
-  ItemComponent itemComp=droppedItem.placedEntity.getComponent(ItemComponent.class);
-  if (itemComp != null && !itemComp.container.exists()) {
-    droppedItem.placedEntity.destroy();
-  }
- else {
-    audioManager.playSound(Assets.getSound("engine:Loot"));
-    entity.destroy();
+  if (inventoryManager.giveItem(event.getOtherEntity(),entity)) {
+    event.getOtherEntity().send(new PlaySoundForOwnerEvent(Assets.getSound("engine:Loot"),1.0f));
   }
 }

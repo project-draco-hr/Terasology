@@ -54,7 +54,10 @@
     ItemComponent tItem=selectedEntity.getComponent(ItemComponent.class);
     tItem.container=EntityRef.NULL;
     selectedEntity.saveComponent(tItem);
-    player.send(new ReceiveItemEvent(entityManager.copy(selectedEntity)));
+    EntityRef item=entityManager.copy(selectedEntity);
+    if (!inventoryManager.giveItem(player,item)) {
+      item.destroy();
+    }
     craftingComponent.getCurrentLevelElements().set(selectedCell,entityToCraftBlock);
   }
   playerItem.stackCount+=returnedCount;

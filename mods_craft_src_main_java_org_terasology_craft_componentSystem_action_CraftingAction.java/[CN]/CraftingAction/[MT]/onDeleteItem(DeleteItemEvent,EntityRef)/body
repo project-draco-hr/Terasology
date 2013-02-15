@@ -25,7 +25,7 @@
   enityForPlayerItem.stackCount=sendingCount;
   entityForPlayer.saveComponent(enityForPlayerItem);
   EntityRef player=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
-  player.send(new ReceiveItemEvent(entityForPlayer));
+  inventoryManager.giveItem(player,entityForPlayer);
   if (craftItem.stackCount == 0) {
     craftingComponent.deleteItem(getSelectedItemFromCraftBlock(entity,craftingComponent.getCurrentLevel()));
     entity.saveComponent(craftingComponent);
