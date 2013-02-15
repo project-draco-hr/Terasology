@@ -4,71 +4,75 @@
   float[] blockLights=new float[8];
   Block[] blocks=new Block[4];
   PerformanceMonitor.startActivity("gatherLightInfo");
-  if (normal.y == 1.0f || normal.y == -1.0f) {
-    blocks[0]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z + 0.1f));
-    blocks[1]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z - 0.1f));
-    blocks[2]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z - 0.1f));
-    blocks[3]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z + 0.1f));
-  }
- else   if (normal.x == 1.0f || normal.x == -1.0f) {
+  Direction dir=Direction.inDirection(normal);
+switch (dir) {
+case LEFT:
+case RIGHT:
     blocks[0]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y + 0.1f),(vertexPos.z + 0.1f));
-    blocks[1]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y + 0.1f),(vertexPos.z - 0.1f));
-    blocks[2]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
-    blocks[3]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
-  }
- else {
-    blocks[0]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y + 0.1f),(vertexPos.z + 0.8f * normal.z));
-    blocks[1]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.8f * normal.z));
-    blocks[2]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.8f * normal.z));
-    blocks[3]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y + 0.1f),(vertexPos.z + 0.8f * normal.z));
-  }
-  lights[0]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
-  lights[1]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
-  lights[2]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
-  lights[3]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
-  lights[4]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
-  lights[5]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
-  lights[6]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
-  lights[7]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
-  blockLights[0]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
-  blockLights[1]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
-  blockLights[2]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
-  blockLights[3]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
-  blockLights[4]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
-  blockLights[5]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
-  blockLights[6]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
-  blockLights[7]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
-  PerformanceMonitor.endActivity();
-  float resultLight=0;
-  float resultBlockLight=0;
-  int counterLight=0;
-  int counterBlockLight=0;
-  int occCounter=0;
-  int occCounterBillboard=0;
-  for (int i=0; i < 8; i++) {
-    if (lights[i] > 0) {
-      resultLight+=lights[i];
-      counterLight++;
-    }
-    if (blockLights[i] > 0) {
-      resultBlockLight+=blockLights[i];
-      counterBlockLight++;
-    }
-    if (i < 4) {
-      Block b=blocks[i];
-      if (b.isShadowCasting() && !b.isTranslucent()) {
-        occCounter++;
-      }
- else       if (b.isShadowCasting()) {
-        occCounterBillboard++;
-      }
-    }
-  }
-  double resultAmbientOcclusion=(Math.pow(0.40,occCounter) + Math.pow(0.80,occCounterBillboard)) / 2.0;
-  if (counterLight == 0)   output[0]=0;
- else   output[0]=resultLight / counterLight / 15f;
-  if (counterBlockLight == 0)   output[1]=0;
- else   output[1]=resultBlockLight / counterBlockLight / 15f;
-  output[2]=(float)resultAmbientOcclusion;
-  PerformanceMonitor.endActivity();
+  blocks[1]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y + 0.1f),(vertexPos.z - 0.1f));
+blocks[2]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
+blocks[3]=worldView.getBlock((vertexPos.x + 0.8f * normal.x),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
+break;
+case FORWARD:
+case BACKWARD:
+blocks[0]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y + 0.1f),(vertexPos.z + 0.8f * normal.z));
+blocks[1]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.8f * normal.z));
+blocks[2]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.8f * normal.z));
+blocks[3]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y + 0.1f),(vertexPos.z + 0.8f * normal.z));
+break;
+default :
+blocks[0]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z + 0.1f));
+blocks[1]=worldView.getBlock((vertexPos.x + 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z - 0.1f));
+blocks[2]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z - 0.1f));
+blocks[3]=worldView.getBlock((vertexPos.x - 0.1f),(vertexPos.y + 0.8f * normal.y),(vertexPos.z + 0.1f));
+}
+lights[0]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
+lights[1]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
+lights[2]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
+lights[3]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
+lights[4]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
+lights[5]=worldView.getSunlight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
+lights[6]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
+lights[7]=worldView.getSunlight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
+blockLights[0]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
+blockLights[1]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
+blockLights[2]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z - 0.1f));
+blockLights[3]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y + 0.8f),(vertexPos.z + 0.1f));
+blockLights[4]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
+blockLights[5]=worldView.getLight((vertexPos.x + 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
+blockLights[6]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z - 0.1f));
+blockLights[7]=worldView.getLight((vertexPos.x - 0.1f),(vertexPos.y - 0.1f),(vertexPos.z + 0.1f));
+PerformanceMonitor.endActivity();
+float resultLight=0;
+float resultBlockLight=0;
+int counterLight=0;
+int counterBlockLight=0;
+int occCounter=0;
+int occCounterBillboard=0;
+for (int i=0; i < 8; i++) {
+if (lights[i] > 0) {
+resultLight+=lights[i];
+counterLight++;
+}
+if (blockLights[i] > 0) {
+resultBlockLight+=blockLights[i];
+counterBlockLight++;
+}
+if (i < 4) {
+Block b=blocks[i];
+if (b.isShadowCasting() && !b.isTranslucent()) {
+occCounter++;
+}
+ else if (b.isShadowCasting()) {
+occCounterBillboard++;
+}
+}
+}
+double resultAmbientOcclusion=(Math.pow(0.40,occCounter) + Math.pow(0.80,occCounterBillboard)) / 2.0;
+if (counterLight == 0) output[0]=0;
+ else output[0]=resultLight / counterLight / 15f;
+if (counterBlockLight == 0) output[1]=0;
+ else output[1]=resultBlockLight / counterBlockLight / 15f;
+output[2]=(float)resultAmbientOcclusion;
+PerformanceMonitor.endActivity();
 }

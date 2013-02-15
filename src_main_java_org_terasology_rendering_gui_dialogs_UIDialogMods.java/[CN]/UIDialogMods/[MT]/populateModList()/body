@@ -1,5 +1,4 @@
 {
-  ModManager modManager=CoreRegistry.get(ModManager.class);
   List<Mod> mods=Lists.newArrayList(modManager.getMods());
   Collections.sort(mods,new Comparator<Mod>(){
     @Override public int compare(    Mod o1,    Mod o2){
@@ -41,17 +40,14 @@
     @Override public void click(    UIDisplayElement element,    int button){
       Mod selectedMod=(Mod)modList.getSelection().getValue();
       if (modConfig.hasMod(selectedMod.getModInfo().getId())) {
-        modConfig.removeMod(selectedMod.getModInfo().getId());
+        deactivateMod(selectedMod);
         toggleButton.getLabel().setText(ACTIVATE_TEXT);
-        modList.getSelection().setTextColor(INACTIVE_TEXT_COLOR);
-        modList.getSelection().setTextSelectionColor(INACTIVE_SELECTED_TEXT_COLOR);
       }
  else {
-        modConfig.addMod(selectedMod.getModInfo().getId());
+        activateMod(selectedMod);
         toggleButton.getLabel().setText(DEACTIVATE_TEXT);
-        modList.getSelection().setTextColor(ACTIVE_TEXT_COLOR);
-        modList.getSelection().setTextSelectionColor(ACTIVE_SELECTED_TEXT_COLOR);
       }
+      refreshListItemActivation();
     }
   }
 );

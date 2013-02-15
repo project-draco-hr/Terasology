@@ -1,0 +1,9 @@
+{
+  modConfig.addMod(mod.getModInfo().getId());
+  for (  String dependencyName : mod.getModInfo().getDependencies()) {
+    Mod dependency=modManager.getMod(dependencyName);
+    if (dependency != null) {
+      activateMod(dependency);
+    }
+  }
+}

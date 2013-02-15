@@ -2,11 +2,15 @@
   Chunk chunk=getChunk(chunkPos);
   if (chunk == null) {
     PerformanceMonitor.startActivity("Check chunk in cache");
-    if (farStore.contains(chunkPos)) {
-      chunkTasksQueue.offer(new AbstractChunkTask(chunkPos,this){
-        @Override public void enact(){
-          Chunk chunk=farStore.get(getPosition());
-          if (nearCache.putIfAbsent(getPosition(),chunk) == null) {
+    if (preparingChunks.add(chunkPos)) {
+      if (farStore.contains(chunkPos)) {
+        chunkTasksQueue.offer(new AbstractChunkTask(chunkPos,this){
+          @Override public void enact(){
+            Chunk chunk=farStore.get(getPosition());
+            if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
+              logger.warn("Chunk {} is already in the near cache",getPosition());
+            }
+            preparingChunks.remove(getPosition());
             if (chunk.getChunkState() == Chunk.State.COMPLETE) {
               for (              Vector3i adjPos : Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)) {
                 checkChunkReady(adjPos);
@@ -15,19 +19,21 @@
             reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.REVIEW,Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)));
           }
         }
-      }
 );
-    }
+      }
  else {
-      chunkTasksQueue.offer(new AbstractChunkTask(chunkPos,this){
-        @Override public void enact(){
-          Chunk chunk=generator.generateChunk(getPosition());
-          if (null == nearCache.putIfAbsent(getPosition(),chunk)) {
+        chunkTasksQueue.offer(new AbstractChunkTask(chunkPos,this){
+          @Override public void enact(){
+            Chunk chunk=generator.generateChunk(getPosition());
+            if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
+              logger.warn("Chunk {} is already in the near cache",getPosition());
+            }
+            preparingChunks.remove(getPosition());
             reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.REVIEW,Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)));
           }
         }
-      }
 );
+      }
     }
     PerformanceMonitor.endActivity();
   }
