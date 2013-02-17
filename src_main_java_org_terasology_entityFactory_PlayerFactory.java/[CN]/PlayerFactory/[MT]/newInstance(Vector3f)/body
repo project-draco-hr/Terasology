@@ -1,7 +1,12 @@
 {
   EntityRef player=entityManager.create("core:player",spawnPosition);
+  EntityRef transferSlot=entityManager.create("engine:transferSlot");
+  NetworkComponent netComp=transferSlot.getComponent(NetworkComponent.class);
+  netComp.owner=player;
+  transferSlot.saveComponent(netComp);
   CharacterComponent playerComponent=player.getComponent(CharacterComponent.class);
   playerComponent.spawnPosition.set(spawnPosition);
+  playerComponent.movingItem=transferSlot;
   player.saveComponent(playerComponent);
   EntityRef chest=blockFactory.newInstance(BlockManager.getInstance().getBlockFamily("core:chest"));
   BlockItemComponent blockItem=chest.getComponent(BlockItemComponent.class);

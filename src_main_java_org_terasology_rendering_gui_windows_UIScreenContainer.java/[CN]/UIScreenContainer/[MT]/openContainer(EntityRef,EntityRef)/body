@@ -1,12 +1,9 @@
 {
   this.container=container;
   this.creature=creature;
-  playerToolbar.setEntity(creature,0,9);
-  playerInventory.setEntity(creature,10);
-  containerInventory.setEntity(container);
-  playerToolbar.setConnected(container);
-  playerInventory.setConnected(container);
-  containerInventory.setConnected(creature);
+  playerToolbar.linkToEntity(creature,0,10);
+  playerInventory.linkToEntity(creature,10);
+  containerInventory.linkToEntity(container);
   getGUIManager().getWindowById("hud").getElementById("leftGearWheel").setVisible(false);
   getGUIManager().getWindowById("hud").getElementById("rightGearWheel").setVisible(false);
   layout();

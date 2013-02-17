@@ -3,6 +3,9 @@
   setupTarget(mouseWheelEvent);
   for (  EntityRef entity : getInputEntities()) {
     entity.send(mouseWheelEvent);
+    if (mouseWheelEvent.isCancelled()) {
+      break;
+    }
   }
   return mouseWheelEvent.isConsumed();
 }

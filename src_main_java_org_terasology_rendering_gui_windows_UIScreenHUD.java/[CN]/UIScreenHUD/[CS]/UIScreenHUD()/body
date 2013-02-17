@@ -1,15 +1,6 @@
 {
   setId("hud");
   maximize();
-  addVisibilityListener(new VisibilityListener(){
-    @Override public void changed(    UIDisplayElement element,    boolean visibility){
-      if (visibility) {
-        toolbar.setEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity(),0,9);
-        toolbar.getCells().get(CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool).setSelection(true);
-      }
-    }
-  }
-);
   _hearts=new UIImage[10];
   for (int i=0; i < 10; i++) {
     _hearts[i]=new UIImage(Assets.getTexture("engine:icons"));
@@ -38,7 +29,7 @@
   debugLine3.setPosition(new Vector2f(4,38));
   debugLine4=new UILabel();
   debugLine4.setPosition(new Vector2f(4,54));
-  toolbar=new UIItemContainer(10);
+  toolbar=new UIInventoryGrid(10);
   toolbar.setId("toolbar");
   toolbar.setVisible(true);
   toolbar.setHorizontalAlign(EHorizontalAlign.CENTER);
@@ -46,6 +37,8 @@
   toolbar.setVisible(true);
   toolbar.setCellMargin(new Vector2f(0f,0f));
   toolbar.setBorderImage("engine:inventory",new Vector2f(0f,84f),new Vector2f(169f,83f),new Vector4f(4f,4f,4f,4f));
+  toolbar.linkToEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity(),0,10);
+  toolbar.setSelected(CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool);
   leftGearWheel=new UIImage(Assets.getTexture("engine:inventory"));
   leftGearWheel.setSize(new Vector2f(36f,36f));
   leftGearWheel.setTextureOrigin(new Vector2f(121.0f,168.0f));

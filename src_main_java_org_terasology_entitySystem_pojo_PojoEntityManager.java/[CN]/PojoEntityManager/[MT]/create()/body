@@ -1,6 +1,9 @@
 {
   if (!freedIds.isEmpty()) {
-    return createEntityRef(freedIds.removeAt(freedIds.size() - 1));
+    TIntIterator iterator=freedIds.iterator();
+    int id=iterator.next();
+    iterator.remove();
+    return createEntityRef(id);
   }
   if (nextEntityId == NULL_ID)   nextEntityId++;
   return createEntityRef(nextEntityId++);

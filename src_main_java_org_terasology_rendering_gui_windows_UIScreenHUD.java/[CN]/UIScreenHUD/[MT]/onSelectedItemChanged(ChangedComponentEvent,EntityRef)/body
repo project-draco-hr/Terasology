@@ -1,8 +1,3 @@
 {
-  for (  UIItemCell cell : toolbar.getCells()) {
-    cell.setSelection(false);
-  }
-  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
-  LocalPlayerComponent localPlayerComp=localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class);
-  toolbar.getCells().get(localPlayerComp.selectedTool).setSelection(true);
+  toolbar.setSelected(CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool);
 }

@@ -11,6 +11,9 @@
         buttonEvent.setTarget(target,targetBlockPos,hitPosition,hitNormal);
         for (        EntityRef entity : inputEntities) {
           entity.send(buttonEvent);
+          if (buttonEvent.isConsumed()) {
+            break;
+          }
         }
         keyConsumed=buttonEvent.isConsumed();
       }
@@ -27,6 +30,9 @@
         buttonEvent.setTarget(target,targetBlockPos,hitPosition,hitNormal);
         for (        EntityRef entity : inputEntities) {
           entity.send(buttonEvent);
+          if (buttonEvent.isConsumed()) {
+            break;
+          }
         }
         keyConsumed=buttonEvent.isConsumed();
       }

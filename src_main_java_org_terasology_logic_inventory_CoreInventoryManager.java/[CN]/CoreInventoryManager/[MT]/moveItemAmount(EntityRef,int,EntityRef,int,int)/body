@@ -1,0 +1,41 @@
+{
+  InventoryComponent fromInvComp=fromInventory.getComponent(InventoryComponent.class);
+  InventoryComponent toInvComp=toInventory.getComponent(InventoryComponent.class);
+  if (fromInvComp == null || fromSlot < 0 || fromSlot >= fromInvComp.itemSlots.size() || toInvComp == null || toSlot < 0 || toSlot >= toInvComp.itemSlots.size() || amount <= 0) {
+    return;
+  }
+  EntityRef fromItem=fromInvComp.itemSlots.get(fromSlot);
+  ItemComponent fromItemComp=fromItem.getComponent(ItemComponent.class);
+  EntityRef toItem=toInvComp.itemSlots.get(toSlot);
+  ItemComponent toItemComp=toItem.getComponent(ItemComponent.class);
+  if (fromItemComp != null) {
+    int amountToTransfer=Math.min(amount,fromItemComp.stackCount);
+    if (toItemComp == null) {
+      if (amountToTransfer < fromItemComp.stackCount) {
+        EntityRef newItem=entityManager.copy(fromItem);
+        ItemComponent newItemComponent=newItem.getComponent(ItemComponent.class);
+        newItemComponent.stackCount=(byte)amountToTransfer;
+        putItemInSlot(toInventory,toInvComp,toSlot,newItem,newItemComponent);
+        fromItemComp.stackCount-=amountToTransfer;
+        fromItem.saveComponent(fromItemComp);
+      }
+ else {
+        putItemInSlot(toInventory,toInvComp,toSlot,fromItem,fromItemComp);
+      }
+    }
+ else     if (!fromItemComp.stackId.isEmpty() && Objects.equal(fromItemComp.stackId,toItemComp.stackId)) {
+      amountToTransfer=Math.min(amountToTransfer,MAX_STACK - toItemComp.stackCount);
+      if (amountToTransfer > 0) {
+        toItemComp.stackCount+=amountToTransfer;
+        toItem.saveComponent(toItemComp);
+        if (amountToTransfer == fromItemComp.stackCount) {
+          fromItem.destroy();
+        }
+ else {
+          fromItemComp.stackCount-=amountToTransfer;
+          fromItem.saveComponent(fromItemComp);
+        }
+      }
+    }
+  }
+}

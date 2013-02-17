@@ -25,6 +25,9 @@
     setupTarget(event);
     for (    EntityRef entity : getInputEntities()) {
       entity.send(event);
+      if (event.isCancelled()) {
+        break;
+      }
     }
   }
   int deltaY=Mouse.getDY();
@@ -33,6 +36,9 @@
     setupTarget(event);
     for (    EntityRef entity : getInputEntities()) {
       entity.send(event);
+      if (event.isCancelled()) {
+        break;
+      }
     }
   }
 }

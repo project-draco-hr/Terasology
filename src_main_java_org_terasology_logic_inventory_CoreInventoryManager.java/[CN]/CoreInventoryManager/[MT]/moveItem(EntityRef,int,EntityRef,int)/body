@@ -1,0 +1,38 @@
+{
+  InventoryComponent fromInvComp=fromInventory.getComponent(InventoryComponent.class);
+  InventoryComponent toInvComp=toInventory.getComponent(InventoryComponent.class);
+  if (fromInvComp == null || fromSlot < 0 || fromSlot >= fromInvComp.itemSlots.size() || toInvComp == null || toSlot < 0 || toSlot >= toInvComp.itemSlots.size()) {
+    return;
+  }
+  EntityRef fromItem=fromInvComp.itemSlots.get(fromSlot);
+  ItemComponent fromItemComp=fromItem.getComponent(ItemComponent.class);
+  EntityRef toItem=toInvComp.itemSlots.get(toSlot);
+  ItemComponent toItemComp=toItem.getComponent(ItemComponent.class);
+  if (fromItemComp != null) {
+    if (toItemComp == null) {
+      putItemInSlot(toInventory,toSlot,fromInvComp.itemSlots.get(fromSlot));
+    }
+ else     if (!fromItemComp.stackId.isEmpty() && Objects.equal(fromItemComp.stackId,toItemComp.stackId)) {
+      int amountToTransfer=Math.min(MAX_STACK - toItemComp.stackCount,fromItemComp.stackCount);
+      if (amountToTransfer == 0) {
+        putItemInSlot(fromInventory,fromInvComp,fromSlot,toItem,toItemComp);
+        putItemInSlot(toInventory,toInvComp,toSlot,fromItem,fromItemComp);
+      }
+ else {
+        toItemComp.stackCount+=amountToTransfer;
+        toItem.saveComponent(toItemComp);
+        if (amountToTransfer == fromItemComp.stackCount) {
+          fromItem.destroy();
+        }
+ else {
+          fromItemComp.stackCount-=amountToTransfer;
+          fromItem.saveComponent(fromItemComp);
+        }
+      }
+    }
+ else {
+      putItemInSlot(fromInventory,fromInvComp,fromSlot,toItem,toItemComp);
+      putItemInSlot(toInventory,toInvComp,toSlot,fromItem,fromItemComp);
+    }
+  }
+}

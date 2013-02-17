@@ -16,6 +16,9 @@ break;
 setupTarget(event);
 for (EntityRef entity : getInputEntities()) {
 entity.send(event);
+if (event.isCancelled()) {
+break;
+}
 }
 return event.isConsumed();
 }
