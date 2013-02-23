@@ -1,6 +1,5 @@
 {
-  InventoryComponent inventory=getCharacterEntity().getComponent(InventoryComponent.class);
   LocalPlayerComponent localPlayer=getCharacterEntity().getComponent(LocalPlayerComponent.class);
-  if (inventory == null || localPlayer == null)   return false;
-  return inventory.getItemSlots().get(localPlayer.selectedTool).hasComponent(LightComponent.class);
+  if (localPlayer == null)   return false;
+  return CoreRegistry.get(SlotBasedInventoryManager.class).getItemInSlot(getCharacterEntity(),localPlayer.selectedTool).hasComponent(LightComponent.class);
 }

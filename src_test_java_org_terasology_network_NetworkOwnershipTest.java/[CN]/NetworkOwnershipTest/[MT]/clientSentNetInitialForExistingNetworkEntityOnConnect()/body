@@ -1,0 +1,7 @@
+{
+  EntityRef entity=entityManager.create(new NetworkComponent());
+  networkSystem.registerNetworkEntity(entity);
+  connectClient();
+  assertTrue(entity.getComponent(NetworkComponent.class).networkId != 0);
+  verify(client).setNetInitial(entity.getComponent(NetworkComponent.class).networkId);
+}

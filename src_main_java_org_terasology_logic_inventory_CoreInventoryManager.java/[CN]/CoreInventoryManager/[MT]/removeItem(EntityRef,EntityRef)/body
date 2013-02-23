@@ -1,13 +1,13 @@
 {
-  InventoryComponent inventoryComponent=inventoryEntity.getComponent(InventoryComponent.class);
-  ItemComponent itemComponent=item.getComponent(ItemComponent.class);
-  if (inventoryComponent != null && itemComponent != null && itemComponent.container.equals(inventoryEntity)) {
-    int slot=inventoryComponent.itemSlots.indexOf(item);
-    if (slot > -1) {
-      inventoryComponent.itemSlots.set(slot,EntityRef.NULL);
-      inventoryEntity.saveComponent(inventoryComponent);
+  if (networkSystem.getMode().isAuthority()) {
+    InventoryComponent inventoryComponent=inventoryEntity.getComponent(InventoryComponent.class);
+    ItemComponent itemComponent=item.getComponent(ItemComponent.class);
+    if (inventoryComponent != null && itemComponent != null) {
+      int slot=inventoryComponent.itemSlots.indexOf(item);
+      if (slot > -1) {
+        putItemInSlot(inventoryEntity,inventoryComponent,slot,item);
+        inventoryEntity.saveComponent(inventoryComponent);
+      }
     }
-    itemComponent.container=EntityRef.NULL;
-    item.saveComponent(itemComponent);
   }
 }

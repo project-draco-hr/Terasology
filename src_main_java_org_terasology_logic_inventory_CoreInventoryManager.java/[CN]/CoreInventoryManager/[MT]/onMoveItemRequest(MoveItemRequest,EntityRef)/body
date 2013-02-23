@@ -1,0 +1,13 @@
+{
+  if (networkSystem.getMode().isAuthority()) {
+    logger.info("Received move item request");
+    if (request instanceof MoveItemAmountRequest) {
+      MoveItemAmountRequest moveAmount=(MoveItemAmountRequest)request;
+      moveItemAmount(request.getFromInventory(),request.getFromSlot(),request.getToInventory(),request.getToSlot(),moveAmount.getAmount());
+    }
+ else {
+      moveItem(request.getFromInventory(),request.getFromSlot(),request.getToInventory(),request.getToSlot());
+    }
+    entity.send(new InventoryChangeAcknowledgedRequest(request.getChangeId()));
+  }
+}

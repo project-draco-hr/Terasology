@@ -1,0 +1,13 @@
+{
+  entityManager.clear();
+  mockTimer=mock(Timer.class);
+  networkSystem=new NetworkSystem(mockTimer);
+  client=mock(Client.class);
+  NetworkComponent clientNetComp=new NetworkComponent();
+  clientNetComp.replicateMode=NetworkComponent.ReplicateMode.OWNER;
+  clientEntity=entityManager.create(clientNetComp);
+  when(client.getEntity()).thenReturn(clientEntity);
+  networkSystem.mockHost();
+  networkSystem.connectToEntitySystem(entityManager,CoreRegistry.get(EntitySystemLibrary.class),mock(BlockEntityRegistry.class));
+  networkSystem.registerNetworkEntity(clientEntity);
+}

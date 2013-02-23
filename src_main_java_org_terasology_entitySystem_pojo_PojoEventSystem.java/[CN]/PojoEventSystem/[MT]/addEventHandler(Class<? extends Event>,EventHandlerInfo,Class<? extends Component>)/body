@@ -1,7 +1,7 @@
 {
-  ListMultimap<Class<? extends Component>,EventHandlerInfo> componentMap=componentSpecificHandlers.get(type);
+  SetMultimap<Class<? extends Component>,EventHandlerInfo> componentMap=componentSpecificHandlers.get(type);
   if (componentMap == null) {
-    componentMap=ArrayListMultimap.create();
+    componentMap=HashMultimap.create();
     componentSpecificHandlers.put(type,componentMap);
   }
   componentMap.put(c,handlerInfo);

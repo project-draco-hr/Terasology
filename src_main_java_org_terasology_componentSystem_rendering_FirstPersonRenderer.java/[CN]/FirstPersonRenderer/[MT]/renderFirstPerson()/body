@@ -4,7 +4,7 @@
   float handMovementAnimationOffset=localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class).handAnimation;
   UIInventoryGrid toolbar=(UIInventoryGrid)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("toolbar");
   int invSlotIndex=localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool + toolbar.getStartSlot();
-  EntityRef heldItem=localPlayer.getCharacterEntity().getComponent(InventoryComponent.class).getItemSlots().get(invSlotIndex);
+  EntityRef heldItem=inventoryManager.getItemInSlot(localPlayer.getCharacterEntity(),invSlotIndex);
   ItemComponent heldItemComp=heldItem.getComponent(ItemComponent.class);
   BlockItemComponent blockItem=heldItem.getComponent(BlockItemComponent.class);
   if (blockItem != null && blockItem.blockFamily != null) {

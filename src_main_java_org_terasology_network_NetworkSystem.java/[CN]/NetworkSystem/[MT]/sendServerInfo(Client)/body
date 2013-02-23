@@ -1,8 +1,10 @@
 {
   NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
   WorldProvider world=CoreRegistry.get(WorldProvider.class);
-  serverInfoMessageBuilder.setTime(world.getTime());
-  serverInfoMessageBuilder.setWorldName(world.getTitle());
+  if (world != null) {
+    serverInfoMessageBuilder.setTime(world.getTime());
+    serverInfoMessageBuilder.setWorldName(world.getTitle());
+  }
   for (  Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
     serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(mod.getModInfo().getId()).build());
   }

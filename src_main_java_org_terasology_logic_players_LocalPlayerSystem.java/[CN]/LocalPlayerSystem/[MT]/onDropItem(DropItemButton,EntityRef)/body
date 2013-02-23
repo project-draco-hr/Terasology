@@ -1,7 +1,6 @@
 {
   LocalPlayerComponent localPlayerComp=entity.getComponent(LocalPlayerComponent.class);
-  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
-  EntityRef selectedItemEntity=inventory.getItemSlots().get(localPlayerComp.selectedTool);
+  EntityRef selectedItemEntity=inventoryManager.getItemInSlot(entity,localPlayerComp.selectedTool);
   BlockItemComponent block=selectedItemEntity.getComponent(BlockItemComponent.class);
   if (selectedItemEntity.equals(EntityRef.NULL)) {
     return;

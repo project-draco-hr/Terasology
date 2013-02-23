@@ -1,29 +1,32 @@
 {
-  InventoryComponent inventory=inventoryEntity.getComponent(InventoryComponent.class);
-  ItemComponent itemComponent=item.getComponent(ItemComponent.class);
-  if (inventory != null && itemComponent != null) {
-    boolean itemChanged=false;
-    if (!itemComponent.stackId.isEmpty()) {
-      for (      EntityRef entity : inventory.itemSlots) {
-        ItemComponent otherItem=entity.getComponent(ItemComponent.class);
-        if (otherItem != null && otherItem.stackId.equals(itemComponent.stackId) && otherItem.stackCount < MAX_STACK) {
-          mergeItems(itemComponent,entity,otherItem);
-          itemChanged=true;
+  if (networkSystem.getMode().isAuthority()) {
+    InventoryComponent inventory=inventoryEntity.getComponent(InventoryComponent.class);
+    ItemComponent itemComponent=item.getComponent(ItemComponent.class);
+    if (inventory != null && itemComponent != null) {
+      boolean itemChanged=false;
+      if (!itemComponent.stackId.isEmpty()) {
+        for (        EntityRef entity : inventory.itemSlots) {
+          ItemComponent otherItem=entity.getComponent(ItemComponent.class);
+          if (otherItem != null && otherItem.stackId.equals(itemComponent.stackId) && otherItem.stackCount < MAX_STACK) {
+            mergeItems(itemComponent,entity,otherItem);
+            itemChanged=true;
+          }
+          if (itemComponent.stackCount == 0) {
+            item.destroy();
+            return true;
+          }
         }
-        if (itemComponent.stackCount == 0) {
-          item.destroy();
+      }
+      if (itemComponent.stackCount > 0) {
+        int freeSlot=inventory.itemSlots.indexOf(EntityRef.NULL);
+        if (freeSlot > -1) {
+          putItemInSlot(inventoryEntity,inventory,freeSlot,item);
+          inventoryEntity.saveComponent(inventory);
           return true;
         }
-      }
-    }
-    if (itemComponent.stackCount > 0) {
-      int freeSlot=inventory.itemSlots.indexOf(EntityRef.NULL);
-      if (freeSlot > -1) {
-        putItemInSlot(inventoryEntity,inventory,freeSlot,item,itemComponent);
-        return true;
-      }
- else       if (itemChanged) {
-        item.saveComponent(itemComponent);
+ else         if (itemChanged) {
+          item.saveComponent(itemComponent);
+        }
       }
     }
   }

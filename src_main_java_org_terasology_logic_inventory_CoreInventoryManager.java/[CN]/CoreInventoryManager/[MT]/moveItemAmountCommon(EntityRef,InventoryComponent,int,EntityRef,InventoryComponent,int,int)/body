@@ -1,0 +1,37 @@
+{
+  if (fromSlot < 0 || fromSlot >= fromInv.itemSlots.size() || toSlot < 0 || toSlot >= toInv.itemSlots.size() || amount == 0) {
+    return;
+  }
+  EntityRef fromItem=fromInv.itemSlots.get(fromSlot);
+  ItemComponent fromItemComp=fromItem.getComponent(ItemComponent.class);
+  int fromItemStackCount=getStackSize(fromItem,fromItemComp);
+  EntityRef toItem=toInv.itemSlots.get(toSlot);
+  ItemComponent toItemComp=toItem.getComponent(ItemComponent.class);
+  int toItemStackCount=getStackSize(toItem,toItemComp);
+  if (fromItemComp != null) {
+    int amountToTransfer=Math.min(amount,fromItemStackCount);
+    if (toItemComp == null) {
+      if (amountToTransfer < fromItemComp.stackCount) {
+        EntityRef newItem=createNewStack(fromItem,amountToTransfer);
+        putItemInSlot(toEntity,toInv,toSlot,newItem);
+        setStackSize(fromItem,fromItemComp,fromItemStackCount - amountToTransfer);
+      }
+ else {
+        putItemInSlot(toEntity,toInv,toSlot,fromItem);
+        putItemInSlot(fromEntity,fromInv,fromSlot,EntityRef.NULL);
+      }
+    }
+ else     if (!fromItemComp.stackId.isEmpty() && Objects.equal(fromItemComp.stackId,toItemComp.stackId)) {
+      amountToTransfer=Math.min(amountToTransfer,MAX_STACK - toItemComp.stackCount);
+      if (amountToTransfer > 0) {
+        setStackSize(toItem,toItemComp,toItemStackCount + amountToTransfer);
+        if (amountToTransfer == fromItemComp.stackCount) {
+          destroyItem(fromItem,fromInv,fromSlot);
+        }
+ else {
+          setStackSize(fromItem,fromItemComp,fromItemStackCount - amountToTransfer);
+        }
+      }
+    }
+  }
+}

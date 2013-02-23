@@ -1,0 +1,20 @@
+{
+  NetworkComponent netCompA=new NetworkComponent();
+  netCompA.replicateMode=NetworkComponent.ReplicateMode.OWNER;
+  EntityRef entityA=entityManager.create(netCompA);
+  NetworkComponent netCompB=new NetworkComponent();
+  netCompB.replicateMode=NetworkComponent.ReplicateMode.OWNER;
+  netCompB.owner=entityA;
+  EntityRef entityB=entityManager.create(netCompB);
+  networkSystem.registerNetworkEntity(entityA);
+  networkSystem.registerNetworkEntity(entityB);
+  connectClient();
+  verify(client,times(0)).setNetInitial(entityA.getComponent(NetworkComponent.class).networkId);
+  verify(client,times(0)).setNetInitial(entityB.getComponent(NetworkComponent.class).networkId);
+  netCompA=entityA.getComponent(NetworkComponent.class);
+  netCompA.owner=clientEntity;
+  entityA.saveComponent(netCompA);
+  networkSystem.updateNetworkEntity(entityA);
+  verify(client,times(1)).setNetInitial(entityA.getComponent(NetworkComponent.class).networkId);
+  verify(client,times(1)).setNetInitial(entityB.getComponent(NetworkComponent.class).networkId);
+}

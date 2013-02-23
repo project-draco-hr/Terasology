@@ -1,0 +1,17 @@
+{
+  NetworkComponent networkComponent=entity.getComponent(NetworkComponent.class);
+  if (networkComponent != null) {
+    if (networkComponent.replicateMode == NetworkComponent.ReplicateMode.OWNER) {
+      logger.debug("{}'s owner changed from {} to {}, so replicating.",entity,lastOwner,newOwner);
+      if (lastOwner != null) {
+        lastOwner.setNetRemoved(networkComponent.networkId);
+      }
+      if (newOwner != null) {
+        newOwner.setNetInitial(networkComponent.networkId);
+      }
+    }
+    for (    EntityRef owned : ownedLookup.get(entity)) {
+      recursiveUpdateOwnership(owned,lastOwner,newOwner);
+    }
+  }
+}

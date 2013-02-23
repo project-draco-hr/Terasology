@@ -1,0 +1,10 @@
+{
+  NetworkComponent netComp=new NetworkComponent();
+  netComp.replicateMode=NetworkComponent.ReplicateMode.OWNER;
+  netComp.owner=clientEntity;
+  EntityRef entity=entityManager.create(netComp);
+  networkSystem.registerNetworkEntity(entity);
+  connectClient();
+  networkSystem.updateNetworkEntity(entity);
+  verify(client,times(1)).setNetInitial(entity.getComponent(NetworkComponent.class).networkId);
+}
