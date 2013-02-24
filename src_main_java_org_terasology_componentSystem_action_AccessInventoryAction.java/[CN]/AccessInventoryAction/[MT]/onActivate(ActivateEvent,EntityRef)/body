@@ -1,3 +1,10 @@
 {
-  event.getInstigator().send(new OpenInventoryEvent(entity));
+  if (networkSystem.getMode().isAuthority()) {
+    InventoryComponent inv=entity.getComponent(InventoryComponent.class);
+    if (inv != null) {
+      inv.accessors.add(event.getInstigator());
+      entity.saveComponent(inv);
+      event.getInstigator().send(new OpenInventoryEvent(entity));
+    }
+  }
 }
