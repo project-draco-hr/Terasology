@@ -8,7 +8,14 @@
           processNewClient(client);
         }
       }
-      long currentTimer=timer.getTimeInMs();
+      if (!disconnectedClients.isEmpty()) {
+        List<Client> removedPlayers=Lists.newArrayListWithExpectedSize(disconnectedClients.size());
+        disconnectedClients.drainTo(removedPlayers);
+        for (        Client client : removedPlayers) {
+          processRemovedClient(client);
+        }
+      }
+      long currentTimer=timer.getRawTimeInMs();
       boolean netTick=false;
       if (currentTimer > nextNetworkTick) {
         nextNetworkTick+=NET_TICK_RATE;

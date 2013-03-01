@@ -1,0 +1,7 @@
+{
+  clientList.remove(client);
+  logger.info("Client disconnected: " + client.getName());
+  MessageManager.getInstance().addMessage("Client disconnected: " + client.getName());
+  client.getEntity().send(new DisconnectedEvent());
+  client.disconnect();
+}
