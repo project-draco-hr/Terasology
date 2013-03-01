@@ -1,0 +1,10 @@
+{
+  if (awaitingConnectMessage) {
+    awaitingConnectMessage=false;
+    this.entitySerializer=entitySerializer;
+    this.eventSerializer=eventSerializer;
+    this.entitySystemLibrary=entitySystemLibrary;
+    CoreRegistry.get(EventSystem.class).registerEventReceiver(this,ChunkUnloadedEvent.class,WorldComponent.class);
+    createEntity(name,entityManager);
+  }
+}

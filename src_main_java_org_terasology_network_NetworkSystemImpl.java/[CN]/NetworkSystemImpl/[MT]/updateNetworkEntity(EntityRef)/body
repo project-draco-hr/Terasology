@@ -1,0 +1,24 @@
+{
+  NetworkComponent netComponent=entity.getComponent(NetworkComponent.class);
+  EntityRef lastOwnerEntity=ownerLookup.get(entity);
+  if (lastOwnerEntity == null) {
+    lastOwnerEntity=EntityRef.NULL;
+  }
+  if (!Objects.equal(lastOwnerEntity,netComponent.owner)) {
+    NetClient lastOwner=(lastOwnerEntity == null) ? null : getNetOwner(lastOwnerEntity);
+    NetClient newOwner=getNetOwner(netComponent.owner);
+    if (!Objects.equal(lastOwner,newOwner)) {
+      recursiveUpdateOwnership(entity,lastOwner,newOwner);
+    }
+    if (lastOwnerEntity.exists()) {
+      ownedLookup.remove(lastOwnerEntity,entity);
+    }
+    if (netComponent.owner.exists()) {
+      ownerLookup.put(entity,netComponent.owner);
+      ownedLookup.put(netComponent.owner,entity);
+    }
+ else {
+      ownerLookup.remove(entity);
+    }
+  }
+}

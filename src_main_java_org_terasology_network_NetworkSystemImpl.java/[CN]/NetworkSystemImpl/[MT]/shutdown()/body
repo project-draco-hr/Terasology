@@ -1,0 +1,24 @@
+{
+  if (mode != NetworkMode.NONE) {
+    allChannels.close().awaitUninterruptibly();
+    factory.releaseExternalResources();
+  }
+  processPendingDisconnects();
+  for (  Client client : clientList) {
+    processRemovedClient(client);
+  }
+  mode=NetworkMode.NONE;
+  server=null;
+  nextNetId=1;
+  netIdToEntityId.clear();
+  if (this.entityManager != null) {
+    this.entityManager.unsubscribe(this);
+  }
+  entityManager=null;
+  entitySystemLibrary=null;
+  eventSerializer=null;
+  entitySerializer=null;
+  clientList.clear();
+  netClientList.clear();
+  logger.info("Network shutdown");
+}

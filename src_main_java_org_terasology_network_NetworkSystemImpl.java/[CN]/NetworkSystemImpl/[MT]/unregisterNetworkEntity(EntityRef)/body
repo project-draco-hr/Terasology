@@ -1,0 +1,13 @@
+{
+  NetworkComponent netComponent=entity.getComponent(NetworkComponent.class);
+  if (netComponent != null) {
+    logger.debug("Unregistering network entity: {} with netId {}",entity,netComponent.getNetworkId());
+    netIdToEntityId.remove(netComponent.getNetworkId());
+    if (mode == NetworkMode.SERVER) {
+      for (      NetClient client : netClientList) {
+        client.setNetRemoved(netComponent.getNetworkId());
+      }
+    }
+  }
+  ownerLookup.remove(entity);
+}

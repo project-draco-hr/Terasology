@@ -1,0 +1,20 @@
+{
+  if (mode != NetworkMode.NONE) {
+    if (entityManager != null) {
+      processPendingConnections();
+      processPendingDisconnects();
+      long currentTimer=timer.getRawTimeInMs();
+      boolean netTick=false;
+      if (currentTimer > nextNetworkTick) {
+        nextNetworkTick+=NET_TICK_RATE;
+        netTick=true;
+      }
+      for (      Client client : clientList) {
+        client.update(netTick);
+      }
+      if (server != null) {
+        server.update(netTick);
+      }
+    }
+  }
+}

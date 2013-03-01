@@ -1,0 +1,16 @@
+{
+switch (mode) {
+case SERVER:
+    int total=0;
+  for (  NetClient client : netClientList) {
+    total+=client.getReceivedBytesSinceLastCall();
+  }
+return total;
+case CLIENT:
+if (server != null) {
+return server.getReceivedBytesSinceLastCall();
+}
+default :
+return 0;
+}
+}
