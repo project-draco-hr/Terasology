@@ -12,6 +12,7 @@
   list.setBorderImage("engine:gui_menu",new Vector2f(256f,0f),new Vector2f(175f,88f),new Vector4f(16f,7f,7f,7f));
   list.addDoubleClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
+      tryJoinServer();
     }
   }
 );
@@ -85,11 +86,7 @@
   joinServerButton.getLabel().setText("Join");
   joinServerButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      saveServerList();
-      if (list.getSelection() != null && list.getSelection().getValue() != null) {
-        ServerInfo server=(ServerInfo)list.getSelection().getValue();
-        CoreRegistry.get(GameEngine.class).changeState(new StateLoading(server.getAddress(),TerasologyConstants.DEFAULT_PORT));
-      }
+      tryJoinServer();
     }
   }
 );
