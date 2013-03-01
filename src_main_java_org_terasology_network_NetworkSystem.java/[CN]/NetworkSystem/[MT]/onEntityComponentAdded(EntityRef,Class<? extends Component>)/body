@@ -1,12 +1,13 @@
 {
   NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-  if (netComp != null) {
+  if (netComp != null && netComp.getNetworkId() != NULL_NET_ID) {
     ComponentMetadata<? extends Component> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
 switch (mode) {
 case SERVER:
       if (metadata.isReplicated()) {
         for (        Client client : clientList) {
-          client.setComponentAdded(netComp.networkId,component);
+          logger.info("Component {} added to {}",component,entity);
+          client.setComponentAdded(netComp.getNetworkId(),component);
         }
       }
     break;

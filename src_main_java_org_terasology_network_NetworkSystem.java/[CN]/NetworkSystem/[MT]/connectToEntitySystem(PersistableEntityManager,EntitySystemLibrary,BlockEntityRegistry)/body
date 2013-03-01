@@ -4,6 +4,7 @@
   }
   this.entityManager=entityManager;
   this.entityManager.subscribe(this);
+  CoreRegistry.get(ComponentSystemManager.class).register(new NetworkEntitySystem(),"engine:networkEntitySystem");
   TypeHandlerLibraryBuilder builder=new TypeHandlerLibraryBuilder();
   for (  Map.Entry<Class<?>,TypeHandler<?>> entry : library.getTypeHandlerLibrary()) {
     builder.addRaw(entry.getKey(),entry.getValue());

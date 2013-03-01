@@ -9,12 +9,12 @@
   networkSystem.registerNetworkEntity(entityA);
   networkSystem.registerNetworkEntity(entityB);
   connectClient();
-  verify(client,times(0)).setNetInitial(entityA.getComponent(NetworkComponent.class).networkId);
-  verify(client,times(0)).setNetInitial(entityB.getComponent(NetworkComponent.class).networkId);
+  verify(client,times(0)).setNetInitial(entityA.getComponent(NetworkComponent.class).getNetworkId());
+  verify(client,times(0)).setNetInitial(entityB.getComponent(NetworkComponent.class).getNetworkId());
   netCompA=entityA.getComponent(NetworkComponent.class);
   netCompA.owner=clientEntity;
   entityA.saveComponent(netCompA);
   networkSystem.updateNetworkEntity(entityA);
-  verify(client,times(1)).setNetInitial(entityA.getComponent(NetworkComponent.class).networkId);
-  verify(client,times(1)).setNetInitial(entityB.getComponent(NetworkComponent.class).networkId);
+  verify(client,times(1)).setNetInitial(entityA.getComponent(NetworkComponent.class).getNetworkId());
+  verify(client,times(1)).setNetInitial(entityB.getComponent(NetworkComponent.class).getNetworkId());
 }

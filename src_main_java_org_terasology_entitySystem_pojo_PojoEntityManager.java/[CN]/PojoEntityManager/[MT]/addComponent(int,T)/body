@@ -1,5 +1,8 @@
 {
   Component oldComponent=store.put(entityId,component);
+  if (oldComponent != null) {
+    logger.error("Adding a component ({}) over an existing component for entity {}",component.getClass(),entityId);
+  }
   if (eventSystem != null) {
     if (oldComponent == null) {
       eventSystem.send(createEntityRef(entityId),AddComponentEvent.newInstance(),component);

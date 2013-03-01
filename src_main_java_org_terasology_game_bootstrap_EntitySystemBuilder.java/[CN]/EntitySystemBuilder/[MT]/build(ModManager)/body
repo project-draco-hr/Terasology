@@ -9,7 +9,7 @@
   PrefabManager prefabManager=new PojoPrefabManager(library.getComponentLibrary());
   entityManager.setPrefabManager(prefabManager);
   CoreRegistry.put(PrefabManager.class,prefabManager);
-  entityManager.setEventSystem(new PojoEventSystem(library.getEventLibrary(),CoreRegistry.get(NetworkSystem.class)));
+  entityManager.setEventSystem(new EventSystemImpl(library.getEventLibrary(),CoreRegistry.get(NetworkSystem.class)));
   CoreRegistry.put(EntityManager.class,entityManager);
   CoreRegistry.put(EventSystem.class,entityManager.getEventSystem());
   registerComponents(library.getComponentLibrary(),modManager);

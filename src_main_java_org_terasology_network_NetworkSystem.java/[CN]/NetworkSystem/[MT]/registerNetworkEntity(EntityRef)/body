@@ -2,30 +2,30 @@
   if (mode == NetworkMode.NONE) {
     return;
   }
-  logger.debug("Registered Network Entity: {}",entity);
   NetworkComponent netComponent=entity.getComponent(NetworkComponent.class);
   if (mode == NetworkMode.SERVER) {
-    netComponent.networkId=nextNetId++;
+    netComponent.setNetworkId(nextNetId++);
     entity.saveComponent(netComponent);
   }
-  netIdToEntityId.put(netComponent.networkId,entity.getId());
+  logger.debug("Registered Network Entity: {}",entity);
+  netIdToEntityId.put(netComponent.getNetworkId(),entity.getId());
   if (mode == NetworkMode.SERVER) {
 switch (netComponent.replicateMode) {
 case OWNER:
       Client clientPlayer=getOwner(entity);
     if (clientPlayer != null) {
-      clientPlayer.setNetInitial(netComponent.networkId);
+      clientPlayer.setNetInitial(netComponent.getNetworkId());
     }
   break;
 default :
 for (Client client : clientList) {
-  client.setNetInitial(netComponent.networkId);
+  client.setNetInitial(netComponent.getNetworkId());
 }
 break;
-}
 }
 if (netComponent.owner.exists()) {
 ownerLookup.put(entity,netComponent.owner);
 ownedLookup.put(netComponent.owner,entity);
+}
 }
 }

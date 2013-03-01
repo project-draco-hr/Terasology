@@ -1,9 +1,18 @@
 {
   AssetUri prefabUri=getPrefabURI();
+  StringBuilder builder=new StringBuilder();
+  builder.append("EntityRef{id = ");
+  builder.append(id);
+  NetworkComponent networkComponent=getComponent(NetworkComponent.class);
+  if (networkComponent != null) {
+    builder.append(", netId = ");
+    builder.append(networkComponent.getNetworkId());
+  }
   if (prefabUri != null) {
-    return "EntityRef{id = " + id + ", prefab = '"+ prefabUri.getSimpleString()+ "'}";
+    builder.append(", prefab = '");
+    builder.append(prefabUri.getSimpleString());
+    builder.append("'");
   }
- else {
-    return "EntityRef{" + "id=" + id + '}';
-  }
+  builder.append("}");
+  return builder.toString();
 }

@@ -1,0 +1,19 @@
+{
+  EntityRef currentEntity=networkSystem.getEntity(updateEntity.getNetId());
+  if (currentEntity.exists()) {
+    if (currentEntity.getComponent(NetworkComponent.class).getNetworkId() != updateEntity.getNetId()) {
+      logger.error("Network ID wrong before update");
+    }
+    boolean blockEntityBefore=currentEntity.hasComponent(BlockComponent.class);
+    entitySerializer.deserializeOnto(currentEntity,updateEntity.getEntity());
+    BlockComponent blockComponent=currentEntity.getComponent(BlockComponent.class);
+    if (blockComponent != null && !blockEntityBefore) {
+      if (!blockEntityRegistry.getBlockEntityAt(blockComponent.getPosition()).equals(currentEntity)) {
+        logger.error("Failed to associated new block entity");
+      }
+    }
+    if (currentEntity.getComponent(NetworkComponent.class).getNetworkId() != updateEntity.getNetId()) {
+      logger.error("Network ID lost in update: {}, {} -> {}",currentEntity,updateEntity.getNetId(),currentEntity.getComponent(NetworkComponent.class).getNetworkId());
+    }
+  }
+}

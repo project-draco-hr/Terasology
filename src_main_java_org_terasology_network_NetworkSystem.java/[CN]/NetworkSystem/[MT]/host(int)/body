@@ -1,5 +1,10 @@
 {
   if (mode == NetworkMode.NONE) {
+    mode=NetworkMode.SERVER;
+    for (    EntityRef entity : entityManager.iteratorEntities(NetworkComponent.class)) {
+      registerNetworkEntity(entity);
+    }
+    generateSerializationTables();
     factory=new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),Executors.newCachedThreadPool());
     ServerBootstrap bootstrap=new ServerBootstrap(factory);
     bootstrap.setPipelineFactory(new TerasologyServerPipelineFactory(this));
@@ -8,8 +13,6 @@
     Channel listenChannel=bootstrap.bind(new InetSocketAddress(port));
     allChannels.add(listenChannel);
     logger.info("Started server");
-    mode=NetworkMode.SERVER;
-    generateSerializationTables();
     nextNetworkTick=timer.getTimeInMs();
   }
 }

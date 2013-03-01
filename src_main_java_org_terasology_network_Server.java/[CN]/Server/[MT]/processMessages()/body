@@ -16,10 +16,7 @@
       createEntityMessage(createEntity);
     }
     for (    NetData.UpdateEntityMessage updateEntity : message.getUpdateEntityList()) {
-      EntityRef currentEntity=networkSystem.getEntity(updateEntity.getNetId());
-      if (currentEntity.exists()) {
-        entitySerializer.deserializeOnto(currentEntity,updateEntity.getEntity());
-      }
+      updateEntity(updateEntity);
     }
   }
 }

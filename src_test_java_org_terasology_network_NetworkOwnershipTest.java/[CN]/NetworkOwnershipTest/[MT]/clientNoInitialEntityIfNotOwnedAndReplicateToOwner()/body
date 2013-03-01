@@ -4,6 +4,6 @@
   netComp.replicateMode=NetworkComponent.ReplicateMode.OWNER;
   EntityRef entity=entityManager.create(netComp);
   networkSystem.registerNetworkEntity(entity);
-  assertTrue(entity.getComponent(NetworkComponent.class).networkId != 0);
-  verify(client,times(0)).setNetInitial(entity.getComponent(NetworkComponent.class).networkId);
+  assertTrue(entity.getComponent(NetworkComponent.class).getNetworkId() != 0);
+  verify(client,times(0)).setNetInitial(entity.getComponent(NetworkComponent.class).getNetworkId());
 }

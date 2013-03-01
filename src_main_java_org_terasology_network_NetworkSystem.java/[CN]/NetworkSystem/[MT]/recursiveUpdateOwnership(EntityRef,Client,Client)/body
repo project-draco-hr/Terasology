@@ -4,10 +4,10 @@
     if (networkComponent.replicateMode == NetworkComponent.ReplicateMode.OWNER) {
       logger.debug("{}'s owner changed from {} to {}, so replicating.",entity,lastOwner,newOwner);
       if (lastOwner != null) {
-        lastOwner.setNetRemoved(networkComponent.networkId);
+        lastOwner.setNetRemoved(networkComponent.getNetworkId());
       }
       if (newOwner != null) {
-        newOwner.setNetInitial(networkComponent.networkId);
+        newOwner.setNetInitial(networkComponent.getNetworkId());
       }
     }
     for (    EntityRef owned : ownedLookup.get(entity)) {

@@ -3,6 +3,9 @@
   while (dirtyIterator.hasNext()) {
     int netId=dirtyIterator.next();
     EntityRef entity=networkSystem.getEntity(netId);
+    if (!entity.exists()) {
+      logger.error("Sending non-existent entity update for netId {}",netId);
+    }
     boolean isOwner=networkSystem.getOwner(entity) == this;
     EntityData.PackedEntity entityData=entitySerializer.serialize(entity,addedComponents.get(netId),dirtyComponents.get(netId),removedComponents.get(netId),new ServerComponentFieldCheck(isOwner,false));
     if (entityData != null) {

@@ -23,7 +23,7 @@
     if (healthComp == null || healthComp.currentHealth == healthComp.maxHealth) {
       entity.destroy();
     }
- else {
+ else     if (networkSystem.getMode().isAuthority() && !entity.hasComponent(NetworkComponent.class)) {
       entity.addComponent(new NetworkComponent());
     }
   }

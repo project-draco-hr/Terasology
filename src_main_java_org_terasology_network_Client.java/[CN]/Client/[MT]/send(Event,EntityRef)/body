@@ -8,8 +8,8 @@
  else {
     NetworkComponent networkComponent=target.getComponent(NetworkComponent.class);
     if (networkComponent != null) {
-      if (netRelevant.contains(networkComponent.networkId) || netInitial.contains(networkComponent.networkId)) {
-        queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetId(networkComponent.networkId).setEvent(eventSerializer.serialize(event)).build());
+      if (netRelevant.contains(networkComponent.getNetworkId()) || netInitial.contains(networkComponent.getNetworkId())) {
+        queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetId(networkComponent.getNetworkId()).setEvent(eventSerializer.serialize(event)).build());
       }
     }
   }

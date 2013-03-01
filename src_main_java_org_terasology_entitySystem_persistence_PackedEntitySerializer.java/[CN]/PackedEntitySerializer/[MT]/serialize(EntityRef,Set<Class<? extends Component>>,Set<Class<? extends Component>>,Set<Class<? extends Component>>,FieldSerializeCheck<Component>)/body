@@ -3,12 +3,19 @@
   ByteString.Output fieldIds=ByteString.newOutput();
   ByteString.Output componentFieldCounts=ByteString.newOutput();
   for (  Class<? extends Component> componentType : added) {
+    Component component=entityRef.getComponent(componentType);
+    if (component == null) {
+      logger.error("Non-existent component marked as added: {}",componentType);
+    }
     serializeComponentFull(entityRef.getComponent(componentType),false,fieldCheck,entity,fieldIds,componentFieldCounts);
   }
   for (  Class<? extends Component> componentType : changed) {
     Component comp=entityRef.getComponent(componentType);
     if (comp != null) {
       serializeComponentFull(comp,true,fieldCheck,entity,fieldIds,componentFieldCounts);
+    }
+ else {
+      logger.error("Non-existent component marked as changed: {}",componentType);
     }
   }
   for (  Class<? extends Component> componentType : removed) {

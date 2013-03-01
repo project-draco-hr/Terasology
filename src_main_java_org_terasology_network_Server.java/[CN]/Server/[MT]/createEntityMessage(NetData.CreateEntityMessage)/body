@@ -13,6 +13,9 @@
  else   if (newEntity.getComponent(NetworkComponent.class) == null) {
     logger.error("Received entity with no NetworkComponent: {}",newEntity);
   }
-  logger.info("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).networkId);
+ else   if (newEntity.getComponent(NetworkComponent.class).getNetworkId() == 0) {
+    logger.error("Received entity with null network id: {}",newEntity);
+  }
+  logger.info("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).getNetworkId());
   networkSystem.registerNetworkEntity(newEntity);
 }
