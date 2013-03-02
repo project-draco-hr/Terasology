@@ -1,9 +1,0 @@
-{
-  InputConfig result=new InputConfig();
-  JsonObject inputObj=json.getAsJsonObject();
-  for (  Map.Entry<String,JsonElement> entry : inputObj.entrySet()) {
-    Multimap<String,Input> map=context.deserialize(entry.getValue(),Multimap.class);
-    result.data.put(entry.getKey(),map);
-  }
-  return result;
-}

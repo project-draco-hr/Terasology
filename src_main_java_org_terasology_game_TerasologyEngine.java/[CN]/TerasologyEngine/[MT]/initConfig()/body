@@ -1,20 +1,16 @@
 {
-  if (org.terasology.config.Config.getConfigFile().exists()) {
-    org.terasology.config.Config config;
+  if (Config.getConfigFile().exists()) {
     try {
-      config=org.terasology.config.Config.load(org.terasology.config.Config.getConfigFile());
-      config.getDefaultModConfig().addMod("core");
+      config=Config.load(Config.getConfigFile());
     }
  catch (    IOException e) {
       logger.error("Failed to load config",e);
-      config=new org.terasology.config.Config();
-      config.getDefaultModConfig().addMod("core");
+      config=new Config();
     }
-    CoreRegistry.put(org.terasology.config.Config.class,config);
   }
  else {
-    org.terasology.config.Config config=new org.terasology.config.Config();
-    config.getDefaultModConfig().addMod("core");
-    CoreRegistry.put(org.terasology.config.Config.class,config);
+    config=new Config();
   }
+  config.getDefaultModSelection().addMod("core");
+  CoreRegistry.put(Config.class,config);
 }

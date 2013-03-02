@@ -2,7 +2,7 @@
   boolean complete=true;
   int newChunkPosX=calcCamChunkOffsetX();
   int newChunkPosZ=calcCamChunkOffsetZ();
-  int viewingDistance=Config.getInstance().getActiveViewingDistance();
+  int viewingDistance=config.getRendering().getActiveViewingDistance();
   chunkProvider.update();
   for (  Vector3i pos : Region3i.createFromCenterExtents(new Vector3i(newChunkPosX,0,newChunkPosZ),new Vector3i(viewingDistance / 2,0,viewingDistance / 2))) {
     Chunk chunk=chunkProvider.getChunk(pos);

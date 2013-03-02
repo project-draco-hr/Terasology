@@ -1,0 +1,11 @@
+{
+  for (  Class<?> buttonEvent : classes) {
+    if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
+      RegisterBindButton info=(RegisterBindButton)buttonEvent.getAnnotation(RegisterBindButton.class);
+      addBind(packageName,buttonEvent,info);
+    }
+  }
+  for (int i=0; i < 10; ++i) {
+    setBinds(ModManager.ENGINE_PACKAGE,"toolbarSlot" + i,new Input(InputType.KEY,Keyboard.KEY_1 + i));
+  }
+}

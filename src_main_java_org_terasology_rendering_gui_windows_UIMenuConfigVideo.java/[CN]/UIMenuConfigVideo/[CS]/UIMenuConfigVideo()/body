@@ -18,16 +18,16 @@
       UIStateButton button=(UIStateButton)element;
 switch (button.getState()) {
 case 0:
-        Config.getInstance().setEnablePostProcessingEffects(false);
-      Config.getInstance().setFlickeringLight(false);
+        config.getRendering().setBloom(false);
+      config.getRendering().setFlickeringLight(false);
     break;
 case 1:
-  Config.getInstance().setEnablePostProcessingEffects(false);
-Config.getInstance().setFlickeringLight(true);
+  config.getRendering().setBloom(false);
+config.getRendering().setFlickeringLight(true);
 break;
 case 2:
-Config.getInstance().setEnablePostProcessingEffects(true);
-Config.getInstance().setFlickeringLight(true);
+config.getRendering().setBloom(true);
+config.getRendering().setFlickeringLight(true);
 break;
 }
 ShaderManager.getInstance().recompileAllShaders();
@@ -45,7 +45,7 @@ viewingDistanceButton=new UIStateButton(new Vector2f(256f,32f));
 StateButtonAction viewingDistanceStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
-Config.getInstance().setViewingDistanceById(button.getState());
+config.getRendering().setActiveViewDistanceMode(button.getState());
 }
 }
 ;
@@ -62,7 +62,7 @@ fovButton.addChangedListener(new ChangedListener(){
 @Override public void changed(UIDisplayElement element){
 UISlider slider=(UISlider)element;
 slider.setText("FOV: " + String.valueOf(slider.getValue()));
-Config.getInstance().setFov(slider.getValue());
+config.getRendering().setFieldOfView(slider.getValue());
 }
 }
 );
@@ -73,8 +73,7 @@ bobbingButton=new UIStateButton(new Vector2f(256f,32f));
 StateButtonAction bobbingStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
-if (button.getState() == 0) Config.getInstance().setCameraBobbing(false);
- else Config.getInstance().setCameraBobbing(true);
+config.getRendering().setCameraBobbing(button.getState() != 0);
 }
 }
 ;
@@ -88,8 +87,7 @@ animateGrassButton=new UIStateButton(new Vector2f(256f,32f));
 StateButtonAction animateGrassStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
-if (button.getState() == 0) Config.getInstance().setAnimatedGrass(false);
- else Config.getInstance().setAnimatedGrass(true);
+config.getRendering().setAnimateGrass(button.getState() != 0);
 ShaderManager.getInstance().recompileAllShaders();
 }
 }
@@ -104,8 +102,7 @@ reflectiveWaterButton=new UIStateButton(new Vector2f(256f,32f));
 StateButtonAction reflectiveWaterStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
-if (button.getState() == 0) Config.getInstance().setComplexWater(false);
- else Config.getInstance().setComplexWater(true);
+config.getRendering().setReflectiveWater(button.getState() != 0);
 ShaderManager.getInstance().recompileAllShaders();
 }
 }
@@ -120,7 +117,7 @@ blurIntensityButton=new UIStateButton(new Vector2f(256f,32f));
 StateButtonAction blurIntensityStateAction=new StateButtonAction(){
 @Override public void action(UIDisplayElement element){
 UIStateButton button=(UIStateButton)element;
-Config.getInstance().setBlurIntensity(button.getState());
+config.getRendering().setBlurIntensity(button.getState());
 ShaderManager.getInstance().recompileAllShaders();
 }
 }

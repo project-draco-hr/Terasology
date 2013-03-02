@@ -1,0 +1,10 @@
+{
+  List<Input> defaultInputs=Lists.newArrayList();
+  for (  Annotation annotation : buttonEvent.getAnnotations()) {
+    if (annotation instanceof DefaultBinding) {
+      DefaultBinding defaultBinding=(DefaultBinding)annotation;
+      defaultInputs.add(new Input(defaultBinding.type(),defaultBinding.id()));
+    }
+  }
+  setBinds(packageName,info.id(),defaultInputs.toArray(new Input[defaultInputs.size()]));
+}

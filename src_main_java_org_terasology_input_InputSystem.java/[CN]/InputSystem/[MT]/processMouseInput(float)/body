@@ -21,7 +21,7 @@
   }
   int deltaX=Mouse.getDX();
   if (deltaX != 0) {
-    MouseAxisEvent event=new MouseXAxisEvent(deltaX * mouseSensitivity,delta);
+    MouseAxisEvent event=new MouseXAxisEvent(deltaX * config.getInput().getMouseSensitivity(),delta);
     setupTarget(event);
     for (    EntityRef entity : getInputEntities()) {
       entity.send(event);
@@ -32,7 +32,7 @@
   }
   int deltaY=Mouse.getDY();
   if (deltaY != 0) {
-    MouseAxisEvent event=new MouseYAxisEvent(deltaY * mouseSensitivity,delta);
+    MouseAxisEvent event=new MouseYAxisEvent(deltaY * config.getInput().getMouseSensitivity(),delta);
     setupTarget(event);
     for (    EntityRef entity : getInputEntities()) {
       entity.send(event);

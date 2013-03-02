@@ -9,7 +9,7 @@
     GL11.glTranslated(chunk.getPos().x * Chunk.SIZE_X - cameraPosition.x,chunk.getPos().y * Chunk.SIZE_Y - cameraPosition.y,chunk.getPos().z * Chunk.SIZE_Z - cameraPosition.z);
     for (int i=0; i < VERTICAL_SEGMENTS; i++) {
       if (!chunk.getMesh()[i].isEmpty()) {
-        if (Config.getInstance().isRenderChunkBoundingBoxes()) {
+        if (config.getSystem().isRenderChunkBoundingBoxes()) {
           AABBRenderer aabbRenderer=new AABBRenderer(chunk.getSubMeshAABB(i));
           aabbRenderer.renderLocally(1f);
           statRenderedTriangles+=12;

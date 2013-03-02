@@ -1,4 +1,12 @@
 {
-  this(title,seed,chunkGenerators,chunkProvider);
+  if (title == null) {
+    title=seed;
+  }
+  this.title=title;
+  this.seed=seed;
+  this.chunkGenerators=chunkGenerators;
+  this.biomeProvider=new WorldBiomeProviderImpl(seed);
+  this.chunkProvider=chunkProvider;
+  CoreRegistry.put(ChunkProvider.class,chunkProvider);
   setTime(time);
 }

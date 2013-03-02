@@ -1,0 +1,11 @@
+{
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  BindsConfig config=new BindsConfig();
+  config.addDefaultsFor(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  for (  Mod mod : modManager.getMods()) {
+    if (mod.isCodeMod()) {
+      config.addDefaultsFor(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+    }
+  }
+  return config;
+}

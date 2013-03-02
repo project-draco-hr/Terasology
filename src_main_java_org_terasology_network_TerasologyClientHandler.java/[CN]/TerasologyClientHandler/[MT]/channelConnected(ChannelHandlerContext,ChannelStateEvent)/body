@@ -1,5 +1,6 @@
 {
   this.server=new Server(networkSystem,e.getChannel());
   networkSystem.setServer(server);
-  e.getChannel().write(NetMessage.newBuilder().setClientConnect(ClientConnectMessage.newBuilder().setName(CoreRegistry.get(Config.class).getPlayerConfig().getName()).setViewDistanceLevel(org.terasology.logic.manager.Config.getInstance().getActiveViewingDistance())).build());
+  Config config=CoreRegistry.get(Config.class);
+  e.getChannel().write(NetMessage.newBuilder().setClientConnect(ClientConnectMessage.newBuilder().setName(config.getPlayer().getName()).setViewDistanceLevel(config.getRendering().getActiveViewDistanceMode())).build());
 }
