@@ -1,6 +1,9 @@
 {
   EntityRef currentEntity=networkSystem.getEntity(updateEntity.getNetId());
   if (currentEntity.exists()) {
+    if (currentEntity.getComponent(NetworkComponent.class) == null) {
+      logger.error("Updating entity with no network component: {}, expected netId {}",currentEntity,updateEntity.getNetId());
+    }
     if (currentEntity.getComponent(NetworkComponent.class).getNetworkId() != updateEntity.getNetId()) {
       logger.error("Network ID wrong before update");
     }

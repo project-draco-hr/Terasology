@@ -1,0 +1,12 @@
+{
+  if (!readyChunks.isEmpty()) {
+    Iterator<Map.Entry<Vector3i,Chunk>> i=readyChunks.entrySet().iterator();
+    while (i.hasNext()) {
+      Map.Entry<Vector3i,Chunk> chunkEntry=i.next();
+      i.remove();
+      relevantChunks.add(chunkEntry.getKey());
+      logger.debug("Sending chunk: {}",chunkEntry.getKey());
+      message.addChunkInfo(Chunks.getInstance().encode(chunkEntry.getValue())).build();
+    }
+  }
+}

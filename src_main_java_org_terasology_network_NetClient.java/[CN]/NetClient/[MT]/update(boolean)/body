@@ -2,6 +2,8 @@
   if (netTick) {
     NetData.NetMessage.Builder message=NetData.NetMessage.newBuilder();
     message.setTime(timer.getTimeInMs());
+    sendChunkInvalidations(message);
+    sendNewChunks(message);
     sendRemovedEntities(message);
     sendInitialEntities(message);
     sendDirtyEntities(message);

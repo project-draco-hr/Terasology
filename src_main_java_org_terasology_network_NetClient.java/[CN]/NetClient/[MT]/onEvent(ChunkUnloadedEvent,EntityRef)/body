@@ -1,5 +1,4 @@
 {
-  if (relevantChunks.remove(event.getChunkPos())) {
-    queuedInvalidatedChunkEvents.add(NetData.InvalidateChunkMessage.newBuilder().setPos(NetworkUtil.convert(event.getChunkPos())).build());
-  }
+  readyChunks.remove(event.getChunkPos());
+  invalidatedChunks.add(event.getChunkPos());
 }

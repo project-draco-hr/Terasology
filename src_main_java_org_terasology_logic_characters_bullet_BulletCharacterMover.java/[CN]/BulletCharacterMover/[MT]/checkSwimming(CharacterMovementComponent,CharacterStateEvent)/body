@@ -1,17 +1,14 @@
 {
   Vector3f worldPos=state.getPosition();
-  boolean topUnderwater=false;
-  boolean bottomUnderwater=false;
   Vector3f top=new Vector3f(worldPos);
   Vector3f bottom=new Vector3f(worldPos);
   top.y+=0.25f * movementComp.height;
   bottom.y-=0.25f * movementComp.height;
-  topUnderwater=worldProvider.getBlock(top).isLiquid();
-  bottomUnderwater=worldProvider.getBlock(bottom).isLiquid();
+  boolean topUnderwater=worldProvider.getBlock(top).isLiquid();
+  boolean bottomUnderwater=worldProvider.getBlock(bottom).isLiquid();
   boolean newSwimming=topUnderwater && bottomUnderwater;
   if (!newSwimming && state.getMode() == MovementMode.SWIMMING && state.getVelocity().y > 0) {
-    float len=state.getVelocity().length();
-    state.getVelocity().scale((len + 8) / len);
+    state.getVelocity().y+=8;
   }
   state.setMode((newSwimming) ? MovementMode.SWIMMING : MovementMode.WALKING);
 }

@@ -1,7 +1,4 @@
 {
-  if (relevantChunks.add(pos)) {
-    logger.debug("Sending chunk: {}",pos);
-    NetData.NetMessage message=NetData.NetMessage.newBuilder().setTime(timer.getTimeInMs()).addChunkInfo(Chunks.getInstance().encode(chunk)).build();
-    send(message);
-  }
+  invalidatedChunks.remove(pos);
+  readyChunks.put(pos,chunk);
 }
