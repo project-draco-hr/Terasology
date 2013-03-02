@@ -1,0 +1,12 @@
+{
+  if (networkSystem.getMode().isAuthority()) {
+    NetClient netClient=networkSystem.getNetOwner(entity);
+    if (netClient != null) {
+      netClient.setViewDistanceMode(request.getNewViewRange());
+      ClientComponent clientComp=netClient.getEntity().getComponent(ClientComponent.class);
+      if (clientComp != null && clientComp.character.exists()) {
+        worldRenderer.getChunkProvider().updateRegionEntity(clientComp.character,netClient.getViewDistance());
+      }
+    }
+  }
+}

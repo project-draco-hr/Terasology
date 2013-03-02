@@ -1,10 +1,13 @@
 {
+  if (!entity.exists()) {
+    return;
+  }
   CacheRegion region=new CacheRegion(entity,distance);
   region.setListener(listener);
   regionLock.writeLock().lock();
   try {
-    regions.remove(region);
-    regions.add(region);
+    regions.remove(entity);
+    regions.put(entity,region);
   }
   finally {
     regionLock.writeLock().unlock();

@@ -1,7 +1,7 @@
 {
   regionLock.readLock().lock();
   try {
-    for (    CacheRegion cacheRegion : regions) {
+    for (    CacheRegion cacheRegion : regions.values()) {
       cacheRegion.update();
       if (cacheRegion.isDirty()) {
         Region3i previousRegion=cacheRegion.getCurrentRegion();
@@ -25,7 +25,7 @@
       while (iterator.hasNext()) {
         Vector3i pos=iterator.next();
         boolean keep=false;
-        for (        CacheRegion region : regions) {
+        for (        CacheRegion region : regions.values()) {
           if (region.getRegion().expand(new Vector3i(4,0,4)).encompasses(pos)) {
             keep=true;
             break;

@@ -6,4 +6,8 @@
   if (worldRenderer != null) {
     worldRenderer.changeViewDistance(getActiveViewingDistance());
   }
+  LocalPlayer player=CoreRegistry.get(LocalPlayer.class);
+  if (player != null) {
+    player.getClientEntity().send(new ChangeViewRangeRequest(activeViewDistanceMode));
+  }
 }
