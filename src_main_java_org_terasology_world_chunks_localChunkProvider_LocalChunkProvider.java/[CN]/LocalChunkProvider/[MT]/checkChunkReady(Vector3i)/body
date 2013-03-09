@@ -1,16 +1,5 @@
 {
   if (worldEntity.exists() && isChunkReady(pos)) {
-    worldEntity.send(new ChunkReadyEvent(pos));
-    regionLock.readLock().lock();
-    try {
-      for (      CacheRegion region : regions.values()) {
-        if (region.getRegion().encompasses(pos)) {
-          region.sendChunkReady(getChunk(pos));
-        }
-      }
-    }
-  finally {
-      regionLock.readLock().unlock();
-    }
+    readyChunks.offer(pos);
   }
 }

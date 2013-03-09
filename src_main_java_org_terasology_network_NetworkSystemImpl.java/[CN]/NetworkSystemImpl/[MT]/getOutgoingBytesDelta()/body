@@ -3,12 +3,12 @@ switch (mode) {
 case SERVER:
     int total=0;
   for (  NetClient client : netClientList) {
-    total+=client.getSentBytesSinceLastCall();
+    total+=client.getMetrics().getSentBytesSinceLastCall();
   }
 return total;
 case CLIENT:
 if (server != null) {
-return server.getSentBytesSinceLastCall();
+return server.getMetrics().getSentBytesSinceLastCall();
 }
 default :
 return 0;

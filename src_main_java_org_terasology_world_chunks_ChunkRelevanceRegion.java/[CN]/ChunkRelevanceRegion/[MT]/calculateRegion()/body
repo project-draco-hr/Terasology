@@ -1,0 +1,7 @@
+{
+  LocationComponent loc=entity.getComponent(LocationComponent.class);
+  if (loc != null) {
+    return Region3i.createFromCenterExtents(worldToChunkPos(loc.getWorldPosition()),new Vector3i(TeraMath.ceilToInt(distance / 2.0f),0,TeraMath.ceilToInt(distance / 2.0f)));
+  }
+  return Region3i.EMPTY;
+}

@@ -1,0 +1,16 @@
+{
+  Event event=eventSerializer.deserialize(message.getEvent());
+  EntityRef target=EntityRef.NULL;
+  if (message.hasTargetBlockPos()) {
+    target=blockEntityRegistry.getOrCreateBlockEntityAt(NetworkUtil.convert(message.getTargetBlockPos()));
+  }
+ else   if (message.hasTargetId()) {
+    target=networkSystem.getEntity(message.getTargetId());
+  }
+  if (target.exists()) {
+    target.send(event);
+  }
+ else {
+    queuedReceivedEvents.offer(message);
+  }
+}

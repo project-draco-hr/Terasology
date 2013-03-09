@@ -1,21 +1,34 @@
 {
   regionLock.readLock().lock();
   try {
-    for (    CacheRegion cacheRegion : regions.values()) {
-      cacheRegion.update();
-      if (cacheRegion.isDirty()) {
-        Region3i previousRegion=cacheRegion.getCurrentRegion();
-        Region3i newRegion=cacheRegion.getRegion();
-        cacheRegion.setUpToDate();
-        Iterator<Vector3i> chunkIterator=newRegion.subtract(previousRegion);
-        while (chunkIterator.hasNext()) {
-          Vector3i pos=chunkIterator.next();
+    for (    ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
+      chunkRelevanceRegion.update();
+      if (chunkRelevanceRegion.isDirty()) {
+        boolean produceChunks=false;
+        for (        Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
           Chunk chunk=getChunk(pos);
           if (chunk != null && getChunk(pos).getChunkState() == Chunk.State.COMPLETE) {
-            cacheRegion.sendChunkReady(chunk);
+            chunkRelevanceRegion.chunkReady(chunk);
+          }
+ else {
+            produceChunks=true;
           }
         }
-        reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.PRODUCE,cacheRegion.getRegion().expand(new Vector3i(2,0,2))));
+        if (produceChunks) {
+          reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.PRODUCE,chunkRelevanceRegion.getRegion().expand(new Vector3i(2,0,2))));
+        }
+        chunkRelevanceRegion.setUpToDate();
+      }
+    }
+    if (!readyChunks.isEmpty()) {
+      List<Vector3i> readyChunkPositions=Lists.newArrayListWithExpectedSize(readyChunks.size());
+      readyChunks.drainTo(readyChunkPositions);
+      for (      Vector3i readyChunkPos : readyChunkPositions) {
+        worldEntity.send(new ChunkReadyEvent(readyChunkPos));
+        Chunk chunk=getChunk(readyChunkPos);
+        for (        ChunkRelevanceRegion region : regions.values()) {
+          region.chunkReady(chunk);
+        }
       }
     }
     PerformanceMonitor.startActivity("Review cache size");
@@ -25,7 +38,7 @@
       while (iterator.hasNext()) {
         Vector3i pos=iterator.next();
         boolean keep=false;
-        for (        CacheRegion region : regions.values()) {
+        for (        ChunkRelevanceRegion region : regions.values()) {
           if (region.getRegion().expand(new Vector3i(4,0,4)).encompasses(pos)) {
             keep=true;
             break;
@@ -44,6 +57,9 @@
           }
   finally {
             chunk.unlock();
+          }
+          for (          ChunkRelevanceRegion region : regions.values()) {
+            region.chunkUnloaded(pos);
           }
           worldEntity.send(new ChunkUnloadedEvent(pos));
         }

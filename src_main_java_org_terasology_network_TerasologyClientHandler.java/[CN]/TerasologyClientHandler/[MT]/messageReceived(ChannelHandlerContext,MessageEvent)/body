@@ -1,6 +1,5 @@
 {
   NetMessage message=(NetMessage)e.getMessage();
-  server.receivedMessageWithSize(message.getSerializedSize());
   if (message.hasServerInfo()) {
     CoreRegistry.get(Timer.class).updateServerTime(message.getTime(),true);
     receivedServerInfo(message.getServerInfo());
@@ -15,7 +14,4 @@
     blockChanged(blockChanged);
   }
   server.queueMessage(message);
-  for (  NetData.EventMessage eventMessage : message.getEventList()) {
-    server.queueEvent(eventMessage);
-  }
 }

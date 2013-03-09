@@ -1,0 +1,34 @@
+{
+  if (!entity.exists()) {
+    return;
+  }
+  regionLock.readLock().lock();
+  try {
+    ChunkRelevanceRegion region=regions.get(entity);
+    if (region != null) {
+      region.setDistance(distance);
+      return;
+    }
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+  ChunkRelevanceRegion region=new ChunkRelevanceRegion(entity,distance);
+  if (listener != null) {
+    region.setListener(listener);
+  }
+  regionLock.writeLock().lock();
+  try {
+    regions.put(entity,region);
+  }
+  finally {
+    regionLock.writeLock().unlock();
+  }
+  for (  Vector3i pos : region.getRegion()) {
+    Chunk chunk=getChunk(pos);
+    if (isChunkReady(pos)) {
+      region.chunkReady(chunk);
+    }
+  }
+  reviewChunkQueue.offer(new ChunkRequest(ChunkRequest.RequestType.PRODUCE,region.getRegion().expand(new Vector3i(2,0,2))));
+}
