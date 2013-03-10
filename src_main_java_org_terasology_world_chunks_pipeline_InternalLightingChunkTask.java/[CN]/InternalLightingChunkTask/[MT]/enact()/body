@@ -1,0 +1,18 @@
+{
+  Chunk chunk=getProvider().getChunk(getPosition());
+  if (chunk == null) {
+    return;
+  }
+  chunk.lock();
+  try {
+    if (chunk.isDisposed() || chunk.getChunkState() != Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING) {
+      return;
+    }
+    InternalLightProcessor.generateInternalLighting(chunk);
+    chunk.setChunkState(Chunk.State.LIGHT_PROPAGATION_PENDING);
+    getPipeline().requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+  }
+  finally {
+    chunk.unlock();
+  }
+}

@@ -1,0 +1,22 @@
+{
+  WorldView view=WorldView.createLocalView(getPosition(),getProvider());
+  if (view == null) {
+    return;
+  }
+  view.lock();
+  try {
+    if (!view.isValidView()) {
+      return;
+    }
+    Chunk chunk=getProvider().getChunk(getPosition());
+    if (chunk.getChunkState() != Chunk.State.ADJACENCY_GENERATION_PENDING) {
+      return;
+    }
+    getPipeline().getChunkGeneratorManager().secondPassChunk(getPosition(),view);
+    chunk.setChunkState(Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING);
+    getPipeline().requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+  }
+  finally {
+    view.unlock();
+  }
+}

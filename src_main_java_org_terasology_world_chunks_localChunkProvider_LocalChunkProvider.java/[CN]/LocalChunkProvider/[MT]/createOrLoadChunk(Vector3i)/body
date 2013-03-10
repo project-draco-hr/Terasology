@@ -1,0 +1,42 @@
+{
+  Chunk chunk=getChunk(chunkPos);
+  if (chunk == null) {
+    PerformanceMonitor.startActivity("Check chunk in cache");
+    if (preparingChunks.add(chunkPos)) {
+      if (farStore.contains(chunkPos)) {
+        pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
+          @Override public void enact(){
+            Chunk chunk=farStore.get(getPosition());
+            if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
+              logger.warn("Chunk {} is already in the near cache",getPosition());
+            }
+            preparingChunks.remove(getPosition());
+            if (chunk.getChunkState() == Chunk.State.COMPLETE) {
+              for (              Vector3i adjPos : Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS)) {
+                if (isChunkReady(adjPos)) {
+                  readyChunks.offer(adjPos);
+                }
+              }
+            }
+            pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS));
+          }
+        }
+);
+      }
+ else {
+        pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
+          @Override public void enact(){
+            Chunk chunk=generator.generateChunk(getPosition());
+            if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
+              logger.warn("Chunk {} is already in the near cache",getPosition());
+            }
+            preparingChunks.remove(getPosition());
+            pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),LOCAL_REGION_EXTENTS));
+          }
+        }
+);
+      }
+    }
+    PerformanceMonitor.endActivity();
+  }
+}

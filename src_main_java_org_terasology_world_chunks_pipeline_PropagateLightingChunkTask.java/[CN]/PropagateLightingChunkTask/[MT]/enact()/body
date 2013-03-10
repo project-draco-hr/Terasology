@@ -1,0 +1,22 @@
+{
+  WorldView worldView=WorldView.createLocalView(getPosition(),getProvider());
+  if (worldView == null) {
+    return;
+  }
+  worldView.lock();
+  try {
+    if (!worldView.isValidView()) {
+      return;
+    }
+    Chunk chunk=getProvider().getChunk(getPosition());
+    if (chunk.getChunkState() != Chunk.State.LIGHT_PROPAGATION_PENDING) {
+      return;
+    }
+    new LightPropagator(worldView).propagateOutOfTargetChunk();
+    chunk.setChunkState(Chunk.State.FULL_LIGHT_CONNECTIVITY_PENDING);
+    getPipeline().requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+  }
+  finally {
+    worldView.unlock();
+  }
+}

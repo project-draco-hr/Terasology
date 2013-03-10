@@ -1,0 +1,20 @@
+{
+  boolean running=true;
+  Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+  while (running) {
+    try {
+      T task=queue.take();
+      task.enact();
+      if (task.isTerminateSignal()) {
+        running=false;
+      }
+    }
+ catch (    InterruptedException e) {
+      logger.error("Thread interrupted",e);
+    }
+catch (    Exception e) {
+      logger.error("Error in thread",e);
+    }
+  }
+  logger.debug("Thread shutdown safely");
+}
