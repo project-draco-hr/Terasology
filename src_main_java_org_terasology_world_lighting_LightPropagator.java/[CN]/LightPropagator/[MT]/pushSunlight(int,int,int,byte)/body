@@ -3,7 +3,7 @@
   Collection<Vector3i> nextWave=Lists.newArrayList();
   nextWave.add(new Vector3i(x,y,z));
   if (lightLevel == Chunk.MAX_LIGHT && worldView.getSunlight(x,y - 1,z) < Chunk.MAX_LIGHT) {
-    Block lastBlock=BlockManager.getInstance().getAir();
+    Block lastBlock=BlockManager.getAir();
     for (int columnY=y - 1; columnY >= 0; columnY--) {
       Block block=worldView.getBlock(x,columnY,z);
       if (LightingUtil.canSpreadLightOutOf(lastBlock,Side.BOTTOM) && LightingUtil.canSpreadLightInto(block,Side.TOP) && LightingUtil.doesSunlightRetainsFullStrengthIn(block)) {

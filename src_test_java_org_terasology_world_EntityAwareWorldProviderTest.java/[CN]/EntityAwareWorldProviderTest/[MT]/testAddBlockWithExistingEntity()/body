@@ -4,12 +4,12 @@
   Block persistentEntityBlock=new Block();
   persistentEntityBlock.setEntityMode(BlockEntityMode.PERSISTENT);
   persistentEntityBlock.setEntityPrefab(PREFAB_URI);
-  BlockManager.getInstance().addBlockFamily(new SymmetricFamily(new BlockUri("unittest:block"),persistentEntityBlock));
+  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("unittest:block"),persistentEntityBlock));
   EntityRef entity=entityManager.create(prefab);
   StringComponent comp=entity.getComponent(StringComponent.class);
   comp.value="hi";
   entity.saveComponent(comp);
-  assertTrue(worldProvider.setBlock(0,0,0,persistentEntityBlock,BlockManager.getInstance().getAir(),entity));
+  assertTrue(worldProvider.setBlock(0,0,0,persistentEntityBlock,BlockManager.getAir(),entity));
   List<EntityRef> blockEntities=Lists.newArrayList(entityManager.iteratorEntities(BlockComponent.class));
   assertEquals(1,blockEntities.size());
   assertEquals(blockEntities.get(0),entity);

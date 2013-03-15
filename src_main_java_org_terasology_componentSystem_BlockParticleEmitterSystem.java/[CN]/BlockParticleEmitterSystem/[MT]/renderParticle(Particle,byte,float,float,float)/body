@@ -1,14 +1,14 @@
 {
-  int displayList=displayLists.get(BlockManager.getInstance().getBlock(blockType).getBlockFamily());
+  int displayList=displayLists.get(blockManager.getBlock(blockType).getBlockFamily());
   if (displayList == 0) {
     displayList=glGenLists(1);
     glNewList(displayList,GL11.GL_COMPILE);
     drawParticle(blockType);
     glEndList();
-    displayLists.put(BlockManager.getInstance().getBlock(blockType).getBlockFamily(),displayList);
+    displayLists.put(blockManager.getBlock(blockType).getBlockFamily(),displayList);
   }
   ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("particle");
-  Vector4f color=BlockManager.getInstance().getBlock(blockType).calcColorOffsetFor(BlockPart.FRONT,temperature,humidity);
+  Vector4f color=blockManager.getBlock(blockType).calcColorOffsetFor(BlockPart.FRONT,temperature,humidity);
   shader.setFloat3("colorOffset",color.x,color.y,color.z);
   shader.setFloat("texOffsetX",particle.texOffset.x);
   shader.setFloat("texOffsetY",particle.texOffset.y);

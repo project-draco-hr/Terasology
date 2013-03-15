@@ -1,10 +1,11 @@
 {
+  BlockManager blockManager=CoreRegistry.get(BlockManager.class);
   StringBuilder stringBuilder=new StringBuilder();
   stringBuilder.append("Used Blocks");
   stringBuilder.append(StringConstants.NEW_LINE);
   stringBuilder.append("-----------");
   stringBuilder.append(StringConstants.NEW_LINE);
-  List<BlockUri> registeredBlocks=sortItems(BlockManager.getInstance().listRegisteredBlockUris());
+  List<BlockUri> registeredBlocks=sortItems(blockManager.listRegisteredBlockUris());
   for (  BlockUri blockUri : registeredBlocks) {
     stringBuilder.append(blockUri.toString());
     stringBuilder.append(StringConstants.NEW_LINE);
@@ -14,7 +15,7 @@
   stringBuilder.append(StringConstants.NEW_LINE);
   stringBuilder.append("----------------");
   stringBuilder.append(StringConstants.NEW_LINE);
-  List<BlockUri> availableBlocks=sortItems(BlockManager.getInstance().listAvailableBlockUris());
+  List<BlockUri> availableBlocks=sortItems(blockManager.listAvailableBlockUris());
   for (  BlockUri blockUri : availableBlocks) {
     stringBuilder.append(blockUri.toString());
     stringBuilder.append(StringConstants.NEW_LINE);

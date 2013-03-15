@@ -1,5 +1,6 @@
 {
-  List<BlockUri> resolvedBlockUris=BlockManager.getInstance().resolveBlockUri(uri);
+  BlockManager blockManager=CoreRegistry.get(BlockManager.class);
+  List<BlockUri> resolvedBlockUris=blockManager.resolveBlockUri(uri);
   if (resolvedBlockUris.isEmpty()) {
     MessageManager.getInstance().addMessage("No block found for '" + uri + "'");
     return;
@@ -30,7 +31,7 @@
   }
   BlockUri blockUri=new BlockUri(resolvedBlockUris.get(0).toString() + BlockUri.PACKAGE_SEPARATOR + resolvedShapeUris.get(0).getSimpleString());
   if (blockUri.isValid()) {
-    giveBlock(BlockManager.getInstance().getBlockFamily(blockUri),quantity);
+    giveBlock(blockManager.getBlockFamily(blockUri),quantity);
     return;
   }
   MessageManager.getInstance().addMessage("Invalid block or shape");

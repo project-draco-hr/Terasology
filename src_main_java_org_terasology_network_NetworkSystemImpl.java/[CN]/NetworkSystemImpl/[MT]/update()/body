@@ -9,9 +9,11 @@
         nextNetworkTick+=NET_TICK_RATE;
         netTick=true;
       }
+      PerformanceMonitor.startActivity("Client update");
       for (      Client client : clientList) {
         client.update(netTick);
       }
+      PerformanceMonitor.endActivity();
       if (server != null) {
         server.update(netTick);
       }

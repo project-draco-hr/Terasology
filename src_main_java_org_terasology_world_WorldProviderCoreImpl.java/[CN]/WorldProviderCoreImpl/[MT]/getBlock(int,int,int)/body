@@ -1,6 +1,6 @@
 {
   if (y >= Chunk.SIZE_Y || y < 0) {
-    return BlockManager.getInstance().getAir();
+    return BlockManager.getAir();
   }
   Vector3i chunkPos=TeraMath.calcChunkPos(x,y,z);
   Chunk chunk=chunkProvider.getChunk(chunkPos);
@@ -8,5 +8,5 @@
     Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
     return chunk.getBlock(blockPos);
   }
-  return BlockManager.getInstance().getAir();
+  return BlockManager.getAir();
 }

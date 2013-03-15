@@ -5,9 +5,10 @@
   offset.scale(3);
   spawnPos.add(offset);
   BlockFamily blockFamily;
-  List<BlockUri> matchingUris=BlockManager.getInstance().resolveBlockUri(blockName);
+  BlockManager blockManager=CoreRegistry.get(BlockManager.class);
+  List<BlockUri> matchingUris=blockManager.resolveBlockUri(blockName);
   if (matchingUris.size() == 1) {
-    blockFamily=BlockManager.getInstance().getBlockFamily(matchingUris.get(0));
+    blockFamily=blockManager.getBlockFamily(matchingUris.get(0));
   }
  else   if (matchingUris.isEmpty()) {
     MessageManager.getInstance().addMessage("No block found for '" + blockName + "'");

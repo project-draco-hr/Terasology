@@ -1,6 +1,7 @@
 {
   this.chunkProvider=chunkProvider;
-  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,this.chunkProvider));
+  BlockManager blockManager=CoreRegistry.get(BlockManager.class);
+  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,this.chunkProvider,blockManager));
   CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
   CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
   worldProvider=new WorldProviderWrapper(entityWorldProvider);

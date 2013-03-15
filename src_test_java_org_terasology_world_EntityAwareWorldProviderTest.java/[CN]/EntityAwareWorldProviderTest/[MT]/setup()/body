@@ -1,7 +1,8 @@
 {
   EntitySystemBuilder builder=new EntitySystemBuilder();
+  blockManager=CoreRegistry.put(BlockManager.class,new BlockManager());
   entityManager=builder.build(modManager);
   prefabManager=entityManager.getPrefabManager();
-  worldProvider=new EntityAwareWorldProvider(new WorldProviderCoreStub(BlockManager.getInstance().getAir()));
+  worldProvider=new EntityAwareWorldProvider(new WorldProviderCoreStub(BlockManager.getAir()));
   worldProvider.entityManager=entityManager;
 }
