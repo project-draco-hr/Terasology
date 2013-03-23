@@ -1,0 +1,25 @@
+{
+  int size=memoizedSerializedSize;
+  if (size != -1)   return size;
+  size=0;
+{
+    int dataSize=0;
+    for (int i=0; i < blockUri_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(blockUri_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getBlockUriList().size();
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < blockId_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(blockId_.get(i));
+    }
+    size+=dataSize;
+    size+=1 * getBlockIdList().size();
+  }
+  size+=extensionsSerializedSize();
+  size+=getUnknownFields().getSerializedSize();
+  memoizedSerializedSize=size;
+  return size;
+}

@@ -2,6 +2,7 @@
   if (netTick) {
     NetData.NetMessage.Builder message=NetData.NetMessage.newBuilder();
     message.setTime(timer.getTimeInMs());
+    sendRegisteredBlocks(message);
     sendChunkInvalidations(message);
     sendNewChunks(message);
     sendRemovedEntities(message);

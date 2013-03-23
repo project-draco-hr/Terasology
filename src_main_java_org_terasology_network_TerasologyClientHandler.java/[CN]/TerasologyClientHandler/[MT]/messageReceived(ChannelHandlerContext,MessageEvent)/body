@@ -4,14 +4,5 @@
     CoreRegistry.get(Timer.class).updateServerTime(message.getTime(),true);
     receivedServerInfo(message.getServerInfo());
   }
-  for (  ChunksProtobuf.Chunk chunk : message.getChunkInfoList()) {
-    receivedChunk(chunk);
-  }
-  for (  InvalidateChunkMessage invalidatedChunk : message.getInvalidateChunkList()) {
-    invalidateChunk(invalidatedChunk);
-  }
-  for (  BlockChangeMessage blockChanged : message.getBlockChangeList()) {
-    blockChanged(blockChanged);
-  }
   server.queueMessage(message);
 }

@@ -1,6 +1,13 @@
 {
-  BlockManager blockManager=new BlockManager();
-  blockManager.load(worldInfo.getBlockIdMap());
+  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
+  BlockManager blockManager;
+  if (networkSystem.getMode().isAuthority()) {
+    blockManager=new BlockManagerAuthority(worldInfo.getBlockIdMap());
+    blockManager.subscribe(CoreRegistry.get(NetworkSystem.class));
+  }
+ else {
+    blockManager=new BlockManagerClient(worldInfo.getBlockIdMap());
+  }
   CoreRegistry.put(BlockManager.class,blockManager);
   return true;
 }

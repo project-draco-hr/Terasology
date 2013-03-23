@@ -1,0 +1,11 @@
+{
+  for (  NetData.RemoveEntityMessage removeEntity : message.getRemoveEntityList()) {
+    int netId=removeEntity.getNetId();
+    EntityRef entity=networkSystem.getEntity(netId);
+    if (entity.exists()) {
+      networkSystem.unregisterNetworkEntity(entity);
+      logger.info("Destroying entity: {}",entity);
+      entity.destroy();
+    }
+  }
+}

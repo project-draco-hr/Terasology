@@ -1,10 +1,10 @@
 {
-  BlockManager blockManager=new BlockManager();
+  BlockManagerAuthority blockManager=new BlockManagerAuthority();
   CoreRegistry.put(BlockManager.class,blockManager);
   airBlock=BlockManager.getAir();
   solidBlock=new Block();
   solidBlock.setDisplayName("Stone");
   solidBlock.setUri(new BlockUri("engine:stone"));
-  blockManager.addBlockFamily(new SymmetricFamily(solidBlock.getURI(),solidBlock));
+  blockManager.addBlockFamily(new SymmetricFamily(solidBlock.getURI(),solidBlock),true);
   solidBlock=blockManager.getBlock(solidBlock.getURI());
 }

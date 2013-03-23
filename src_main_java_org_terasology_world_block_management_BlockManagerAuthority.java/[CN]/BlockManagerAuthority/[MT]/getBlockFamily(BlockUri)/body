@@ -1,0 +1,18 @@
+{
+  BlockFamily family=super.getBlockFamily(uri);
+  if (family == null) {
+    if (isFreeformFamily(uri.getRootFamilyUri())) {
+      family=blockLoader.loadWithShape(uri);
+    }
+ else {
+      family=getAvailableBlockFamily(uri);
+    }
+    if (family != null) {
+      for (      Block block : family.getBlocks()) {
+        block.setId((byte)nextId++);
+      }
+      registerFamily(family);
+    }
+  }
+  return family;
+}

@@ -1,0 +1,10 @@
+{
+  logger.info("Registered {}",family);
+  registeredFamilyByUri.put(family.getURI(),family);
+  for (  Block block : family.getBlocks()) {
+    registerBlock(block);
+  }
+  for (  BlockRegistrationListener listener : listeners) {
+    listener.onBlockFamilyRegistered(family);
+  }
+}

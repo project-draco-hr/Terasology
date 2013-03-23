@@ -198,6 +198,33 @@
   if (other.hasServerInfo()) {
     mergeServerInfo(other.getServerInfo());
   }
+  if (blockFamilyRegisteredBuilder_ == null) {
+    if (!other.blockFamilyRegistered_.isEmpty()) {
+      if (blockFamilyRegistered_.isEmpty()) {
+        blockFamilyRegistered_=other.blockFamilyRegistered_;
+        bitField0_=(bitField0_ & ~0x00000400);
+      }
+ else {
+        ensureBlockFamilyRegisteredIsMutable();
+        blockFamilyRegistered_.addAll(other.blockFamilyRegistered_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.blockFamilyRegistered_.isEmpty()) {
+      if (blockFamilyRegisteredBuilder_.isEmpty()) {
+        blockFamilyRegisteredBuilder_.dispose();
+        blockFamilyRegisteredBuilder_=null;
+        blockFamilyRegistered_=other.blockFamilyRegistered_;
+        bitField0_=(bitField0_ & ~0x00000400);
+        blockFamilyRegisteredBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getBlockFamilyRegisteredFieldBuilder() : null;
+      }
+ else {
+        blockFamilyRegisteredBuilder_.addAllMessages(other.blockFamilyRegistered_);
+      }
+    }
+  }
   this.mergeExtensionFields(other);
   this.mergeUnknownFields(other.getUnknownFields());
   return this;

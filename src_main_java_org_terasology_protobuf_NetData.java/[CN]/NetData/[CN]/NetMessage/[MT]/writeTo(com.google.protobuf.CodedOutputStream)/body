@@ -31,6 +31,9 @@
   if (((bitField0_ & 0x00000004) == 0x00000004)) {
     output.writeMessage(16,serverInfo_);
   }
+  for (int i=0; i < blockFamilyRegistered_.size(); i++) {
+    output.writeMessage(17,blockFamilyRegistered_.get(i));
+  }
   extensionWriter.writeUntil(536870912,output);
   getUnknownFields().writeTo(output);
 }

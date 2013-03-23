@@ -55,6 +55,12 @@
       return false;
     }
   }
+  for (int i=0; i < getBlockFamilyRegisteredCount(); i++) {
+    if (!getBlockFamilyRegistered(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
   if (!extensionsAreInitialized()) {
     memoizedIsInitialized=0;
     return false;

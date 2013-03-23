@@ -1,0 +1,18 @@
+{
+  for (  NetData.BlockFamilyRegisteredMessage blockFamily : message.getBlockFamilyRegisteredList()) {
+    if (blockFamily.getBlockIdCount() != blockFamily.getBlockUriCount()) {
+      logger.error("Received block registration with mismatched id<->uri mapping");
+    }
+ else     if (blockFamily.getBlockUriCount() == 0) {
+      logger.error("Received empty block registration");
+    }
+ else {
+      BlockUri family=new BlockUri(blockFamily.getBlockUri(0)).getFamilyUri();
+      Map<String,Integer> registrationMap=Maps.newHashMap();
+      for (int i=0; i < blockFamily.getBlockIdCount(); ++i) {
+        registrationMap.put(blockFamily.getBlockUri(i),blockFamily.getBlockId(i));
+      }
+      blockManagerClient.receiveFamilyRegistration(family,registrationMap);
+    }
+  }
+}
