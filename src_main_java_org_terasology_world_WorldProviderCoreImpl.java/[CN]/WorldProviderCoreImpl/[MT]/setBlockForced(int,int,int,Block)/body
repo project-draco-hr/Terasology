@@ -1,0 +1,22 @@
+{
+  Vector3i blockPos=new Vector3i(x,y,z);
+  ChunkView chunkView=chunkProvider.getSubviewAroundBlock(blockPos,Chunk.MAX_LIGHT + 1);
+  if (chunkView != null) {
+    chunkView.lock();
+    try {
+      Block current=chunkView.getBlock(x,y,z);
+      chunkView.setBlock(x,y,z,type);
+      Region3i affected=new LightPropagator(chunkView).update(x,y,z,type,current);
+      if (affected.isEmpty()) {
+        chunkView.setDirtyAround(blockPos);
+      }
+ else {
+        chunkView.setDirtyAround(affected);
+      }
+      notifyBlockChanged(x,y,z,type,current);
+    }
+  finally {
+      chunkView.unlock();
+    }
+  }
+}

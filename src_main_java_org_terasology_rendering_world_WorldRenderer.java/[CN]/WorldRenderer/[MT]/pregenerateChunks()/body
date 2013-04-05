@@ -6,12 +6,12 @@
   chunkProvider.update();
   for (  Vector3i pos : Region3i.createFromCenterExtents(new Vector3i(newChunkPosX,0,newChunkPosZ),new Vector3i(viewingDistance / 2,0,viewingDistance / 2))) {
     Chunk chunk=chunkProvider.getChunk(pos);
-    if (chunk == null || chunk.getChunkState() != Chunk.State.COMPLETE) {
+    if (chunk == null) {
       complete=false;
       continue;
     }
  else     if (chunk.isDirty()) {
-      WorldView view=worldProvider.getLocalView(chunk.getPos());
+      ChunkView view=worldProvider.getLocalView(chunk.getPos());
       if (view == null) {
         continue;
       }

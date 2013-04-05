@@ -1,2 +1,9 @@
 {
+  if (!readyChunks.isEmpty() && listener != null) {
+    List<Vector3i> ready=Lists.newArrayListWithExpectedSize(readyChunks.size());
+    readyChunks.drainTo(ready);
+    for (    Vector3i pos : ready) {
+      listener.onChunkReady(pos);
+    }
+  }
 }

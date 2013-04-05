@@ -1,0 +1,13 @@
+{
+  Region3i region=Region3i.createFromCenterExtents(pos,new Vector3i(1,0,1));
+  Chunk[] chunks=new Chunk[region.size().x * region.size().z];
+  for (  Vector3i chunkPos : region) {
+    Chunk chunk=getChunkForProcessing(chunkPos);
+    if (chunk == null) {
+      return null;
+    }
+    int index=(chunkPos.x - region.min().x) + region.size().x * (chunkPos.z - region.min().z);
+    chunks[index]=chunk;
+  }
+  return new RegionalChunkView(chunks,region,Vector3i.one());
+}

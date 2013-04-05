@@ -2,8 +2,18 @@
   Vector3i chunkPos=TeraMath.calcChunkPos(x,y,z);
   Chunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
-    Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
-    return chunk.setLiquid(blockPos,newState,oldState);
+    chunk.lock();
+    try {
+      Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
+      LiquidData liquidState=chunk.getLiquid(blockPos);
+      if (liquidState.equals(oldState)) {
+        chunk.setLiquid(blockPos,newState);
+        return true;
+      }
+    }
+  finally {
+      chunk.unlock();
+    }
   }
   return false;
 }

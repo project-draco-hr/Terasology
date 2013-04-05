@@ -1,0 +1,45 @@
+{
+  Block block=chunkView.getBlock(pos);
+  if (isLiquidBlocking(block)) {
+    return new LiquidData();
+  }
+  LiquidData currentState=chunkView.getLiquid(pos);
+  if (currentState.getDepth() == MAX_LIQUID_DEPTH) {
+    return currentState;
+  }
+  LiquidData aboveState=chunkView.getLiquid(pos.x,pos.y + 1,pos.z);
+  if (aboveState.getDepth() > 0) {
+    return new LiquidData(aboveState.getType(),MAX_LIQUID_DEPTH - 1);
+  }
+  LiquidData h1=new LiquidData();
+  LiquidData h2=new LiquidData();
+  for (  Side side : Side.horizontalSides()) {
+    Vector3i adjPos=new Vector3i(side.getVector3i());
+    adjPos.add(pos);
+    Block supportingBlock=chunkView.getBlock(adjPos.x,adjPos.y - 1,adjPos.z);
+    if (!supportingBlock.isPenetrable()) {
+      LiquidData state=getOutgoingLiquid(adjPos,chunkView);
+      if (state.getType() != currentState.getType() || state.getDepth() >= currentState.getDepth()) {
+        if (state.getDepth() > h1.getDepth()) {
+          h2=h1;
+          h1=state;
+        }
+ else         if (state.getDepth() > h2.getDepth()) {
+          h2=state;
+        }
+      }
+    }
+  }
+  if (h1.getDepth() > 0) {
+    if (h1.getType() == h2.getType() || h2.getDepth() == 0) {
+      return new LiquidData(h1.getType(),h1.getDepth());
+    }
+ else {
+      byte finalDepth=(byte)(h1.getDepth() - h2.getDepth());
+      if (finalDepth > 0) {
+        return new LiquidData(h1.getType(),finalDepth);
+      }
+    }
+  }
+  return new LiquidData();
+}

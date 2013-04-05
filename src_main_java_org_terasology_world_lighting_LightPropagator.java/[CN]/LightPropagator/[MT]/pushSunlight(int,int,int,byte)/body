@@ -2,12 +2,12 @@
   Collection<Vector3i> currentWave=Lists.newArrayList();
   Collection<Vector3i> nextWave=Lists.newArrayList();
   nextWave.add(new Vector3i(x,y,z));
-  if (lightLevel == Chunk.MAX_LIGHT && worldView.getSunlight(x,y - 1,z) < Chunk.MAX_LIGHT) {
+  if (lightLevel == Chunk.MAX_LIGHT && chunkView.getSunlight(x,y - 1,z) < Chunk.MAX_LIGHT) {
     Block lastBlock=BlockManager.getAir();
     for (int columnY=y - 1; columnY >= 0; columnY--) {
-      Block block=worldView.getBlock(x,columnY,z);
+      Block block=chunkView.getBlock(x,columnY,z);
       if (LightingUtil.canSpreadLightOutOf(lastBlock,Side.BOTTOM) && LightingUtil.canSpreadLightInto(block,Side.TOP) && LightingUtil.doesSunlightRetainsFullStrengthIn(block)) {
-        worldView.setSunlight(x,columnY,z,lightLevel);
+        chunkView.setSunlight(x,columnY,z,lightLevel);
         lastBlock=block;
         nextWave.add(new Vector3i(x,columnY,z));
       }
@@ -26,12 +26,12 @@
       for (      Vector3i pos : currentWave) {
         if (pos.y < Chunk.SIZE_Y - 2) {
           Vector3i adjPos=new Vector3i(pos.x,pos.y + 1,pos.z);
-          Block block=worldView.getBlock(pos);
-          Block adjBlock=worldView.getBlock(adjPos);
+          Block block=chunkView.getBlock(pos);
+          Block adjBlock=chunkView.getBlock(adjPos);
           if (LightingUtil.canSpreadLightOutOf(block,Side.TOP) && LightingUtil.canSpreadLightInto(adjBlock,Side.BOTTOM)) {
-            byte adjLight=worldView.getSunlight(adjPos);
+            byte adjLight=chunkView.getSunlight(adjPos);
             if (adjLight < lightLevel - 1) {
-              worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
+              chunkView.setSunlight(adjPos,(byte)(lightLevel - 1));
               nextWave.add(adjPos);
               affectedRegion=affectedRegion.expandToContain(adjPos);
             }
@@ -42,12 +42,12 @@
     for (    Vector3i pos : currentWave) {
       if (pos.y > 0) {
         Vector3i adjPos=new Vector3i(pos.x,pos.y - 1,pos.z);
-        Block block=worldView.getBlock(pos);
-        Block adjBlock=worldView.getBlock(adjPos);
+        Block block=chunkView.getBlock(pos);
+        Block adjBlock=chunkView.getBlock(adjPos);
         if (LightingUtil.canSpreadLightOutOf(block,Side.BOTTOM) && LightingUtil.canSpreadLightInto(adjBlock,Side.TOP)) {
-          byte adjLight=worldView.getSunlight(adjPos);
+          byte adjLight=chunkView.getSunlight(adjPos);
           if (adjLight < lightLevel - 1) {
-            worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
+            chunkView.setSunlight(adjPos,(byte)(lightLevel - 1));
             nextWave.add(adjPos);
             affectedRegion=affectedRegion.expandToContain(adjPos);
           }
@@ -59,19 +59,19 @@
         Vector3i adjPos=new Vector3i(pos);
         adjPos.add(side.getVector3i());
         try {
-          Block block=worldView.getBlock(pos);
-          Block adjBlock=worldView.getBlock(adjPos);
+          Block block=chunkView.getBlock(pos);
+          Block adjBlock=chunkView.getBlock(adjPos);
           if (LightingUtil.canSpreadLightOutOf(block,side) && LightingUtil.canSpreadLightInto(adjBlock,side.reverse())) {
-            byte adjLight=worldView.getSunlight(adjPos);
+            byte adjLight=chunkView.getSunlight(adjPos);
             if (adjLight < lightLevel - 1) {
-              worldView.setSunlight(adjPos,(byte)(lightLevel - 1));
+              chunkView.setSunlight(adjPos,(byte)(lightLevel - 1));
               nextWave.add(adjPos);
               affectedRegion=affectedRegion.expandToContain(adjPos);
             }
           }
         }
  catch (        ArrayIndexOutOfBoundsException e) {
-          logger.error("Pushing Light {} {} {} failed",new Vector3i(x,y,z),lightLevel,worldView.getChunkRegion(),e);
+          logger.error("Pushing Light {} {} {} failed",new Vector3i(x,y,z),lightLevel,chunkView.getChunkRegion(),e);
         }
       }
     }

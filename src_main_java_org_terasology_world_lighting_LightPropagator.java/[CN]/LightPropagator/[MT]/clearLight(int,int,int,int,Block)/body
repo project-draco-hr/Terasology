@@ -3,20 +3,20 @@
   List<Vector3i> lightSources=Lists.newArrayList();
   Region3i region=Region3i.createFromCenterExtents(new Vector3i(x,y,z),checkExtent);
   for (  Vector3i pos : Diamond3iIterator.iterate(new Vector3i(x,y,z),checkExtent + 1)) {
-    byte lum=worldView.getBlock(pos).getLuminance();
-    worldView.setLight(pos,lum);
+    byte lum=chunkView.getBlock(pos).getLuminance();
+    chunkView.setLight(pos,lum);
     if (lum > 1) {
       lightSources.add(pos);
     }
   }
   for (  Vector3i pos : lightSources) {
-    byte lightLevel=worldView.getLight(pos);
+    byte lightLevel=chunkView.getLight(pos);
     if (lightLevel > 1) {
       region=Region3i.createEncompassing(region,pushLight(pos.x,pos.y,pos.z,lightLevel));
     }
   }
   for (  Vector3i pos : Diamond3iIterator.iterateAtDistance(new Vector3i(x,y,z),checkExtent + 1)) {
-    byte lightLevel=worldView.getLight(pos);
+    byte lightLevel=chunkView.getLight(pos);
     lightLevel=pullLight(pos.x,pos.y,pos.z,lightLevel,type);
     if (lightLevel > 1) {
       pushLight(pos.x,pos.y,pos.z,lightLevel);

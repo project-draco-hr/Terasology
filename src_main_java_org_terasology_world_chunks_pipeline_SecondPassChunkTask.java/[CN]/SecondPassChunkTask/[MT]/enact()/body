@@ -1,5 +1,5 @@
 {
-  WorldView view=WorldView.createLocalView(getPosition(),getProvider());
+  ChunkView view=getProvider().getViewAround(getPosition());
   if (view == null) {
     return;
   }
@@ -8,7 +8,7 @@
     if (!view.isValidView()) {
       return;
     }
-    Chunk chunk=getProvider().getChunk(getPosition());
+    Chunk chunk=getProvider().getChunkForProcessing(getPosition());
     if (chunk.getChunkState() != Chunk.State.ADJACENCY_GENERATION_PENDING) {
       return;
     }

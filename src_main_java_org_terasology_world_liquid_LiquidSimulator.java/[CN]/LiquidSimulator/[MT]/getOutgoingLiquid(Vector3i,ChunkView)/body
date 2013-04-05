@@ -1,0 +1,19 @@
+{
+  LiquidData currentState=chunkView.getLiquid(pos);
+  if (currentState.getDepth() == 0) {
+    return new LiquidData();
+  }
+  int availableSpaces=0;
+  for (  Side side : Side.horizontalSides()) {
+    Vector3i adjPos=new Vector3i(pos);
+    adjPos.add(side.getVector3i());
+    Block block=chunkView.getBlock(pos);
+    if (block.isPenetrable()) {
+      LiquidData adjState=chunkView.getLiquid(adjPos);
+      if (adjState.getDepth() < currentState.getDepth()) {
+        availableSpaces++;
+      }
+    }
+  }
+  return new LiquidData(currentState.getType(),OUTGOING_FLOW[availableSpaces][currentState.getDepth()]);
+}

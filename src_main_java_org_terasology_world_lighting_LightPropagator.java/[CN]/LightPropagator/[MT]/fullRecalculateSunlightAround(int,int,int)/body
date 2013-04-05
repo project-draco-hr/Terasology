@@ -5,13 +5,13 @@
   for (int x=0; x < region.size().x; x++) {
     for (int z=0; z < region.size().z; z++) {
       int y=top;
-      byte aboveLight=worldView.getSunlight(x + region.min().x,y + 1,z + region.min().z);
+      byte aboveLight=chunkView.getSunlight(x + region.min().x,y + 1,z + region.min().z);
       Block lastBlock=BlockManager.getAir();
       if (aboveLight == Chunk.MAX_LIGHT) {
         for (; y >= 0; y--) {
-          Block block=worldView.getBlock(x + region.min().x,y,z + region.min().z);
+          Block block=chunkView.getBlock(x + region.min().x,y,z + region.min().z);
           if (LightingUtil.canSpreadLightOutOf(lastBlock,Side.BOTTOM) && LightingUtil.canSpreadLightInto(block,Side.TOP) && LightingUtil.doesSunlightRetainsFullStrengthIn(block)) {
-            worldView.setSunlight(x + region.min().x,y,z + region.min().z,Chunk.MAX_LIGHT);
+            chunkView.setSunlight(x + region.min().x,y,z + region.min().z,Chunk.MAX_LIGHT);
             lastBlock=block;
           }
  else {
@@ -21,7 +21,7 @@
       }
       tops[x + region.size().x * z]=(short)y;
       for (; y >= 0; y--) {
-        worldView.setSunlight(x + region.min().x,y,z + region.min().z,(byte)0);
+        chunkView.setSunlight(x + region.min().x,y,z + region.min().z,(byte)0);
       }
     }
   }

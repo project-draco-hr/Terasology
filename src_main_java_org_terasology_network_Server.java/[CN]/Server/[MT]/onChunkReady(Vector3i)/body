@@ -1,0 +1,10 @@
+{
+  List<NetData.BlockChangeMessage> updateMessages=awaitingChunkReadyUpdates.removeAll(chunkPos);
+  for (  NetData.BlockChangeMessage message : updateMessages) {
+    BlockManager blockManager=CoreRegistry.get(BlockManager.class);
+    WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
+    Vector3i pos=NetworkUtil.convert(message.getPos());
+    Block newBlock=blockManager.getBlock((byte)message.getNewBlock());
+    worldProvider.setBlockForced(pos,newBlock);
+  }
+}

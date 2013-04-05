@@ -3,7 +3,7 @@
   if (chunk != null && chunk.getChunkState() == Chunk.State.FULL_LIGHT_CONNECTIVITY_PENDING) {
     for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,ChunkConstants.LOCAL_REGION_EXTENTS)) {
       if (!adjPos.equals(pos)) {
-        Chunk adjChunk=provider.getChunk(adjPos);
+        Chunk adjChunk=provider.getChunkForProcessing(adjPos);
         if (adjChunk == null || adjChunk.getChunkState().compareTo(Chunk.State.FULL_LIGHT_CONNECTIVITY_PENDING) < 0) {
           return;
         }
@@ -15,9 +15,12 @@
     if (config.isChunkDeflationEnabled()) {
       pipeline.doTask(new DeflateChunkTask(pipeline,pos,provider));
     }
+    if (provider.isChunkReady(pos)) {
+      provider.onChunkIsReady(pos);
+    }
     for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,ChunkConstants.LOCAL_REGION_EXTENTS)) {
       if (provider.isChunkReady(adjPos)) {
-        provider.chunkIsReady(pos);
+        provider.onChunkIsReady(adjPos);
       }
     }
   }

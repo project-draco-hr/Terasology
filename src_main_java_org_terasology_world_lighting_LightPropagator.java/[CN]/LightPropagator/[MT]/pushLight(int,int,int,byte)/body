@@ -15,12 +15,12 @@
         if (adjPos.y < 0 || adjPos.y >= Chunk.SIZE_Y) {
           continue;
         }
-        Block block=worldView.getBlock(pos);
-        Block adjBlock=worldView.getBlock(adjPos);
+        Block block=chunkView.getBlock(pos);
+        Block adjBlock=chunkView.getBlock(adjPos);
         if (LightingUtil.canSpreadLightOutOf(block,side) && LightingUtil.canSpreadLightInto(adjBlock,side.reverse())) {
-          byte adjLight=worldView.getLight(adjPos);
+          byte adjLight=chunkView.getLight(adjPos);
           if (adjLight < lightLevel - 1) {
-            worldView.setLight(adjPos,(byte)(lightLevel - 1));
+            chunkView.setLight(adjPos,(byte)(lightLevel - 1));
             nextWave.add(adjPos);
             affectedRegion=affectedRegion.expandToContain(adjPos);
           }

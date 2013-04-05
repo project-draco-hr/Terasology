@@ -6,14 +6,14 @@
   try {
     ChunkRelevanceRegion region=regions.get(entity);
     if (region != null) {
-      region.setDistance(distance);
+      region.setDistance(distance + ChunkConstants.FULL_GENERATION_DISTANCE);
       return;
     }
   }
   finally {
     regionLock.readLock().unlock();
   }
-  ChunkRelevanceRegion region=new ChunkRelevanceRegion(entity,distance);
+  ChunkRelevanceRegion region=new ChunkRelevanceRegion(entity,distance + ChunkConstants.FULL_GENERATION_DISTANCE);
   if (listener != null) {
     region.setListener(listener);
   }
@@ -26,7 +26,7 @@
   }
   for (  Vector3i pos : region.getRegion()) {
     Chunk chunk=getChunk(pos);
-    if (isChunkReady(pos)) {
+    if (chunk != null) {
       region.chunkReady(chunk);
     }
   }

@@ -1,9 +1,9 @@
 {
   for (  Vector3i pos : Diamond3iIterator.iterate(new Vector3i(x,y,z),oldLightLevel)) {
-    worldView.setSunlight(pos,(byte)0);
+    chunkView.setSunlight(pos,(byte)0);
   }
   for (  Vector3i pos : Diamond3iIterator.iterateAtDistance(new Vector3i(x,y,z),oldLightLevel + 1)) {
-    byte lightLevel=worldView.getSunlight(pos);
+    byte lightLevel=chunkView.getSunlight(pos);
     if (lightLevel > 1) {
       pushSunlight(pos.x,pos.y,pos.z,lightLevel);
     }

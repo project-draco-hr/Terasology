@@ -1,5 +1,5 @@
 {
-  byte currentLight=worldView.getLight(x,y,z);
+  byte currentLight=chunkView.getLight(x,y,z);
   byte lum=type.getLuminance();
   PropagationComparison changeType=LightingUtil.compareLightingPropagation(type,oldType);
   if (changeType == PropagationComparison.MORE_RESTRICTED || (lum < oldType.getLuminance() && currentLight == oldType.getLuminance())) {
@@ -7,11 +7,11 @@
   }
  else   if (changeType == PropagationComparison.MORE_PERMISSIVE) {
     byte newLight=pullLight(x,y,z,lum,type);
-    worldView.setLight(x,y,z,newLight);
+    chunkView.setLight(x,y,z,newLight);
     return pushLight(x,y,z,newLight);
   }
  else   if (lum > currentLight) {
-    worldView.setLight(x,y,z,lum);
+    chunkView.setLight(x,y,z,lum);
     return pushLight(x,y,z,lum);
   }
   return Region3i.EMPTY;

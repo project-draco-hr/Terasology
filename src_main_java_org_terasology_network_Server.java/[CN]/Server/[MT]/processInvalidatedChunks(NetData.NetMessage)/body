@@ -1,5 +1,7 @@
 {
   for (  NetData.InvalidateChunkMessage chunk : message.getInvalidateChunkList()) {
-    remoteWorldProvider.invalidateChunks(NetworkUtil.convert(chunk.getPos()));
+    Vector3i chunkPos=NetworkUtil.convert(chunk.getPos());
+    remoteWorldProvider.invalidateChunks(chunkPos);
+    awaitingChunkReadyUpdates.removeAll(chunkPos);
   }
 }

@@ -3,7 +3,7 @@
   if (chunk != null && chunk.getChunkState() == Chunk.State.LIGHT_PROPAGATION_PENDING) {
     for (    Vector3i adjPos : Region3i.createFromCenterExtents(pos,ChunkConstants.LOCAL_REGION_EXTENTS)) {
       if (!adjPos.equals(pos)) {
-        Chunk adjChunk=provider.getChunk(adjPos);
+        Chunk adjChunk=provider.getChunkForProcessing(adjPos);
         if (adjChunk == null || adjChunk.getChunkState().compareTo(Chunk.State.LIGHT_PROPAGATION_PENDING) < 0) {
           return;
         }
