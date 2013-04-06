@@ -2,7 +2,7 @@
   CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
   CharacterStateEvent result=new CharacterStateEvent(initial);
   result.setSequenceNumber(input.getSequenceNumber());
-  updatePosition(characterMovementComponent,result,input);
+  updatePosition(characterMovementComponent,result,input,entity);
   result.setTime(initial.getTime() + input.getDeltaMs());
   if (result.getMode() != MovementMode.GHOSTING) {
     checkSwimming(characterMovementComponent,result);
@@ -10,5 +10,6 @@
   updateRotation(characterMovementComponent,result,input);
   result.setPitch(input.getPitch());
   result.setYaw(input.getYaw());
+  input.runComplete();
   return result;
 }
