@@ -1,17 +1,17 @@
 {
   setId("hud");
   maximize();
-  _hearts=new UIImage[10];
+  hearts=new UIImage[10];
   for (int i=0; i < 10; i++) {
-    _hearts[i]=new UIImage(Assets.getTexture("engine:icons"));
-    _hearts[i].setVisible(true);
-    _hearts[i].setTextureSize(new Vector2f(9f,9f));
-    _hearts[i].setTextureOrigin(new Vector2f(52f,0.0f));
-    _hearts[i].setSize(new Vector2f(18f,18f));
-    _hearts[i].setVerticalAlign(EVerticalAlign.BOTTOM);
-    _hearts[i].setHorizontalAlign(EHorizontalAlign.CENTER);
-    _hearts[i].setPosition(new Vector2f(18f * i - 212f,-52f));
-    addDisplayElement(_hearts[i]);
+    hearts[i]=new UIImage(Assets.getTexture("engine:icons"));
+    hearts[i].setVisible(true);
+    hearts[i].setTextureSize(new Vector2f(9f,9f));
+    hearts[i].setTextureOrigin(new Vector2f(52f,0.0f));
+    hearts[i].setSize(new Vector2f(18f,18f));
+    hearts[i].setVerticalAlign(EVerticalAlign.BOTTOM);
+    hearts[i].setHorizontalAlign(EHorizontalAlign.CENTER);
+    hearts[i].setPosition(new Vector2f(18f * i - 212f,-52f));
+    addDisplayElement(hearts[i]);
   }
   crosshair=new UIImage(Assets.getTexture("engine:gui"));
   crosshair.setId("crosshair");
@@ -65,7 +65,7 @@
   addDisplayElement(debugLine3);
   addDisplayElement(debugLine4);
   addDisplayElement(toolbar);
-  CoreRegistry.get(EventSystem.class).registerEventHandler(this);
+  localPlayer=CoreRegistry.get(LocalPlayer.class);
   update();
   layout();
 }
