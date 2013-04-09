@@ -9,8 +9,8 @@
     Collections.sort(selectedHandlers,priorityComparator);
     for (    EventHandlerInfo handler : selectedHandlers) {
       if (handler.isValidFor(entity)) {
-        handler.invoke(entity,event);
         if (event.isCancelled())         return;
+        handler.invoke(entity,event);
       }
     }
   }

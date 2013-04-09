@@ -11,6 +11,7 @@ case OWNER:
 break;
 case SERVER:
 sendEventToServer(entity,event);
+if (!metadata.isRunLocally() && networkSystem.getMode() == NetworkMode.CLIENT) event.cancel();
 break;
 }
 }
