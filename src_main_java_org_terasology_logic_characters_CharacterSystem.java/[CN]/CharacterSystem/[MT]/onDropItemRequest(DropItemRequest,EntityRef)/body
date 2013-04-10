@@ -27,5 +27,7 @@
   InventoryManager inventoryManager=CoreRegistry.get(InventoryManager.class);
   int newStackSize=inventoryManager.getStackSize(selectedItemEntity) - 1;
   inventoryManager.setStackSize(selectedItemEntity,newStackSize);
-  if (newStackSize <= 0)   inventoryManager.destroyItem(event.getInventoryEntity(),selectedItemEntity);
+  if (newStackSize <= 0) {
+    inventoryManager.destroyItem(event.getInventoryEntity(),selectedItemEntity);
+  }
 }
