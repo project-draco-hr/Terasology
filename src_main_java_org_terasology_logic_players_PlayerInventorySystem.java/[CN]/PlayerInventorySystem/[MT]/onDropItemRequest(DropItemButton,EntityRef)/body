@@ -21,10 +21,6 @@
     Vector3f impulseVector=new Vector3f(playerCamera.getViewingDirection());
     impulseVector.scale(dropPower);
     entity.send(new DropItemRequest(selectedItemEntity,impulseVector,newPosition));
-    item.stackCount--;
-    if (item.stackCount <= 0) {
-      selectedItemEntity.destroy();
-    }
     localPlayerComp.handAnimation=0.5f;
     resetDropMark();
   }

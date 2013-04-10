@@ -5,10 +5,10 @@
   EntityRef selectedItemEntity=event.getItem();
   Vector3f impulse=event.getImpulse();
   Vector3f newPosition=event.getNewPosition();
+  ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
   if (!selectedItemEntity.hasComponent(BlockItemComponent.class)) {
     DroppedItemFactory droppedItemFactory=new DroppedItemFactory(entityManager);
-    ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
     EntityRef droppedItem=droppedItemFactory.newInstance(new Vector3f(newPosition),item.icon,200,selectedItemEntity);
     if (!droppedItem.equals(EntityRef.NULL)) {
       droppedItem.send(new ImpulseEvent(new Vector3f(impulse)));
@@ -21,5 +21,10 @@
     if (!droppedBlock.equals(EntityRef.NULL)) {
       droppedBlock.send(new ImpulseEvent(new Vector3f(impulse)));
     }
+  }
+  item.stackCount--;
+  event.getItem().saveComponent(item);
+  if (item.stackCount <= 0) {
+    event.getItem().destroy();
   }
 }
