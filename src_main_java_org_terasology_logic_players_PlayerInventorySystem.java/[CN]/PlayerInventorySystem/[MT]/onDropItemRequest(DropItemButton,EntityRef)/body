@@ -20,7 +20,7 @@
     Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 1.5f,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 1.5f,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 1.5f);
     Vector3f impulseVector=new Vector3f(playerCamera.getViewingDirection());
     impulseVector.scale(dropPower);
-    entity.send(new DropItemRequest(selectedItemEntity,impulseVector,newPosition));
+    entity.send(new DropItemRequest(selectedItemEntity,entity,impulseVector,newPosition));
     localPlayerComp.handAnimation=0.5f;
     resetDropMark();
   }
