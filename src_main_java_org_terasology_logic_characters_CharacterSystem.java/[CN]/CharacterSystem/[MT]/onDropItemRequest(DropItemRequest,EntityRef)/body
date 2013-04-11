@@ -1,0 +1,30 @@
+{
+  if (!event.getItem().exists() || !networkSystem.getOwnerEntity(event.getItem()).equals(networkSystem.getOwnerEntity(character))) {
+    return;
+  }
+  EntityRef selectedItemEntity=event.getItem();
+  Vector3f impulse=event.getImpulse();
+  Vector3f newPosition=event.getNewPosition();
+  ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
+  if (networkSystem.getMode().isAuthority()) {
+    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+    if (!selectedItemEntity.hasComponent(BlockItemComponent.class)) {
+      DroppedItemFactory droppedItemFactory=new DroppedItemFactory(entityManager);
+      EntityRef droppedItem=droppedItemFactory.newInstance(new Vector3f(newPosition),item.icon,200,selectedItemEntity);
+      if (!droppedItem.equals(EntityRef.NULL)) {
+        droppedItem.send(new ImpulseEvent(new Vector3f(impulse)));
+      }
+    }
+ else {
+      DroppedBlockFactory droppedBlockFactory=new DroppedBlockFactory(entityManager);
+      BlockItemComponent block=selectedItemEntity.getComponent(BlockItemComponent.class);
+      EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(newPosition),block.blockFamily,20);
+      if (!droppedBlock.equals(EntityRef.NULL)) {
+        droppedBlock.send(new ImpulseEvent(new Vector3f(impulse)));
+      }
+    }
+  }
+  InventoryManager inventoryManager=CoreRegistry.get(InventoryManager.class);
+  int newStackSize=inventoryManager.getStackSize(selectedItemEntity) - 1;
+  inventoryManager.setStackSize(selectedItemEntity,event.getInventoryEntity(),newStackSize);
+}
