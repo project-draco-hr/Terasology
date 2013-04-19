@@ -1,0 +1,12 @@
+{
+  if (!networkSystem.getMode().isAuthority()) {
+    predictedStackCounts.put(item,newStackSize);
+  }
+ else {
+    component.stackCount=(byte)newStackSize;
+    item.saveComponent(component);
+  }
+  if (newStackSize <= 0 && inventoryEntity != EntityRef.NULL) {
+    destroyItem(inventoryEntity,item);
+  }
+}
