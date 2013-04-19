@@ -3,8 +3,11 @@
     return;
   }
   MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-  if (meshComp.hideFromOwner && entity.hasComponent(LocalPlayerComponent.class)) {
-    return;
+  if (meshComp.hideFromOwner) {
+    ClientComponent owner=network.getOwnerEntity(entity).getComponent(ClientComponent.class);
+    if (owner != null && owner.local) {
+      return;
+    }
   }
   if (meshComp.renderType == MeshComponent.RenderType.GelatinousCube) {
     gelatinous.add(entity);

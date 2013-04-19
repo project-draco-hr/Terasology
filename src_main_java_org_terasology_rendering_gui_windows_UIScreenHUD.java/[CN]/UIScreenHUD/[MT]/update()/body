@@ -1,7 +1,18 @@
 {
   super.update();
   updateHealthBar(localPlayer.getCharacterEntity().getComponent(HealthComponent.class));
-  toolbar.setSelected(localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool);
+  CharacterComponent character=localPlayer.getCharacterEntity().getComponent(CharacterComponent.class);
+  if (character == null) {
+    toolbar.setVisible(false);
+    leftGearWheel.setVisible(false);
+    rightGearWheel.setVisible(false);
+  }
+ else {
+    toolbar.setVisible(true);
+    toolbar.setSelected(character.selectedTool);
+    leftGearWheel.setVisible(true);
+    rightGearWheel.setVisible(true);
+  }
   boolean enableDebug=config.getSystem().isDebugEnabled();
   debugLine1.setVisible(enableDebug);
   debugLine2.setVisible(enableDebug);
@@ -15,7 +26,7 @@
     if (entityManager != null) {
       debugLine2.setText(String.format("Active Entities: %s, Current Target: %s",entityManager.getActiveEntities(),cameraTarget.toString()));
     }
-    debugLine3.setText(String.format("%s, %.2f",CoreRegistry.get(LocalPlayer.class).getPosition(),CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(CharacterComponent.class).yaw));
+    debugLine3.setText(String.format("%s, %.2f",CoreRegistry.get(LocalPlayer.class).getPosition(),(character != null) ? character.yaw : 0));
     debugLine4.setText(String.format("total vus: %s | active threads: %s",ChunkTessellator.getVertexArrayUpdateCount(),CoreRegistry.get(GameEngine.class).getActiveTaskCount()));
   }
 }

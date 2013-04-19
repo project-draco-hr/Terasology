@@ -1,9 +1,9 @@
 {
-  LocalPlayerComponent localPlayerComp=localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class);
-  localPlayerComp.selectedTool=(localPlayerComp.selectedTool - 1) % 10;
-  if (localPlayerComp.selectedTool < 0) {
-    localPlayerComp.selectedTool=10 + localPlayerComp.selectedTool;
+  CharacterComponent character=localPlayer.getCharacterEntity().getComponent(CharacterComponent.class);
+  character.selectedTool=(character.selectedTool - 1) % 10;
+  if (character.selectedTool < 0) {
+    character.selectedTool=10 + character.selectedTool;
   }
-  localPlayer.getCharacterEntity().saveComponent(localPlayerComp);
+  localPlayer.getCharacterEntity().saveComponent(character);
   event.consume();
 }

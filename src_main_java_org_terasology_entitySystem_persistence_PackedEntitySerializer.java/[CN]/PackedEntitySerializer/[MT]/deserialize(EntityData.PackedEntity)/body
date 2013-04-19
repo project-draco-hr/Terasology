@@ -1,11 +1,11 @@
 {
-  EntityRef target;
+  EntityBuilder target;
   if (entityData.hasParentPrefabUri()) {
-    target=entityManager.create(entityData.getParentPrefabUri());
+    target=entityManager.newBuilder(entityData.getParentPrefabUri());
   }
  else {
-    target=entityManager.create();
+    target=entityManager.newBuilder();
   }
   deserializeOnto(target,entityData);
-  return target;
+  return target.build();
 }

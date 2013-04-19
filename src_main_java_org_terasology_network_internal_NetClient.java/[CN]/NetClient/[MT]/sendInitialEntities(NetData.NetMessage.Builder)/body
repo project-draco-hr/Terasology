@@ -1,7 +1,9 @@
 {
   TIntIterator initialIterator=netInitial.iterator();
-  while (initialIterator.hasNext()) {
-    int netId=initialIterator.next();
+  int[] initial=netInitial.toArray();
+  netInitial.clear();
+  Arrays.sort(initial);
+  for (  int netId : initial) {
     netRelevant.add(netId);
     EntityRef entity=networkSystem.getEntity(netId);
     if (!entity.hasComponent(NetworkComponent.class)) {
@@ -17,5 +19,4 @@
     }
     message.addCreateEntity(createMessage);
   }
-  netInitial.clear();
 }

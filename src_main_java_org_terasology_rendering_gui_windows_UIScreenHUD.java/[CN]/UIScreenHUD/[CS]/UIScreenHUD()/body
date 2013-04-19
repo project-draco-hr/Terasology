@@ -38,7 +38,10 @@
   toolbar.setCellMargin(new Vector2f(0f,0f));
   toolbar.setBorderImage("engine:inventory",new Vector2f(0f,84f),new Vector2f(169f,83f),new Vector4f(4f,4f,4f,4f));
   toolbar.linkToEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity(),0,10);
-  toolbar.setSelected(CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool);
+  CharacterComponent character=CoreRegistry.get(LocalPlayer.class).getCharacterEntity().getComponent(CharacterComponent.class);
+  if (character != null) {
+    toolbar.setSelected(character.selectedTool);
+  }
   leftGearWheel=new UIImage(Assets.getTexture("engine:inventory"));
   leftGearWheel.setSize(new Vector2f(36f,36f));
   leftGearWheel.setTextureOrigin(new Vector2f(121.0f,168.0f));

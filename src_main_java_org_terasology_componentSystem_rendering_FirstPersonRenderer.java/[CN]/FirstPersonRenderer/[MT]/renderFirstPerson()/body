@@ -1,9 +1,13 @@
 {
+  CharacterComponent character=localPlayer.getCharacterEntity().getComponent(CharacterComponent.class);
+  if (character == null) {
+    return;
+  }
   CharacterMovementComponent charMoveComp=localPlayer.getCharacterEntity().getComponent(CharacterMovementComponent.class);
   float bobOffset=calcBobbingOffset(charMoveComp.footstepDelta / charMoveComp.distanceBetweenFootsteps,(float)java.lang.Math.PI / 8f,0.05f,1f);
-  float handMovementAnimationOffset=localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class).handAnimation;
+  float handMovementAnimationOffset=character.handAnimation;
   UIInventoryGrid toolbar=(UIInventoryGrid)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("toolbar");
-  int invSlotIndex=localPlayer.getCharacterEntity().getComponent(LocalPlayerComponent.class).selectedTool + toolbar.getStartSlot();
+  int invSlotIndex=character.selectedTool + toolbar.getStartSlot();
   EntityRef heldItem=inventoryManager.getItemInSlot(localPlayer.getCharacterEntity(),invSlotIndex);
   ItemComponent heldItemComp=heldItem.getComponent(ItemComponent.class);
   BlockItemComponent blockItem=heldItem.getComponent(BlockItemComponent.class);

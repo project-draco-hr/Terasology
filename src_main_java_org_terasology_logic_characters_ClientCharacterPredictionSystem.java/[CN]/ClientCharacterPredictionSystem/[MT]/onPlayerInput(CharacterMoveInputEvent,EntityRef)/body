@@ -1,4 +1,9 @@
 {
+  if (predictedState == null) {
+    predictedState=createInitialState(entity);
+    authoritiveState=predictedState;
+    playerStates.remove(entity);
+  }
   inputs.add(input);
   CharacterStateEvent newState=stepState(input,predictedState,entity);
   predictedState=newState;

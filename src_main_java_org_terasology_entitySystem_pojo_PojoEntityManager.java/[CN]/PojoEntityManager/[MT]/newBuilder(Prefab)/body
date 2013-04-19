@@ -1,0 +1,8 @@
+{
+  EntityBuilder builder=new EntityBuilder(this);
+  for (  Component component : prefab.iterateComponents()) {
+    builder.addComponent(componentLibrary.copy(component));
+  }
+  builder.addComponent(new EntityInfoComponent(prefab.getName(),prefab.isPersisted()));
+  return builder;
+}

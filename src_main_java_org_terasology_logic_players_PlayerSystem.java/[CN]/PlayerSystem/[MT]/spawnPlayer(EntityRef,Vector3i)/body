@@ -5,7 +5,7 @@
   ClientComponent client=clientEntity.getComponent(ClientComponent.class);
   if (client != null) {
     PlayerFactory playerFactory=new PlayerFactory(entityManager,inventoryManager);
-    EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z));
+    EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z),clientEntity);
     NetworkComponent netComp=playerCharacter.getComponent(NetworkComponent.class);
     if (netComp != null) {
       netComp.owner=clientEntity;
