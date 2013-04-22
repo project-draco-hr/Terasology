@@ -3,4 +3,7 @@
     int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
     chunks[chunkIndex].setLight(TeraMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize),light);
   }
+ else {
+    throw new IllegalStateException("Attempted to modify light though an unlocked view");
+  }
 }

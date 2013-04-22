@@ -1,0 +1,17 @@
+{
+  LocationComponent childLoc=child.getComponent(LocationComponent.class);
+  LocationComponent parentLoc=parent.getComponent(LocationComponent.class);
+  if (childLoc != null && parentLoc != null && !childLoc.getParent().equals(parent)) {
+    Vector3f oldWorldPos=childLoc.getWorldPosition();
+    LocationComponent oldParentLoc=childLoc.getParent().getComponent(LocationComponent.class);
+    if (oldParentLoc != null) {
+      oldParentLoc.children.remove(child);
+      childLoc.getParent().saveComponent(oldParentLoc);
+    }
+    childLoc.parent=parent;
+    childLoc.setWorldPosition(oldWorldPos);
+    parentLoc.children.add(child);
+    child.saveComponent(childLoc);
+    parent.saveComponent(parentLoc);
+  }
+}

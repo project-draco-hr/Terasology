@@ -3,4 +3,7 @@
     int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
     chunks[chunkIndex].setBlock(TeraMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize),type);
   }
+ else {
+    throw new IllegalStateException("Attempted to modify block though an unlocked view");
+  }
 }

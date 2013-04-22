@@ -11,9 +11,7 @@
       loc.setLocalRotation(bone.getLocalRotation());
       EntityRef boneEntity=entityManager.create(loc);
       EntityRef parent=(bone.getParent() != null) ? skeleton.boneEntities.get(bone.getParent().getName()) : entity;
-      LocationComponent parentLoc=parent.getComponent(LocationComponent.class);
-      parentLoc.addChild(boneEntity,parent);
-      parent.saveComponent(parentLoc);
+      Location.attachChild(parent,boneEntity);
       if (bone.getParent() == null) {
         skeleton.rootBone=boneEntity;
       }

@@ -1,0 +1,18 @@
+{
+  LocationComponent parentLoc=entity.getComponent(LocationComponent.class);
+  if (parentLoc == null)   if (parentLoc.parent != null) {
+    removeChild(parentLoc.parent,entity);
+  }
+  Iterator<EntityRef> childIterator=parentLoc.getChildren().iterator();
+  while (childIterator.hasNext()) {
+    EntityRef child=childIterator.next();
+    LocationComponent childLoc=child.getComponent(LocationComponent.class);
+    if (childLoc != null) {
+      Vector3f oldWorldPos=childLoc.getWorldPosition();
+      childLoc.parent=EntityRef.NULL;
+      childLoc.setWorldPosition(oldWorldPos);
+      child.saveComponent(childLoc);
+    }
+    childIterator.remove();
+  }
+}

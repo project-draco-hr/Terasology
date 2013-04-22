@@ -3,4 +3,7 @@
     int chunkIndex=relChunkIndex(x,y,z);
     chunks[chunkIndex].setLiquid(TeraMath.calcBlockPos(x,y,z,chunkFilterSize),newState);
   }
+ else {
+    throw new IllegalStateException("Attempted to modify liquid data though an unlocked view");
+  }
 }
