@@ -1,18 +1,28 @@
 {
   if (mode == NetworkMode.NONE) {
-    mode=NetworkMode.SERVER;
-    for (    EntityRef entity : entityManager.iteratorEntities(NetworkComponent.class)) {
-      registerNetworkEntity(entity);
+    try {
+      for (      EntityRef entity : entityManager.iteratorEntities(NetworkComponent.class)) {
+        registerNetworkEntity(entity);
+      }
+      generateSerializationTables();
+      factory=new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),Executors.newCachedThreadPool());
+      ServerBootstrap bootstrap=new ServerBootstrap(factory);
+      bootstrap.setPipelineFactory(new TerasologyServerPipelineFactory(this));
+      bootstrap.setOption("child.tcpNoDelay",true);
+      bootstrap.setOption("child.keepAlive",true);
+      Channel listenChannel=bootstrap.bind(new InetSocketAddress(port));
+      allChannels.add(listenChannel);
+      logger.info("Started server");
+      nextNetworkTick=timer.getRawTimeInMs();
+      mode=NetworkMode.SERVER;
     }
-    generateSerializationTables();
-    factory=new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),Executors.newCachedThreadPool());
-    ServerBootstrap bootstrap=new ServerBootstrap(factory);
-    bootstrap.setPipelineFactory(new TerasologyServerPipelineFactory(this));
-    bootstrap.setOption("child.tcpNoDelay",true);
-    bootstrap.setOption("child.keepAlive",true);
-    Channel listenChannel=bootstrap.bind(new InetSocketAddress(port));
-    allChannels.add(listenChannel);
-    logger.info("Started server");
-    nextNetworkTick=timer.getRawTimeInMs();
+ catch (    ChannelException e) {
+      if (e.getCause() instanceof BindException) {
+        throw new HostingFailedException("Port already in use (are you already hosting a game?)");
+      }
+ else {
+        throw new HostingFailedException("Failed to host game");
+      }
+    }
   }
 }
