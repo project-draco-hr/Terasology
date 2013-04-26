@@ -8,7 +8,8 @@
   ItemComponent item=selectedItemEntity.getComponent(ItemComponent.class);
   if (networkSystem.getMode().isAuthority()) {
     EntityManager entityManager=CoreRegistry.get(EntityManager.class);
-    if (!selectedItemEntity.hasComponent(BlockItemComponent.class)) {
+    BlockItemComponent blockItem=selectedItemEntity.getComponent(BlockItemComponent.class);
+    if (blockItem == null) {
       DroppedItemFactory droppedItemFactory=new DroppedItemFactory(entityManager);
       EntityRef droppedItem=droppedItemFactory.newInstance(new Vector3f(newPosition),item.icon,200,selectedItemEntity);
       if (!droppedItem.equals(EntityRef.NULL)) {
@@ -17,10 +18,14 @@
     }
  else {
       DroppedBlockFactory droppedBlockFactory=new DroppedBlockFactory(entityManager);
-      BlockItemComponent block=selectedItemEntity.getComponent(BlockItemComponent.class);
-      EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(newPosition),block.blockFamily,20);
+      EntityRef droppedBlock=droppedBlockFactory.newInstance(new Vector3f(newPosition),blockItem.blockFamily,20,blockItem.placedEntity);
       if (!droppedBlock.equals(EntityRef.NULL)) {
         droppedBlock.send(new ImpulseEvent(new Vector3f(impulse)));
+        blockItem.placedEntity=EntityRef.NULL;
+        selectedItemEntity.saveComponent(blockItem);
+      }
+ else {
+        return;
       }
     }
   }

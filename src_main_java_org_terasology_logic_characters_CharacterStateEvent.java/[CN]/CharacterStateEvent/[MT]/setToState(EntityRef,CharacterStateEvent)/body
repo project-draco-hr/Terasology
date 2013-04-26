@@ -1,18 +1,18 @@
 {
   LocationComponent location=entity.getComponent(LocationComponent.class);
-  if (location == null) {
+  CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
+  CharacterComponent characterComponent=entity.getComponent(CharacterComponent.class);
+  if (location == null || movementComp == null || characterComponent == null) {
     return;
   }
   location.setWorldPosition(state.getPosition());
   location.setWorldRotation(state.getRotation());
   entity.saveComponent(location);
-  CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
   movementComp.mode=state.getMode();
   movementComp.setVelocity(state.getVelocity());
   movementComp.grounded=state.isGrounded();
   movementComp.footstepDelta=state.getFootstepDelta();
   entity.saveComponent(movementComp);
-  CharacterComponent characterComponent=entity.getComponent(CharacterComponent.class);
   characterComponent.pitch=state.pitch;
   characterComponent.yaw=state.yaw;
   entity.saveComponent(characterComponent);
