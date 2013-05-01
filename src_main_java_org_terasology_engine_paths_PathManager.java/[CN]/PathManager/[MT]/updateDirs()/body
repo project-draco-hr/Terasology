@@ -4,8 +4,16 @@
   worldPath.mkdirs();
   logPath=new File(homePath,LOG_DIR);
   logPath.mkdirs();
-  modPath=new File(homePath,MOD_DIR);
-  modPath.mkdirs();
+  homeModPath=new File(homePath,MOD_DIR);
+  homeModPath.mkdirs();
+  installModPath=new File(installPath,MOD_DIR);
+  installModPath.mkdirs();
+  if (homeModPath.equals(installModPath)) {
+    modPaths=ImmutableList.of(homeModPath);
+  }
+ else {
+    modPaths=ImmutableList.of(homeModPath,installModPath);
+  }
   screenshotPath=new File(homePath,SCREENSHOT_DIR);
   screenshotPath.mkdirs();
   nativesPath=new File(installPath,NATIVES_DIR);
