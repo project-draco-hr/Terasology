@@ -1,0 +1,28 @@
+{
+  logger.info("Received new identity request");
+  try {
+    byte[] preMasterSecret=config.getSecurity().getServerPrivateCertificate().decrypt(newIdentityRequest.getPreMasterSecret().toByteArray());
+    byte[] masterSecret=SecretGenerator.generate(preMasterSecret,SecretGenerator.MASTER_SECRET_LABEL,Bytes.concat(newIdentityRequest.getRandom().toByteArray(),serverRandom),SecretGenerator.MASTER_SECRET_LENGTH);
+    CertificatePair clientCertificates=new CertificateGenerator().generate(config.getSecurity().getServerPrivateCertificate());
+    NetData.CertificateSet certificateData=NetData.CertificateSet.newBuilder().setPublicCertificate(NetData.Certificate.newBuilder().setId(clientCertificates.getPublicCert().getId()).setModulus(ByteString.copyFrom(clientCertificates.getPublicCert().getModulus().toByteArray())).setExponent(ByteString.copyFrom(clientCertificates.getPublicCert().getExponent().toByteArray())).setSignature(ByteString.copyFrom(clientCertificates.getPublicCert().getSignature().toByteArray()))).setPrivateExponent(ByteString.copyFrom(clientCertificates.getPrivateCert().getExponent().toByteArray())).build();
+    byte[] encryptedCert=null;
+    try {
+      SecretKeySpec key=new SecretKeySpec(SecretGenerator.generate(masterSecret,SecretGenerator.KEY_EXPANSION,Bytes.concat(newIdentityRequest.getRandom().toByteArray(),serverRandom),IdentityConstants.SYMMETRIC_ENCRYPTION_KEY_LENGTH),IdentityConstants.SYMMETRIC_ENCRYPTION_ALGORITHM);
+      Cipher cipher=Cipher.getInstance(IdentityConstants.SYMMETRIC_ENCRYPTION_ALGORITHM);
+      cipher.init(Cipher.ENCRYPT_MODE,key);
+      encryptedCert=cipher.doFinal(certificateData.toByteArray());
+    }
+ catch (    NoSuchAlgorithmException|NoSuchPaddingException|InvalidKeyException|BadPaddingException|IllegalBlockSizeException e) {
+      logger.error("Unexpected error encrypting certificate for sending, ending connection attempt",e);
+      ctx.getChannel().close();
+      return;
+    }
+    ctx.getChannel().write(NetData.NetMessage.newBuilder().setProvisionIdentity(NetData.ProvisionIdentity.newBuilder().setEncryptedCertificates(ByteString.copyFrom(encryptedCert))).build());
+    ctx.getPipeline().remove(this);
+    serverHandler.channelAuthenticated(clientCertificates.getPublicCert(),ctx);
+  }
+ catch (  BadEncryptedDataException e) {
+    logger.error("Received invalid encrypted pre-master secret, ending connection attempt");
+    ctx.getChannel().close();
+  }
+}

@@ -1,0 +1,16 @@
+{
+  RSAPublicKeySpec keySpec=new RSAPublicKeySpec(modulus,exponent);
+  try {
+    KeyFactory keyFactory=KeyFactory.getInstance(IdentityConstants.CERTIFICATE_ALGORITHM);
+    PublicKey key=keyFactory.generatePublic(keySpec);
+    Cipher cipher=Cipher.getInstance(IdentityConstants.CERTIFICATE_ALGORITHM);
+    cipher.init(Cipher.ENCRYPT_MODE,key);
+    return cipher.doFinal(data);
+  }
+ catch (  NoSuchAlgorithmException|NoSuchPaddingException e) {
+    throw new RuntimeException("Insufficient support for '" + IdentityConstants.CERTIFICATE_ALGORITHM + "', required for identity management",e);
+  }
+catch (  InvalidKeySpecException|InvalidKeyException|BadPaddingException|IllegalBlockSizeException e) {
+    throw new RuntimeException("Unexpected error during encryption",e);
+  }
+}

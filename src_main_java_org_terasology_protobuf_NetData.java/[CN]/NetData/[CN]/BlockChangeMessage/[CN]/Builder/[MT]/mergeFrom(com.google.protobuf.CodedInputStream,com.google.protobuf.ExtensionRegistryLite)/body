@@ -1,37 +1,16 @@
 {
-  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
-  while (true) {
-    int tag=input.readTag();
-switch (tag) {
-case 0:
-      this.setUnknownFields(unknownFields.build());
-    onChanged();
-  return this;
-default :
-{
-  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
-    this.setUnknownFields(unknownFields.build());
-    onChanged();
-    return this;
+  org.terasology.protobuf.NetData.BlockChangeMessage parsedMessage=null;
+  try {
+    parsedMessage=PARSER.parsePartialFrom(input,extensionRegistry);
   }
-  break;
-}
-case 10:
-{
-org.terasology.protobuf.NetData.Vector3iData.Builder subBuilder=org.terasology.protobuf.NetData.Vector3iData.newBuilder();
-if (hasPos()) {
-  subBuilder.mergeFrom(getPos());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setPos(subBuilder.buildPartial());
-break;
-}
-case 16:
-{
-bitField0_|=0x00000002;
-newBlock_=input.readInt32();
-break;
-}
-}
-}
+ catch (  com.google.protobuf.InvalidProtocolBufferException e) {
+    parsedMessage=(org.terasology.protobuf.NetData.BlockChangeMessage)e.getUnfinishedMessage();
+    throw e;
+  }
+ finally {
+    if (parsedMessage != null) {
+      mergeFrom(parsedMessage);
+    }
+  }
+  return this;
 }

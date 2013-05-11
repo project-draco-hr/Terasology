@@ -1,99 +1,16 @@
 {
-  com.google.protobuf.UnknownFieldSet.Builder unknownFields=com.google.protobuf.UnknownFieldSet.newBuilder(this.getUnknownFields());
-  while (true) {
-    int tag=input.readTag();
-switch (tag) {
-case 0:
-      this.setUnknownFields(unknownFields.build());
-    onChanged();
-  return this;
-default :
-{
-  if (!parseUnknownField(input,unknownFields,extensionRegistry,tag)) {
-    this.setUnknownFields(unknownFields.build());
-    onChanged();
-    return this;
+  org.terasology.protobuf.ChunksProtobuf.Chunk parsedMessage=null;
+  try {
+    parsedMessage=PARSER.parsePartialFrom(input,extensionRegistry);
   }
-  break;
-}
-case 8:
-{
-bitField0_|=0x00000001;
-x_=input.readSInt32();
-break;
-}
-case 16:
-{
-bitField0_|=0x00000002;
-y_=input.readSInt32();
-break;
-}
-case 24:
-{
-bitField0_|=0x00000004;
-z_=input.readSInt32();
-break;
-}
-case 32:
-{
-int rawValue=input.readEnum();
-org.terasology.protobuf.ChunksProtobuf.State value=org.terasology.protobuf.ChunksProtobuf.State.valueOf(rawValue);
-if (value == null) {
-unknownFields.mergeVarintField(4,rawValue);
-}
- else {
-bitField0_|=0x00000008;
-state_=value;
-}
-break;
-}
-case 42:
-{
-org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
-if (hasBlockData()) {
-subBuilder.mergeFrom(getBlockData());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setBlockData(subBuilder.buildPartial());
-break;
-}
-case 50:
-{
-org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
-if (hasSunlightData()) {
-subBuilder.mergeFrom(getSunlightData());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setSunlightData(subBuilder.buildPartial());
-break;
-}
-case 58:
-{
-org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
-if (hasLightData()) {
-subBuilder.mergeFrom(getLightData());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setLightData(subBuilder.buildPartial());
-break;
-}
-case 66:
-{
-org.terasology.protobuf.ChunksProtobuf.TeraArray.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.TeraArray.newBuilder();
-if (hasExtraData()) {
-subBuilder.mergeFrom(getExtraData());
-}
-input.readMessage(subBuilder,extensionRegistry);
-setExtraData(subBuilder.buildPartial());
-break;
-}
-case 74:
-{
-org.terasology.protobuf.ChunksProtobuf.ModData.Builder subBuilder=org.terasology.protobuf.ChunksProtobuf.ModData.newBuilder();
-input.readMessage(subBuilder,extensionRegistry);
-addModData(subBuilder.buildPartial());
-break;
-}
-}
-}
+ catch (  com.google.protobuf.InvalidProtocolBufferException e) {
+    parsedMessage=(org.terasology.protobuf.ChunksProtobuf.Chunk)e.getUnfinishedMessage();
+    throw e;
+  }
+ finally {
+    if (parsedMessage != null) {
+      mergeFrom(parsedMessage);
+    }
+  }
+  return this;
 }

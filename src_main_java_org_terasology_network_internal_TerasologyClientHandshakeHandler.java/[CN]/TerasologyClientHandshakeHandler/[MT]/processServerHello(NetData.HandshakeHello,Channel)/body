@@ -1,0 +1,29 @@
+{
+  if (!receivedServerHello) {
+    logger.info("Received Server Hello");
+    receivedServerHello=true;
+    serverRandom=helloMessage.getRandom().toByteArray();
+    NetData.Certificate cert=helloMessage.getCertificate();
+    serverCertificate=new PublicIdentityCertificate(cert.getId(),new BigInteger(cert.getModulus().toByteArray()),new BigInteger(cert.getExponent().toByteArray()),new BigInteger(cert.getSignature().toByteArray()));
+    if (!serverCertificate.verifySelfSigned()) {
+      logger.error("Received invalid server certificate: cancelling authentication");
+      channel.close();
+      return;
+    }
+    identity=config.getSecurity().getIdentity(serverCertificate);
+    if (identity == null) {
+      logger.info("No existing identity, requesting one");
+      byte[] preMasterSecret=new byte[IdentityConstants.PREMASTER_SECRET_LENGTH];
+      new SecureRandom().nextBytes(preMasterSecret);
+      byte[] encryptedPreMasterSecret=serverCertificate.encrypt(preMasterSecret);
+      clientRandom=new byte[IdentityConstants.SERVER_CLIENT_RANDOM_LENGTH];
+      masterSecret=SecretGenerator.generate(preMasterSecret,SecretGenerator.MASTER_SECRET_LABEL,Bytes.concat(clientRandom,serverRandom),SecretGenerator.MASTER_SECRET_LENGTH);
+      channel.write(NetData.NetMessage.newBuilder().setNewIdentityRequest(NetData.NewIdentityRequest.newBuilder().setPreMasterSecret(ByteString.copyFrom(encryptedPreMasterSecret)).setRandom(ByteString.copyFrom(clientRandom))).build());
+      requestedCertificate=true;
+    }
+  }
+ else {
+    logger.error("Received multiple hello messages from server: cancelling authentication");
+    channel.close();
+  }
+}

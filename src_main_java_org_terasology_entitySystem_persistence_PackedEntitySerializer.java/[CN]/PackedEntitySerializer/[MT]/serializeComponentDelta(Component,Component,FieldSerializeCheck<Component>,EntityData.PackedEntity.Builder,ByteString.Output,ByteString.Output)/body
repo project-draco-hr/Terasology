@@ -4,31 +4,26 @@
     logger.error("Unregistered component type: {}",oldComponent.getClass());
     return;
   }
-  try {
-    byte fieldCount=0;
-    for (    FieldMetadata field : componentMetadata.iterateFields()) {
-      if (fieldCheck.shouldSerializeField(field,newComponent)) {
-        Object oldValue=field.getValue(oldComponent);
-        Object newValue=field.getValue(newComponent);
-        if (!Objects.equal(oldValue,newValue)) {
-          EntityData.Value fieldValue=field.serializeValue(newValue);
-          if (fieldValue != null) {
-            entityFieldIds.write(field.getId());
-            entityData.addFieldValue(fieldValue);
-            fieldCount++;
-          }
+  byte fieldCount=0;
+  for (  FieldMetadata field : componentMetadata.iterateFields()) {
+    if (fieldCheck.shouldSerializeField(field,newComponent)) {
+      Object oldValue=field.getValue(oldComponent);
+      Object newValue=field.getValue(newComponent);
+      if (!Objects.equal(oldValue,newValue)) {
+        EntityData.Value fieldValue=field.serializeValue(newValue);
+        if (fieldValue != null) {
+          entityFieldIds.write(field.getId());
+          entityData.addFieldValue(fieldValue);
+          fieldCount++;
+        }
  else {
-            logger.error("Exception serializing component type: {}, field: {} - returned null",componentMetadata,field);
-          }
+          logger.error("Exception serializing component type: {}, field: {} - returned null",componentMetadata,field);
         }
       }
     }
-    if (fieldCount > 0) {
-      entityData.addComponentId(idTable.get(newComponent.getClass()));
-      componentFieldCounts.write(fieldCount);
-    }
   }
- catch (  IOException e) {
-    logger.error("Failed to serialize component {}",componentMetadata,e);
+  if (fieldCount > 0) {
+    entityData.addComponentId(idTable.get(newComponent.getClass()));
+    componentFieldCounts.write(fieldCount);
   }
 }

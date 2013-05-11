@@ -1,0 +1,6 @@
+{
+  logger.info("Sending Server Hello");
+  PublicIdentityCertificate serverPublicCert=config.getSecurity().getServerPublicCertificate();
+  new SecureRandom().nextBytes(serverRandom);
+  e.getChannel().write(NetData.NetMessage.newBuilder().setHandshakeHello(NetData.HandshakeHello.newBuilder().setRandom(ByteString.copyFrom(serverRandom)).setCertificate(NetData.Certificate.newBuilder().setId(serverPublicCert.getId()).setModulus(ByteString.copyFrom(serverPublicCert.getModulus().toByteArray())).setExponent(ByteString.copyFrom(serverPublicCert.getExponent().toByteArray())).setSignature(ByteString.copyFrom(serverPublicCert.getSignature().toByteArray())))).build());
+}

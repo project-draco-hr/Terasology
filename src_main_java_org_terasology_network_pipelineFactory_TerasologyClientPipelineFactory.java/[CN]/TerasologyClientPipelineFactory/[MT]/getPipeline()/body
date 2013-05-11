@@ -1,11 +1,11 @@
 {
   ChannelPipeline p=pipeline();
   p.addLast(MetricRecordingHandler.NAME,new MetricRecordingHandler());
-  p.addLast("inflateDecoder",new ZlibDecoder(ZlibWrapper.GZIP));
   p.addLast("frameDecoder",new ProtobufVarint32FrameDecoder());
   p.addLast("protobufDecoder",new ProtobufDecoder(NetData.NetMessage.getDefaultInstance()));
   p.addLast("frameEncoder",new ProtobufVarint32LengthFieldPrepender());
   p.addLast("protobufEncoder",new ProtobufEncoder());
+  p.addLast("authenticationHandler",new TerasologyClientHandshakeHandler());
   p.addLast("handler",new TerasologyClientHandler(networkSystem));
   return p;
 }
