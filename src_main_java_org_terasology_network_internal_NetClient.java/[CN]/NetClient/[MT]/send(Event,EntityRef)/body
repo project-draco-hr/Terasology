@@ -2,7 +2,7 @@
   BlockComponent blockComp=target.getComponent(BlockComponent.class);
   if (blockComp != null) {
     if (relevantChunks.contains(TeraMath.calcChunkPos(blockComp.getPosition()))) {
-      queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetBlockPos(NetworkUtil.convert(blockComp.getPosition())).setEvent(eventSerializer.serialize(event)).build());
+      queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetBlockPos(NetMessageUtil.convert(blockComp.getPosition())).setEvent(eventSerializer.serialize(event)).build());
     }
   }
  else {

@@ -3,4 +3,7 @@
   if (message.hasNewIdentityRequest()) {
     processNewIdentityRequest(message.getNewIdentityRequest(),ctx);
   }
+ else   if (message.hasHandshakeHello() && message.hasHandshakeVerification()) {
+    processClientHandshake(message.getHandshakeHello(),message.getHandshakeVerification(),ctx);
+  }
 }

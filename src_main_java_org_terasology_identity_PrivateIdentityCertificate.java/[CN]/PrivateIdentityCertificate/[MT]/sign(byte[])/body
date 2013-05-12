@@ -1,0 +1,15 @@
+{
+  RSAPrivateKeySpec keySpec=new RSAPrivateKeySpec(modulus,exponent);
+  Signature signer=null;
+  try {
+    signer=Signature.getInstance(IdentityConstants.SIGNATURE_ALGORITHM);
+    KeyFactory keyFactory=KeyFactory.getInstance(IdentityConstants.CERTIFICATE_ALGORITHM);
+    PrivateKey key=keyFactory.generatePrivate(keySpec);
+    signer.initSign(key,new SecureRandom());
+    signer.update(dataToSign);
+    return signer.sign();
+  }
+ catch (  NoSuchAlgorithmException|InvalidKeySpecException|InvalidKeyException|SignatureException e) {
+    throw new RuntimeException("Unexpected exception during signing",e);
+  }
+}

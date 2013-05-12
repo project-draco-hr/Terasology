@@ -1,0 +1,8 @@
+{
+  logger.info("Sending client certificate");
+  PublicIdentityCertificate pubClientCert=identity.getPlayerPublicCertificate();
+  clientHello=NetData.HandshakeHello.newBuilder().setRandom(ByteString.copyFrom(clientRandom)).setCertificate(NetMessageUtil.convert(pubClientCert)).setTimestamp(System.currentTimeMillis()).build();
+  byte[] dataToSign=Bytes.concat(helloMessage.toByteArray(),clientHello.toByteArray());
+  byte[] signature=identity.getPlayerPrivateCertificate().sign(dataToSign);
+  ctx.getChannel().write(NetData.NetMessage.newBuilder().setHandshakeHello(clientHello).setHandshakeVerification(NetData.HandshakeVerification.newBuilder().setSignature(ByteString.copyFrom(signature))).build());
+}

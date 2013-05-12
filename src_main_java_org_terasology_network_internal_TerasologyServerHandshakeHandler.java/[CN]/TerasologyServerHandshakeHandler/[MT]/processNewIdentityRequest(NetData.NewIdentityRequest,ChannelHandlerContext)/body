@@ -4,7 +4,7 @@
     byte[] preMasterSecret=config.getSecurity().getServerPrivateCertificate().decrypt(newIdentityRequest.getPreMasterSecret().toByteArray());
     byte[] masterSecret=SecretGenerator.generate(preMasterSecret,SecretGenerator.MASTER_SECRET_LABEL,Bytes.concat(newIdentityRequest.getRandom().toByteArray(),serverRandom),SecretGenerator.MASTER_SECRET_LENGTH);
     CertificatePair clientCertificates=new CertificateGenerator().generate(config.getSecurity().getServerPrivateCertificate());
-    NetData.CertificateSet certificateData=NetData.CertificateSet.newBuilder().setPublicCertificate(NetData.Certificate.newBuilder().setId(clientCertificates.getPublicCert().getId()).setModulus(ByteString.copyFrom(clientCertificates.getPublicCert().getModulus().toByteArray())).setExponent(ByteString.copyFrom(clientCertificates.getPublicCert().getExponent().toByteArray())).setSignature(ByteString.copyFrom(clientCertificates.getPublicCert().getSignature().toByteArray()))).setPrivateExponent(ByteString.copyFrom(clientCertificates.getPrivateCert().getExponent().toByteArray())).build();
+    NetData.CertificateSet certificateData=NetData.CertificateSet.newBuilder().setPublicCertificate(NetMessageUtil.convert(clientCertificates.getPublicCert())).setPrivateExponent(ByteString.copyFrom(clientCertificates.getPrivateCert().getExponent().toByteArray())).build();
     byte[] encryptedCert=null;
     try {
       SecretKeySpec key=new SecretKeySpec(SecretGenerator.generate(masterSecret,SecretGenerator.KEY_EXPANSION,Bytes.concat(newIdentityRequest.getRandom().toByteArray(),serverRandom),IdentityConstants.SYMMETRIC_ENCRYPTION_KEY_LENGTH),IdentityConstants.SYMMETRIC_ENCRYPTION_ALGORITHM);

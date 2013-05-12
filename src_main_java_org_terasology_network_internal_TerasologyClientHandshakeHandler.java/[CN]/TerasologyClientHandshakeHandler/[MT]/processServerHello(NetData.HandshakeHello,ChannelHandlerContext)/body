@@ -1,0 +1,26 @@
+{
+  if (serverHello == null) {
+    logger.info("Received Server Hello");
+    serverHello=helloMessage;
+    serverRandom=helloMessage.getRandom().toByteArray();
+    NetData.Certificate cert=helloMessage.getCertificate();
+    serverCertificate=NetMessageUtil.convert(cert);
+    if (!serverCertificate.verifySelfSigned()) {
+      logger.error("Received invalid server certificate: cancelling authentication");
+      ctx.getChannel().close();
+      return;
+    }
+    clientRandom=new byte[IdentityConstants.SERVER_CLIENT_RANDOM_LENGTH];
+    identity=config.getSecurity().getIdentity(serverCertificate);
+    if (identity == null) {
+      requestIdentity(ctx);
+    }
+ else {
+      sendCertificate(helloMessage,ctx);
+    }
+  }
+ else {
+    logger.error("Received multiple hello messages from server: cancelling authentication");
+    ctx.getChannel().close();
+  }
+}

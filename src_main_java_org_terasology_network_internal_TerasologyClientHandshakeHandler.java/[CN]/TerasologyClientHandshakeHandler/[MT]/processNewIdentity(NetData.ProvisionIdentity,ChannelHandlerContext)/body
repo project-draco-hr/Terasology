@@ -1,10 +1,5 @@
 {
   logger.info("Received identity from server");
-  if (!receivedServerHello) {
-    logger.error("Received identity without receiving server hello: cancelling authentication");
-    ctx.getChannel().close();
-    return;
-  }
   if (!requestedCertificate) {
     logger.error("Received identity without requesting it: cancelling authentication");
     ctx.getChannel().close();
@@ -25,7 +20,7 @@
     }
     NetData.CertificateSet certificateSet=NetData.CertificateSet.parseFrom(decryptedCert);
     NetData.Certificate publicCertData=certificateSet.getPublicCertificate();
-    PublicIdentityCertificate publicCert=new PublicIdentityCertificate(publicCertData.getId(),new BigInteger(publicCertData.getModulus().toByteArray()),new BigInteger(publicCertData.getExponent().toByteArray()),new BigInteger(publicCertData.getSignature().toByteArray()));
+    PublicIdentityCertificate publicCert=NetMessageUtil.convert(publicCertData);
     if (!publicCert.verifySignedBy(serverCertificate)) {
       logger.error("Received invalid certificate, not signed by server: cancelling authentication");
       ctx.getChannel().close();

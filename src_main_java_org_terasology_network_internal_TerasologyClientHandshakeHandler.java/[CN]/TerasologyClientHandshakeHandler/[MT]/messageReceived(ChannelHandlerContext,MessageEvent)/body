@@ -1,9 +1,12 @@
 {
   NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
   if (message.hasHandshakeHello()) {
-    processServerHello(message.getHandshakeHello(),e.getChannel());
+    processServerHello(message.getHandshakeHello(),ctx);
   }
  else   if (message.hasProvisionIdentity()) {
     processNewIdentity(message.getProvisionIdentity(),ctx);
+  }
+ else   if (message.hasHandshakeVerification()) {
+    processHandshakeVerification(message.getHandshakeVerification(),ctx);
   }
 }

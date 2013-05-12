@@ -1,7 +1,7 @@
 {
   EntityRef newEntity;
   if (message.hasBlockPos()) {
-    newEntity=blockEntityRegistry.getOrCreateBlockEntityAt(NetworkUtil.convert(message.getBlockPos()));
+    newEntity=blockEntityRegistry.getOrCreateBlockEntityAt(NetMessageUtil.convert(message.getBlockPos()));
     entitySerializer.deserializeOnto(newEntity,message.getEntity());
   }
  else {

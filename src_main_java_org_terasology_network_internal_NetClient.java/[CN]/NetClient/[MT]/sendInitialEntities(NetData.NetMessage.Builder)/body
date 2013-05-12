@@ -15,7 +15,7 @@
     NetData.CreateEntityMessage.Builder createMessage=NetData.CreateEntityMessage.newBuilder().setEntity(entityData);
     BlockComponent blockComponent=entity.getComponent(BlockComponent.class);
     if (blockComponent != null) {
-      createMessage.setBlockPos(NetworkUtil.convert(blockComponent.getPosition()));
+      createMessage.setBlockPos(NetMessageUtil.convert(blockComponent.getPosition()));
     }
     message.addCreateEntity(createMessage);
   }
