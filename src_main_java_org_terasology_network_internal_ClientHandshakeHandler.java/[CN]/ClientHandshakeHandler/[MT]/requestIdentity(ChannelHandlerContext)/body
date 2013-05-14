@@ -1,0 +1,9 @@
+{
+  logger.info("No existing identity, requesting one");
+  byte[] preMasterSecret=new byte[IdentityConstants.PREMASTER_SECRET_LENGTH];
+  new SecureRandom().nextBytes(preMasterSecret);
+  byte[] encryptedPreMasterSecret=serverCertificate.encrypt(preMasterSecret);
+  masterSecret=HandshakeCommon.generateMasterSecret(preMasterSecret,clientRandom,serverRandom);
+  ctx.getChannel().write(NetData.NetMessage.newBuilder().setNewIdentityRequest(NetData.NewIdentityRequest.newBuilder().setPreMasterSecret(ByteString.copyFrom(encryptedPreMasterSecret)).setRandom(ByteString.copyFrom(clientRandom))).build());
+  requestedCertificate=true;
+}

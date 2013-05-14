@@ -1,0 +1,15 @@
+{
+  logger.info("Received server verification");
+  if (serverHello == null || clientHello == null) {
+    logger.error("Received server verification without requesting it: cancelling authentication");
+    ctx.getChannel().close();
+    return;
+  }
+  if (!serverCertificate.verify(HandshakeCommon.getSignatureData(serverHello,clientHello),handshakeVerification.getSignature().toByteArray())) {
+    logger.error("Server failed verification: cancelling authentication");
+    ctx.getChannel().close();
+    return;
+  }
+  ctx.getPipeline().remove(this);
+  clientHandler.channelAuthenticated(ctx);
+}

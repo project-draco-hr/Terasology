@@ -1,0 +1,21 @@
+{
+  logger.info("Received client certificate");
+  PublicIdentityCertificate clientCert=NetMessageUtil.convert(clientHello.getCertificate());
+  if (!clientCert.verifySignedBy(config.getSecurity().getServerPublicCertificate())) {
+    logger.error("Received invalid client certificate, ending connection attempt");
+    ctx.getChannel().close();
+    return;
+  }
+  byte[] clientSignature=handshakeVerification.getSignature().toByteArray();
+  byte[] signatureData=HandshakeCommon.getSignatureData(serverHello,clientHello);
+  if (!clientCert.verify(signatureData,clientSignature)) {
+    logger.error("Received invalid verification signature, ending connection attempt");
+    ctx.getChannel().close();
+    return;
+  }
+  logger.info("Sending server verification");
+  byte[] serverSignature=config.getSecurity().getServerPrivateCertificate().sign(signatureData);
+  ctx.getChannel().write(NetData.NetMessage.newBuilder().setHandshakeVerification(NetData.HandshakeVerification.newBuilder().setSignature(ByteString.copyFrom(serverSignature))).build());
+  ctx.getPipeline().remove(this);
+  serverHandler.channelAuthenticated(clientCert,ctx);
+}

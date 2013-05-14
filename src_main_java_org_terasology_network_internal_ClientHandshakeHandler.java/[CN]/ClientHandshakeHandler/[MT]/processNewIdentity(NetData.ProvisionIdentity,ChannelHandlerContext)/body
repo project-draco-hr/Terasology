@@ -1,0 +1,41 @@
+{
+  logger.info("Received identity from server");
+  if (!requestedCertificate) {
+    logger.error("Received identity without requesting it: cancelling authentication");
+    ctx.getChannel().close();
+    return;
+  }
+  try {
+    byte[] decryptedCert=null;
+    try {
+      SecretKeySpec key=HandshakeCommon.generateSymmetricKey(masterSecret,clientRandom,serverRandom);
+      Cipher cipher=Cipher.getInstance(IdentityConstants.SYMMETRIC_ENCRYPTION_ALGORITHM);
+      cipher.init(Cipher.DECRYPT_MODE,key);
+      decryptedCert=cipher.doFinal(provisionIdentity.getEncryptedCertificates().toByteArray());
+    }
+ catch (    NoSuchAlgorithmException|NoSuchPaddingException|InvalidKeyException|BadPaddingException|IllegalBlockSizeException e) {
+      logger.error("Unexpected error decrypting received certificate, ending connection attempt",e);
+      ctx.getChannel().close();
+      return;
+    }
+    NetData.CertificateSet certificateSet=NetData.CertificateSet.parseFrom(decryptedCert);
+    NetData.Certificate publicCertData=certificateSet.getPublicCertificate();
+    PublicIdentityCertificate publicCert=NetMessageUtil.convert(publicCertData);
+    if (!publicCert.verifySignedBy(serverCertificate)) {
+      logger.error("Received invalid certificate, not signed by server: cancelling authentication");
+      ctx.getChannel().close();
+      return;
+    }
+    PrivateIdentityCertificate privateCert=new PrivateIdentityCertificate(publicCert.getModulus(),new BigInteger(certificateSet.getPrivateExponent().toByteArray()));
+    ClientIdentity identity=new ClientIdentity(publicCert,privateCert);
+    config.getSecurity().addIdentity(serverCertificate,identity);
+    config.save();
+    ctx.getPipeline().remove(this);
+    clientHandler.channelAuthenticated(ctx);
+  }
+ catch (  InvalidProtocolBufferException e) {
+    logger.error("Received invalid certificate data: cancelling authentication",e);
+    ctx.getChannel().close();
+    return;
+  }
+}
