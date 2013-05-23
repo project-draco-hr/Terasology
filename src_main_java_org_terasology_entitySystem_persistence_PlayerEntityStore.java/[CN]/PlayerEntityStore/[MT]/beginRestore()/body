@@ -1,0 +1,21 @@
+{
+  if (playerDataFile.exists()) {
+    try (InputStream in=new FileInputStream(playerDataFile)){
+      EntityData.PlayerEntityStore playerEntityStore=EntityData.PlayerEntityStore.parseFrom(in);
+      loadedData=playerEntityStore.getStore();
+      if (playerEntityStore.hasCharacterPosX() && playerEntityStore.hasCharacterPosY() && playerEntityStore.hasCharacterPosZ()) {
+        relevanceLocation.set(playerEntityStore.getCharacterPosX(),playerEntityStore.getCharacterPosY(),playerEntityStore.getCharacterPosZ());
+      }
+      if (playerEntityStore.hasHasCharacter()) {
+        hasCharacter=playerEntityStore.getHasCharacter();
+      }
+    }
+ catch (    IOException e) {
+      loadedData=EntityData.EntityStore.newBuilder().build();
+      throw new IOException(e);
+    }
+  }
+ else {
+    loadedData=EntityData.EntityStore.newBuilder().build();
+  }
+}

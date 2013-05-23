@@ -1,0 +1,9 @@
+{
+  if (entity.exists()) {
+    int entityId=entity.getId();
+    if (eventSystem != null) {
+      eventSystem.send(entity,OnDeactivatedEvent.newInstance());
+    }
+    store.remove(entityId);
+  }
+}

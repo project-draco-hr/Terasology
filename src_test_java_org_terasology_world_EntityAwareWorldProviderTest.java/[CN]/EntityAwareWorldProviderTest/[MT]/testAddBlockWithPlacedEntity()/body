@@ -6,7 +6,7 @@
   persistentEntityBlock.setEntityPrefab(PREFAB_URI);
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("unittest:block"),persistentEntityBlock),false);
   assertTrue(worldProvider.setBlock(0,0,0,persistentEntityBlock,BlockManager.getAir()));
-  List<EntityRef> blockEntities=Lists.newArrayList(entityManager.iteratorEntities(BlockComponent.class));
+  List<EntityRef> blockEntities=Lists.newArrayList(entityManager.listEntitiesWith(BlockComponent.class));
   assertEquals(1,blockEntities.size());
   assertNotNull(blockEntities.get(0).getComponent(StringComponent.class));
   assertNotNull(blockEntities.get(0).getComponent(BlockComponent.class));

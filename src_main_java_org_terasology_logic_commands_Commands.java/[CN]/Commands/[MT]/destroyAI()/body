@@ -1,13 +1,13 @@
 {
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
   int i=0;
-  for (  EntityRef ref : entityManager.iteratorEntities(SimpleAIComponent.class)) {
+  for (  EntityRef ref : entityManager.listEntitiesWith(SimpleAIComponent.class)) {
     ref.destroy();
     i++;
   }
   MessageManager.getInstance().addMessage("Simple AIs (" + i + ") Destroyed ");
   i=0;
-  for (  EntityRef ref : entityManager.iteratorEntities(HierarchicalAIComponent.class)) {
+  for (  EntityRef ref : entityManager.listEntitiesWith(HierarchicalAIComponent.class)) {
     ref.destroy();
     i++;
   }

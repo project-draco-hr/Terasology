@@ -1,0 +1,14 @@
+{
+  try (FileOutputStream out=new FileOutputStream(playerDataFile)){
+    BufferedOutputStream bos=new BufferedOutputStream(out);
+    EntityData.PlayerEntityStore.Builder playerEntityStore=EntityData.PlayerEntityStore.newBuilder();
+    playerEntityStore.setStore(entityStoreBuilder);
+    playerEntityStore.setCharacterPosX(relevanceLocation.x);
+    playerEntityStore.setCharacterPosY(relevanceLocation.y);
+    playerEntityStore.setCharacterPosZ(relevanceLocation.z);
+    playerEntityStore.setHasCharacter(hasCharacter);
+    playerEntityStore.build().writeTo(bos);
+    bos.flush();
+  }
+   entityStoreBuilder=null;
+}

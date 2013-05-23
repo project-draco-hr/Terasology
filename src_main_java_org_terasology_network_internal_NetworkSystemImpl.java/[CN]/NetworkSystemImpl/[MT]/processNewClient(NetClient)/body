@@ -5,9 +5,9 @@
   netClientList.add(client);
   clientPlayerLookup.put(client.getEntity(),client);
   sendServerInfo(client);
-  client.getEntity().send(new ConnectedEvent());
+  connectClient(client);
   logger.info("New client entity: {}",client.getEntity());
-  for (  EntityRef netEntity : entityManager.iteratorEntities(NetworkComponent.class)) {
+  for (  EntityRef netEntity : entityManager.listEntitiesWith(NetworkComponent.class)) {
     NetworkComponent netComp=netEntity.getComponent(NetworkComponent.class);
 switch (netComp.replicateMode) {
 case OWNER:

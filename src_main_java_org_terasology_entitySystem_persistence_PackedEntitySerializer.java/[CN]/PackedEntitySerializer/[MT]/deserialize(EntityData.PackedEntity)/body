@@ -7,5 +7,10 @@
     target=entityManager.newBuilder();
   }
   deserializeOnto(target,entityData);
-  return target.build();
+  if (entityData.hasId()) {
+    return entityManager.createEntityWithId(entityData.getId(),target.iterateComponents());
+  }
+ else {
+    return target.build();
+  }
 }

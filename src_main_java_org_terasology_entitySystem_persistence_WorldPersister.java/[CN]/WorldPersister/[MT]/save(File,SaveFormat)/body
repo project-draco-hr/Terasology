@@ -6,16 +6,7 @@
       logger.error("Failed to create world save directory {}",parentFile);
     }
   }
-  FileOutputStream out=new FileOutputStream(file);
-  try {
+  try (FileOutputStream out=new FileOutputStream(file)){
     format.save(out,world);
   }
-  finally {
-    try {
-      out.close();
-    }
- catch (    IOException e) {
-      logger.error("Failed to close file",e);
-    }
-  }
-}
+ }

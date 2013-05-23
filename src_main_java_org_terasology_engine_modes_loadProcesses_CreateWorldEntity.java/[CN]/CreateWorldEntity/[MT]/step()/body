@@ -1,7 +1,7 @@
 {
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
   WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
-  Iterator<EntityRef> worldEntityIterator=entityManager.iteratorEntities(WorldComponent.class).iterator();
+  Iterator<EntityRef> worldEntityIterator=entityManager.listEntitiesWith(WorldComponent.class).iterator();
   if (worldEntityIterator.hasNext()) {
     worldRenderer.getChunkProvider().setWorldEntity(worldEntityIterator.next());
   }

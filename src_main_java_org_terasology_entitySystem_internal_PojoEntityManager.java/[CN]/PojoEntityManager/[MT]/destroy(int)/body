@@ -1,0 +1,12 @@
+{
+  EntityRef ref=createEntityRef(entityId);
+  if (eventSystem != null) {
+    eventSystem.send(ref,OnDeactivatedEvent.newInstance());
+  }
+  entityCache.remove(entityId);
+  freedIds.add(entityId);
+  if (ref instanceof PojoEntityRef) {
+    ((PojoEntityRef)ref).invalidate();
+  }
+  store.remove(entityId);
+}

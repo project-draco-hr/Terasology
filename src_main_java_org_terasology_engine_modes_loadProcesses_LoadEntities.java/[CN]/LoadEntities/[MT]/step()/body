@@ -1,6 +1,6 @@
 {
-  CoreRegistry.put(WorldPersister.class,new WorldPersister(CoreRegistry.get(EntityManager.class)));
-  File entityDataFile=new File(PathManager.getInstance().getWorldSavePath(worldInfo.getTitle()),TerasologyConstants.ENTITY_DATA_FILE);
+  CoreRegistry.put(WorldPersister.class,new WorldPersister((EngineEntityManager)CoreRegistry.get(EntityManager.class)));
+  File entityDataFile=new File(PathManager.getInstance().getCurrentWorldPath(),TerasologyConstants.ENTITY_DATA_FILE);
   if (entityDataFile.exists()) {
     try {
       CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);

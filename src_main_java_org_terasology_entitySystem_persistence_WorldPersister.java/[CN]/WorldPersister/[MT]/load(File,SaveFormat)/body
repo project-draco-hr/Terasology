@@ -1,19 +1,10 @@
 {
   entityManager.clear();
-  FileInputStream in=new FileInputStream(file);
   EntityData.World world=null;
-  try {
+  try (FileInputStream in=new FileInputStream(file)){
     world=format.load(in);
   }
-  finally {
-    try {
-      in.close();
-    }
- catch (    IOException e) {
-      logger.error("Failed to close file",e);
-    }
-  }
-  if (world != null) {
+   if (world != null) {
     persisterHelper.deserializeWorld(world);
   }
 }

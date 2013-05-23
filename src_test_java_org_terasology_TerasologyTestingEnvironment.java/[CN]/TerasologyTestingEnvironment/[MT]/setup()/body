@@ -1,4 +1,6 @@
 {
-  setupConfig();
-  new EntitySystemBuilder().build(new ModManager());
+  engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModManager.class));
+  LoadPrefabs prefabLoadStep=new LoadPrefabs();
+  prefabLoadStep.begin();
+  while (!prefabLoadStep.step())   ;
 }

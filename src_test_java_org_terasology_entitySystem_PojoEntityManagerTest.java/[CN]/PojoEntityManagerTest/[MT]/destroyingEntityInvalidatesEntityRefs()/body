@@ -3,9 +3,9 @@
   main.addComponent(new StringComponent());
   EntityRef reference=entityManager.create();
   EntityRefComponent refComp=reference.addComponent(new EntityRefComponent());
-  refComp.entityRef=entityManager.iteratorEntities(StringComponent.class).iterator().next();
+  refComp.entityRef=entityManager.listEntitiesWith(StringComponent.class).iterator().next();
   assertTrue(main.exists());
-  entityManager.iteratorEntities(StringComponent.class).iterator().next().destroy();
+  entityManager.listEntitiesWith(StringComponent.class).iterator().next().destroy();
   assertFalse(main.exists());
   assertFalse(refComp.entityRef.exists());
 }

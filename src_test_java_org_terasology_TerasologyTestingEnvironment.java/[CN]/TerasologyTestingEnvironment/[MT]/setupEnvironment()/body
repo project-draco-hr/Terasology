@@ -1,4 +1,17 @@
 {
-  bindLwjgl();
-  CoreRegistry.put(BlockManager.class,new BlockManagerAuthority());
+  if (!setup) {
+    setup=true;
+    bindLwjgl();
+    CoreRegistry.put(BlockManager.class,new BlockManagerAuthority());
+    setupConfig();
+    CoreRegistry.put(AudioManager.class,new NullAudioManager());
+    Display.setDisplayMode(new DisplayMode(0,0));
+    Display.create(CoreRegistry.get(Config.class).getRendering().getPixelFormat());
+    CoreRegistry.put(CollisionGroupManager.class,new CollisionGroupManager());
+    ModManager modManager=new ModManager();
+    modManager.applyActiveMods();
+    CoreRegistry.put(ModManager.class,modManager);
+    AssetType.registerAssetTypes();
+    AssetManager.getInstance().addAssetSource(new ClasspathSource(ModManager.ENGINE_PACKAGE,Terasology.class.getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY));
+  }
 }

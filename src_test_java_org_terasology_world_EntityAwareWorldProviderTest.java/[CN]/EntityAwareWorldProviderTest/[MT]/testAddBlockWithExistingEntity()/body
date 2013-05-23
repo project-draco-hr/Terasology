@@ -10,7 +10,7 @@
   comp.value="hi";
   entity.saveComponent(comp);
   assertTrue(worldProvider.setBlock(0,0,0,persistentEntityBlock,BlockManager.getAir(),entity));
-  List<EntityRef> blockEntities=Lists.newArrayList(entityManager.iteratorEntities(BlockComponent.class));
+  List<EntityRef> blockEntities=Lists.newArrayList(entityManager.listEntitiesWith(BlockComponent.class));
   for (  EntityRef entityFound : blockEntities) {
     System.out.println(entityFound.toFullDescription());
   }

@@ -1,0 +1,12 @@
+{
+  for (int i=0; i < 10000; ++i) {
+    test.run();
+  }
+  long start=System.nanoTime();
+  for (int i=0; i < 10000; ++i) {
+    test.run();
+  }
+  long durationNS=System.nanoTime() - start;
+  long duration=TimeUnit.MILLISECONDS.convert(durationNS,TimeUnit.NANOSECONDS);
+  System.out.println(test.getTitle() + ": " + ((float)duration / 10000)+ "ms");
+}

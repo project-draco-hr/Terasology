@@ -3,6 +3,14 @@
   clientList.remove(client);
   logger.info("Client disconnected: " + client.getName());
   MessageManager.getInstance().addMessage("Client disconnected: " + client.getName());
-  client.getEntity().send(new DisconnectedEvent());
+  PlayerEntityStore playerStore=new PlayerEntityStore(client.getId(),entityManager);
+  playerStore.beginStore();
+  client.getEntity().send(new DisconnectedEvent(playerStore));
+  try {
+    playerStore.endStore();
+  }
+ catch (  IOException e) {
+    logger.error("Failed to store player data for '{}'",client.getId(),e);
+  }
   client.disconnect();
 }

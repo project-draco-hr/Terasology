@@ -1,0 +1,21 @@
+{
+  Component oldComponent=store.put(entityId,component);
+  if (oldComponent != null) {
+    logger.error("Adding a component ({}) over an existing component for entity {}",component.getClass(),entityId);
+  }
+  if (eventSystem != null) {
+    if (oldComponent == null) {
+      eventSystem.send(createEntityRef(entityId),OnActivatedEvent.newInstance(),component);
+    }
+ else {
+      eventSystem.send(createEntityRef(entityId),OnChangedEvent.newInstance(),component);
+    }
+  }
+  if (oldComponent == null) {
+    notifyComponentAdded(getEntity(entityId),component.getClass());
+  }
+ else {
+    notifyComponentChanged(getEntity(entityId),component.getClass());
+  }
+  return component;
+}

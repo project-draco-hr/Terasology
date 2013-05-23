@@ -1,5 +1,5 @@
 {
-  for (  EntityRef entity : entityManager.iteratorEntities(MiniaturizerComponent.class)) {
+  for (  EntityRef entity : entityManager.listEntitiesWith(MiniaturizerComponent.class)) {
     MiniaturizerComponent min=entity.getComponent(MiniaturizerComponent.class);
     if (min.chunkMesh == null && min.miniatureChunk != null) {
       min.chunkMesh=worldRenderer.getChunkTesselator().generateMinaturizedMesh(min.miniatureChunk);

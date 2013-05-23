@@ -1,22 +1,24 @@
 {
-  AssetUri prefabURI=prefabs.next();
-  logger.debug("Loading prefab " + prefabURI);
-  try {
-    InputStream stream=AssetManager.assetStream(prefabURI);
-    if (stream != null) {
-      BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
-      EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
-      stream.close();
-      if (prefabData != null) {
-        prefabSerializer.deserialize(prefabData,prefabURI);
+  if (prefabs.hasNext()) {
+    AssetUri prefabURI=prefabs.next();
+    logger.debug("Loading prefab " + prefabURI);
+    try {
+      InputStream stream=AssetManager.assetStream(prefabURI);
+      if (stream != null) {
+        BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
+        EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
+        stream.close();
+        if (prefabData != null) {
+          prefabSerializer.deserialize(prefabData,prefabURI);
+        }
+      }
+ else {
+        logger.warn("Failed to load prefab '{}'",prefabURI);
       }
     }
- else {
-      logger.warn("Failed to load prefab '{}'",prefabURI);
+ catch (    IOException e) {
+      logger.error("Failed to load prefab '{}'",prefabURI,e);
     }
-  }
- catch (  IOException e) {
-    logger.error("Failed to load prefab '{}'",prefabURI,e);
   }
   return !prefabs.hasNext();
 }
