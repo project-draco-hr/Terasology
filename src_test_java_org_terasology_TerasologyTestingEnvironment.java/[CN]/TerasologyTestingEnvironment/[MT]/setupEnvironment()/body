@@ -1,17 +1,30 @@
 {
+  PathManager.getInstance().useOverrideHomePath(new File("unittesthome"));
   if (!setup) {
     setup=true;
     bindLwjgl();
-    CoreRegistry.put(BlockManager.class,new BlockManagerAuthority());
-    setupConfig();
-    CoreRegistry.put(AudioManager.class,new NullAudioManager());
+    blockManager=new BlockManagerAuthority();
+    CoreRegistry.put(BlockManager.class,blockManager);
+    config=new Config();
+    CoreRegistry.put(Config.class,config);
+    audioManager=new NullAudioManager();
+    CoreRegistry.put(AudioManager.class,audioManager);
     Display.setDisplayMode(new DisplayMode(0,0));
     Display.create(CoreRegistry.get(Config.class).getRendering().getPixelFormat());
-    CoreRegistry.put(CollisionGroupManager.class,new CollisionGroupManager());
-    ModManager modManager=new ModManager();
+    collisionGroupManager=new CollisionGroupManager();
+    CoreRegistry.put(CollisionGroupManager.class,collisionGroupManager);
+    modManager=new ModManager();
     modManager.applyActiveMods();
     CoreRegistry.put(ModManager.class,modManager);
     AssetType.registerAssetTypes();
     AssetManager.getInstance().addAssetSource(new ClasspathSource(ModManager.ENGINE_PACKAGE,Terasology.class.getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY));
   }
+ else {
+    CoreRegistry.put(BlockManager.class,blockManager);
+    CoreRegistry.put(Config.class,config);
+    CoreRegistry.put(AudioManager.class,audioManager);
+    CoreRegistry.put(CollisionGroupManager.class,collisionGroupManager);
+    CoreRegistry.put(ModManager.class,modManager);
+  }
+  PathManager.getInstance().setCurrentWorldTitle("world1");
 }
