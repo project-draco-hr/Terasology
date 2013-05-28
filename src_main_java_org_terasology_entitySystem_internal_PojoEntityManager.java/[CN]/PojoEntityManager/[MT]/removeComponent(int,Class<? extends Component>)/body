@@ -2,7 +2,9 @@
   Component component=store.get(entityId,componentClass);
   if (component != null) {
     if (eventSystem != null) {
-      eventSystem.send(createEntityRef(entityId),OnDeactivatedEvent.newInstance(),component);
+      EntityRef entityRef=createEntityRef(entityId);
+      eventSystem.send(entityRef,OnDeactivatedEvent.newInstance(),component);
+      eventSystem.send(entityRef,OnRemovedEvent.newInstance(),component);
     }
     store.remove(entityId,componentClass);
     notifyComponentRemoved(getEntity(entityId),componentClass);

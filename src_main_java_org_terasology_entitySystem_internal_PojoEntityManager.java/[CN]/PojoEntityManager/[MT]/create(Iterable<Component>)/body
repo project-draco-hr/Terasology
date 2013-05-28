@@ -4,6 +4,7 @@
     store.put(entity.getId(),c);
   }
   if (eventSystem != null) {
+    eventSystem.send(entity,OnAddedEvent.newInstance());
     eventSystem.send(entity,OnActivatedEvent.newInstance());
   }
   return entity;

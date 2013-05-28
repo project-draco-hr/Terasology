@@ -5,4 +5,5 @@
   entityManager.setEventSystem(eventSystem);
   entity1.removeComponent(StringComponent.class);
   verify(eventSystem).send(entity1,OnDeactivatedEvent.newInstance(),comp);
+  verify(eventSystem).send(entity1,OnRemovedEvent.newInstance(),comp);
 }

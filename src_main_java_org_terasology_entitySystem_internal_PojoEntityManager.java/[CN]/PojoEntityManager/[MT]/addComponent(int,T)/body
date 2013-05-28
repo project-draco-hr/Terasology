@@ -4,11 +4,13 @@
     logger.error("Adding a component ({}) over an existing component for entity {}",component.getClass(),entityId);
   }
   if (eventSystem != null) {
+    EntityRef entityRef=createEntityRef(entityId);
     if (oldComponent == null) {
-      eventSystem.send(createEntityRef(entityId),OnActivatedEvent.newInstance(),component);
+      eventSystem.send(entityRef,OnAddedEvent.newInstance(),component);
+      eventSystem.send(entityRef,OnActivatedEvent.newInstance(),component);
     }
  else {
-      eventSystem.send(createEntityRef(entityId),OnChangedEvent.newInstance(),component);
+      eventSystem.send(entityRef,OnChangedEvent.newInstance(),component);
     }
   }
   if (oldComponent == null) {
