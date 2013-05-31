@@ -7,14 +7,7 @@
       logger.error("Unsupported field type in component type {}, {} : {}",forClass.getSimpleName(),field.getName(),field.getGenericType());
     }
  else {
-      boolean replicate=replicateFieldsByDefault;
-      if (field.getAnnotation(NoReplicate.class) != null) {
-        replicate=false;
-      }
-      if (field.getAnnotation(Replicate.class) != null) {
-        replicate=true;
-      }
-      info.addField(new FieldMetadata(field,forClass,typeHandler,replicate));
+      info.addField(new FieldMetadata(field,forClass,typeHandler,replicateFieldsByDefault));
     }
   }
 }
