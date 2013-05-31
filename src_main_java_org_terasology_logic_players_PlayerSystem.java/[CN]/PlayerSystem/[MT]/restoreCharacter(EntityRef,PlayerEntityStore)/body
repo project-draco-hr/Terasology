@@ -19,6 +19,9 @@
     ClientComponent client=entity.getComponent(ClientComponent.class);
     client.character=character;
     entity.saveComponent(client);
+    CharacterComponent characterComp=character.getComponent(CharacterComponent.class);
+    characterComp.controller=entity;
+    character.saveComponent(characterComp);
     Location.attachChild(character,entity);
   }
 }

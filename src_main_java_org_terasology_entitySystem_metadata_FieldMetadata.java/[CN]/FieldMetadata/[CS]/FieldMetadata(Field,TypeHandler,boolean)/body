@@ -1,5 +1,6 @@
 {
   this.field=field;
+  Class<?> classOfField=field.getType();
   this.serializationHandler=handler;
   this.replicated=replicatedByDefault;
   if (field.getAnnotation(NoReplicate.class) != null) {
@@ -9,7 +10,7 @@
     replicated=true;
   }
   this.replicationInfo=field.getAnnotation(Replicate.class);
-  ownedReference=field.getAnnotation(Owns.class) != null && (EntityRef.class.isAssignableFrom(field.getType()) || isCollectionOf(EntityRef.class,field.getType()));
-  getter=findGetter(type,field);
-  setter=findSetter(type,field);
+  ownedReference=field.getAnnotation(Owns.class) != null && (EntityRef.class.isAssignableFrom(field.getType()) || isCollectionOf(EntityRef.class,field));
+  getter=findGetter(classOfField,field);
+  setter=findSetter(classOfField,field);
 }

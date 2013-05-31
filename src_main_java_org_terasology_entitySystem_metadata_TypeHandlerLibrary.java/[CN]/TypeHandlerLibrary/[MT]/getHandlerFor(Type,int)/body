@@ -1,12 +1,6 @@
 {
-  Class typeClass;
-  if (type instanceof Class) {
-    typeClass=(Class)type;
-  }
- else   if (type instanceof ParameterizedType) {
-    typeClass=(Class)((ParameterizedType)type).getRawType();
-  }
- else {
+  Class<?> typeClass=ReflectionUtil.getClassOfType(type);
+  if (typeClass == null) {
     logger.error("Cannot obtain class for type {}",type);
     return null;
   }
@@ -14,7 +8,7 @@
     return new EnumTypeHandler(typeClass);
   }
  else   if (List.class.isAssignableFrom(typeClass)) {
-    Type parameter=getTypeParameter(type,0);
+    Type parameter=ReflectionUtil.getTypeParameter(type,0);
     if (parameter != null) {
       TypeHandler innerHandler=getHandlerFor(parameter,depth);
       if (innerHandler != null) {
@@ -25,7 +19,7 @@
     return null;
   }
  else   if (Set.class.isAssignableFrom(typeClass)) {
-    Type parameter=getTypeParameter(type,0);
+    Type parameter=ReflectionUtil.getTypeParameter(type,0);
     if (parameter != null) {
       TypeHandler innerHandler=getHandlerFor(parameter,depth);
       if (innerHandler != null) {
@@ -36,8 +30,8 @@
     return null;
   }
  else   if (Map.class.isAssignableFrom(typeClass)) {
-    Type keyParameter=getTypeParameter(type,0);
-    Type contentsParameter=getTypeParameter(type,1);
+    Type keyParameter=ReflectionUtil.getTypeParameter(type,0);
+    Type contentsParameter=ReflectionUtil.getTypeParameter(type,1);
     if (keyParameter != null && contentsParameter != null && String.class == keyParameter) {
       TypeHandler valueHandler=getHandlerFor(contentsParameter,depth);
       if (valueHandler != null) {
@@ -70,7 +64,7 @@
         logger.error("Unsupported field type in component type {}, {} : {}",typeClass.getSimpleName(),field.getName(),field.getGenericType());
       }
  else {
-        mappedHandler.addField(new FieldMetadata(field,typeClass,handler,false));
+        mappedHandler.addField(new FieldMetadata(field,handler,false));
       }
     }
     return mappedHandler;
