@@ -11,11 +11,6 @@
     clientLoc.setLocalPosition(new Vector3f());
     clientLoc.setLocalRotation(new Quat4f(0,0,0,1));
     clientEntity.saveComponent(clientLoc);
-    NetworkComponent netComp=playerCharacter.getComponent(NetworkComponent.class);
-    if (netComp != null) {
-      netComp.owner=clientEntity;
-      playerCharacter.saveComponent(netComp);
-    }
     Client clientListener=networkSystem.getOwner(clientEntity);
     int distance=clientListener.getViewDistance();
     if (!clientListener.isLocal()) {

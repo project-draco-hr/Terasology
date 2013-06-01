@@ -1,7 +1,7 @@
 {
+  ComponentMetadata<? extends Component> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
   NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
   if (netComp != null && netComp.getNetworkId() != NULL_NET_ID) {
-    ComponentMetadata<? extends Component> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
 switch (mode) {
 case SERVER:
       if (metadata.isReplicated()) {
@@ -11,6 +11,11 @@ case SERVER:
         }
       }
     break;
+}
+}
+if (mode.isAuthority() && metadata.isReferenceOwner()) {
+for (EntityRef ownedEntity : ownershipHelper.listOwnedEntities(entity.getComponent(component))) {
+  ownedEntity.destroy();
 }
 }
 }

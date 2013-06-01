@@ -1,0 +1,7 @@
+{
+  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl(new TypeHandlerLibraryBuilder().add(EntityRef.class,new EntityRefTypeHandler(null)).build());
+  ComponentLibrary lib=entitySystemLibrary.getComponentLibrary();
+  lib.register(OwnerComponent.class);
+  ComponentMetadata<OwnerComponent> metadata=lib.getMetadata(OwnerComponent.class);
+  assertTrue(metadata.isReferenceOwner());
+}

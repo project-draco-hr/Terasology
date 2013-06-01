@@ -6,7 +6,11 @@
         urls.add(mod.getModClasspathUrl());
       }
     }
-    allReflections=new Reflections(new ConfigurationBuilder().addUrls(urls).addUrls(ClasspathHelper.forPackage("org.terasology",getClass().getClassLoader())).addClassLoader(allModClassLoader).addClassLoader(getClass().getClassLoader()));
+    ConfigurationBuilder builder=new ConfigurationBuilder().addUrls(urls).addClassLoader(allModClassLoader);
+    for (    ClassLoader engineLoader : engineClassLoaders) {
+      builder.addClassLoader(engineLoader).addUrls(ClasspathHelper.forPackage("org.terasology",engineLoader));
+    }
+    allReflections=new Reflections(builder);
     allReflections.merge(getEngineReflections());
     for (    Mod mod : getMods()) {
       if (mod.isCodeMod()) {

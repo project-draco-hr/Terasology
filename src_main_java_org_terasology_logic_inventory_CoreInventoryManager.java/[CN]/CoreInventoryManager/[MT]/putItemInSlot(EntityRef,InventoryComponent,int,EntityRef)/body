@@ -2,11 +2,6 @@
   inventory.itemSlots.set(slot,item);
   if (networkSystem.getMode().isAuthority()) {
     inventoryEntity.saveComponent(inventory);
-    NetworkComponent networkComponent=item.getComponent(NetworkComponent.class);
-    if (networkComponent != null) {
-      networkComponent.owner=inventoryEntity;
-      item.saveComponent(networkComponent);
-    }
     if (item.exists()) {
       inventoryEntity.send(new ReceivedItemEvent(item,slot));
     }

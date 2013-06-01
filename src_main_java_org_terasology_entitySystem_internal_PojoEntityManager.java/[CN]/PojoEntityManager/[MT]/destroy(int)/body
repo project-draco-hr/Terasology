@@ -4,6 +4,9 @@
     eventSystem.send(ref,OnDeactivatedEvent.newInstance());
     eventSystem.send(ref,OnRemovedEvent.newInstance());
   }
+  for (  Component comp : store.iterateComponents(entityId)) {
+    notifyComponentRemoved(ref,comp.getClass());
+  }
   entityCache.remove(entityId);
   freedIds.add(entityId);
   if (ref instanceof PojoEntityRef) {

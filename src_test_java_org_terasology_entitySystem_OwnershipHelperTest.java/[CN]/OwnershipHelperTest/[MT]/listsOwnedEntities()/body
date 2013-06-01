@@ -1,0 +1,8 @@
+{
+  EntityRef ownedEntity=entityManager.create();
+  OwnerComponent ownerComp=new OwnerComponent();
+  ownerComp.child=ownedEntity;
+  EntityRef ownerEntity=entityManager.create(ownerComp);
+  OwnershipHelper helper=new OwnershipHelper(entityManager.getComponentLibrary());
+  assertEqualsContent(Lists.newArrayList(ownedEntity),helper.listOwnedEntities(ownerEntity));
+}

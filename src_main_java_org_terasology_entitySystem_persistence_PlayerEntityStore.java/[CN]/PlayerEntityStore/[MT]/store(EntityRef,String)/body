@@ -2,26 +2,8 @@
   if (entityStoreBuilder == null) {
     throw new IllegalStateException("Entity Store not ready for storing entities");
   }
-  for (  Component comp : entity.iterateComponents()) {
-    ComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
-    for (    FieldMetadata fieldMetadata : metadata.iterateFields()) {
-      if (fieldMetadata.isOwnedReference()) {
-        Object value=fieldMetadata.getValue(comp);
-        if (value instanceof Collection) {
-          for (          EntityRef ref : ((Collection<EntityRef>)value)) {
-            if (ref.exists()) {
-              store(ref,"");
-            }
-          }
-        }
- else {
-          EntityRef ref=(EntityRef)value;
-          if (ref.exists()) {
-            store(ref,"");
-          }
-        }
-      }
-    }
+  for (  EntityRef ownedEntity : helper.listOwnedEntities(entity)) {
+    store(ownedEntity);
   }
   if (entity.exists()) {
     entity.send(new OnStoreEvent(this));

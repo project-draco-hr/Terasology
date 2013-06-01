@@ -1,0 +1,13 @@
+{
+  if (expected == null) {
+    assertNull(actual);
+  }
+ else {
+    assertNotNull(actual);
+    List copyActual=Lists.newArrayList(actual);
+    for (    Object obj : expected) {
+      assertTrue("Missing element: " + obj,copyActual.remove(obj));
+    }
+    assertTrue("Unexpected additional elements: " + copyActual.toString(),copyActual.isEmpty());
+  }
+}

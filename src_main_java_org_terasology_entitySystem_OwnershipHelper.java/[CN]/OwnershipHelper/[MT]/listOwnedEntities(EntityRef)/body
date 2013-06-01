@@ -1,0 +1,12 @@
+{
+  Set<EntityRef> entityRefList=Sets.newHashSet();
+  for (  ComponentMetadata<?> componentMetadata : componentLibrary) {
+    if (componentMetadata.isReferenceOwner()) {
+      Component comp=entity.getComponent(componentMetadata.getType());
+      if (comp != null) {
+        addOwnedEntitiesFor(comp,componentMetadata,entityRefList);
+      }
+    }
+  }
+  return entityRefList;
+}

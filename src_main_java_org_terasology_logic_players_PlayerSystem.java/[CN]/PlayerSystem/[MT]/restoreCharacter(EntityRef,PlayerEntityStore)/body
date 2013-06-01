@@ -11,11 +11,6 @@
       distance+=ChunkConstants.REMOTE_GENERATION_DISTANCE;
     }
     worldRenderer.getChunkProvider().updateRelevanceEntity(entity,distance);
-    NetworkComponent netComp=character.getComponent(NetworkComponent.class);
-    if (netComp != null) {
-      netComp.owner=entity;
-      character.saveComponent(netComp);
-    }
     ClientComponent client=entity.getComponent(ClientComponent.class);
     client.character=character;
     entity.saveComponent(client);
