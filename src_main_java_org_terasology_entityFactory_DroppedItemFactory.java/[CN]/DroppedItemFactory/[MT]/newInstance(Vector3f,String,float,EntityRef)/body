@@ -14,8 +14,8 @@
     LifespanComponent lifespanComp=itemEntity.getComponent(LifespanComponent.class);
     lifespanComp.lifespan=lifespan;
     itemEntity.saveComponent(lifespanComp);
-    DroppedItemTypeComponent droppedItem=itemEntity.getComponent(DroppedItemTypeComponent.class);
-    droppedItem.placedEntity=entityManager.copy(placedEntity);
+    DroppedItemComponent droppedItem=itemEntity.getComponent(DroppedItemComponent.class);
+    droppedItem.itemEntity=entityManager.copy(placedEntity);
     ItemComponent itemComponent=placedEntity.getComponent(ItemComponent.class);
     ItemComponent newItem=new ItemComponent();
     newItem.stackCount=1;
@@ -25,7 +25,7 @@
     newItem.icon=itemComponent.icon;
     newItem.stackId=itemComponent.stackId;
     newItem.renderWithIcon=itemComponent.renderWithIcon;
-    droppedItem.placedEntity.saveComponent(newItem);
+    droppedItem.itemEntity.saveComponent(newItem);
     itemEntity.saveComponent(droppedItem);
     return itemEntity;
   }

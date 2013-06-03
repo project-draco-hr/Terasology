@@ -1,0 +1,9 @@
+{
+  DroppedItemComponent droppedItem=entity.getComponent(DroppedItemComponent.class);
+  if (inventoryManager.giveItem(event.getOtherEntity(),droppedItem.itemEntity)) {
+    droppedItem.itemEntity=EntityRef.NULL;
+    entity.saveComponent(droppedItem);
+    entity.destroy();
+    event.getOtherEntity().send(new PlaySoundForOwnerEvent(Assets.getSound("engine:Loot"),1.0f));
+  }
+}
