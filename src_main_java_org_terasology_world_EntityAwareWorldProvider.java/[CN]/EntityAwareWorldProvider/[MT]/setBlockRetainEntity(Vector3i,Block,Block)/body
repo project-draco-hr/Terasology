@@ -1,0 +1,12 @@
+{
+  if (super.setBlock(pos.x,pos.y,pos.z,type,oldType)) {
+    if (Thread.currentThread().equals(mainThread)) {
+      getOrCreateEntityAt(pos).send(new BlockChangedEvent(pos,type,oldType));
+    }
+ else {
+      eventQueue.add(new BlockChangedEvent(pos,type,oldType));
+    }
+    return true;
+  }
+  return false;
+}
