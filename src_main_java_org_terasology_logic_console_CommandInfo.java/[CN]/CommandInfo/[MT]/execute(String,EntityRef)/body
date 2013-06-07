@@ -1,0 +1,19 @@
+{
+  Binding bind=new Binding();
+  bind.setVariable(PROVIDER_VAR,provider);
+  if (isClientEntityRequired()) {
+    bind.setVariable(CLIENT_VAR,callingClient);
+  }
+  GroovyShell shell=new GroovyShell(bind);
+  Object result;
+  if (isClientEntityRequired()) {
+    String fullParams=(params.trim().isEmpty()) ? CLIENT_VAR : PARAM_JOINER.join(params,CLIENT_VAR);
+    logger.debug("Executing command {}.{}({})",PROVIDER_VAR,name,fullParams);
+    result=shell.evaluate(PROVIDER_VAR + "." + name+ "("+ fullParams+ ")");
+  }
+ else {
+    logger.debug("Executing command {}.{}({})",PROVIDER_VAR,name,params);
+    result=shell.evaluate(PROVIDER_VAR + "." + name+ "("+ params+ ")");
+  }
+  return (result != null) ? result.toString() : "";
+}

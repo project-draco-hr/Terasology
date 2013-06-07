@@ -1,0 +1,12 @@
+{
+  ClientComponent clientComp=clientEntity.getComponent(ClientComponent.class);
+  if (clientComp != null) {
+    EntityRef character=clientComp.character;
+    HealthComponent health=character.getComponent(HealthComponent.class);
+    if (health != null) {
+      health.currentHealth=health.maxHealth;
+      character.send(new FullHealthEvent(localPlayer.getCharacterEntity(),health.maxHealth));
+      character.saveComponent(health);
+    }
+  }
+}

@@ -1,5 +1,6 @@
 {
   console=CoreRegistry.get(Console.class);
+  localPlayer=CoreRegistry.get(LocalPlayer.class);
   setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
   setCloseBinds(new String[]{"engine:console"});
   setId("chat");
@@ -20,7 +21,7 @@
           inputBox.deleteText();
           commandHistory.add(message);
           commandCursor=commandHistory.size();
-          console.execute(message);
+          console.execute(message,localPlayer.getClientEntity());
         }
  else         if (event.getKey() == Keyboard.KEY_UP) {
           if (commandCursor > 0) {

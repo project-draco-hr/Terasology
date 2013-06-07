@@ -1,0 +1,9 @@
+{
+  String[] params=event.getParams().split(Console.PARAM_SPLIT_REGEX);
+  for (  CommandInfo cmd : console.getCommand(event.getCommand())) {
+    if (cmd.getParameterCount() == params.length && cmd.isRunOnServer()) {
+      console.execute(event.getCommand() + " " + event.getParams(),entity);
+      break;
+    }
+  }
+}
