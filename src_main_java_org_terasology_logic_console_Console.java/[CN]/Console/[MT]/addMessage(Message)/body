@@ -1,0 +1,7 @@
+{
+  logger.info("[{}] {}",message.getType(),message.getMessage());
+  messageHistory.add(message);
+  for (  ConsoleSubscriber subscriber : messageSubscribers) {
+    subscriber.onNewConsoleMessage(message);
+  }
+}

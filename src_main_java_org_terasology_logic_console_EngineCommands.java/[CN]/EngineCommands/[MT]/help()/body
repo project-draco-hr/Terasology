@@ -1,0 +1,11 @@
+{
+  StringBuilder msg=new StringBuilder();
+  List<CommandInfo> commands=console.getCommandList();
+  for (  CommandInfo cmd : commands) {
+    if (!msg.toString().isEmpty()) {
+      msg.append("\n");
+    }
+    msg.append(cmd.getUsageMessage()).append(" - ").append(cmd.getShortDescription());
+  }
+  return msg.toString();
+}

@@ -1,0 +1,16 @@
+{
+  List<BlockUri> matchingUris=blockManager.resolveBlockUri(uri);
+  if (matchingUris.size() == 1) {
+    BlockFamily blockFamily=blockManager.getBlockFamily(matchingUris.get(0));
+    return giveBlock(blockFamily,quantity);
+  }
+ else   if (matchingUris.isEmpty()) {
+    return "No block found for '" + uri + "'";
+  }
+ else {
+    StringBuilder builder=new StringBuilder();
+    builder.append("Non-unique block name, possible matches: ");
+    Joiner.on(", ").appendTo(builder,matchingUris);
+    return builder.toString();
+  }
+}

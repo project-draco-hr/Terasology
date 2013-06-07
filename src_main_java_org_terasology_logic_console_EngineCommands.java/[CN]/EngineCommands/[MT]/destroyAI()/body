@@ -1,0 +1,13 @@
+{
+  int simpleAI=0;
+  for (  EntityRef ref : entityManager.listEntitiesWith(SimpleAIComponent.class)) {
+    ref.destroy();
+    simpleAI++;
+  }
+  int hierarchicalAI=0;
+  for (  EntityRef ref : entityManager.listEntitiesWith(HierarchicalAIComponent.class)) {
+    ref.destroy();
+    hierarchicalAI++;
+  }
+  return "Simple AIs (" + simpleAI + ") Destroyed, Hierarchical AIs ("+ hierarchicalAI+ ") Destroyed ";
+}

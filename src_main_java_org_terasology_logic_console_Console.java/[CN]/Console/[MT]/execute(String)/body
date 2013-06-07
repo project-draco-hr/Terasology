@@ -1,0 +1,52 @@
+{
+  str=str.replaceAll("\\s\\s+"," ");
+  int commandEndIndex=str.indexOf(" ");
+  String commandName;
+  if (commandEndIndex >= 0) {
+    commandName=str.substring(0,commandEndIndex);
+  }
+ else {
+    commandName=str;
+    str="";
+    commandEndIndex=0;
+  }
+  str=str.substring(commandEndIndex).trim();
+  String[] params=str.split(" (?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+  String paramsStr="";
+  int paramsCount=0;
+  for (  String s : params) {
+    if (s.trim().isEmpty()) {
+      continue;
+    }
+    if (!paramsStr.isEmpty()) {
+      paramsStr+=",";
+    }
+    paramsStr+=s;
+    paramsCount++;
+  }
+  CommandInfo cmd=commandLookup.get(commandName,paramsCount);
+  if (cmd == null) {
+    if (commandLookup.containsRow(commandName)) {
+      addMessage("Incorrect number of parameters");
+    }
+ else {
+      addMessage("Unknown command '" + commandName + "'");
+    }
+    return false;
+  }
+  String executeString=paramsStr;
+  logger.debug("Execute command with params '{}'",executeString);
+  try {
+    String result=cmd.execute(paramsStr);
+    if (result != null && !result.isEmpty()) {
+      addMessage(result);
+    }
+    return true;
+  }
+ catch (  Exception e) {
+    addMessage(cmd.getUsageMessage());
+    addMessage("Error executing command '" + commandName + "'.");
+    logger.warn("Failed to execute command",e);
+    return false;
+  }
+}

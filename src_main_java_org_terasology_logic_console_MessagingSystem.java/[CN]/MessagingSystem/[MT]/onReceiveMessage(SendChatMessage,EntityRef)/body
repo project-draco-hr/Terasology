@@ -1,8 +1,0 @@
-{
-  if (networkSystem.getMode().isAuthority()) {
-    logger.info("Received message from {} : '{}'",entity,event.getMessage());
-    for (    EntityRef client : entityManager.listEntitiesWith(ClientComponent.class)) {
-      client.send(new ChatMessageEvent(event.getMessage(),entity.getComponent(ClientComponent.class).clientInfo));
-    }
-  }
-}
