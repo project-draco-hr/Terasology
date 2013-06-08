@@ -3,8 +3,12 @@
     TIntIterator iterator=freedIds.iterator();
     int id=iterator.next();
     iterator.remove();
+    loadedIds.add(id);
     return createEntityRef(id);
   }
-  if (nextEntityId == NULL_ID)   nextEntityId++;
+  if (nextEntityId == NULL_ID) {
+    nextEntityId++;
+  }
+  loadedIds.add(nextEntityId);
   return createEntityRef(nextEntityId++);
 }

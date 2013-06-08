@@ -1,4 +1,7 @@
 {
+  if (!loadedIds.contains(entityId)) {
+    return;
+  }
   EntityRef ref=createEntityRef(entityId);
   if (eventSystem != null) {
     eventSystem.send(ref,OnDeactivatedEvent.newInstance());
@@ -8,6 +11,7 @@
     notifyComponentRemoved(ref,comp.getClass());
   }
   entityCache.remove(entityId);
+  loadedIds.remove(entityId);
   freedIds.add(entityId);
   if (ref instanceof PojoEntityRef) {
     ((PojoEntityRef)ref).invalidate();

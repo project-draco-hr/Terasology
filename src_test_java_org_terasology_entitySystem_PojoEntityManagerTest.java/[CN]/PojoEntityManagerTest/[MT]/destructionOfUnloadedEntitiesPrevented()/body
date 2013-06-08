@@ -1,0 +1,9 @@
+{
+  EntityRef entity=entityManager.create();
+  int id=entity.getId();
+  entityManager.removedForStoring(entity);
+  assertTrue(entity.exists());
+  entity.destroy();
+  assertTrue(entity.exists());
+  assertFalse(entityManager.getFreedIds().contains(id));
+}

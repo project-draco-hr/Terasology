@@ -1,11 +1,12 @@
 {
-  EntityRef player=entityManager.create("engine:player",spawnPosition);
+  EntityBuilder builder=entityManager.newBuilder("engine:player");
+  builder.getComponent(LocationComponent.class).setWorldPosition(spawnPosition);
+  builder.getComponent(NetworkComponent.class).owner=controller;
   EntityRef transferSlot=entityManager.create("engine:transferSlot");
-  CharacterComponent playerComponent=player.getComponent(CharacterComponent.class);
+  CharacterComponent playerComponent=builder.getComponent(CharacterComponent.class);
   playerComponent.spawnPosition.set(spawnPosition);
   playerComponent.movingItem=transferSlot;
   playerComponent.controller=controller;
-  player.saveComponent(playerComponent);
   EntityRef chest=blockFactory.newInstance(blockManager.getBlockFamily("core:chest"));
   BlockItemComponent blockItem=chest.getComponent(BlockItemComponent.class);
   EntityRef chestContents=blockItem.placedEntity;
@@ -33,6 +34,7 @@
   inventoryManager.giveItem(innerChestContents,blockFactory.newInstance(blockManager.getBlockFamily("engine:Tulip"),99));
   inventoryManager.giveItem(innerChestContents,blockFactory.newInstance(blockManager.getBlockFamily("engine:YellowFlower"),99));
   inventoryManager.giveItem(chestContents,innerChest);
+  EntityRef player=builder.build();
   inventoryManager.giveItem(player,entityManager.create("core:pickaxe"));
   inventoryManager.giveItem(player,entityManager.create("core:axe"));
   inventoryManager.giveItem(player,blockFactory.newInstance(blockManager.getBlockFamily("engine:Torch"),99));

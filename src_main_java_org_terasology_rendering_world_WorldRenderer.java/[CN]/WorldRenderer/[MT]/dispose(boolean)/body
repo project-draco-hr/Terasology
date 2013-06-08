@@ -1,0 +1,13 @@
+{
+  worldProvider.dispose();
+  if (saveWorld) {
+    WorldInfo worldInfo=worldProvider.getWorldInfo();
+    try {
+      WorldInfo.save(new File(PathManager.getInstance().getCurrentWorldPath(),WorldInfo.DEFAULT_FILE_NAME),worldInfo);
+    }
+ catch (    IOException e) {
+      logger.error("Failed to save world manifest",e);
+    }
+  }
+  audioManager.stopAllSounds();
+}

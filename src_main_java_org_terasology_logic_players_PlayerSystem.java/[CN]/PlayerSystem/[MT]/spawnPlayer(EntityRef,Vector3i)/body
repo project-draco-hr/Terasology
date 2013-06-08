@@ -6,17 +6,13 @@
   if (client != null) {
     PlayerFactory playerFactory=new PlayerFactory(entityManager,inventoryManager);
     EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z),clientEntity);
-    Location.attachChild(playerCharacter,clientEntity);
-    LocationComponent clientLoc=clientEntity.getComponent(LocationComponent.class);
-    clientLoc.setLocalPosition(new Vector3f());
-    clientLoc.setLocalRotation(new Quat4f(0,0,0,1));
-    clientEntity.saveComponent(clientLoc);
+    Location.attachChild(playerCharacter,clientEntity,new Vector3f(),new Quat4f(0,0,0,1));
     Client clientListener=networkSystem.getOwner(clientEntity);
     int distance=clientListener.getViewDistance();
     if (!clientListener.isLocal()) {
       distance+=ChunkConstants.REMOTE_GENERATION_DISTANCE;
     }
-    worldRenderer.getChunkProvider().updateRelevanceEntity(playerCharacter,distance);
+    worldRenderer.getChunkProvider().updateRelevanceEntity(clientEntity,distance);
     client.character=playerCharacter;
     clientEntity.saveComponent(client);
   }
