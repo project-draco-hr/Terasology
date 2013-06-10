@@ -79,10 +79,10 @@ break;
 case 48:
 {
 if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
-assetIds_=new java.util.ArrayList<java.lang.Integer>();
+assetId_=new java.util.ArrayList<java.lang.Integer>();
 mutable_bitField0_|=0x00000020;
 }
-assetIds_.add(input.readInt32());
+assetId_.add(input.readInt32());
 break;
 }
 case 50:
@@ -90,11 +90,11 @@ case 50:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 if (!((mutable_bitField0_ & 0x00000020) == 0x00000020) && input.getBytesUntilLimit() > 0) {
-assetIds_=new java.util.ArrayList<java.lang.Integer>();
+assetId_=new java.util.ArrayList<java.lang.Integer>();
 mutable_bitField0_|=0x00000020;
 }
 while (input.getBytesUntilLimit() > 0) {
-assetIds_.add(input.readInt32());
+assetId_.add(input.readInt32());
 }
 input.popLimit(limit);
 break;
@@ -102,10 +102,19 @@ break;
 case 58:
 {
 if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
-assetUris_=new com.google.protobuf.LazyStringArrayList();
+assetUri_=new com.google.protobuf.LazyStringArrayList();
 mutable_bitField0_|=0x00000040;
 }
-assetUris_.add(input.readBytes());
+assetUri_.add(input.readBytes());
+break;
+}
+case 66:
+{
+if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+registerBlockFamily_=new com.google.protobuf.LazyStringArrayList();
+mutable_bitField0_|=0x00000080;
+}
+registerBlockFamily_.add(input.readBytes());
 break;
 }
 case 122:
@@ -158,10 +167,13 @@ if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
 event_=java.util.Collections.unmodifiableList(event_);
 }
 if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
-assetIds_=java.util.Collections.unmodifiableList(assetIds_);
+assetId_=java.util.Collections.unmodifiableList(assetId_);
 }
 if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
-assetUris_=new com.google.protobuf.UnmodifiableLazyStringList(assetUris_);
+assetUri_=new com.google.protobuf.UnmodifiableLazyStringList(assetUri_);
+}
+if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
+registerBlockFamily_=new com.google.protobuf.UnmodifiableLazyStringList(registerBlockFamily_);
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();

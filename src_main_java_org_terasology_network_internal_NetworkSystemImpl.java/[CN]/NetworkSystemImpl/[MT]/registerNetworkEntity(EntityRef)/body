@@ -8,7 +8,9 @@
     entity.saveComponent(netComponent);
   }
   logger.debug("Registered Network Entity: {}",entity);
-  netIdToEntityId.put(netComponent.getNetworkId(),entity.getId());
+  if (NULL_NET_ID != netIdToEntityId.put(netComponent.getNetworkId(),entity.getId())) {
+    logger.error("Registered duplicate network id");
+  }
   if (mode == NetworkMode.SERVER) {
 switch (netComponent.replicateMode) {
 case OWNER:

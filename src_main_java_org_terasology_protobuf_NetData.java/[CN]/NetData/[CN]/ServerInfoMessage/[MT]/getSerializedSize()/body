@@ -33,23 +33,31 @@
   }
 {
     int dataSize=0;
-    for (int i=0; i < assetIds_.size(); i++) {
-      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(assetIds_.get(i));
+    for (int i=0; i < assetId_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(assetId_.get(i));
     }
     size+=dataSize;
-    if (!getAssetIdsList().isEmpty()) {
+    if (!getAssetIdList().isEmpty()) {
       size+=1;
       size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
     }
-    assetIdsMemoizedSerializedSize=dataSize;
+    assetIdMemoizedSerializedSize=dataSize;
   }
 {
     int dataSize=0;
-    for (int i=0; i < assetUris_.size(); i++) {
-      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(assetUris_.getByteString(i));
+    for (int i=0; i < assetUri_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(assetUri_.getByteString(i));
     }
     size+=dataSize;
-    size+=1 * getAssetUrisList().size();
+    size+=1 * getAssetUriList().size();
+  }
+{
+    int dataSize=0;
+    for (int i=0; i < registerBlockFamily_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeBytesSizeNoTag(registerBlockFamily_.getByteString(i));
+    }
+    size+=dataSize;
+    size+=1 * getRegisterBlockFamilyList().size();
   }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(15,getVersionBytes());

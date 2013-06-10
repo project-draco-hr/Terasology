@@ -1,4 +1,7 @@
 {
   BlockComponent block=entity.getComponent(BlockComponent.class);
-  blockComponentLookup.remove(new Vector3i(block.getPosition()));
+  Vector3i pos=new Vector3i(block.getPosition());
+  if (blockComponentLookup.get(pos) == entity) {
+    blockComponentLookup.remove(pos);
+  }
 }

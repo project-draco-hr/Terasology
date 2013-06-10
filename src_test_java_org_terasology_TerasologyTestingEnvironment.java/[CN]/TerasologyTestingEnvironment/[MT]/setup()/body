@@ -1,5 +1,7 @@
 {
   engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModManager.class));
+  componentSystemManager=new ComponentSystemManager();
+  CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
   LoadPrefabs prefabLoadStep=new LoadPrefabs();
   prefabLoadStep.begin();
   while (!prefabLoadStep.step())   ;

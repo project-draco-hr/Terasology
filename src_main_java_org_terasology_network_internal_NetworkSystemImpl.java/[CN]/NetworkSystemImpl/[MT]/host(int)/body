@@ -1,6 +1,7 @@
 {
   if (mode == NetworkMode.NONE) {
     try {
+      mode=NetworkMode.SERVER;
       for (      EntityRef entity : entityManager.listEntitiesWith(NetworkComponent.class)) {
         registerNetworkEntity(entity);
       }
@@ -14,7 +15,6 @@
       allChannels.add(listenChannel);
       logger.info("Started server");
       nextNetworkTick=timer.getRawTimeInMs();
-      mode=NetworkMode.SERVER;
     }
  catch (    ChannelException e) {
       if (e.getCause() instanceof BindException) {

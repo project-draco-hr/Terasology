@@ -9,15 +9,17 @@
   logger.info("New client entity: {}",client.getEntity());
   for (  EntityRef netEntity : entityManager.listEntitiesWith(NetworkComponent.class)) {
     NetworkComponent netComp=netEntity.getComponent(NetworkComponent.class);
+    if (netComp.getNetworkId() != NULL_NET_ID) {
 switch (netComp.replicateMode) {
 case OWNER:
-      if (client.equals(getOwner(netEntity))) {
-        client.setNetInitial(netComp.getNetworkId());
-      }
-    break;
+        if (client.equals(getOwner(netEntity))) {
+          client.setNetInitial(netComp.getNetworkId());
+        }
+      break;
 default :
-  client.setNetInitial(netComp.getNetworkId());
-break;
+    client.setNetInitial(netComp.getNetworkId());
+  break;
+}
 }
 }
 }

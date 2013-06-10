@@ -1,7 +1,17 @@
 {
   if (super.setBlock(x,y,z,type,oldType)) {
     if (Thread.currentThread().equals(mainThread)) {
-      getOrCreateEntityAt(new Vector3i(x,y,z)).send(new BlockChangedEvent(new Vector3i(x,y,z),type,oldType));
+      Vector3i pos=new Vector3i(x,y,z);
+      EntityRef regionEntity=blockRegionLookup.get(pos);
+      if (regionEntity != null) {
+        regionEntity.send(new BlockChangedEvent(pos,type,oldType));
+      }
+      EntityRef blockEntity=getBlockEntityAt(new Vector3i(x,y,z));
+      if (blockEntity.exists()) {
+        blockEntity.destroy();
+      }
+      blockEntity=getOrCreateBlockEntityAt(pos);
+      blockEntity.send(new BlockChangedEvent(new Vector3i(x,y,z),type,oldType));
     }
  else {
       eventQueue.add(new BlockChangedEvent(new Vector3i(x,y,z),type,oldType));

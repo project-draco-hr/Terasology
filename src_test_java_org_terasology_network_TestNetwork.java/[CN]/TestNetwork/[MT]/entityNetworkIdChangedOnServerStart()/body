@@ -1,0 +1,13 @@
+{
+  EngineEntityManager entityManager=getEntityManager();
+  NetworkComponent netComp=new NetworkComponent();
+  netComp.setNetworkId(122);
+  EntityRef entity=entityManager.create(netComp);
+  Timer timer=mock(Timer.class);
+  NetworkSystem server=new NetworkSystemImpl(timer);
+  netSystems.add(server);
+  server.connectToEntitySystem(entityManager,CoreRegistry.get(EntitySystemLibrary.class),null);
+  server.host(7777);
+  assertFalse(122 == entity.getComponent(NetworkComponent.class).getNetworkId());
+  server.shutdown();
+}

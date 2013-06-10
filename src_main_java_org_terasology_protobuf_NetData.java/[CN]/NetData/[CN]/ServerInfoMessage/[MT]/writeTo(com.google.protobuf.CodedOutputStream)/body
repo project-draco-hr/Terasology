@@ -20,15 +20,18 @@
   for (int i=0; i < event_.size(); i++) {
     output.writeMessage(5,event_.get(i));
   }
-  if (getAssetIdsList().size() > 0) {
+  if (getAssetIdList().size() > 0) {
     output.writeRawVarint32(50);
-    output.writeRawVarint32(assetIdsMemoizedSerializedSize);
+    output.writeRawVarint32(assetIdMemoizedSerializedSize);
   }
-  for (int i=0; i < assetIds_.size(); i++) {
-    output.writeInt32NoTag(assetIds_.get(i));
+  for (int i=0; i < assetId_.size(); i++) {
+    output.writeInt32NoTag(assetId_.get(i));
   }
-  for (int i=0; i < assetUris_.size(); i++) {
-    output.writeBytes(7,assetUris_.getByteString(i));
+  for (int i=0; i < assetUri_.size(); i++) {
+    output.writeBytes(7,assetUri_.getByteString(i));
+  }
+  for (int i=0; i < registerBlockFamily_.size(); i++) {
+    output.writeBytes(8,registerBlockFamily_.getByteString(i));
   }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     output.writeBytes(15,getVersionBytes());

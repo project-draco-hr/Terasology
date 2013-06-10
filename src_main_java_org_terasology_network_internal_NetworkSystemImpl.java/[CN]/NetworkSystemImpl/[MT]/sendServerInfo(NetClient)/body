@@ -14,6 +14,9 @@
     serverInfoMessageBuilder.addBlockId(blockMapping.getValue());
     serverInfoMessageBuilder.addBlockName(blockMapping.getKey());
   }
+  for (  BlockFamily registeredBlockFamily : blockManager.listRegisteredBlockFamilies()) {
+    serverInfoMessageBuilder.addRegisterBlockFamily(registeredBlockFamily.getURI().toString());
+  }
   serializeComponentInfo(serverInfoMessageBuilder);
   serializeEventInfo(serverInfoMessageBuilder);
   serverInfoMessageBuilder.setClientId(client.getEntity().getComponent(NetworkComponent.class).getNetworkId());

@@ -1,12 +1,5 @@
 {
-  EntityRef newEntity;
-  if (message.hasBlockPos()) {
-    newEntity=blockEntityRegistry.getOrCreateBlockEntityAt(NetMessageUtil.convert(message.getBlockPos()));
-    entitySerializer.deserializeOnto(newEntity,message.getEntity());
-  }
- else {
-    newEntity=entitySerializer.deserialize(message.getEntity());
-  }
+  EntityRef newEntity=entitySerializer.deserialize(message.getEntity());
   if (newEntity == null) {
     logger.error("Received entity is null");
   }
