@@ -1,3 +1,7 @@
 {
-  return findMethod(field.getDeclaringClass(),"set" + field.getName().substring(0,1).toUpperCase(Locale.ENGLISH) + field.getName().substring(1),field.getType());
+  Method result=findMethod(field.getDeclaringClass(),"set" + field.getName().substring(0,1).toUpperCase(Locale.ENGLISH) + field.getName().substring(1),field.getType());
+  if (result != null) {
+    result.setAccessible(true);
+  }
+  return result;
 }

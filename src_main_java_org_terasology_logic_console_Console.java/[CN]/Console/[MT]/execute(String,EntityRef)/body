@@ -11,20 +11,9 @@
     commandEndIndex=0;
   }
   str=str.substring(commandEndIndex).trim();
-  String[] params=str.split(PARAM_SPLIT_REGEX);
-  String paramsStr="";
-  int paramsCount=0;
-  for (  String s : params) {
-    if (s.trim().isEmpty()) {
-      continue;
-    }
-    if (!paramsStr.isEmpty()) {
-      paramsStr+=",";
-    }
-    paramsStr+=s;
-    paramsCount++;
-  }
-  CommandInfo cmd=commandLookup.get(commandName,paramsCount);
+  List<String> params=splitParameters(str);
+  String paramsStr=PARAMETER_JOINER.join(params);
+  CommandInfo cmd=commandLookup.get(commandName,params.size());
   if (cmd == null) {
     if (commandLookup.containsRow(commandName)) {
       addMessage("Incorrect number of parameters");

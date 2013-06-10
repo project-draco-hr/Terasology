@@ -1,10 +1,12 @@
 {
   Method result=findMethod(field.getDeclaringClass(),"get" + field.getName().substring(0,1).toUpperCase(Locale.ENGLISH) + field.getName().substring(1));
   if (result != null && field.getType().equals(result.getReturnType())) {
+    result.setAccessible(true);
     return result;
   }
   result=findMethod(field.getDeclaringClass(),"is" + field.getName().substring(0,1).toUpperCase(Locale.ENGLISH) + field.getName().substring(1));
   if (result != null && field.getType().equals(result.getReturnType())) {
+    result.setAccessible(true);
     return result;
   }
   return null;
