@@ -1,14 +1,12 @@
 {
-  if (!networkSystem.getMode().isAuthority()) {
-    logger.debug("Received resynch event");
-    LocationComponent loc=entity.getComponent(LocationComponent.class);
-    Vector3f delta=new Vector3f(event.getPosition());
-    delta.sub(loc.getWorldPosition());
-    pendingResynch.put(entity,new ResynchData(delta,new Quat4f()));
-    RigidBody body=entityRigidBodies.get(entity);
-    if (body != null) {
-      body.setLinearVelocity(event.getVelocity());
-      body.setAngularVelocity(event.getAngularVelocity());
-    }
+  logger.debug("Received resynch event");
+  LocationComponent loc=entity.getComponent(LocationComponent.class);
+  Vector3f delta=new Vector3f(event.getPosition());
+  delta.sub(loc.getWorldPosition());
+  pendingResynch.put(entity,new ResynchData(delta,new Quat4f()));
+  RigidBody body=entityRigidBodies.get(entity);
+  if (body != null) {
+    body.setLinearVelocity(event.getVelocity());
+    body.setAngularVelocity(event.getAngularVelocity());
   }
 }

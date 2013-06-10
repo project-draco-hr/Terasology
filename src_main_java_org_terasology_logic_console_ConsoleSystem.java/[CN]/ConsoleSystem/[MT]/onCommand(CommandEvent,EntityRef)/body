@@ -1,11 +1,9 @@
 {
-  if (networkSystem.getMode().isAuthority()) {
-    List<String> params=console.splitParameters(event.getParams());
-    for (    CommandInfo cmd : console.getCommand(event.getCommand())) {
-      if (cmd.getParameterCount() == params.size() && cmd.isRunOnServer()) {
-        console.execute(event.getCommand() + " " + event.getParams(),entity);
-        break;
-      }
+  List<String> params=console.splitParameters(event.getParams());
+  for (  CommandInfo cmd : console.getCommand(event.getCommand())) {
+    if (cmd.getParameterCount() == params.size() && cmd.isRunOnServer()) {
+      console.execute(event.getCommand() + " " + event.getParams(),entity);
+      break;
     }
   }
 }

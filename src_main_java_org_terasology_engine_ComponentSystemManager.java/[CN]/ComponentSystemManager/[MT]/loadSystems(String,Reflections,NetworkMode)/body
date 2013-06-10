@@ -6,7 +6,7 @@
       continue;
     }
     RegisterSystem registerInfo=system.getAnnotation(RegisterSystem.class);
-    if (shouldRegister(registerInfo,netMode)) {
+    if (registerInfo.value().isValidFor(netMode)) {
       String id=packageName + ":" + system.getSimpleName();
       logger.debug("Registering system {}",id);
       try {
