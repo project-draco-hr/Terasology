@@ -1,13 +1,11 @@
 {
-  if (networkSystem.getMode().isAuthority()) {
-    InventoryComponent inventoryComponent=inventoryEntity.getComponent(InventoryComponent.class);
-    ItemComponent itemComponent=item.getComponent(ItemComponent.class);
-    if (inventoryComponent != null && itemComponent != null) {
-      int slot=inventoryComponent.itemSlots.indexOf(item);
-      if (slot > -1) {
-        putItemInSlot(inventoryEntity,inventoryComponent,slot,EntityRef.NULL);
-        inventoryEntity.saveComponent(inventoryComponent);
-      }
+  InventoryComponent inventoryComponent=inventoryEntity.getComponent(InventoryComponent.class);
+  ItemComponent itemComponent=item.getComponent(ItemComponent.class);
+  if (inventoryComponent != null && itemComponent != null) {
+    int slot=inventoryComponent.itemSlots.indexOf(item);
+    if (slot > -1) {
+      putItemInSlot(inventoryEntity,inventoryComponent,slot,EntityRef.NULL);
+      inventoryEntity.saveComponent(inventoryComponent);
     }
   }
 }

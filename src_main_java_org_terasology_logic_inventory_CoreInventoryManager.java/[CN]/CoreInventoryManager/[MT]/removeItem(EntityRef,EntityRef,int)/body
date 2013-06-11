@@ -1,0 +1,23 @@
+{
+  if (stackCount > 0) {
+    InventoryComponent inventoryComponent=inventoryEntity.getComponent(InventoryComponent.class);
+    ItemComponent itemComponent=item.getComponent(ItemComponent.class);
+    if (inventoryComponent != null && itemComponent != null) {
+      int slot=inventoryComponent.itemSlots.indexOf(item);
+      if (slot > -1) {
+        int stackChange=Math.min(stackCount,itemComponent.stackCount);
+        if (stackChange == itemComponent.stackCount) {
+          removeItem(inventoryEntity,item);
+          return item;
+        }
+ else {
+          EntityRef removedItem=createNewStack(item,stackChange);
+          setStackSize(item,itemComponent,itemComponent.stackCount - stackChange);
+          inventoryEntity.saveComponent(inventoryComponent);
+          return removedItem;
+        }
+      }
+    }
+  }
+  return EntityRef.NULL;
+}
