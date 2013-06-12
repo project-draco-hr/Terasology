@@ -1,7 +1,8 @@
 {
   Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
   byte connectingOnSides=block.getComponent(SignalConsumerComponent.class).connectionSides;
-  signalNetwork.removeLeafBlock(toNode(location,connectingOnSides));
+  final NetworkNode consumer=toNode(location,connectingOnSides);
+  signalNetwork.removeLeafBlock(consumer);
   signalConsumers.remove(location);
-  consumerSignalInNetworks.remove(location);
+  consumerSignalInNetworks.remove(consumer);
 }

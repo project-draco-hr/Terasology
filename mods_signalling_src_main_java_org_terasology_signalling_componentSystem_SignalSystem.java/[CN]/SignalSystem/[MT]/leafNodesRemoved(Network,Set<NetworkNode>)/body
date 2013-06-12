@@ -1,19 +1,17 @@
 {
   for (  NetworkNode modifiedLeafNode : leafNodes) {
-    Vector3i nodeLocation=modifiedLeafNode.location.toVector3i();
-    Byte producerConnectingSides=signalProducers.get(nodeLocation);
-    if (producerConnectingSides != null && producerConnectingSides.byteValue() == modifiedLeafNode.connectionSides) {
+    if (signalProducers.containsValue(modifiedLeafNode)) {
       logger.info("Producer removed from network");
       networksToRecalculate.add(network);
-      producerNetworks.remove(nodeLocation,network);
-      producersInNetwork.remove(network,nodeLocation);
+      producerNetworks.remove(modifiedLeafNode,network);
+      producersInNetwork.remove(network,modifiedLeafNode);
     }
  else {
       logger.info("Consumer removed from network");
-      consumersToRecalculate.add(nodeLocation);
-      consumerNetworks.remove(nodeLocation,network);
-      consumersInNetwork.remove(network,nodeLocation);
-      consumerSignalInNetworks.get(nodeLocation).remove(network);
+      consumersToRecalculate.add(modifiedLeafNode);
+      consumerNetworks.remove(modifiedLeafNode,network);
+      consumersInNetwork.remove(network,modifiedLeafNode);
+      consumerSignalInNetworks.get(modifiedLeafNode).remove(network);
     }
   }
 }

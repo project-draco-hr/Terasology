@@ -2,12 +2,13 @@
   if (block.hasComponent(BlockComponent.class)) {
     Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
     final SignalConsumerComponent consumerComponent=block.getComponent(SignalConsumerComponent.class);
-    final Byte oldConnectionSides=signalConsumers.get(location);
+    final byte oldConnectionSides=signalConsumers.get(location).connectionSides;
     byte newConnectionSides=consumerComponent.connectionSides;
+    NetworkNode node=toNode(location,newConnectionSides);
     if (oldConnectionSides != newConnectionSides) {
-      signalConsumers.put(location,newConnectionSides);
-      signalNetwork.updateLeafBlock(toNode(location,oldConnectionSides),toNode(location,newConnectionSides));
+      signalConsumers.put(location,node);
+      signalNetwork.updateLeafBlock(toNode(location,oldConnectionSides),node);
     }
-    consumersToRecalculate.add(location);
+    consumersToRecalculate.add(node);
   }
 }

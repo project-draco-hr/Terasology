@@ -1,17 +1,17 @@
 {
-  for (  Vector3i producerChanges : producersSignalsChanged)   networksToRecalculate.addAll(producerNetworks.get(producerChanges));
-  Set<Vector3i> consumersToEvaluate=Sets.newHashSet();
+  for (  NetworkNode producerChanges : producersSignalsChanged)   networksToRecalculate.addAll(producerNetworks.get(producerChanges));
+  Set<NetworkNode> consumersToEvaluate=Sets.newHashSet();
   for (  Network network : networksToRecalculate) {
     if (signalNetwork.isNetworkActive(network)) {
-      Collection<Vector3i> consumersInNetwork=this.consumersInNetwork.get(network);
-      for (      Vector3i consumerLocation : consumersInNetwork) {
+      Collection<NetworkNode> consumersInNetwork=this.consumersInNetwork.get(network);
+      for (      NetworkNode consumerLocation : consumersInNetwork) {
         boolean consumerSignalInNetwork=getConsumerSignalInNetwork(network,consumerLocation);
         consumerSignalInNetworks.get(consumerLocation).put(network,consumerSignalInNetwork);
       }
       consumersToEvaluate.addAll(consumersInNetwork);
     }
   }
-  for (  Vector3i modifiedConsumer : consumersToRecalculate) {
+  for (  NetworkNode modifiedConsumer : consumersToRecalculate) {
     Collection<Network> networks=consumerNetworks.get(modifiedConsumer);
     for (    Network network : networks) {
       boolean consumerSignalInNetwork=getConsumerSignalInNetwork(network,modifiedConsumer);
@@ -19,9 +19,9 @@
     }
     consumersToEvaluate.add(modifiedConsumer);
   }
-  for (  Vector3i consumerToEvaluate : consumersToEvaluate) {
-    if (signalConsumers.containsKey(consumerToEvaluate)) {
-      final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(consumerToEvaluate);
+  for (  NetworkNode consumerToEvaluate : consumersToEvaluate) {
+    if (signalConsumers.containsValue(consumerToEvaluate)) {
+      final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(consumerToEvaluate.location.toVector3i());
       final SignalConsumerStatusComponent consumerStatusComponent=blockEntity.getComponent(SignalConsumerStatusComponent.class);
       final SignalConsumerComponent consumerComponent=blockEntity.getComponent(SignalConsumerComponent.class);
       if (consumerComponent != null && consumerStatusComponent != null) {
