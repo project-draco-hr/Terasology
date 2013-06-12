@@ -1,0 +1,26 @@
+{
+  if (distance < 0)   throw new IllegalArgumentException("distance must be >= 0");
+  if ((!hasNetworkingNode(from) && !hasLeafNode(from)) || (!hasNetworkingNode(to) && !hasLeafNode(to)))   throw new IllegalArgumentException("Cannot test nodes not in network");
+  if (from.equals(to))   return true;
+  if (distance == 0)   return false;
+  if (SimpleNetwork.areNodesConnecting(from,to))   return true;
+  Set<NetworkNode> visitedNodes=Sets.newHashSet();
+  visitedNodes.add(from);
+  Set<NetworkNode> networkingNodesToTest=Sets.newHashSet();
+  listConnectedNotVisitedNetworkingNodes(visitedNodes,from,networkingNodesToTest);
+  int distanceSearched=1;
+  while (distanceSearched < distance) {
+    distanceSearched++;
+    for (    NetworkNode nodeToTest : networkingNodesToTest) {
+      if (SimpleNetwork.areNodesConnecting(nodeToTest,to)) {
+        distanceCache.put(new TwoNetworkNodes(from,to),distanceSearched);
+        return true;
+      }
+      visitedNodes.add(nodeToTest);
+    }
+    Set<NetworkNode> nextNetworkingNodesToTest=Sets.newHashSet();
+    for (    NetworkNode nodeToTest : networkingNodesToTest)     listConnectedNotVisitedNetworkingNodes(visitedNodes,nodeToTest,nextNetworkingNodesToTest);
+    networkingNodesToTest=nextNetworkingNodesToTest;
+  }
+  return false;
+}

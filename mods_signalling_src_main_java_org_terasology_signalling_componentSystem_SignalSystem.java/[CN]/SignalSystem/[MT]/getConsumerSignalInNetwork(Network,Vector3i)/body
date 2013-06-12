@@ -6,7 +6,7 @@
   }
   for (  Vector3i producerLocation : producers) {
     final int signalStrength=producerSignalStrengths.get(producerLocation);
-    if (network.isInDistance(signalStrength,producerLocation,signalProducers.get(producerLocation),location,signalConsumers.get(location)))     return true;
+    if (network.isInDistance(signalStrength,new NetworkNode(producerLocation,signalProducers.get(producerLocation)),new NetworkNode(location,signalConsumers.get(location))))     return true;
   }
   return false;
 }

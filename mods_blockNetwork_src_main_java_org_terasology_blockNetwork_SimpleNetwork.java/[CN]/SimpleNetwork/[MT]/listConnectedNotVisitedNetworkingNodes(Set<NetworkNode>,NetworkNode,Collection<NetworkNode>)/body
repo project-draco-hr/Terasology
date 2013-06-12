@@ -1,0 +1,8 @@
+{
+  for (  Direction connectingOnSide : DirectionsUtil.getDirections(location.connectionSides)) {
+    final ImmutableBlockLocation possibleConnectionLocation=location.location.move(connectingOnSide);
+    for (    NetworkNode possibleConnection : networkingNodes.get(possibleConnectionLocation)) {
+      if (!visitedNodes.contains(possibleConnection) && DirectionsUtil.hasDirection(possibleConnection.connectionSides,connectingOnSide.reverse()))       result.add(possibleConnection);
+    }
+  }
+}

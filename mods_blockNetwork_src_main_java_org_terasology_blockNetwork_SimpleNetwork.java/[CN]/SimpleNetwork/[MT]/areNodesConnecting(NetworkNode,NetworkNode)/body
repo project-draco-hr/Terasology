@@ -1,0 +1,7 @@
+{
+  for (  Direction direction : DirectionsUtil.getDirections(node1.connectionSides)) {
+    final ImmutableBlockLocation possibleConnectedLocation=node1.location.move(direction);
+    if (node2.location.equals(possibleConnectedLocation) && DirectionsUtil.hasDirection(node2.connectionSides,direction.reverse()))     return true;
+  }
+  return false;
+}

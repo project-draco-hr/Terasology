@@ -2,8 +2,9 @@
   validateNotMutating();
   mutating=true;
   try {
-    networkingNodes.add(location);
-    addNetworkingBlockInternal(location,connectingOnSides);
+    final NetworkNode networkNode=new NetworkNode(location,connectingOnSides);
+    networkingNodes.add(networkNode);
+    addNetworkingBlockInternal(networkNode);
   }
   finally {
     mutating=false;

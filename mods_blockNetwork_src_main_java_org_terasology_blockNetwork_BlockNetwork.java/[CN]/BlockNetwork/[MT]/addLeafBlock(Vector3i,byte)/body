@@ -2,23 +2,22 @@
   validateNotMutating();
   mutating=true;
   try {
+    final NetworkNode networkNode=new NetworkNode(location,connectingOnSides);
     for (    SimpleNetwork network : networks) {
-      if (network.canAddLeafNode(location,connectingOnSides)) {
-        network.addLeafNode(location,connectingOnSides);
-        notifyLeafNodesAdded(network,ImmutableMultimap.of(location,connectingOnSides));
+      if (network.canAddLeafNode(networkNode)) {
+        network.addLeafNode(networkNode);
+        notifyLeafNodesAdded(network,toMultimap(Collections.singleton(networkNode)));
       }
     }
-    for (    Map.Entry<Vector3i,Byte> leafNode : leafNodes.entries()) {
-      final Vector3i leafLocation=leafNode.getKey();
-      final byte leafConnectingOnSides=leafNode.getValue();
-      if (SimpleNetwork.areNodesConnecting(location,connectingOnSides,leafLocation,leafConnectingOnSides)) {
-        SimpleNetwork degenerateNetwork=SimpleNetwork.createDegenerateNetwork(location,connectingOnSides,leafLocation,leafConnectingOnSides);
+    for (    NetworkNode leafNode : leafNodes) {
+      if (SimpleNetwork.areNodesConnecting(networkNode,leafNode)) {
+        SimpleNetwork degenerateNetwork=SimpleNetwork.createDegenerateNetwork(networkNode,leafNode);
         networks.add(degenerateNetwork);
         notifyNetworkAdded(degenerateNetwork);
-        notifyLeafNodesAdded(degenerateNetwork,ImmutableMultimap.of(location,connectingOnSides,leafLocation,leafConnectingOnSides));
+        notifyLeafNodesAdded(degenerateNetwork,toMultimap(Sets.newHashSet(networkNode,leafNode)));
       }
     }
-    leafNodes.put(location,connectingOnSides);
+    leafNodes.add(networkNode);
   }
   finally {
     mutating=false;

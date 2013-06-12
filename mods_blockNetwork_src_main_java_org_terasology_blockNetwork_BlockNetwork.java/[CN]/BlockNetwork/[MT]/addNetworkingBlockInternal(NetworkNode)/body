@@ -1,0 +1,43 @@
+{
+  SimpleNetwork addToNetwork=null;
+  Set<NetworkNode> networkingNodesToAdd=Sets.newHashSet();
+  networkingNodesToAdd.add(networkNode);
+  Set<NetworkNode> newLeafNodes=Sets.newHashSet();
+  final Iterator<SimpleNetwork> networkIterator=networks.iterator();
+  while (networkIterator.hasNext()) {
+    final SimpleNetwork network=networkIterator.next();
+    if (network.canAddNetworkingNode(networkNode)) {
+      if (addToNetwork == null) {
+        addToNetwork=network;
+      }
+ else {
+        Set<NetworkNode> networkingNodes=Sets.newHashSet(network.getNetworkingNodes());
+        Set<NetworkNode> leafNodes=Sets.newHashSet(network.getLeafNodes());
+        networkingNodesToAdd.addAll(networkingNodes);
+        newLeafNodes.addAll(leafNodes);
+        network.removeAllLeafNodes();
+        notifyLeafNodesRemoved(network,toMultimap(leafNodes));
+        network.removeAllNetworkingNodes();
+        notifyNetworkingNodesRemoved(network,toMultimap(networkingNodes));
+        networkIterator.remove();
+        notifyNetworkRemoved(network);
+      }
+    }
+  }
+  if (addToNetwork == null) {
+    SimpleNetwork newNetwork=new SimpleNetwork();
+    networks.add(newNetwork);
+    notifyNetworkAdded(newNetwork);
+    addToNetwork=newNetwork;
+  }
+  for (  NetworkNode networkingNode : networkingNodesToAdd)   addToNetwork.addNetworkingNode(networkingNode);
+  notifyNetworkingNodesAdded(addToNetwork,toMultimap(networkingNodesToAdd));
+  for (  NetworkNode leafNode : newLeafNodes)   addToNetwork.addLeafNode(leafNode);
+  for (  NetworkNode leafNode : leafNodes) {
+    if (addToNetwork.canAddLeafNode(leafNode)) {
+      addToNetwork.addLeafNode(leafNode);
+      newLeafNodes.add(leafNode);
+    }
+  }
+  if (newLeafNodes.size() > 0)   notifyLeafNodesAdded(addToNetwork,toMultimap(newLeafNodes));
+}

@@ -2,16 +2,17 @@
   validateNotMutating();
   mutating=true;
   try {
-    leafNodes.remove(location,connectingOnSides);
+    NetworkNode networkNode=new NetworkNode(location,connectingOnSides);
+    leafNodes.remove(networkNode);
     final Iterator<SimpleNetwork> networkIterator=networks.iterator();
     while (networkIterator.hasNext()) {
       final SimpleNetwork network=networkIterator.next();
-      if (network.hasLeafNode(location,connectingOnSides)) {
-        boolean degenerate=network.removeLeafNode(location,connectingOnSides);
+      if (network.hasLeafNode(networkNode)) {
+        boolean degenerate=network.removeLeafNode(networkNode);
         if (!degenerate)         notifyLeafNodesRemoved(network,ImmutableMultimap.of(location,connectingOnSides));
  else {
-          Map.Entry<Vector3i,Byte> onlyLeafNode=network.getLeafNodes().entries().iterator().next();
-          notifyLeafNodesRemoved(network,ImmutableMultimap.of(location,connectingOnSides,onlyLeafNode.getKey(),onlyLeafNode.getValue()));
+          NetworkNode onlyLeafNode=network.getLeafNodes().iterator().next();
+          notifyLeafNodesRemoved(network,toMultimap(Sets.<NetworkNode>newHashSet(networkNode,onlyLeafNode)));
           networkIterator.remove();
           notifyNetworkRemoved(network);
         }
