@@ -6,7 +6,7 @@
     byte newConnectionSides=producerComponent.connectionSides;
     if (oldConnectionSides != newConnectionSides) {
       signalProducers.put(location,newConnectionSides);
-      signalNetwork.updateLeafBlock(location,oldConnectionSides,newConnectionSides);
+      signalNetwork.updateLeafBlock(toNode(location,oldConnectionSides),toNode(location,newConnectionSides));
     }
     int oldSignalStrength=producerSignalStrengths.get(location);
     int newSignalStrength=producerComponent.signalStrength;

@@ -6,7 +6,7 @@
     byte newConnectionSides=consumerComponent.connectionSides;
     if (oldConnectionSides != newConnectionSides) {
       signalConsumers.put(location,newConnectionSides);
-      signalNetwork.updateLeafBlock(location,oldConnectionSides,newConnectionSides);
+      signalNetwork.updateLeafBlock(toNode(location,oldConnectionSides),toNode(location,newConnectionSides));
     }
     consumersToRecalculate.add(location);
   }

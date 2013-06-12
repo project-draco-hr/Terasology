@@ -1,6 +1,7 @@
 {
   if (block.hasComponent(BlockComponent.class)) {
     byte connectingOnSides=block.getComponent(SignalConductorComponent.class).connectionSides;
-    signalNetwork.updateNetworkingBlock(new Vector3i(block.getComponent(BlockComponent.class).getPosition()),(byte)0,connectingOnSides);
+    final Vector3i position=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+    signalNetwork.updateNetworkingBlock(toNode(position,(byte)0),toNode(new Vector3i(position),connectingOnSides));
   }
 }

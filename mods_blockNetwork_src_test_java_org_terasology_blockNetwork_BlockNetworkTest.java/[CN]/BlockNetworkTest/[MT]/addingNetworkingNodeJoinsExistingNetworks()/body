@@ -1,9 +1,9 @@
 {
-  blockNetwork.addNetworkingBlock(new Vector3i(0,0,1),allDirections);
-  blockNetwork.addNetworkingBlock(new Vector3i(0,0,-1),allDirections);
+  blockNetwork.addNetworkingBlock(toNode(new Vector3i(0,0,1),allDirections));
+  blockNetwork.addNetworkingBlock(toNode(new Vector3i(0,0,-1),allDirections));
   assertEquals(2,blockNetwork.getNetworks().size());
   assertEquals(2,listener.networksAdded);
-  blockNetwork.addNetworkingBlock(new Vector3i(0,0,0),allDirections);
+  blockNetwork.addNetworkingBlock(toNode(new Vector3i(0,0,0),allDirections));
   assertEquals(1,blockNetwork.getNetworks().size());
   Network network=blockNetwork.getNetworks().iterator().next();
   assertTrue(network.hasNetworkingNode(toNode(new Vector3i(0,0,-1),allDirections)));
