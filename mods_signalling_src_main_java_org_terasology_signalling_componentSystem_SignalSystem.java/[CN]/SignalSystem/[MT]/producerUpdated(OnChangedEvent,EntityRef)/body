@@ -1,0 +1,18 @@
+{
+  if (block.hasComponent(BlockComponent.class)) {
+    Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+    final SignalProducerComponent producerComponent=block.getComponent(SignalProducerComponent.class);
+    final Byte oldConnectionSides=signalProducers.get(location);
+    byte newConnectionSides=producerComponent.connectionSides;
+    if (oldConnectionSides != newConnectionSides) {
+      signalProducers.put(location,newConnectionSides);
+      signalNetwork.updateLeafBlock(location,oldConnectionSides,newConnectionSides);
+    }
+    int oldSignalStrength=producerSignalStrengths.get(location);
+    int newSignalStrength=producerComponent.signalStrength;
+    if (oldSignalStrength != newSignalStrength) {
+      producerSignalStrengths.put(location,newSignalStrength);
+      producersSignalsChanged.add(location);
+    }
+  }
+}

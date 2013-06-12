@@ -1,0 +1,26 @@
+{
+  validateNotMutating();
+  mutating=true;
+  try {
+    for (    SimpleNetwork network : networks) {
+      if (network.canAddLeafNode(location,connectingOnSides)) {
+        network.addLeafNode(location,connectingOnSides);
+        notifyLeafNodesAdded(network,ImmutableMultimap.of(location,connectingOnSides));
+      }
+    }
+    for (    Map.Entry<Vector3i,Byte> leafNode : leafNodes.entries()) {
+      final Vector3i leafLocation=leafNode.getKey();
+      final byte leafConnectingOnSides=leafNode.getValue();
+      if (SimpleNetwork.areNodesConnecting(location,connectingOnSides,leafLocation,leafConnectingOnSides)) {
+        SimpleNetwork degenerateNetwork=SimpleNetwork.createDegenerateNetwork(location,connectingOnSides,leafLocation,leafConnectingOnSides);
+        networks.add(degenerateNetwork);
+        notifyNetworkAdded(degenerateNetwork);
+        notifyLeafNodesAdded(degenerateNetwork,ImmutableMultimap.of(location,connectingOnSides,leafLocation,leafConnectingOnSides));
+      }
+    }
+    leafNodes.put(location,connectingOnSides);
+  }
+  finally {
+    mutating=false;
+  }
+}

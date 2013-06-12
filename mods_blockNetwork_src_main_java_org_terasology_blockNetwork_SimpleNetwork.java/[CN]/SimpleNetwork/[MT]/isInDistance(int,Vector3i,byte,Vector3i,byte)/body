@@ -1,0 +1,26 @@
+{
+  if (distance < 0)   throw new IllegalArgumentException("distance must be >= 0");
+  if ((!hasNetworkingNode(from) && !hasLeafNode(from,fromConnectionSides)) || (!hasNetworkingNode(to) && !hasLeafNode(to,toConnectionSides)))   throw new IllegalArgumentException("Cannot test nodes not in network");
+  if (from.equals(to) && fromConnectionSides == toConnectionSides)   return true;
+  if (distance == 0)   return false;
+  if (SimpleNetwork.areNodesConnecting(from,fromConnectionSides,to,toConnectionSides))   return true;
+  Set<Vector3i> visitedNodes=Sets.newHashSet();
+  visitedNodes.add(from);
+  Map<Vector3i,Byte> networkingNodesToTest=Maps.newHashMap();
+  listConnectedNotVisitedNetworkingNodes(visitedNodes,from,fromConnectionSides,networkingNodesToTest);
+  int distanceSearched=1;
+  while (distanceSearched < distance) {
+    distanceSearched++;
+    for (    Map.Entry<Vector3i,Byte> nodeToTest : networkingNodesToTest.entrySet()) {
+      if (SimpleNetwork.areNodesConnecting(nodeToTest.getKey(),nodeToTest.getValue(),to,toConnectionSides)) {
+        distanceCache.put(new TwoNetworkNodes(new NetworkNode(from,fromConnectionSides),new NetworkNode(to,toConnectionSides)),distanceSearched);
+        return true;
+      }
+      visitedNodes.add(nodeToTest.getKey());
+    }
+    Map<Vector3i,Byte> nextNetworkingNodesToTest=Maps.newHashMap();
+    for (    Map.Entry<Vector3i,Byte> nodeToTest : networkingNodesToTest.entrySet())     listConnectedNotVisitedNetworkingNodes(visitedNodes,nodeToTest.getKey(),nodeToTest.getValue(),nextNetworkingNodesToTest);
+    networkingNodesToTest=nextNetworkingNodesToTest;
+  }
+  return false;
+}

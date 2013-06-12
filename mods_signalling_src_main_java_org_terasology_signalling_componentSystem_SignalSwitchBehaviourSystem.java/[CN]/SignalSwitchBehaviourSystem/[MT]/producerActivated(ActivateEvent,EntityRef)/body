@@ -1,0 +1,11 @@
+{
+  SignalProducerComponent producerComponent=entity.getComponent(SignalProducerComponent.class);
+  Vector3i blockLocation=new Vector3i(entity.getComponent(BlockComponent.class).getPosition());
+  Block blockAtLocation=worldProvider.getBlock(blockLocation);
+  if (blockAtLocation == signalTransformer) {
+    int result=producerComponent.signalStrength + 1;
+    if (result == 11)     result=0;
+    producerComponent.signalStrength=result;
+    entity.saveComponent(producerComponent);
+  }
+}

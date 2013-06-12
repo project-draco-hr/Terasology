@@ -1,0 +1,24 @@
+{
+  validateNotMutating();
+  mutating=true;
+  try {
+    leafNodes.remove(location,connectingOnSides);
+    final Iterator<SimpleNetwork> networkIterator=networks.iterator();
+    while (networkIterator.hasNext()) {
+      final SimpleNetwork network=networkIterator.next();
+      if (network.hasLeafNode(location,connectingOnSides)) {
+        boolean degenerate=network.removeLeafNode(location,connectingOnSides);
+        if (!degenerate)         notifyLeafNodesRemoved(network,ImmutableMultimap.of(location,connectingOnSides));
+ else {
+          Map.Entry<Vector3i,Byte> onlyLeafNode=network.getLeafNodes().entries().iterator().next();
+          notifyLeafNodesRemoved(network,ImmutableMultimap.of(location,connectingOnSides,onlyLeafNode.getKey(),onlyLeafNode.getValue()));
+          networkIterator.remove();
+          notifyNetworkRemoved(network);
+        }
+      }
+    }
+  }
+  finally {
+    mutating=false;
+  }
+}

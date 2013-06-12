@@ -1,0 +1,12 @@
+{
+  final Collection<Vector3i> producers=producersInNetwork.get(network);
+  for (  Vector3i producer : producers) {
+    final int signalStrength=producerSignalStrengths.get(producer);
+    if (signalStrength == -1)     return true;
+  }
+  for (  Vector3i producerLocation : producers) {
+    final int signalStrength=producerSignalStrengths.get(producerLocation);
+    if (network.isInDistance(signalStrength,producerLocation,signalProducers.get(producerLocation),location,signalConsumers.get(location)))     return true;
+  }
+  return false;
+}

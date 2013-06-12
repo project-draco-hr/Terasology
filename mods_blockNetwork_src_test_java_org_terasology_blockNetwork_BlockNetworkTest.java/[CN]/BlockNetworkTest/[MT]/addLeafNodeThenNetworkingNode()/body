@@ -1,0 +1,10 @@
+{
+  blockNetwork.addLeafBlock(new Vector3i(0,0,1),allDirections);
+  assertEquals(0,listener.networksAdded);
+  blockNetwork.addNetworkingBlock(new Vector3i(0,0,0),allDirections);
+  assertEquals(1,blockNetwork.getNetworks().size());
+  Network network=blockNetwork.getNetworks().iterator().next();
+  assertTrue(network.hasLeafNode(new Vector3i(0,0,1),allDirections));
+  assertTrue(network.hasNetworkingNode(new Vector3i(0,0,0)));
+  assertEquals(1,listener.networksAdded);
+}

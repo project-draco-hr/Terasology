@@ -1,0 +1,11 @@
+{
+  if (isEmptyNetwork())   return true;
+  if (networkingNodes.containsKey(location) || leafNodes.containsKey(location))   return false;
+  for (  Direction connectingOnSide : DirectionsUtil.getDirections(connectingOnSides)) {
+    final Vector3i possibleNodeLocation=new Vector3i(location);
+    possibleNodeLocation.add(connectingOnSide.getVector3i());
+    final Byte directionsForNodeOnThatSide=networkingNodes.get(possibleNodeLocation);
+    if (directionsForNodeOnThatSide != null && DirectionsUtil.hasDirection(directionsForNodeOnThatSide,connectingOnSide.reverse()))     return true;
+  }
+  return false;
+}

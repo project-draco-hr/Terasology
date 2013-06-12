@@ -1,0 +1,13 @@
+{
+  Map<Vector3i,Byte> result=Maps.newHashMap();
+  for (  Direction connectingOnSide : DirectionsUtil.getDirections(connectionSides)) {
+    final Vector3i possibleNodeLocation=new Vector3i(location);
+    possibleNodeLocation.add(connectingOnSide.getVector3i());
+    final Byte directionsForNodeOnThatSide=networkingNodes.get(possibleNodeLocation);
+    if (directionsForNodeOnThatSide != null && DirectionsUtil.hasDirection(directionsForNodeOnThatSide,connectingOnSide.reverse()))     result.put(possibleNodeLocation,directionsForNodeOnThatSide);
+    for (    byte directionsForLeafNodeOnThatSide : leafNodes.get(possibleNodeLocation)) {
+      if (DirectionsUtil.hasDirection(directionsForLeafNodeOnThatSide,connectingOnSide.reverse()))       result.put(possibleNodeLocation,directionsForLeafNodeOnThatSide);
+    }
+  }
+  return result;
+}
