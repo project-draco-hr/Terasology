@@ -9,10 +9,10 @@
       final SimpleNetwork network=networkIterator.next();
       if (network.hasLeafNode(networkNode)) {
         boolean degenerate=network.removeLeafNode(networkNode);
-        if (!degenerate)         notifyLeafNodesRemoved(network,ImmutableMultimap.of(location,connectingOnSides));
+        if (!degenerate)         notifyLeafNodesRemoved(network,Collections.singleton(networkNode));
  else {
           NetworkNode onlyLeafNode=network.getLeafNodes().iterator().next();
-          notifyLeafNodesRemoved(network,toMultimap(Sets.<NetworkNode>newHashSet(networkNode,onlyLeafNode)));
+          notifyLeafNodesRemoved(network,Sets.<NetworkNode>newHashSet(networkNode,onlyLeafNode));
           networkIterator.remove();
           notifyNetworkRemoved(network);
         }

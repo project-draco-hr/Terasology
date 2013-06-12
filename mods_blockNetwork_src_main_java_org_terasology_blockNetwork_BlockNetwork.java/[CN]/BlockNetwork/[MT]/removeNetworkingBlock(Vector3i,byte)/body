@@ -9,9 +9,9 @@
     Set<NetworkNode> networkingNodes=Sets.newHashSet(networkWithBlock.getNetworkingNodes());
     Set<NetworkNode> leafNodes=Sets.newHashSet(networkWithBlock.getLeafNodes());
     networkWithBlock.removeAllLeafNodes();
-    notifyLeafNodesRemoved(networkWithBlock,toMultimap(leafNodes));
+    notifyLeafNodesRemoved(networkWithBlock,leafNodes);
     networkWithBlock.removeAllNetworkingNodes();
-    notifyNetworkingNodesRemoved(networkWithBlock,toMultimap(networkingNodes));
+    notifyNetworkingNodesRemoved(networkWithBlock,Collections.unmodifiableSet(networkingNodes));
     networks.remove(networkWithBlock);
     notifyNetworkRemoved(networkWithBlock);
     for (    NetworkNode networkingNode : networkingNodes) {

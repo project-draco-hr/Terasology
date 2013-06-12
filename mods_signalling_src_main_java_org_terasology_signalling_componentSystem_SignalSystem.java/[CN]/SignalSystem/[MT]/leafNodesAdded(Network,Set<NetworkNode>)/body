@@ -1,0 +1,18 @@
+{
+  for (  NetworkNode modifiedLeafNode : leafNodes) {
+    Vector3i nodeLocation=modifiedLeafNode.location.toVector3i();
+    Byte producerConnectingSides=signalProducers.get(nodeLocation);
+    if (producerConnectingSides != null && producerConnectingSides.byteValue() == modifiedLeafNode.connectionSides) {
+      logger.info("Producer added to network");
+      networksToRecalculate.add(network);
+      producerNetworks.put(nodeLocation,network);
+      producersInNetwork.put(network,nodeLocation);
+    }
+ else {
+      logger.info("Consumer added to network");
+      consumersToRecalculate.add(nodeLocation);
+      consumerNetworks.put(nodeLocation,network);
+      consumersInNetwork.put(network,nodeLocation);
+    }
+  }
+}

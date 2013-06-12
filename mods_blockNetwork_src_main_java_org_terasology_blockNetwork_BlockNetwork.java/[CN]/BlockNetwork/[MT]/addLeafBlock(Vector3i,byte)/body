@@ -6,7 +6,7 @@
     for (    SimpleNetwork network : networks) {
       if (network.canAddLeafNode(networkNode)) {
         network.addLeafNode(networkNode);
-        notifyLeafNodesAdded(network,toMultimap(Collections.singleton(networkNode)));
+        notifyLeafNodesAdded(network,Collections.singleton(networkNode));
       }
     }
     for (    NetworkNode leafNode : leafNodes) {
@@ -14,7 +14,7 @@
         SimpleNetwork degenerateNetwork=SimpleNetwork.createDegenerateNetwork(networkNode,leafNode);
         networks.add(degenerateNetwork);
         notifyNetworkAdded(degenerateNetwork);
-        notifyLeafNodesAdded(degenerateNetwork,toMultimap(Sets.newHashSet(networkNode,leafNode)));
+        notifyLeafNodesAdded(degenerateNetwork,Sets.newHashSet(networkNode,leafNode));
       }
     }
     leafNodes.add(networkNode);

@@ -16,9 +16,9 @@
         networkingNodesToAdd.addAll(networkingNodes);
         newLeafNodes.addAll(leafNodes);
         network.removeAllLeafNodes();
-        notifyLeafNodesRemoved(network,toMultimap(leafNodes));
+        notifyLeafNodesRemoved(network,leafNodes);
         network.removeAllNetworkingNodes();
-        notifyNetworkingNodesRemoved(network,toMultimap(networkingNodes));
+        notifyNetworkingNodesRemoved(network,networkingNodes);
         networkIterator.remove();
         notifyNetworkRemoved(network);
       }
@@ -31,7 +31,7 @@
     addToNetwork=newNetwork;
   }
   for (  NetworkNode networkingNode : networkingNodesToAdd)   addToNetwork.addNetworkingNode(networkingNode);
-  notifyNetworkingNodesAdded(addToNetwork,toMultimap(networkingNodesToAdd));
+  notifyNetworkingNodesAdded(addToNetwork,networkingNodesToAdd);
   for (  NetworkNode leafNode : newLeafNodes)   addToNetwork.addLeafNode(leafNode);
   for (  NetworkNode leafNode : leafNodes) {
     if (addToNetwork.canAddLeafNode(leafNode)) {
@@ -39,5 +39,5 @@
       newLeafNodes.add(leafNode);
     }
   }
-  if (newLeafNodes.size() > 0)   notifyLeafNodesAdded(addToNetwork,toMultimap(newLeafNodes));
+  if (newLeafNodes.size() > 0)   notifyLeafNodesAdded(addToNetwork,newLeafNodes);
 }
