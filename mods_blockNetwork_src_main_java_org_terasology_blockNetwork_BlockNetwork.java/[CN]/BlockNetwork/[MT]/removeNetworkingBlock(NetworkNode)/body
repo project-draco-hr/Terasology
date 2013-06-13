@@ -4,7 +4,7 @@
   try {
     SimpleNetwork networkWithBlock=findNetworkWithNetworkingBlock(networkNode);
     if (networkWithBlock == null)     throw new IllegalStateException("Trying to remove a networking block that doesn't belong to any network");
-    networkingNodes.remove(networkNode);
+    networkingNodes.remove(networkNode.location,networkNode);
     Set<NetworkNode> networkingNodes=Sets.newHashSet(networkWithBlock.getNetworkingNodes());
     Set<NetworkNode> leafNodes=Sets.newHashSet(networkWithBlock.getLeafNodes());
     networkWithBlock.removeAllLeafNodes();
