@@ -1,4 +1,7 @@
 {
   byte connectingOnSides=block.getComponent(SignalConductorComponent.class).connectionSides;
-  signalNetwork.addNetworkingBlock(toNode(new Vector3i(block.getComponent(BlockComponent.class).getPosition()),connectingOnSides));
+  final Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+  final NetworkNode conductorNode=toNode(location,connectingOnSides);
+  signalConductors.put(location,conductorNode);
+  signalNetwork.addNetworkingBlock(conductorNode);
 }

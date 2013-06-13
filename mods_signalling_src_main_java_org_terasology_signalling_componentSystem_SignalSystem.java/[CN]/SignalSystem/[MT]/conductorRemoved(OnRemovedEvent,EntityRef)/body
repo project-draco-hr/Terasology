@@ -1,4 +1,6 @@
 {
   byte connectingOnSides=block.getComponent(SignalConductorComponent.class).connectionSides;
-  signalNetwork.removeNetworkingBlock(toNode(new Vector3i(block.getComponent(BlockComponent.class).getPosition()),connectingOnSides));
+  final Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+  signalConductors.remove(location);
+  signalNetwork.removeNetworkingBlock(toNode(location,connectingOnSides));
 }
