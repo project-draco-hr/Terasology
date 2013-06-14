@@ -24,7 +24,7 @@
       List<Vector3i> readyChunkPositions=Lists.newArrayListWithExpectedSize(readyChunks.size());
       readyChunks.drainTo(readyChunkPositions);
       for (      Vector3i readyChunkPos : readyChunkPositions) {
-        worldEntity.send(new ChunkReadyEvent(readyChunkPos));
+        worldEntity.send(new OnChunkLoaded(readyChunkPos));
         Chunk chunk=getChunk(readyChunkPos);
         for (        ChunkRelevanceRegion region : regions.values()) {
           region.chunkReady(chunk);
@@ -61,7 +61,7 @@
           for (          ChunkRelevanceRegion region : regions.values()) {
             region.chunkUnloaded(pos);
           }
-          worldEntity.send(new ChunkUnloadedEvent(pos));
+          worldEntity.send(new BeforeChunkUnload(pos));
         }
       }
     }

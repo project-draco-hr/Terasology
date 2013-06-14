@@ -4,7 +4,9 @@
     gameThread.join();
   }
  catch (  InterruptedException e) {
-    logger.error("Failed to cleanly shut down engine");
+    if (logger != null) {
+      logger.error("Failed to cleanly shut down engine");
+    }
   }
   super.destroy();
 }

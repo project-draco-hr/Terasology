@@ -4,8 +4,8 @@
   }
   EntityRef ref=createEntityRef(entityId);
   if (eventSystem != null) {
-    eventSystem.send(ref,OnDeactivatedEvent.newInstance());
-    eventSystem.send(ref,OnRemovedEvent.newInstance());
+    eventSystem.send(ref,BeforeDeactivateComponent.newInstance());
+    eventSystem.send(ref,BeforeRemoveComponent.newInstance());
   }
   for (  Component comp : store.iterateComponents(entityId)) {
     notifyComponentRemoved(ref,comp.getClass());

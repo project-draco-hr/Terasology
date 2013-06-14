@@ -7,11 +7,11 @@
     Set<EventHandlerInfo> selectedHandlersSet=selectEventHandlers(event.getClass(),entity);
     List<EventHandlerInfo> selectedHandlers=Lists.newArrayList(selectedHandlersSet);
     Collections.sort(selectedHandlers,priorityComparator);
-    for (    EventHandlerInfo handler : selectedHandlers) {
-      if (handler.isValidFor(entity)) {
-        handler.invoke(entity,event);
-        if (event.isCancelled())         return;
-      }
+    if (event instanceof ConsumableEvent) {
+      sendConsumableEvent(entity,event,selectedHandlers);
+    }
+ else {
+      sendStandardEvent(entity,event,selectedHandlers);
     }
   }
 }

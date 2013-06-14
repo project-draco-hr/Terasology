@@ -1,6 +1,6 @@
 {
   if (!event.getTarget().exists()) {
-    event.cancel();
+    event.consume();
     return;
   }
   BlockItemComponent blockItem=item.getComponent(BlockItemComponent.class);
@@ -19,13 +19,13 @@
         }
       }
  else {
-        event.cancel();
+        event.consume();
         return;
       }
     }
     event.getInstigator().send(new PlaySoundEvent(event.getInstigator(),Assets.getSound("engine:PlaceBlock"),0.5f));
   }
  else {
-    event.cancel();
+    event.consume();
   }
 }
