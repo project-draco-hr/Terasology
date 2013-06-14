@@ -4,7 +4,7 @@
   }
   logger.debug("Registering event {}",eventType.getSimpleName());
   for (  Class parent : Reflections.getAllSuperTypes(eventType,Predicates.assignableFrom(Event.class))) {
-    if (!AbstractEvent.class.equals(parent) && !Event.class.equals(parent)) {
+    if (!AbstractConsumableEvent.class.equals(parent) && !Event.class.equals(parent)) {
       childEvents.put(parent,eventType);
     }
   }

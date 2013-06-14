@@ -4,6 +4,6 @@
   StringComponent comp=entity1.addComponent(new StringComponent());
   entityManager.setEventSystem(eventSystem);
   entity1.removeComponent(StringComponent.class);
-  verify(eventSystem).send(entity1,OnDeactivatedEvent.newInstance(),comp);
-  verify(eventSystem).send(entity1,OnRemovedEvent.newInstance(),comp);
+  verify(eventSystem).send(entity1,BeforeDeactivateComponent.newInstance(),comp);
+  verify(eventSystem).send(entity1,BeforeRemoveComponent.newInstance(),comp);
 }

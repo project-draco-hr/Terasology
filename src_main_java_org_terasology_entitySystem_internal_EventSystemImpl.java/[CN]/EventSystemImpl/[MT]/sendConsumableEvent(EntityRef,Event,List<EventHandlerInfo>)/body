@@ -1,0 +1,11 @@
+{
+  ConsumableEvent consumableEvent=(ConsumableEvent)event;
+  for (  EventHandlerInfo handler : selectedHandlers) {
+    if (handler.isValidFor(entity)) {
+      handler.invoke(entity,event);
+      if (consumableEvent.isConsumed()) {
+        return;
+      }
+    }
+  }
+}
