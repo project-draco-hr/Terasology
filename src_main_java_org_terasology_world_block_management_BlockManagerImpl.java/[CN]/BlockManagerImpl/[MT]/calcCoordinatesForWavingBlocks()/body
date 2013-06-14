@@ -1,0 +1,22 @@
+{
+  FloatBuffer buffer=BufferUtils.createFloatBuffer(NUM_WAVING_TEXTURES * 2);
+  int counter=0;
+  for (  BlockFamily b : registeredFamilyByUri.values()) {
+    if (b.getArchetypeBlock().isWaving()) {
+      Vector2f pos=b.getArchetypeBlock().getTextureAtlasPos(BlockPart.TOP);
+      buffer.put(pos.x);
+      buffer.put(pos.y);
+      counter++;
+    }
+    if (counter >= NUM_WAVING_TEXTURES) {
+      break;
+    }
+  }
+  while (counter < NUM_WAVING_TEXTURES) {
+    buffer.put(-1);
+    buffer.put(-1);
+    counter++;
+  }
+  buffer.flip();
+  return buffer;
+}
