@@ -4,6 +4,11 @@
     modConfig.addMod(mod.getModInfo().getId());
   }
   WorldInfo worldInfo=new WorldInfo(title,seed,getTime(),chunkGenerators,modConfig);
+  List<String> registeredBlockFamilies=Lists.newArrayList();
+  for (  BlockFamily family : blockManager.listRegisteredBlockFamilies()) {
+    registeredBlockFamilies.add(family.getURI().toString());
+  }
+  worldInfo.setRegisteredBlockFamilies(registeredBlockFamilies);
   worldInfo.setBlockIdMap(blockManager.getBlockIdMap());
   return worldInfo;
 }

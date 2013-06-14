@@ -1,0 +1,11 @@
+{
+  if (block.getId() != UNKNOWN_ID) {
+    logger.info("Registered Block {} with id {}",block,block.getId());
+    blocksById.put(block.getId(),block);
+    idByUri.put(block.getURI(),block.getId());
+  }
+ else {
+    logger.info("Failed to register block {} - no id",block,block.getId());
+  }
+  blocksByUri.put(block.getURI(),block);
+}
