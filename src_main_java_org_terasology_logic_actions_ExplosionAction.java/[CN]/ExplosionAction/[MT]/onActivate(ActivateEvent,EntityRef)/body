@@ -34,7 +34,7 @@ Block currentBlock=worldProvider.getBlock(blockPos);
 if (currentBlock.getId() == 0) continue;
 if (currentBlock.isDestructible()) {
 worldProvider.setBlock(blockPos,BlockManager.getAir(),currentBlock);
-EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
+EntityRef blockEntity=blockEntityRegistry.getExistingEntityAt(blockPos);
 blockEntity.destroy();
 if (random.randomInt(4) == 0) {
 EntityRef block=droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily(),5);

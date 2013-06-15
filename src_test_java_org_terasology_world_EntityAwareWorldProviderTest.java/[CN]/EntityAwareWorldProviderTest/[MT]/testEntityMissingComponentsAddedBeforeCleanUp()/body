@@ -1,0 +1,8 @@
+{
+  worldStub.setBlock(0,0,0,blockWithString,BlockManager.getAir());
+  EntityRef entity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));
+  entity.removeComponent(StringComponent.class);
+  LifecycleEventChecker checker=new LifecycleEventChecker(entityManager.getEventSystem(),StringComponent.class);
+  worldProvider.update(1.0f);
+  assertEquals(Lists.newArrayList(new EventInfo(OnAddedComponent.newInstance(),entity),new EventInfo(OnActivatedComponent.newInstance(),entity)),checker.receivedEvents);
+}

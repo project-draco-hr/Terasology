@@ -1,0 +1,16 @@
+{
+  Component currentComp=blockEntity.getComponent(targetComponent.getClass());
+  if (currentComp != null) {
+    boolean changed=false;
+    for (    FieldMetadata field : metadata.iterateFields()) {
+      Object newVal=field.getValue(targetComponent);
+      if (!Objects.equal(field.getValue(currentComp),newVal)) {
+        field.setValue(currentComp,newVal);
+        changed=true;
+      }
+    }
+    if (changed) {
+      blockEntity.saveComponent(currentComp);
+    }
+  }
+}

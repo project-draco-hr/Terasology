@@ -1,0 +1,22 @@
+{
+  EntityBuilder builder=entityManager.newBuilder(block.getPrefab());
+  builder.addComponent(new LocationComponent(blockPosition.toVector3f()));
+  builder.addComponent(new BlockComponent(blockPosition));
+  if (block.isDestructible() && !builder.hasComponent(HealthComponent.class)) {
+    builder.addComponent(new HealthComponent(block.getHardness(),2.0f,1.0f));
+  }
+  boolean isTemporary=isTemporaryBlock(builder,block);
+  if (!isTemporary && !builder.hasComponent(NetworkComponent.class)) {
+    builder.addComponent(new NetworkComponent());
+  }
+  EntityRef blockEntity;
+  if (isTemporary) {
+    blockEntity=builder.buildNoEvents();
+    temporaryBlockEntities.add(blockEntity);
+  }
+ else {
+    blockEntity=builder.build();
+  }
+  blockEntityLookup.put(new Vector3i(blockPosition),blockEntity);
+  return blockEntity;
+}

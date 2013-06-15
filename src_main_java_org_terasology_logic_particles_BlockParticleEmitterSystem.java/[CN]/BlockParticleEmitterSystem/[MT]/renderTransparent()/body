@@ -2,7 +2,7 @@
   ShaderManager.getInstance().enableShader("particle");
   glDisable(GL11.GL_CULL_FACE);
   Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  for (  EntityRef entity : entityManager.listEntitiesWith(BlockParticleEffectComponent.class,LocationComponent.class)) {
+  for (  EntityRef entity : entityManager.getEntitiesWith(BlockParticleEffectComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
     Vector3f worldPos=location.getWorldPosition();
     if (!worldProvider.isBlockActive(worldPos)) {

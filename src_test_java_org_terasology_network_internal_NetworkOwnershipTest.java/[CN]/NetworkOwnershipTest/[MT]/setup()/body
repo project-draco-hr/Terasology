@@ -1,9 +1,10 @@
 {
+  mockTimer=mock(Timer.class);
+  networkSystem=new NetworkSystemImpl(mockTimer);
+  entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModManager.class),networkSystem);
   CoreRegistry.put(ComponentSystemManager.class,new ComponentSystemManager());
   CoreRegistry.put(BlockManager.class,new BlockManagerImpl());
   entityManager.clear();
-  mockTimer=mock(Timer.class);
-  networkSystem=new NetworkSystemImpl(mockTimer);
   client=mock(NetClient.class);
   NetworkComponent clientNetComp=new NetworkComponent();
   clientNetComp.replicateMode=NetworkComponent.ReplicateMode.OWNER;

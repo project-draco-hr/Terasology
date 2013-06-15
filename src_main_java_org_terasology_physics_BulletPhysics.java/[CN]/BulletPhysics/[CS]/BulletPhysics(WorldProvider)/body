@@ -8,7 +8,7 @@
   _discreteDynamicsWorld=new DiscreteDynamicsWorld(_dispatcher,_broadphase,_sequentialImpulseConstraintSolver,_defaultCollisionConfiguration);
   _discreteDynamicsWorld.setGravity(new Vector3f(0f,-15f,0f));
   blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
-  CoreRegistry.get(EventSystem.class).registerEventReceiver(this,BlockChangedEvent.class,BlockComponent.class);
+  CoreRegistry.get(EventSystem.class).registerEventReceiver(this,OnChangedBlock.class,BlockComponent.class);
   PhysicsWorldWrapper wrapper=new PhysicsWorldWrapper(world);
   VoxelWorldShape worldShape=new VoxelWorldShape(wrapper);
   Matrix3f rot=new Matrix3f();

@@ -20,7 +20,7 @@
         if (currentBlock.getId() == 0x0)         continue;
         if (currentBlock.isDestructible()) {
           worldProvider.setBlock(blockPos,BlockManager.getAir(),currentBlock);
-          EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
+          EntityRef blockEntity=blockEntityRegistry.getExistingEntityAt(blockPos);
           blockEntity.destroy();
           if (random.randomInt(6) == 0) {
             EntityRef block=droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily(),5);

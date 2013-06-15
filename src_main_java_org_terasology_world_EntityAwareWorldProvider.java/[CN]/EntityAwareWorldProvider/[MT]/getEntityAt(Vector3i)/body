@@ -1,7 +1,7 @@
 {
-  EntityRef result=blockRegionLookup.get(blockPosition);
-  if (result == null) {
+  EntityRef entity=getExistingEntityAt(blockPosition);
+  if (!entity.exists()) {
     return getBlockEntityAt(blockPosition);
   }
-  return result;
+  return entity;
 }

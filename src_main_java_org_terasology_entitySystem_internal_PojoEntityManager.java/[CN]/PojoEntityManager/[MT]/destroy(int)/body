@@ -10,11 +10,5 @@
   for (  Component comp : store.iterateComponents(entityId)) {
     notifyComponentRemoved(ref,comp.getClass());
   }
-  entityCache.remove(entityId);
-  loadedIds.remove(entityId);
-  freedIds.add(entityId);
-  if (ref instanceof PojoEntityRef) {
-    ((PojoEntityRef)ref).invalidate();
-  }
-  store.remove(entityId);
+  destroy(ref);
 }

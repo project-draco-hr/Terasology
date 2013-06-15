@@ -1,0 +1,13 @@
+{
+  if (block.isKeepActive()) {
+    return false;
+  }
+  for (  ComponentMetadata<?> metadata : entityManager.getComponentLibrary()) {
+    if (metadata.isForceBlockActive() && ignoreComponent != metadata.getType()) {
+      if (entity.hasComponent(metadata.getType())) {
+        return false;
+      }
+    }
+  }
+  return true;
+}

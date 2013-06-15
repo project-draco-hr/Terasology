@@ -8,18 +8,8 @@
     worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,BlockManager.getAir(),upperBlock);
   }
   entity.send(new PlaySoundEvent(Assets.getSound("engine:RemoveBlock"),0.6f));
-  if (oldBlock.getEntityMode() == BlockEntityMode.PERSISTENT) {
-    entity.removeComponent(HealthComponent.class);
-    entity.removeComponent(BlockComponent.class);
-  }
   if ((oldBlock.isDirectPickup()) && event.getInstigator().exists()) {
-    EntityRef item;
-    if (oldBlock.getEntityMode() == BlockEntityMode.PERSISTENT) {
-      item=blockItemFactory.newInstance(oldBlock.getBlockFamily(),entity);
-    }
- else {
-      item=blockItemFactory.newInstance(oldBlock.getBlockFamily());
-    }
+    EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily());
     if (!inventoryManager.giveItem(event.getInstigator(),item)) {
       item.destroy();
       EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
@@ -27,16 +17,8 @@
     }
   }
  else {
-    EntityRef block;
-    if (oldBlock.getEntityMode() == BlockEntityMode.PERSISTENT) {
-      block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20,entity);
-    }
- else {
-      block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
-    }
+    EntityRef block=droppedBlockFactory.newInstance(blockComp.getPosition().toVector3f(),oldBlock.getBlockFamily(),20);
     block.send(new ImpulseEvent(random.randomVector3f(30)));
   }
-  if (oldBlock.getEntityMode() != BlockEntityMode.PERSISTENT) {
-    entity.destroy();
-  }
+  entity.destroy();
 }

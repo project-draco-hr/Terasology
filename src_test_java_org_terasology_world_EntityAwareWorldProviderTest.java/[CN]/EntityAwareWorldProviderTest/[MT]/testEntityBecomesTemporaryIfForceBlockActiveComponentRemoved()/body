@@ -1,0 +1,9 @@
+{
+  EntityRef blockEntity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));
+  blockEntity.addComponent(new ForceBlockActiveComponent());
+  worldProvider.update(1.0f);
+  blockEntity.removeComponent(ForceBlockActiveComponent.class);
+  worldProvider.update(1.0f);
+  assertFalse(blockEntity.exists());
+  assertFalse(blockEntity.isActive());
+}
