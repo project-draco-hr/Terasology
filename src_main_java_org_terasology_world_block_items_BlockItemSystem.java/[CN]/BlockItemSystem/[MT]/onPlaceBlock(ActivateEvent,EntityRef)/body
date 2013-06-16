@@ -17,6 +17,9 @@
         event.consume();
         return;
       }
+ else {
+        item.send(new OnBlockItemPlaced(placementPos,blockEntityRegistry.getBlockEntityAt(placementPos)));
+      }
     }
     event.getInstigator().send(new PlaySoundEvent(event.getInstigator(),Assets.getSound("engine:PlaceBlock"),0.5f));
   }

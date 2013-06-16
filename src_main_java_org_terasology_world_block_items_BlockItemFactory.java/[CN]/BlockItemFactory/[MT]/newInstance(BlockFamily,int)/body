@@ -1,3 +1,18 @@
 {
-  return newInstance(blockFamily,quantity,EntityRef.NULL);
+  if (blockFamily == null) {
+    return EntityRef.NULL;
+  }
+  EntityBuilder builder=entityManager.newBuilder("engine:blockItemBase");
+  if (blockFamily.getArchetypeBlock().getLuminance() > 0) {
+    builder.addComponent(new LightComponent());
+  }
+  ItemComponent item=builder.getComponent(ItemComponent.class);
+  item.name=blockFamily.getDisplayName();
+  if (blockFamily.getArchetypeBlock().isStackable()) {
+    item.stackId="block:" + blockFamily.getURI().toString();
+    item.stackCount=(byte)quantity;
+  }
+  BlockItemComponent blockItem=builder.getComponent(BlockItemComponent.class);
+  blockItem.blockFamily=blockFamily;
+  return builder.build();
 }

@@ -4,20 +4,12 @@
   Vector3f offset=camera.getViewingDirection();
   offset.scale(3);
   spawnPos.add(offset);
-  Block block=blockManager.getBlock(blockName);
+  BlockFamily block=blockManager.getBlockFamily(blockName);
   if (block == null) {
     return "";
   }
-  Prefab prefab=prefabManager.getPrefab("core:droppedBlock");
-  if (prefab != null && prefab.getComponent(LocationComponent.class) != null) {
-    EntityRef blockEntity=entityManager.create(prefab,spawnPos);
-    MeshComponent blockMesh=blockEntity.getComponent(MeshComponent.class);
-    BlockPickupComponent blockPickup=blockEntity.getComponent(BlockPickupComponent.class);
-    blockPickup.blockFamily=block.getBlockFamily();
-    blockMesh.mesh=block.getMesh();
-    blockEntity.saveComponent(blockMesh);
-    blockEntity.saveComponent(blockPickup);
-    return "Spawned block.";
-  }
-  return "";
+  BlockItemFactory blockItemFactory=new BlockItemFactory(entityManager);
+  EntityRef blockItem=blockItemFactory.newInstance(block);
+  itemPickupFactory.newInstance(spawnPos,60,blockItem);
+  return "Spawned block.";
 }
