@@ -1,8 +1,13 @@
 {
-  engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModManager.class));
+  mockTimer=mock(Timer.class);
+  CoreRegistry.put(Timer.class,mockTimer);
+  networkSystem=new NetworkSystemImpl(mockTimer);
+  CoreRegistry.put(NetworkSystem.class,networkSystem);
+  engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModManager.class),networkSystem);
   componentSystemManager=new ComponentSystemManager();
   CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
   LoadPrefabs prefabLoadStep=new LoadPrefabs();
   prefabLoadStep.begin();
   while (!prefabLoadStep.step())   ;
+  CoreRegistry.get(ComponentSystemManager.class).initialise();
 }

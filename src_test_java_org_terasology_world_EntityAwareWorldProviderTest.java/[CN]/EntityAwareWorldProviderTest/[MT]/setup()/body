@@ -1,8 +1,28 @@
 {
   EntitySystemBuilder builder=new EntitySystemBuilder();
   blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl());
-  entityManager=builder.build(modManager);
-  prefabManager=entityManager.getPrefabManager();
-  worldProvider=new EntityAwareWorldProvider(new WorldProviderCoreStub(BlockManager.getAir()));
-  worldProvider.entityManager=entityManager;
+  NetworkSystem networkSystem=mock(NetworkSystem.class);
+  when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
+  entityManager=builder.build(modManager,networkSystem);
+  PrefabManager prefabManager=entityManager.getPrefabManager();
+  worldStub=new WorldProviderCoreStub(BlockManager.getAir());
+  worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);
+  simpleBlock=new Block();
+  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:simpeBlock"),simpleBlock),true);
+  blockWithString=new Block();
+  Prefab prefabWithString=prefabManager.createPrefab("test:prefabWithString");
+  prefabWithString.addComponent(new StringComponent("Test"));
+  blockWithString.setPrefab("test:prefabWithString");
+  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithString"),blockWithString),true);
+  blockWithDifferentString=new Block();
+  Prefab prefabWithDifferentString=prefabManager.createPrefab("test:prefabWithDifferentString");
+  prefabWithDifferentString.addComponent(new StringComponent("Test2"));
+  blockWithDifferentString.setPrefab("test:prefabWithDifferentString");
+  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithDifferentString"),blockWithDifferentString),true);
+  blockWithRetainedComponent=new Block();
+  Prefab prefabWithRetainedComponent=prefabManager.createPrefab("test:prefabWithRetainedComponent");
+  prefabWithRetainedComponent.addComponent(new RetainedOnBlockChangeComponent(3));
+  blockWithRetainedComponent.setPrefab("test:prefabWithRetainedComponent");
+  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithRetainedComponent"),blockWithRetainedComponent),true);
+  worldProvider.initialise();
 }

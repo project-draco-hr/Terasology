@@ -1,0 +1,28 @@
+{
+  Prefab prefab=CoreRegistry.get(PrefabManager.class).getPrefab("engine:itemPickup");
+  if (prefab != null && prefab.getComponent(LocationComponent.class) != null) {
+    EntityBuilder builder=entityManager.newBuilder(prefab);
+    BlockItemComponent blockItemComponent=item.getComponent(BlockItemComponent.class);
+    ItemComponent itemComp=item.getComponent(ItemComponent.class);
+    if (blockItemComponent != null) {
+      MeshComponent mesh=builder.getComponent(MeshComponent.class);
+      mesh.mesh=blockItemComponent.blockFamily.getArchetypeBlock().getMesh();
+      mesh.material=Assets.getMaterial("engine:terrain");
+      builder.getComponent(RigidBodyComponent.class).mass=blockItemComponent.blockFamily.getArchetypeBlock().getMass();
+    }
+ else {
+      Mesh itemMesh=iconMeshes.get(itemComp.icon);
+      if (itemMesh == null) {
+        Icon icon=Icon.get(itemComp.icon);
+        itemMesh=MeshFactory.getInstance().generateItemMesh(icon.getX(),icon.getY());
+        iconMeshes.put(itemComp.icon,itemMesh);
+      }
+      builder.getComponent(MeshComponent.class).mesh=itemMesh;
+    }
+    builder.getComponent(LocationComponent.class).setWorldPosition(location);
+    builder.getComponent(LifespanComponent.class).lifespan=lifespan;
+    builder.getComponent(PickupComponent.class).itemEntity=item;
+    return builder.build();
+  }
+  return EntityRef.NULL;
+}

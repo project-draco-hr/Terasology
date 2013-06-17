@@ -1,15 +1,3 @@
 {
-  for (  EntityRef blockComp : entityManager.listEntitiesWith(BlockComponent.class)) {
-    BlockComponent comp=blockComp.getComponent(BlockComponent.class);
-    blockComponentLookup.put(new Vector3i(comp.getPosition()),blockComp);
-  }
-  for (  EntityRef entity : entityManager.listEntitiesWith(BlockComponent.class)) {
-    BlockComponent blockComp=entity.getComponent(BlockComponent.class);
-    if (blockComp.temporary) {
-      HealthComponent health=entity.getComponent(HealthComponent.class);
-      if (health == null || health.currentHealth == health.maxHealth || health.currentHealth == 0) {
-        entity.destroy();
-      }
-    }
-  }
+  entityManager.subscribe(this);
 }

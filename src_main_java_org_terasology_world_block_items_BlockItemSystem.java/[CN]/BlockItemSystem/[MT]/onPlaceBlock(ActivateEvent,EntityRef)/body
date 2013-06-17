@@ -1,0 +1,29 @@
+{
+  if (!event.getTarget().exists()) {
+    event.consume();
+    return;
+  }
+  BlockItemComponent blockItem=item.getComponent(BlockItemComponent.class);
+  BlockFamily type=blockItem.blockFamily;
+  Side surfaceSide=Side.inDirection(event.getHitNormal());
+  Side secondaryDirection=TeraMath.getSecondaryPlacementDirection(event.getDirection(),event.getHitNormal());
+  Block block=type.getBlockFor(surfaceSide,secondaryDirection);
+  Vector3i targetBlock=event.getTarget().getComponent(BlockComponent.class).getPosition();
+  Vector3i placementPos=new Vector3i(targetBlock);
+  placementPos.add(surfaceSide.getVector3i());
+  if (canPlaceBlock(block,targetBlock,placementPos)) {
+    if (networkSystem.getMode().isAuthority()) {
+      if (!worldProvider.setBlock(placementPos,block,worldProvider.getBlock(placementPos))) {
+        event.consume();
+        return;
+      }
+ else {
+        item.send(new OnBlockItemPlaced(placementPos,blockEntityRegistry.getBlockEntityAt(placementPos)));
+      }
+    }
+    event.getInstigator().send(new PlaySoundEvent(event.getInstigator(),Assets.getSound("engine:PlaceBlock"),0.5f));
+  }
+ else {
+    event.consume();
+  }
+}

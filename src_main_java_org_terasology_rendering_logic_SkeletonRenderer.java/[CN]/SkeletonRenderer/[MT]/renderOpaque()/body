@@ -8,7 +8,7 @@
   Quat4f inverseWorldRot=new Quat4f();
   glPushMatrix();
   glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
-  for (  EntityRef entity : entityManager.listEntitiesWith(SkeletalMeshComponent.class,LocationComponent.class)) {
+  for (  EntityRef entity : entityManager.getEntitiesWith(SkeletalMeshComponent.class,LocationComponent.class)) {
     SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
     if (skeletalMesh.mesh == null || skeletalMesh.material == null) {
       continue;

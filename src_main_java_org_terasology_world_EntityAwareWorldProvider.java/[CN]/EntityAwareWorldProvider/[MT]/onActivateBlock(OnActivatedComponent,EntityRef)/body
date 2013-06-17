@@ -1,0 +1,7 @@
+{
+  BlockComponent block=entity.getComponent(BlockComponent.class);
+  EntityRef oldEntity=blockEntityLookup.put(new Vector3i(block.getPosition()),entity);
+  if (oldEntity != null && !Objects.equal(oldEntity,entity)) {
+    oldEntity.destroy();
+  }
+}

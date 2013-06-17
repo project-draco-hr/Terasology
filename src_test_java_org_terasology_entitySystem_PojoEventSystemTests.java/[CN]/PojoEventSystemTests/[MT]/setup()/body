@@ -5,7 +5,9 @@
   entityManager=new PojoEntityManager();
   entityManager.setEntitySystemLibrary(entitySystemLibrary);
   entityManager.setPrefabManager(new PojoPrefabManager(compLibrary));
-  eventSystem=new EventSystemImpl(entitySystemLibrary.getEventLibrary(),mock(NetworkSystem.class));
+  NetworkSystem networkSystem=mock(NetworkSystem.class);
+  when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
+  eventSystem=new EventSystemImpl(entitySystemLibrary.getEventLibrary(),networkSystem);
   entityManager.setEventSystem(eventSystem);
   entity=entityManager.create();
 }

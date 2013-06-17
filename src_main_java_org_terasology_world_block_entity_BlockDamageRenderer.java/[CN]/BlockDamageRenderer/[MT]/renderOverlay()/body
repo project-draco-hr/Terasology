@@ -5,7 +5,7 @@
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_DST_COLOR,GL_ZERO);
   Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
-  for (  EntityRef entity : entityManager.listEntitiesWith(HealthComponent.class,BlockComponent.class)) {
+  for (  EntityRef entity : entityManager.getEntitiesWith(BlockDamagedComponent.class,HealthComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
     if (health.currentHealth == health.maxHealth) {
       continue;
@@ -13,7 +13,7 @@
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
     renderHealth(blockComp.getPosition(),health,cameraPosition);
   }
-  for (  EntityRef entity : entityManager.listEntitiesWith(BlockRegionComponent.class,HealthComponent.class)) {
+  for (  EntityRef entity : entityManager.getEntitiesWith(BlockRegionComponent.class,HealthComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
     if (health.currentHealth == health.maxHealth) {
       continue;

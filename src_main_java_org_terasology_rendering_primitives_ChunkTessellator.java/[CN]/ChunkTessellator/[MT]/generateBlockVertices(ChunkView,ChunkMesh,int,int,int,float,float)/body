@@ -28,7 +28,7 @@
     Block blockToCheck=view.getBlock(x,y + 1,z);
     drawDir[Side.TOP.ordinal()]|=!blockToCheck.isLiquid();
     Block bottomBlock=view.getBlock(x,y - 1,z);
-    if (bottomBlock.isLiquid() || bottomBlock.getId() == 0x0) {
+    if (bottomBlock.isLiquid() || bottomBlock.isInvisible()) {
       for (      Side dir : Side.values()) {
         if (drawDir[dir.ordinal()]) {
           Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),temp,hum);

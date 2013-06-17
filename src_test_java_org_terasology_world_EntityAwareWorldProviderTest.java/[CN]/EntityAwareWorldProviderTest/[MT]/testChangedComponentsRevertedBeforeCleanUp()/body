@@ -1,0 +1,10 @@
+{
+  worldStub.setBlock(0,0,0,blockWithString,BlockManager.getAir());
+  EntityRef entity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));
+  StringComponent comp=entity.getComponent(StringComponent.class);
+  comp.value="Moo";
+  entity.saveComponent(comp);
+  LifecycleEventChecker checker=new LifecycleEventChecker(entityManager.getEventSystem(),StringComponent.class);
+  worldProvider.update(1.0f);
+  assertEquals(Lists.newArrayList(new EventInfo(OnChangedComponent.newInstance(),entity)),checker.receivedEvents);
+}

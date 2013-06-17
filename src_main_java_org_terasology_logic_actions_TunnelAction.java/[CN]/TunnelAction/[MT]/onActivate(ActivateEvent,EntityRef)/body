@@ -17,14 +17,10 @@
         target.z+=direction.z * j;
         blockPos.set((int)target.x,(int)target.y,(int)target.z);
         Block currentBlock=worldProvider.getBlock(blockPos);
-        if (currentBlock.getId() == 0x0)         continue;
         if (currentBlock.isDestructible()) {
-          worldProvider.setBlock(blockPos,BlockManager.getAir(),currentBlock);
-          EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
-          blockEntity.destroy();
           if (random.randomInt(6) == 0) {
-            EntityRef block=droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily(),5);
-            block.send(new ImpulseEvent(impulse));
+            EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
+            blockEntity.send(new DamageEvent(1000,EntityRef.NULL));
           }
           blockCounter--;
         }

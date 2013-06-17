@@ -19,7 +19,7 @@ if (origin == null) {
 return;
 }
 Vector3i blockPos=new Vector3i();
-for (int i=0; i < 256; i++) {
+for (int i=0; i < 64; i++) {
 Vector3f direction=new Vector3f(random.randomFloat(),random.randomFloat(),random.randomFloat());
 direction.normalize();
 Vector3f impulse=new Vector3f(direction);
@@ -31,15 +31,8 @@ target.y+=direction.y * j;
 target.z+=direction.z * j;
 blockPos.set((int)target.x,(int)target.y,(int)target.z);
 Block currentBlock=worldProvider.getBlock(blockPos);
-if (currentBlock.getId() == 0) continue;
 if (currentBlock.isDestructible()) {
-worldProvider.setBlock(blockPos,BlockManager.getAir(),currentBlock);
-EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
-blockEntity.destroy();
-if (random.randomInt(4) == 0) {
-EntityRef block=droppedBlockFactory.newInstance(target,currentBlock.getBlockFamily(),5);
-block.send(new ImpulseEvent(impulse));
-}
+blockEntityRegistry.getEntityAt(blockPos).send(new DamageEvent(1000,EntityRef.NULL));
 }
 }
 }

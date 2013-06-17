@@ -1,4 +1,9 @@
 {
   super(simpleClass,names);
   replicated=simpleClass.getAnnotation(Replicate.class) != null;
+  ForceBlockActive forceBlockActiveAnnotation=simpleClass.getAnnotation(ForceBlockActive.class);
+  if (forceBlockActiveAnnotation != null) {
+    forceBlockActive=true;
+    retainUnalteredOnBlockChange=forceBlockActiveAnnotation.retainUnalteredOnBlockChange();
+  }
 }
