@@ -4,10 +4,10 @@
     Vector3i blockLocation=new Vector3i(entity.getComponent(BlockComponent.class).getPosition());
     Block blockAtLocation=worldProvider.getBlock(blockLocation);
     if (blockAtLocation == lampTurnedOff && consumerStatusComponent.hasSignal) {
-      blockEntityRegistry.setBlockRetainEntity(blockLocation,lampTurnedOn,blockAtLocation);
+      worldProvider.setBlock(blockLocation,lampTurnedOn,blockAtLocation);
     }
  else     if (blockAtLocation == lampTurnedOn && !consumerStatusComponent.hasSignal) {
-      blockEntityRegistry.setBlockRetainEntity(blockLocation,lampTurnedOff,blockAtLocation);
+      worldProvider.setBlock(blockLocation,lampTurnedOff,blockAtLocation);
     }
   }
 }
