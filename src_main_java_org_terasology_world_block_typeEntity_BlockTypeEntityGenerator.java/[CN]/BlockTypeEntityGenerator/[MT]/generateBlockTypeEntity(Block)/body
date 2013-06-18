@@ -1,7 +1,7 @@
 {
   EntityBuilder builder=entityManager.newBuilder(blockTypePrefab);
   builder.getComponent(BlockTypeComponent.class).block=block;
-  Prefab prefab=entityManager.getPrefabManager().getPrefab(block.getPrefab());
+  Prefab prefab=prefabManager.getPrefab(block.getPrefab());
   if (prefab != null) {
     for (    Component comp : prefab.iterateComponents()) {
       if (!(comp instanceof NetworkComponent)) {

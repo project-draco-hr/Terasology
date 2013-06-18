@@ -24,5 +24,9 @@
   prefabWithRetainedComponent.addComponent(new RetainedOnBlockChangeComponent(3));
   blockWithRetainedComponent.setPrefab("test:prefabWithRetainedComponent");
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithRetainedComponent"),blockWithRetainedComponent),true);
+  keepActiveBlock=new Block();
+  keepActiveBlock.setKeepActive(true);
+  keepActiveBlock.setPrefab("test:prefabWithString");
+  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:keepActiveBlock"),keepActiveBlock),true);
   worldProvider.initialise();
 }

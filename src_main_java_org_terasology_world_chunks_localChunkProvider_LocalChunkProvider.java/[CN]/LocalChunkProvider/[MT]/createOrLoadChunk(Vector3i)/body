@@ -14,7 +14,7 @@
             if (chunk.getChunkState() == Chunk.State.COMPLETE) {
               for (              Vector3i adjPos : Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS)) {
                 if (isChunkReady(adjPos)) {
-                  readyChunks.offer(adjPos);
+                  readyChunks.offer(new ReadyChunkInfo(adjPos,createBatchBlockEventMappings(nearCache.get(adjPos))));
                 }
               }
             }
