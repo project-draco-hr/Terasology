@@ -1,4 +1,7 @@
 {
+  TwoNetworkNodes nodePair=new TwoNetworkNodes(from,to);
+  final Integer cachedDistance=distanceCache.get(nodePair);
+  if (cachedDistance != null)   return cachedDistance;
   if ((!hasNetworkingNode(from) && !hasLeafNode(from)) || (!hasNetworkingNode(to) && !hasLeafNode(to)))   throw new IllegalArgumentException("Cannot test nodes not in network");
   if (from.equals(to))   return 0;
   if (SimpleNetwork.areNodesConnecting(from,to))   return 1;
