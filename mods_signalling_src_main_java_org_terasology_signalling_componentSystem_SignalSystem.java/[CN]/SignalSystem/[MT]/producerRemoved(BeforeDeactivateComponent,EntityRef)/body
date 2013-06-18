@@ -1,8 +1,5 @@
 {
   Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
   byte connectingOnSides=block.getComponent(SignalProducerComponent.class).connectionSides;
-  final NetworkNode producer=toNode(location,connectingOnSides);
-  signalNetwork.removeLeafBlock(producer);
-  signalProducers.remove(location);
-  producerSignalStrengths.remove(producer);
+  removeProducer(connectingOnSides,location);
 }

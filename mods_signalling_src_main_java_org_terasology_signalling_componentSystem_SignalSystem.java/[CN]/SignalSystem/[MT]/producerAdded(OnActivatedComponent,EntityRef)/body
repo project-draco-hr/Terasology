@@ -1,9 +1,7 @@
 {
   Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
   final SignalProducerComponent producerComponent=block.getComponent(SignalProducerComponent.class);
+  final int signalStrength=producerComponent.signalStrength;
   byte connectingOnSides=producerComponent.connectionSides;
-  final NetworkNode producerNode=toNode(location,connectingOnSides);
-  signalProducers.put(location,producerNode);
-  producerSignalStrengths.put(producerNode,producerComponent.signalStrength);
-  signalNetwork.addLeafBlock(producerNode);
+  addProducer(connectingOnSides,location,signalStrength);
 }

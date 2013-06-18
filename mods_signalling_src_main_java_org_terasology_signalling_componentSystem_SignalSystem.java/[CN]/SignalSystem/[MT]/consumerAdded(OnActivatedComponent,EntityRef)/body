@@ -1,8 +1,5 @@
 {
   Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
   byte connectingOnSides=block.getComponent(SignalConsumerComponent.class).connectionSides;
-  NetworkNode consumerNode=toNode(location,connectingOnSides);
-  signalConsumers.put(location,consumerNode);
-  consumerSignalInNetworks.put(consumerNode,Maps.<Network,Boolean>newHashMap());
-  signalNetwork.addLeafBlock(consumerNode);
+  addConsumer(connectingOnSides,location);
 }
