@@ -20,16 +20,10 @@
         chunkRelevanceRegion.setUpToDate();
       }
     }
-    if (!readyChunks.isEmpty()) {
-      List<Vector3i> readyChunkPositions=Lists.newArrayListWithExpectedSize(readyChunks.size());
-      readyChunks.drainTo(readyChunkPositions);
-      for (      Vector3i readyChunkPos : readyChunkPositions) {
-        worldEntity.send(new OnChunkLoaded(readyChunkPos));
-        Chunk chunk=getChunk(readyChunkPos);
-        for (        ChunkRelevanceRegion region : regions.values()) {
-          region.chunkReady(chunk);
-        }
-      }
+    List<ReadyChunkInfo> readyChunkPositions=Lists.newArrayListWithExpectedSize(readyChunks.size());
+    readyChunks.drainTo(readyChunkPositions);
+    for (    ReadyChunkInfo info : readyChunkPositions) {
+      makeChunkAvailable(info);
     }
     PerformanceMonitor.startActivity("Review cache size");
     if (nearCache.size() > CACHE_SIZE) {
@@ -49,6 +43,9 @@
           if (chunk.isLocked()) {
             continue;
           }
+          if (chunk.getChunkState() == Chunk.State.COMPLETE) {
+            worldEntity.send(new BeforeChunkUnload(pos));
+          }
           chunk.lock();
           try {
             farStore.put(chunk);
@@ -61,7 +58,6 @@
           for (          ChunkRelevanceRegion region : regions.values()) {
             region.chunkUnloaded(pos);
           }
-          worldEntity.send(new BeforeChunkUnload(pos));
         }
       }
     }

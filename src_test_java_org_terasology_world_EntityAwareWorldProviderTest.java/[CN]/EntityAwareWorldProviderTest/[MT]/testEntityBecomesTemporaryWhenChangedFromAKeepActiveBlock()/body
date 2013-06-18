@@ -1,0 +1,7 @@
+{
+  worldProvider.setBlock(0,0,0,keepActiveBlock,BlockManager.getAir());
+  EntityRef blockEntity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));
+  worldProvider.setBlock(0,0,0,BlockManager.getAir(),keepActiveBlock);
+  worldProvider.update(1.0f);
+  assertFalse(blockEntity.isActive());
+}

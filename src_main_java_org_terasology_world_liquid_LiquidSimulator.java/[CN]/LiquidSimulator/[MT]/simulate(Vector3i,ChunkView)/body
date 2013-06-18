@@ -3,7 +3,6 @@
   LiquidData current=view.getLiquid(blockPos);
   LiquidData newState=calcStateFor(blockPos,view);
   if (!newState.equals(current)) {
-    view.lock();
     try {
       if (view.isValidView() && world.setLiquid(blockPos,newState,current)) {
         if (newState.getDepth() > 0) {
