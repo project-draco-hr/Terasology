@@ -3,5 +3,8 @@
   final SignalProducerComponent producerComponent=block.getComponent(SignalProducerComponent.class);
   final int signalStrength=producerComponent.signalStrength;
   byte connectingOnSides=producerComponent.connectionSides;
-  addProducer(connectingOnSides,location,signalStrength);
+  final NetworkNode producerNode=toNode(location,connectingOnSides);
+  signalProducers.put(producerNode.location,producerNode);
+  producerSignalStrengths.put(producerNode,signalStrength);
+  signalNetwork.addLeafBlock(producerNode);
 }

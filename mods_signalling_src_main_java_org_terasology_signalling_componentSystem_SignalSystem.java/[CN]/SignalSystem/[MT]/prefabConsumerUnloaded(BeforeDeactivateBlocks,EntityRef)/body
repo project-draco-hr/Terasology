@@ -1,4 +1,13 @@
 {
   byte connectingOnSides=blockType.getComponent(SignalConsumerComponent.class).connectionSides;
-  for (  Vector3i location : event)   removeConsumer(connectingOnSides,location);
+  Set<NetworkNode> consumerNodes=Sets.newHashSet();
+  for (  Vector3i location : event) {
+    NetworkNode consumerNode=toNode(location,connectingOnSides);
+    consumerNodes.add(consumerNode);
+  }
+  signalNetwork.removeLeafBlocks(consumerNodes);
+  for (  NetworkNode consumerNode : consumerNodes) {
+    signalConsumers.remove(consumerNode.location);
+    consumerSignalInNetworks.remove(consumerNode);
+  }
 }

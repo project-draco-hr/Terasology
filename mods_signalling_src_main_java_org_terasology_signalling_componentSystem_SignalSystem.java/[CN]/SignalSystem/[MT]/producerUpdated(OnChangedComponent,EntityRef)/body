@@ -1,12 +1,13 @@
 {
   if (block.hasComponent(BlockComponent.class)) {
     Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+    ImmutableBlockLocation blockLocation=new ImmutableBlockLocation(location);
     final SignalProducerComponent producerComponent=block.getComponent(SignalProducerComponent.class);
-    final byte oldConnectionSides=signalProducers.get(location).connectionSides;
+    final byte oldConnectionSides=signalProducers.get(blockLocation).connectionSides;
     byte newConnectionSides=producerComponent.connectionSides;
     NetworkNode node=toNode(location,newConnectionSides);
     if (oldConnectionSides != newConnectionSides) {
-      signalProducers.put(location,node);
+      signalProducers.put(node.location,node);
       final NetworkNode oldNode=toNode(location,oldConnectionSides);
       signalNetwork.updateLeafBlock(oldNode,node);
     }

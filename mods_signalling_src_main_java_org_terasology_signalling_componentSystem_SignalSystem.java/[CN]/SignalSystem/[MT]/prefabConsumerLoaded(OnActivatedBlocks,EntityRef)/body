@@ -1,4 +1,11 @@
 {
   byte connectingOnSides=blockType.getComponent(SignalConsumerComponent.class).connectionSides;
-  for (  Vector3i location : event)   addConsumer(connectingOnSides,location);
+  Set<NetworkNode> consumerNodes=Sets.newHashSet();
+  for (  Vector3i location : event) {
+    NetworkNode consumerNode=toNode(location,connectingOnSides);
+    signalConsumers.put(consumerNode.location,consumerNode);
+    consumerSignalInNetworks.put(consumerNode,Maps.<Network,Boolean>newHashMap());
+    consumerNodes.add(consumerNode);
+  }
+  signalNetwork.addLeafBlocks(consumerNodes);
 }
