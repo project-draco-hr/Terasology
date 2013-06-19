@@ -29,16 +29,7 @@
               result.families.add(new SymmetricFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),constructSingleBlock(blockDefUri,blockDef),blockDef.categories));
             }
  else {
-              Map<String,BlockDefinition> blockDefinitionMap=Maps.newHashMap();
-              for (              String section : familyFactory.supportedExtraBlockDefinitionSections()) {
-                if (blockDefJson.has(section) && blockDefJson.get(section).isJsonObject()) {
-                  JsonObject sectionJson=blockDefJson.getAsJsonObject(section);
-                  blockDefJson.remove(section);
-                  JsonMergeUtil.mergeOnto(blockDefJson,sectionJson);
-                  blockDefinitionMap.put(section,createBlockDefinition(sectionJson));
-                }
-              }
-              result.families.add(familyFactory.createBlockFamily(this,blockDefUri,blockDef,blockDefinitionMap,blockDefJson));
+              result.families.add(familyFactory.createBlockFamily(this,blockDefUri,blockDef,blockDefJson));
             }
           }
  else {
