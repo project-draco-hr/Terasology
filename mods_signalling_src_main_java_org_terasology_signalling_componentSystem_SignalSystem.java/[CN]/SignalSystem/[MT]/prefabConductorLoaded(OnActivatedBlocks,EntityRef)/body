@@ -1,7 +1,7 @@
 {
   byte connectingOnSides=blockType.getComponent(SignalConductorComponent.class).connectionSides;
   Set<NetworkNode> conductorNodes=Sets.newHashSet();
-  for (  Vector3i location : event) {
+  for (  Vector3i location : event.getBlockPositions()) {
     final NetworkNode conductorNode=toNode(location,connectingOnSides);
     conductorNodes.add(conductorNode);
     signalConductors.put(conductorNode.location,conductorNode);
