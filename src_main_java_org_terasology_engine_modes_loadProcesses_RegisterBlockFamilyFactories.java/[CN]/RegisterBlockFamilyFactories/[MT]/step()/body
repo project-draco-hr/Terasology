@@ -1,0 +1,13 @@
+{
+  DefaultBlockFamilyFactoryRegistry registry=new DefaultBlockFamilyFactoryRegistry();
+  registry.setDefaultBlockFamilyFactory(new SymmetricBlockFamilyFactory());
+  ModManager modManager=CoreRegistry.get(ModManager.class);
+  loadFamilies(registry,modManager.getEngineReflections());
+  for (  Mod mod : modManager.getActiveMods()) {
+    if (mod.isCodeMod()) {
+      loadFamilies(registry,mod.getReflections());
+    }
+  }
+  CoreRegistry.put(BlockFamilyFactoryRegistry.class,registry);
+  return true;
+}

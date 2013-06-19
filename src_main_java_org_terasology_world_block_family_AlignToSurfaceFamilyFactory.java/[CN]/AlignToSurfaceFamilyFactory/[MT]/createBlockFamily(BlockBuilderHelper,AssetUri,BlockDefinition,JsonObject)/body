@@ -5,8 +5,8 @@
     JsonObject topDefJson=blockDefJson.getAsJsonObject("top");
     blockDefJson.remove("top");
     mergeJsonInto(blockDefJson,topDefJson);
-    BlockDefinition topDef=loadBlockDefinition(topDefJson);
-    Block block=constructSingleBlock(blockDefUri,topDef);
+    BlockDefinition topDef=blockBuilder.createBlockDefinition(topDefJson);
+    Block block=blockBuilder.constructSimpleBlock(blockDefUri,topDef);
     block.setDirection(Side.TOP);
     blockMap.put(Side.TOP,block);
     categories=getCategories(topDef);
@@ -15,16 +15,16 @@
     JsonObject sideDefJson=blockDefJson.getAsJsonObject("sides");
     blockDefJson.remove("sides");
     mergeJsonInto(blockDefJson,sideDefJson);
-    BlockDefinition sideDef=loadBlockDefinition(sideDefJson);
-    constructHorizontalBlocks(blockDefUri,sideDef,blockMap);
+    BlockDefinition sideDef=blockBuilder.createBlockDefinition(sideDefJson);
+    blockMap.putAll(blockBuilder.constructHorizontalRotatedBlocks(blockDefUri,sideDef));
     categories=getCategories(sideDef);
   }
   if (blockDefJson.has("bottom")) {
     JsonObject bottomDefJson=blockDefJson.getAsJsonObject("bottom");
     blockDefJson.remove("bottom");
     mergeJsonInto(blockDefJson,bottomDefJson);
-    BlockDefinition bottomDef=loadBlockDefinition(bottomDefJson);
-    Block block=constructSingleBlock(blockDefUri,bottomDef);
+    BlockDefinition bottomDef=blockBuilder.createBlockDefinition(bottomDefJson);
+    Block block=blockBuilder.constructSimpleBlock(blockDefUri,bottomDef);
     block.setDirection(Side.BOTTOM);
     blockMap.put(Side.BOTTOM,block);
     categories=getCategories(bottomDef);

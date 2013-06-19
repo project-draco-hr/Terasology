@@ -1,0 +1,23 @@
+{
+  Set<Class<?>> blockFamilyFactories=reflections.getTypesAnnotatedWith(RegisterBlockFamilyFactory.class);
+  for (  Class<?> blockFamilyFactory : blockFamilyFactories) {
+    if (!BlockFamilyFactory.class.isAssignableFrom(blockFamilyFactory)) {
+      logger.error("Cannot load {}, must be a subclass of BlockFamilyFactory",blockFamilyFactory.getSimpleName());
+      continue;
+    }
+    RegisterBlockFamilyFactory registerInfo=blockFamilyFactory.getAnnotation(RegisterBlockFamilyFactory.class);
+    String id=registerInfo.value();
+    logger.debug("Registering blockFamilyFactory {}",id);
+    try {
+      BlockFamilyFactory newBlockFamilyFactory=(BlockFamilyFactory)blockFamilyFactory.newInstance();
+      registry.setBlockFamilyFactory(id,newBlockFamilyFactory);
+      logger.debug("Loaded blockFamilyFactory {}",id);
+    }
+ catch (    InstantiationException e) {
+      logger.error("Failed to load blockFamilyFactory {}",id,e);
+    }
+catch (    IllegalAccessException e) {
+      logger.error("Failed to load blockFamilyFactory {}",id,e);
+    }
+  }
+}
