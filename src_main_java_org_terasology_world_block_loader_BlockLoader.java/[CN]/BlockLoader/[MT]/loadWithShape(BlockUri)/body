@@ -21,11 +21,11 @@
   def.shape=(shape.getURI().getSimpleString());
   if (shape.isCollisionSymmetric()) {
     Block block=constructSingleBlock(blockDefUri,def);
-    return new SymmetricFamily(uri,block,getCategories(def));
+    return new SymmetricFamily(uri,block,def.categories);
   }
  else {
     Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
     constructHorizontalBlocks(blockDefUri,def,blockMap);
-    return new HorizontalBlockFamily(uri,blockMap,getCategories(def));
+    return new HorizontalBlockFamily(uri,blockMap,def.categories);
   }
 }

@@ -14,12 +14,12 @@
       blockDef.shape=shapeString;
       if (shape.isCollisionSymmetric()) {
         Block block=constructSingleBlock(blockDefUri,blockDef);
-        result.add(new SymmetricFamily(familyUri,block,getCategories(blockDef)));
+        result.add(new SymmetricFamily(familyUri,block,blockDef.categories));
       }
  else {
         Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
         constructHorizontalBlocks(blockDefUri,blockDef,blockMap);
-        result.add(new HorizontalBlockFamily(familyUri,blockMap,getCategories(blockDef)));
+        result.add(new HorizontalBlockFamily(familyUri,blockMap,blockDef.categories));
       }
     }
   }
