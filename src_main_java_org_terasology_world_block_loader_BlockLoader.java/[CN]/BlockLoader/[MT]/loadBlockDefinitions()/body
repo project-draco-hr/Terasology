@@ -13,7 +13,7 @@
         logger.debug("Loading {}",blockDefUri);
         BlockDefinition blockDef=loadBlockDefinition(inheritData(blockDefUri,blockDefJson));
         if (isShapelessBlockFamily(blockDef)) {
-          indexTile(getDefaultTile(blockDef,blockDefUri),true);
+          atlasBuilder.addToAtlas(getDefaultTile(blockDef,blockDefUri));
           result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockDef.categories));
         }
  else {
