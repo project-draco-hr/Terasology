@@ -1,0 +1,20 @@
+{
+  Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+  if (extraDefinitions.containsKey(TOP)) {
+    BlockDefinition topDef=extraDefinitions.get(TOP);
+    Block block=blockBuilder.constructSimpleBlock(blockDefUri,topDef);
+    block.setDirection(Side.TOP);
+    blockMap.put(Side.TOP,block);
+  }
+  if (extraDefinitions.containsKey(SIDES)) {
+    BlockDefinition sideDef=extraDefinitions.get(SIDES);
+    blockMap.putAll(blockBuilder.constructHorizontalRotatedBlocks(blockDefUri,sideDef));
+  }
+  if (extraDefinitions.containsKey(BOTTOM)) {
+    BlockDefinition bottomDef=extraDefinitions.get(BOTTOM);
+    Block block=blockBuilder.constructSimpleBlock(blockDefUri,bottomDef);
+    block.setDirection(Side.BOTTOM);
+    blockMap.put(Side.BOTTOM,block);
+  }
+  return new AlignToSurfaceFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockMap,mainDefinition.categories);
+}

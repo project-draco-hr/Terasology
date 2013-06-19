@@ -11,7 +11,7 @@
           continue;
         }
         logger.debug("Loading {}",blockDefUri);
-        BlockDefinition blockDef=loadBlockDefinition(inheritData(blockDefUri,blockDefJson));
+        BlockDefinition blockDef=createBlockDefinition(inheritData(blockDefUri,blockDefJson));
         if (isShapelessBlockFamily(blockDef)) {
           atlasBuilder.addToAtlas(getDefaultTile(blockDef,blockDefUri));
           result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockDef.categories));
@@ -23,7 +23,23 @@
             blockDef.shape=trimmedLoweredShape.getURI().getSimpleString();
           }
           if (blockDef.shapes.isEmpty()) {
-            result.families.add(blockFamilyFactoryRegistry.getBlockFamilyFactory(blockDef.rotation).createBlockFamily(this,blockDefUri,blockDef,blockDefJson));
+            BlockFamilyFactory familyFactory=blockFamilyFactoryRegistry.getBlockFamilyFactory(blockDef.rotation);
+            if (familyFactory == null) {
+              logger.error("Invalid rotation '{}', reverting to symmetric");
+              result.families.add(new SymmetricFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),constructSingleBlock(blockDefUri,blockDef),blockDef.categories));
+            }
+ else {
+              Map<String,BlockDefinition> blockDefinitionMap=Maps.newHashMap();
+              for (              String section : familyFactory.supportedExtraBlockDefinitionSections()) {
+                if (blockDefJson.has(section) && blockDefJson.get(section).isJsonObject()) {
+                  JsonObject sectionJson=blockDefJson.getAsJsonObject(section);
+                  blockDefJson.remove(section);
+                  JsonMergeUtil.mergeOnto(blockDefJson,sectionJson);
+                  blockDefinitionMap.put(section,createBlockDefinition(sectionJson));
+                }
+              }
+              result.families.add(familyFactory.createBlockFamily(this,blockDefUri,blockDef,blockDefinitionMap,blockDefJson));
+            }
           }
  else {
             result.families.addAll(processMultiBlockFamily(blockDefUri,blockDef));
@@ -31,10 +47,7 @@
         }
       }
     }
- catch (    JsonParseException e) {
-      logger.error("Failed to load block '{}'",blockDefUri,e);
-    }
-catch (    NullPointerException e) {
+ catch (    JsonParseException|NullPointerException e) {
       logger.error("Failed to load block '{}'",blockDefUri,e);
     }
   }
