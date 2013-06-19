@@ -4,11 +4,11 @@
   }
   health.timeSinceLastDamage=0;
   health.currentHealth-=damageAmount;
+  entity.saveComponent(health);
   if (health.currentHealth <= 0) {
     entity.send(new NoHealthEvent(instigator,health.maxHealth));
   }
  else {
     entity.send(new HealthChangedEvent(instigator,health.currentHealth,health.maxHealth));
   }
-  entity.saveComponent(health);
 }

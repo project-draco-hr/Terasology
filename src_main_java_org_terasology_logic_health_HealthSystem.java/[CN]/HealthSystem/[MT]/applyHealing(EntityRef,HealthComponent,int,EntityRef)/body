@@ -3,6 +3,7 @@
     return;
   }
   health.currentHealth+=healAmount;
+  entity.saveComponent(health);
   if (health.currentHealth >= health.maxHealth) {
     health.currentHealth=health.maxHealth;
     entity.send(new FullHealthEvent(instigator,health.maxHealth));
@@ -10,5 +11,4 @@
  else {
     entity.send(new HealthChangedEvent(instigator,health.currentHealth,health.maxHealth));
   }
-  entity.saveComponent(health);
 }
