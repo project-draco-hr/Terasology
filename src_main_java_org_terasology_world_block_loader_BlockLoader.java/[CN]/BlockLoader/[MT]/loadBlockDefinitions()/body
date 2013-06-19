@@ -1,5 +1,6 @@
 {
   logger.info("Loading Blocks...");
+  BlockFamilyFactoryRegistry blockFamilyFactoryRegistry=CoreRegistry.get(BlockFamilyFactoryRegistry.class);
   LoadBlockDefinitionResults result=new LoadBlockDefinitionResults();
   for (  AssetUri blockDefUri : Assets.list(AssetType.BLOCK_DEFINITION)) {
     try {
@@ -10,43 +11,37 @@
           continue;
         }
         logger.debug("Loading {}",blockDefUri);
-        BlockDefinition blockDef=loadBlockDefinition(inheritData(blockDefUri,blockDefJson));
+        BlockDefinition blockDef=createBlockDefinition(inheritData(blockDefUri,blockDefJson));
         if (isShapelessBlockFamily(blockDef)) {
-          indexTile(getDefaultTile(blockDef,blockDefUri),true);
-          result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),getCategories(blockDef)));
+          atlasBuilder.addToAtlas(getDefaultTile(blockDef,blockDefUri));
+          result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockDef.categories));
         }
  else {
           if (blockDef.liquid) {
-            blockDef.rotation=BlockDefinition.RotationType.NONE;
+            blockDef.rotation=null;
             blockDef.shapes.clear();
             blockDef.shape=trimmedLoweredShape.getURI().getSimpleString();
           }
           if (blockDef.shapes.isEmpty()) {
-switch (blockDef.rotation) {
-case ALIGNTOSURFACE:
-              result.families.add(processAlignToSurfaceFamily(blockDefUri,blockDefJson));
-            break;
-case HORIZONTAL:
-          result.families.add(processHorizontalBlockFamily(blockDefUri,blockDef));
-        break;
-default :
-      result.families.add(processSingleBlockFamily(blockDefUri,blockDef));
-    break;
-}
-}
+            BlockFamilyFactory familyFactory=blockFamilyFactoryRegistry.getBlockFamilyFactory(blockDef.rotation);
+            if (familyFactory == null) {
+              logger.error("Invalid rotation '{}', reverting to symmetric");
+              result.families.add(new SymmetricFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),constructSingleBlock(blockDefUri,blockDef),blockDef.categories));
+            }
  else {
-result.families.addAll(processMultiBlockFamily(blockDefUri,blockDef));
-}
-}
-}
-}
- catch (JsonParseException e) {
-logger.error("Failed to load block '{}'",blockDefUri,e);
-}
-catch (NullPointerException e) {
-logger.error("Failed to load block '{}'",blockDefUri,e);
-}
-}
-result.shapelessDefinitions.addAll(loadAutoBlocks());
-return result;
+              result.families.add(familyFactory.createBlockFamily(this,blockDefUri,blockDef,blockDefJson));
+            }
+          }
+ else {
+            result.families.addAll(processMultiBlockFamily(blockDefUri,blockDef));
+          }
+        }
+      }
+    }
+ catch (    JsonParseException|NullPointerException e) {
+      logger.error("Failed to load block '{}'",blockDefUri,e);
+    }
+  }
+  result.shapelessDefinitions.addAll(loadAutoBlocks());
+  return result;
 }

@@ -1,7 +1,6 @@
 {
   for (  BlockPart part : BlockPart.values()) {
-    int tileIndex=getTileIndex(tileUris.get(part),shape.getMeshPart(part) != null);
-    Vector2f atlasPos=calcAtlasPositionForId(tileIndex);
+    Vector2f atlasPos=atlasBuilder.getTexCoords(tileUris.get(part),shape.getMeshPart(part) != null);
     BlockPart targetPart=rot.rotate(part);
     block.setTextureAtlasPos(targetPart,atlasPos);
     if (shape.getMeshPart(part) != null) {
