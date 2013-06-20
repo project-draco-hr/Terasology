@@ -1,0 +1,28 @@
+{
+  Map<Byte,Block> blocksForConnections=Maps.newHashMap();
+  putFixedBlockDefinition(NO_CONNECTIONS,(byte)0,blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(ONE_CONNECTION,DirectionsUtil.getDirections(Direction.RIGHT),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(TWO_CONNECTIONS_LINE,DirectionsUtil.getDirections(Direction.LEFT,Direction.RIGHT),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(TWO_CONNECTIONS_CORNER,DirectionsUtil.getDirections(Direction.RIGHT,Direction.FORWARD),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(THREE_CONNECTIONS_CORNER,DirectionsUtil.getDirections(Direction.RIGHT,Direction.FORWARD,Direction.UP),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(THREE_CONNECTIONS_T,DirectionsUtil.getDirections(Direction.RIGHT,Direction.FORWARD,Direction.BACKWARD),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(FOUR_CONNECTIONS_CROSS,DirectionsUtil.getDirections(Direction.LEFT,Direction.RIGHT,Direction.FORWARD,Direction.BACKWARD),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(FOUR_CONNECTIONS_SIDE,DirectionsUtil.getDirections(Direction.RIGHT,Direction.FORWARD,Direction.BACKWARD,Direction.UP),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(FIVE_CONNECTIONS,DirectionsUtil.getDirections(Direction.RIGHT,Direction.FORWARD,Direction.BACKWARD,Direction.UP,Direction.DOWN),blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  putFixedBlockDefinition(SIX_CONNECTIONS,(byte)63,blockBuilder,blockDefUri,blockDefJson,blocksForConnections);
+  for (byte connections=0; connections < 64; connections++) {
+    if (!blocksForConnections.containsKey(connections)) {
+      for (      Rotation rotation : Rotation.allPossibleRotations()) {
+        final Collection<Direction> connectedDirections=DirectionsUtil.getDirections(connections);
+        Set<Direction> rotatedDirections=Sets.newHashSet();
+        for (        Direction connectedDirection : connectedDirections) {
+          final Vector3i rotatedSideVector=rotation.rotate(Side.inDirection(connectedDirection.getVector3f())).getVector3i();
+          rotatedDirections.add(Direction.inDirection(rotatedSideVector.x,rotatedSideVector.y,rotatedSideVector.z));
+        }
+        byte rotatedConnection=DirectionsUtil.getDirections(rotatedDirections);
+      }
+    }
+  }
+  final Block archetypeBlock=blocksForConnections.get(DirectionsUtil.getDirections(Direction.LEFT,Direction.RIGHT));
+  return new ConnectToSixSidesFamily(connectionCondition,new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockDefinition.categories,archetypeBlock,blocksForConnections);
+}
