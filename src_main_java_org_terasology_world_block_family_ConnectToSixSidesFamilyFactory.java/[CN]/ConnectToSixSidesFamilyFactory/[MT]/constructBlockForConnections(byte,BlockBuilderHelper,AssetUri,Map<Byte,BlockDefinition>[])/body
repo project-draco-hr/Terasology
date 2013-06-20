@@ -1,0 +1,12 @@
+{
+  int connectionCount=DirectionsUtil.getDirections(connections).size();
+  Map<Byte,BlockDefinition> possibleBlockDefinitions=basicBlocks[connectionCount];
+  for (  Map.Entry<Byte,BlockDefinition> connectionBlockDefinition : possibleBlockDefinitions.entrySet()) {
+    byte originalConnections=connectionBlockDefinition.getKey();
+    Matrix3f transformation=getTransformationToAchieve(originalConnections,connections);
+    if (transformation != null) {
+      return blockBuilder.constructTransformedBlock(blockDefUri,connectionBlockDefinition.getValue(),Rotation.constructTempRotation(transformation));
+    }
+  }
+  return null;
+}

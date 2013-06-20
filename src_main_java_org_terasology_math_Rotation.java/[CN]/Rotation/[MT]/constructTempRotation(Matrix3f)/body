@@ -1,0 +1,19 @@
+{
+  Quat4f quaternion=new Quat4f();
+  quaternion.set(transformation);
+  return new Rotation(quaternion){
+    @Override public Side rotate(    Side side){
+      Vector3f directionVector=side.getVector3i().toVector3f();
+      transformation.transform(directionVector);
+      return Side.inDirection(directionVector);
+    }
+    @Override public AABB rotate(    AABB aabb){
+      Vector3f transformedCenter=new Vector3f();
+      transformation.transform(aabb.getCenter(),transformedCenter);
+      Vector3f transformedExtent=new Vector3f();
+      transformation.transform(aabb.getExtents(),transformedExtent);
+      return AABB.createCenterExtent(transformedCenter,new Vector3f(TeraMath.fastAbs(transformedExtent.x),TeraMath.fastAbs(transformedExtent.y),TeraMath.fastAbs(transformedExtent.z)));
+    }
+  }
+;
+}

@@ -2,5 +2,7 @@
   if (isCollisionSymmetric()) {
     return collisionOffset.get(Rotation.NONE);
   }
-  return collisionOffset.get(rot);
+  Vector3f result=collisionOffset.get(rot);
+  if (result == null)   return new Vector3f();
+  return result;
 }

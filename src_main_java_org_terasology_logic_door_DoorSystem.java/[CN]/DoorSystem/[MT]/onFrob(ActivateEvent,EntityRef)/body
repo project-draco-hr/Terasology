@@ -3,8 +3,8 @@
   Side oldSide=(door.isOpen) ? door.openSide : door.closedSide;
   Side newSide=(door.isOpen) ? door.closedSide : door.openSide;
   BlockRegionComponent regionComp=entity.getComponent(BlockRegionComponent.class);
-  worldProvider.setBlock(regionComp.region.min(),door.bottomBlockFamily.getBlockFor(worldProvider,blockEntityRegistry,regionComp.region.min(),newSide,Side.TOP),door.bottomBlockFamily.getBlockFor(worldProvider,blockEntityRegistry,regionComp.region.min(),oldSide,Side.TOP));
-  worldProvider.setBlock(regionComp.region.max(),door.topBlockFamily.getBlockFor(worldProvider,blockEntityRegistry,regionComp.region.max(),newSide,Side.TOP),door.topBlockFamily.getBlockFor(worldProvider,blockEntityRegistry,regionComp.region.max(),oldSide,Side.TOP));
+  worldProvider.setBlock(regionComp.region.min(),door.bottomBlockFamily.getBlockUponPlacement(worldProvider,blockEntityRegistry,regionComp.region.min(),newSide,Side.TOP),door.bottomBlockFamily.getBlockUponPlacement(worldProvider,blockEntityRegistry,regionComp.region.min(),oldSide,Side.TOP));
+  worldProvider.setBlock(regionComp.region.max(),door.topBlockFamily.getBlockUponPlacement(worldProvider,blockEntityRegistry,regionComp.region.max(),newSide,Side.TOP),door.topBlockFamily.getBlockUponPlacement(worldProvider,blockEntityRegistry,regionComp.region.max(),oldSide,Side.TOP));
   Sound sound=(door.isOpen) ? door.closeSound : door.openSound;
   if (sound != null) {
     LocationComponent loc=entity.getComponent(LocationComponent.class);

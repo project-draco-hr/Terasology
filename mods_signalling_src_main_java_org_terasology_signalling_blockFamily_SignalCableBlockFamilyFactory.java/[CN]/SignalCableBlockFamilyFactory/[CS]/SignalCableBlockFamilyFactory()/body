@@ -1,0 +1,11 @@
+{
+  super(new ConnectionCondition(){
+    @Override public boolean isConnectingTo(    Vector3i blockLocation,    Direction connectDirection,    WorldProvider worldProvider,    BlockEntityRegistry blockEntityRegistry){
+      Vector3i neighborLocation=new Vector3i(blockLocation);
+      neighborLocation.add(connectDirection.getVector3i());
+      EntityRef neighborEntity=blockEntityRegistry.getBlockEntityAt(neighborLocation);
+      return (neighborEntity != null && (neighborEntity.hasComponent(SignalConductorComponent.class) || neighborEntity.hasComponent(SignalProducerComponent.class) || neighborEntity.hasComponent(SignalConsumerComponent.class)));
+    }
+  }
+);
+}
