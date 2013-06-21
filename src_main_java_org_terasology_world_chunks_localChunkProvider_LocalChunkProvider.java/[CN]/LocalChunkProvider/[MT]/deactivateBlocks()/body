@@ -1,0 +1,15 @@
+{
+  List<TByteObjectMap<TIntList>> deactivatedBlockSets=Lists.newArrayListWithExpectedSize(deactivateBlocksQueue.size());
+  deactivateBlocksQueue.drainTo(deactivatedBlockSets);
+  for (  TByteObjectMap<TIntList> deactivatedBlockSet : deactivatedBlockSets) {
+    deactivatedBlockSet.forEachEntry(new TByteObjectProcedure<TIntList>(){
+      @Override public boolean execute(      byte id,      TIntList positions){
+        if (positions.size() > 0) {
+          blockManager.getBlock(id).getEntity().send(new BeforeDeactivateBlocks(positions,registry));
+        }
+        return true;
+      }
+    }
+);
+  }
+}
