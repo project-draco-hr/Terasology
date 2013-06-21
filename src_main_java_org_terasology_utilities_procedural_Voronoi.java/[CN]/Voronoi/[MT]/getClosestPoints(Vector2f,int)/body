@@ -1,0 +1,45 @@
+{
+  VoronoiResult[] results=new VoronoiResult[numPoints];
+  for (int i=0; i < results.length; i++) {
+    results[i].distance=Float.MAX_VALUE;
+  }
+  at.scale(densityAdjustment);
+  at.add(offset);
+  int cellX=TeraMath.floorToInt(at.x);
+  int cellY=TeraMath.floorToInt(at.y);
+  processCell(cellX,cellY,at,results);
+  Vector2f cellPos=new Vector2f(at);
+  cellPos.x-=cellX;
+  cellPos.y-=cellY;
+  Vector2f distMax=new Vector2f(standardDistanceFunction(new Vector2f(1 - cellPos.x,0)),standardDistanceFunction(new Vector2f(0,1 - cellPos.y)));
+  Vector2f distMin=new Vector2f(standardDistanceFunction(new Vector2f(cellPos.x,0)),standardDistanceFunction(new Vector2f(0,cellPos.y)));
+  if (distMin.x < results[results.length - 1].distance) {
+    processCell(cellX - 1,cellY,at,results);
+  }
+  if (distMin.y < results[results.length - 1].distance) {
+    processCell(cellX,cellY - 1,at,results);
+  }
+  if (distMax.x < results[results.length - 1].distance) {
+    processCell(cellX + 1,cellY,at,results);
+  }
+  if (distMax.y < results[results.length - 1].distance) {
+    processCell(cellX,cellY + 1,at,results);
+  }
+  if (distMin.x + distMin.y < results[results.length - 1].distance) {
+    processCell(cellX - 1,cellY - 1,at,results);
+  }
+  if (distMax.x + distMax.y < results[results.length - 1].distance) {
+    processCell(cellX + 1,cellY + 1,at,results);
+  }
+  if (distMin.x + distMax.y < results[results.length - 1].distance) {
+    processCell(cellX - 1,cellY + 1,at,results);
+  }
+  if (distMax.x + distMin.y < results[results.length - 1].distance) {
+    processCell(cellX + 1,cellY - 1,at,results);
+  }
+  for (int i=0; i < results.length; i++) {
+    results[i].delta.scale(inverseDensityAdjustment);
+    results[i].distance*=inverseDensityAdjustment * inverseDensityAdjustment;
+  }
+  return results;
+}
