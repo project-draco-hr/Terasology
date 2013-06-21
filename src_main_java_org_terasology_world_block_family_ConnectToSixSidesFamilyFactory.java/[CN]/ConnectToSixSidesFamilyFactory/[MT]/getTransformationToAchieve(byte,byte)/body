@@ -1,14 +1,14 @@
 {
-  Collection<Direction> originalDirections=DirectionsUtil.getDirections(source);
+  Collection<Side> originalSides=Sides.getSides(source);
   for (  Matrix3f possibleTransformation : possibleTransformations) {
-    Set<Direction> transformedDirections=Sets.newHashSet();
-    for (    Direction originalDirection : originalDirections) {
+    Set<Side> transformedSides=Sets.newHashSet();
+    for (    Side originalSide : originalSides) {
       Vector3f result=new Vector3f();
-      possibleTransformation.transform(originalDirection.getVector3f(),result);
-      transformedDirections.add(Direction.inDirection(result));
+      possibleTransformation.transform(originalSide.getVector3i().toVector3f(),result);
+      transformedSides.add(Side.inDirection(result));
     }
-    byte transformedDirection=DirectionsUtil.getDirections(transformedDirections);
-    if (transformedDirection == target) {
+    byte transformedSide=Sides.getSides(transformedSides);
+    if (transformedSide == target) {
       return possibleTransformation;
     }
   }

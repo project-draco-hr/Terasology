@@ -1,7 +1,7 @@
 {
-  for (  Direction direction : Direction.values()) {
+  for (  Side side : Side.values()) {
     Vector3i neighborLocation=new Vector3i(event.getBlockPosition());
-    neighborLocation.add(direction.getVector3i());
+    neighborLocation.add(side.getVector3i());
     Block neighborBlock=worldProvider.getBlock(neighborLocation);
     Block neighborBlockAfterUpdate=neighborBlock.getBlockFamily().getBlockUponNeighborUpdate(worldProvider,blockEntityRegistry,neighborLocation,neighborBlock);
     if (neighborBlock != neighborBlockAfterUpdate) {
