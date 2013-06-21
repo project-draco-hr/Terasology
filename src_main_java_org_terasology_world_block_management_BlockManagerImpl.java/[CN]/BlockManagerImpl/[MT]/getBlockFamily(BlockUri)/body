@@ -1,5 +1,5 @@
 {
-  BlockFamily family=registeredFamilyByUri.get(uri);
+  BlockFamily family=registeredBlockInfo.get().registeredFamilyByUri.get(uri);
   if (family == null && generateNewIds) {
     if (isFreeformFamily(uri.getRootFamilyUri())) {
       family=blockLoader.loadWithShape(uri);
@@ -8,10 +8,16 @@
       family=getAvailableBlockFamily(uri);
     }
     if (family != null) {
-      for (      Block block : family.getBlocks()) {
-        block.setId(getNextId());
+      lock.lock();
+      try {
+        for (        Block block : family.getBlocks()) {
+          block.setId(getNextId());
+        }
+        registerFamily(family);
       }
-      registerFamily(family);
+  finally {
+        lock.unlock();
+      }
     }
   }
   return family;

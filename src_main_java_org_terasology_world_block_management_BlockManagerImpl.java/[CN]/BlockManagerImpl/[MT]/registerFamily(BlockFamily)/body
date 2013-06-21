@@ -1,8 +1,16 @@
 {
   logger.info("Registered {}",family);
-  registeredFamilyByUri.put(family.getURI(),family);
-  for (  Block block : family.getBlocks()) {
-    registerBlock(block);
+  lock.lock();
+  try {
+    RegisteredState newState=new RegisteredState(registeredBlockInfo.get());
+    newState.registeredFamilyByUri.put(family.getURI(),family);
+    for (    Block block : family.getBlocks()) {
+      registerBlock(block,newState);
+    }
+    registeredBlockInfo.set(newState);
+  }
+  finally {
+    lock.unlock();
   }
   for (  BlockRegistrationListener listener : listeners) {
     listener.onBlockFamilyRegistered(family);
