@@ -1,0 +1,21 @@
+{
+  for (  ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
+    chunkRelevanceRegion.update();
+    if (chunkRelevanceRegion.isDirty()) {
+      boolean produceChunks=false;
+      for (      Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
+        Chunk chunk=nearCache.get(pos);
+        if (chunk != null && chunk.getChunkState() == Chunk.State.COMPLETE) {
+          chunkRelevanceRegion.chunkReady(chunk);
+        }
+ else {
+          produceChunks=true;
+        }
+      }
+      if (produceChunks) {
+        pipeline.requestProduction(chunkRelevanceRegion.getRegion().expand(new Vector3i(2,0,2)));
+      }
+      chunkRelevanceRegion.setUpToDate();
+    }
+  }
+}

@@ -1,67 +1,10 @@
 {
   regionLock.readLock().lock();
   try {
-    for (    ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
-      chunkRelevanceRegion.update();
-      if (chunkRelevanceRegion.isDirty()) {
-        boolean produceChunks=false;
-        for (        Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
-          Chunk chunk=nearCache.get(pos);
-          if (chunk != null && chunk.getChunkState() == Chunk.State.COMPLETE) {
-            chunkRelevanceRegion.chunkReady(chunk);
-          }
- else {
-            produceChunks=true;
-          }
-        }
-        if (produceChunks) {
-          pipeline.requestProduction(chunkRelevanceRegion.getRegion().expand(new Vector3i(2,0,2)));
-        }
-        chunkRelevanceRegion.setUpToDate();
-      }
-    }
-    List<ReadyChunkInfo> readyChunkPositions=Lists.newArrayListWithExpectedSize(readyChunks.size());
-    readyChunks.drainTo(readyChunkPositions);
-    for (    ReadyChunkInfo info : readyChunkPositions) {
-      makeChunkAvailable(info);
-    }
-    PerformanceMonitor.startActivity("Review cache size");
-    if (nearCache.size() > CACHE_SIZE) {
-      logger.debug("Compacting cache");
-      Iterator<Vector3i> iterator=nearCache.keySet().iterator();
-      while (iterator.hasNext()) {
-        Vector3i pos=iterator.next();
-        boolean keep=false;
-        for (        ChunkRelevanceRegion region : regions.values()) {
-          if (region.getRegion().expand(new Vector3i(4,0,4)).encompasses(pos)) {
-            keep=true;
-            break;
-          }
-        }
-        if (!keep) {
-          Chunk chunk=nearCache.get(pos);
-          if (chunk.isLocked()) {
-            continue;
-          }
-          if (chunk.getChunkState() == Chunk.State.COMPLETE) {
-            worldEntity.send(new BeforeChunkUnload(pos));
-          }
-          chunk.lock();
-          try {
-            farStore.put(chunk);
-            iterator.remove();
-            chunk.dispose();
-          }
-  finally {
-            chunk.unlock();
-          }
-          for (          ChunkRelevanceRegion region : regions.values()) {
-            region.chunkUnloaded(pos);
-          }
-        }
-      }
-    }
-    PerformanceMonitor.endActivity();
+    updateRelevance();
+    makeChunksAvailable();
+    checkForUnload();
+    deactivateBlocks();
   }
   finally {
     regionLock.readLock().unlock();
