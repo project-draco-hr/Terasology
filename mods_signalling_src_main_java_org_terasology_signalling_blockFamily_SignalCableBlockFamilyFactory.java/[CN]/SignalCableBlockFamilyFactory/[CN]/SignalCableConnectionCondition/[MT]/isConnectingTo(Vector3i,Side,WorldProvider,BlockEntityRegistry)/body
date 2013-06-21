@@ -1,10 +1,6 @@
 {
   Vector3i neighborLocation=new Vector3i(blockLocation);
   neighborLocation.add(connectSide.getVector3i());
-  final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(blockLocation);
-  final SignalConductorComponent conductorComponent=blockEntity.getComponent(SignalConductorComponent.class);
-  byte cableConnections=conductorComponent.connectionSides;
-  if (!Sides.hasSide(cableConnections,connectSide))   return false;
   EntityRef neighborEntity=blockEntityRegistry.getBlockEntityAt(neighborLocation);
   return neighborEntity != null && connectsToNeighbor(connectSide,neighborEntity);
 }
