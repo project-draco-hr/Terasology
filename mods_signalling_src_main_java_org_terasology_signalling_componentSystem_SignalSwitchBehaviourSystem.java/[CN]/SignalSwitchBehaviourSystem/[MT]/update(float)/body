@@ -12,6 +12,7 @@
         if (signalProducer.signalStrength == 0) {
           signalProducer.signalStrength=-1;
           entityBeneathPlayer.saveComponent(signalProducer);
+          entityBeneathPlayer.saveComponent(new SignalProducerModifiedComponent());
           activatedPressurePlates.add(locationBeneathPlayer);
         }
  else {
@@ -27,6 +28,7 @@
       if (signalProducer.signalStrength == -1) {
         signalProducer.signalStrength=0;
         entityBeneathPlayer.saveComponent(signalProducer);
+        entityBeneathPlayer.removeComponent(SignalProducerModifiedComponent.class);
         activatedPressurePlates.remove(pressurePlateLocation);
       }
     }
