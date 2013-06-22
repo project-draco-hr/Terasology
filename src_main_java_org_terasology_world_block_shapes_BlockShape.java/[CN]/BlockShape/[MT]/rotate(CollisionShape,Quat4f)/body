@@ -1,0 +1,20 @@
+{
+  if (shape instanceof BoxShape) {
+    BoxShape box=(BoxShape)shape;
+    Vector3f extents=((BoxShape)shape).getHalfExtentsWithoutMargin(new Vector3f());
+    QuaternionUtil.quatRotate(rot,extents,extents);
+    extents.absolute();
+    return new BoxShape(extents);
+  }
+ else   if (shape instanceof CompoundShape) {
+    CompoundShape compound=(CompoundShape)shape;
+    CompoundShape newShape=new CompoundShape();
+    for (    CompoundShapeChild child : compound.getChildList()) {
+      CollisionShape rotatedChild=rotate(child.childShape,rot);
+      Vector3f offset=QuaternionUtil.quatRotate(rot,child.transform.origin,new Vector3f());
+      newShape.addChildShape(new Transform(new Matrix4f(Rotation.none().getQuat4f(),offset,1.0f)),rotatedChild);
+    }
+    return newShape;
+  }
+  return shape;
+}

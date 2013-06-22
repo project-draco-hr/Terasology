@@ -6,23 +6,26 @@
       if (colliderObj.has("type") && colliderObj.get("type").isJsonPrimitive() && colliderObj.getAsJsonPrimitive("type").isString()) {
         String type=colliderObj.get("type").getAsString();
         if ("AABB".equals(type)) {
-          colliders.add(processAABBShape(context,colliderObj,rot));
+          colliders.add(processAABBShape(context,colliderObj));
         }
  else         if ("Sphere".equals(type)) {
-          colliders.add(processSphereShape(context,colliderObj,rot));
+          colliders.add(processSphereShape(context,colliderObj));
         }
       }
     }
   }
   if (colliders.size() > 1) {
-    return processCompoundShape(colliders);
+    ColliderInfo info=processCompoundShape(colliders);
+    shape.setCollisionShape(info.collisionShape);
+    shape.setCollisionOffset(info.offset);
   }
  else   if (colliders.size() == 1) {
-    return colliders.get(0);
+    shape.setCollisionShape(colliders.get(0).collisionShape);
+    shape.setCollisionOffset(colliders.get(0).offset);
   }
  else {
-    ColliderInfo result=new ColliderInfo(new Vector3f(),CUBE_SHAPE);
-    result.symmetric=true;
-    return result;
+    shape.setCollisionShape(CUBE_SHAPE);
+    shape.setCollisionOffset(new Vector3f(0,0,0));
+    shape.setCollisionSymmetric(true);
   }
 }

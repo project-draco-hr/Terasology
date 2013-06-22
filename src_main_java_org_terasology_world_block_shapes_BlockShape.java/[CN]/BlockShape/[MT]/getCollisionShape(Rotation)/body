@@ -1,10 +1,11 @@
 {
   if (isCollisionSymmetric()) {
-    return collisionShape.get(Rotation.none());
+    return baseCollisionShape;
   }
   CollisionShape result=collisionShape.get(rot);
   if (result == null) {
-    return new BoxShape(new Vector3f(0.5f,0.5f,0.5f));
+    result=rotate(baseCollisionShape,rot.getQuat4f());
+    collisionShape.put(rot,result);
   }
   return result;
 }
