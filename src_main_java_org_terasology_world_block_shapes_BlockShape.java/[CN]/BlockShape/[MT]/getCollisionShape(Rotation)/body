@@ -2,6 +2,7 @@
   if (isCollisionSymmetric()) {
     return baseCollisionShape;
   }
+  rot=applySymmetry(rot);
   CollisionShape result=collisionShape.get(rot);
   if (result == null) {
     result=rotate(baseCollisionShape,rot.getQuat4f());

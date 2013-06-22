@@ -1,6 +1,6 @@
 {
-  Vector3f offset=context.deserialize(colliderDef.get("position"),Vector3f.class);
-  float radius=colliderDef.get("radius").getAsFloat();
+  Vector3f offset=context.deserialize(colliderDef.get(POSITION),Vector3f.class);
+  float radius=colliderDef.get(RADIUS).getAsFloat();
   if (offset == null)   throw new JsonParseException("Sphere Collider missing position");
   return new ColliderInfo(offset,new SphereShape(radius));
 }

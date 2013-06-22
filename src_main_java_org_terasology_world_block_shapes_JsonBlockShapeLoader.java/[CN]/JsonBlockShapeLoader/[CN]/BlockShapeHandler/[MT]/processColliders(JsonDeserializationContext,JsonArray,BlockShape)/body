@@ -3,12 +3,12 @@
   for (  JsonElement elem : colliderArray) {
     if (elem.isJsonObject()) {
       JsonObject colliderObj=elem.getAsJsonObject();
-      if (colliderObj.has("type") && colliderObj.get("type").isJsonPrimitive() && colliderObj.getAsJsonPrimitive("type").isString()) {
-        String type=colliderObj.get("type").getAsString();
-        if ("AABB".equals(type)) {
+      if (colliderObj.has(TYPE) && colliderObj.get(TYPE).isJsonPrimitive() && colliderObj.getAsJsonPrimitive(TYPE).isString()) {
+        String type=colliderObj.get(TYPE).getAsString();
+        if (AABB.equals(type)) {
           colliders.add(processAABBShape(context,colliderObj));
         }
- else         if ("Sphere".equals(type)) {
+ else         if (SPHERE.equals(type)) {
           colliders.add(processSphereShape(context,colliderObj));
         }
       }

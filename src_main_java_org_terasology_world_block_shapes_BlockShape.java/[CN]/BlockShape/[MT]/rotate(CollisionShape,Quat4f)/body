@@ -1,7 +1,7 @@
 {
   if (shape instanceof BoxShape) {
     BoxShape box=(BoxShape)shape;
-    Vector3f extents=((BoxShape)shape).getHalfExtentsWithoutMargin(new Vector3f());
+    Vector3f extents=box.getHalfExtentsWithoutMargin(new Vector3f());
     QuaternionUtil.quatRotate(rot,extents,extents);
     extents.absolute();
     return new BoxShape(extents);
@@ -15,6 +15,14 @@
       newShape.addChildShape(new Transform(new Matrix4f(Rotation.none().getQuat4f(),offset,1.0f)),rotatedChild);
     }
     return newShape;
+  }
+ else   if (shape instanceof ConvexHullShape) {
+    ConvexHullShape convexHull=(ConvexHullShape)shape;
+    ObjectArrayList<Vector3f> transformedVerts=new ObjectArrayList<>();
+    for (    Vector3f vert : convexHull.getPoints()) {
+      transformedVerts.add(QuaternionUtil.quatRotate(rot,vert,new Vector3f()));
+    }
+    return new ConvexHullShape(transformedVerts);
   }
   return shape;
 }
