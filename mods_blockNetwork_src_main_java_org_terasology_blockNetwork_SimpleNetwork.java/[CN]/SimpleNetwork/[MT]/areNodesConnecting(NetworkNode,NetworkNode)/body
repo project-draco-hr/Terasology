@@ -1,0 +1,7 @@
+{
+  for (  Side side : Sides.getSides(node1.connectionSides)) {
+    final ImmutableBlockLocation possibleConnectedLocation=node1.location.move(side);
+    if (node2.location.equals(possibleConnectedLocation) && Sides.hasSide(node2.connectionSides,side.reverse()))     return true;
+  }
+  return false;
+}

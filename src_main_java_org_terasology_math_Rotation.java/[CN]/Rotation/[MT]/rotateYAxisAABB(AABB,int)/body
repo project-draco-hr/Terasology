@@ -1,0 +1,18 @@
+{
+  if (clockwiseSteps < 0) {
+    clockwiseSteps=-clockwiseSteps + 2;
+  }
+  clockwiseSteps=clockwiseSteps % 4;
+  Vector3f center=collider.getCenter();
+  Vector3f extents=collider.getExtents();
+switch (clockwiseSteps) {
+case 1:
+    return AABB.createCenterExtent(new Vector3f(-center.z,center.y,center.x),new Vector3f(extents.z,extents.y,extents.x));
+case 2:
+  return AABB.createCenterExtent(new Vector3f(-center.x,center.y,-center.z),extents);
+case 3:
+return AABB.createCenterExtent(new Vector3f(center.z,center.y,-center.x),new Vector3f(extents.z,extents.y,extents.x));
+default :
+return collider;
+}
+}

@@ -1,0 +1,13 @@
+{
+  if (entity.hasComponent(BlockComponent.class)) {
+    SignalConsumerStatusComponent consumerStatusComponent=entity.getComponent(SignalConsumerStatusComponent.class);
+    Vector3i blockLocation=new Vector3i(entity.getComponent(BlockComponent.class).getPosition());
+    Block blockAtLocation=worldProvider.getBlock(blockLocation);
+    if (blockAtLocation == lampTurnedOff && consumerStatusComponent.hasSignal) {
+      worldProvider.setBlock(blockLocation,lampTurnedOn,blockAtLocation);
+    }
+ else     if (blockAtLocation == lampTurnedOn && !consumerStatusComponent.hasSignal) {
+      worldProvider.setBlock(blockLocation,lampTurnedOff,blockAtLocation);
+    }
+  }
+}

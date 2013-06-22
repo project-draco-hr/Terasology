@@ -1,0 +1,16 @@
+{
+  Collection<Side> originalSides=Sides.getSides(source);
+  for (  Matrix3f possibleTransformation : possibleTransformations) {
+    Set<Side> transformedSides=Sets.newHashSet();
+    for (    Side originalSide : originalSides) {
+      Vector3f result=new Vector3f();
+      possibleTransformation.transform(originalSide.getVector3i().toVector3f(),result);
+      transformedSides.add(Side.inDirection(result));
+    }
+    byte transformedSide=Sides.getSides(transformedSides);
+    if (transformedSide == target) {
+      return possibleTransformation;
+    }
+  }
+  return null;
+}

@@ -1,0 +1,12 @@
+{
+  int result=producerComponent.signalStrength + 1;
+  if (result == 11)   result=0;
+  producerComponent.signalStrength=result;
+  entity.saveComponent(producerComponent);
+  if (producerComponent.signalStrength == 1) {
+    entity.saveComponent(new SignalTransformerHasSignalComponent());
+  }
+ else   if (producerComponent.signalStrength == 0) {
+    entity.removeComponent(SignalTransformerHasSignalComponent.class);
+  }
+}

@@ -1,0 +1,12 @@
+{
+  validateNotMutating();
+  mutating=true;
+  try {
+    validateNoNetworkingOverlap(networkNode);
+    networkingNodes.put(networkNode.location,networkNode);
+    addNetworkingBlockInternal(networkNode);
+  }
+  finally {
+    mutating=false;
+  }
+}

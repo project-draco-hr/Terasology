@@ -1,0 +1,34 @@
+{
+  Set<Vector3i> toRemoveSignal=Sets.newHashSet(activatedPressurePlates);
+  Iterable<EntityRef> players=entityManager.getEntitiesWith(CharacterComponent.class,LocationComponent.class);
+  for (  EntityRef player : players) {
+    Vector3f playerLocation=player.getComponent(LocationComponent.class).getWorldPosition();
+    Vector3i locationBeneathPlayer=new Vector3i(playerLocation.x + 0.5f,playerLocation.y - 0.5f,playerLocation.z + 0.5f);
+    Block blockBeneathPlayer=worldProvider.getBlock(locationBeneathPlayer);
+    if (blockBeneathPlayer == signalPressurePlate) {
+      EntityRef entityBeneathPlayer=blockEntityRegistry.getBlockEntityAt(locationBeneathPlayer);
+      SignalProducerComponent signalProducer=entityBeneathPlayer.getComponent(SignalProducerComponent.class);
+      if (signalProducer != null) {
+        if (signalProducer.signalStrength == 0) {
+          signalProducer.signalStrength=-1;
+          entityBeneathPlayer.saveComponent(signalProducer);
+          activatedPressurePlates.add(locationBeneathPlayer);
+        }
+ else {
+          toRemoveSignal.remove(locationBeneathPlayer);
+        }
+      }
+    }
+  }
+  for (  Vector3i pressurePlateLocation : toRemoveSignal) {
+    EntityRef entityBeneathPlayer=blockEntityRegistry.getBlockEntityAt(pressurePlateLocation);
+    SignalProducerComponent signalProducer=entityBeneathPlayer.getComponent(SignalProducerComponent.class);
+    if (signalProducer != null) {
+      if (signalProducer.signalStrength == -1) {
+        signalProducer.signalStrength=0;
+        entityBeneathPlayer.saveComponent(signalProducer);
+        activatedPressurePlates.remove(pressurePlateLocation);
+      }
+    }
+  }
+}

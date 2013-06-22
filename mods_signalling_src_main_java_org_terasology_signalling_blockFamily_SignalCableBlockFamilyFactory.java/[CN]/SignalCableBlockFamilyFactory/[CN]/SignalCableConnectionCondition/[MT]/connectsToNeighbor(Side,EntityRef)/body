@@ -1,0 +1,10 @@
+{
+  final Side oppositeDirection=connectSide.reverse();
+  final SignalConductorComponent neighborConductorComponent=neighborEntity.getComponent(SignalConductorComponent.class);
+  if (neighborConductorComponent != null && Sides.hasSide(neighborConductorComponent.connectionSides,oppositeDirection))   return true;
+  final SignalConsumerComponent neighborConsumerComponent=neighborEntity.getComponent(SignalConsumerComponent.class);
+  if (neighborConsumerComponent != null && Sides.hasSide(neighborConsumerComponent.connectionSides,oppositeDirection))   return true;
+  final SignalProducerComponent neighborProducerComponent=neighborEntity.getComponent(SignalProducerComponent.class);
+  if (neighborProducerComponent != null && Sides.hasSide(neighborProducerComponent.connectionSides,oppositeDirection))   return true;
+  return false;
+}

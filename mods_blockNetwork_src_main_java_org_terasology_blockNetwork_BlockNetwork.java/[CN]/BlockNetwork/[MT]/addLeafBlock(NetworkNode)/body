@@ -1,0 +1,25 @@
+{
+  validateNotMutating();
+  mutating=true;
+  try {
+    validateNoLeafOverlap(networkNode);
+    for (    SimpleNetwork network : networks) {
+      if (network.canAddLeafNode(networkNode)) {
+        network.addLeafNode(networkNode);
+        notifyLeafNodesAdded(network,Collections.singleton(networkNode));
+      }
+    }
+    for (    NetworkNode leafNode : leafNodes.values()) {
+      if (SimpleNetwork.areNodesConnecting(networkNode,leafNode)) {
+        SimpleNetwork degenerateNetwork=SimpleNetwork.createDegenerateNetwork(networkNode,leafNode);
+        networks.add(degenerateNetwork);
+        notifyNetworkAdded(degenerateNetwork);
+        notifyLeafNodesAdded(degenerateNetwork,Sets.newHashSet(networkNode,leafNode));
+      }
+    }
+    leafNodes.put(networkNode.location,networkNode);
+  }
+  finally {
+    mutating=false;
+  }
+}

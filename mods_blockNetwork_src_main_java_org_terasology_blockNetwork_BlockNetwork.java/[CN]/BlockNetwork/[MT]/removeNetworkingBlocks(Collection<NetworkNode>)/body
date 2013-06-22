@@ -1,0 +1,33 @@
+{
+  if (networkNodes.size() == 0)   return;
+  validateNotMutating();
+  mutating=true;
+  try {
+    Set<SimpleNetwork> affectedNetworks=Sets.newHashSet();
+    for (    NetworkNode networkNode : networkNodes) {
+      final SimpleNetwork networkWithBlock=findNetworkWithNetworkingBlock(networkNode);
+      if (networkWithBlock == null)       throw new IllegalStateException("Trying to remove a networking block that doesn't belong to any network");
+      affectedNetworks.add(networkWithBlock);
+      networkingNodes.remove(networkNode.location,networkNode);
+    }
+    List<Set<NetworkNode>> listOfNodesFromModifiedNetworks=Lists.newLinkedList();
+    for (    SimpleNetwork networkWithBlock : affectedNetworks) {
+      Set<NetworkNode> leafNodes=Sets.newHashSet(networkWithBlock.getLeafNodes());
+      Set<NetworkNode> networkingNodes=Sets.newHashSet(networkWithBlock.getNetworkingNodes());
+      networkWithBlock.removeAllLeafNodes();
+      notifyLeafNodesAdded(networkWithBlock,leafNodes);
+      networkWithBlock.removeAllNetworkingNodes();
+      notifyNetworkingNodesRemoved(networkWithBlock,Collections.unmodifiableSet(networkingNodes));
+      networks.remove(networkWithBlock);
+      notifyNetworkRemoved(networkWithBlock);
+    }
+    for (    Set<NetworkNode> networkingNodesInModifiedNetwork : listOfNodesFromModifiedNetworks) {
+      for (      NetworkNode networkingNode : networkingNodesInModifiedNetwork) {
+        if (!networkNodes.contains(networkingNode))         addNetworkingBlockInternal(networkingNode);
+      }
+    }
+  }
+  finally {
+    mutating=false;
+  }
+}
