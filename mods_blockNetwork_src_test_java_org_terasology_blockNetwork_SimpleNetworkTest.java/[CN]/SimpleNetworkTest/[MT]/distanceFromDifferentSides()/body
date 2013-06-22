@@ -1,0 +1,13 @@
+{
+  NetworkNode firstLeaf=toNode(new Vector3i(0,0,0),allDirections);
+  NetworkNode secondLeaf=toNode(new Vector3i(0,0,2),allDirections);
+  network.addNetworkingNode(toNode(new Vector3i(0,0,1),allDirections));
+  network.addNetworkingNode(toNode(new Vector3i(0,1,1),allDirections));
+  network.addNetworkingNode(toNode(new Vector3i(0,1,2),allDirections));
+  network.addLeafNode(secondLeaf);
+  network.addLeafNode(firstLeaf);
+  assertTrue(network.isInDistanceWithSide(2,firstLeaf,secondLeaf,Side.FRONT));
+  assertFalse(network.isInDistanceWithSide(2,firstLeaf,secondLeaf,Side.TOP));
+  assertFalse(network.isInDistanceWithSide(3,firstLeaf,secondLeaf,Side.TOP));
+  assertTrue(network.isInDistanceWithSide(4,firstLeaf,secondLeaf,Side.TOP));
+}

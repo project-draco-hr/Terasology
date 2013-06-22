@@ -5,7 +5,7 @@
     if (signalNetwork.isNetworkActive(network)) {
       Collection<NetworkNode> consumersInNetwork=this.consumersInNetwork.get(network);
       for (      NetworkNode consumerLocation : consumersInNetwork) {
-        boolean consumerSignalInNetwork=getConsumerSignalInNetwork(network,consumerLocation);
+        NetworkSignals consumerSignalInNetwork=getConsumerSignalInNetwork(network,consumerLocation);
         consumerSignalInNetworks.get(consumerLocation).put(network,consumerSignalInNetwork);
       }
       consumersToEvaluate.addAll(consumersInNetwork);
@@ -14,18 +14,21 @@
   for (  NetworkNode modifiedConsumer : consumersToRecalculate) {
     Collection<Network> networks=consumerNetworks.get(modifiedConsumer);
     for (    Network network : networks) {
-      boolean consumerSignalInNetwork=getConsumerSignalInNetwork(network,modifiedConsumer);
+      NetworkSignals consumerSignalInNetwork=getConsumerSignalInNetwork(network,modifiedConsumer);
       consumerSignalInNetworks.get(modifiedConsumer).put(network,consumerSignalInNetwork);
     }
     consumersToEvaluate.add(modifiedConsumer);
   }
+  producersSignalsChanged.clear();
+  networksToRecalculate.clear();
+  consumersToRecalculate.clear();
   for (  NetworkNode consumerToEvaluate : consumersToEvaluate) {
     if (signalConsumers.containsValue(consumerToEvaluate)) {
       final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(consumerToEvaluate.location.toVector3i());
       final SignalConsumerStatusComponent consumerStatusComponent=blockEntity.getComponent(SignalConsumerStatusComponent.class);
       final SignalConsumerComponent consumerComponent=blockEntity.getComponent(SignalConsumerComponent.class);
       if (consumerComponent != null && consumerStatusComponent != null) {
-        Map<Network,Boolean> consumerSignals=consumerSignalInNetworks.get(consumerToEvaluate);
+        Map<Network,NetworkSignals> consumerSignals=consumerSignalInNetworks.get(consumerToEvaluate);
         boolean newSignal=false;
         if (consumerSignals != null)         newSignal=calculateResultSignal(consumerSignals.values(),consumerComponent);
         if (newSignal != consumerStatusComponent.hasSignal) {
@@ -36,7 +39,4 @@
       }
     }
   }
-  producersSignalsChanged.clear();
-  networksToRecalculate.clear();
-  consumersToRecalculate.clear();
 }
