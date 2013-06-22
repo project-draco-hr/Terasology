@@ -1,0 +1,9 @@
+{
+  byte connections=0;
+  for (  Side connectSide : SideBitFlag.getSides(connectionSides)) {
+    if (connectionCondition.isConnectingTo(location,connectSide,worldProvider,blockEntityRegistry)) {
+      connections+=SideBitFlag.getSide(connectSide);
+    }
+  }
+  return blocks.get(connections);
+}

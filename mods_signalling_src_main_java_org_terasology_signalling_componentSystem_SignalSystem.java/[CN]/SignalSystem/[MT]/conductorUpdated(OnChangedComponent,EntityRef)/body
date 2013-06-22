@@ -1,0 +1,13 @@
+{
+  if (block.hasComponent(BlockComponent.class)) {
+    byte connectingOnSides=block.getComponent(SignalConductorComponent.class).connectionSides;
+    final Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
+    final ImmutableBlockLocation blockLocation=new ImmutableBlockLocation(location);
+    final NetworkNode oldConductorNode=signalConductors.get(blockLocation);
+    if (oldConductorNode != null) {
+      final NetworkNode newConductorNode=toNode(new Vector3i(location),connectingOnSides);
+      signalConductors.put(newConductorNode.location,newConductorNode);
+      signalNetwork.updateNetworkingBlock(oldConductorNode,newConductorNode);
+    }
+  }
+}

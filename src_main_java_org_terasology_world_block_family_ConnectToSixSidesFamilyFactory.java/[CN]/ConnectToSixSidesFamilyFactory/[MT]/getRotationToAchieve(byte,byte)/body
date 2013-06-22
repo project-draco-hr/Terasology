@@ -1,0 +1,14 @@
+{
+  Collection<Side> originalSides=SideBitFlag.getSides(source);
+  for (  Rotation rot : Rotation.values()) {
+    Set<Side> transformedSides=Sets.newHashSet();
+    for (    Side originalSide : originalSides) {
+      transformedSides.add(rot.rotate(originalSide));
+    }
+    byte transformedSide=SideBitFlag.getSides(transformedSides);
+    if (transformedSide == target) {
+      return rot;
+    }
+  }
+  return null;
+}

@@ -1,0 +1,7 @@
+{
+  for (int i=0; i < 10; i++)   network.addNetworkingNode(toNode(new Vector3i(0,0,i),allDirections));
+  for (int i=1; i <= 5; i++)   network.addNetworkingNode(toNode(new Vector3i(i,0,5),allDirections));
+  assertTrue(network.isInDistance(10,toNode(new Vector3i(0,0,0),allDirections),toNode(new Vector3i(5,0,5),allDirections)));
+  assertFalse(network.isInDistance(9,toNode(new Vector3i(0,0,0),allDirections),toNode(new Vector3i(5,0,5),allDirections)));
+  assertEquals(10,network.getDistance(toNode(new Vector3i(0,0,0),allDirections),toNode(new Vector3i(5,0,5),allDirections)));
+}

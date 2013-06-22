@@ -1,0 +1,9 @@
+{
+  for (  Side connectingOnSide : SideBitFlag.getSides(networkNode.connectionSides)) {
+    final ImmutableBlockLocation possibleConnectionLocation=networkNode.location.move(connectingOnSide);
+    for (    NetworkNode possibleConnectedNode : networkingNodes.get(possibleConnectionLocation)) {
+      if (SideBitFlag.hasSide(possibleConnectedNode.connectionSides,connectingOnSide.reverse()))       return true;
+    }
+  }
+  return false;
+}

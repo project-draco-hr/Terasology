@@ -7,10 +7,10 @@
   BlockFamily type=blockItem.blockFamily;
   Side surfaceSide=Side.inDirection(event.getHitNormal());
   Side secondaryDirection=TeraMath.getSecondaryPlacementDirection(event.getDirection(),event.getHitNormal());
-  Block block=type.getBlockFor(surfaceSide,secondaryDirection);
   Vector3i targetBlock=event.getTarget().getComponent(BlockComponent.class).getPosition();
   Vector3i placementPos=new Vector3i(targetBlock);
   placementPos.add(surfaceSide.getVector3i());
+  Block block=type.getBlockForPlacement(worldProvider,blockEntityRegistry,placementPos,surfaceSide,secondaryDirection);
   if (canPlaceBlock(block,targetBlock,placementPos)) {
     if (networkSystem.getMode().isAuthority()) {
       if (!worldProvider.setBlock(placementPos,block,worldProvider.getBlock(placementPos))) {

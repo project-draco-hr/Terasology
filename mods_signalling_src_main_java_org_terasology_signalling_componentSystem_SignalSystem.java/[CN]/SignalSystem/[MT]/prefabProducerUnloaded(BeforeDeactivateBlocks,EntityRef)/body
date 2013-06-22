@@ -1,0 +1,13 @@
+{
+  byte connectingOnSides=blockType.getComponent(SignalProducerComponent.class).connectionSides;
+  Set<NetworkNode> producerNodes=Sets.newHashSet();
+  for (  Vector3i location : event.getBlockPositions()) {
+    final NetworkNode producerNode=toNode(location,connectingOnSides);
+    producerNodes.add(producerNode);
+  }
+  signalNetwork.removeLeafBlocks(producerNodes);
+  for (  NetworkNode producerNode : producerNodes) {
+    signalProducers.remove(producerNode.location);
+    producerSignalStrengths.remove(producerNode);
+  }
+}

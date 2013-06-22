@@ -1,0 +1,15 @@
+{
+  int connectionCount=SideBitFlag.getSides(connections).size();
+  TByteObjectMap<BlockDefinition> possibleBlockDefinitions=basicBlocks[connectionCount];
+  final TByteObjectIterator<BlockDefinition> blockDefinitionIterator=possibleBlockDefinitions.iterator();
+  while (blockDefinitionIterator.hasNext()) {
+    blockDefinitionIterator.advance();
+    final byte originalConnections=blockDefinitionIterator.key();
+    final BlockDefinition blockDefinition=blockDefinitionIterator.value();
+    Rotation rot=getRotationToAchieve(originalConnections,connections);
+    if (rot != null) {
+      return blockBuilder.constructTransformedBlock(blockDefUri,blockDefinition,rot);
+    }
+  }
+  return null;
+}
