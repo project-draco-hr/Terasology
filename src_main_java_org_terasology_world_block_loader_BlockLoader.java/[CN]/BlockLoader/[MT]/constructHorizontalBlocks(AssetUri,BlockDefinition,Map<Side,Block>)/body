@@ -1,16 +1,5 @@
 {
-  Map<BlockPart,AssetUri> tileUris=prepareTiles(blockDef,blockDefUri);
-  Map<BlockPart,Block.ColorSource> colorSourceMap=prepareColorSources(blockDef);
-  Map<BlockPart,Vector4f> colorOffsetsMap=prepareColorOffsets(blockDef);
-  BlockShape shape=getShape(blockDef);
   for (  Rotation rot : Rotation.horizontalRotations()) {
-    Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
-    block.setDirection(rot.rotate(Side.FRONT));
-    applyShape(block,shape,tileUris,rot);
-    for (    BlockPart part : BlockPart.values()) {
-      block.setColorSource(part,colorSourceMap.get(part));
-      block.setColorOffset(part,colorOffsetsMap.get(part));
-    }
-    blockMap.put(rot.rotate(Side.FRONT),block);
+    blockMap.put(rot.rotate(Side.FRONT),constructTransformedBlock(blockDefUri,blockDef,rot));
   }
 }

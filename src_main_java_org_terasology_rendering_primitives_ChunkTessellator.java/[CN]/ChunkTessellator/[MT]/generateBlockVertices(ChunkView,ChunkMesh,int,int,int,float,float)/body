@@ -1,33 +1,37 @@
 {
   Block block=view.getBlock(x,y,z);
+  Map<Side,Block> adjacentBlocks=Maps.newEnumMap(Side.class);
+  for (  Side side : Side.values()) {
+    Vector3i offset=side.getVector3i();
+    Block blockToCheck=view.getBlock(x + offset.x,y + offset.y,z + offset.z);
+    adjacentBlocks.put(side,blockToCheck);
+  }
+  BlockAppearance blockAppearance=block.getAppearance(adjacentBlocks);
   ChunkMesh.RENDER_TYPE renderType=ChunkMesh.RENDER_TYPE.TRANSLUCENT;
   if (!block.isTranslucent())   renderType=ChunkMesh.RENDER_TYPE.OPAQUE;
   if (block.getURI().toString().equals("engine:water") || block.getURI().toString().equals("engine:ice"))   renderType=ChunkMesh.RENDER_TYPE.WATER_AND_ICE;
   if (block.isDoubleSided())   renderType=ChunkMesh.RENDER_TYPE.BILLBOARD;
-  if (block.getMeshPart(BlockPart.CENTER) != null) {
+  if (blockAppearance.getPart(BlockPart.CENTER) != null) {
     Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.CENTER,temp,hum);
-    block.getMeshPart(BlockPart.CENTER).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex());
+    blockAppearance.getPart(BlockPart.CENTER).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex());
   }
   boolean[] drawDir=new boolean[6];
   for (  Side side : Side.values()) {
-    Vector3i offset=side.getVector3i();
-    Block blockToCheck=view.getBlock(x + offset.x,y + offset.y,z + offset.z);
-    drawDir[side.ordinal()]=isSideVisibleForBlockTypes(blockToCheck,block,side);
+    drawDir[side.ordinal()]=blockAppearance.getPart(BlockPart.fromSide(side)) != null && isSideVisibleForBlockTypes(adjacentBlocks.get(side),block,side);
   }
   if (y == 0) {
     drawDir[Side.BOTTOM.ordinal()]=false;
   }
   if (block.isLiquid()) {
+    Block bottomBlock=adjacentBlocks.get(Side.BOTTOM);
     for (    Side side : Side.horizontalSides()) {
       Vector3i offset=side.getVector3i();
       Block adjacentBelow=view.getBlock(x + offset.x,y - 1,z + offset.z);
-      Block adjacent=view.getBlock(x + offset.x,y,z + offset.z);
-      Block below=view.getBlock(x,y - 1,z);
-      drawDir[side.ordinal()]|=(isSideVisibleForBlockTypes(adjacentBelow,block,side) && !isSideVisibleForBlockTypes(below,adjacent,side.reverse()));
+      Block adjacent=adjacentBlocks.get(side);
+      drawDir[side.ordinal()]|=(blockAppearance.getPart(BlockPart.fromSide(side)) != null && isSideVisibleForBlockTypes(adjacentBelow,block,side) && !isSideVisibleForBlockTypes(bottomBlock,adjacent,side.reverse()));
     }
-    Block blockToCheck=view.getBlock(x,y + 1,z);
+    Block blockToCheck=adjacentBlocks.get(Side.TOP);
     drawDir[Side.TOP.ordinal()]|=!blockToCheck.isLiquid();
-    Block bottomBlock=view.getBlock(x,y - 1,z);
     if (bottomBlock.isLiquid() || bottomBlock.isInvisible()) {
       for (      Side dir : Side.values()) {
         if (drawDir[dir.ordinal()]) {
@@ -41,7 +45,7 @@
   for (  Side dir : Side.values()) {
     if (drawDir[dir.ordinal()]) {
       Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),temp,hum);
-      block.getMeshPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex());
+      blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex());
     }
   }
 }

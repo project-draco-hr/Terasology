@@ -1,0 +1,13 @@
+{
+  Map<BlockPart,BlockMeshPart> meshParts=Maps.newEnumMap(BlockPart.class);
+  Map<BlockPart,Vector2f> textureAtlasPositions=Maps.newEnumMap(BlockPart.class);
+  for (  BlockPart part : BlockPart.values()) {
+    Vector2f atlasPos=atlasBuilder.getTexCoords(tileUris.get(part),shape.getMeshPart(part) != null);
+    BlockPart targetPart=part.rotate(rot);
+    textureAtlasPositions.put(targetPart,atlasPos);
+    if (shape.getMeshPart(part) != null) {
+      meshParts.put(targetPart,shape.getMeshPart(part).rotate(rot.getQuat4f()).mapTexCoords(atlasPos,Block.TEXTURE_OFFSET_WIDTH));
+    }
+  }
+  return new BlockAppearance(meshParts,textureAtlasPositions);
+}

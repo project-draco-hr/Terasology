@@ -4,7 +4,9 @@
   Map<BlockPart,Vector4f> colorOffsetsMap=prepareColorOffsets(blockDef);
   BlockShape shape=getShape(blockDef);
   Block block=createRawBlock(blockDef,properCase(blockDefUri.getAssetName()));
-  applyShape(block,shape,tileUris,Rotation.none());
+  block.setPrimaryAppearance(createAppearance(shape,tileUris,Rotation.none()));
+  setBlockFullSides(block,shape,Rotation.none());
+  block.setCollision(shape.getCollisionOffset(Rotation.none()),shape.getCollisionShape(Rotation.none()));
   for (  BlockPart part : BlockPart.values()) {
     block.setColorSource(part,colorSourceMap.get(part));
     block.setColorOffset(part,colorOffsetsMap.get(part));
