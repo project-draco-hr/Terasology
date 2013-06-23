@@ -1,0 +1,13 @@
+{
+  int currentSignalStrength=producerComponent.signalStrength;
+  if (currentSignalStrength == 0) {
+    producerComponent.signalStrength=onSignalStrength;
+    entity.saveComponent(producerComponent);
+    entity.saveComponent(new SignalProducerModifiedComponent());
+  }
+ else {
+    producerComponent.signalStrength=0;
+    entity.saveComponent(producerComponent);
+    entity.removeComponent(SignalProducerModifiedComponent.class);
+  }
+}
