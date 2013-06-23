@@ -12,13 +12,11 @@
             }
             preparingChunks.remove(getPosition());
             if (chunk.getChunkState() == Chunk.State.COMPLETE) {
-              for (              Vector3i adjPos : Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS)) {
-                if (isChunkReady(adjPos)) {
-                  readyChunks.offer(new ReadyChunkInfo(adjPos,createBatchBlockEventMappings(nearCache.get(adjPos))));
-                }
-              }
+              readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk)));
             }
-            pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+ else {
+              pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+            }
           }
         }
 );

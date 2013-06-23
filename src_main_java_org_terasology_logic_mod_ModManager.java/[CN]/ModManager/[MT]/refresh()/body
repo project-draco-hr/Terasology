@@ -38,8 +38,7 @@ catch (        JsonIOException e) {
       }
     }
 )) {
-      try {
-        ZipFile zipFile=new ZipFile(modFile);
+      try (ZipFile zipFile=new ZipFile(modFile)){
         ZipEntry modInfoEntry=zipFile.getEntry("mod.txt");
         if (modInfoEntry != null) {
           try {
