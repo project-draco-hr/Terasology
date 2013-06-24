@@ -5,10 +5,7 @@
     }
     return field.get(obj);
   }
- catch (  InvocationTargetException e) {
-    logger.error("Exception during access of {} from {}",field.getName(),obj.getClass(),e);
-  }
-catch (  IllegalAccessException e) {
+ catch (  InvocationTargetException|IllegalAccessException e) {
     logger.error("Exception during access of {} from {}",field.getName(),obj.getClass(),e);
   }
   return null;
