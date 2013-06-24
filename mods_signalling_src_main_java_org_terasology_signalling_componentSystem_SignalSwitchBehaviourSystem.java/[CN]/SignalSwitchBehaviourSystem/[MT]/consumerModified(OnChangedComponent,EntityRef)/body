@@ -2,42 +2,27 @@
   if (entity.hasComponent(BlockComponent.class)) {
     SignalConsumerStatusComponent consumerStatusComponent=entity.getComponent(SignalConsumerStatusComponent.class);
     Vector3i blockLocation=new Vector3i(entity.getComponent(BlockComponent.class).getPosition());
-    Block blockAtLocation=worldProvider.getBlock(blockLocation);
-    if (blockAtLocation == lampTurnedOff && consumerStatusComponent.hasSignal) {
+    Block block=worldProvider.getBlock(blockLocation);
+    BlockFamily blockFamily=block.getBlockFamily();
+    if (block == lampTurnedOff && consumerStatusComponent.hasSignal) {
       logger.info("Lamp turning on");
-      worldProvider.setBlock(blockLocation,lampTurnedOn,blockAtLocation);
+      worldProvider.setBlock(blockLocation,lampTurnedOn,block);
     }
- else     if (blockAtLocation == lampTurnedOn && !consumerStatusComponent.hasSignal) {
+ else     if (block == lampTurnedOn && !consumerStatusComponent.hasSignal) {
       logger.info("Lamp turning off");
-      worldProvider.setBlock(blockLocation,lampTurnedOff,blockAtLocation);
+      worldProvider.setBlock(blockLocation,lampTurnedOff,block);
     }
- else     if (blockAtLocation == signalOrGate || blockAtLocation == signalAndGate || blockAtLocation == signalXorGate) {
-      SignalProducerComponent producerComponent=entity.getComponent(SignalProducerComponent.class);
-      logger.info("Gate has signal: " + consumerStatusComponent.hasSignal);
-      if (consumerStatusComponent.hasSignal) {
-        producerComponent.signalStrength=-1;
-        entity.saveComponent(producerComponent);
-        entity.saveComponent(new SignalProducerModifiedComponent());
-      }
- else {
-        producerComponent.signalStrength=0;
-        entity.saveComponent(producerComponent);
-        entity.removeComponent(SignalProducerModifiedComponent.class);
-      }
+ else     if (blockFamily == signalOrGate || blockFamily == signalAndGate || blockFamily == signalXorGate) {
+      signalChangedForNormalGate(entity,consumerStatusComponent);
     }
- else     if (blockAtLocation == signalNandGate) {
-      SignalProducerComponent producerComponent=entity.getComponent(SignalProducerComponent.class);
-      logger.info("Gate has signal: " + consumerStatusComponent.hasSignal);
-      if (consumerStatusComponent.hasSignal) {
-        producerComponent.signalStrength=0;
-        entity.saveComponent(producerComponent);
-        entity.saveComponent(new SignalProducerModifiedComponent());
-      }
- else {
-        producerComponent.signalStrength=-1;
-        entity.saveComponent(producerComponent);
-        entity.removeComponent(SignalProducerModifiedComponent.class);
-      }
+ else     if (blockFamily == signalNandGate) {
+      signalChangedForNotGate(entity,consumerStatusComponent);
+    }
+ else     if (blockFamily == signalOnDelayGate) {
+      signalChangedForDelayOnGate(entity,consumerStatusComponent);
+    }
+ else     if (blockFamily == signalOffDelayGate) {
+      signalChangedForDelayOffGate(entity,consumerStatusComponent);
     }
   }
 }

@@ -1,6 +1,9 @@
 {
   logger.info("Producer updated: " + block.getParentPrefab());
   if (block.hasComponent(BlockComponent.class)) {
+    for (    Component component : block.iterateComponents()) {
+      logger.info("Producer component: " + component.getClass().getName());
+    }
     Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
     ImmutableBlockLocation blockLocation=new ImmutableBlockLocation(location);
     final SignalProducerComponent producerComponent=block.getComponent(SignalProducerComponent.class);

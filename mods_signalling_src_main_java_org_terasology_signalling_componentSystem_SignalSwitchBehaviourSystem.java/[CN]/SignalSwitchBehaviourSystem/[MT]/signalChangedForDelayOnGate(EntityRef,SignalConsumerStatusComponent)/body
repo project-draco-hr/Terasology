@@ -1,0 +1,12 @@
+{
+  SignalTimeDelayComponent delay=entity.getComponent(SignalTimeDelayComponent.class);
+  if (consumerStatusComponent.hasSignal) {
+    SignalDelayedActionComponent delayedAction=new SignalDelayedActionComponent();
+    delayedAction.executeTime=worldProvider.getTime() + delay.delaySetting;
+    entity.saveComponent(delayedAction);
+  }
+ else {
+    entity.removeComponent(SignalDelayedActionComponent.class);
+    stopProducingSignal(entity);
+  }
+}

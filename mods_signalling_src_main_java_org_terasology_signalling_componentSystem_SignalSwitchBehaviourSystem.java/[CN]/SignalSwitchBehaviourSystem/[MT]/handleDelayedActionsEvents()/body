@@ -1,0 +1,18 @@
+{
+  long worldTime=worldProvider.getTime();
+  BlockAtLocationDelayedAction action;
+  while ((action=delayedActions.peek()) != null && action.executeTime >= worldTime) {
+    action=delayedActions.poll();
+    final Vector3i actionLocation=action.blockLocation.toVector3i();
+    final Block block=worldProvider.getBlock(actionLocation);
+    final BlockFamily blockFamily=block.getBlockFamily();
+    final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(actionLocation);
+    if (blockFamily == signalOnDelayGate) {
+      startProducingSignal(blockEntity,-1);
+    }
+ else     if (blockFamily == signalOffDelayGate) {
+      stopProducingSignal(blockEntity);
+    }
+    blockEntity.removeComponent(SignalDelayedActionComponent.class);
+  }
+}

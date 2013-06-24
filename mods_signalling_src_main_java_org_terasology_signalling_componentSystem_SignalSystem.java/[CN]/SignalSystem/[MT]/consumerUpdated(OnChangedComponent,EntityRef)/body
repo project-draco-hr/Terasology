@@ -1,5 +1,8 @@
 {
   if (block.hasComponent(BlockComponent.class)) {
+    for (    Component component : block.iterateComponents()) {
+      logger.info("Consumer component: " + component.getClass().getName());
+    }
     Vector3i location=new Vector3i(block.getComponent(BlockComponent.class).getPosition());
     ImmutableBlockLocation blockLocation=new ImmutableBlockLocation(location);
     final SignalConsumerComponent consumerComponent=block.getComponent(SignalConsumerComponent.class);
