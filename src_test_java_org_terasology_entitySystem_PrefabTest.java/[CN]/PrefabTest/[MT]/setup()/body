@@ -1,0 +1,14 @@
+{
+  ModManager modManager=new ModManager();
+  modManager.applyActiveMods();
+  CoreRegistry.put(ModManager.class,modManager);
+  AssetType.registerAssetTypes();
+  AssetManager.getInstance().addAssetSource(new ClasspathSource("unittest",PrefabTest.class.getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY));
+  NetworkSystem networkSystem=mock(NetworkSystem.class);
+  when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
+  EntityManager em=new EntitySystemBuilder().build(modManager,networkSystem);
+  prefabManager=new PojoPrefabManager(em.getComponentLibrary());
+  for (  AssetUri prefabUri : AssetManager.getInstance().listAssets(AssetType.PREFAB)) {
+    prefabManager.registerPrefab(Assets.get(prefabUri,Prefab.class));
+  }
+}

@@ -1,6 +1,7 @@
 {
-  prefabManager.createPrefab(PrefabName);
-  Prefab ref=prefabManager.getPrefab(PrefabName);
+  Prefab prefab=new PojoPrefab(new AssetUri(AssetType.PREFAB,PREFAB_NAME),null,true,new StringComponent("Test"));
+  prefabManager.registerPrefab(prefab);
+  Prefab ref=prefabManager.getPrefab(PREFAB_NAME);
   assertNotNull(ref);
-  assertEquals(PrefabName,ref.getName());
+  assertEquals(PREFAB_NAME,ref.getName());
 }

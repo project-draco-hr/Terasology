@@ -3,7 +3,8 @@
   if (!setup) {
     setup=true;
     bindLwjgl();
-    blockManager=new BlockManagerImpl();
+    blockFamilyFactoryRegistry=new DefaultBlockFamilyFactoryRegistry();
+    blockManager=new BlockManagerImpl(blockFamilyFactoryRegistry);
     CoreRegistry.put(BlockManager.class,blockManager);
     config=new Config();
     CoreRegistry.put(Config.class,config);

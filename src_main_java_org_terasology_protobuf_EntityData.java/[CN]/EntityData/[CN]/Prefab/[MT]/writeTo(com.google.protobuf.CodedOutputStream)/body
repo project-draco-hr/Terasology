@@ -7,21 +7,24 @@
   for (int i=0; i < component_.size(); i++) {
     output.writeMessage(2,component_.get(i));
   }
-  if (getParentIndexList().size() > 0) {
+  if (getDeprecatedList().size() > 0) {
     output.writeRawVarint32(26);
-    output.writeRawVarint32(parentIndexMemoizedSerializedSize);
+    output.writeRawVarint32(deprecatedMemoizedSerializedSize);
   }
-  for (int i=0; i < parentIndex_.size(); i++) {
-    output.writeInt32NoTag(parentIndex_.get(i));
+  for (int i=0; i < deprecated_.size(); i++) {
+    output.writeInt32NoTag(deprecated_.get(i));
   }
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
     output.writeBool(4,persisted_);
   }
+  for (int i=0; i < removedComponent_.size(); i++) {
+    output.writeBytes(5,removedComponent_.getByteString(i));
+  }
   if (((bitField0_ & 0x00000004) == 0x00000004)) {
     output.writeBytes(15,getNameBytes());
   }
-  for (int i=0; i < parentName_.size(); i++) {
-    output.writeBytes(16,parentName_.getByteString(i));
+  if (((bitField0_ & 0x00000008) == 0x00000008)) {
+    output.writeBytes(16,getParentNameBytes());
   }
   extensionWriter.writeUntil(536870912,output);
   getUnknownFields().writeTo(output);

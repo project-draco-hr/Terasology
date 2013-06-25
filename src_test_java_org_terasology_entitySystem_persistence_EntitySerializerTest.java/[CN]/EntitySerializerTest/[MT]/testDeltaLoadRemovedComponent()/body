@@ -1,7 +1,7 @@
 {
-  Prefab prefab=prefabManager.createPrefab("Test");
-  prefab.addComponent(new StringComponent("Value"));
-  EntityRef entity=entityManager.create("Test");
+  Prefab prefab=new PojoPrefab(new AssetUri(AssetType.PREFAB,"test:Test"),null,true,new StringComponent("Value"));
+  prefabManager.registerPrefab(prefab);
+  EntityRef entity=entityManager.create("test:Test");
   entity.removeComponent(StringComponent.class);
   EntityData.Entity entityData=entitySerializer.serialize(entity);
   entityManager.clear();

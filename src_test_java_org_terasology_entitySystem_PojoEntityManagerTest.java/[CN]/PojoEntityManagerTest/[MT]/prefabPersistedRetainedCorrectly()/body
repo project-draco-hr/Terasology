@@ -1,8 +1,7 @@
 {
   PrefabManager manager=new PojoPrefabManager(entityManager.getComponentLibrary());
-  Prefab prefab=manager.createPrefab("myprefab");
-  prefab.setPersisted(false);
-  prefab.addComponent(new StringComponent("Test"));
+  Prefab prefab=new PojoPrefab(new AssetUri(AssetType.PREFAB,"unittest:myprefab"),null,false,new StringComponent("Test"));
+  manager.registerPrefab(prefab);
   EntityRef entity1=entityManager.create(prefab);
   assertFalse(entity1.isPersistent());
 }

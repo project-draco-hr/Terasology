@@ -5,8 +5,7 @@
   if (prefab != null) {
     for (    Component comp : prefab.iterateComponents()) {
       if (!(comp instanceof NetworkComponent)) {
-        ComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
-        builder.addComponent(metadata.clone(comp));
+        builder.addComponent(entityManager.getComponentLibrary().copy(comp));
       }
     }
   }

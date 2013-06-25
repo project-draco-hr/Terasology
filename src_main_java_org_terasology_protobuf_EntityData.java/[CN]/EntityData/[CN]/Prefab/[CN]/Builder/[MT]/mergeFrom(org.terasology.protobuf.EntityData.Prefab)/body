@@ -30,34 +30,39 @@
       }
     }
   }
-  if (!other.parentIndex_.isEmpty()) {
-    if (parentIndex_.isEmpty()) {
-      parentIndex_=other.parentIndex_;
+  if (!other.deprecated_.isEmpty()) {
+    if (deprecated_.isEmpty()) {
+      deprecated_=other.deprecated_;
       bitField0_=(bitField0_ & ~0x00000004);
     }
  else {
-      ensureParentIndexIsMutable();
-      parentIndex_.addAll(other.parentIndex_);
+      ensureDeprecatedIsMutable();
+      deprecated_.addAll(other.deprecated_);
     }
     onChanged();
   }
   if (other.hasPersisted()) {
     setPersisted(other.getPersisted());
   }
+  if (!other.removedComponent_.isEmpty()) {
+    if (removedComponent_.isEmpty()) {
+      removedComponent_=other.removedComponent_;
+      bitField0_=(bitField0_ & ~0x00000010);
+    }
+ else {
+      ensureRemovedComponentIsMutable();
+      removedComponent_.addAll(other.removedComponent_);
+    }
+    onChanged();
+  }
   if (other.hasName()) {
-    bitField0_|=0x00000010;
+    bitField0_|=0x00000020;
     name_=other.name_;
     onChanged();
   }
-  if (!other.parentName_.isEmpty()) {
-    if (parentName_.isEmpty()) {
-      parentName_=other.parentName_;
-      bitField0_=(bitField0_ & ~0x00000020);
-    }
- else {
-      ensureParentNameIsMutable();
-      parentName_.addAll(other.parentName_);
-    }
+  if (other.hasParentName()) {
+    bitField0_|=0x00000040;
+    parentName_=other.parentName_;
     onChanged();
   }
   this.mergeExtensionFields(other);
