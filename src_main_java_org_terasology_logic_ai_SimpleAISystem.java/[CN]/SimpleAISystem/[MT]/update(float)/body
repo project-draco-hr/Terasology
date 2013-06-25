@@ -2,7 +2,7 @@
   for (  EntityRef entity : entityManager.getEntitiesWith(SimpleAIComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
     Vector3f worldPos=location.getWorldPosition();
-    if (!worldProvider.isBlockActive(worldPos)) {
+    if (!worldProvider.isBlockRelevant(worldPos)) {
       continue;
     }
     SimpleAIComponent ai=entity.getComponent(SimpleAIComponent.class);

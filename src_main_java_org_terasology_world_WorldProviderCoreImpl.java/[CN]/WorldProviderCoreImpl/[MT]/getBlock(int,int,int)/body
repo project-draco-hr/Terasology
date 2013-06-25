@@ -1,5 +1,6 @@
 {
   if (y >= Chunk.SIZE_Y || y < 0) {
+    logger.warn("Accessed block outside of the height range");
     return BlockManager.getAir();
   }
   Vector3i chunkPos=TeraMath.calcChunkPos(x,y,z);
@@ -8,5 +9,6 @@
     Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
     return chunk.getBlock(blockPos);
   }
+  logger.warn("Attempted to access unavailable chunk via block at {}, {}, {}",x,y,z);
   return BlockManager.getAir();
 }
