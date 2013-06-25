@@ -3,7 +3,10 @@
   if (chunk == null) {
     PerformanceMonitor.startActivity("Check chunk in cache");
     if (preparingChunks.add(chunkPos)) {
-      if (farStore.contains(chunkPos)) {
+      if (nearCache.get(chunkPos) != null) {
+        preparingChunks.remove(chunkPos);
+      }
+ else       if (farStore.contains(chunkPos)) {
         pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
           @Override public void enact(){
             Chunk chunk=farStore.get(getPosition());
