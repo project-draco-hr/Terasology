@@ -4,6 +4,7 @@
   eventSystem.process();
   componentSystemManager.shutdown();
   guiManager.closeAllWindows();
+  CoreRegistry.get(BulletPhysics.class).dispose();
   if (saveWorld) {
     try {
       CoreRegistry.get(WorldPersister.class).save(new File(PathManager.getInstance().getCurrentWorldPath(),TerasologyConstants.ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
@@ -17,4 +18,7 @@
     worldRenderer.dispose(saveWorld);
     worldRenderer=null;
   }
+  CoreRegistry.get(Console.class).dispose();
+  CoreRegistry.clear();
+  BlockManager.getAir().setEntity(EntityRef.NULL);
 }

@@ -1,7 +1,7 @@
 {
   PrefabManager manager=new PojoPrefabManager(entityManager.getComponentLibrary());
-  Prefab prefab=manager.createPrefab("myprefab");
-  prefab.addComponent(new StringComponent("Test"));
+  Prefab prefab=new PojoPrefab(new AssetUri(AssetType.PREFAB,"unittest:myprefab"),null,true,new StringComponent("Test"));
+  manager.registerPrefab(prefab);
   EntityRef entity1=entityManager.create(prefab);
   StringComponent comp=entity1.getComponent(StringComponent.class);
   assertEquals("Test",comp.value);

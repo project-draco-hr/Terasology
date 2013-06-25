@@ -1,0 +1,13 @@
+{
+  super(uri);
+  Map<Class<? extends Component>,Component> compMap=Maps.newHashMap();
+  for (  Component comp : components) {
+    compMap.put(comp.getClass(),comp);
+  }
+  this.componentMap=ImmutableMap.copyOf(compMap);
+  this.persisted=persisted;
+  this.parent=parent;
+  if (parent != null && parent instanceof PojoPrefab) {
+    ((PojoPrefab)parent).children.add(this);
+  }
+}

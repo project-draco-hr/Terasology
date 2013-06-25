@@ -1,25 +1,38 @@
 {
-  String name=uri.getSimpleString();
-  Prefab prefab=prefabManager.createPrefab(name);
-  prefab.setPersisted(prefabData.getPersisted());
-  for (  String parentName : prefabData.getParentNameList()) {
-    int packageSplit=parentName.indexOf(':');
-    if (packageSplit == -1) {
-      parentName=uri.getPackage() + ":" + parentName;
+  boolean persisted=(prefabData.hasPersisted()) ? prefabData.getPersisted() : true;
+  Prefab parent=null;
+  if (prefabData.hasParentName()) {
+    AssetUri parentUri=new AssetUri(AssetType.PREFAB,prefabData.getParentName());
+    if (parentUri.isValid()) {
+      parent=Assets.get(parentUri,Prefab.class);
     }
-    Prefab parent=prefabManager.getPrefab(parentName);
-    if (parent == null) {
-      logger.error("Missing parent prefab (need to fix parent serialization)");
+  }
+  Map<Class<? extends Component>,Component> componentMap=Maps.newHashMap();
+  if (parent != null) {
+    for (    Component comp : parent.iterateComponents()) {
+      componentMap.put(comp.getClass(),componentLibrary.copy(comp));
     }
- else {
-      prefab.addParent(parent);
+  }
+  for (  String removedComponent : prefabData.getRemovedComponentList()) {
+    ComponentMetadata<?> metadata=componentLibrary.getMetadata(removedComponent);
+    if (metadata != null) {
+      componentMap.remove(metadata.getType());
     }
   }
   for (  EntityData.Component componentData : prefabData.getComponentList()) {
-    Component component=componentSerializer.deserialize(componentData);
-    if (component != null) {
-      prefab.addComponent(component);
+    ComponentMetadata<?> metadata=componentLibrary.getMetadata(componentData.getType());
+    if (metadata != null) {
+      Component existing=componentMap.get(metadata.getType());
+      if (existing != null) {
+        componentSerializer.deserializeOnto(existing,componentData);
+      }
+ else {
+        Component newComponent=componentSerializer.deserialize(componentData);
+        if (newComponent != null) {
+          componentMap.put(newComponent.getClass(),newComponent);
+        }
+      }
     }
   }
-  return prefab;
+  return new PojoPrefab(uri,componentMap,parent,persisted);
 }

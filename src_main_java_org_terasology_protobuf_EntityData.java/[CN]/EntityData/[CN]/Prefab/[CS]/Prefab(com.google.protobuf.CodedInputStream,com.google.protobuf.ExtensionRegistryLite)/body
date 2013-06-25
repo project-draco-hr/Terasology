@@ -35,10 +35,10 @@ case 18:
 case 24:
 {
 if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-  parentIndex_=new java.util.ArrayList<java.lang.Integer>();
+  deprecated_=new java.util.ArrayList<java.lang.Integer>();
   mutable_bitField0_|=0x00000004;
 }
-parentIndex_.add(input.readInt32());
+deprecated_.add(input.readInt32());
 break;
 }
 case 26:
@@ -46,11 +46,11 @@ case 26:
 int length=input.readRawVarint32();
 int limit=input.pushLimit(length);
 if (!((mutable_bitField0_ & 0x00000004) == 0x00000004) && input.getBytesUntilLimit() > 0) {
-parentIndex_=new java.util.ArrayList<java.lang.Integer>();
+deprecated_=new java.util.ArrayList<java.lang.Integer>();
 mutable_bitField0_|=0x00000004;
 }
 while (input.getBytesUntilLimit() > 0) {
-parentIndex_.add(input.readInt32());
+deprecated_.add(input.readInt32());
 }
 input.popLimit(limit);
 break;
@@ -61,6 +61,15 @@ bitField0_|=0x00000002;
 persisted_=input.readBool();
 break;
 }
+case 42:
+{
+if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+removedComponent_=new com.google.protobuf.LazyStringArrayList();
+mutable_bitField0_|=0x00000010;
+}
+removedComponent_.add(input.readBytes());
+break;
+}
 case 122:
 {
 bitField0_|=0x00000004;
@@ -69,11 +78,8 @@ break;
 }
 case 130:
 {
-if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
-parentName_=new com.google.protobuf.LazyStringArrayList();
-mutable_bitField0_|=0x00000020;
-}
-parentName_.add(input.readBytes());
+bitField0_|=0x00000008;
+parentName_=input.readBytes();
 break;
 }
 }
@@ -90,10 +96,10 @@ if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
 component_=java.util.Collections.unmodifiableList(component_);
 }
 if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
-parentIndex_=java.util.Collections.unmodifiableList(parentIndex_);
+deprecated_=java.util.Collections.unmodifiableList(deprecated_);
 }
-if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
-parentName_=new com.google.protobuf.UnmodifiableLazyStringList(parentName_);
+if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+removedComponent_=new com.google.protobuf.UnmodifiableLazyStringList(removedComponent_);
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();

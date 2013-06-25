@@ -1,2 +1,10 @@
 {
+  Iterator<Asset> iterator=assetCache.values().iterator();
+  while (iterator.hasNext()) {
+    Asset asset=iterator.next();
+    if (asset instanceof Prefab) {
+      asset.dispose();
+      iterator.remove();
+    }
+  }
 }

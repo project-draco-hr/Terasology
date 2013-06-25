@@ -1,6 +1,6 @@
 {
   EntitySystemBuilder builder=new EntitySystemBuilder();
-  blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl());
+  blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl(new DefaultBlockFamilyFactoryRegistry()));
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
   entityManager=builder.build(modManager,networkSystem);
@@ -8,18 +8,18 @@
   worldStub=new WorldProviderCoreStub(BlockManager.getAir());
   worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);
   blockWithString=new Block();
-  Prefab prefabWithString=prefabManager.createPrefab("test:prefabWithString");
-  prefabWithString.addComponent(new StringComponent("Test"));
+  Prefab prefabWithString=new PojoPrefab(new AssetUri(AssetType.PREFAB,"test:prefabWithString"),null,true,new StringComponent("Test"));
+  prefabManager.registerPrefab(prefabWithString);
   blockWithString.setPrefab("test:prefabWithString");
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithString"),blockWithString),true);
   blockWithDifferentString=new Block();
-  Prefab prefabWithDifferentString=prefabManager.createPrefab("test:prefabWithDifferentString");
-  prefabWithDifferentString.addComponent(new StringComponent("Test2"));
+  Prefab prefabWithDifferentString=new PojoPrefab(new AssetUri(AssetType.PREFAB,"test:prefabWithDifferentString"),null,true,new StringComponent("Test2"));
+  prefabManager.registerPrefab(prefabWithDifferentString);
   blockWithDifferentString.setPrefab("test:prefabWithDifferentString");
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithDifferentString"),blockWithDifferentString),true);
   blockWithRetainedComponent=new Block();
-  Prefab prefabWithRetainedComponent=prefabManager.createPrefab("test:prefabWithRetainedComponent");
-  prefabWithRetainedComponent.addComponent(new RetainedOnBlockChangeComponent(3));
+  Prefab prefabWithRetainedComponent=new PojoPrefab(new AssetUri(AssetType.PREFAB,"test:prefabWithRetainedComponent"),null,true,new RetainedOnBlockChangeComponent(3));
+  prefabManager.registerPrefab(prefabWithRetainedComponent);
   blockWithRetainedComponent.setPrefab("test:prefabWithRetainedComponent");
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithRetainedComponent"),blockWithRetainedComponent),true);
   keepActiveBlock=new Block();
