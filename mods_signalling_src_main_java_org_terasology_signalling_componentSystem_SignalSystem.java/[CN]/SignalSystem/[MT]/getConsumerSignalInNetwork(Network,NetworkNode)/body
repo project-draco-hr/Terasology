@@ -1,8 +1,10 @@
 {
   final Collection<NetworkNode> producers=producersInNetwork.get(network);
   for (  NetworkNode producer : producers) {
-    final int signalStrength=producerSignalStrengths.get(producer);
-    if (signalStrength == -1)     return new NetworkSignals(network.getLeafSidesInNetwork(consumerNode),(byte)0);
+    if (!producer.location.equals(consumerNode.location)) {
+      final int signalStrength=producerSignalStrengths.get(producer);
+      if (signalStrength == -1)       return new NetworkSignals(network.getLeafSidesInNetwork(consumerNode),(byte)0);
+    }
   }
   byte sidesInNetwork=network.getLeafSidesInNetwork(consumerNode);
   byte sidesWithSignal=0;

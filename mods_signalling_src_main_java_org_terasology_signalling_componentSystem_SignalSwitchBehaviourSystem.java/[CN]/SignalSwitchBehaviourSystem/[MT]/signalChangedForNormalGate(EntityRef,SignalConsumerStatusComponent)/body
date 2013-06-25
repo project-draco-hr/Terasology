@@ -1,9 +1,6 @@
 {
   logger.debug("Gate has signal: " + consumerStatusComponent.hasSignal);
-  if (consumerStatusComponent.hasSignal) {
-    startProducingSignal(entity,-1);
-  }
- else {
-    stopProducingSignal(entity);
-  }
+  SignalDelayedActionComponent delayedAction=new SignalDelayedActionComponent();
+  delayedAction.executeTime=worldProvider.getTime() + GATE_DELAY;
+  entity.saveComponent(delayedAction);
 }

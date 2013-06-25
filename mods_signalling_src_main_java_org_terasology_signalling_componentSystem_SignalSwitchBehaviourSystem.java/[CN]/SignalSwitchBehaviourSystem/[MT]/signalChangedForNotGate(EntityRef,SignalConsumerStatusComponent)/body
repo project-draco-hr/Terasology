@@ -1,12 +1,7 @@
 {
   SignalProducerComponent producerComponent=entity.getComponent(SignalProducerComponent.class);
   logger.debug("Gate has signal: " + consumerStatusComponent.hasSignal);
-  if (consumerStatusComponent.hasSignal) {
-    producerComponent.signalStrength=0;
-    entity.saveComponent(producerComponent);
-  }
- else {
-    producerComponent.signalStrength=-1;
-    entity.saveComponent(producerComponent);
-  }
+  SignalDelayedActionComponent delayedAction=new SignalDelayedActionComponent();
+  delayedAction.executeTime=worldProvider.getTime() + GATE_DELAY;
+  entity.saveComponent(delayedAction);
 }
