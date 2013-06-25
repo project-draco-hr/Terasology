@@ -2,7 +2,7 @@
   for (  EntityRef entity : entityManager.getEntitiesWith(HierarchicalAIComponent.class,CharacterMovementComponent.class,LocationComponent.class)) {
     LocationComponent location=entity.getComponent(LocationComponent.class);
     Vector3f worldPos=location.getWorldPosition();
-    if (!worldProvider.isBlockActive(worldPos)) {
+    if (!worldProvider.isBlockRelevant(worldPos)) {
       continue;
     }
     loop(entity,location,worldPos);
