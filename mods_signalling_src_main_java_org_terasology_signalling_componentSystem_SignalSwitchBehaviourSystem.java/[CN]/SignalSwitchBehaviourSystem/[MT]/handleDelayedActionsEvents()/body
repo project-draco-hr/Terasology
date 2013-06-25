@@ -1,6 +1,5 @@
 {
   long worldTime=worldProvider.getTime();
-  logger.info("Time in handle delayed actions: " + worldTime);
   BlockAtLocationDelayedAction action;
   while ((action=delayedActions.peek()) != null && action.executeTime <= worldTime) {
     action=delayedActions.poll();

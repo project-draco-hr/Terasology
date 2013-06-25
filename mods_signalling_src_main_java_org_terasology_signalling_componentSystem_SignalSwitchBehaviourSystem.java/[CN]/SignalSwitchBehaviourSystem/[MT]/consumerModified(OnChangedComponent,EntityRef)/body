@@ -5,11 +5,11 @@
     Block block=worldProvider.getBlock(blockLocation);
     BlockFamily blockFamily=block.getBlockFamily();
     if (block == lampTurnedOff && consumerStatusComponent.hasSignal) {
-      logger.info("Lamp turning on");
+      logger.debug("Lamp turning on");
       worldProvider.setBlock(blockLocation,lampTurnedOn,block);
     }
  else     if (block == lampTurnedOn && !consumerStatusComponent.hasSignal) {
-      logger.info("Lamp turning off");
+      logger.debug("Lamp turning off");
       worldProvider.setBlock(blockLocation,lampTurnedOff,block);
     }
  else     if (blockFamily == signalOrGate || blockFamily == signalAndGate || blockFamily == signalXorGate) {
