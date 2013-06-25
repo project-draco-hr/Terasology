@@ -2,6 +2,12 @@ def writeMeshCollision(fw, scene):
     fw(',\n\t"collision" : {\n')
     if scene.teraCollisionSymmetric:
         fw('\t\t"symmetric" : true,\n')
+    if scene.teraCollisionSymmetricZ:
+        fw('        "yawSymmetric" : true,\n')
+    if scene.teraCollisionSymmetricX:
+        fw('        "pitchSymmetric" : true,\n')
+    if scene.teraCollisionSymmetricY:
+        fw('        "rollSymmetric" : true,\n')
     first = True
     for object in bpy.data.objects:
         if ((object.teraColliderType != '') and (object.teraColliderType != 'None')):
