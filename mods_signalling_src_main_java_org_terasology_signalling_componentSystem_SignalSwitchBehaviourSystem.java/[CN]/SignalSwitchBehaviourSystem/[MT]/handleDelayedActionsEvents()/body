@@ -15,10 +15,14 @@
         stopProducingSignal(blockEntity);
       }
  else       if (blockFamily == signalOrGate || blockFamily == signalAndGate || blockFamily == signalXorGate) {
-        processOutputForNormalGate(blockEntity);
+        if (processOutputForNormalGate(blockEntity)) {
+          gateLastSignalChangeTime.put(new ImmutableBlockLocation(actionLocation),worldTime);
+        }
       }
  else       if (blockFamily == signalNandGate) {
-        processOutputForRevertedGate(blockEntity);
+        if (processOutputForRevertedGate(blockEntity)) {
+          gateLastSignalChangeTime.put(new ImmutableBlockLocation(actionLocation),worldTime);
+        }
       }
       blockEntity.removeComponent(SignalDelayedActionComponent.class);
     }

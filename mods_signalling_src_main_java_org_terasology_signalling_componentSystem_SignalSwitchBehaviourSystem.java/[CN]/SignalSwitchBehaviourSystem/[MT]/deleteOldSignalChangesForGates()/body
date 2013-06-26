@@ -1,0 +1,13 @@
+{
+  long worldTime=worldProvider.getTime();
+  if (lastSignalCleanupExecuteTime + SIGNAL_CLEANUP_INTERVAL < worldTime) {
+    final TObjectLongIterator<ImmutableBlockLocation> iterator=gateLastSignalChangeTime.iterator();
+    while (iterator.hasNext()) {
+      iterator.advance();
+      if (iterator.value() + GATE_MINIMUM_SIGNAL_CHANGE_INTERVAL < worldTime) {
+        iterator.remove();
+      }
+    }
+    lastSignalCleanupExecuteTime=worldTime;
+  }
+}

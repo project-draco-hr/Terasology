@@ -1,8 +1,10 @@
 {
   final SignalProducerComponent producer=entity.getComponent(SignalProducerComponent.class);
-  if (producer.signalStrength == 0) {
+  if (producer.signalStrength != signalStrength) {
     producer.signalStrength=signalStrength;
     entity.saveComponent(producer);
     entity.saveComponent(new SignalProducerModifiedComponent());
+    return true;
   }
+  return false;
 }
