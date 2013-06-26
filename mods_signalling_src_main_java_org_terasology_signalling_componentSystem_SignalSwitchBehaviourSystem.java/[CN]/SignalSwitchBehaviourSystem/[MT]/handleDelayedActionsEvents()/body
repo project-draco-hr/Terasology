@@ -7,8 +7,6 @@
     final Block block=worldProvider.getBlock(actionLocation);
     final BlockFamily blockFamily=block.getBlockFamily();
     final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(actionLocation);
-    System.out.println("Block family: " + blockFamily.getDisplayName());
-    System.out.println("Block entity: " + blockEntity);
     if (blockFamily == signalOnDelayGate) {
       startProducingSignal(blockEntity,-1);
     }
@@ -20,6 +18,10 @@
     }
  else     if (blockFamily == signalNandGate) {
       processOutputForRevertedGate(blockEntity);
+    }
+ else {
+      action.executeTime+=NOT_LOADED_BLOCK_DELAY;
+      delayedActions.add(action);
     }
     blockEntity.removeComponent(SignalDelayedActionComponent.class);
   }

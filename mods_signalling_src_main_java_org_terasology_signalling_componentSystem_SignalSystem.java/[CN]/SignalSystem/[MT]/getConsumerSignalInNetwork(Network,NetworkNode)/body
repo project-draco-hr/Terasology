@@ -1,7 +1,7 @@
 {
   final Collection<NetworkNode> producers=producersInNetwork.get(network);
   for (  NetworkNode producer : producers) {
-    if (!producer.location.equals(consumerNode.location)) {
+    if (CONSUMER_CAN_POWER_ITSELF || !producer.location.equals(consumerNode.location)) {
       final int signalStrength=producerSignalStrengths.get(producer);
       if (signalStrength == -1)       return new NetworkSignals(network.getLeafSidesInNetwork(consumerNode),(byte)0);
     }

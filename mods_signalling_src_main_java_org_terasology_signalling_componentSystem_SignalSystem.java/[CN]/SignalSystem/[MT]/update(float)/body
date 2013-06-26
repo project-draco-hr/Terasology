@@ -1,6 +1,6 @@
 {
   long worldTime=worldProvider.getTime();
-  if (worldTime > lastUpdate + delay) {
+  if (worldTime > lastUpdate + PROCESSING_MINIMUM_INTERVAL) {
     lastUpdate=worldTime;
     for (    NetworkNode producerChanges : producersSignalsChanged)     networksToRecalculate.addAll(producerNetworks.get(producerChanges));
     Set<NetworkNode> consumersToEvaluate=Sets.newHashSet();

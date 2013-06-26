@@ -1,6 +1,6 @@
 {
   for (  NetworkNode producer : producers) {
-    if (!producer.location.equals(consumerNode.location)) {
+    if (CONSUMER_CAN_POWER_ITSELF || !producer.location.equals(consumerNode.location)) {
       final int signalStrength=producerSignalStrengths.get(producer);
       if (network.isInDistanceWithSide(signalStrength,producer,consumerNode,sideInNetwork))       return true;
     }

@@ -1,7 +1,4 @@
 {
-  SignalProducerComponent producerComponent=entity.getComponent(SignalProducerComponent.class);
   logger.debug("Gate has signal: " + consumerStatusComponent.hasSignal);
-  SignalDelayedActionComponent delayedAction=new SignalDelayedActionComponent();
-  delayedAction.executeTime=worldProvider.getTime() + GATE_DELAY;
-  entity.saveComponent(delayedAction);
+  processOutputForRevertedGate(entity);
 }
