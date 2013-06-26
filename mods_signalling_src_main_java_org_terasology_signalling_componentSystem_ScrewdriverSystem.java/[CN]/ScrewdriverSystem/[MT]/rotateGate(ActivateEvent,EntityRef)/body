@@ -9,6 +9,7 @@
       final Side currentSide=gateBlockFamily.getBlockSide(block);
       final Side newSide=sideOrder.get(currentSide);
       if (worldProvider.setBlock(targetLocation,gateBlockFamily.getBlockForSide(newSide),block)) {
+        logger.info("Gate rotated");
         final EntityRef gateEntity=blockEntityRegistry.getBlockEntityAt(targetLocation);
         final SignalProducerComponent signalProducer=gateEntity.getComponent(SignalProducerComponent.class);
         gateEntity.removeComponent(SignalProducerComponent.class);
