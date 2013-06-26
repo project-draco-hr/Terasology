@@ -4,25 +4,27 @@
   while ((action=delayedActions.peek()) != null && action.executeTime <= worldTime) {
     action=delayedActions.poll();
     final Vector3i actionLocation=action.blockLocation.toVector3i();
-    final Block block=worldProvider.getBlock(actionLocation);
-    final BlockFamily blockFamily=block.getBlockFamily();
-    final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(actionLocation);
-    if (blockFamily == signalOnDelayGate) {
-      startProducingSignal(blockEntity,-1);
-    }
- else     if (blockFamily == signalOffDelayGate) {
-      stopProducingSignal(blockEntity);
-    }
- else     if (blockFamily == signalOrGate || blockFamily == signalAndGate || blockFamily == signalXorGate) {
-      processOutputForNormalGate(blockEntity);
-    }
- else     if (blockFamily == signalNandGate) {
-      processOutputForRevertedGate(blockEntity);
+    if (worldProvider.isBlockRelevant(actionLocation)) {
+      final Block block=worldProvider.getBlock(actionLocation);
+      final BlockFamily blockFamily=block.getBlockFamily();
+      final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(actionLocation);
+      if (blockFamily == signalOnDelayGate) {
+        startProducingSignal(blockEntity,-1);
+      }
+ else       if (blockFamily == signalOffDelayGate) {
+        stopProducingSignal(blockEntity);
+      }
+ else       if (blockFamily == signalOrGate || blockFamily == signalAndGate || blockFamily == signalXorGate) {
+        processOutputForNormalGate(blockEntity);
+      }
+ else       if (blockFamily == signalNandGate) {
+        processOutputForRevertedGate(blockEntity);
+      }
+      blockEntity.removeComponent(SignalDelayedActionComponent.class);
     }
  else {
-      action.executeTime+=NOT_LOADED_BLOCK_DELAY;
+      action.executeTime+=NOT_LOADED_BLOCK_RETRY_DELAY;
       delayedActions.add(action);
     }
-    blockEntity.removeComponent(SignalDelayedActionComponent.class);
   }
 }
