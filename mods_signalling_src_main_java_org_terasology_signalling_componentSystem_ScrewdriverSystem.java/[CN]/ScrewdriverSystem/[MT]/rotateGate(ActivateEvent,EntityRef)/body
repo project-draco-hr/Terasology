@@ -9,12 +9,11 @@
       final Side currentSide=gateBlockFamily.getBlockSide(block);
       final Side newSide=sideOrder.get(currentSide);
       if (worldProvider.setBlock(targetLocation,gateBlockFamily.getBlockForSide(newSide),block)) {
-        logger.info("Gate rotated");
         final EntityRef gateEntity=blockEntityRegistry.getBlockEntityAt(targetLocation);
         final SignalProducerComponent signalProducer=gateEntity.getComponent(SignalProducerComponent.class);
-        gateEntity.removeComponent(SignalProducerComponent.class);
         final SignalConsumerComponent signalConsumer=gateEntity.getComponent(SignalConsumerComponent.class);
-        gateEntity.removeComponent(SignalConsumerComponent.class);
+        signalConsumer.connectionSides=0;
+        gateEntity.saveComponent(signalConsumer);
         final byte newSideBit=SideBitFlag.getSide(newSide);
         signalProducer.connectionSides=newSideBit;
         signalConsumer.connectionSides=(byte)(63 - newSideBit);
@@ -23,7 +22,7 @@
         if (newSide == Side.FRONT) {
           gateEntity.removeComponent(SignalGateRotatedComponent.class);
         }
- else {
+ else         if (!gateEntity.hasComponent(SignalGateRotatedComponent.class)) {
           gateEntity.addComponent(new SignalGateRotatedComponent());
         }
       }
