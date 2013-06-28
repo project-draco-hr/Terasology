@@ -1,9 +1,9 @@
 {
-  loadProcesses.add(new JoinServer(worldInfo));
-  loadProcesses.add(new RegisterMods(worldInfo));
+  loadProcesses.add(new JoinServer(gameManifest));
+  loadProcesses.add(new RegisterMods(gameManifest));
   loadProcesses.add(new CacheTextures());
   loadProcesses.add(new RegisterBlockFamilyFactories());
-  loadProcesses.add(new RegisterBlocks(worldInfo));
+  loadProcesses.add(new RegisterBlocks(gameManifest));
   loadProcesses.add(new CacheBlocks());
   loadProcesses.add(new InitialiseEntitySystem());
   loadProcesses.add(new LoadPrefabs());
@@ -11,7 +11,7 @@
   loadProcesses.add(new RegisterInputSystem());
   loadProcesses.add(new RegisterSystems(netMode));
   loadProcesses.add(new InitialiseCommandSystem());
-  loadProcesses.add(new InitialiseRemoteWorld(worldInfo));
+  loadProcesses.add(new InitialiseRemoteWorld(gameManifest));
   loadProcesses.add(new InitialiseSystems());
   loadProcesses.add(new SetupRemotePlayer());
   loadProcesses.add(new AwaitCharacterSpawn());

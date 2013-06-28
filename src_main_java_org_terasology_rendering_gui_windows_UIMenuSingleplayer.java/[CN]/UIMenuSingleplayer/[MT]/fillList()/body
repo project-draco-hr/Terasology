@@ -1,14 +1,9 @@
 {
   list.removeAll();
-  File worldCatalog=PathManager.getInstance().getWorldPath();
+  File worldCatalog=PathManager.getInstance().getSavesPath();
   File[] listFiles=worldCatalog.listFiles(new FileFilter(){
     public boolean accept(    File file){
-      if (file.isDirectory()) {
-        return true;
-      }
- else {
-        return false;
-      }
+      return file.isDirectory();
     }
   }
 );
@@ -30,12 +25,12 @@
 );
   DateFormat date=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
   for (  File file : listFiles) {
-    File worldManifest=new File(file,WorldInfo.DEFAULT_FILE_NAME);
-    if (!worldManifest.exists())     continue;
+    File gameManifest=new File(file,GameManifest.DEFAULT_FILE_NAME);
+    if (!gameManifest.exists())     continue;
     try {
-      WorldInfo info=WorldInfo.load(worldManifest);
+      GameManifest info=GameManifest.load(gameManifest);
       if (!info.getTitle().isEmpty()) {
-        UIListItem item=new UIListItem(info.getTitle() + "\n" + date.format(new java.util.Date(new File(file.getAbsolutePath(),"entity.dat").lastModified())).toString(),info);
+        UIListItem item=new UIListItem(info.getTitle() + "\n" + date.format(new java.util.Date(new File(file.getAbsolutePath(),"entity.dat").lastModified())),info);
         item.setPadding(new Vector4f(10f,5f,10f,5f));
         list.addItem(item);
       }

@@ -33,11 +33,14 @@
   for (int i=0; i < registerBlockFamily_.size(); i++) {
     output.writeBytes(8,registerBlockFamily_.getByteString(i));
   }
+  for (int i=0; i < worldInfo_.size(); i++) {
+    output.writeMessage(9,worldInfo_.get(i));
+  }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     output.writeBytes(15,getVersionBytes());
   }
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
-    output.writeBytes(16,getWorldNameBytes());
+    output.writeBytes(16,getGameNameBytes());
   }
   if (((bitField0_ & 0x00000004) == 0x00000004)) {
     output.writeInt32(17,clientId_);

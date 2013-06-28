@@ -1,7 +1,7 @@
 {
   RemoteChunkProvider chunkProvider=new RemoteChunkProvider();
   BlockManager blockManager=CoreRegistry.get(BlockManager.class);
-  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider,blockManager));
+  EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD),chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);
   CoreRegistry.put(WorldProvider.class,worldProvider);
   CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
@@ -11,7 +11,6 @@
   CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
   CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
   CoreRegistry.put(BulletPhysics.class,worldRenderer.getBulletRenderer());
-  worldProvider.getWorldTime().setTime(worldInfo.getTime());
   CoreRegistry.get(NetworkSystem.class).setRemoteWorldProvider(chunkProvider);
   return true;
 }

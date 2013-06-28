@@ -117,6 +117,15 @@ mutable_bitField0_|=0x00000080;
 registerBlockFamily_.add(input.readBytes());
 break;
 }
+case 74:
+{
+if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+worldInfo_=new java.util.ArrayList<org.terasology.protobuf.NetData.WorldInfo>();
+mutable_bitField0_|=0x00000100;
+}
+worldInfo_.add(input.readMessage(org.terasology.protobuf.NetData.WorldInfo.PARSER,extensionRegistry));
+break;
+}
 case 122:
 {
 bitField0_|=0x00000001;
@@ -126,7 +135,7 @@ break;
 case 130:
 {
 bitField0_|=0x00000002;
-worldName_=input.readBytes();
+gameName_=input.readBytes();
 break;
 }
 case 136:
@@ -174,6 +183,9 @@ assetUri_=new com.google.protobuf.UnmodifiableLazyStringList(assetUri_);
 }
 if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
 registerBlockFamily_=new com.google.protobuf.UnmodifiableLazyStringList(registerBlockFamily_);
+}
+if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+worldInfo_=java.util.Collections.unmodifiableList(worldInfo_);
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();

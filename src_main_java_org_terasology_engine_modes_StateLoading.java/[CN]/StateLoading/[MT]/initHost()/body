@@ -1,8 +1,8 @@
 {
-  loadProcesses.add(new RegisterMods(worldInfo));
+  loadProcesses.add(new RegisterMods(gameManifest));
   loadProcesses.add(new CacheTextures());
   loadProcesses.add(new RegisterBlockFamilyFactories());
-  loadProcesses.add(new RegisterBlocks(worldInfo));
+  loadProcesses.add(new RegisterBlocks(gameManifest));
   loadProcesses.add(new CacheBlocks());
   loadProcesses.add(new InitialiseEntitySystem());
   loadProcesses.add(new LoadPrefabs());
@@ -10,9 +10,9 @@
   loadProcesses.add(new RegisterInputSystem());
   loadProcesses.add(new RegisterSystems(netMode));
   loadProcesses.add(new InitialiseCommandSystem());
-  loadProcesses.add(new InitialiseWorld(worldInfo));
+  loadProcesses.add(new InitialiseWorld(gameManifest));
   loadProcesses.add(new InitialiseSystems());
-  loadProcesses.add(new LoadEntities(worldInfo));
+  loadProcesses.add(new LoadEntities());
   loadProcesses.add(new InitialiseBlockTypeEntities());
   loadProcesses.add(new CreateWorldEntity());
   if (netMode == NetworkMode.SERVER) {

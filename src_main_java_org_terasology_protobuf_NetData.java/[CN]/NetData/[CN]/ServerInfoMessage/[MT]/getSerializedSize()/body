@@ -59,11 +59,14 @@
     size+=dataSize;
     size+=1 * getRegisterBlockFamilyList().size();
   }
+  for (int i=0; i < worldInfo_.size(); i++) {
+    size+=com.google.protobuf.CodedOutputStream.computeMessageSize(9,worldInfo_.get(i));
+  }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     size+=com.google.protobuf.CodedOutputStream.computeBytesSize(15,getVersionBytes());
   }
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
-    size+=com.google.protobuf.CodedOutputStream.computeBytesSize(16,getWorldNameBytes());
+    size+=com.google.protobuf.CodedOutputStream.computeBytesSize(16,getGameNameBytes());
   }
   if (((bitField0_ & 0x00000004) == 0x00000004)) {
     size+=com.google.protobuf.CodedOutputStream.computeInt32Size(17,clientId_);

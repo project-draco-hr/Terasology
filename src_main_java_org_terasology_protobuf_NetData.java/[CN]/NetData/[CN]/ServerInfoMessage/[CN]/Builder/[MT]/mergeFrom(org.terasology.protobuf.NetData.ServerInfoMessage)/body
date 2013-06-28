@@ -136,14 +136,41 @@
     }
     onChanged();
   }
+  if (worldInfoBuilder_ == null) {
+    if (!other.worldInfo_.isEmpty()) {
+      if (worldInfo_.isEmpty()) {
+        worldInfo_=other.worldInfo_;
+        bitField0_=(bitField0_ & ~0x00000100);
+      }
+ else {
+        ensureWorldInfoIsMutable();
+        worldInfo_.addAll(other.worldInfo_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.worldInfo_.isEmpty()) {
+      if (worldInfoBuilder_.isEmpty()) {
+        worldInfoBuilder_.dispose();
+        worldInfoBuilder_=null;
+        worldInfo_=other.worldInfo_;
+        bitField0_=(bitField0_ & ~0x00000100);
+        worldInfoBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getWorldInfoFieldBuilder() : null;
+      }
+ else {
+        worldInfoBuilder_.addAllMessages(other.worldInfo_);
+      }
+    }
+  }
   if (other.hasVersion()) {
-    bitField0_|=0x00000100;
+    bitField0_|=0x00000200;
     version_=other.version_;
     onChanged();
   }
-  if (other.hasWorldName()) {
-    bitField0_|=0x00000200;
-    worldName_=other.worldName_;
+  if (other.hasGameName()) {
+    bitField0_|=0x00000400;
+    gameName_=other.gameName_;
     onChanged();
   }
   if (other.hasClientId()) {
