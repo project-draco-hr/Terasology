@@ -1,0 +1,16 @@
+{
+  List<BlockChange> changes=Lists.newArrayListWithExpectedSize(pendingChanges.size());
+  pendingChanges.drainTo(changes);
+  for (  BlockChange change : changes) {
+    if (isBlockRelevant(change.position.x,change.position.y,change.position.z)) {
+      Block currentType=getBlock(change.position.x,change.position.y,change.position.z);
+      if (currentType == change.oldType) {
+        EntityRef blockEntity=getExistingBlockEntityAt(change.position);
+        if (!blockEntity.exists()) {
+          blockEntity=createBlockEntity(change.position,change.oldType);
+          updateBlockEntity(blockEntity,change.position,change.oldType,change.newType);
+        }
+      }
+    }
+  }
+}

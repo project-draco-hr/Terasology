@@ -1,7 +1,11 @@
 {
-  EntityRef entity=getExistingEntityAt(blockPosition);
-  if (!entity.exists()) {
-    return getBlockEntityAt(blockPosition);
+  if (Thread.currentThread() == mainThread) {
+    EntityRef entity=getExistingEntityAt(blockPosition);
+    if (!entity.exists()) {
+      return getBlockEntityAt(blockPosition);
+    }
+    return entity;
   }
-  return entity;
+  logger.error("Attempted to get block entity off-thread");
+  return EntityRef.NULL;
 }

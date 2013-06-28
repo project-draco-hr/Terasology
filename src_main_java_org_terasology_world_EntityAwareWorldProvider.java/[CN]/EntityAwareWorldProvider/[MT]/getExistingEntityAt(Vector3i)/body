@@ -1,7 +1,11 @@
 {
-  EntityRef result=blockRegionLookup.get(blockPosition);
-  if (result == null) {
-    return getExistingBlockEntityAt(blockPosition);
+  if (Thread.currentThread() == mainThread) {
+    EntityRef result=blockRegionLookup.get(blockPosition);
+    if (result == null) {
+      return getExistingBlockEntityAt(blockPosition);
+    }
+    return result;
   }
-  return result;
+  logger.error("Attempted to get block entity off-thread");
+  return EntityRef.NULL;
 }
