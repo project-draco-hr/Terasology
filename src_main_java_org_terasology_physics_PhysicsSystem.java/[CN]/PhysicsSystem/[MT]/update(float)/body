@@ -1,9 +1,9 @@
 {
   addPendingRigidBodies();
   applyPendingImpulses();
-  if (networkSystem.getMode() == NetworkMode.SERVER && timer.getTimeInMs() - TIME_BETWEEN_NETSYNCS > lastNetsync) {
+  if (networkSystem.getMode() == NetworkMode.SERVER && time.getGameTimeInMs() - TIME_BETWEEN_NETSYNCS > lastNetsync) {
     sendSyncMessages();
-    lastNetsync=timer.getTimeInMs();
+    lastNetsync=time.getGameTimeInMs();
   }
   resynchronize(delta);
   if (skipProcessingFrames > 0) {

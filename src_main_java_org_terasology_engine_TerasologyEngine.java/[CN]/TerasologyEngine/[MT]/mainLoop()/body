@@ -17,23 +17,28 @@
       shutdown();
       break;
     }
-    timer.tick();
+    Iterator<Float> updateCycles=time.tick();
     PerformanceMonitor.startActivity("Network Update");
     networkSystem.update();
     PerformanceMonitor.endActivity();
-    PerformanceMonitor.startActivity("Main Update");
-    currentState.update(timer.getDelta());
-    PerformanceMonitor.endActivity();
+    long totalDelta=0;
+    while (updateCycles.hasNext()) {
+      float delta=updateCycles.next();
+      totalDelta+=time.getDeltaInMs();
+      PerformanceMonitor.startActivity("Main Update");
+      currentState.update(delta);
+      PerformanceMonitor.endActivity();
+    }
     PerformanceMonitor.startActivity("Render");
     currentState.render();
     Display.update();
     Display.sync(60);
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Audio");
-    audioManager.update(timer.getDelta());
+    audioManager.update(totalDelta / 1000f);
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Input");
-    currentState.handleInput(timer.getDelta());
+    currentState.handleInput(totalDelta / 1000f);
     PerformanceMonitor.endActivity();
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");

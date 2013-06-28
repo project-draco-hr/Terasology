@@ -5,12 +5,12 @@
       world.setLiquid(event.getBlockPosition(),new LiquidData(),currentState);
     }
     if (event.getNewType().isPenetrable()) {
-      blockQueue.offer(new SimulateBlock(event.getBlockPosition(),world.getTime() + PROPAGATION_DELAY));
+      blockQueue.offer(new SimulateBlock(event.getBlockPosition(),world.getWorldTime().getTimeInMs() + PROPAGATION_DELAY));
     }
     for (    Side side : Side.values()) {
       Vector3i adjPos=new Vector3i(event.getBlockPosition());
       adjPos.add(side.getVector3i());
-      blockQueue.offer(new SimulateBlock(adjPos,world.getTime() + PROPAGATION_DELAY));
+      blockQueue.offer(new SimulateBlock(adjPos,world.getWorldTime().getTimeInMs() + PROPAGATION_DELAY));
     }
   }
  else {
@@ -21,7 +21,7 @@
     for (    Side side : Side.values()) {
       Vector3i adjPos=new Vector3i(event.getBlockPosition());
       adjPos.add(side.getVector3i());
-      blockQueue.offer(new SimulateBlock(adjPos,world.getTime() + PROPAGATION_DELAY));
+      blockQueue.offer(new SimulateBlock(adjPos,world.getWorldTime().getTimeInMs() + PROPAGATION_DELAY));
     }
   }
 }

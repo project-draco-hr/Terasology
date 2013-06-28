@@ -2,7 +2,7 @@
   NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
   WorldProvider world=CoreRegistry.get(WorldProvider.class);
   if (world != null) {
-    serverInfoMessageBuilder.setTime(world.getTime());
+    serverInfoMessageBuilder.setTime(world.getWorldTime().getTimeInMs());
     serverInfoMessageBuilder.setWorldName(world.getTitle());
   }
   for (  Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
@@ -20,5 +20,5 @@
   serializeComponentInfo(serverInfoMessageBuilder);
   serializeEventInfo(serverInfoMessageBuilder);
   serverInfoMessageBuilder.setClientId(client.getEntity().getComponent(NetworkComponent.class).getNetworkId());
-  client.send(NetData.NetMessage.newBuilder().setTime(timer.getTimeInMs()).setServerInfo(serverInfoMessageBuilder).build());
+  client.send(NetData.NetMessage.newBuilder().setTime(time.getGameTimeInMs()).setServerInfo(serverInfoMessageBuilder).build());
 }

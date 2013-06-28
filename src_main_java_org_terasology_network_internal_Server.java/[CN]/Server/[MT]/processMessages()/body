@@ -3,7 +3,7 @@
   queuedMessages.drainTo(messages);
   for (  NetData.NetMessage message : messages) {
     if (message.hasTime()) {
-      timer.updateServerTime(message.getTime(),false);
+      time.updateTimeFromServer(message.getTime());
     }
     processBlockRegistrations(message);
     processReceivedChunks(message);

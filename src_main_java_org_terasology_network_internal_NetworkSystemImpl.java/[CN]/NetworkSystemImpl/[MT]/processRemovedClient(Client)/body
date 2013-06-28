@@ -1,5 +1,8 @@
 {
-  netClientList.remove(client);
+  if (client instanceof NetClient) {
+    NetClient netClient=(NetClient)client;
+    netClientList.remove(netClient);
+  }
   clientList.remove(client);
   clientPlayerLookup.remove(client.getEntity());
   logger.info("Client disconnected: " + client.getName());

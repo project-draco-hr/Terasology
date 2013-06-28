@@ -3,8 +3,8 @@
   NetworkComponent netComp=new NetworkComponent();
   netComp.setNetworkId(122);
   EntityRef entity=entityManager.create(netComp);
-  Timer timer=mock(Timer.class);
-  NetworkSystem server=new NetworkSystemImpl(timer);
+  EngineTime time=mock(EngineTime.class);
+  NetworkSystem server=new NetworkSystemImpl(time);
   netSystems.add(server);
   server.connectToEntitySystem(entityManager,CoreRegistry.get(EntitySystemLibrary.class),null);
   server.host(7777);

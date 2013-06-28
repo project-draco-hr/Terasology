@@ -2,6 +2,7 @@
   EntityRef newEntity=entitySerializer.deserialize(message.getEntity());
   if (newEntity == null) {
     logger.error("Received entity is null");
+    return;
   }
  else   if (newEntity.getComponent(NetworkComponent.class) == null) {
     logger.error("Received entity with no NetworkComponent: {}",newEntity);

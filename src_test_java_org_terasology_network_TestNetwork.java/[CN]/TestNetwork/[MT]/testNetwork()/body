@@ -1,12 +1,12 @@
 {
   EngineEntityManager entityManager=getEntityManager();
-  Timer timer=mock(Timer.class);
-  NetworkSystem server=new NetworkSystemImpl(timer);
+  EngineTime time=mock(EngineTime.class);
+  NetworkSystem server=new NetworkSystemImpl(time);
   netSystems.add(server);
   server.connectToEntitySystem(entityManager,CoreRegistry.get(EntitySystemLibrary.class),null);
   server.host(7777);
   Thread.sleep(500);
-  NetworkSystem client=new NetworkSystemImpl(timer);
+  NetworkSystem client=new NetworkSystemImpl(time);
   netSystems.add(client);
   client.join("localhost",7777);
   Thread.sleep(500);

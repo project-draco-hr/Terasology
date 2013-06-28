@@ -1,7 +1,7 @@
 {
   NetMessage message=(NetMessage)e.getMessage();
   if (message.hasServerInfo()) {
-    CoreRegistry.get(Timer.class).updateServerTime(message.getTime(),true);
+    ((EngineTime)CoreRegistry.get(Time.class)).setGameTime(message.getTime());
     receivedServerInfo(message.getServerInfo());
   }
   server.queueMessage(message);

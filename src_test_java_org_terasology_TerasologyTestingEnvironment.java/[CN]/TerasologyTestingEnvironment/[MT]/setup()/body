@@ -1,7 +1,7 @@
 {
-  mockTimer=mock(Timer.class);
-  CoreRegistry.put(Timer.class,mockTimer);
-  networkSystem=new NetworkSystemImpl(mockTimer);
+  mockTime=mock(EngineTime.class);
+  CoreRegistry.put(Time.class,mockTime);
+  networkSystem=new NetworkSystemImpl(mockTime);
   CoreRegistry.put(NetworkSystem.class,networkSystem);
   engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModManager.class),networkSystem);
   componentSystemManager=new ComponentSystemManager();
