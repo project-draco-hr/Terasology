@@ -1,5 +1,5 @@
 {
-  if (nextSendState < timer.getTimeInMs()) {
+  if (nextSendState < time.getGameTimeInMs()) {
     long lastSendTime=nextSendState - TIME_BETWEEN_STATE_REPLICATE;
     for (    Map.Entry<EntityRef,CircularBuffer<CharacterStateEvent>> entry : characterStates.entrySet()) {
       if (entry.getValue().size() > 0) {
@@ -7,10 +7,10 @@
         if (state.getTime() >= lastSendTime) {
           entry.getKey().send(state);
         }
- else         if (timer.getTimeInMs() - state.getTime() > MAX_INPUT_UNDERFLOW) {
+ else         if (time.getGameTimeInMs() - state.getTime() > MAX_INPUT_UNDERFLOW) {
           CharacterMoveInputEvent lastInput=lastInputEvent.get(entry.getKey());
           if (lastInput != null) {
-            CharacterMoveInputEvent newInput=new CharacterMoveInputEvent(lastInput,(int)(timer.getTimeInMs() - state.getTime()));
+            CharacterMoveInputEvent newInput=new CharacterMoveInputEvent(lastInput,(int)(time.getGameTimeInMs() - state.getTime()));
             onPlayerInput(newInput,entry.getKey());
           }
           entry.getKey().send(state);
@@ -19,7 +19,7 @@
     }
     nextSendState+=TIME_BETWEEN_STATE_REPLICATE;
   }
-  long renderTime=timer.getTimeInMs() - RENDER_DELAY;
+  long renderTime=time.getGameTimeInMs() - RENDER_DELAY;
   for (  Map.Entry<EntityRef,CircularBuffer<CharacterStateEvent>> entry : characterStates.entrySet()) {
     if (entry.getKey().equals(localPlayer.getCharacterEntity())) {
       continue;

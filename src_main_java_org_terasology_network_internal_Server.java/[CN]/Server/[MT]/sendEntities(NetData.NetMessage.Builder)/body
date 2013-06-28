@@ -4,7 +4,7 @@
     int netId=dirtyIterator.next();
     EntityRef entity=networkSystem.getEntity(netId);
     if (isOwned(entity)) {
-      EntityData.PackedEntity entityData=entitySerializer.serialize(entity,Collections.EMPTY_SET,changedComponents.get(netId),Collections.EMPTY_SET,new ClientComponentFieldCheck());
+      EntityData.PackedEntity entityData=entitySerializer.serialize(entity,Collections.<Class<? extends Component>>emptySet(),changedComponents.get(netId),Collections.<Class<? extends Component>>emptySet(),new ClientComponentFieldCheck());
       if (entityData != null) {
         message.addUpdateEntity(NetData.UpdateEntityMessage.newBuilder().setEntity(entityData).setNetId(netId));
       }
