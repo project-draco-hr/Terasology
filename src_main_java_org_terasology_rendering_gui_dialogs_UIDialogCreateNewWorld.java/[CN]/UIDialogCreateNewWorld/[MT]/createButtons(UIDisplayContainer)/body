@@ -10,7 +10,7 @@
         getGUIManager().showMessage("Error","Please enter a world name");
         return;
       }
- else       if ((new File(PathManager.getInstance().getWorldSavePath(inputWorldTitle.getText()),WorldInfo.DEFAULT_FILE_NAME)).exists()) {
+ else       if ((new File(PathManager.getInstance().getSavePath(inputWorldTitle.getText()),GameManifest.DEFAULT_FILE_NAME)).exists()) {
         getGUIManager().showMessage("Error","A World with this name already exists");
         return;
       }
@@ -57,7 +57,13 @@ break;
 String[] chunksListArr=chunkList.toArray(new String[chunkList.size()]);
 config.getDefaultModSelection().copy(modConfig);
 config.save();
-CoreRegistry.get(GameEngine.class).changeState(new StateLoading(new WorldInfo(config.getWorldGeneration().getWorldTitle(),config.getWorldGeneration().getDefaultSeed(),config.getSystem().getDayNightLengthInMs() / 4,chunksListArr,modConfig),(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
+GameManifest gameManifest=new GameManifest();
+gameManifest.setTitle(config.getWorldGeneration().getWorldTitle());
+gameManifest.setSeed(config.getWorldGeneration().getDefaultSeed());
+gameManifest.getModConfiguration().copy(modConfig);
+WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getWorldGeneration().getDefaultSeed(),0,chunksListArr);
+gameManifest.addWorldInfo(worldInfo);
+CoreRegistry.get(GameEngine.class).changeState(new StateLoading(gameManifest,(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
 }
 }
 );
