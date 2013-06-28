@@ -1,14 +1,6 @@
 {
-  int processed=0;
   PerformanceMonitor.startActivity("BlockChangedEventQueue");
-  OnChangedBlock event=eventQueue.poll();
-  while (event != null) {
-    getEntityAt(event.getBlockPosition()).send(event);
-    if (processed++ >= 4) {
-      break;
-    }
-    event=eventQueue.poll();
-  }
+  processOffThreadChanges();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Temp Blocks Cleanup");
   for (  EntityRef entity : temporaryBlockEntities) {

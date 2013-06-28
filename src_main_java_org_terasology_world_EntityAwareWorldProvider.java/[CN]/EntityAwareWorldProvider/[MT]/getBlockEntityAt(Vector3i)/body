@@ -1,8 +1,12 @@
 {
-  EntityRef blockEntity=getExistingBlockEntityAt(blockPosition);
-  if (!blockEntity.exists() && isBlockRelevant(blockPosition.x,blockPosition.y,blockPosition.z)) {
-    Block block=getBlock(blockPosition.x,blockPosition.y,blockPosition.z);
-    blockEntity=createBlockEntity(blockPosition,block);
+  if (Thread.currentThread() == mainThread) {
+    EntityRef blockEntity=getExistingBlockEntityAt(blockPosition);
+    if (!blockEntity.exists() && isBlockRelevant(blockPosition.x,blockPosition.y,blockPosition.z)) {
+      Block block=getBlock(blockPosition.x,blockPosition.y,blockPosition.z);
+      blockEntity=createBlockEntity(blockPosition,block);
+    }
+    return blockEntity;
   }
-  return blockEntity;
+  logger.error("Attempted to get block entity off-thread");
+  return EntityRef.NULL;
 }

@@ -1,3 +1,8 @@
 {
-  return blockEntityLookup.containsKey(blockPos) && !temporaryBlockEntities.contains(blockPos);
+  if (Thread.currentThread() == mainThread) {
+    EntityRef blockEntity=blockEntityLookup.get(blockPos);
+    return blockEntity != null && !temporaryBlockEntities.contains(blockEntity);
+  }
+  logger.error("Attempted check whether a block entity is permanent, off thread");
+  return false;
 }
