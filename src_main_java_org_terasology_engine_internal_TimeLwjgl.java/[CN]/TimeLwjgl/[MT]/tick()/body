@@ -16,8 +16,14 @@
     gameTime.getAndAdd(diff);
     desynch-=diff;
   }
-  if (updateCycles > 0) {
-    delta.set(newDelta / updateCycles);
+  if (paused) {
+    delta.set(0);
+    return new TimeStepper(1,0);
   }
-  return new TimeStepper(updateCycles,newDelta / updateCycles);
+ else {
+    if (updateCycles > 0) {
+      delta.set(newDelta / updateCycles);
+    }
+    return new TimeStepper(updateCycles,newDelta / updateCycles);
+  }
 }
