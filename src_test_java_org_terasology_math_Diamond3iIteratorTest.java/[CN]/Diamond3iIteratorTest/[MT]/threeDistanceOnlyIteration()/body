@@ -1,7 +1,7 @@
 {
-  Iterator<Vector3i> iter=new Diamond3iIterator(Vector3i.zero(),4,3);
-  while (iter.hasNext()) {
-    Vector3i next=iter.next();
-    assertEquals(3,Vector3i.zero().gridDistance(next));
+  Set<Vector3i> iter=Sets.newHashSet(Diamond3iIterator.iterate(Vector3i.zero(),3));
+  assertEquals(63,iter.size());
+  for (  Vector3i pos : iter) {
+    assertTrue(pos.gridDistance(new Vector3i()) <= 3);
   }
 }
