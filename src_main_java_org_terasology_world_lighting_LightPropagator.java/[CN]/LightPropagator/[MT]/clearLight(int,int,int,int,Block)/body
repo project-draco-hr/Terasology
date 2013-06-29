@@ -2,7 +2,7 @@
   int checkExtent=(oldLightLevel > 0) ? oldLightLevel - 1 : 0;
   List<Vector3i> lightSources=Lists.newArrayList();
   Region3i region=Region3i.createFromCenterExtents(new Vector3i(x,y,z),checkExtent);
-  for (  Vector3i pos : Diamond3iIterator.iterate(new Vector3i(x,y,z),checkExtent + 1)) {
+  for (  Vector3i pos : Diamond3iIterator.iterate(new Vector3i(x,y,z),checkExtent)) {
     byte lum=chunkView.getBlock(pos).getLuminance();
     chunkView.setLight(pos,lum);
     if (lum > 1) {
