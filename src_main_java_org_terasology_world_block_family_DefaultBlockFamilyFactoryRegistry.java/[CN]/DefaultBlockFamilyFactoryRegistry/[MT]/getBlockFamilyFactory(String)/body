@@ -1,6 +1,10 @@
 {
-  if (blockFamilyFactoryId == null) {
+  if (blockFamilyFactoryId == null || blockFamilyFactoryId.isEmpty()) {
     return defaultBlockFamilyFactory;
   }
-  return registryMap.get(blockFamilyFactoryId.toLowerCase());
+  BlockFamilyFactory factory=registryMap.get(blockFamilyFactoryId.toLowerCase());
+  if (factory == null) {
+    return defaultBlockFamilyFactory;
+  }
+  return factory;
 }
