@@ -7,6 +7,12 @@
       }
     }
 );
+    instance.setAssetFactory(AssetType.SHAPE,new AssetFactory<BlockShapeData,BlockShape>(){
+      @Override public BlockShape buildAsset(      AssetUri uri,      BlockShapeData data){
+        return new BlockShapeImpl(uri,data);
+      }
+    }
+);
   }
   return instance;
 }

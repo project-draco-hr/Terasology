@@ -1,0 +1,7 @@
+{
+  rot=applySymmetry(rot);
+  if (rot.equals(Rotation.none())) {
+    return new Vector3f(baseCollisionOffset);
+  }
+  return QuaternionUtil.quatRotate(rot.getQuat4f(),baseCollisionOffset,new Vector3f());
+}
