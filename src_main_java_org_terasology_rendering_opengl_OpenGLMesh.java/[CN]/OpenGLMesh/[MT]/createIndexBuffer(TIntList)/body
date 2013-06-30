@@ -1,0 +1,11 @@
+{
+  IntBuffer indexBuffer=BufferUtils.createIntBuffer(indexList.size());
+  TIntIterator iterator=indexList.iterator();
+  while (iterator.hasNext()) {
+    indexBuffer.put(iterator.next());
+  }
+  indexBuffer.flip();
+  vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  VertexBufferObjectManager.getInstance().bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
+  indexBuffer.flip();
+}

@@ -1,26 +1,26 @@
 {
   for (int i=0; i < part.size(); ++i) {
     Vector3f vertex=part.getVertex(i);
-    _vertices.add(vertex.x);
-    _vertices.add(vertex.y);
-    _vertices.add(vertex.z);
-    _color.add(_activeColor.x);
-    _color.add(_activeColor.y);
-    _color.add(_activeColor.z);
-    _color.add(_activeColor.w);
+    meshData.getVertices().add(vertex.x);
+    meshData.getVertices().add(vertex.y);
+    meshData.getVertices().add(vertex.z);
+    meshData.getColors().add(activeColor.x);
+    meshData.getColors().add(activeColor.y);
+    meshData.getColors().add(activeColor.z);
+    meshData.getColors().add(activeColor.w);
     Vector3f normal=part.getNormal(i);
-    _normals.add(normal.x);
-    _normals.add(normal.y);
-    _normals.add(normal.z);
+    meshData.getNormals().add(normal.x);
+    meshData.getNormals().add(normal.y);
+    meshData.getNormals().add(normal.z);
     Vector2f uv=part.getTexCoord(i);
-    _texCoord0.add(uv.x);
-    _texCoord0.add(uv.y);
-    _texCoord1.add(_lighting.x);
-    _texCoord1.add(_lighting.y);
-    _texCoord1.add(_lighting.z);
+    meshData.getTexCoord0().add(uv.x);
+    meshData.getTexCoord0().add(uv.y);
+    meshData.getTexCoord1().add(lighting.x);
+    meshData.getTexCoord1().add(lighting.y);
+    meshData.getTexCoord1().add(lighting.z);
   }
   for (int i=0; i < part.indicesSize(); ++i) {
-    _indices.add(_indexOffset + part.getIndex(i));
+    meshData.getIndices().add(nextIndex + part.getIndex(i));
   }
-  _indexOffset+=part.size();
+  nextIndex+=part.size();
 }

@@ -1,0 +1,43 @@
+{
+  MeshData result=new MeshData();
+  TFloatList vertices=result.getVertices();
+  TFloatList texCoord0=result.getTexCoord0();
+  TFloatList normals=result.getNormals();
+  TIntList indices=result.getIndices();
+  int vertCount=0;
+  for (  Tuple3i[] face : rawIndices) {
+    for (    Tuple3i indexSet : face) {
+      if (indexSet.x > rawVertices.size()) {
+        throw new IOException("Vertex index out of range: " + indexSet.x);
+      }
+      Vector3f vertex=rawVertices.get(indexSet.x - 1);
+      vertices.add(vertex.x);
+      vertices.add(vertex.y);
+      vertices.add(vertex.z);
+      if (indexSet.y != -1) {
+        if (indexSet.y > rawTexCoords.size()) {
+          throw new IOException("TexCoord index out of range: " + indexSet.y);
+        }
+        Vector2f texCoord=rawTexCoords.get(indexSet.y - 1);
+        texCoord0.add(texCoord.x);
+        texCoord0.add(1 - texCoord.y);
+      }
+      if (indexSet.z != -1) {
+        if (indexSet.z > rawNormals.size()) {
+          throw new IOException("Normal index out of range: " + indexSet.z);
+        }
+        Vector3f normal=rawNormals.get(indexSet.z - 1);
+        normals.add(normal.x);
+        normals.add(normal.y);
+        normals.add(normal.z);
+      }
+    }
+    for (int i=0; i < face.length - 2; ++i) {
+      indices.add(vertCount);
+      indices.add(vertCount + i + 1);
+      indices.add(vertCount + i + 2);
+    }
+    vertCount+=face.length;
+  }
+  return result;
+}
