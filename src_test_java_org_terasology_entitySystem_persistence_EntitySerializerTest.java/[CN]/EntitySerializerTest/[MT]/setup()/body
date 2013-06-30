@@ -6,5 +6,9 @@
   entityManager.getComponentLibrary().register(IntegerComponent.class);
   entitySerializer=new EntitySerializer(entityManager);
   componentLibrary=entityManager.getComponentLibrary();
-  prefabManager=entityManager.getPrefabManager();
+  PrefabManager prefabManager=entityManager.getPrefabManager();
+  PrefabData prefabData=new PrefabData();
+  prefabData.addComponent(new StringComponent("Value"));
+  prefab=Assets.generateAsset(new AssetUri(AssetType.PREFAB,"test:Test"),prefabData,Prefab.class);
+  prefabManager.registerPrefab(prefab);
 }
