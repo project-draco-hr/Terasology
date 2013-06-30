@@ -14,4 +14,10 @@
     }
   }
 );
+  AssetManager.getInstance().setAssetFactory(AssetType.SHADER,new AssetFactory<ShaderData,Shader>(){
+    @Override public Shader buildAsset(    AssetUri uri,    ShaderData data){
+      return new OpenGLShader(uri,data);
+    }
+  }
+);
 }
