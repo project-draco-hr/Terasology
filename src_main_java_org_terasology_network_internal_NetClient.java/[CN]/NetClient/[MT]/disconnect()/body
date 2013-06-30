@@ -1,4 +1,7 @@
 {
   super.disconnect();
-  CoreRegistry.get(WorldProvider.class).unregisterListener(this);
+  WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
+  if (worldProvider != null) {
+    worldProvider.unregisterListener(this);
+  }
 }
