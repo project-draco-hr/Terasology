@@ -1,7 +1,11 @@
 {
-  if (!uri.isValid())   return null;
+  if (!uri.isValid()) {
+    return null;
+  }
   Asset asset=assetCache.get(uri);
-  if (asset != null)   return asset;
+  if (asset != null) {
+    return asset;
+  }
   List<URL> urls=getAssetURLs(uri);
   if (urls.size() == 0) {
     if (logErrors) {
@@ -9,22 +13,43 @@
     }
     return null;
   }
+  AssetFactory factory=factories.get(uri.getAssetType());
+  if (factory == null) {
+  }
   for (  URL url : urls) {
     int extensionIndex=url.toString().lastIndexOf('.');
-    if (extensionIndex == -1)     continue;
+    if (extensionIndex == -1) {
+      continue;
+    }
     String extension=url.toString().substring(extensionIndex + 1).toLowerCase(Locale.ENGLISH);
     Map<String,AssetLoader> extensionMap=assetLoaders.get(uri.getAssetType());
-    if (extensionMap == null)     continue;
+    if (extensionMap == null) {
+      continue;
+    }
     AssetLoader loader=extensionMap.get(extension);
-    if (loader == null)     continue;
+    if (loader == null) {
+      continue;
+    }
     InputStream stream=null;
     try {
       stream=url.openStream();
       urls.remove(url);
       urls.add(0,url);
-      asset=loader.load(uri,stream,urls);
-      if (asset != null) {
-        assetCache.put(uri,asset);
+      AssetData data=loader.load(uri,stream,urls);
+      if (data != null) {
+        if (data instanceof CompatibilityHackAsset) {
+          asset=(Asset)data;
+        }
+ else         if (factory != null) {
+          asset=factory.buildAsset(uri,data);
+        }
+ else {
+          logger.error("No factory available for {}",uri.getAssetType());
+          return null;
+        }
+        if (asset != null) {
+          assetCache.put(uri,asset);
+        }
       }
       logger.debug("Loaded {}",uri);
       return asset;
