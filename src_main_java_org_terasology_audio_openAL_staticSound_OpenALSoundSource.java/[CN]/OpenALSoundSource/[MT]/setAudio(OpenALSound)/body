@@ -1,0 +1,14 @@
+{
+  boolean playing=isPlaying();
+  if (playing) {
+    stop();
+  }
+  reset();
+  audio=sound;
+  AL10.alSourcei(getSourceId(),AL10.AL_BUFFER,audio.getBufferId());
+  OpenALException.checkState("Assigning buffer to source");
+  if (playing) {
+    play();
+  }
+  return this;
+}
