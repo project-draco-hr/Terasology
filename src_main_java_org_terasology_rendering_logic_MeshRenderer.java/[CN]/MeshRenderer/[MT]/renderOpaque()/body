@@ -11,15 +11,16 @@
   glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
   for (  Material material : opaqueMesh.keys()) {
     Mesh lastMesh=null;
-    material.enable();
-    material.setInt("carryingTorch",carryingTorch ? 1 : 0);
-    material.setFloat("light",1);
-    material.bindTextures();
+    OpenGLMaterial openglMat=(OpenGLMaterial)material;
+    openglMat.enable();
+    openglMat.setInt("carryingTorch",carryingTorch ? 1 : 0);
+    openglMat.setFloat("light",1);
+    openglMat.bindTextures();
     lastRendered=opaqueMesh.get(material).size();
     TFloatList vertexData=new TFloatArrayList();
     TIntList indexData=new TIntArrayList();
     int indexOffset=0;
-    float[] openglMat=new float[16];
+    float[] openglMatrix=new float[16];
     FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
     for (    EntityRef entity : opaqueMesh.get(material)) {
       if (!batch) {
@@ -47,8 +48,8 @@
             meshComp.mesh.preRender();
           }
           glPushMatrix();
-          trans.getOpenGLMatrix(openglMat);
-          mBuffer.put(openglMat);
+          trans.getOpenGLMatrix(openglMatrix);
+          mBuffer.put(openglMatrix);
           mBuffer.flip();
           glMultMatrix(mBuffer);
           material.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));

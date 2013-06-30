@@ -20,4 +20,10 @@
     }
   }
 );
+  AssetManager.getInstance().setAssetFactory(AssetType.MATERIAL,new AssetFactory<MaterialData,Material>(){
+    @Override public Material buildAsset(    AssetUri uri,    MaterialData data){
+      return new OpenGLMaterial(uri,data);
+    }
+  }
+);
 }

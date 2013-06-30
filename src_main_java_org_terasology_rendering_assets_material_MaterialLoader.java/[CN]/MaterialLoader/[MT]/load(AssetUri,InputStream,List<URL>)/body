@@ -1,0 +1,13 @@
+{
+  MaterialMetadata metadata=gson.fromJson(new InputStreamReader(stream),MaterialMetadata.class);
+  Shader shader=Assets.get(new AssetUri(AssetType.SHADER,metadata.shader),Shader.class);
+  if (shader == null) {
+    return null;
+  }
+  MaterialData data=new MaterialData(shader);
+  data.setTextureParams(metadata.textures);
+  data.setFloatParams(metadata.floatParams);
+  data.setFloatArrayParams(metadata.floatArrayParams);
+  data.setIntParams(metadata.intParams);
+  return data;
+}
