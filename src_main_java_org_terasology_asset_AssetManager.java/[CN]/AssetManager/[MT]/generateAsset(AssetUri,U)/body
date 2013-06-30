@@ -1,0 +1,11 @@
+{
+  if (data instanceof CompatibilityHackAsset) {
+    return (Asset)data;
+  }
+  AssetFactory assetFactory=factories.get(uri.getAssetType());
+  if (assetFactory == null) {
+    logger.warn("Unsupported asset type: {}",uri.getAssetType());
+    return null;
+  }
+  return assetFactory.buildAsset(uri,data);
+}
