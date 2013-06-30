@@ -1,0 +1,18 @@
+{
+  dispose();
+  this.data=data;
+  vboPosNormBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  IntBuffer indexBuffer=BufferUtils.createIntBuffer(data.getIndices().size());
+  indexBuffer.put(data.getIndices().toArray());
+  indexBuffer.flip();
+  vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  VertexBufferObjectManager.getInstance().bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
+  FloatBuffer uvBuffer=BufferUtils.createFloatBuffer(data.getUVs().size() * 2);
+  for (  Vector2f uv : data.getUVs()) {
+    uvBuffer.put(uv.x);
+    uvBuffer.put(uv.y);
+  }
+  uvBuffer.flip();
+  vboUVBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  VertexBufferObjectManager.getInstance().bufferVboData(vboUVBuffer,uvBuffer,GL15.GL_STATIC_DRAW);
+}

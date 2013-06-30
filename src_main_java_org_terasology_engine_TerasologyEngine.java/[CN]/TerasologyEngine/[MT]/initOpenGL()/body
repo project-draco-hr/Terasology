@@ -32,4 +32,10 @@
     }
   }
 );
+  AssetManager.getInstance().setAssetFactory(AssetType.SKELETON_MESH,new AssetFactory<SkeletalMeshData,SkeletalMesh>(){
+    @Override public SkeletalMesh buildAsset(    AssetUri uri,    SkeletalMeshData data){
+      return new OpenGLSkeletalMesh(uri,data);
+    }
+  }
+);
 }
