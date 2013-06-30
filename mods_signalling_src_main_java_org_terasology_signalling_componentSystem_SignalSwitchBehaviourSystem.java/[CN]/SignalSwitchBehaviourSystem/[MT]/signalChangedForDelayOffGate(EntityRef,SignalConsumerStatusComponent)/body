@@ -1,7 +1,9 @@
 {
   SignalTimeDelayComponent delay=entity.getComponent(SignalTimeDelayComponent.class);
   if (consumerStatusComponent.hasSignal) {
-    entity.removeComponent(SignalDelayedActionComponent.class);
+    if (entity.hasComponent(SignalDelayedActionComponent.class)) {
+      entity.removeComponent(SignalDelayedActionComponent.class);
+    }
     startProducingSignal(entity,-1);
   }
  else {

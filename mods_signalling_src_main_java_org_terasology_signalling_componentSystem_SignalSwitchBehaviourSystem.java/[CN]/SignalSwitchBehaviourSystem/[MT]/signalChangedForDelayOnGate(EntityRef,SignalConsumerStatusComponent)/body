@@ -6,7 +6,9 @@
     entity.addComponent(delayedAction);
   }
  else {
-    entity.removeComponent(SignalDelayedActionComponent.class);
+    if (entity.hasComponent(SignalDelayedActionComponent.class)) {
+      entity.removeComponent(SignalDelayedActionComponent.class);
+    }
     stopProducingSignal(entity);
   }
 }
