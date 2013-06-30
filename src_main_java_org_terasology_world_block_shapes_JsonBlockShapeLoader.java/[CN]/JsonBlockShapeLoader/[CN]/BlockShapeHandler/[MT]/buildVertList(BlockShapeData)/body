@@ -1,0 +1,12 @@
+{
+  ObjectArrayList<Vector3f> result=new ObjectArrayList<>();
+  for (  BlockPart part : BlockPart.values()) {
+    BlockMeshPart meshPart=shape.getMeshPart(part);
+    if (meshPart != null) {
+      for (int i=0; i < meshPart.size(); ++i) {
+        result.add(meshPart.getVertex(i));
+      }
+    }
+  }
+  return result;
+}

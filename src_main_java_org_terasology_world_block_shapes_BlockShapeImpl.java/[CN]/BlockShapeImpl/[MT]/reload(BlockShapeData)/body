@@ -1,0 +1,15 @@
+{
+  collisionShape.clear();
+  for (  BlockPart part : BlockPart.values()) {
+    this.meshParts.put(part,data.getMeshPart(part));
+  }
+  for (  Side side : Side.values()) {
+    this.fullSide.put(side,data.isBlockingSide(side));
+  }
+  this.baseCollisionShape=data.getCollisionShape();
+  this.baseCollisionOffset.set(data.getCollisionOffset());
+  collisionShape.put(Rotation.none(),baseCollisionShape);
+  yawSymmetric=data.isYawSymmetric();
+  pitchSymmetric=data.isPitchSymmetric();
+  rollSymmetric=data.isRollSymmetric();
+}

@@ -6,69 +6,18 @@
   if (asset != null) {
     return asset;
   }
-  List<URL> urls=getAssetURLs(uri);
-  if (urls.size() == 0) {
-    if (logErrors) {
-      logger.warn("Unable to resolve asset: {}",uri);
-    }
-    return null;
-  }
   AssetFactory factory=factories.get(uri.getAssetType());
   if (factory == null) {
+    logger.error("No asset factory set for assets of type {}",uri.getAssetType());
+    return null;
   }
-  for (  URL url : urls) {
-    int extensionIndex=url.toString().lastIndexOf('.');
-    if (extensionIndex == -1) {
-      continue;
-    }
-    String extension=url.toString().substring(extensionIndex + 1).toLowerCase(Locale.ENGLISH);
-    Map<String,AssetLoader> extensionMap=assetLoaders.get(uri.getAssetType());
-    if (extensionMap == null) {
-      continue;
-    }
-    AssetLoader loader=extensionMap.get(extension);
-    if (loader == null) {
-      continue;
-    }
-    InputStream stream=null;
-    try {
-      stream=url.openStream();
-      urls.remove(url);
-      urls.add(0,url);
-      AssetData data=loader.load(uri,stream,urls);
-      if (data != null) {
-        if (data instanceof CompatibilityHackAsset) {
-          asset=(Asset)data;
-        }
- else         if (factory != null) {
-          asset=factory.buildAsset(uri,data);
-        }
- else {
-          logger.error("No factory available for {}",uri.getAssetType());
-          return null;
-        }
-        if (asset != null) {
-          assetCache.put(uri,asset);
-        }
-      }
+  AssetData data=loadAssetData(uri,logErrors);
+  if (data != null) {
+    asset=factory.buildAsset(uri,data);
+    if (asset != null) {
       logger.debug("Loaded {}",uri);
-      return asset;
-    }
- catch (    IOException ioe) {
-      logger.error("Error reading asset {}",uri,ioe);
-      return null;
-    }
- finally {
-      if (stream != null) {
-        try {
-          stream.close();
-        }
- catch (        IOException innerException) {
-          logger.error("Error closing stream for {}",uri,innerException);
-        }
-      }
+      assetCache.put(uri,asset);
     }
   }
-  logger.warn("Unable to resolve asset: {}",uri);
-  return null;
+  return asset;
 }
