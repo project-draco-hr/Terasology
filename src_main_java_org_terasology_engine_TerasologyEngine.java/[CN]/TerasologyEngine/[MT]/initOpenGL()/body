@@ -2,4 +2,10 @@
   checkOpenGL();
   resizeViewport();
   initOpenGLParams();
+  AssetManager.getInstance().setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
+    @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
+      return new OpenGLTexture(uri,data);
+    }
+  }
+);
 }
