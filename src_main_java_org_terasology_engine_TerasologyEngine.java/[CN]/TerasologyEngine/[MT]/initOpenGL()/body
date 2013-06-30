@@ -38,4 +38,10 @@
     }
   }
 );
+  AssetManager.getInstance().setAssetFactory(AssetType.ANIMATION,new AssetFactory<MeshAnimationData,MeshAnimation>(){
+    @Override public MeshAnimation buildAsset(    AssetUri uri,    MeshAnimationData data){
+      return new MeshAnimationImpl(uri,data);
+    }
+  }
+);
 }
