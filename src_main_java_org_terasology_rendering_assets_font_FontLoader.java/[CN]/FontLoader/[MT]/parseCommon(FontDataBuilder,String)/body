@@ -1,0 +1,7 @@
+{
+  if (!commonLine.startsWith("common ")) {
+    throw new IOException("Failed to load font - missing common line");
+  }
+  builder.setLineHeight(findInteger(lineHeightPattern,commonLine));
+  return findInteger(pagesPattern,commonLine);
+}
