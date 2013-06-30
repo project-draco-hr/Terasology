@@ -1,0 +1,20 @@
+{
+  dispose();
+  this.width=data.getWidth();
+  this.height=data.getHeight();
+  this.wrapMode=data.getWrapMode();
+  this.filterMode=data.getFilterMode();
+  this.textureData=data;
+  id=glGenTextures();
+  logger.debug("Bound texture '{}' - {}",getURI(),id);
+  glBindTexture(GL11.GL_TEXTURE_2D,id);
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,wrapMode.getGLMode());
+  glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,wrapMode.getGLMode());
+  GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,filterMode.getGlMinFilter());
+  GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,filterMode.getGlMagFilter());
+  GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT,4);
+  GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL12.GL_TEXTURE_MAX_LEVEL,data.getBuffers().length - 1);
+  for (int i=0; i < data.getBuffers().length; i++) {
+    GL11.glTexImage2D(GL11.GL_TEXTURE_2D,i,GL11.GL_RGBA,width >> i,height >> i,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,data.getBuffers()[i]);
+  }
+}
