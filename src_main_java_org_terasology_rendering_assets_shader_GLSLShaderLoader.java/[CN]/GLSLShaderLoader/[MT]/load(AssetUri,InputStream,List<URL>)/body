@@ -1,0 +1,20 @@
+{
+  String vertProgram=null;
+  String fragProgram=null;
+  ShaderMetadata metadata=new ShaderMetadata();
+  for (  URL url : urls) {
+    if (url.toString().endsWith("_vert.glsl")) {
+      vertProgram=readUrl(url);
+    }
+ else     if (url.toString().endsWith("_frag.glsl")) {
+      fragProgram=readUrl(url);
+    }
+ else     if (url.toString().endsWith(".info")) {
+      metadata=readMetadata(url);
+    }
+  }
+  if (vertProgram != null && fragProgram != null) {
+    return new ShaderData(vertProgram,fragProgram,metadata.getParameters());
+  }
+  return null;
+}

@@ -1,9 +1,0 @@
-{
-  Config config=CoreRegistry.get(Config.class);
-  StringBuilder builder=new StringBuilder().append(PreProcessorPreamble);
-  if (config.getRendering().isAnimateGrass())   builder.append("#define ANIMATED_WATER_AND_GRASS \n");
-  if (config.getRendering().getBlurIntensity() == 0)   builder.append("#define NO_BLUR \n");
-  if (!config.getRendering().isBloom())   builder.append("#define NO_POST_PROCESSING \n");
-  if (config.getRendering().isFlickeringLight())   builder.append("#define FLICKERING_LIGHT \n");
-  return builder;
-}
