@@ -1,6 +1,6 @@
 {
   for (  NetworkNode modifiedLeafNode : leafNodes) {
-    if (signalProducers.containsValue(modifiedLeafNode)) {
+    if (((SignalNetworkNode)modifiedLeafNode).getType() == SignalNetworkNode.Type.PRODUCER) {
       logger.debug("Producer removed from network");
       networksToRecalculate.add(network);
       producerNetworks.remove(modifiedLeafNode,network);

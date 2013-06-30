@@ -6,17 +6,21 @@
     final SignalProducerComponent producerComponent=block.getComponent(SignalProducerComponent.class);
     final byte oldConnectionSides=signalProducers.get(blockLocation).connectionSides;
     byte newConnectionSides=producerComponent.connectionSides;
-    NetworkNode node=toNode(location,newConnectionSides);
+    NetworkNode node=toNode(location,newConnectionSides,SignalNetworkNode.Type.PRODUCER);
+    NetworkNode oldNode=toNode(location,oldConnectionSides,SignalNetworkNode.Type.PRODUCER);
     if (oldConnectionSides != newConnectionSides) {
+      producerSignalStrengths.put(node,producerComponent.signalStrength);
       signalProducers.put(node.location,node);
-      final NetworkNode oldNode=toNode(location,oldConnectionSides);
       signalNetwork.updateLeafBlock(oldNode,node);
+      producerSignalStrengths.remove(oldNode);
     }
-    int oldSignalStrength=producerSignalStrengths.get(node);
-    int newSignalStrength=producerComponent.signalStrength;
-    if (oldSignalStrength != newSignalStrength) {
-      producerSignalStrengths.put(node,newSignalStrength);
-      producersSignalsChanged.add(node);
+ else {
+      int oldSignalStrength=producerSignalStrengths.get(oldNode);
+      int newSignalStrength=producerComponent.signalStrength;
+      if (oldSignalStrength != newSignalStrength) {
+        producerSignalStrengths.put(node,newSignalStrength);
+        producersSignalsChanged.add(node);
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  long worldTime=worldProvider.getTime().getMilliseconds();
+  long worldTime=TimeUtils.getCorrectTime(worldProvider.getTime());
   BlockAtLocationDelayedAction action;
   while ((action=delayedActions.peek()) != null && action.executeTime <= worldTime) {
     action=delayedActions.poll();

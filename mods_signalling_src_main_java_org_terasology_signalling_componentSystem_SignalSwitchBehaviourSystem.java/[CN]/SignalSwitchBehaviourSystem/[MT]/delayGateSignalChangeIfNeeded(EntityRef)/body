@@ -7,7 +7,7 @@
       whenToLookAt=gateLastSignalChangeTime.get(location) + GATE_MINIMUM_SIGNAL_CHANGE_INTERVAL;
     }
  else {
-      whenToLookAt=worldProvider.getTime().getMilliseconds();
+      whenToLookAt=TimeUtils.getCorrectTime(worldProvider.getTime());
     }
     delayedAction.executeTime=whenToLookAt;
     entity.addComponent(delayedAction);

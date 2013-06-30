@@ -2,7 +2,7 @@
   SignalTimeDelayComponent delay=entity.getComponent(SignalTimeDelayComponent.class);
   if (consumerStatusComponent.hasSignal) {
     SignalDelayedActionComponent delayedAction=new SignalDelayedActionComponent();
-    delayedAction.executeTime=worldProvider.getTime().getMilliseconds() + delay.delaySetting;
+    delayedAction.executeTime=TimeUtils.getCorrectTime(worldProvider.getTime()) + delay.delaySetting;
     entity.addComponent(delayedAction);
   }
  else {

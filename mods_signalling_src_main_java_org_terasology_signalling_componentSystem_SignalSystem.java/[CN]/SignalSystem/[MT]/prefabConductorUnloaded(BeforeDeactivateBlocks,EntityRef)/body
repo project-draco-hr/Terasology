@@ -2,7 +2,7 @@
   byte connectingOnSides=blockType.getComponent(SignalConductorComponent.class).connectionSides;
   Set<NetworkNode> conductorNodes=Sets.newHashSet();
   for (  Vector3i location : event.getBlockPositions()) {
-    final NetworkNode conductorNode=toNode(location,connectingOnSides);
+    final NetworkNode conductorNode=toNode(location,connectingOnSides,SignalNetworkNode.Type.CONDUCTOR);
     conductorNodes.add(conductorNode);
   }
   signalNetwork.removeNetworkingBlocks(conductorNodes);
