@@ -1,0 +1,15 @@
+{
+  FloatBuffer vertexBuffer=BufferUtils.createFloatBuffer(vertexSize * vertexCount);
+  for (int v=0; v < vertexCount; ++v) {
+    for (int partIndex=0; partIndex < parts.size(); ++partIndex) {
+      TFloatIterator part=parts.get(partIndex);
+      for (int i=0; i < partSizes.get(partIndex); ++i) {
+        vertexBuffer.put(part.next());
+      }
+    }
+  }
+  vertexBuffer.flip();
+  vboVertexBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  VertexBufferObjectManager.getInstance().bufferVboData(vboVertexBuffer,vertexBuffer,GL15.GL_STATIC_DRAW);
+  vertexBuffer.flip();
+}

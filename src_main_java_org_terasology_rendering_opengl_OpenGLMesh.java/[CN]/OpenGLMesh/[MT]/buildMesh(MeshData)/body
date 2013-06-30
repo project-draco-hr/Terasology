@@ -1,0 +1,42 @@
+{
+  this.data=data;
+  List<TFloatIterator> parts=Lists.newArrayList();
+  TIntList partSizes=new TIntArrayList();
+  int vertexCount=data.getVertices().size() / VERTEX_SIZE;
+  int vertexSize=VERTEX_SIZE;
+  parts.add(data.getVertices().iterator());
+  partSizes.add(VERTEX_SIZE);
+  if (data.getTexCoord0() != null && data.getTexCoord0().size() / TEX_COORD_0_SIZE == vertexCount) {
+    parts.add(data.getTexCoord0().iterator());
+    partSizes.add(TEX_COORD_0_SIZE);
+    texCoord0Offset=vertexSize * FLOAT_SIZE;
+    vertexSize+=TEX_COORD_0_SIZE;
+    hasTexCoord0=true;
+  }
+  if (data.getTexCoord1() != null && data.getTexCoord1().size() / TEX_COORD_1_SIZE == vertexCount) {
+    parts.add(data.getTexCoord1().iterator());
+    partSizes.add(TEX_COORD_1_SIZE);
+    texCoord1Offset=vertexSize * FLOAT_SIZE;
+    vertexSize+=TEX_COORD_1_SIZE;
+    hasTexCoord1=true;
+  }
+  if (data.getNormals() != null && data.getNormals().size() / NORMAL_SIZE == vertexCount) {
+    parts.add(data.getNormals().iterator());
+    partSizes.add(NORMAL_SIZE);
+    normalOffset=vertexSize * FLOAT_SIZE;
+    vertexSize+=NORMAL_SIZE;
+    hasNormal=true;
+  }
+  if (data.getColors() != null && data.getColors().size() / COLOR_SIZE == vertexCount) {
+    parts.add(data.getColors().iterator());
+    partSizes.add(COLOR_SIZE);
+    colorOffset=vertexSize * FLOAT_SIZE;
+    vertexSize+=COLOR_SIZE;
+    hasColor=true;
+  }
+  stride=vertexSize * FLOAT_SIZE;
+  indexCount=data.getIndices().size();
+  createVertexBuffer(parts,partSizes,vertexCount,vertexSize);
+  createIndexBuffer(data.getIndices());
+  aabb=AABB.createEncompasing(data.getVertices());
+}

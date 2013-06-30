@@ -26,4 +26,10 @@
     }
   }
 );
+  AssetManager.getInstance().setAssetFactory(AssetType.MESH,new AssetFactory<MeshData,Mesh>(){
+    @Override public Mesh buildAsset(    AssetUri uri,    MeshData data){
+      return new OpenGLMesh(uri,data);
+    }
+  }
+);
 }
