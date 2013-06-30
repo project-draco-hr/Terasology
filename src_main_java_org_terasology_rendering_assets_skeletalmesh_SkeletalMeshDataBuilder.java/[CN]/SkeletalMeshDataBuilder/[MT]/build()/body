@@ -1,0 +1,15 @@
+{
+  int rootBones=0;
+  for (  Bone bone : bones) {
+    if (bone.getParent() == null) {
+      rootBones++;
+    }
+  }
+  if (rootBones == 0) {
+    throw new IllegalStateException("Cannot create a skeleton with no root bones");
+  }
+ else   if (rootBones > 1) {
+    throw new IllegalStateException("Cannot create a skeleton with multiple root bones");
+  }
+  return new SkeletalMeshData(bones,weights,uvs,vertexStartWeights,vertexWeightCounts,indices);
+}
