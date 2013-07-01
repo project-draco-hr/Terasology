@@ -29,6 +29,13 @@
   prefabManager.registerPrefab(prefabWithRetainedComponent);
   blockWithRetainedComponent.setPrefab("test:prefabWithRetainedComponent");
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithRetainedComponent"),blockWithRetainedComponent),true);
+  blockInFamilyOne=new Block();
+  blockInFamilyOne.setKeepActive(true);
+  blockInFamilyOne.setPrefab("test:prefabWithString");
+  blockInFamilyTwo=new Block();
+  blockInFamilyTwo.setPrefab("test:prefabWithString");
+  blockInFamilyTwo.setKeepActive(true);
+  blockManager.addBlockFamily(new HorizontalBlockFamily(new BlockUri("test:blockFamily"),ImmutableMap.<Side,Block>of(Side.FRONT,blockInFamilyOne,Side.LEFT,blockInFamilyTwo,Side.RIGHT,blockInFamilyTwo,Side.BACK,blockInFamilyOne),NullIterator.<String>newInstance()),true);
   keepActiveBlock=new Block();
   keepActiveBlock.setKeepActive(true);
   keepActiveBlock.setPrefab("test:prefabWithString");

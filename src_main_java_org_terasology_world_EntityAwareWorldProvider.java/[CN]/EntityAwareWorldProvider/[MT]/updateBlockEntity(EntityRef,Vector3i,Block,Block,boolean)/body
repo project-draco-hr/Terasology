@@ -9,6 +9,8 @@
   if (regionEntity != null) {
     regionEntity.send(new OnChangedBlock(pos,type,oldType));
   }
-  updateBlockEntityComponents(blockEntity,oldType,type);
+  if (forceEntityUpdate || !(Objects.equal(oldType.getBlockFamily(),type.getBlockFamily()) && Objects.equal(oldType.getPrefab(),type.getPrefab()))) {
+    updateBlockEntityComponents(blockEntity,oldType,type);
+  }
   blockEntity.send(new OnChangedBlock(new Vector3i(pos),type,oldType));
 }
