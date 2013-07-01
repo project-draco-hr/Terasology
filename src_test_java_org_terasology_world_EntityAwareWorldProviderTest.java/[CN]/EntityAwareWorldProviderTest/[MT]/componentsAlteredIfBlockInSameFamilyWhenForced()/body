@@ -1,0 +1,7 @@
+{
+  worldProvider.setBlock(0,0,0,blockInFamilyOne,BlockManager.getAir());
+  EntityRef entity=worldProvider.getBlockEntityAt(Vector3i.zero());
+  entity.addComponent(new IntegerComponent());
+  worldProvider.setBlockForceUpdateEntity(0,0,0,blockInFamilyTwo,blockInFamilyOne);
+  assertNull(entity.getComponent(IntegerComponent.class));
+}
