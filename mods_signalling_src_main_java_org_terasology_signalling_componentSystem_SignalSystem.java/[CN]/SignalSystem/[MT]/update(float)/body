@@ -28,17 +28,10 @@
     for (    NetworkNode consumerToEvaluate : consumersToEvaluate) {
       if (signalConsumers.containsValue(consumerToEvaluate)) {
         final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(consumerToEvaluate.location.toVector3i());
-        final SignalConsumerStatusComponent consumerStatusComponent=blockEntity.getComponent(SignalConsumerStatusComponent.class);
         final SignalConsumerComponent consumerComponent=blockEntity.getComponent(SignalConsumerComponent.class);
-        if (consumerComponent != null && consumerStatusComponent != null) {
+        if (consumerComponent != null) {
           Map<Network,NetworkSignals> consumerSignals=consumerSignalInNetworks.get(consumerToEvaluate);
-          boolean newSignal=false;
-          if (consumerSignals != null)           newSignal=calculateResultSignal(consumerSignals.values(),consumerComponent);
-          if (newSignal != consumerStatusComponent.hasSignal) {
-            consumerStatusComponent.hasSignal=newSignal;
-            blockEntity.saveComponent(consumerStatusComponent);
-            logger.debug("Consumer has signal: " + newSignal);
-          }
+          processSignalConsumerResult(consumerSignals.values(),consumerComponent,blockEntity);
         }
       }
     }

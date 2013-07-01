@@ -1,0 +1,16 @@
+{
+  final SignalConsumerAdvancedStatusComponent advancedStatusComponent=entity.getComponent(SignalConsumerAdvancedStatusComponent.class);
+  byte withoutSignal=0;
+  byte withSignal=0;
+  if (networkSignals != null) {
+    for (    NetworkSignals networkSignal : networkSignals) {
+      withoutSignal+=networkSignal.sidesWithoutSignal;
+      withSignal+=networkSignal.sidesWithSignal;
+    }
+  }
+  if (advancedStatusComponent.sidesWithoutSignals != withoutSignal || advancedStatusComponent.sidesWithSignals != withSignal) {
+    advancedStatusComponent.sidesWithoutSignals=withoutSignal;
+    advancedStatusComponent.sidesWithSignals=withSignal;
+    entity.saveComponent(advancedStatusComponent);
+  }
+}

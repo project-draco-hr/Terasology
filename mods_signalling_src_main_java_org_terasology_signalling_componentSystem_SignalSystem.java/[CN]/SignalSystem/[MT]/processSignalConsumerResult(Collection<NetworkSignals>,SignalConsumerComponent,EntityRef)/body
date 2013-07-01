@@ -1,0 +1,30 @@
+{
+  final SignalConsumerComponent.Mode mode=signalConsumerComponent.mode;
+switch (mode) {
+case AT_LEAST_ONE:
+{
+      final boolean signal=hasSignalForOr(networkSignals);
+      outputSignalToSimpleConsumer(entity,signal);
+      return;
+    }
+case ALL_CONNECTED:
+{
+    final boolean signal=hasSignalForAnd(networkSignals);
+    outputSignalToSimpleConsumer(entity,signal);
+    return;
+  }
+case EXACTLY_ONE:
+{
+  final boolean signal=hasSignalForXor(networkSignals);
+  outputSignalToSimpleConsumer(entity,signal);
+  return;
+}
+case SPECIAL:
+{
+outputSignalToAdvancedConsumer(entity,networkSignals);
+return;
+}
+default :
+throw new IllegalArgumentException("Unknown mode set for SignalConsumerComponent");
+}
+}

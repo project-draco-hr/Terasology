@@ -1,0 +1,18 @@
+{
+  if (networkSignals == null)   return false;
+  boolean connected=false;
+  for (  NetworkSignals networkSignal : networkSignals) {
+    if (SideBitFlag.getSides(networkSignal.sidesWithSignal).size() > 1) {
+      return false;
+    }
+ else     if (networkSignal.sidesWithSignal > 0) {
+      if (connected) {
+        return false;
+      }
+ else {
+        connected=true;
+      }
+    }
+  }
+  return connected;
+}
