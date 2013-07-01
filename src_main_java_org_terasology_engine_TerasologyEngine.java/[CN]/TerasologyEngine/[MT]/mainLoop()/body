@@ -3,6 +3,11 @@
   PerformanceMonitor.startActivity("Other");
   while (running && !Display.isCloseRequested()) {
     if (!Display.isActive() && currentState.isHibernationAllowed()) {
+      time.setPaused(true);
+      Iterator<Float> updateCycles=time.tick();
+      while (updateCycles.hasNext()) {
+        updateCycles.next();
+      }
       try {
         Thread.sleep(100);
       }
@@ -10,6 +15,7 @@
         logger.warn("Display inactivity sleep interrupted",e);
       }
       Display.processMessages();
+      time.setPaused(false);
       continue;
     }
     processStateChanges();
