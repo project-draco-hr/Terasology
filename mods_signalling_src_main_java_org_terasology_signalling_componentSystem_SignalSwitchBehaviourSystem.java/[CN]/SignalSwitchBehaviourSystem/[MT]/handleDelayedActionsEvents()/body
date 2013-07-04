@@ -24,6 +24,11 @@
           gateLastSignalChangeTime.put(new ImmutableBlockLocation(actionLocation),worldTime);
         }
       }
+ else       if (blockFamily == signalSetResetGate) {
+        if (processOutputForSetResetGate(blockEntity)) {
+          gateLastSignalChangeTime.put(new ImmutableBlockLocation(actionLocation),worldTime);
+        }
+      }
       blockEntity.removeComponent(SignalDelayedActionComponent.class);
     }
  else {
