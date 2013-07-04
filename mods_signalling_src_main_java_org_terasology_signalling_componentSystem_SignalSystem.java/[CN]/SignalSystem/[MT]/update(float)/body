@@ -1,42 +1,39 @@
 {
-  for (  NetworkNode producerChanges : producersSignalsChanged)   networksToRecalculate.addAll(producerNetworks.get(producerChanges));
-  Set<NetworkNode> consumersToEvaluate=Sets.newHashSet();
-  for (  Network network : networksToRecalculate) {
-    if (signalNetwork.isNetworkActive(network)) {
-      Collection<NetworkNode> consumersInNetwork=this.consumersInNetwork.get(network);
-      for (      NetworkNode consumerLocation : consumersInNetwork) {
-        boolean consumerSignalInNetwork=getConsumerSignalInNetwork(network,consumerLocation);
-        consumerSignalInNetworks.get(consumerLocation).put(network,consumerSignalInNetwork);
+  long worldTime=time.getGameTimeInMs();
+  if (worldTime > lastUpdate + PROCESSING_MINIMUM_INTERVAL) {
+    lastUpdate=worldTime;
+    for (    NetworkNode producerChanges : producersSignalsChanged)     networksToRecalculate.addAll(producerNetworks.get(producerChanges));
+    Set<NetworkNode> consumersToEvaluate=Sets.newHashSet();
+    for (    Network network : networksToRecalculate) {
+      if (signalNetwork.isNetworkActive(network)) {
+        Collection<NetworkNode> consumersInNetwork=this.consumersInNetwork.get(network);
+        for (        NetworkNode consumerLocation : consumersInNetwork) {
+          NetworkSignals consumerSignalInNetwork=getConsumerSignalInNetwork(network,consumerLocation);
+          consumerSignalInNetworks.get(consumerLocation).put(network,consumerSignalInNetwork);
+        }
+        consumersToEvaluate.addAll(consumersInNetwork);
       }
-      consumersToEvaluate.addAll(consumersInNetwork);
     }
-  }
-  for (  NetworkNode modifiedConsumer : consumersToRecalculate) {
-    Collection<Network> networks=consumerNetworks.get(modifiedConsumer);
-    for (    Network network : networks) {
-      boolean consumerSignalInNetwork=getConsumerSignalInNetwork(network,modifiedConsumer);
-      consumerSignalInNetworks.get(modifiedConsumer).put(network,consumerSignalInNetwork);
+    for (    NetworkNode modifiedConsumer : consumersToRecalculate) {
+      Collection<Network> networks=consumerNetworks.get(modifiedConsumer);
+      for (      Network network : networks) {
+        NetworkSignals consumerSignalInNetwork=getConsumerSignalInNetwork(network,modifiedConsumer);
+        consumerSignalInNetworks.get(modifiedConsumer).put(network,consumerSignalInNetwork);
+      }
+      consumersToEvaluate.add(modifiedConsumer);
     }
-    consumersToEvaluate.add(modifiedConsumer);
-  }
-  for (  NetworkNode consumerToEvaluate : consumersToEvaluate) {
-    if (signalConsumers.containsValue(consumerToEvaluate)) {
-      final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(consumerToEvaluate.location.toVector3i());
-      final SignalConsumerStatusComponent consumerStatusComponent=blockEntity.getComponent(SignalConsumerStatusComponent.class);
-      final SignalConsumerComponent consumerComponent=blockEntity.getComponent(SignalConsumerComponent.class);
-      if (consumerComponent != null && consumerStatusComponent != null) {
-        Map<Network,Boolean> consumerSignals=consumerSignalInNetworks.get(consumerToEvaluate);
-        boolean newSignal=false;
-        if (consumerSignals != null)         newSignal=calculateResultSignal(consumerSignals.values(),consumerComponent);
-        if (newSignal != consumerStatusComponent.hasSignal) {
-          consumerStatusComponent.hasSignal=newSignal;
-          blockEntity.saveComponent(consumerStatusComponent);
-          logger.info("Consumer has signal: " + newSignal);
+    producersSignalsChanged.clear();
+    networksToRecalculate.clear();
+    consumersToRecalculate.clear();
+    for (    NetworkNode consumerToEvaluate : consumersToEvaluate) {
+      if (signalConsumers.containsValue(consumerToEvaluate)) {
+        final EntityRef blockEntity=blockEntityRegistry.getBlockEntityAt(consumerToEvaluate.location.toVector3i());
+        final SignalConsumerComponent consumerComponent=blockEntity.getComponent(SignalConsumerComponent.class);
+        if (consumerComponent != null) {
+          Map<Network,NetworkSignals> consumerSignals=consumerSignalInNetworks.get(consumerToEvaluate);
+          processSignalConsumerResult(consumerSignals.values(),consumerComponent,blockEntity);
         }
       }
     }
   }
-  producersSignalsChanged.clear();
-  networksToRecalculate.clear();
-  consumersToRecalculate.clear();
 }

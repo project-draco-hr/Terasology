@@ -1,13 +1,13 @@
 {
   for (  NetworkNode modifiedLeafNode : leafNodes) {
-    if (signalProducers.containsValue(modifiedLeafNode)) {
-      logger.info("Producer added to network");
+    if (((SignalNetworkNode)modifiedLeafNode).getType() == SignalNetworkNode.Type.PRODUCER) {
+      logger.debug("Producer added to network");
       networksToRecalculate.add(network);
       producerNetworks.put(modifiedLeafNode,network);
       producersInNetwork.put(network,modifiedLeafNode);
     }
  else {
-      logger.info("Consumer added to network");
+      logger.debug("Consumer added to network");
       consumersToRecalculate.add(modifiedLeafNode);
       consumerNetworks.put(modifiedLeafNode,network);
       consumersInNetwork.put(network,modifiedLeafNode);

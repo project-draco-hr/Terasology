@@ -1,12 +1,10 @@
 {
   int result=producerComponent.signalStrength + 1;
   if (result == 11)   result=0;
-  producerComponent.signalStrength=result;
-  entity.saveComponent(producerComponent);
-  if (producerComponent.signalStrength == 1) {
-    entity.saveComponent(new SignalProducerModifiedComponent());
+  if (result > 0) {
+    startProducingSignal(entity,result);
   }
- else   if (producerComponent.signalStrength == 0) {
-    entity.removeComponent(SignalProducerModifiedComponent.class);
+ else {
+    stopProducingSignal(entity);
   }
 }

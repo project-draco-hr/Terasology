@@ -5,7 +5,7 @@
     final ImmutableBlockLocation blockLocation=new ImmutableBlockLocation(location);
     final NetworkNode oldConductorNode=signalConductors.get(blockLocation);
     if (oldConductorNode != null) {
-      final NetworkNode newConductorNode=toNode(new Vector3i(location),connectingOnSides);
+      final NetworkNode newConductorNode=toNode(new Vector3i(location),connectingOnSides,SignalNetworkNode.Type.CONDUCTOR);
       signalConductors.put(newConductorNode.location,newConductorNode);
       signalNetwork.updateNetworkingBlock(oldConductorNode,newConductorNode);
     }

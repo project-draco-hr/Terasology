@@ -2,12 +2,28 @@
   if (entity.hasComponent(BlockComponent.class)) {
     SignalConsumerStatusComponent consumerStatusComponent=entity.getComponent(SignalConsumerStatusComponent.class);
     Vector3i blockLocation=new Vector3i(entity.getComponent(BlockComponent.class).getPosition());
-    Block blockAtLocation=worldProvider.getBlock(blockLocation);
-    if (blockAtLocation == lampTurnedOff && consumerStatusComponent.hasSignal) {
-      worldProvider.setBlock(blockLocation,lampTurnedOn,blockAtLocation);
+    Block block=worldProvider.getBlock(blockLocation);
+    BlockFamily blockFamily=block.getBlockFamily();
+    if (block == lampTurnedOff && consumerStatusComponent.hasSignal) {
+      logger.debug("Lamp turning on");
+      worldProvider.setBlock(blockLocation,lampTurnedOn,block);
     }
- else     if (blockAtLocation == lampTurnedOn && !consumerStatusComponent.hasSignal) {
-      worldProvider.setBlock(blockLocation,lampTurnedOff,blockAtLocation);
+ else     if (block == lampTurnedOn && !consumerStatusComponent.hasSignal) {
+      logger.debug("Lamp turning off");
+      worldProvider.setBlock(blockLocation,lampTurnedOff,block);
+    }
+ else     if (blockFamily == signalOrGate || blockFamily == signalAndGate || blockFamily == signalXorGate) {
+      logger.debug("Signal changed for gate");
+      signalChangedForNormalGate(entity,consumerStatusComponent);
+    }
+ else     if (blockFamily == signalNandGate) {
+      signalChangedForNotGate(entity,consumerStatusComponent);
+    }
+ else     if (blockFamily == signalOnDelayGate) {
+      signalChangedForDelayOnGate(entity,consumerStatusComponent);
+    }
+ else     if (blockFamily == signalOffDelayGate) {
+      signalChangedForDelayOffGate(entity,consumerStatusComponent);
     }
   }
 }

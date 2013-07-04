@@ -1,8 +1,9 @@
 {
+  logger.info("Removing leaf node: " + networkNode.toString());
   validateNotMutating();
   mutating=true;
   try {
-    leafNodes.remove(networkNode.location,networkNode);
+    if (!leafNodes.remove(networkNode.location,networkNode))     throw new IllegalArgumentException("Leaf node not found in the BlockNetwork");
     final Iterator<SimpleNetwork> networkIterator=networks.iterator();
     while (networkIterator.hasNext()) {
       final SimpleNetwork network=networkIterator.next();

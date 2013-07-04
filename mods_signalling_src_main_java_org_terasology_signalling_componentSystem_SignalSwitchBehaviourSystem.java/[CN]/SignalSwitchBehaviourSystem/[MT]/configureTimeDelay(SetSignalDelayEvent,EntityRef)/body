@@ -1,0 +1,11 @@
+{
+  SignalTimeDelayComponent timeDelayComponent=entity.getComponent(SignalTimeDelayComponent.class);
+  timeDelayComponent.delaySetting=Math.min(500,event.getTime());
+  entity.saveComponent(timeDelayComponent);
+  if (timeDelayComponent.delaySetting == 1000 && entity.hasComponent(SignalTimeDelayModifiedComponent.class)) {
+    entity.removeComponent(SignalTimeDelayModifiedComponent.class);
+  }
+ else   if (!entity.hasComponent(SignalTimeDelayModifiedComponent.class)) {
+    entity.addComponent(new SignalTimeDelayModifiedComponent());
+  }
+}
