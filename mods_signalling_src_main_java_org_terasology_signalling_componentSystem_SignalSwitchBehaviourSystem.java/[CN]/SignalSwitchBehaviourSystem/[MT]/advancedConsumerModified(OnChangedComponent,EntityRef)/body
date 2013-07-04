@@ -1,0 +1,10 @@
+{
+  if (entity.hasComponent(BlockComponent.class)) {
+    Vector3i blockLocation=new Vector3i(entity.getComponent(BlockComponent.class).getPosition());
+    Block block=worldProvider.getBlock(blockLocation);
+    BlockFamily blockFamily=block.getBlockFamily();
+    if (blockFamily == signalSetResetGate) {
+      delayGateSignalChangeIfNeeded(entity);
+    }
+  }
+}

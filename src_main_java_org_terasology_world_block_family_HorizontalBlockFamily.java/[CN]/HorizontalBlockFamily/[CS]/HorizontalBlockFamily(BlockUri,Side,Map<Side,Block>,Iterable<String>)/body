@@ -1,0 +1,13 @@
+{
+  super(uri,categories);
+  this.archetypeSide=archetypeSide;
+  for (  Side side : Side.horizontalSides()) {
+    Block block=blocks.get(side);
+    if (block == null) {
+      throw new IllegalArgumentException("Missing block for side: " + side.toString());
+    }
+    this.blocks.put(side,block);
+    block.setBlockFamily(this);
+    block.setUri(new BlockUri(uri,side.name()));
+  }
+}

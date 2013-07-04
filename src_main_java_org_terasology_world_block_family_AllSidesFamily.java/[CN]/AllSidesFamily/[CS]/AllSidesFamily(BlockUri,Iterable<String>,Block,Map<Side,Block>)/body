@@ -1,0 +1,14 @@
+{
+  super(uri,categories);
+  for (  Map.Entry<Side,Block> blockBySide : sideBlocks.entrySet()) {
+    final Side side=blockBySide.getKey();
+    final Block block=blockBySide.getValue();
+    if (block == null) {
+      throw new IllegalArgumentException("Missing block for side: " + side.toString());
+    }
+    block.setBlockFamily(this);
+    block.setUri(new BlockUri(uri,side.name()));
+  }
+  this.archetypeBlock=archetypeBlock;
+  this.sideBlocks=sideBlocks;
+}
