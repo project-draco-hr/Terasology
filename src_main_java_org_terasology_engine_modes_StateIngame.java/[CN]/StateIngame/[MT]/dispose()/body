@@ -7,7 +7,7 @@
   CoreRegistry.get(BulletPhysics.class).dispose();
   if (saveWorld) {
     try {
-      CoreRegistry.get(WorldPersister.class).save(new File(PathManager.getInstance().getCurrentSavePath(),TerasologyConstants.ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
+      CoreRegistry.get(WorldPersister.class).save(PathManager.getInstance().getCurrentSavePath().resolve(TerasologyConstants.ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
     }
  catch (    IOException e) {
       logger.error("Failed to save entities",e);

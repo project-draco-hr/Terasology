@@ -1,27 +1,27 @@
 {
 switch (LWJGLUtil.getPlatform()) {
 case LWJGLUtil.PLATFORM_LINUX:
-    homePath=new File(new File(System.getProperty("user.home")),TERASOLOGY_HIDDEN_FOLDER_NAME);
+    homePath=Paths.get(System.getProperty("user.home"),TERASOLOGY_HIDDEN_FOLDER_NAME);
   break;
 case LWJGLUtil.PLATFORM_MACOSX:
-homePath=new File(new File(System.getProperty("user.home")),"Library/Application Support/" + TERASOLOGY_FOLDER_NAME);
+homePath=Paths.get(System.getProperty("user.home"),"Library","Application Support",TERASOLOGY_FOLDER_NAME);
 break;
 case LWJGLUtil.PLATFORM_WINDOWS:
 String savedGamesPath=SavedGamesPathFinder.findSavedGamesPath();
 if (savedGamesPath == null) {
 savedGamesPath=SavedGamesPathFinder.findDocumentsPath();
 }
-File rawPath;
+Path rawPath;
 if (savedGamesPath != null) {
-rawPath=new File(savedGamesPath);
+rawPath=Paths.get(savedGamesPath);
 }
  else {
-rawPath=new JFileChooser().getFileSystemView().getDefaultDirectory();
+rawPath=new JFileChooser().getFileSystemView().getDefaultDirectory().toPath();
 }
-homePath=new File(rawPath,TERASOLOGY_FOLDER_NAME);
+homePath=rawPath.resolve(TERASOLOGY_FOLDER_NAME);
 break;
 default :
-homePath=new File(new File(System.getProperty("user.home")),TERASOLOGY_HIDDEN_FOLDER_NAME);
+homePath=Paths.get(System.getProperty("user.home"),TERASOLOGY_HIDDEN_FOLDER_NAME);
 break;
 }
 updateDirs();

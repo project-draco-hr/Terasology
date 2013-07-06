@@ -1,7 +1,12 @@
 {
   List<EntityRef> result=Lists.newArrayListWithCapacity(value.getIntegerCount());
   for (  Integer item : value.getIntegerList()) {
-    result.add(entityManager.createEntityRefWithId(item));
+    if (refInterceptor.get() == null || refInterceptor.get().loadingRef(item)) {
+      result.add(entityManager.createEntityRefWithId(item));
+    }
+ else {
+      result.add(EntityRef.NULL);
+    }
   }
   return result;
 }

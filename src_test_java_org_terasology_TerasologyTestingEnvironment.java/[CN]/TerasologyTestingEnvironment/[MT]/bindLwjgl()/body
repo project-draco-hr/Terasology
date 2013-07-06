@@ -1,10 +1,10 @@
 {
 switch (LWJGLUtil.getPlatform()) {
 case LWJGLUtil.PLATFORM_MACOSX:
-    NativeHelper.addLibraryPath(new File(PathManager.getInstance().getNativesPath(),"macosx"));
+    NativeHelper.addLibraryPath(PathManager.getInstance().getNativesPath().resolve("macosx"));
   break;
 case LWJGLUtil.PLATFORM_LINUX:
-NativeHelper.addLibraryPath(new File(PathManager.getInstance().getNativesPath(),"linux"));
+NativeHelper.addLibraryPath(PathManager.getInstance().getNativesPath().resolve("linux"));
 if (System.getProperty("os.arch").contains("64")) {
 System.loadLibrary("openal64");
 }
@@ -13,7 +13,7 @@ System.loadLibrary("openal");
 }
 break;
 case LWJGLUtil.PLATFORM_WINDOWS:
-NativeHelper.addLibraryPath(new File(PathManager.getInstance().getNativesPath(),"windows"));
+NativeHelper.addLibraryPath(PathManager.getInstance().getNativesPath().resolve("windows"));
 if (System.getProperty("os.arch").contains("64")) {
 System.loadLibrary("OpenAL64");
 }

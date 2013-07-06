@@ -11,4 +11,7 @@
     notifyComponentRemoved(ref,comp.getClass());
   }
   destroy(ref);
+  for (  EntityDestroySubscriber destroySubscriber : destroySubscribers) {
+    destroySubscriber.onEntityDestroyed(entityId);
+  }
 }

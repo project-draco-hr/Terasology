@@ -1,3 +1,12 @@
 {
-  return playerStores.get(playerId);
+  EntityData.PlayerEntityStore store=playerStores.get(playerId);
+  if (store != null) {
+    TIntSet validRefs=null;
+    StoreRefTable table=playerStoreExternalRefs.get(playerId);
+    if (table != null) {
+      validRefs=table.externalReferences;
+    }
+    return new PlayerStoreInternal(playerId,store,validRefs,this,entityManager);
+  }
+  return null;
 }

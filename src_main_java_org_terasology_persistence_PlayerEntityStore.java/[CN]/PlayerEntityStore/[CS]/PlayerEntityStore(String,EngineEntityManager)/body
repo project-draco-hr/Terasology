@@ -3,7 +3,12 @@
   helper=new OwnershipHelper(manager.getComponentLibrary());
   serializer=new EntitySerializer(manager,manager.getComponentLibrary());
   serializer.setIgnoringEntityId(false);
-  File playerSubDir=new File(PathManager.getInstance().getCurrentSavePath(),PLAYER_STORE_SUBDIR);
-  playerSubDir.mkdirs();
-  playerDataFile=new File(playerSubDir,playerId + ".dat");
+  Path playerSubDir=PathManager.getInstance().getCurrentSavePath().resolve(PLAYER_STORE_SUBDIR);
+  try {
+    Files.createDirectories(playerSubDir);
+  }
+ catch (  IOException e) {
+    logger.error("Failed to create player sub directory for {}",playerId,e);
+  }
+  playerDataFile=playerSubDir.resolve(playerId + ".dat");
 }

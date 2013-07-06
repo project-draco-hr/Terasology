@@ -4,15 +4,14 @@
   for (int i=0; i < numMipMaps; ++i) {
     BufferedImage image=generateAtlas(i);
     if (i == 0) {
-      try {
-        ImageIO.write(image,"png",new File(PathManager.getInstance().getScreenshotPath(),"tiles.png"));
+      try (OutputStream stream=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getScreenshotPath().resolve("tiles.png")))){
+        ImageIO.write(image,"png",stream);
       }
  catch (      IOException e) {
         logger.warn("Failed to write atlas");
       }
     }
-    ByteArrayOutputStream bos=new ByteArrayOutputStream();
-    try {
+    try (ByteArrayOutputStream bos=new ByteArrayOutputStream()){
       ImageIO.write(image,"png",bos);
       PNGDecoder decoder=new PNGDecoder(new ByteArrayInputStream(bos.toByteArray()));
       ByteBuffer buf=ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
@@ -24,11 +23,17 @@
       logger.error("Failed to create atlas texture");
     }
   }
+  Util.checkGLError();
   TextureData terrainTexData=new TextureData(atlasSize,atlasSize,data,Texture.WrapMode.Clamp,Texture.FilterMode.Nearest);
+  Util.checkGLError();
   Texture terrainTex=Assets.generateAsset(new AssetUri(AssetType.TEXTURE,"engine:terrain"),terrainTexData,Texture.class);
+  Util.checkGLError();
   MaterialData terrainMatData=new MaterialData(Assets.getShader("engine:block"));
+  Util.checkGLError();
   terrainMatData.setParam("textureAtlas",terrainTex);
   terrainMatData.setParam("colorOffset",new float[]{1,1,1});
   terrainMatData.setParam("textured",1);
+  Util.checkGLError();
   Assets.generateAsset(new AssetUri(AssetType.MATERIAL,"engine:terrain"),terrainMatData,Material.class);
+  Util.checkGLError();
 }

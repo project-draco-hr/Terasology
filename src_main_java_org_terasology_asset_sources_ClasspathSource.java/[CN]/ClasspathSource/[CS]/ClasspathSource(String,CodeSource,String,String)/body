@@ -4,12 +4,12 @@
   }
   URL url=cs.getLocation();
   try {
-    File codePath=new File(url.toURI());
-    if (codePath.isFile()) {
-      source=new ArchiveSource(id,codePath,baseAssetsPath,baseOverridesPath);
+    Path codePath=Paths.get(url.toURI());
+    if (Files.isRegularFile(codePath)) {
+      source=new ArchiveSource(id,codePath.toFile(),baseAssetsPath,baseOverridesPath);
     }
  else {
-      source=new DirectorySource(id,new File(codePath,baseAssetsPath),new File(codePath,baseOverridesPath));
+      source=new DirectorySource(id,codePath.resolve(baseAssetsPath),codePath.resolve(baseOverridesPath));
     }
   }
  catch (  Throwable e) {

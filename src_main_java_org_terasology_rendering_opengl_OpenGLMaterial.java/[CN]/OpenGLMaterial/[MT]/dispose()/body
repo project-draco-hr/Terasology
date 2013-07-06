@@ -1,6 +1,11 @@
 {
+  Util.checkGLError();
   if (shaderProgram != 0) {
-    GL20.glDeleteShader(shaderProgram);
+    Material activeMaterial=ShaderManager.getInstance().getActiveMaterial();
+    if (activeMaterial == this) {
+      ShaderManager.getInstance().enableDefault();
+    }
     shaderProgram=0;
   }
+  Util.checkGLError();
 }

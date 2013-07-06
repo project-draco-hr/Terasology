@@ -1,14 +1,15 @@
 {
   try {
-    if (modRoot.isDirectory()) {
-      File classesDir=new File(modRoot,"classes");
-      if (classesDir.exists() && classesDir.isDirectory()) {
-        return classesDir.toURI().toURL();
+    if (Files.isDirectory(modRoot)) {
+      Path classesDir=modRoot.resolve("classes");
+      if (Files.isDirectory(classesDir)) {
+        return classesDir.toUri().toURL();
       }
     }
- else {
-      if (modRoot.getAbsolutePath().endsWith(".jar")) {
-        return modRoot.toURI().toURL();
+ else     if (Files.isRegularFile(modRoot)) {
+      String extension=com.google.common.io.Files.getFileExtension(modRoot.getFileName().toString());
+      if (extension.equals(".jar")) {
+        return modRoot.toUri().toURL();
       }
     }
   }

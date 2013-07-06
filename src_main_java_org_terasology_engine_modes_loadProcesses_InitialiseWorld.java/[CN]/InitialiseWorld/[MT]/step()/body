@@ -9,8 +9,8 @@
   chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
   chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
   ChunkStore chunkStore=null;
-  File f=new File(PathManager.getInstance().getCurrentSavePath(),TerasologyConstants.WORLD_DATA_FILE);
-  if (f.exists()) {
+  Path f=PathManager.getInstance().getCurrentSavePath().resolve(TerasologyConstants.WORLD_DATA_FILE);
+  if (Files.isRegularFile(f)) {
     try {
       chunkStore=loadChunkStore(f);
     }

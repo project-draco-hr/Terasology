@@ -1,5 +1,7 @@
 {
-  PathManager.getInstance().useOverrideHomePath(new File("unittesthome"));
+  final JavaArchive homeArchive=ShrinkWrap.create(JavaArchive.class);
+  final FileSystem vfs=ShrinkWrapFileSystems.newFileSystem(homeArchive);
+  PathManager.getInstance().useOverrideHomePath(vfs.getPath(""));
   if (!setup) {
     setup=true;
     bindLwjgl();

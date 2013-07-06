@@ -1,0 +1,7 @@
+{
+  Vector3f loc=new Vector3f(1,2,3);
+  EntityRef character=entityManager.create(new LocationComponent(loc));
+  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
+  store.setCharacter(character);
+  assertEquals(loc,store.getRelevanceLocation());
+}

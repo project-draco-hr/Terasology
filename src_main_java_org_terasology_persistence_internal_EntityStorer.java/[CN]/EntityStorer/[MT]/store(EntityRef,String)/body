@@ -1,0 +1,15 @@
+{
+  if (entity.isActive()) {
+    for (    EntityRef ownedEntity : helper.listOwnedEntities(entity)) {
+      store(ownedEntity);
+    }
+    EntityRefTypeHandler.setReferenceInterceptor(this);
+    EntityData.Entity entityData=serializer.serialize(entity,true,FieldSerializeCheck.NullCheck.<Component>newInstance());
+    EntityRefTypeHandler.setReferenceInterceptor(null);
+    entityStoreBuilder.addEntity(entityData);
+    entityStoreBuilder.addEntityName(name);
+    storedEntityIds.add(entityData.getId());
+    externalReferences.remove(entityData.getId());
+    entityManager.deactivateForStorage(entity);
+  }
+}

@@ -1,0 +1,13 @@
+{
+  if (relativePath.getNameCount() > 1) {
+    Path assetPath=relativePath.subpath(0,1);
+    Path filename=relativePath.getFileName();
+    String extension=Files.getFileExtension(filename.toString());
+    String nameOnly=filename.toString().substring(0,filename.toString().length() - extension.length() - 1);
+    AssetType assetType=AssetType.getTypeFor(assetPath.toString(),extension);
+    if (assetType != null) {
+      return assetType.getUri(moduleId,nameOnly);
+    }
+  }
+  return null;
+}

@@ -1,6 +1,11 @@
 {
   super.init();
-  PathManager.getInstance().useDefaultHomePath();
+  try {
+    PathManager.getInstance().useDefaultHomePath();
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("Failed to start applet - could not obtain home path.",e);
+  }
   logger=LoggerFactory.getLogger(TerasologyApplet.class);
   obtainMods();
   startGame();

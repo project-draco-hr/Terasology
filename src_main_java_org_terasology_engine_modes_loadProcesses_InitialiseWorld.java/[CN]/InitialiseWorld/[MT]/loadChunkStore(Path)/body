@@ -1,0 +1,15 @@
+{
+  try (ObjectInputStream in=new ObjectInputStream(new BufferedInputStream(Files.newInputStream(file)))){
+    ChunkStore cache=(ChunkStore)in.readObject();
+    if (cache instanceof ChunkStoreGZip) {
+      ((ChunkStoreGZip)cache).setup();
+      logger.info("Using old chunk store implementation without protobuf support for compatibility.");
+    }
+ else     if (cache instanceof ChunkStoreProtobuf)     ((ChunkStoreProtobuf)cache).setup();
+ else     logger.warn("Chunk store might not have been initialized: {}",cache.getClass().getName());
+    return cache;
+  }
+ catch (  ClassNotFoundException e) {
+    throw new IOException("Unable to load chunk cache",e);
+  }
+}

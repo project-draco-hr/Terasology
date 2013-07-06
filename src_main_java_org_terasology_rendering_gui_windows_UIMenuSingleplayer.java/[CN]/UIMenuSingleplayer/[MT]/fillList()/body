@@ -1,36 +1,42 @@
 {
   list.removeAll();
-  File worldCatalog=PathManager.getInstance().getSavesPath();
-  File[] listFiles=worldCatalog.listFiles(new FileFilter(){
-    public boolean accept(    File file){
-      return file.isDirectory();
+  Path savedGames=PathManager.getInstance().getSavesPath();
+  List<Path> savedGamePaths=Lists.newArrayList();
+  try (DirectoryStream<Path> stream=Files.newDirectoryStream(savedGames)){
+    for (    Path entry : stream) {
+      if (Files.isRegularFile(entry.resolve(GameManifest.DEFAULT_FILE_NAME))) {
+        savedGamePaths.add(entry);
+      }
     }
   }
-);
-  Arrays.sort(listFiles,new Comparator(){
-    public int compare(    Object o1,    Object o2){
-      if (((File)o1).isDirectory() && ((File)o2).isDirectory()) {
-        File f1=new File(((File)o1).getAbsolutePath(),"entity.dat");
-        File f2=new File(((File)o2).getAbsolutePath(),"entity.dat");
-        if (f1.lastModified() > f2.lastModified()) {
-          return -1;
-        }
- else         if (f1.lastModified() < f2.lastModified()) {
-          return +1;
-        }
+ catch (  IOException e) {
+    logger.error("Failed to read saved games path",e);
+  }
+  Collections.sort(savedGamePaths,new Comparator<Path>(){
+    public int compare(    Path o1,    Path o2){
+      Path f1=o1.resolve(GameManifest.DEFAULT_FILE_NAME);
+      Path f2=o2.resolve(GameManifest.DEFAULT_FILE_NAME);
+      try {
+        FileTime f1Time=Files.getLastModifiedTime(f1);
+        FileTime f2Time=Files.getLastModifiedTime(f2);
+        return -f1Time.compareTo(f2Time);
+      }
+ catch (      IOException e) {
+        logger.error("Failed to compare times for {} and {}",f1,f2,e);
       }
       return 0;
     }
   }
 );
-  DateFormat date=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-  for (  File file : listFiles) {
-    File gameManifest=new File(file,GameManifest.DEFAULT_FILE_NAME);
-    if (!gameManifest.exists())     continue;
+  DateFormat dateFormat=new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+  for (  Path savedGameDir : savedGamePaths) {
+    Path gameManifest=savedGameDir.resolve(GameManifest.DEFAULT_FILE_NAME);
+    if (!Files.isRegularFile(gameManifest))     continue;
     try {
       GameManifest info=GameManifest.load(gameManifest);
       if (!info.getTitle().isEmpty()) {
-        UIListItem item=new UIListItem(info.getTitle() + "\n" + date.format(new java.util.Date(new File(file.getAbsolutePath(),"entity.dat").lastModified())),info);
+        Date date=new Date(Files.getLastModifiedTime(gameManifest).toMillis());
+        UIListItem item=new UIListItem(info.getTitle() + "\n" + dateFormat.format(date),info);
         item.setPadding(new Vector4f(10f,5f,10f,5f));
         list.addItem(item);
       }

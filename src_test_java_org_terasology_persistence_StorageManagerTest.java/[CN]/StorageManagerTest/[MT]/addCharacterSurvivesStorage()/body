@@ -1,0 +1,13 @@
+{
+  EntityRef character=entityManager.create();
+  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
+  assertFalse(store.hasCharacter());
+  store.setCharacter(character);
+  assertTrue(store.hasCharacter());
+  assertEquals(character,store.getCharacter());
+  store.save();
+  PlayerStore restored=esm.loadStore(PLAYER_ID);
+  restored.restore();
+  assertTrue(restored.hasCharacter());
+  assertEquals(character,restored.getCharacter());
+}

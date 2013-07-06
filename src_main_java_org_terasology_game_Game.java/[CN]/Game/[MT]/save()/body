@@ -15,7 +15,7 @@
   gameManifest.setBlockIdMap(blockManager.getBlockIdMap());
   gameManifest.addWorldInfo(worldProvider.getWorldInfo());
   try {
-    GameManifest.save(new File(PathManager.getInstance().getCurrentSavePath(),GameManifest.DEFAULT_FILE_NAME),gameManifest);
+    GameManifest.save(PathManager.getInstance().getCurrentSavePath().resolve(GameManifest.DEFAULT_FILE_NAME),gameManifest);
   }
  catch (  IOException e) {
     logger.error("Failed to save world manifest",e);

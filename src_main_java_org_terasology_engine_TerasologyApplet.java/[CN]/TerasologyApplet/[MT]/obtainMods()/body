@@ -4,21 +4,26 @@
   for (  String mod : mods) {
     try {
       URL url=new URL(modsPath + mod);
-      ReadableByteChannel rbc=Channels.newChannel(url.openStream());
-      FileOutputStream fos=new FileOutputStream(new File(PathManager.getInstance().getHomeModPath(),mod));
-      long readBytes=fos.getChannel().transferFrom(rbc,0,1 << 24);
-      while (readBytes == 1 << 24) {
-        readBytes=fos.getChannel().transferFrom(rbc,0,1 << 24);
+      try (ReadableByteChannel rbc=Channels.newChannel(url.openStream());SeekableByteChannel writeChannel=Files.newByteChannel(PathManager.getInstance().getHomeModPath().resolve(mod),StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING,StandardOpenOption.WRITE)){
+        ByteBuffer buffer=ByteBuffer.allocateDirect(1 << 24);
+        while (rbc.read(buffer) != -1) {
+          buffer.flip();
+          writeChannel.write(buffer);
+          buffer.compact();
+        }
+        buffer.flip();
+        while (buffer.hasRemaining()) {
+          writeChannel.write(buffer);
+        }
       }
-      fos.close();
+ catch (      FileNotFoundException e) {
+        logger.error("Unable to obtain mod '{}'",mod,e);
+      }
+catch (      IOException e) {
+        logger.error("Unable to obtain mod '{}'",mod,e);
+      }
     }
  catch (    MalformedURLException e) {
-      logger.error("Unable to obtain mod '{}'",mod,e);
-    }
-catch (    FileNotFoundException e) {
-      logger.error("Unable to obtain mod '{}'",mod,e);
-    }
-catch (    IOException e) {
       logger.error("Unable to obtain mod '{}'",mod,e);
     }
   }

@@ -1,6 +1,6 @@
 {
-  if (playerDataFile.exists()) {
-    try (InputStream in=new FileInputStream(playerDataFile)){
+  if (Files.isRegularFile(playerDataFile)) {
+    try (InputStream in=new BufferedInputStream(Files.newInputStream(playerDataFile))){
       EntityData.PlayerEntityStore playerEntityStore=EntityData.PlayerEntityStore.parseFrom(in);
       loadedData=playerEntityStore.getStore();
       if (playerEntityStore.hasCharacterPosX() && playerEntityStore.hasCharacterPosY() && playerEntityStore.hasCharacterPosZ()) {

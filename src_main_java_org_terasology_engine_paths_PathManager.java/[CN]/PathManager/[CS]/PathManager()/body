@@ -1,16 +1,16 @@
 {
   try {
-    URL path=PathManager.class.getProtectionDomain().getCodeSource().getLocation();
-    File codeLocation=new File(path.toURI());
-    if (codeLocation.isFile()) {
-      installPath=codeLocation.getParentFile();
+    URL urlToSource=PathManager.class.getProtectionDomain().getCodeSource().getLocation();
+    Path codeLocation=Paths.get(urlToSource.toURI());
+    if (Files.isRegularFile(codeLocation)) {
+      installPath=codeLocation.getParent();
     }
   }
  catch (  URISyntaxException e) {
     System.out.println("Failed to convert code location to uri");
   }
   if (installPath == null) {
-    installPath=new File("").getAbsoluteFile();
+    installPath=Paths.get("");
   }
   homePath=installPath;
 }

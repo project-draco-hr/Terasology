@@ -1,0 +1,24 @@
+{
+  try {
+    for (    Path child : Files.newDirectoryStream(path)) {
+      if (Files.isDirectory(child)) {
+        scanAssets(child,basePath);
+      }
+ else       if (Files.isRegularFile(child)) {
+        Path relativePath=basePath.relativize(child);
+        AssetUri uri=getUri(relativePath);
+        if (uri != null) {
+          try {
+            addItem(uri,child.toUri().toURL());
+          }
+ catch (          MalformedURLException e) {
+            logger.warn("Failed to load asset {}",relativePath,e.getMessage());
+          }
+        }
+      }
+    }
+  }
+ catch (  IOException e) {
+    logger.error("Failed to scan assets path: {}",path,e);
+  }
+}

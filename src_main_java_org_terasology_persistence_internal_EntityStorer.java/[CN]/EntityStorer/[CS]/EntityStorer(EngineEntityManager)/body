@@ -1,0 +1,12 @@
+{
+  this.entityManager=entityManager;
+  this.entityStoreBuilder=EntityData.EntityStore.newBuilder();
+  this.serializer=new EntitySerializer(entityManager);
+  this.helper=new OwnershipHelper(entityManager.getComponentLibrary());
+  Map<Class<? extends Component>,Integer> componentIds=Maps.newHashMap();
+  for (  ClassMetadata<? extends Component> componentMetadata : entityManager.getComponentLibrary()) {
+    entityStoreBuilder.addComponentClass(componentMetadata.getName());
+    componentIds.put(componentMetadata.getType(),componentIds.size());
+  }
+  serializer.setComponentIdMapping(componentIds);
+}

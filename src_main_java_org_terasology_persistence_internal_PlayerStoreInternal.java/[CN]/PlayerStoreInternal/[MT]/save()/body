@@ -1,3 +1,11 @@
 {
-  manager.store(this);
+  EntityData.PlayerEntityStore.Builder playerEntityStore=EntityData.PlayerEntityStore.newBuilder();
+  playerEntityStore.setCharacterPosX(relevanceLocation.x);
+  playerEntityStore.setCharacterPosY(relevanceLocation.y);
+  playerEntityStore.setCharacterPosZ(relevanceLocation.z);
+  playerEntityStore.setHasCharacter(hasCharacter());
+  EntityStorer storer=new EntityStorer(entityManager);
+  storer.store(character,CHARACTER);
+  playerEntityStore.setStore(storer.finaliseStore());
+  manager.store(id,playerEntityStore.build(),storer.getExternalReferences());
 }

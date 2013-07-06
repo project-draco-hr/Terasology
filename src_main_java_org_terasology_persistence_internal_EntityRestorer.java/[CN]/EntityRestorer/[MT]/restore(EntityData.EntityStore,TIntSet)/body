@@ -1,0 +1,22 @@
+{
+  this.validRefs=validRefs;
+  EntitySerializer serializer=new EntitySerializer(entityManager);
+  EntityRefTypeHandler.setReferenceInterceptor(this);
+  Map<String,EntityRef> namedEntities=Maps.newHashMap();
+  Map<Class<? extends Component>,Integer> idMap=Maps.newHashMap();
+  for (int i=0; i < store.getComponentClassCount(); ++i) {
+    ClassMetadata<? extends Component> metadata=entityManager.getComponentLibrary().getMetadata(store.getComponentClass(i));
+    if (metadata != null) {
+      idMap.put(metadata.getType(),i);
+    }
+  }
+  serializer.setComponentIdMapping(idMap);
+  for (int i=0; i < store.getEntityCount(); ++i) {
+    EntityRef entity=serializer.deserialize(store.getEntity(i));
+    if (!store.getEntityName(i).isEmpty()) {
+      namedEntities.put(store.getEntityName(i),entity);
+    }
+  }
+  EntityRefTypeHandler.setReferenceInterceptor(null);
+  return namedEntities;
+}

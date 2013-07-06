@@ -1,22 +1,22 @@
 {
-  homePath.mkdirs();
-  savesPath=new File(homePath,SAVED_GAMES_DIR);
-  savesPath.mkdirs();
-  logPath=new File(homePath,LOG_DIR);
-  logPath.mkdirs();
-  homeModPath=new File(homePath,MOD_DIR);
-  homeModPath.mkdirs();
-  installModPath=new File(installPath,MOD_DIR);
-  installModPath.mkdirs();
-  if (homeModPath.equals(installModPath)) {
+  Files.createDirectories(homePath);
+  savesPath=homePath.resolve(SAVED_GAMES_DIR);
+  Files.createDirectories(savesPath);
+  logPath=homePath.resolve(LOG_DIR);
+  Files.createDirectories(logPath);
+  Path homeModPath=homePath.resolve(MOD_DIR);
+  Files.createDirectories(homeModPath);
+  Path installModPath=installPath.resolve(MOD_DIR);
+  Files.createDirectories(installModPath);
+  if (Files.isSameFile(homeModPath,installModPath)) {
     modPaths=ImmutableList.of(homeModPath);
   }
  else {
     modPaths=ImmutableList.of(homeModPath,installModPath);
   }
-  screenshotPath=new File(homePath,SCREENSHOT_DIR);
-  screenshotPath.mkdirs();
-  nativesPath=new File(installPath,NATIVES_DIR);
+  screenshotPath=homePath.resolve(SCREENSHOT_DIR);
+  Files.createDirectories(screenshotPath);
+  nativesPath=installPath.resolve(NATIVES_DIR);
   if (currentWorldPath == null) {
     currentWorldPath=homePath;
   }

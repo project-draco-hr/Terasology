@@ -1,0 +1,10 @@
+{
+  final EntityData.World world=persisterHelper.serializeWorld(format.isVerbose());
+  Path parentFile=file.getParent();
+  if (!Files.isDirectory(parentFile)) {
+    Files.createDirectories(parentFile);
+  }
+  try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(file))){
+    format.save(out,world);
+  }
+ }
