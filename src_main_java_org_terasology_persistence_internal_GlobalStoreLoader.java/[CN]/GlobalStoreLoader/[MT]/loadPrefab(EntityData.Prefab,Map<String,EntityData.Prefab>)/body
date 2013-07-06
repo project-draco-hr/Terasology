@@ -1,0 +1,10 @@
+{
+  Prefab result=prefabManager.getPrefab(prefabData.getName());
+  if (result == null) {
+    if (prefabManager.getPrefab(prefabData.getParentName()) == null) {
+      loadPrefab(pendingPrefabs.get(prefabData.getParentName()),pendingPrefabs);
+    }
+    result=createPrefab(prefabData);
+  }
+  return result;
+}

@@ -1,0 +1,17 @@
+{
+  Map<String,EntityData.Prefab> pendingPrefabs=Maps.newHashMap();
+  PrefabManager prefabManager=entityManager.getPrefabManager();
+  for (  EntityData.Prefab prefabData : globalStore.getPrefabList()) {
+    if (prefabManager.exists(prefabData.getName())) {
+      if (!prefabData.hasParentName()) {
+        createPrefab(prefabData);
+      }
+ else {
+        pendingPrefabs.put(prefabData.getName(),prefabData);
+      }
+    }
+  }
+  for (  EntityData.Prefab prefabData : pendingPrefabs.values()) {
+    loadPrefab(prefabData,pendingPrefabs);
+  }
+}
