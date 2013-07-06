@@ -21,6 +21,18 @@
     size+=dataSize;
     size+=1 * getComponentClassList().size();
   }
+{
+    int dataSize=0;
+    for (int i=0; i < entityNamed_.size(); i++) {
+      dataSize+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(entityNamed_.get(i));
+    }
+    size+=dataSize;
+    if (!getEntityNamedList().isEmpty()) {
+      size+=1;
+      size+=com.google.protobuf.CodedOutputStream.computeInt32SizeNoTag(dataSize);
+    }
+    entityNamedMemoizedSerializedSize=dataSize;
+  }
   size+=extensionsSerializedSize();
   size+=getUnknownFields().getSerializedSize();
   memoizedSerializedSize=size;

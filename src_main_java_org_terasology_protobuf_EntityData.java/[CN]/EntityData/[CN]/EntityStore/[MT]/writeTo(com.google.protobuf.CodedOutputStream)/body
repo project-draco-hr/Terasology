@@ -10,6 +10,13 @@
   for (int i=0; i < componentClass_.size(); i++) {
     output.writeBytes(3,componentClass_.getByteString(i));
   }
+  if (getEntityNamedList().size() > 0) {
+    output.writeRawVarint32(34);
+    output.writeRawVarint32(entityNamedMemoizedSerializedSize);
+  }
+  for (int i=0; i < entityNamed_.size(); i++) {
+    output.writeInt32NoTag(entityNamed_.get(i));
+  }
   extensionWriter.writeUntil(536870912,output);
   getUnknownFields().writeTo(output);
 }

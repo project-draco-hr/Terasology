@@ -7,7 +7,10 @@
     EntityData.Entity entityData=serializer.serialize(entity,true,FieldSerializeCheck.NullCheck.<Component>newInstance());
     EntityRefTypeHandler.setReferenceInterceptor(null);
     entityStoreBuilder.addEntity(entityData);
-    entityStoreBuilder.addEntityName(name);
+    if (!name.isEmpty()) {
+      entityStoreBuilder.addEntityName(name);
+      entityStoreBuilder.addEntityNamed(entityData.getId());
+    }
     storedEntityIds.add(entityData.getId());
     externalReferences.remove(entityData.getId());
     entityManager.deactivateForStorage(entity);

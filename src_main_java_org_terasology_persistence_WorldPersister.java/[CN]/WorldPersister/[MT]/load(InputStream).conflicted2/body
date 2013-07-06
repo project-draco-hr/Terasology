@@ -1,4 +1,6 @@
 {
   BufferedReader bufferedReader=new BufferedReader(new InputStreamReader(in));
-  return EntityDataJSONFormat.readWorld(bufferedReader);
+  EntityData.GlobalEntityStore.Builder builder=EntityData.GlobalEntityStore.newBuilder();
+  TextFormat.merge(bufferedReader,builder);
+  return builder.build();
 }

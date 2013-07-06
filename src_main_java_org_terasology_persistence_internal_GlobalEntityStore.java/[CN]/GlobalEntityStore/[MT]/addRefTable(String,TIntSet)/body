@@ -1,0 +1,14 @@
+{
+  EntityData.EntityStoreReferenceSet.Builder referenceSet=EntityData.EntityStoreReferenceSet.newBuilder();
+  TIntIterator iterator=references.iterator();
+  while (iterator.hasNext()) {
+    int ref=iterator.next();
+    if (!nonPersistentIds.contains(ref)) {
+      referenceSet.addReference(ref);
+    }
+  }
+  if (referenceSet.getReferenceCount() > 0) {
+    referenceSet.setStoreId(id);
+    store.addStoreReferenceSet(referenceSet);
+  }
+}

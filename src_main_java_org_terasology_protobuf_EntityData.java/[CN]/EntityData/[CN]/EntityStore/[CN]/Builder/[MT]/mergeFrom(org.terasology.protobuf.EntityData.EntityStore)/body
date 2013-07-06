@@ -27,10 +27,21 @@
       }
     }
   }
+  if (!other.componentClass_.isEmpty()) {
+    if (componentClass_.isEmpty()) {
+      componentClass_=other.componentClass_;
+      bitField0_=(bitField0_ & ~0x00000002);
+    }
+ else {
+      ensureComponentClassIsMutable();
+      componentClass_.addAll(other.componentClass_);
+    }
+    onChanged();
+  }
   if (!other.entityName_.isEmpty()) {
     if (entityName_.isEmpty()) {
       entityName_=other.entityName_;
-      bitField0_=(bitField0_ & ~0x00000002);
+      bitField0_=(bitField0_ & ~0x00000004);
     }
  else {
       ensureEntityNameIsMutable();
@@ -38,14 +49,14 @@
     }
     onChanged();
   }
-  if (!other.componentClass_.isEmpty()) {
-    if (componentClass_.isEmpty()) {
-      componentClass_=other.componentClass_;
-      bitField0_=(bitField0_ & ~0x00000004);
+  if (!other.entityNamed_.isEmpty()) {
+    if (entityNamed_.isEmpty()) {
+      entityNamed_=other.entityNamed_;
+      bitField0_=(bitField0_ & ~0x00000008);
     }
  else {
-      ensureComponentClassIsMutable();
-      componentClass_.addAll(other.componentClass_);
+      ensureEntityNamedIsMutable();
+      entityNamed_.addAll(other.entityNamed_);
     }
     onChanged();
   }

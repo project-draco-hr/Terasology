@@ -1,9 +1,8 @@
 {
   if (value.exists()) {
-    if (refInterceptor.get() != null) {
-      refInterceptor.get().savingRef(value.getId());
+    if (refInterceptor.get() == null || refInterceptor.get().savingRef(value)) {
+      return EntityData.Value.newBuilder().addInteger(value.getId()).build();
     }
-    return EntityData.Value.newBuilder().addInteger(value.getId()).build();
   }
   return null;
 }

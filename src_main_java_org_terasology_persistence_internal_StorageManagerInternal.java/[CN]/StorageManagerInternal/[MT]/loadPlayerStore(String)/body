@@ -1,0 +1,23 @@
+{
+  EntityData.PlayerEntityStore store=playerStores.get(playerId);
+  if (store == null) {
+    Path storePath=playersPath.resolve(playerId + PLAYER_STORE_EXTENSION);
+    if (Files.isRegularFile(storePath)) {
+      try (InputStream inputStream=new BufferedInputStream(Files.newInputStream(storePath))){
+        store=EntityData.PlayerEntityStore.parseFrom(inputStream);
+      }
+ catch (      IOException e) {
+        logger.error("Failed to load player data for {}",playerId,e);
+      }
+    }
+  }
+  if (store != null) {
+    TIntSet validRefs=null;
+    StoreRefTable table=playerStoreExternalRefs.get(playerId);
+    if (table != null) {
+      validRefs=table.externalReferences;
+    }
+    return new PlayerStoreInternal(playerId,store,validRefs,this,entityManager);
+  }
+  return null;
+}

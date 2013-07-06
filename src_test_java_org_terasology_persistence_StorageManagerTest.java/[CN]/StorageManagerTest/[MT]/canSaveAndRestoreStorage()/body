@@ -1,0 +1,11 @@
+{
+  EntityRef character=entityManager.create();
+  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
+  store.setCharacter(character);
+  store.save();
+  esm.flush();
+  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(modManager,networkSystem);
+  StorageManager newSM=new StorageManagerInternal(newEntityManager);
+  newSM.loadGlobalEntities();
+  assertNotNull(newSM.loadPlayerStore(PLAYER_ID));
+}

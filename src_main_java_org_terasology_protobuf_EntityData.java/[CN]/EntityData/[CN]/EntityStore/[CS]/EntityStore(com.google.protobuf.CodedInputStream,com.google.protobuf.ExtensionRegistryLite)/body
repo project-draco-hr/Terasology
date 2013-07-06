@@ -28,20 +28,43 @@ case 10:
   }
 case 18:
 {
-  if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+  if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
     entityName_=new com.google.protobuf.LazyStringArrayList();
-    mutable_bitField0_|=0x00000002;
+    mutable_bitField0_|=0x00000004;
   }
   entityName_.add(input.readBytes());
   break;
 }
 case 26:
 {
-if (!((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
   componentClass_=new com.google.protobuf.LazyStringArrayList();
-  mutable_bitField0_|=0x00000004;
+  mutable_bitField0_|=0x00000002;
 }
 componentClass_.add(input.readBytes());
+break;
+}
+case 32:
+{
+if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+entityNamed_=new java.util.ArrayList<java.lang.Integer>();
+mutable_bitField0_|=0x00000008;
+}
+entityNamed_.add(input.readInt32());
+break;
+}
+case 34:
+{
+int length=input.readRawVarint32();
+int limit=input.pushLimit(length);
+if (!((mutable_bitField0_ & 0x00000008) == 0x00000008) && input.getBytesUntilLimit() > 0) {
+entityNamed_=new java.util.ArrayList<java.lang.Integer>();
+mutable_bitField0_|=0x00000008;
+}
+while (input.getBytesUntilLimit() > 0) {
+entityNamed_.add(input.readInt32());
+}
+input.popLimit(limit);
 break;
 }
 }
@@ -57,11 +80,14 @@ throw new com.google.protobuf.InvalidProtocolBufferException(e.getMessage()).set
 if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
 entity_=java.util.Collections.unmodifiableList(entity_);
 }
-if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
+if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
 entityName_=new com.google.protobuf.UnmodifiableLazyStringList(entityName_);
 }
-if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
+if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
 componentClass_=new com.google.protobuf.UnmodifiableLazyStringList(componentClass_);
+}
+if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+entityNamed_=java.util.Collections.unmodifiableList(entityNamed_);
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();
