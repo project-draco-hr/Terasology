@@ -1,0 +1,11 @@
+{
+  Chunk chunk=new Chunk(CHUNK_POS);
+  ChunkStore chunkStore=esm.createChunkStoreForSave(chunk);
+  chunk.setBlock(0,0,0,testBlock);
+  chunkStore.save();
+  ChunkStore restored=esm.loadChunkStore(CHUNK_POS);
+  assertNotNull(restored);
+  assertEquals(CHUNK_POS,restored.getChunkPosition());
+  assertNotNull(restored.getChunk());
+  assertEquals(testBlock,restored.getChunk().getBlock(0,0,0));
+}

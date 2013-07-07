@@ -1,17 +1,7 @@
 {
   if (externalReference.size() > 0) {
     StoreRefTable refTable=new StoreRefTable(id,externalReference);
-    playerStoreExternalRefs.put(id,refTable);
-    TIntIterator iterator=externalReference.iterator();
-    while (iterator.hasNext()) {
-      int refId=iterator.next();
-      List<StoreRefTable> tables=externalRefHolderLookup.get(refId);
-      if (tables == null) {
-        tables=Lists.newArrayList();
-        externalRefHolderLookup.put(refId,tables);
-      }
-      tables.add(refTable);
-    }
+    indexStoreRefTable(refTable);
   }
   playerStores.put(id,playerStore);
 }

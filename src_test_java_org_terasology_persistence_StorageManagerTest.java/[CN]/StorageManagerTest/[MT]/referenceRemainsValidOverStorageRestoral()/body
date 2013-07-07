@@ -1,0 +1,14 @@
+{
+  EntityRef someEntity=entityManager.create();
+  EntityRef character=entityManager.create(new EntityRefComponent(someEntity));
+  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
+  store.setCharacter(character);
+  store.save();
+  esm.flush();
+  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(modManager,networkSystem);
+  StorageManager newSM=new StorageManagerInternal(newEntityManager);
+  newSM.loadGlobalEntities();
+  PlayerStore restored=newSM.loadPlayerStore(PLAYER_ID);
+  restored.restore();
+  assertTrue(restored.getCharacter().getComponent(EntityRefComponent.class).entityRef.exists());
+}

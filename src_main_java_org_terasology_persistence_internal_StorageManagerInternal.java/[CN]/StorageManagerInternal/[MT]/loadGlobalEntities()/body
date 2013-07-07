@@ -5,6 +5,10 @@
       EntityData.GlobalEntityStore store=EntityData.GlobalEntityStore.parseFrom(in);
       GlobalStoreLoader loader=new GlobalStoreLoader(entityManager);
       loader.load(store);
+      for (      StoreRefTable refTable : loader.getStoreRefTables()) {
+        playerStoreExternalRefs.put(refTable.getId(),refTable);
+        indexStoreRefTable(refTable);
+      }
     }
    }
 }

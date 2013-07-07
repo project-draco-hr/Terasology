@@ -12,7 +12,7 @@
     globalStore.store(entity);
   }
   for (  StoreRefTable table : playerStoreExternalRefs.values()) {
-    globalStore.addRefTable(table.id,table.externalReferences);
+    globalStore.addRefTable(table.getId(),table.getExternalReferences());
   }
   EntityData.GlobalEntityStore globalStoreData=globalStore.save();
   try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getCurrentSavePath().resolve(GLOBAL_ENTITY_STORE)))){
