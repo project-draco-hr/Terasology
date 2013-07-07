@@ -10,10 +10,7 @@
       }
     }
     logger.debug("Now complete {}",pos);
-    AdvancedConfig config=CoreRegistry.get(org.terasology.config.Config.class).getAdvanced();
-    if (config.isChunkDeflationEnabled()) {
-      chunk.deflate();
-    }
+    chunk.deflate();
     chunk.setChunkState(Chunk.State.COMPLETE);
     provider.onChunkIsReady(pos);
   }
