@@ -1,5 +1,11 @@
 {
-  this.validRefs=validRefs;
+  validRefs=new TIntHashSet();
+  if (externalRefs != null) {
+    validRefs.addAll(externalRefs);
+  }
+  for (  EntityData.Entity entity : store.getEntityList()) {
+    validRefs.add(entity.getId());
+  }
   EntitySerializer serializer=new EntitySerializer(entityManager);
   EntityRefTypeHandler.setReferenceInterceptor(this);
   Map<Class<? extends Component>,Integer> idMap=Maps.newHashMap();

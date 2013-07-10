@@ -1,21 +1,5 @@
 {
-  Files.createDirectories(playersPath);
-  for (  Map.Entry<String,EntityData.PlayerEntityStore> playerStoreEntry : playerStores.entrySet()) {
-    Path playerFile=playersPath.resolve(playerStoreEntry.getKey() + PLAYER_STORE_EXTENSION);
-    try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(playerFile))){
-      playerStoreEntry.getValue().writeTo(out);
-    }
-   }
-  playerStores.clear();
-  GlobalStoreSaver globalStore=new GlobalStoreSaver(entityManager);
-  for (  EntityRef entity : entityManager.getAllEntities()) {
-    globalStore.store(entity);
-  }
-  for (  StoreRefTable table : playerStoreExternalRefs.values()) {
-    globalStore.addRefTable(table.getId(),table.getExternalReferences());
-  }
-  EntityData.GlobalEntityStore globalStoreData=globalStore.save();
-  try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getCurrentSavePath().resolve(GLOBAL_ENTITY_STORE)))){
-    globalStoreData.writeTo(out);
-  }
- }
+  flushPlayerStores();
+  flushChunkStores();
+  flushGlobalStore();
+}

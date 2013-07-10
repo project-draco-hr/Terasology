@@ -1,0 +1,52 @@
+{
+  Prefab oldPrefab=entityManager.getPrefabManager().getPrefab(oldType.getPrefab());
+  Prefab newPrefab=entityManager.getPrefabManager().getPrefab(type.getPrefab());
+  for (  ComponentMetadata<?> metadata : entityManager.getComponentLibrary()) {
+    if (!COMMON_BLOCK_COMPONENTS.contains(metadata.getType()) && !metadata.isRetainUnalteredOnBlockChange() && (newPrefab == null || !newPrefab.hasComponent(metadata.getType()))&& !retainComponents.contains(metadata.getType())) {
+      blockEntity.removeComponent(metadata.getType());
+    }
+  }
+  HealthComponent health=blockEntity.getComponent(HealthComponent.class);
+  if (health == null && type.isDestructible()) {
+    blockEntity.addComponent(new HealthComponent(type.getHardness(),2.0f,1.0f));
+  }
+ else   if (health != null && !type.isDestructible()) {
+    blockEntity.removeComponent(HealthComponent.class);
+  }
+ else   if (health != null && type.isDestructible()) {
+    health.maxHealth=type.getHardness();
+    health.currentHealth=Math.min(health.currentHealth,health.maxHealth);
+    blockEntity.saveComponent(health);
+  }
+  if (Objects.equal(newPrefab,oldPrefab)) {
+    return;
+  }
+  if (newPrefab != null) {
+    for (    Component comp : newPrefab.iterateComponents()) {
+      ComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
+      if (!blockEntity.hasComponent(comp.getClass())) {
+        blockEntity.addComponent(metadata.clone(comp));
+      }
+ else       if (!metadata.isRetainUnalteredOnBlockChange() && !retainComponents.contains(metadata.getType())) {
+        updateComponent(blockEntity,metadata,comp);
+      }
+    }
+    EntityInfoComponent entityInfo=blockEntity.getComponent(EntityInfoComponent.class);
+    if (entityInfo == null) {
+      entityInfo=new EntityInfoComponent();
+      entityInfo.parentPrefab=newPrefab.getName();
+      blockEntity.addComponent(entityInfo);
+    }
+ else     if (!entityInfo.parentPrefab.equals(newPrefab.getName())) {
+      entityInfo.parentPrefab=newPrefab.getName();
+      blockEntity.saveComponent(entityInfo);
+    }
+  }
+ else   if (oldPrefab != null) {
+    EntityInfoComponent entityInfo=blockEntity.getComponent(EntityInfoComponent.class);
+    if (entityInfo != null) {
+      entityInfo.parentPrefab="";
+      blockEntity.saveComponent(entityInfo);
+    }
+  }
+}

@@ -1,14 +1,7 @@
 {
   if (entityStore != null) {
     EntityRestorer restorer=new EntityRestorer(entityManager);
-    TIntSet validRefs=new TIntHashSet();
-    if (externalRefs != null) {
-      validRefs.addAll(externalRefs);
-    }
-    for (    EntityData.Entity entity : entityStore.getEntityList()) {
-      validRefs.add(entity.getId());
-    }
-    Map<String,EntityRef> refMap=restorer.restore(entityStore,validRefs);
+    Map<String,EntityRef> refMap=restorer.restore(entityStore,externalRefs);
     EntityRef character=refMap.get(CHARACTER);
     if (character != null) {
       this.character=character;

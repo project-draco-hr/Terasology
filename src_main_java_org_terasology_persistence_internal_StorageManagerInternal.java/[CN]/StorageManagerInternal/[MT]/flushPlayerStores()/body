@@ -1,0 +1,10 @@
+{
+  Files.createDirectories(playersPath);
+  for (  Map.Entry<String,EntityData.PlayerStore> playerStoreEntry : playerStores.entrySet()) {
+    Path playerFile=playersPath.resolve(playerStoreEntry.getKey() + PLAYER_STORE_EXTENSION);
+    try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(playerFile))){
+      playerStoreEntry.getValue().writeTo(out);
+    }
+   }
+  playerStores.clear();
+}

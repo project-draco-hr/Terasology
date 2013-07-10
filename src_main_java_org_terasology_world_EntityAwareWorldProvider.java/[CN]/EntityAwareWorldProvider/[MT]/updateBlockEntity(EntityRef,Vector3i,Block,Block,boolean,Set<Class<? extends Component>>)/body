@@ -1,0 +1,16 @@
+{
+  if (type.isKeepActive()) {
+    temporaryBlockEntities.remove(blockEntity);
+  }
+ else   if (oldType.isKeepActive() && isTemporaryBlock(blockEntity,type)) {
+    temporaryBlockEntities.add(blockEntity);
+  }
+  if (forceEntityUpdate || !(Objects.equal(oldType.getBlockFamily(),type.getBlockFamily()) && Objects.equal(oldType.getPrefab(),type.getPrefab()))) {
+    updateBlockEntityComponents(blockEntity,oldType,type,retainComponents);
+  }
+  EntityRef regionEntity=blockRegionLookup.get(pos);
+  if (regionEntity != null) {
+    regionEntity.send(new OnChangedBlock(pos,type,oldType));
+  }
+  blockEntity.send(new OnChangedBlock(new Vector3i(pos),type,oldType));
+}

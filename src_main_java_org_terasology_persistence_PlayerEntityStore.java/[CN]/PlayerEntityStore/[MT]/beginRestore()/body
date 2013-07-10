@@ -1,7 +1,7 @@
 {
   if (Files.isRegularFile(playerDataFile)) {
     try (InputStream in=new BufferedInputStream(Files.newInputStream(playerDataFile))){
-      EntityData.PlayerEntityStore playerEntityStore=EntityData.PlayerEntityStore.parseFrom(in);
+      EntityData.PlayerStore playerEntityStore=EntityData.PlayerStore.parseFrom(in);
       loadedData=playerEntityStore.getStore();
       if (playerEntityStore.hasCharacterPosX() && playerEntityStore.hasCharacterPosY() && playerEntityStore.hasCharacterPosZ()) {
         relevanceLocation.set(playerEntityStore.getCharacterPosX(),playerEntityStore.getCharacterPosY(),playerEntityStore.getCharacterPosZ());

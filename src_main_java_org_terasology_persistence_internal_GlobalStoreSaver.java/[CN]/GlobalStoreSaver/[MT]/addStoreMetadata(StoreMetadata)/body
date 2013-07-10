@@ -1,0 +1,14 @@
+{
+  EntityData.EntityStoreMetadata.Builder referenceSet=EntityData.EntityStoreMetadata.newBuilder();
+  TIntIterator iterator=metadata.getExternalReferences().iterator();
+  while (iterator.hasNext()) {
+    int ref=iterator.next();
+    if (!nonPersistentIds.contains(ref)) {
+      referenceSet.addReference(ref);
+    }
+  }
+  if (referenceSet.getReferenceCount() > 0) {
+    metadata.getId().setUpIdentity(referenceSet);
+    store.addStoreReferenceSet(referenceSet);
+  }
+}
