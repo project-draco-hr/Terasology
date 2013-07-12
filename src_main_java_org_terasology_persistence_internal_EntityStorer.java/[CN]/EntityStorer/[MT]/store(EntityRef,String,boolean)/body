@@ -1,7 +1,7 @@
 {
   if (entity.isActive()) {
     for (    EntityRef ownedEntity : helper.listOwnedEntities(entity)) {
-      store(ownedEntity);
+      store(ownedEntity,deactivate);
     }
     EntityRefTypeHandler.setReferenceInterceptor(this);
     EntityData.Entity entityData=serializer.serialize(entity,true,FieldSerializeCheck.NullCheck.<Component>newInstance());
@@ -13,6 +13,8 @@
     }
     storedEntityIds.add(entityData.getId());
     externalReferences.remove(entityData.getId());
-    entityManager.deactivateForStorage(entity);
+    if (deactivate) {
+      entityManager.deactivateForStorage(entity);
+    }
   }
 }

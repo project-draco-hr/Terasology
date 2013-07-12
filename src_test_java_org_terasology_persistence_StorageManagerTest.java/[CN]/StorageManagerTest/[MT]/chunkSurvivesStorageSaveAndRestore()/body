@@ -3,9 +3,11 @@
   chunk.setBlock(0,0,0,testBlock);
   ChunkStore chunkStore=esm.createChunkStoreForSave(chunk);
   chunkStore.save();
+  esm.createGlobalStoreForSave().save();
   esm.flush();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(modManager,networkSystem);
   StorageManager newSM=new StorageManagerInternal(newEntityManager);
+  newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);
   assertNotNull(restored);
   assertEquals(CHUNK_POS,restored.getChunkPosition());

@@ -1,9 +1,13 @@
 {
-  int entityId=entityManager.create(new StringComponent("Test")).getId();
+  EntityRef entity=entityManager.create(new StringComponent("Test"));
+  int entityId=entity.getId();
+  GlobalStore globalStore=esm.createGlobalStoreForSave();
+  globalStore.store(entity);
+  globalStore.save();
   esm.flush();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(modManager,networkSystem);
   StorageManager newSM=new StorageManagerInternal(newEntityManager);
-  newSM.loadGlobalEntities();
+  newSM.loadGlobalStore();
   List<EntityRef> entities=Lists.newArrayList(newEntityManager.getEntitiesWith(StringComponent.class));
   assertEquals(1,entities.size());
   assertEquals(entityId,entities.get(0).getId());

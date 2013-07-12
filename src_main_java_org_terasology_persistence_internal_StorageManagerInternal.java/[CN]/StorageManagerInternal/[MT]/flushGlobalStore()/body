@@ -1,13 +1,13 @@
 {
-  GlobalStoreSaver globalStore=new GlobalStoreSaver(entityManager);
-  for (  EntityRef entity : entityManager.getAllEntities()) {
-    globalStore.store(entity);
+  if (globalStore == null) {
+    GlobalStore store=createGlobalStoreForSave();
+    for (    EntityRef entity : entityManager.getAllEntities()) {
+      store.store(entity);
+    }
+    store.save();
   }
-  for (  StoreMetadata table : storeMetadata.values()) {
-    globalStore.addStoreMetadata(table);
-  }
-  EntityData.GlobalStore globalStoreData=globalStore.save();
   try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getCurrentSavePath().resolve(GLOBAL_ENTITY_STORE)))){
-    globalStoreData.writeTo(out);
+    globalStore.writeTo(out);
   }
- }
+   globalStore=null;
+}
