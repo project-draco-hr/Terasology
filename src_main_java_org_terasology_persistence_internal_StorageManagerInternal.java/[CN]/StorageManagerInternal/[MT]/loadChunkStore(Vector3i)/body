@@ -1,19 +1,31 @@
 {
-  ChunkStore store=chunkStores.get(chunkPos);
+  ChunkStore store=pendingProcessingChunkStore.get(chunkPos);
   if (store == null) {
-    Path chunkPath=PathManager.getInstance().getCurrentSavePath().resolve(WORLDS_PATH).resolve(TerasologyConstants.MAIN_WORLD).resolve(getChunkFilename(chunkPos));
-    if (Files.isRegularFile(chunkPath)) {
-      try (InputStream in=new BufferedInputStream(Files.newInputStream(chunkPath))){
-        TIntSet validRefs=null;
-        StoreMetadata table=storeMetadata.get(new ChunkStoreId(chunkPos));
-        if (table != null) {
-          validRefs=table.getExternalReferences();
+    byte[] chunkData=compressedChunkStore.get(chunkPos);
+    if (chunkData == null) {
+      Path chunkPath=PathManager.getInstance().getCurrentSavePath().resolve(WORLDS_PATH).resolve(TerasologyConstants.MAIN_WORLD).resolve(getChunkFilename(chunkPos));
+      if (Files.isRegularFile(chunkPath)) {
+        try {
+          chunkData=Files.readAllBytes(chunkPath);
         }
-        EntityData.ChunkStore chunkData=EntityData.ChunkStore.parseFrom(in);
-        store=new ChunkStoreInternal(chunkData,validRefs,this,entityManager);
+ catch (        IOException e) {
+          logger.error("Failed to load chunk {}",chunkPos,e);
+        }
+      }
+    }
+    if (chunkData != null) {
+      TIntSet validRefs=null;
+      StoreMetadata table=storeMetadata.get(new ChunkStoreId(chunkPos));
+      if (table != null) {
+        validRefs=table.getExternalReferences();
+      }
+      ByteArrayInputStream bais=new ByteArrayInputStream(chunkData);
+      try (GZIPInputStream gzipIn=new GZIPInputStream(bais)){
+        EntityData.ChunkStore storeData=EntityData.ChunkStore.parseFrom(gzipIn);
+        store=new ChunkStoreInternal(storeData,validRefs,this,entityManager);
       }
  catch (      IOException e) {
-        logger.error("Failed to load chunk {}",chunkPos,e);
+        logger.error("Failed to read existing saved chunk {}",chunkPos);
       }
     }
   }
