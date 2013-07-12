@@ -1,10 +1,4 @@
 {
-  PlayerEntityStore entityStore=new PlayerEntityStore(client.getId(),entityManager);
-  try {
-    entityStore.beginRestore();
-  }
- catch (  IOException ioe) {
-    logger.error("Failed to read player store for: '{}'",client.getId(),ioe);
-  }
+  PlayerStore entityStore=storageManager.loadPlayerStore(client.getId());
   client.getEntity().send(new ConnectedEvent(entityStore));
 }

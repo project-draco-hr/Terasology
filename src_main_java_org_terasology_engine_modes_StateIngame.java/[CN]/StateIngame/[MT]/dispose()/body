@@ -5,13 +5,15 @@
   componentSystemManager.shutdown();
   guiManager.closeAllWindows();
   CoreRegistry.get(BulletPhysics.class).dispose();
-  if (saveWorld) {
+  StorageManager storageManager=CoreRegistry.get(StorageManager.class);
+  if (storageManager != null) {
     try {
-      CoreRegistry.get(WorldPersister.class).save(PathManager.getInstance().getCurrentSavePath().resolve(TerasologyConstants.ENTITY_DATA_FILE),WorldPersister.SaveFormat.Binary);
+      storageManager.flush();
     }
  catch (    IOException e) {
-      logger.error("Failed to save entities",e);
+      logger.error("Failed to save game",e);
     }
+    storageManager.shutdown();
   }
   entityManager.clear();
   if (worldRenderer != null) {

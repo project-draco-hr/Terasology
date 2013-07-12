@@ -3,15 +3,15 @@
   while (i.hasNext()) {
     SpawningClientInfo spawning=i.next();
     if (worldRenderer.getWorldProvider().isBlockRelevant(spawning.position)) {
-      if (spawning.entityStore == null) {
+      if (spawning.playerStore == null) {
         spawnPlayer(spawning.clientEntity,new Vector3i(Chunk.SIZE_X / 2,Chunk.SIZE_Y,Chunk.SIZE_Z / 2));
       }
- else       if (!spawning.entityStore.hasCharacter()) {
-        spawning.entityStore.restoreAll();
+ else       if (!spawning.playerStore.hasCharacter()) {
+        spawning.playerStore.restoreEntities();
         spawnPlayer(spawning.clientEntity,new Vector3i(Chunk.SIZE_X / 2,Chunk.SIZE_Y,Chunk.SIZE_Z / 2));
       }
  else {
-        restoreCharacter(spawning.clientEntity,spawning.entityStore);
+        restoreCharacter(spawning.clientEntity,spawning.playerStore);
       }
       i.remove();
     }

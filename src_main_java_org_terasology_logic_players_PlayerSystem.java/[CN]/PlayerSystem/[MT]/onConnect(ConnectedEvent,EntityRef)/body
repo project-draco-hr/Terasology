@@ -1,14 +1,14 @@
 {
   LocationComponent loc=entity.getComponent(LocationComponent.class);
-  loc.setWorldPosition(connected.getEntityStore().getRelevanceLocation());
+  loc.setWorldPosition(connected.getPlayerStore().getRelevanceLocation());
   entity.saveComponent(loc);
   worldRenderer.getChunkProvider().addRelevanceEntity(entity,4,networkSystem.getOwner(entity));
-  if (connected.getEntityStore().hasCharacter()) {
-    if (worldRenderer.getWorldProvider().isBlockRelevant(connected.getEntityStore().getRelevanceLocation())) {
-      restoreCharacter(entity,connected.getEntityStore());
+  if (connected.getPlayerStore().hasCharacter()) {
+    if (worldRenderer.getWorldProvider().isBlockRelevant(connected.getPlayerStore().getRelevanceLocation())) {
+      restoreCharacter(entity,connected.getPlayerStore());
     }
  else {
-      SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,connected.getEntityStore().getRelevanceLocation(),connected.getEntityStore());
+      SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,connected.getPlayerStore().getRelevanceLocation(),connected.getPlayerStore());
       clientsPreparingToSpawn.add(spawningClientInfo);
     }
   }

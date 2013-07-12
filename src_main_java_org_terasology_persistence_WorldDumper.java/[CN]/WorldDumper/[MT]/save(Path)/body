@@ -1,0 +1,10 @@
+{
+  final EntityData.GlobalStore world=persisterHelper.serializeWorld(true);
+  Path parentFile=file.getParent();
+  if (!Files.isDirectory(parentFile)) {
+    Files.createDirectories(parentFile);
+  }
+  try (BufferedWriter writer=Files.newBufferedWriter(file,TerasologyConstants.CHARSET)){
+    EntityDataJSONFormat.write(world,writer);
+  }
+ }

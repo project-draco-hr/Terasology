@@ -6,6 +6,7 @@
   this.entityManager.subscribe(this);
   this.blockManager=CoreRegistry.get(BlockManager.class);
   this.ownershipHelper=new OwnershipHelper(entityManager.getComponentLibrary());
+  this.storageManager=CoreRegistry.get(StorageManager.class);
   CoreRegistry.get(ComponentSystemManager.class).register(new NetworkEntitySystem(this),"engine:networkEntitySystem");
   TypeHandlerLibraryBuilder builder=new TypeHandlerLibraryBuilder();
   for (  Map.Entry<Class<?>,TypeHandler<?>> entry : library.getTypeHandlerLibrary()) {

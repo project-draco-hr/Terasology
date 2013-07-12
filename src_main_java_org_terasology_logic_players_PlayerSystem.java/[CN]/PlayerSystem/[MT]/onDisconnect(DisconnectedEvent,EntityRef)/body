@@ -1,8 +1,6 @@
 {
   EntityRef character=entity.getComponent(ClientComponent.class).character;
   if (character.exists()) {
-    event.getEntityStore().setHasCharacter(true);
-    event.getEntityStore().setRelevanceLocation(character.getComponent(LocationComponent.class).getWorldPosition());
-    event.getEntityStore().store(character,"character");
+    event.getPlayerStore().setCharacter(character);
   }
 }

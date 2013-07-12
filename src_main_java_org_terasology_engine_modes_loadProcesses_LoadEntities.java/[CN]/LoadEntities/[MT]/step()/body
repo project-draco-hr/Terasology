@@ -1,13 +1,10 @@
 {
-  CoreRegistry.put(WorldPersister.class,new WorldPersister((EngineEntityManager)CoreRegistry.get(EntityManager.class)));
-  Path entityDataFile=PathManager.getInstance().getCurrentSavePath().resolve(TerasologyConstants.ENTITY_DATA_FILE);
-  if (Files.isRegularFile(entityDataFile)) {
-    try {
-      CoreRegistry.get(WorldPersister.class).load(entityDataFile,WorldPersister.SaveFormat.Binary);
-    }
- catch (    IOException e) {
-      logger.error("Failed to load entity data",e);
-    }
+  StorageManager storageManager=CoreRegistry.get(StorageManager.class);
+  try {
+    storageManager.loadGlobalStore();
+  }
+ catch (  IOException e) {
+    logger.error("Failed to load global data.",e);
   }
   return true;
 }
