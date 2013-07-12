@@ -1,7 +1,7 @@
 {
   storageTaskMaster.shutdown(new ShutdownTask(),true);
   try {
-    Path chunksPath=PathManager.getInstance().getCurrentSavePath().resolve(WORLDS_PATH).resolve(TerasologyConstants.MAIN_WORLD);
+    Path chunksPath=getWorldPath();
     Files.createDirectories(chunksPath);
     for (    Map.Entry<Vector3i,byte[]> chunkStoreEntry : compressedChunkStore.entrySet()) {
       Path chunkPath=chunksPath.resolve(getChunkFilename(chunkStoreEntry.getKey()));

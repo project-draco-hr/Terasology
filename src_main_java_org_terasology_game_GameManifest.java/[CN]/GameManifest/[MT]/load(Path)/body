@@ -1,5 +1,6 @@
 {
-  try (BufferedReader reader=Files.newBufferedReader(filePath,TerasologyConstants.CHARSET)){
+  byte[] bytes=Files.readAllBytes(filePath);
+  try (BufferedReader reader=new BufferedReader(new InputStreamReader(new ByteArrayInputStream(bytes)))){
     GameManifest result=new GsonBuilder().create().fromJson(reader,GameManifest.class);
     if (result.modConfiguration.size() == 0) {
       for (      Mod mod : CoreRegistry.get(ModManager.class).getMods()) {

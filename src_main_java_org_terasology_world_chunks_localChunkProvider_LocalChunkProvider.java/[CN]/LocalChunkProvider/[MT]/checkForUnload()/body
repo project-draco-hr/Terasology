@@ -26,7 +26,8 @@
             }
           }
           chunk.dispose();
-          farStore.put(chunk);
+          ChunkStore store=storageManager.createChunkStoreForSave(chunk);
+          store.save();
           try {
             unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));
           }

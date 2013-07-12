@@ -9,20 +9,7 @@
   ChunkGeneratorManager chunkGeneratorManager=ChunkGeneratorManagerImpl.buildChunkGenerator(Arrays.asList(worldInfo.getChunkGenerators()));
   chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
   chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
-  ChunkStore chunkStore=null;
-  Path f=PathManager.getInstance().getCurrentSavePath().resolve(TerasologyConstants.WORLD_DATA_FILE);
-  if (Files.isRegularFile(f)) {
-    try {
-      chunkStore=loadChunkStore(f);
-    }
- catch (    IOException e) {
-      logger.error("Failed to load chunk store",e);
-    }
-  }
-  if (chunkStore == null) {
-    chunkStore=new ChunkStoreGZip();
-  }
-  LocalChunkProvider chunkProvider=new LocalChunkProvider(chunkStore,chunkGeneratorManager);
+  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,chunkGeneratorManager);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);

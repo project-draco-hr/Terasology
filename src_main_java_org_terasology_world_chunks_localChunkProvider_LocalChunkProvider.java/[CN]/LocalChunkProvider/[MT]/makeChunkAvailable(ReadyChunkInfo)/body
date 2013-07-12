@@ -15,6 +15,9 @@
       generateBlockEntities(chunk);
       PerformanceMonitor.endActivity();
     }
+    if (readyChunkInfo.getChunkStore() != null) {
+      readyChunkInfo.getChunkStore().restoreEntities();
+    }
     if (!loaded) {
       PerformanceMonitor.startActivity("Sending OnAddedBlocks");
       readyChunkInfo.getBlockPositionMapppings().forEachEntry(new TByteObjectProcedure<TIntList>(){

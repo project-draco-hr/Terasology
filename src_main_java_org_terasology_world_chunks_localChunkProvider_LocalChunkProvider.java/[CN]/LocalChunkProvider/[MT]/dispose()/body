@@ -2,16 +2,9 @@
   pipeline.shutdown();
   unloadRequestTaskMaster.shutdown(new ChunkUnloadRequest(),true);
   for (  Chunk chunk : nearCache.values()) {
-    farStore.put(chunk);
     chunk.dispose();
+    ChunkStore store=storageManager.createChunkStoreForSave(chunk);
+    store.save();
   }
   nearCache.clear();
-  farStore.dispose();
-  Path chunkFile=PathManager.getInstance().getCurrentSavePath().resolve(TerasologyConstants.WORLD_DATA_FILE);
-  try (BufferedOutputStream bos=new BufferedOutputStream(Files.newOutputStream(chunkFile));ObjectOutputStream out=new ObjectOutputStream(bos)){
-    out.writeObject(farStore);
-  }
- catch (  IOException e) {
-    logger.error("Error saving chunks",e);
-  }
 }
