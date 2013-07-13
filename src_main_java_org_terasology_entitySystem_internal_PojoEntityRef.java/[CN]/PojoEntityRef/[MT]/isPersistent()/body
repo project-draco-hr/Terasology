@@ -1,11 +1,3 @@
 {
-  if (exists()) {
-    EntityInfoComponent info=getComponent(EntityInfoComponent.class);
-    if (info == null) {
-      info=new EntityInfoComponent();
-      addComponent(info);
-    }
-    return info.persisted;
-  }
-  return false;
+  return exists() && (!isActive() || getEntityInfo().persisted);
 }

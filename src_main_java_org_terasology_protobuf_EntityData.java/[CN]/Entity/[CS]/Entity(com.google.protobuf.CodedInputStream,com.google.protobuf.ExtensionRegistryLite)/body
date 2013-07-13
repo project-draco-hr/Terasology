@@ -61,11 +61,23 @@ bitField0_|=0x00000002;
 parentPrefab_=input.readBytes();
 break;
 }
+case 40:
+{
+bitField0_|=0x00000004;
+alwaysRelevant_=input.readBool();
+break;
+}
+case 48:
+{
+bitField0_|=0x00000008;
+owner_=input.readInt32();
+break;
+}
 case 122:
 {
-if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
 removedComponent_=new com.google.protobuf.LazyStringArrayList();
-mutable_bitField0_|=0x00000010;
+mutable_bitField0_|=0x00000040;
 }
 removedComponent_.add(input.readBytes());
 break;
@@ -86,7 +98,7 @@ component_=java.util.Collections.unmodifiableList(component_);
 if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
 removedComponentIndex_=java.util.Collections.unmodifiableList(removedComponentIndex_);
 }
-if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
 removedComponent_=new com.google.protobuf.UnmodifiableLazyStringList(removedComponent_);
 }
 this.unknownFields=unknownFields.build();

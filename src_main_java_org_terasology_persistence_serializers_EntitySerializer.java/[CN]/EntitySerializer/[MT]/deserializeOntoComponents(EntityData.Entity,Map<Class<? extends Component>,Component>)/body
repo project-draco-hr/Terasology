@@ -1,4 +1,15 @@
 {
+  EntityInfoComponent entityInfo=(EntityInfoComponent)componentMap.get(EntityInfoComponent.class);
+  if (entityInfo == null) {
+    entityInfo=new EntityInfoComponent();
+    componentMap.put(EntityInfoComponent.class,entityInfo);
+  }
+  if (entityData.hasOwner()) {
+    entityInfo.owner=entityManager.getEntity(entityData.getOwner());
+  }
+  if (entityData.hasAlwaysRelevant()) {
+    entityInfo.alwaysRelevant=entityData.getAlwaysRelevant();
+  }
   for (  EntityData.Component componentData : entityData.getComponentList()) {
     ComponentMetadata<? extends Component> metadata=componentSerializer.getComponentMetadata(componentData);
     if (metadata == null || !componentSerializeCheck.serialize(metadata)) {

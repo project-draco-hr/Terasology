@@ -1,7 +1,7 @@
 {
   JsonObject nameValueObject=json.getAsJsonObject();
   for (  Map.Entry<String,JsonElement> nameValue : nameValueObject.entrySet()) {
-    EntityData.Value innerValue=(EntityData.Value)context.deserialize(nameValue.getValue(),EntityData.Value.class);
+    EntityData.Value innerValue=context.deserialize(nameValue.getValue(),EntityData.Value.class);
     value.addNameValue(EntityData.NameValue.newBuilder().setName(nameValue.getKey()).setValue(innerValue));
   }
 }

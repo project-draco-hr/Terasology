@@ -1,10 +1,9 @@
 {
   if (mode.isAuthority() && metadata.isReferenceOwner()) {
     for (    EntityRef ownedEntity : ownershipHelper.listOwnedEntities(entity.getComponent(component))) {
-      NetworkComponent ownedNetworkComp=ownedEntity.getComponent(NetworkComponent.class);
-      if (ownedNetworkComp != null && !ownedNetworkComp.owner.equals(entity)) {
-        ownedNetworkComp.owner=entity;
-        ownedEntity.saveComponent(ownedNetworkComp);
+      EntityRef previousOwner=ownedEntity.getOwner();
+      if (!previousOwner.equals(entity)) {
+        ownedEntity.setOwner(entity);
       }
     }
   }

@@ -1,12 +1,7 @@
 {
   if (exists()) {
-    EntityInfoComponent info=getComponent(EntityInfoComponent.class);
-    if (info == null) {
-      info=new EntityInfoComponent();
-      info.persisted=persistent;
-      addComponent(info);
-    }
- else     if (info.persisted != persistent) {
+    EntityInfoComponent info=getEntityInfo();
+    if (info.persisted != persistent) {
       info.persisted=persistent;
       saveComponent(info);
     }

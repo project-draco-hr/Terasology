@@ -4,7 +4,7 @@
   for (  Map.Entry<String,JsonElement> entry : jsonObject.entrySet()) {
     EntityData.NameValue.Builder nameValue=EntityData.NameValue.newBuilder();
     nameValue.setName(entry.getKey());
-    EntityData.Value value=(EntityData.Value)context.deserialize(entry.getValue(),EntityData.Value.class);
+    EntityData.Value value=context.deserialize(entry.getValue(),EntityData.Value.class);
     nameValue.setValue(value);
     component.addField(nameValue);
   }

@@ -46,10 +46,16 @@
     parentPrefab_=other.parentPrefab_;
     onChanged();
   }
+  if (other.hasAlwaysRelevant()) {
+    setAlwaysRelevant(other.getAlwaysRelevant());
+  }
+  if (other.hasOwner()) {
+    setOwner(other.getOwner());
+  }
   if (!other.removedComponent_.isEmpty()) {
     if (removedComponent_.isEmpty()) {
       removedComponent_=other.removedComponent_;
-      bitField0_=(bitField0_ & ~0x00000010);
+      bitField0_=(bitField0_ & ~0x00000040);
     }
  else {
       ensureRemovedComponentIsMutable();

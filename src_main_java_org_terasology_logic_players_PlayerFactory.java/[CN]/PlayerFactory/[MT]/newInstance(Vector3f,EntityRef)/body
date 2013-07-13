@@ -1,7 +1,7 @@
 {
   EntityBuilder builder=entityManager.newBuilder("engine:player");
   builder.getComponent(LocationComponent.class).setWorldPosition(spawnPosition);
-  builder.getComponent(NetworkComponent.class).owner=controller;
+  builder.setOwner(controller);
   EntityRef transferSlot=entityManager.create("engine:transferSlot");
   CharacterComponent playerComponent=builder.getComponent(CharacterComponent.class);
   playerComponent.spawnPosition.set(spawnPosition);

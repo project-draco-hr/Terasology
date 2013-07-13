@@ -2,10 +2,7 @@
   if (this == o)   return true;
   if (o instanceof EntityRef) {
     EntityRef other=(EntityRef)o;
-    if (!exists() && !(other.exists())) {
-      return true;
-    }
-    return getId() == other.getId();
+    return !exists() && !(other.exists()) || getId() == other.getId();
   }
   return false;
 }

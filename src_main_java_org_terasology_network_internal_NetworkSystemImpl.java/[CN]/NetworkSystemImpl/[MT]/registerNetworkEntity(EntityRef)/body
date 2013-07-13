@@ -25,9 +25,10 @@ for (NetClient client : netClientList) {
 }
 break;
 }
-if (netComponent.owner.exists()) {
-ownerLookup.put(entity,netComponent.owner);
-ownedLookup.put(netComponent.owner,entity);
+EntityRef owner=entity.getOwner();
+if (owner.exists()) {
+ownerLookup.put(entity,owner);
+ownedLookup.put(owner,entity);
 }
 }
 }

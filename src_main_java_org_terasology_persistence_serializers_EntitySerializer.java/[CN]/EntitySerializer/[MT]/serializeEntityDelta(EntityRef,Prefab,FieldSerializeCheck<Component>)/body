@@ -4,6 +4,13 @@
     entity.setId(entityRef.getId());
   }
   entity.setParentPrefab(prefab.getName());
+  if (entityRef.isAlwaysRelevant() != prefab.isAlwaysRelevant()) {
+    entity.setAlwaysRelevant(entityRef.isAlwaysRelevant());
+  }
+  EntityRef owner=entityRef.getOwner();
+  if (owner.exists()) {
+    entity.setOwner(owner.getId());
+  }
   Set<Class<? extends Component>> presentClasses=Sets.newHashSet();
   for (  Component component : entityRef.iterateComponents()) {
     if (!componentSerializeCheck.serialize(componentLibrary.getMetadata(component.getClass()))) {

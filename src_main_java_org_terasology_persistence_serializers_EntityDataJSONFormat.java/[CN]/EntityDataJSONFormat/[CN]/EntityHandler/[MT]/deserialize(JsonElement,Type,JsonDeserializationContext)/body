@@ -3,28 +3,37 @@
   JsonObject jsonObject=json.getAsJsonObject();
   for (  Map.Entry<String,JsonElement> entry : jsonObject.entrySet()) {
     String name=entry.getKey().toLowerCase(Locale.ENGLISH);
-    if (name.equals("parentprefab")) {
+switch (name) {
+case "parentprefab":
       if (entry.getValue().isJsonPrimitive()) {
         entity.setParentPrefab(entry.getValue().getAsString());
       }
-    }
- else     if (name.equals("id")) {
-      if (entry.getValue().isJsonPrimitive()) {
-        entity.setId(entry.getValue().getAsInt());
-      }
-    }
- else     if (name.equals("removedcomponent")) {
-      if (entry.getValue().isJsonArray()) {
-        for (        JsonElement element : entry.getValue().getAsJsonArray()) {
-          entity.addRemovedComponent(element.getAsString());
-        }
-      }
-    }
- else {
-      EntityData.Component.Builder component=context.deserialize(entry.getValue(),EntityData.Component.Builder.class);
-      component.setType(entry.getKey());
-      entity.addComponent(component);
-    }
+    break;
+case "id":
+  if (entry.getValue().isJsonPrimitive()) {
+    entity.setId(entry.getValue().getAsInt());
   }
-  return entity.build();
+break;
+case "removedcomponent":
+if (entry.getValue().isJsonArray()) {
+for (JsonElement element : entry.getValue().getAsJsonArray()) {
+  entity.addRemovedComponent(element.getAsString());
+}
+}
+break;
+case "owner":
+if (entry.getValue().isJsonPrimitive()) {
+entity.setOwner(entry.getValue().getAsInt());
+}
+break;
+case "alwaysrelevant":
+entity.setAlwaysRelevant(entry.getValue().getAsBoolean());
+break;
+default :
+EntityData.Component.Builder component=context.deserialize(entry.getValue(),EntityData.Component.Builder.class);
+component.setType(entry.getKey());
+entity.addComponent(component);
+}
+}
+return entity.build();
 }

@@ -6,6 +6,12 @@
   if (src.hasParentPrefab() && !src.getParentPrefab().isEmpty()) {
     result.addProperty("parentPrefab",src.getParentPrefab());
   }
+  if (src.hasAlwaysRelevant()) {
+    result.addProperty("alwaysRelevant",src.getAlwaysRelevant());
+  }
+  if (src.hasOwner()) {
+    result.addProperty("owner",src.getOwner());
+  }
   for (  EntityData.Component component : src.getComponentList()) {
     result.add(component.getType(),context.serialize(component));
   }

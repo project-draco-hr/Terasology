@@ -18,9 +18,7 @@
     if (characterComp != null) {
       characterComp.controller=entity;
       character.saveComponent(characterComp);
-      NetworkComponent netComp=character.getComponent(NetworkComponent.class);
-      netComp.owner=entity;
-      character.saveComponent(netComp);
+      character.setOwner(entity);
       Location.attachChild(character,entity,new Vector3f(),new Quat4f(0,0,0,1));
     }
  else {
