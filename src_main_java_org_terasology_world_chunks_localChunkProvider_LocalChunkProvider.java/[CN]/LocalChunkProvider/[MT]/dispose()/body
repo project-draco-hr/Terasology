@@ -4,6 +4,7 @@
   for (  Chunk chunk : nearCache.values()) {
     chunk.dispose();
     ChunkStore store=storageManager.createChunkStoreForSave(chunk);
+    store.storeAllEntities();
     store.save();
   }
   nearCache.clear();

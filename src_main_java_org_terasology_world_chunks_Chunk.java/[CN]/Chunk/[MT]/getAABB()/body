@@ -1,8 +1,9 @@
 {
   if (aabb == null) {
-    Vector3f dimensions=new Vector3f(0.5f * getChunkSizeX(),0.5f * getChunkSizeY(),0.5f * getChunkSizeZ());
-    Vector3f position=new Vector3f(getChunkWorldPosX() + dimensions.x - 0.5f,dimensions.y - 0.5f,getChunkWorldPosZ() + dimensions.z - 0.5f);
-    aabb=AABB.createCenterExtent(position,dimensions);
+    Vector3f min=getChunkWorldPos().toVector3f();
+    Vector3f max=CHUNK_SIZE.toVector3f();
+    max.add(min);
+    aabb=AABB.createMinMax(min,max);
   }
   return aabb;
 }

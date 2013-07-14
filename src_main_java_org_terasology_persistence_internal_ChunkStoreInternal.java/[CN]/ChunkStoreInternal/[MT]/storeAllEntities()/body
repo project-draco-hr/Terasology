@@ -1,4 +1,18 @@
 {
+  AABB aabb=chunk.getAABB();
   for (  EntityRef entity : entityManager.getEntitiesWith(LocationComponent.class)) {
+    if (!entity.getOwner().exists() && !entity.isAlwaysRelevant()) {
+      LocationComponent loc=entity.getComponent(LocationComponent.class);
+      if (loc != null) {
+        if (aabb.contains(loc.getWorldPosition())) {
+          if (entity.isPersistent()) {
+            store(entity);
+          }
+ else {
+            entity.destroy();
+          }
+        }
+      }
+    }
   }
 }

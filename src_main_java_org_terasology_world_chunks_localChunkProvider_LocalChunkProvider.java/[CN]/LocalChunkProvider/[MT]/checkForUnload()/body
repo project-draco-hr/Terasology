@@ -1,6 +1,7 @@
 {
   PerformanceMonitor.startActivity("Review cache size");
-  if (nearCache.size() > CACHE_SIZE) {
+  if (nearCache.size() > CACHE_SIZE || forceCleanup) {
+    forceCleanup=false;
     logger.debug("Compacting cache");
     Iterator<Vector3i> iterator=nearCache.keySet().iterator();
     while (iterator.hasNext()) {
@@ -19,15 +20,19 @@
         }
         chunk.lock();
         try {
+          if (chunk.getChunkState() == Chunk.State.COMPLETE && !chunk.isReady()) {
+            continue;
+          }
           if (chunk.getChunkState() == Chunk.State.COMPLETE) {
             worldEntity.send(new BeforeChunkUnload(pos));
             for (            ChunkRelevanceRegion region : regions.values()) {
               region.chunkUnloaded(pos);
             }
           }
-          chunk.dispose();
           ChunkStore store=storageManager.createChunkStoreForSave(chunk);
+          store.storeAllEntities();
           store.save();
+          chunk.dispose();
           try {
             unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));
           }

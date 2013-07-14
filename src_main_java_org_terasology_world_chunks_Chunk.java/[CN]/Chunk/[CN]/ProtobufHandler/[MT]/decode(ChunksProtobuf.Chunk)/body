@@ -1,15 +1,15 @@
 {
   Preconditions.checkNotNull(message,"The parameter 'message' must not be null");
   if (!message.hasX() || !message.hasY() || !message.hasZ()) {
-    throw new IllegalArgumentException("Illformed protobuf message. Missing chunk position.");
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing chunk position.");
   }
   Vector3i pos=new Vector3i(message.getX(),message.getY(),message.getZ());
   if (!message.hasState()) {
-    throw new IllegalArgumentException("Illformed protobuf message. Missing chunk state.");
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing chunk state.");
   }
   State state=State.lookup(message.getState());
   if (!message.hasBlockData()) {
-    throw new IllegalArgumentException("Illformed protobuf message. Missing block data.");
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing block data.");
   }
   final TeraArrays t=TeraArrays.getInstance();
   final TeraArray blockData=t.decode(message.getBlockData());
@@ -41,5 +41,5 @@
  else {
     extraData=c.getExtraDataEntry().factory.create(SIZE_X,SIZE_Y,SIZE_Z);
   }
-  return new Chunk(pos,state,blockData,sunlightData,lightData,extraData);
+  return new Chunk(pos,state,blockData,sunlightData,lightData,extraData,state == State.COMPLETE);
 }

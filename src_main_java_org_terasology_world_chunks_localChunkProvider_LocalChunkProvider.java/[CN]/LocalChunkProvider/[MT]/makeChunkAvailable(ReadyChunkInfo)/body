@@ -5,9 +5,7 @@
   }
   chunk.lock();
   try {
-    if (chunk.isDisposed()) {
-      return;
-    }
+    chunk.markReady();
     boolean loaded=chunk.isInitialGenerationComplete();
     if (!loaded) {
       chunk.setInitialGenerationComplete();
