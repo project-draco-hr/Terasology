@@ -6,7 +6,7 @@
   globalStore.save();
   esm.flush();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(modManager,networkSystem);
-  StorageManager newSM=new StorageManagerInternal(newEntityManager);
+  StorageManager newSM=new StorageManagerInternal(newEntityManager,false);
   newSM.loadGlobalStore();
   List<EntityRef> entities=Lists.newArrayList(newEntityManager.getEntitiesWith(StringComponent.class));
   assertEquals(1,entities.size());

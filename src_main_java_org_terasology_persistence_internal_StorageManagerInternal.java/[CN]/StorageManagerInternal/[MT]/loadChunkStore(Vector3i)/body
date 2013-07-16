@@ -3,13 +3,18 @@
   if (store == null) {
     byte[] chunkData=compressedChunkStore.get(chunkPos);
     if (chunkData == null) {
-      Path chunkPath=PathManager.getInstance().getCurrentSavePath().resolve(WORLDS_PATH).resolve(TerasologyConstants.MAIN_WORLD).resolve(getChunkFilename(chunkPos));
-      if (Files.isRegularFile(chunkPath)) {
-        try {
-          chunkData=Files.readAllBytes(chunkPath);
-        }
- catch (        IOException e) {
-          logger.error("Failed to load chunk {}",chunkPos,e);
+      if (storeChunksInZips) {
+        chunkData=loadChunkZip(chunkPos);
+      }
+ else {
+        Path chunkPath=PathManager.getInstance().getCurrentSavePath().resolve(WORLDS_PATH).resolve(TerasologyConstants.MAIN_WORLD).resolve(getChunkFilename(chunkPos));
+        if (Files.isRegularFile(chunkPath)) {
+          try {
+            chunkData=Files.readAllBytes(chunkPath);
+          }
+ catch (          IOException e) {
+            logger.error("Failed to load chunk {}",chunkPos,e);
+          }
         }
       }
     }

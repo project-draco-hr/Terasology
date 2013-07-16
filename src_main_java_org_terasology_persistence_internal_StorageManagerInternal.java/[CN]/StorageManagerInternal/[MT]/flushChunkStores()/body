@@ -3,12 +3,50 @@
   try {
     Path chunksPath=getWorldPath();
     Files.createDirectories(chunksPath);
-    for (    Map.Entry<Vector3i,byte[]> chunkStoreEntry : compressedChunkStore.entrySet()) {
-      Path chunkPath=chunksPath.resolve(getChunkFilename(chunkStoreEntry.getKey()));
-      try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
-        out.write(chunkStoreEntry.getValue());
+    if (storeChunksInZips) {
+      Map<Vector3i,FileSystem> newChunkZips=Maps.newHashMap();
+      for (      Map.Entry<Vector3i,byte[]> chunkStoreEntry : compressedChunkStore.entrySet()) {
+        Vector3i chunkZipPos=getChunkZipPosition(chunkStoreEntry.getKey());
+        FileSystem zip=newChunkZips.get(chunkZipPos);
+        if (zip == null) {
+          zip=FileSystems.newFileSystem(URI.create("jar:file:" + chunksPath.resolve(getChunkZipTempFilename(chunkZipPos)).toUri().getPath()),CREATE_ZIP_OPTIONS,null);
+          newChunkZips.put(chunkZipPos,zip);
+        }
+        Path chunkPath=zip.getPath(getChunkFilename(chunkStoreEntry.getKey()));
+        try (BufferedOutputStream bos=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
+          bos.write(chunkStoreEntry.getValue());
+        }
+       }
+      for (      Map.Entry<Vector3i,FileSystem> chunkZipEntry : newChunkZips.entrySet()) {
+        Path oldChunkZipPath=chunksPath.resolve(getChunkZipFilename(chunkZipEntry.getKey()));
+        final FileSystem zip=chunkZipEntry.getValue();
+        if (Files.isRegularFile(oldChunkZipPath)) {
+          try (FileSystem oldZip=FileSystems.newFileSystem(oldChunkZipPath,null)){
+            for (            Path root : oldZip.getRootDirectories()) {
+              Files.walkFileTree(root,new SimpleFileVisitor<Path>(){
+                @Override public FileVisitResult visitFile(                Path file,                BasicFileAttributes attrs) throws IOException {
+                  if (!Files.isRegularFile(zip.getPath(file.toString()))) {
+                    Files.copy(file,zip.getPath(file.toString()));
+                  }
+                  return FileVisitResult.CONTINUE;
+                }
+              }
+);
+            }
+          }
+         }
+        zip.close();
+        Files.move(chunksPath.resolve(getChunkZipTempFilename(chunkZipEntry.getKey())),chunksPath.resolve(getChunkZipFilename(chunkZipEntry.getKey())),StandardCopyOption.REPLACE_EXISTING);
       }
-     }
+    }
+ else {
+      for (      Map.Entry<Vector3i,byte[]> chunkStoreEntry : compressedChunkStore.entrySet()) {
+        Path chunkPath=chunksPath.resolve(getChunkFilename(chunkStoreEntry.getKey()));
+        try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
+          out.write(chunkStoreEntry.getValue());
+        }
+       }
+    }
   }
   finally {
     storageTaskMaster.restart();

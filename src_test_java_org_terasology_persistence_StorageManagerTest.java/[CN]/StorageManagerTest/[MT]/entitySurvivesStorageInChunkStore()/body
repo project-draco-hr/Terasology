@@ -8,7 +8,7 @@
   chunkStore.save();
   esm.flush();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(modManager,networkSystem);
-  StorageManager newSM=new StorageManagerInternal(newEntityManager);
+  StorageManager newSM=new StorageManagerInternal(newEntityManager,false);
   newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);
   restored.restoreEntities();

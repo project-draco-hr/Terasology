@@ -1,0 +1,17 @@
+{
+  byte[] chunkData=null;
+  Path chunkPath=getWorldPath().resolve(getChunkZipFilename(getChunkZipPosition(chunkPos)));
+  if (Files.isRegularFile(chunkPath)) {
+    try {
+      FileSystem chunkZip=FileSystems.newFileSystem(chunkPath,null);
+      Path targetChunk=chunkZip.getPath(getChunkFilename(chunkPos));
+      if (Files.isRegularFile(targetChunk)) {
+        chunkData=Files.readAllBytes(targetChunk);
+      }
+    }
+ catch (    IOException e) {
+      logger.error("Failed to load chunk zip {}",chunkPath,e);
+    }
+  }
+  return chunkData;
+}
