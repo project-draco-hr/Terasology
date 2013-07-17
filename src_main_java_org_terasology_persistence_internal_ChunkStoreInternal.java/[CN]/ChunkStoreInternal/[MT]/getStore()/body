@@ -1,20 +1,11 @@
 {
-  EntityData.ChunkStore.Builder builder=EntityData.ChunkStore.newBuilder();
-  builder.setX(chunkPosition.x);
-  builder.setY(chunkPosition.y);
-  builder.setZ(chunkPosition.z);
   chunk.lock();
   try {
-    ChunksProtobuf.Chunk encoded=new Chunk.ProtobufHandler().encode(chunk,false);
-    builder.setBlockData(encoded.getBlockData());
-    builder.setSunlightData(encoded.getSunlightData());
-    builder.setLightData(encoded.getLightData());
-    builder.setLiquidData(encoded.getExtraData());
-    builder.setState(chunk.getChunkState().getProtobufState());
-    builder.setStore(entityStore);
+    EntityData.ChunkStore.Builder encoded=new Chunk.ProtobufHandler().encode(chunk,false);
+    encoded.setStore(entityStore);
+    return encoded.build();
   }
   finally {
     chunk.unlock();
   }
-  return builder.build();
 }
