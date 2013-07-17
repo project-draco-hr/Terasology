@@ -76,10 +76,25 @@ catch (            JsonIOException e) {
       urls.add(mod.getModClasspathUrl());
     }
   }
+  if (allModClassLoader != null) {
+    try {
+      allModClassLoader.close();
+    }
+ catch (    IOException e) {
+      logger.error("Failed to cloase allModClassLoader",e);
+    }
+  }
   allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
   for (  Mod mod : getMods()) {
     mod.setInactiveClassLoader(allModClassLoader);
   }
-  activeModClassLoader=null;
+  if (activeModClassLoader != null) {
+    try {
+      activeModClassLoader.close();
+    }
+ catch (    IOException e) {
+      logger.error("Failed to close activeModClassLoader",e);
+    }
+  }
   allReflections=null;
 }

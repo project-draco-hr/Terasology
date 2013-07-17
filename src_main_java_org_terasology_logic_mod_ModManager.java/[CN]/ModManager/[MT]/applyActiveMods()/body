@@ -5,6 +5,14 @@
       urls.add(mod.getModClasspathUrl());
     }
   }
+  if (activeModClassLoader != null) {
+    try {
+      activeModClassLoader.close();
+    }
+ catch (    IOException e) {
+      logger.error("Failed to close activeModClassLoader",e);
+    }
+  }
   activeModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
   for (  Mod mod : getActiveMods()) {
     mod.setActiveClassLoader(activeModClassLoader);
