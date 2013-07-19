@@ -2,7 +2,9 @@
   byte result=0;
   for (  Side side : sides) {
     final byte sideBit=sideBits.get(side);
-    if ((result & sideBit) > 0)     throw new IllegalArgumentException("Cannot have multiples of the same side");
+    if ((result & sideBit) > 0) {
+      throw new IllegalArgumentException("Cannot have multiples of the same side");
+    }
     result+=sideBit;
   }
   return result;
