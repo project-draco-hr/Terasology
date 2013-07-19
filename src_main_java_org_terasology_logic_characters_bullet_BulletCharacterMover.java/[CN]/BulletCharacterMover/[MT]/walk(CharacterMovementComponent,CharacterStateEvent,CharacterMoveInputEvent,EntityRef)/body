@@ -62,10 +62,12 @@
     entity.send(new HorizontalCollisionEvent(state.getPosition(),state.getVelocity()));
   }
   if (state.isGrounded()) {
-    state.setFootstepDelta(state.getFootstepDelta() + distanceMoved.length());
-    if (input.isFirstRun() && state.getFootstepDelta() > movementComp.distanceBetweenFootsteps) {
-      state.setFootstepDelta(state.getFootstepDelta() - movementComp.distanceBetweenFootsteps);
-      entity.send(new FootstepEvent());
+    state.setFootstepDelta(state.getFootstepDelta() + distanceMoved.length() / movementComp.distanceBetweenFootsteps);
+    if (state.getFootstepDelta() > 1) {
+      state.setFootstepDelta(state.getFootstepDelta() - 1);
+      if (input.isFirstRun()) {
+        entity.send(new FootstepEvent());
+      }
     }
   }
 }

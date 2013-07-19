@@ -1,0 +1,9 @@
+{
+  CharacterSoundComponent characterSounds=entity.getComponent(CharacterSoundComponent.class);
+  if (characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs() && characterSounds.damageSounds.size() > 0) {
+    Sound sound=random.randomItem(characterSounds.damageSounds);
+    entity.send(new PlaySoundEvent(entity,sound,characterSounds.damageVolume));
+    characterSounds.lastSoundTime=time.getGameTimeInMs();
+    entity.saveComponent(characterSounds);
+  }
+}

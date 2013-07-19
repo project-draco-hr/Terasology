@@ -5,7 +5,7 @@
   Vector3f viewDir=Direction.FORWARD.getVector3f();
   QuaternionUtil.quatRotate(rotation,viewDir,playerCamera.getViewingDirection());
   float stepDelta=charMovementComp.footstepDelta - lastStepDelta;
-  if (stepDelta < 0)   stepDelta+=charMovementComp.distanceBetweenFootsteps;
+  if (stepDelta < 0)   stepDelta+=1;
   bobFactor+=stepDelta;
   lastStepDelta=charMovementComp.footstepDelta;
   if (config.getRendering().isCameraBobbing()) {

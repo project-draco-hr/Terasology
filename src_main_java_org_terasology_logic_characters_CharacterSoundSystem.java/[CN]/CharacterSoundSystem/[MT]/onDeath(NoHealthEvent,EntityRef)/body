@@ -1,0 +1,7 @@
+{
+  CharacterSoundComponent characterSounds=entity.getComponent(CharacterSoundComponent.class);
+  if (characterSounds.deathSounds.size() > 0) {
+    Sound sound=random.randomItem(characterSounds.deathSounds);
+    entity.send(new PlaySoundEvent(entity,sound,characterSounds.deathVolume));
+  }
+}
