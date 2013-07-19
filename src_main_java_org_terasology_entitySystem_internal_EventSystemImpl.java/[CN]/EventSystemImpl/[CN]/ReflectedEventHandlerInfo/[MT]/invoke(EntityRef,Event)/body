@@ -1,6 +1,12 @@
 {
   try {
-    method.invoke(handler,event,entity);
+    Object[] params=new Object[2 + componentParams.size()];
+    params[0]=event;
+    params[1]=entity;
+    for (int i=0; i < componentParams.size(); ++i) {
+      params[i + 2]=entity.getComponent(componentParams.get(i));
+    }
+    method.invoke(handler,params);
   }
  catch (  IllegalAccessException ex) {
     logger.error("Failed to invoke event",ex);

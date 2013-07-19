@@ -1,0 +1,19 @@
+{
+  if (event.getVelocity().y > 0f) {
+    return;
+  }
+  if (characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs()) {
+    Sound sound=null;
+    if (characterSounds.landingSounds.size() > 0) {
+      sound=random.randomItem(characterSounds.landingSounds);
+    }
+ else     if (characterSounds.footstepSounds.size() > 0) {
+      sound=random.randomItem(characterSounds.footstepSounds);
+    }
+    if (sound != null) {
+      entity.send(new PlaySoundEvent(entity,sound,characterSounds.landingVolume));
+      characterSounds.lastSoundTime=time.getGameTimeInMs();
+      entity.saveComponent(characterSounds);
+    }
+  }
+}
