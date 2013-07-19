@@ -17,7 +17,7 @@
     if (ai.dieIfPlayerFar)     if (distanceToPlayer > ai.dieDistance)     entity.destroy();
     if (ai.aggressive)     if (distanceToPlayer <= ai.attackDistance) {
       if (tempTime - lastAttack > ai.damageFrequency) {
-        localPlayer.getCharacterEntity().send(new DamageEvent(ai.damage,entity));
+        localPlayer.getCharacterEntity().send(new DoDamageEvent(ai.damage,EngineDamageTypes.PHYSICAL.get(),entity));
         lastAttack=CoreRegistry.get(Time.class).getGameTimeInMs();
       }
     }

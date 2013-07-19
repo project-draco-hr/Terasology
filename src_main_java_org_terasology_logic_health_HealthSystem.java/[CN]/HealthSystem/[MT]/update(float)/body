@@ -1,22 +1,20 @@
 {
   for (  EntityRef entity : entityManager.getEntitiesWith(HealthComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
-    if (health.currentHealth <= 0)     continue;
-    if (health.currentHealth == health.maxHealth || health.regenRate == 0)     continue;
-    health.timeSinceLastDamage+=delta;
-    if (health.timeSinceLastDamage >= health.waitBeforeRegen) {
-      health.partialRegen+=delta * health.regenRate;
-      if (health.partialRegen >= 1) {
-        health.currentHealth=Math.min(health.maxHealth,health.currentHealth + (int)health.partialRegen);
-        health.partialRegen%=1f;
-        if (health.currentHealth == health.maxHealth) {
-          entity.send(new FullHealthEvent(entity,health.maxHealth));
-        }
- else {
-          entity.send(new HealthChangedEvent(entity,health.currentHealth,health.maxHealth));
-        }
-      }
+    if (health.currentHealth <= 0) {
+      continue;
     }
-    entity.saveComponent(health);
+    if (health.currentHealth == health.maxHealth || health.regenRate == 0) {
+      continue;
+    }
+    int healAmount=0;
+    while (time.getGameTimeInMs() >= health.nextRegenTick) {
+      healAmount++;
+      health.nextRegenTick=health.nextRegenTick + (long)(1000 / health.regenRate);
+    }
+    if (healAmount > 0) {
+      checkHeal(entity,healAmount,entity,health);
+      entity.saveComponent(health);
+    }
   }
 }

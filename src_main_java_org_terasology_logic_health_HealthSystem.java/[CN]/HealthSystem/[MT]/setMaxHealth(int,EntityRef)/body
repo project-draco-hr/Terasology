@@ -2,9 +2,6 @@
   ClientComponent clientComp=client.getComponent(ClientComponent.class);
   HealthComponent health=clientComp.character.getComponent(HealthComponent.class);
   if (health != null) {
-    health.maxHealth=max;
-    health.currentHealth=health.maxHealth;
-    clientComp.character.saveComponent(health);
-    clientComp.character.send(new FullHealthEvent(clientComp.character,health.maxHealth));
+    doHeal(clientComp.character,health.maxHealth,clientComp.character,health);
   }
 }
