@@ -57,7 +57,9 @@
     }
     MappedContainerTypeHandler mappedHandler=new MappedContainerTypeHandler(typeClass);
     for (    Field field : typeClass.getDeclaredFields()) {
-      if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers()))       continue;
+      if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())) {
+        continue;
+      }
       field.setAccessible(true);
       TypeHandler handler=getHandlerFor(field.getGenericType(),depth + 1);
       if (handler == null) {
