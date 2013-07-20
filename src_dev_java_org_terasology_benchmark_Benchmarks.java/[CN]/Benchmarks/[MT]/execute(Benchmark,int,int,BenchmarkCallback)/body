@@ -10,19 +10,27 @@
   }
  catch (  Exception e) {
     result.addError(BenchmarkError.Type.Setup,e);
-    if (callback != null)     callback.error(BenchmarkError.Type.Setup,e,result);
+    if (callback != null) {
+      callback.error(BenchmarkError.Type.Setup,e,result);
+    }
     return result;
   }
   try {
-    if (callback != null)     callback.warmup(benchmark,false);
+    if (callback != null) {
+      callback.warmup(benchmark,false);
+    }
     for (int i=0; i < benchmark.getWarmupRepetitions(); ++i) {
       benchmark.run();
     }
-    if (callback != null)     callback.warmup(benchmark,true);
+    if (callback != null) {
+      callback.warmup(benchmark,true);
+    }
   }
  catch (  Exception e) {
     result.addError(BenchmarkError.Type.Warmup,e);
-    if (callback != null)     callback.error(BenchmarkError.Type.Warmup,e,result);
+    if (callback != null) {
+      callback.error(BenchmarkError.Type.Warmup,e,result);
+    }
     return result;
   }
   int repsTotal=0, repsSoFar=0;
@@ -39,7 +47,9 @@
  catch (    Exception e) {
       aborted=true;
       result.addError(BenchmarkError.Type.PreRun,e);
-      if (callback != null)       callback.error(BenchmarkError.Type.PreRun,e,result);
+      if (callback != null) {
+        callback.error(BenchmarkError.Type.PreRun,e,result);
+      }
       break;
     }
     long start=time(), elapsed=0;
@@ -51,14 +61,18 @@
         }
         reps-=repsPart;
         repsSoFar+=repsPart;
-        if (callback != null)         callback.progress(benchmark,100d / (double)repsTotal * (double)repsSoFar);
+        if (callback != null) {
+          callback.progress(benchmark,100d / (double)repsTotal * (double)repsSoFar);
+        }
       }
       if (reps <= repsPart) {
         for (int i=0; i < reps; ++i) {
           benchmark.run();
         }
         repsSoFar+=reps;
-        if (callback != null)         callback.progress(benchmark,100d / (double)repsTotal * (double)repsSoFar);
+        if (callback != null) {
+          callback.progress(benchmark,100d / (double)repsTotal * (double)repsSoFar);
+        }
       }
       elapsed=elapsed(start,TimeUnit.NANOSECONDS);
       result.setRunTime(repIndex,TimeUnit.MILLISECONDS.convert(elapsed,TimeUnit.NANOSECONDS));
@@ -66,7 +80,9 @@
  catch (    Exception e) {
       aborted=true;
       result.addError(BenchmarkError.Type.Run,e);
-      if (callback != null)       callback.error(BenchmarkError.Type.Run,e,result);
+      if (callback != null) {
+        callback.error(BenchmarkError.Type.Run,e,result);
+      }
       break;
     }
     try {
@@ -75,7 +91,9 @@
  catch (    Exception e) {
       aborted=true;
       result.addError(BenchmarkError.Type.PostRun,e);
-      if (callback != null)       callback.error(BenchmarkError.Type.PostRun,e,result);
+      if (callback != null) {
+        callback.error(BenchmarkError.Type.PostRun,e,result);
+      }
       break;
     }
     ++repIndex;
@@ -85,13 +103,17 @@
   }
  catch (  Exception e) {
     result.addError(BenchmarkError.Type.Finish,e);
-    if (callback != null)     callback.error(BenchmarkError.Type.Finish,e,result);
+    if (callback != null) {
+      callback.error(BenchmarkError.Type.Finish,e,result);
+    }
   }
-  if (callback != null)   if (result.isAborted()) {
-    callback.aborted(result);
-  }
+  if (callback != null) {
+    if (result.isAborted()) {
+      callback.aborted(result);
+    }
  else {
-    callback.success(result);
+      callback.success(result);
+    }
   }
   return result;
 }
