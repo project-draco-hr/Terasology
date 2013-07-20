@@ -1,9 +1,8 @@
 {
-  LocationComponent parentLoc=entity.getComponent(LocationComponent.class);
-  if (parentLoc == null)   if (parentLoc.parent != null) {
-    removeChild(parentLoc.parent,entity);
+  if (location.parent.exists()) {
+    removeChild(location.parent,entity);
   }
-  Iterator<EntityRef> childIterator=parentLoc.getChildren().iterator();
+  Iterator<EntityRef> childIterator=location.getChildren().iterator();
   while (childIterator.hasNext()) {
     EntityRef child=childIterator.next();
     LocationComponent childLoc=child.getComponent(LocationComponent.class);
