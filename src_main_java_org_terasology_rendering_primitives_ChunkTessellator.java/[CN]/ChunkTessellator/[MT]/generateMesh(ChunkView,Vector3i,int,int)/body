@@ -2,6 +2,8 @@
   PerformanceMonitor.startActivity("GenerateMesh");
   ChunkMesh mesh=new ChunkMesh();
   Vector3i chunkOffset=new Vector3i(chunkPos.x * Chunk.SIZE_X,chunkPos.y * Chunk.SIZE_Y,chunkPos.z * Chunk.SIZE_Z);
+  final Stopwatch watch=new Stopwatch();
+  watch.start();
   for (int x=0; x < Chunk.SIZE_X; x++) {
     for (int z=0; z < Chunk.SIZE_Z; z++) {
       float biomeTemp=biomeProvider.getTemperatureAt(chunkOffset.x + x,chunkOffset.z + z);
@@ -13,8 +15,13 @@
       }
     }
   }
+  watch.stop();
+  mesh.setTimeToGenerateBlockVertices((int)watch.elapsedMillis());
+  watch.reset().start();
   generateOptimizedBuffers(chunkView,mesh);
-  _statVertexArrayUpdateCount++;
+  watch.stop();
+  mesh.setTimeToGenerateOptimizedBuffers((int)watch.elapsedMillis());
+  statVertexArrayUpdateCount++;
   PerformanceMonitor.endActivity();
   return mesh;
 }

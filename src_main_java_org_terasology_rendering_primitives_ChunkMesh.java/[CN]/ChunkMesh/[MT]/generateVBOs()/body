@@ -1,13 +1,17 @@
 {
-  if (_lock.tryLock()) {
+  if (lock.tryLock()) {
     try {
-      if (_vertexElements == null || _disposed)       return false;
-      for (int i=0; i < _vertexBuffers.length; i++)       generateVBO(i);
-      _vertexElements=null;
-      _triangleCount=(_vertexCount[0] + _vertexCount[1] + _vertexCount[2]+ _vertexCount[3]) / 3;
+      if (vertexElements == null || disposed) {
+        return false;
+      }
+      for (int i=0; i < vertexBuffers.length; i++) {
+        generateVBO(i);
+      }
+      vertexElements=null;
+      triangleCount=(vertexCount[0] + vertexCount[1] + vertexCount[2]+ vertexCount[3]) / 3;
     }
   finally {
-      _lock.unlock();
+      lock.unlock();
     }
     return true;
   }

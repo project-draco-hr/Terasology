@@ -19,7 +19,7 @@
   PerformanceMonitor.startActivity("Render Chunks (Transparent)");
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  while (renderQueueChunksSortedBillboards.size() > 0)   renderChunk(renderQueueChunksSortedBillboards.poll(),ChunkMesh.RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT,camera);
+  while (renderQueueChunksSortedBillboards.size() > 0)   renderChunk(renderQueueChunksSortedBillboards.poll(),ChunkMesh.RENDER_PHASE.ALPHA_REJECT,camera);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Objects (Transparent)");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
@@ -35,11 +35,11 @@
     for (int j=0; j < 2; j++) {
       if (j == 0) {
         glColorMask(false,false,false,false);
-        renderChunk(c,ChunkMesh.RENDER_PHASE.WATER_AND_ICE,camera);
+        renderChunk(c,ChunkMesh.RENDER_PHASE.REFRACTIVE,camera);
       }
  else {
         glColorMask(true,true,true,true);
-        renderChunk(c,ChunkMesh.RENDER_PHASE.WATER_AND_ICE,camera);
+        renderChunk(c,ChunkMesh.RENDER_PHASE.REFRACTIVE,camera);
       }
     }
   }

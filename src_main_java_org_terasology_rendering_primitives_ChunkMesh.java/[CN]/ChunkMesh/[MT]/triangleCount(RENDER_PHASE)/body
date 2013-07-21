@@ -1,5 +1,11 @@
 {
-  if (phase == RENDER_PHASE.OPAQUE)   return _vertexCount[0] / 3;
- else   if (phase == RENDER_PHASE.BILLBOARD_AND_TRANSLUCENT)   return (_vertexCount[1] + _vertexCount[2]) / 3;
- else   return _vertexCount[3] / 3;
+  if (phase == RENDER_PHASE.OPAQUE) {
+    return vertexCount[0] / 3;
+  }
+ else   if (phase == RENDER_PHASE.ALPHA_REJECT) {
+    return (vertexCount[1] + vertexCount[2]) / 3;
+  }
+ else {
+    return vertexCount[3] / 3;
+  }
 }

@@ -18,8 +18,8 @@
     }
     if (!loaded) {
       PerformanceMonitor.startActivity("Sending OnAddedBlocks");
-      readyChunkInfo.getBlockPositionMapppings().forEachEntry(new TByteObjectProcedure<TIntList>(){
-        @Override public boolean execute(        byte id,        TIntList positions){
+      readyChunkInfo.getBlockPositionMapppings().forEachEntry(new TShortObjectProcedure<TIntList>(){
+        @Override public boolean execute(        short id,        TIntList positions){
           if (positions.size() > 0) {
             blockManager.getBlock(id).getEntity().send(new OnAddedBlocks(positions,registry));
           }
@@ -30,8 +30,8 @@
       PerformanceMonitor.endActivity();
     }
     PerformanceMonitor.startActivity("Sending OnActivateBlocks");
-    readyChunkInfo.getBlockPositionMapppings().forEachEntry(new TByteObjectProcedure<TIntList>(){
-      @Override public boolean execute(      byte id,      TIntList positions){
+    readyChunkInfo.getBlockPositionMapppings().forEachEntry(new TShortObjectProcedure<TIntList>(){
+      @Override public boolean execute(      short id,      TIntList positions){
         if (positions.size() > 0) {
           blockManager.getBlock(id).getEntity().send(new OnActivatedBlocks(positions,registry));
         }
