@@ -1,0 +1,27 @@
+{
+  if (fbo == null) {
+    return;
+  }
+  int attachmentId=0;
+  IntBuffer bufferIds=BufferUtils.createIntBuffer(3);
+  if (fbo.textureId != 0) {
+    if (color) {
+      bufferIds.put(EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT + attachmentId);
+    }
+    attachmentId++;
+  }
+  if (fbo.normalsTextureId != 0) {
+    if (normal) {
+      bufferIds.put(EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT + attachmentId);
+    }
+    attachmentId++;
+  }
+  if (fbo.lightBufferTextureId != 0) {
+    if (lightBuffer) {
+      bufferIds.put(EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT + attachmentId);
+    }
+    attachmentId++;
+  }
+  bufferIds.flip();
+  GL20.glDrawBuffers(bufferIds);
+}

@@ -1,0 +1,13 @@
+{
+  super.applyParameters(program);
+  DefaultRenderingProcess.FBO scene=DefaultRenderingProcess.getInstance().getFBO("sceneOpaque");
+  if (scene != null) {
+    GL13.glActiveTexture(GL13.GL_TEXTURE0);
+    scene.bindDepthTexture();
+    program.setInt("texDepth",0);
+    program.setFloat("texelWidth",1.0f / scene.width);
+    program.setFloat("texelHeight",1.0f / scene.height);
+  }
+  program.setFloat("pixelOffsetX",pixelOffsetX);
+  program.setFloat("pixelOffsetY",pixelOffsetY);
+}

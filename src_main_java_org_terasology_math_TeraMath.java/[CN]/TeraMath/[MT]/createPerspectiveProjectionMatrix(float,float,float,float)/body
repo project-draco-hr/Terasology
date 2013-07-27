@@ -1,0 +1,22 @@
+{
+  Matrix4f m=new Matrix4f();
+  float f=1.0f / (float)Math.tan(fovY * 0.5f);
+  m.m00=f / aspectRatio;
+  m.m10=0;
+  m.m20=0;
+  m.m30=0;
+  m.m01=0;
+  m.m11=f;
+  m.m21=0;
+  m.m31=0;
+  m.m02=0;
+  m.m12=0;
+  m.m22=(zFar + zNear) / (zNear - zFar);
+  m.m32=(2 * zFar * zNear) / (zNear - zFar);
+  m.m03=0;
+  m.m13=0;
+  m.m23=-1;
+  m.m33=0;
+  m.transpose();
+  return m;
+}

@@ -1,0 +1,21 @@
+{
+  if (ssaoSamples == null) {
+    ssaoSamples=BufferUtils.createFloatBuffer(SSAO_KERNEL_ELEMENTS * 3);
+    for (int i=0; i < SSAO_KERNEL_ELEMENTS; ++i) {
+      Vector3f vec=new Vector3f();
+      vec.x=rand.randomFloat();
+      vec.y=rand.randomFloat();
+      vec.z=rand.randomPosFloat();
+      vec.normalize();
+      vec.scale(rand.randomPosFloat());
+      float scale=i / (float)SSAO_KERNEL_ELEMENTS;
+      scale=TeraMath.lerpf(0.1f,1.0f,scale * scale);
+      vec.scale(scale);
+      ssaoSamples.put(vec.x);
+      ssaoSamples.put(vec.y);
+      ssaoSamples.put(vec.z);
+    }
+    ssaoSamples.flip();
+  }
+  material.setFloat3("ssaoSamples",ssaoSamples);
+}

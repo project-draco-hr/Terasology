@@ -1,0 +1,12 @@
+{
+  super.applyParameters(program);
+  Texture terrainTex=Assets.getTexture("engine:terrain");
+  if (terrainTex == null) {
+    return;
+  }
+  GL13.glActiveTexture(GL13.GL_TEXTURE0);
+  glBindTexture(GL11.GL_TEXTURE_2D,terrainTex.getId());
+  program.setFloat3("colorOffset",1.0f,1.0f,1.0f,true);
+  program.setBoolean("textured",true,true);
+  program.setFloat("alpha",1.0f,true);
+}

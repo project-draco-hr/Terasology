@@ -1,38 +1,37 @@
 {
-  boolean carryingTorch=CoreRegistry.get(LocalPlayer.class).isCarryingTorch();
   Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
   Quat4f worldRot=new Quat4f();
   Vector3f worldPos=new Vector3f();
-  Matrix4f matrix=new Matrix4f();
-  Transform trans=new Transform();
   Quat4f inverseWorldRot=new Quat4f();
-  glPushMatrix();
-  glTranslated(-cameraPosition.x,-cameraPosition.y,-cameraPosition.z);
+  Matrix4f matrixCameraSpace=new Matrix4f();
+  FloatBuffer tempMatrixBuffer44=BufferUtils.createFloatBuffer(16);
+  FloatBuffer tempMatrixBuffer33=BufferUtils.createFloatBuffer(12);
+  ;
   for (  EntityRef entity : entityManager.getEntitiesWith(SkeletalMeshComponent.class,LocationComponent.class)) {
     SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
     if (skeletalMesh.mesh == null || skeletalMesh.material == null) {
       continue;
     }
-    OpenGLMaterial mat=(OpenGLMaterial)skeletalMesh.material;
-    mat.enable();
-    skeletalMesh.material.setInt("carryingTorch",carryingTorch ? 1 : 0);
-    skeletalMesh.material.setFloat("light",1);
-    mat.bindTextures();
-    float[] openglMat=new float[16];
-    FloatBuffer mBuffer=BufferUtils.createFloatBuffer(16);
+    skeletalMesh.material.enable();
+    skeletalMesh.material.setFloat("sunlight",1.0f,true);
+    skeletalMesh.material.setFloat("blockLight",1.0f,true);
+    skeletalMesh.material.setMatrix4("projectionMatrix",worldRenderer.getActiveCamera().getProjectionMatrix());
+    skeletalMesh.material.bindTextures();
     LocationComponent location=entity.getComponent(LocationComponent.class);
     location.getWorldRotation(worldRot);
     inverseWorldRot.inverse(worldRot);
     location.getWorldPosition(worldPos);
+    Vector3f worldPositionCameraSpace=new Vector3f();
+    worldPositionCameraSpace.sub(worldPos,cameraPosition);
     float worldScale=location.getWorldScale();
-    matrix.set(worldRot,worldPos,worldScale);
-    trans.set(matrix);
-    glPushMatrix();
-    trans.getOpenGLMatrix(openglMat);
-    mBuffer.put(openglMat);
-    mBuffer.flip();
-    glMultMatrix(mBuffer);
-    skeletalMesh.material.setFloat("light",worldRenderer.getRenderingLightValueAt(worldPos));
+    matrixCameraSpace.set(worldRot,worldPositionCameraSpace,worldScale);
+    Matrix4f modelViewMatrix=TeraMath.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
+    TeraMath.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
+    skeletalMesh.material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
+    TeraMath.matrixToFloatBuffer(TeraMath.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
+    skeletalMesh.material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
+    skeletalMesh.material.setFloat("sunlight",worldRenderer.getSunlightValueAt(worldPos),true);
+    skeletalMesh.material.setFloat("blockLight",worldRenderer.getBlockLightValueAt(worldPos),true);
     List<Vector3f> bonePositions=Lists.newArrayListWithCapacity(skeletalMesh.mesh.getVertexCount());
     List<Quat4f> boneRotations=Lists.newArrayListWithCapacity(skeletalMesh.mesh.getVertexCount());
     for (    Bone bone : skeletalMesh.mesh.getBones()) {
@@ -57,7 +56,5 @@
       }
     }
     ((OpenGLSkeletalMesh)skeletalMesh.mesh).render(bonePositions,boneRotations);
-    glPopMatrix();
   }
-  glPopMatrix();
 }

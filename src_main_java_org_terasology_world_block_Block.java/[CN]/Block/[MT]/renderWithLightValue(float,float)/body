@@ -1,0 +1,24 @@
+{
+  if (isInvisible())   return;
+  Material mat=Assets.getMaterial("engine:block");
+  mat.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+  mat.enable();
+  mat.setFloat("sunlight",sunlight);
+  mat.setFloat("blockLight",blockLight);
+  if (mesh == null) {
+    generateMesh();
+  }
+ else   if (mesh.isDisposed()) {
+    logger.error("Cannot render disposed mesh");
+    return;
+  }
+  if (!isDoubleSided() || !glIsEnabled(GL11.GL_CULL_FACE)) {
+    mesh.render();
+  }
+ else {
+    glDisable(GL11.GL_CULL_FACE);
+    mesh.render();
+    glEnable(GL11.GL_CULL_FACE);
+  }
+  mat.removeFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+}

@@ -7,11 +7,11 @@
     glEndList();
     displayLists.put(blockType,displayList);
   }
-  ShaderProgram shader=ShaderManager.getInstance().getShaderProgram("particle");
+  Material shader=Assets.getMaterial("engine:particle");
   Vector4f color=blockType.getArchetypeBlock().calcColorOffsetFor(BlockPart.FRONT,temperature,humidity);
-  shader.setFloat3("colorOffset",color.x,color.y,color.z);
-  shader.setFloat("texOffsetX",particle.texOffset.x);
-  shader.setFloat("texOffsetY",particle.texOffset.y);
-  shader.setFloat("light",light);
+  shader.setFloat3("colorOffset",color.x,color.y,color.z,true);
+  shader.setFloat("texOffsetX",particle.texOffset.x,true);
+  shader.setFloat("texOffsetY",particle.texOffset.y,true);
+  shader.setFloat("light",light,true);
   glCallList(displayList);
 }

@@ -1,0 +1,19 @@
+{
+  glDepthMask(false);
+  if (camera.isReflected()) {
+    glCullFace(GL_BACK);
+  }
+ else {
+    glCullFace(GL_FRONT);
+  }
+  Material shader=Assets.getMaterial("engine:sky");
+  shader.enable();
+  drawSkysphere();
+  if (camera.isReflected()) {
+    glCullFace(GL_FRONT);
+  }
+ else {
+    glCullFace(GL_BACK);
+  }
+  glDepthMask(true);
+}

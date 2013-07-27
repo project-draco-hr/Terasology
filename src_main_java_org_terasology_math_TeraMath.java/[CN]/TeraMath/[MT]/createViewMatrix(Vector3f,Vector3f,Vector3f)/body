@@ -1,0 +1,34 @@
+{
+  Matrix4f m=new Matrix4f();
+  Vector3f f=new Vector3f();
+  f.sub(center,eye);
+  f.normalize();
+  up.normalize();
+  Vector3f s=new Vector3f();
+  s.cross(f,up);
+  s.normalize();
+  Vector3f u=new Vector3f();
+  u.cross(s,f);
+  u.normalize();
+  m.m00=s.x;
+  m.m10=s.y;
+  m.m20=s.z;
+  m.m30=0;
+  m.m01=u.x;
+  m.m11=u.y;
+  m.m21=u.z;
+  m.m31=0;
+  m.m02=-f.x;
+  m.m12=-f.y;
+  m.m22=-f.z;
+  m.m32=0;
+  m.m03=0;
+  m.m13=0;
+  m.m23=0;
+  m.m33=1;
+  m.m30=-eye.x;
+  m.m31=-eye.y;
+  m.m32=-eye.z;
+  m.transpose();
+  return m;
+}

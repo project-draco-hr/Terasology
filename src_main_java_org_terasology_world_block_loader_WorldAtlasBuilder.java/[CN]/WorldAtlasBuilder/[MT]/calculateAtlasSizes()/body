@@ -1,0 +1,21 @@
+{
+  tileSize=16;
+  for (  TileData tile : tiles) {
+    if (tile.getImage().getWidth() > tileSize) {
+      tileSize=tile.getImage().getWidth();
+    }
+  }
+  atlasSize=1;
+  while (atlasSize * atlasSize < tiles.size()) {
+    atlasSize*=2;
+  }
+  atlasSize=atlasSize * tileSize;
+  if (atlasSize > maxAtlasSize) {
+    atlasSize=maxAtlasSize;
+    int maxTiles=(atlasSize / tileSize) * (atlasSize / tileSize);
+    while (maxTiles < tiles.size()) {
+      tileSize>>=1;
+      maxTiles=(atlasSize / tileSize) * (atlasSize / tileSize);
+    }
+  }
+}

@@ -2,7 +2,13 @@
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   if (worldRenderer != null) {
-    worldRenderer.render();
+    if (!CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
+      worldRenderer.render(DefaultRenderingProcess.StereoRenderState.MONO);
+    }
+ else {
+      worldRenderer.render(DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE);
+      worldRenderer.render(DefaultRenderingProcess.StereoRenderState.OCULUS_RIGHT_EYE);
+    }
   }
   PerformanceMonitor.startActivity("Render and Update UI");
   renderUserInterface();

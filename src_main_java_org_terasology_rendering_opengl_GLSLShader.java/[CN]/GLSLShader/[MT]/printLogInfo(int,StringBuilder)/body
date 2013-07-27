@@ -1,0 +1,12 @@
+{
+  int length=ARBShaderObjects.glGetObjectParameteriARB(shaderId,ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB);
+  int compileStatus=ARBShaderObjects.glGetObjectParameteriARB(shaderId,ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB);
+  if (length > 0) {
+    logEntry.append(ARBShaderObjects.glGetInfoLogARB(shaderId,length));
+  }
+  if (compileStatus == 0) {
+    return false;
+  }
+  logger.info("Shader '{}' successfully compiled.",getURI());
+  return true;
+}

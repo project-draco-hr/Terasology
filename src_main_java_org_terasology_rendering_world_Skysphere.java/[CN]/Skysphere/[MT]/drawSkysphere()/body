@@ -1,0 +1,11 @@
+{
+  if (displayListSphere == -1) {
+    displayListSphere=glGenLists(1);
+    Sphere sphere=new Sphere();
+    sphere.setTextureFlag(true);
+    glNewList(displayListSphere,GL11.GL_COMPILE);
+    sphere.draw(1024,16,128);
+    glEndList();
+  }
+  glCallList(displayListSphere);
+}

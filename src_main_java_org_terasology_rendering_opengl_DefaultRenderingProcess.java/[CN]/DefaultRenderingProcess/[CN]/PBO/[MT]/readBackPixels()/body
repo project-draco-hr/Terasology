@@ -1,0 +1,11 @@
+{
+  bind();
+  cachedBuffer=EXTPixelBufferObject.glMapBufferARB(EXTPixelBufferObject.GL_PIXEL_PACK_BUFFER_EXT,GL_READ_ONLY,cachedBuffer);
+  ByteBuffer resultBuffer=BufferUtils.createByteBuffer(cachedBuffer.capacity());
+  resultBuffer.put(cachedBuffer);
+  cachedBuffer.rewind();
+  resultBuffer.flip();
+  EXTPixelBufferObject.glUnmapBufferARB(EXTPixelBufferObject.GL_PIXEL_PACK_BUFFER_EXT);
+  unbind();
+  return resultBuffer;
+}

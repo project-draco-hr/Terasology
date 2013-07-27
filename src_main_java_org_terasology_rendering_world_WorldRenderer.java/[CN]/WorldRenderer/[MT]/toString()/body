@@ -1,3 +1,13 @@
 {
-  return String.format("world (numdropped: %d, biome: %s, time: %.2f, exposure: %.2f, sun: %.2f, dirty: %d, ign: %d, vis: %d, tri: %d, empty: %d, !ready: %d, seed: \"%s\", title: \"%s\")",((MeshRenderer)CoreRegistry.get(ComponentSystemManager.class).get("engine:MeshRenderer")).lastRendered,getPlayerBiome(),worldProvider.getTime().getDays(),PostProcessingRenderer.getInstance().getExposure(),skysphere.getSunPosAngle(),statDirtyChunks,statIgnoredPhases,statVisibleChunks,statRenderedTriangles,statChunkMeshEmpty,statChunkNotReady,worldProvider.getSeed(),worldProvider.getTitle());
+  float renderedTriangles=0.0f;
+  String renderedTrianglesUnit="";
+  if (statRenderedTriangles > 1000000.0f) {
+    renderedTriangles=statRenderedTriangles / 1000000.0f;
+    renderedTrianglesUnit="mil";
+  }
+ else   if (statRenderedTriangles > 1000.0f) {
+    renderedTriangles=statRenderedTriangles / 1000.0f;
+    renderedTrianglesUnit="k";
+  }
+  return String.format("world (db: %d, b: %s, t: %.1f, exposure: %.1f" + ", dirty: %d, ign: %d, vis: %d, tri: %.1f%s, empty: %d, !rdy: %d, seed: \"%s\", title: \"%s\")",((MeshRenderer)CoreRegistry.get(ComponentSystemManager.class).get("engine:MeshRenderer")).lastRendered,getPlayerBiome(),worldProvider.getTime().getDays(),DefaultRenderingProcess.getInstance().getExposure(),statDirtyChunks,statIgnoredPhases,statVisibleChunks,renderedTriangles,renderedTrianglesUnit,statChunkMeshEmpty,statChunkNotReady,worldProvider.getSeed(),worldProvider.getTitle());
 }

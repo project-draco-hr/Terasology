@@ -1,0 +1,20 @@
+{
+  if (c.getPendingMesh() != null) {
+    for (int i=0; i < c.getPendingMesh().length; i++) {
+      c.getPendingMesh()[i].generateVBOs();
+    }
+    if (c.getMesh() != null) {
+      for (int i=0; i < c.getMesh().length; i++) {
+        c.getMesh()[i].dispose();
+      }
+    }
+    c.setMesh(c.getPendingMesh());
+    c.setPendingMesh(null);
+  }
+  if ((c.isDirty() || c.getMesh() == null) && isChunkValidForRender(c)) {
+    statDirtyChunks++;
+    chunkUpdateManager.queueChunkUpdate(c,ChunkUpdateManager.UpdateType.DEFAULT);
+    return true;
+  }
+  return false;
+}

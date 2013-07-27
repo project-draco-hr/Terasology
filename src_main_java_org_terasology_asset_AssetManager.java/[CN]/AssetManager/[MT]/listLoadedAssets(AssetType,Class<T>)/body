@@ -1,0 +1,9 @@
+{
+  List<T> results=Lists.newArrayList();
+  for (  Map.Entry<AssetUri,Asset> entry : assetCache.entrySet()) {
+    if (entry.getKey().getAssetType() == type && assetClass.isInstance(entry.getValue())) {
+      results.add(assetClass.cast(entry.getValue()));
+    }
+  }
+  return results;
+}

@@ -1,0 +1,13 @@
+{
+  availableFeatures.clear();
+  for (  ShaderProgramFeature feature : ShaderProgramFeature.values()) {
+    if (shaderProgramBase.getFragmentProgram().contains(feature.toString())) {
+      logger.info("Fragment shader feature '" + feature.toString() + "' is available...");
+      availableFeatures.add(feature);
+    }
+ else     if (shaderProgramBase.getVertexProgram().contains(feature.toString())) {
+      logger.info("Vertex shader feature '" + feature.toString() + "' is available...");
+      availableFeatures.add(feature);
+    }
+  }
+}

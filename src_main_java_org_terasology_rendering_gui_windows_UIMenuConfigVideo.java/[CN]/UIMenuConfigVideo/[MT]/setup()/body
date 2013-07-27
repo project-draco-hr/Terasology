@@ -1,16 +1,11 @@
 {
   fovButton.setValue((int)config.getRendering().getFieldOfView());
-  viewingDistanceButton.setState(config.getRendering().getActiveViewDistanceMode());
+  viewingDistanceButton.setState(config.getRendering().getViewDistance().getIndex());
   blurIntensityButton.setState(config.getRendering().getBlurIntensity());
-  if (config.getRendering().isBloom() && config.getRendering().isFlickeringLight()) {
-    graphicsQualityButton.setState(2);
-  }
- else   if (!config.getRendering().isBloom() && config.getRendering().isFlickeringLight()) {
-    graphicsQualityButton.setState(1);
-  }
- else {
-    graphicsQualityButton.setState(0);
-  }
+  if (config.getRendering().isAnimateWater())   graphicsQualityButton.setState(3);
+ else   if (config.getRendering().isLightShafts())   graphicsQualityButton.setState(2);
+ else   if (config.getRendering().isBloom())   graphicsQualityButton.setState(1);
+ else   graphicsQualityButton.setState(0);
   if (config.getRendering().isAnimateGrass()) {
     animateGrassButton.setState(1);
   }
@@ -34,5 +29,26 @@
   }
  else {
     fullscreenButton.setState(0);
+  }
+  if (config.getRendering().isOutline()) {
+    outlineButton.setState(1);
+  }
+ else {
+    outlineButton.setState(0);
+  }
+  if (config.getRendering().isDynamicShadowsPcfFiltering()) {
+    shadowButton.setState(2);
+  }
+ else   if (config.getRendering().isDynamicShadows()) {
+    shadowButton.setState(1);
+  }
+ else {
+    shadowButton.setState(0);
+  }
+  if (config.getRendering().isVolumetricFog()) {
+    volumetricFogButton.setState(1);
+  }
+ else {
+    volumetricFogButton.setState(0);
   }
 }

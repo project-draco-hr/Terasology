@@ -1,0 +1,56 @@
+{
+  statDirtyChunks=0;
+  statVisibleChunks=0;
+  statIgnoredPhases=0;
+  int processedChunks=0;
+  for (int i=0; i < chunksInProximity.size(); i++) {
+    Chunk c=chunksInProximity.get(i);
+    ChunkMesh[] mesh=c.getMesh();
+    if (i < TeraMath.clamp(config.getRendering().getMaxChunksUsedForShadowMapping(),64,1024) && config.getRendering().isDynamicShadows() && fillShadowRenderQueue) {
+      if (isChunkVisibleLight(c) && isChunkValidForRender(c)) {
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
+          renderQueueChunksOpaqueShadow.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+      }
+    }
+    if (isChunkValidForRender(c)) {
+      if (isChunkVisible(c)) {
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
+          renderQueueChunksOpaque.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.REFRACTIVE) > 0) {
+          renderQueueChunksAlphaBlend.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.ALPHA_REJECT) > 0) {
+          renderQueueChunksAlphaBlend.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+        statVisibleChunks++;
+        if (statVisibleChunks < MAX_ANIMATED_CHUNKS) {
+          c.setAnimated(true);
+        }
+ else {
+          c.setAnimated(false);
+        }
+      }
+      if (isChunkVisibleReflection(c)) {
+        renderQueueChunksOpaqueReflection.add(c);
+      }
+      if (processChunkUpdates && processChunkUpdate(c)) {
+        processedChunks++;
+      }
+    }
+  }
+  return processedChunks;
+}

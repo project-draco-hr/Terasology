@@ -1,0 +1,42 @@
+{
+  prevViewProjectionMatrix.set(viewProjectionMatrix);
+  if (cachedPosition.equals(getPosition()) && cachedViewigDirection.equals(getViewingDirection()) && cachedZFar == zFar && cachedZNear == zNear) {
+    return;
+  }
+  projectionMatrix=TeraMath.createPerspectiveProjectionMatrix(OculusVrHelper.getyFov(),OculusVrHelper.getAspectRatio(),zNear,zFar);
+  projTranslationLeftEye.setIdentity();
+  projTranslationLeftEye.setTranslation(new Vector3f(OculusVrHelper.getProjectionCenterOffset(),0.0f,0.0f));
+  projTranslationRightEye.setIdentity();
+  projTranslationRightEye.setTranslation(new Vector3f(-OculusVrHelper.getProjectionCenterOffset(),0.0f,0.0f));
+  projectionMatrixLeftEye.mul(projTranslationLeftEye,projectionMatrix);
+  projectionMatrixRightEye.mul(projTranslationRightEye,projectionMatrix);
+  viewMatrix=TeraMath.createViewMatrix(0f,0.0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
+  normViewMatrix=TeraMath.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
+  reflectionMatrix.setRow(0,1.0f,0.0f,0.0f,0.0f);
+  reflectionMatrix.setRow(1,0.0f,-1.0f,0.0f,2f * (-position.y + 32f));
+  reflectionMatrix.setRow(2,0.0f,0.0f,1.0f,0.0f);
+  reflectionMatrix.setRow(3,0.0f,0.0f,0.0f,1.0f);
+  viewMatrixReflected.mul(viewMatrix,reflectionMatrix);
+  reflectionMatrix.setRow(1,0.0f,-1.0f,0.0f,0.0f);
+  normViewMatrixReflected.mul(normViewMatrix,reflectionMatrix);
+  final float halfIPD=OculusVrHelper.getInterpupillaryDistance() * 0.5f;
+  viewTranslationLeftEye.setIdentity();
+  viewTranslationLeftEye.setTranslation(new Vector3f(halfIPD,0.0f,0.0f));
+  viewTranslationRightEye.setIdentity();
+  viewTranslationRightEye.setTranslation(new Vector3f(-halfIPD,0.0f,0.0f));
+  viewMatrixLeftEye.mul(viewMatrix,viewTranslationLeftEye);
+  viewMatrixRightEye.mul(viewMatrix,viewTranslationRightEye);
+  viewMatrixReflectedLeftEye.mul(viewMatrixReflected,viewTranslationLeftEye);
+  viewMatrixReflectedRightEye.mul(viewMatrixReflected,viewTranslationRightEye);
+  viewProjectionMatrixLeftEye=TeraMath.calcViewProjectionMatrix(viewMatrixLeftEye,projectionMatrixLeftEye);
+  viewProjectionMatrixRightEye=TeraMath.calcViewProjectionMatrix(viewMatrixRightEye,projectionMatrixRightEye);
+  inverseViewProjectionMatrixLeftEye.invert(viewProjectionMatrixLeftEye);
+  inverseViewProjectionMatrixRightEye.invert(viewProjectionMatrixRightEye);
+  inverseProjectionMatrixLeftEye.invert(projectionMatrixLeftEye);
+  inverseProjectionMatrixRightEye.invert(projectionMatrixRightEye);
+  cachedPosition.set(getPosition());
+  cachedViewigDirection.set(getViewingDirection());
+  cachedZFar=zFar;
+  cachedZNear=zNear;
+  updateFrustum();
+}

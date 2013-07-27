@@ -1,0 +1,11 @@
+{
+  this.viewDistance=viewDistance;
+  WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+  LocalPlayer player=CoreRegistry.get(LocalPlayer.class);
+  if (player != null) {
+    player.getClientEntity().send(new ChangeViewRangeRequest(viewDistance));
+  }
+  if (worldRenderer != null) {
+    worldRenderer.changeViewDistance(viewDistance);
+  }
+}

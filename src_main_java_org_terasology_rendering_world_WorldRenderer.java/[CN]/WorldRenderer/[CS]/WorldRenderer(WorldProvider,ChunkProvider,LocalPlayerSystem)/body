@@ -2,12 +2,25 @@
   this.chunkProvider=chunkProvider;
   this.worldProvider=worldProvider;
   bulletPhysics=new BulletPhysics(worldProvider);
-  chunkTesselator=new ChunkTessellator(worldProvider.getBiomeProvider());
+  chunkTessellator=new ChunkTessellator(worldProvider.getBiomeProvider());
   skysphere=new Skysphere(this);
-  chunkUpdateManager=new ChunkUpdateManager(chunkTesselator,worldProvider);
+  chunkUpdateManager=new ChunkUpdateManager(chunkTessellator,worldProvider);
   worldTimeEventManager=new WorldTimeEventManager(worldProvider);
-  localPlayerSystem.setPlayerCamera(defaultCamera);
   systemManager=CoreRegistry.get(ComponentSystemManager.class);
-  audioManager=CoreRegistry.get(AudioManager.class);
+  if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
+    localPlayerCamera=new OculusStereoCamera();
+  }
+ else {
+    localPlayerCamera=new PerspectiveCamera();
+  }
+  activeCamera=localPlayerCamera;
+  mainDirectionalLight.lightType=LightComponent.LightType.DIRECTIONAL;
+  mainDirectionalLight.lightColorAmbient=new Vector3f(1.0f,1.0f,1.0f);
+  mainDirectionalLight.lightColorDiffuse=new Vector3f(1.0f,1.0f,1.0f);
+  mainDirectionalLight.lightAmbientIntensity=2.0f;
+  mainDirectionalLight.lightDiffuseIntensity=1.0f;
+  mainDirectionalLight.lightSpecularIntensity=0.0f;
+  localPlayerSystem.setPlayerCamera(localPlayerCamera);
+  config=CoreRegistry.get(Config.class);
   initTimeEvents();
 }

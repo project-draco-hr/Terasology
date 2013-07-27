@@ -1,9 +1,9 @@
 {
-  PostProcessingRenderer.getInstance().getFBO(id).unbind();
-  ShaderProgram program=ShaderManager.getInstance().getShaderProgram("animateOpacity");
-  program.setFloat("alpha",currentOpacity);
+  DefaultRenderingProcess.getInstance().getFBO(id).unbind();
+  Material program=Assets.getMaterial("engine:animateOpacity");
+  program.setFloat("alpha",currentOpacity,true);
   program.enable();
-  PostProcessingRenderer.getInstance().getFBO(id).bindTexture();
+  DefaultRenderingProcess.getInstance().getFBO(id).bindTexture();
   glMatrixMode(GL_TEXTURE);
   glPushMatrix();
   glLoadIdentity();

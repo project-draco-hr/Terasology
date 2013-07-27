@@ -1,0 +1,54 @@
+{
+  rtFullWidth=overwriteRtWidth;
+  rtFullHeight=overwriteRtHeight;
+  if (overwriteRtWidth == 0) {
+    rtFullWidth=org.lwjgl.opengl.Display.getWidth();
+  }
+  if (overwriteRtHeight == 0) {
+    rtFullHeight=org.lwjgl.opengl.Display.getHeight();
+  }
+  if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
+    if (overwriteRtWidth == 0) {
+      rtFullWidth*=OculusVrHelper.getScaleFactor();
+    }
+    if (overwriteRtHeight == 0) {
+      rtFullHeight*=OculusVrHelper.getScaleFactor();
+    }
+  }
+  rtWidth2=rtFullWidth / 2;
+  rtHeight2=rtFullHeight / 2;
+  rtWidth4=rtWidth2 / 2;
+  rtHeight4=rtHeight2 / 2;
+  rtWidth8=rtWidth4 / 2;
+  rtHeight8=rtHeight4 / 2;
+  rtWidth16=rtHeight8 / 2;
+  rtHeight16=rtWidth8 / 2;
+  rtWidth32=rtHeight16 / 2;
+  rtHeight32=rtWidth16 / 2;
+  FBO scene=FBOs.get("sceneOpaque");
+  final boolean recreate=scene == null || (scene.width != rtFullWidth || scene.height != rtFullHeight);
+  if (!recreate) {
+    return;
+  }
+  createFBO("sceneOpaque",rtFullWidth,rtFullHeight,FBOType.HDR,true,true,true,true);
+  createFBO("sceneOpaquePingPong",rtFullWidth,rtFullHeight,FBOType.HDR,true,true,true,true);
+  createFBO("sceneTransparent",rtFullWidth,rtFullHeight,FBOType.HDR);
+  attachDepthBufferToFbo("sceneOpaque","sceneTransparent");
+  createFBO("sceneReflected",rtWidth2,rtHeight2,FBOType.DEFAULT,true);
+  createFBO("sceneShadowMap",config.getRendering().getShadowMapResolution(),config.getRendering().getShadowMapResolution(),FBOType.NO_COLOR,true,false);
+  createFBO("scenePrePost",rtFullWidth,rtFullHeight,FBOType.HDR);
+  createFBO("sceneToneMapped",rtFullWidth,rtFullHeight,FBOType.HDR);
+  createFBO("sceneFinal",rtFullWidth,rtFullHeight,FBOType.DEFAULT);
+  createFBO("sobel",rtFullWidth,rtFullHeight,FBOType.DEFAULT);
+  createFBO("ssao",rtFullWidth,rtFullHeight,FBOType.DEFAULT);
+  createFBO("ssaoBlurred",rtFullWidth,rtFullHeight,FBOType.DEFAULT);
+  createFBO("lightShafts",rtWidth2,rtHeight2,FBOType.DEFAULT);
+  createFBO("sceneHighPass",rtFullWidth,rtFullHeight,FBOType.DEFAULT);
+  createFBO("sceneBloom0",rtWidth2,rtHeight2,FBOType.DEFAULT);
+  createFBO("sceneBloom1",rtWidth4,rtHeight4,FBOType.DEFAULT);
+  createFBO("sceneBloom2",rtWidth8,rtHeight8,FBOType.DEFAULT);
+  createFBO("sceneBlur0",rtWidth2,rtHeight2,FBOType.DEFAULT);
+  createFBO("sceneBlur1",rtWidth2,rtHeight2,FBOType.DEFAULT);
+  createFBO("sceneSkyBand0",rtWidth16,rtHeight16,FBOType.DEFAULT);
+  createFBO("sceneSkyBand1",rtWidth32,rtHeight32,FBOType.DEFAULT);
+}

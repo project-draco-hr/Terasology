@@ -1,0 +1,31 @@
+{
+  super.applyParameters(program);
+  DefaultRenderingProcess.FBO scene=DefaultRenderingProcess.getInstance().getFBO("sceneOpaque");
+  int texId=0;
+  if (scene != null) {
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    scene.bindTexture();
+    program.setInt("texScene",texId++,true);
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    scene.bindDepthTexture();
+    program.setInt("texDepth",texId++,true);
+  }
+  program.setFloat("density",density,true);
+  program.setFloat("exposure",exposure,true);
+  program.setFloat("weight",weight,true);
+  program.setFloat("decay",decay,true);
+  WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+  if (worldRenderer != null) {
+    Vector3f sunDirection=worldRenderer.getSkysphere().getSunDirection(true);
+    Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+    Vector4f sunPositionWorldSpace4=new Vector4f(sunDirection.x * 10000.0f,sunDirection.y * 10000.0f,sunDirection.z * 10000.0f,1.0f);
+    Vector4f sunPositionScreenSpace=new Vector4f();
+    activeCamera.getViewProjectionMatrix().transform(sunPositionWorldSpace4,sunPositionScreenSpace);
+    sunPositionScreenSpace.x/=sunPositionScreenSpace.w;
+    sunPositionScreenSpace.y/=sunPositionScreenSpace.w;
+    sunPositionScreenSpace.z/=sunPositionScreenSpace.w;
+    sunPositionScreenSpace.w=1.0f;
+    program.setFloat("lightDirDotViewDir",activeCamera.getViewingDirection().dot(sunDirection),true);
+    program.setFloat2("lightScreenPos",(sunPositionScreenSpace.x + 1.0f) / 2.0f,(sunPositionScreenSpace.y + 1.0f) / 2.0f,true);
+  }
+}

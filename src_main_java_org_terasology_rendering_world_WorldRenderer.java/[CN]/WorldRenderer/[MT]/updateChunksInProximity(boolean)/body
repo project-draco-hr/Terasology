@@ -1,18 +1,19 @@
 {
   int newChunkPosX=calcCamChunkOffsetX();
   int newChunkPosZ=calcCamChunkOffsetZ();
-  int viewingDistance=config.getRendering().getActiveViewingDistance();
+  int viewingDistance=config.getRendering().getViewDistance().getChunkDistance();
+  boolean chunksCurrentlyPending=false;
   if (chunkPosX != newChunkPosX || chunkPosZ != newChunkPosZ || force || pendingChunks) {
     if (chunksInProximity.size() == 0 || force || pendingChunks) {
       chunksInProximity.clear();
       for (int x=-(viewingDistance / 2); x < viewingDistance / 2; x++) {
         for (int z=-(viewingDistance / 2); z < viewingDistance / 2; z++) {
           Chunk c=chunkProvider.getChunk(newChunkPosX + x,0,newChunkPosZ + z);
-          if (c != null) {
+          if (c != null && c.getChunkState() == Chunk.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
             chunksInProximity.add(c);
           }
  else {
-            pendingChunks=true;
+            chunksCurrentlyPending=true;
           }
         }
       }
@@ -27,6 +28,7 @@
           for (int y=r.minY(); y < r.maxY(); ++y) {
             Chunk c=chunkProvider.getChunk(x,0,y);
             chunksInProximity.remove(c);
+            c.disposeMesh();
           }
         }
       }
@@ -35,11 +37,11 @@
         for (int x=r.minX(); x < r.maxX(); ++x) {
           for (int y=r.minY(); y < r.maxY(); ++y) {
             Chunk c=chunkProvider.getChunk(x,0,y);
-            if (c != null) {
+            if (c != null && c.getChunkState() == Chunk.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
               chunksInProximity.add(c);
             }
  else {
-              pendingChunks=true;
+              chunksCurrentlyPending=true;
             }
           }
         }
@@ -47,7 +49,8 @@
     }
     chunkPosX=newChunkPosX;
     chunkPosZ=newChunkPosZ;
-    Collections.sort(chunksInProximity,new ChunkProximityComparator());
+    pendingChunks=chunksCurrentlyPending;
+    Collections.sort(chunksInProximity,new ChunkFrontToBackComparator());
     return true;
   }
   return false;

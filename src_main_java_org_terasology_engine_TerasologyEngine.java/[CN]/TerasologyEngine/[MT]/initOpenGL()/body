@@ -16,13 +16,13 @@
 );
   AssetManager.getInstance().setAssetFactory(AssetType.SHADER,new AssetFactory<ShaderData,Shader>(){
     @Override public Shader buildAsset(    AssetUri uri,    ShaderData data){
-      return new OpenGLShader(uri,data);
+      return new GLSLShader(uri,data);
     }
   }
 );
   AssetManager.getInstance().setAssetFactory(AssetType.MATERIAL,new AssetFactory<MaterialData,Material>(){
     @Override public Material buildAsset(    AssetUri uri,    MaterialData data){
-      return new OpenGLMaterial(uri,data);
+      return new GLSLMaterial(uri,data);
     }
   }
 );
@@ -44,4 +44,5 @@
     }
   }
 );
+  CoreRegistry.putPermanently(ShaderManager.class,new ShaderManager());
 }

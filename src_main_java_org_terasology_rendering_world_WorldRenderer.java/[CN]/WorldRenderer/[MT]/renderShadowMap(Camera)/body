@@ -1,0 +1,9 @@
+{
+  PerformanceMonitor.startActivity("Render World (Shadow Map)");
+  camera.lookThrough();
+  while (renderQueueChunksOpaqueShadow.size() > 0)   renderChunk(renderQueueChunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.SHADOW_MAP);
+  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+    renderer.renderShadows();
+  }
+  PerformanceMonitor.endActivity();
+}

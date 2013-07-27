@@ -1,0 +1,74 @@
+{
+  super.applyParameters(program);
+  Texture terrain=Assets.getTexture("engine:terrain");
+  Texture terrainNormal=Assets.getTexture("engine:terrainNormal");
+  Texture terrainHeight=Assets.getTexture("engine:terrainHeight");
+  Texture water=Assets.getTexture("engine:waterStill");
+  Texture lava=Assets.getTexture("engine:lavaStill");
+  Texture waterNormal=Assets.getTexture("engine:waterNormal");
+  Texture waterNormalAlt=Assets.getTexture("engine:waterNormalAlt");
+  Texture effects=Assets.getTexture("engine:effects");
+  if (terrain == null || water == null || lava == null || waterNormal == null || effects == null) {
+    return;
+  }
+  int texId=0;
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  glBindTexture(GL11.GL_TEXTURE_2D,terrain.getId());
+  program.setInt("textureAtlas",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  glBindTexture(GL11.GL_TEXTURE_2D,water.getId());
+  program.setInt("textureWater",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  glBindTexture(GL11.GL_TEXTURE_2D,lava.getId());
+  program.setInt("textureLava",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  glBindTexture(GL11.GL_TEXTURE_2D,waterNormal.getId());
+  program.setInt("textureWaterNormal",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  glBindTexture(GL11.GL_TEXTURE_2D,waterNormalAlt.getId());
+  program.setInt("textureWaterNormalAlt",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  glBindTexture(GL11.GL_TEXTURE_2D,effects.getId());
+  program.setInt("textureEffects",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  DefaultRenderingProcess.getInstance().bindFboTexture("sceneReflected");
+  program.setInt("textureWaterReflection",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  DefaultRenderingProcess.getInstance().bindFboTexture("sceneOpaque");
+  program.setInt("texSceneOpaque",texId++,true);
+  if (CoreRegistry.get(Config.class).getRendering().isNormalMapping()) {
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    glBindTexture(GL11.GL_TEXTURE_2D,terrainNormal.getId());
+    program.setInt("textureAtlasNormal",texId++,true);
+    if (CoreRegistry.get(Config.class).getRendering().isParallaxMapping()) {
+      GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+      glBindTexture(GL11.GL_TEXTURE_2D,terrainHeight.getId());
+      program.setInt("textureAtlasHeight",texId++,true);
+    }
+  }
+  Vector4f lightingSettingsFrag=new Vector4f();
+  lightingSettingsFrag.z=waterSpecExp;
+  program.setFloat4("lightingSettingsFrag",lightingSettingsFrag,true);
+  Vector4f waterSettingsFrag=new Vector4f();
+  waterSettingsFrag.x=waterNormalBias;
+  waterSettingsFrag.y=waterRefraction;
+  waterSettingsFrag.z=waterFresnelBias;
+  waterSettingsFrag.w=waterFresnelPow;
+  program.setFloat4("waterSettingsFrag",waterSettingsFrag,true);
+  Vector4f alternativeWaterSettingsFrag=new Vector4f();
+  alternativeWaterSettingsFrag.x=waterTint;
+  program.setFloat4("alternativeWaterSettingsFrag",alternativeWaterSettingsFrag,true);
+  if (CoreRegistry.get(Config.class).getRendering().isAnimateWater()) {
+    program.setFloat("waveIntensFalloff",waveIntensFalloff,true);
+    program.setFloat("waveSizeFalloff",waveSizeFalloff,true);
+    program.setFloat("waveSize",waveSize,true);
+    program.setFloat("waveSpeedFalloff",waveSpeedFalloff,true);
+    program.setFloat("waveSpeed",waveSpeed,true);
+    program.setFloat("waveIntens",waveIntens,true);
+    program.setFloat("waterOffsetY",waterOffsetY,true);
+    program.setFloat("waveOverallScale",waveOverallScale,true);
+  }
+  if (CoreRegistry.get(Config.class).getRendering().isParallaxMapping() && CoreRegistry.get(Config.class).getRendering().isNormalMapping()) {
+    program.setFloat4("parallaxProperties",parallaxBias,parallaxScale,0.0f,0.0f,true);
+  }
+}

@@ -1,0 +1,42 @@
+{
+  if (!takeScreenshot) {
+    return;
+  }
+  final FBO fboSceneFinal=getFBO("sceneFinal");
+  if (fboSceneFinal == null) {
+    return;
+  }
+  final ByteBuffer buffer=BufferUtils.createByteBuffer(fboSceneFinal.width * fboSceneFinal.height * 4);
+  fboSceneFinal.bindTexture();
+  GL11.glGetTexImage(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,buffer);
+  fboSceneFinal.unbindTexture();
+  Runnable r=new Runnable(){
+    @Override public void run(){
+      Calendar cal=Calendar.getInstance();
+      SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
+      final String fileName="Terasology-" + sdf.format(cal.getTime()) + "-"+ fboSceneFinal.width+ "x"+ fboSceneFinal.height+ ".png";
+      Path path=PathManager.getInstance().getScreenshotPath().resolve(fileName);
+      BufferedImage image=new BufferedImage(fboSceneFinal.width,fboSceneFinal.height,BufferedImage.TYPE_INT_RGB);
+      for (int x=0; x < fboSceneFinal.width; x++)       for (int y=0; y < fboSceneFinal.height; y++) {
+        int i=(x + fboSceneFinal.width * y) * 4;
+        int r=buffer.get(i) & 0xFF;
+        int g=buffer.get(i + 1) & 0xFF;
+        int b=buffer.get(i + 2) & 0xFF;
+        image.setRGB(x,fboSceneFinal.height - (y + 1),(0xFF << 24) | (r << 16) | (g << 8)| b);
+      }
+      try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(path))){
+        ImageIO.write(image,"png",out);
+        logger.info("Screenshot '" + fileName + "' saved! ");
+      }
+ catch (      IOException e) {
+        logger.warn("Failed to save screenshot!",e);
+      }
+    }
+  }
+;
+  CoreRegistry.get(GameEngine.class).submitTask("Write screenshot",r);
+  takeScreenshot=false;
+  overwriteRtWidth=0;
+  overwriteRtWidth=0;
+  createOrUpdateFullscreenFbos();
+}

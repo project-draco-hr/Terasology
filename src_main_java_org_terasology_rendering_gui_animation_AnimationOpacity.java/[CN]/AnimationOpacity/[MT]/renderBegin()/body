@@ -1,10 +1,10 @@
 {
   if (fbo == null) {
-    fbo=PostProcessingRenderer.getInstance().createFBO(id,Display.getWidth(),Display.getHeight(),false,false);
+    fbo=DefaultRenderingProcess.getInstance().createFBO(id,Display.getWidth(),Display.getHeight(),DefaultRenderingProcess.FBOType.DEFAULT,true,false);
   }
- else   if (fbo._height != Display.getHeight() || fbo._width != Display.getWidth()) {
-    fbo=PostProcessingRenderer.getInstance().createFBO(id,Display.getWidth(),Display.getHeight(),false,false);
+ else   if (fbo.height != Display.getHeight() || fbo.width != Display.getWidth()) {
+    fbo=DefaultRenderingProcess.getInstance().createFBO(id,Display.getWidth(),Display.getHeight(),DefaultRenderingProcess.FBOType.DEFAULT,true,false);
   }
-  PostProcessingRenderer.getInstance().getFBO(id).bind();
+  DefaultRenderingProcess.getInstance().getFBO(id).bind();
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

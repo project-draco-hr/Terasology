@@ -1,0 +1,41 @@
+{
+switch (stereoRenderState) {
+case MONO:
+    currentRenderingStage=WorldRenderingStage.DEFAULT;
+  break;
+case OCULUS_LEFT_EYE:
+currentRenderingStage=WorldRenderingStage.OCULUS_LEFT_EYE;
+activeCamera.updateFrustum();
+break;
+case OCULUS_RIGHT_EYE:
+currentRenderingStage=WorldRenderingStage.OCULUS_RIGHT_EYE;
+activeCamera.updateFrustum();
+break;
+}
+resetStats();
+if (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE) {
+updateAndQueueVisibleChunks();
+}
+ else {
+updateAndQueueVisibleChunks(false,false);
+}
+if (config.getRendering().isDynamicShadows() && (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE)) {
+DefaultRenderingProcess.getInstance().beginRenderSceneShadowMap();
+renderShadowMap(lightCamera);
+DefaultRenderingProcess.getInstance().endRenderSceneShadowMap();
+}
+DefaultRenderingProcess.getInstance().beginRenderReflectedScene();
+glCullFace(GL11.GL_FRONT);
+getActiveCamera().setReflected(true);
+renderWorldReflection(activeCamera);
+getActiveCamera().setReflected(false);
+glCullFace(GL11.GL_BACK);
+DefaultRenderingProcess.getInstance().endRenderReflectedScene();
+renderWorld(getActiveCamera());
+PerformanceMonitor.startActivity("Render Post-Processing");
+DefaultRenderingProcess.getInstance().renderScene(stereoRenderState);
+PerformanceMonitor.endActivity();
+if (activeCamera != null) {
+activeCamera.updatePrevViewProjectionMatrix();
+}
+}

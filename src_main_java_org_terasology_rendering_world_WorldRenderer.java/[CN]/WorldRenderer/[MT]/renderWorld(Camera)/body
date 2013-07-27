@@ -1,56 +1,107 @@
 {
-  PerformanceMonitor.startActivity("Render Sky");
+  if (config.getRendering().getDebug().isWireframe()) {
+    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+  }
+  DefaultRenderingProcess.getInstance().clear();
+  DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
   camera.lookThroughNormalized();
-  skysphere.render();
+  PerformanceMonitor.startActivity("Render Sky");
+  DefaultRenderingProcess.getInstance().beginRenderSceneSky();
+  skysphere.render(camera);
+  DefaultRenderingProcess.getInstance().endRenderSceneSky();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render World");
   camera.lookThrough();
-  glEnable(GL_LIGHT0);
-  boolean headUnderWater=cameraMode == CAMERA_MODE.PLAYER && isUnderWater();
-  if (wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
   PerformanceMonitor.startActivity("Render Objects (Opaque)");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderOpaque();
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Chunks (Opaque)");
-  while (renderQueueChunksOpaque.size() > 0)   renderChunk(renderQueueChunksOpaque.poll(),ChunkMesh.RENDER_PHASE.OPAQUE,camera);
-  PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render Chunks (Transparent)");
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  while (renderQueueChunksSortedBillboards.size() > 0)   renderChunk(renderQueueChunksSortedBillboards.poll(),ChunkMesh.RENDER_PHASE.ALPHA_REJECT,camera);
-  PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render Objects (Transparent)");
-  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
-    renderer.renderTransparent();
+  while (renderQueueChunksOpaque.size() > 0) {
+    renderChunk(renderQueueChunksOpaque.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render Chunks (Water, Ice)");
-  if (headUnderWater) {
-    glDisable(GL11.GL_CULL_FACE);
+  PerformanceMonitor.startActivity("Render Chunks (Alpha Reject)");
+  while (renderQueueChunksAlphaReject.size() > 0) {
+    renderChunk(renderQueueChunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,camera,ChunkRenderMode.DEFAULT);
   }
-  while (renderQueueChunksSortedWater.size() > 0) {
-    Chunk c=renderQueueChunksSortedWater.poll();
-    for (int j=0; j < 2; j++) {
-      if (j == 0) {
-        glColorMask(false,false,false,false);
-        renderChunk(c,ChunkMesh.RENDER_PHASE.REFRACTIVE,camera);
-      }
- else {
-        glColorMask(true,true,true,true);
-        renderChunk(c,ChunkMesh.RENDER_PHASE.REFRACTIVE,camera);
-      }
+  PerformanceMonitor.endActivity();
+  if (activeCamera != null && !config.getRendering().getDebug().isFirstPersonElementsHidden()) {
+    PerformanceMonitor.startActivity("Render First Person");
+    glPushMatrix();
+    glLoadIdentity();
+    activeCamera.updateMatrices(90f);
+    activeCamera.loadProjectionMatrix();
+    glDepthFunc(GL11.GL_ALWAYS);
+    for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+      renderer.renderFirstPerson();
     }
+    glDepthFunc(GL_LEQUAL);
+    activeCamera.updateMatrices();
+    activeCamera.loadProjectionMatrix();
+    glPopMatrix();
+    PerformanceMonitor.endActivity();
   }
-  PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Overlays");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderOverlay();
   }
   PerformanceMonitor.endActivity();
+  DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
+  PerformanceMonitor.startActivity("Render Light Geometry");
+  DefaultRenderingProcess.getInstance().beginRenderLightGeometryStencilPass();
+  Material program=Assets.getMaterial("engine:simple");
+  program.enable();
+  program.setCamera(camera);
+  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+  for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
+    LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
+    LightComponent lightComponent=entity.getComponent(LightComponent.class);
+    final Vector3f worldPosition=locationComponent.getWorldPosition();
+    renderLightComponent(lightComponent,worldPosition,program,camera,true);
+  }
+  DefaultRenderingProcess.getInstance().endRenderLightGeometryStencilPass();
+  DefaultRenderingProcess.getInstance().beginRenderLightGeometry();
+  program=Assets.getMaterial("engine:lightGeometryPass");
+  for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
+    LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
+    LightComponent lightComponent=entity.getComponent(LightComponent.class);
+    final Vector3f worldPosition=locationComponent.getWorldPosition();
+    renderLightComponent(lightComponent,worldPosition,program,camera,false);
+  }
+  DefaultRenderingProcess.getInstance().endRenderLightGeometry();
+  DefaultRenderingProcess.getInstance().beginRenderDirectionalLights();
+  Vector3f sunlightWorldPosition=new Vector3f(skysphere.getSunDirection(true));
+  renderLightComponent(mainDirectionalLight,sunlightWorldPosition,program,camera,false);
+  DefaultRenderingProcess.getInstance().endRenderDirectionalLights();
+  PerformanceMonitor.endActivity();
+  boolean headUnderWater=isUnderWater();
+  if (headUnderWater) {
+    glDisable(GL11.GL_CULL_FACE);
+  }
+  PerformanceMonitor.startActivity("Render Chunks (Alpha blend)");
+  DefaultRenderingProcess.getInstance().beginRenderSceneTransparent();
+  while (renderQueueChunksAlphaBlend.size() > 0) {
+    renderChunk(renderQueueChunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,camera,ChunkRenderMode.DEFAULT);
+  }
+  PerformanceMonitor.endActivity();
+  if (headUnderWater) {
+    glEnable(GL11.GL_CULL_FACE);
+  }
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render Objects (Transparent)");
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glDepthMask(false);
+  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+    renderer.renderAlphaBlend();
+  }
   glDisable(GL_BLEND);
-  if (headUnderWater)   glEnable(GL11.GL_CULL_FACE);
-  if (wireframe)   glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-  glDisable(GL_LIGHT0);
+  glDepthMask(true);
+  PerformanceMonitor.endActivity();
+  DefaultRenderingProcess.getInstance().endRenderSceneTransparent();
+  if (config.getRendering().getDebug().isWireframe()) {
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+  }
 }

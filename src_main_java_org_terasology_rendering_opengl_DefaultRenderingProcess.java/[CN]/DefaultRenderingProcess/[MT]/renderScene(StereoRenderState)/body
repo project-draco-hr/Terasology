@@ -1,0 +1,42 @@
+{
+  createOrUpdateFullscreenFbos();
+  if (config.getRendering().isOutline()) {
+    generateSobel();
+  }
+  if (config.getRendering().isSsao()) {
+    generateSSAO();
+    generateBlurredSSAO();
+  }
+  generateCombinedScene();
+  if (config.getRendering().isLightShafts()) {
+    generateLightShafts();
+  }
+  generatePrePost();
+  if (config.getRendering().isEyeAdaptation()) {
+    generateDownsampledScene();
+  }
+  updateExposure();
+  generateToneMappedScene();
+  if (config.getRendering().isBloom()) {
+    generateHighPass();
+  }
+  for (int i=0; i < 3; i++) {
+    if (config.getRendering().isBloom()) {
+      generateBloom(i);
+    }
+  }
+  for (int i=0; i < 2; i++) {
+    if (config.getRendering().getBlurIntensity() != 0) {
+      generateBlur(i);
+    }
+  }
+  if (stereoRenderState == StereoRenderState.OCULUS_LEFT_EYE || stereoRenderState == StereoRenderState.OCULUS_RIGHT_EYE || (stereoRenderState == StereoRenderState.MONO && takeScreenshot)) {
+    renderFinalSceneToRT(stereoRenderState);
+    if (takeScreenshot) {
+      saveScreenshot();
+    }
+  }
+  if (stereoRenderState == StereoRenderState.MONO || stereoRenderState == StereoRenderState.OCULUS_RIGHT_EYE) {
+    renderFinalScene();
+  }
+}

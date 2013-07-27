@@ -1,0 +1,13 @@
+{
+  Assets.getMaterial("engine:sobel").enable();
+  FBO sobel=getFBO("sobel");
+  if (sobel == null) {
+    return;
+  }
+  sobel.bind();
+  glViewport(0,0,sobel.width,sobel.height);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  sobel.unbind();
+  glViewport(0,0,rtFullWidth,rtFullHeight);
+}

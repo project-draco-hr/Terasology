@@ -1,20 +1,16 @@
 {
   PerformanceMonitor.startActivity("Render World (Reflection)");
   camera.lookThroughNormalized();
-  skysphere.render();
+  skysphere.render(camera);
+  Material chunkShader=Assets.getMaterial("engine:chunk");
+  chunkShader.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   if (config.getRendering().isReflectiveWater()) {
     camera.lookThrough();
     glEnable(GL_LIGHT0);
-    for (    Chunk c : renderQueueChunksOpaque) {
-      renderChunk(c,ChunkMesh.RENDER_PHASE.OPAQUE,camera);
+    while (renderQueueChunksOpaqueReflection.size() > 0) {
+      renderChunk(renderQueueChunksOpaqueReflection.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.REFLECTION);
     }
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    for (    Chunk c : renderQueueChunksSortedBillboards) {
-      renderChunk(c,ChunkMesh.RENDER_PHASE.ALPHA_REJECT,camera);
-    }
-    glDisable(GL_BLEND);
-    glDisable(GL_LIGHT0);
   }
+  chunkShader.removeFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   PerformanceMonitor.endActivity();
 }

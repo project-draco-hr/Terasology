@@ -1,0 +1,9 @@
+{
+  this.width=width;
+  this.height=height;
+  int byteSize=width * height * 4;
+  cachedBuffer=BufferUtils.createByteBuffer(byteSize);
+  bind();
+  EXTPixelBufferObject.glBufferDataARB(EXTPixelBufferObject.GL_PIXEL_PACK_BUFFER_EXT,byteSize,EXTPixelBufferObject.GL_STREAM_READ_ARB);
+  unbind();
+}

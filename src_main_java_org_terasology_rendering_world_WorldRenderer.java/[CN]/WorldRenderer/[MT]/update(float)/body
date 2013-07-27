@@ -1,8 +1,4 @@
 {
-  PerformanceMonitor.startActivity("Cameras");
-  animateSpawnCamera(delta);
-  spawnCamera.update(delta);
-  PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Tick");
   updateTick(delta);
   PerformanceMonitor.endActivity();
@@ -13,10 +9,14 @@
   updateChunksInProximity(false);
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Skysphere");
-  skysphere.update(delta);
+  skysphere.update();
   PerformanceMonitor.endActivity();
   if (activeCamera != null) {
     activeCamera.update(delta);
+  }
+  if (lightCamera != null) {
+    positionLightCamera();
+    lightCamera.update(delta);
   }
   PerformanceMonitor.startActivity("Fire Events");
   worldTimeEventManager.fireWorldTimeEvents();
@@ -24,4 +24,5 @@
   PerformanceMonitor.startActivity("Physics Renderer");
   bulletPhysics.update(delta);
   PerformanceMonitor.endActivity();
+  smoothedPlayerSunlightValue=TeraMath.lerpf(smoothedPlayerSunlightValue,getSunlightValue(),delta);
 }

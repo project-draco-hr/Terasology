@@ -3,17 +3,9 @@
   if (debugEnabled) {
 switch (event.getKey()) {
 case Keyboard.KEY_R:
-      worldRenderer.setWireframe(!worldRenderer.isWireframe());
+      config.getRendering().getDebug().setWireframe(!config.getRendering().getDebug().isWireframe());
     event.consume();
   break;
-case Keyboard.KEY_P:
-worldRenderer.setCameraMode(WorldRenderer.CAMERA_MODE.PLAYER);
-event.consume();
-break;
-case Keyboard.KEY_O:
-worldRenderer.setCameraMode(WorldRenderer.CAMERA_MODE.SPAWN);
-event.consume();
-break;
 case Keyboard.KEY_K:
 entity.send(new DoDamageEvent(9999,null));
 break;
@@ -21,6 +13,19 @@ case Keyboard.KEY_H:
 for (UIDisplayElement element : CoreRegistry.get(GUIManager.class).getWindowById("hud").getDisplayElements()) {
 element.setVisible(!element.isVisible());
 }
+event.consume();
+break;
+case Keyboard.KEY_F6:
+config.getRendering().getDebug().setEnabled(!config.getRendering().getDebug().isEnabled());
+event.consume();
+break;
+case Keyboard.KEY_F7:
+config.getRendering().getDebug().cycleStage();
+entity.send(new ConsoleMessageEvent("Set debug stage to: " + config.getRendering().getDebug().getStage()));
+event.consume();
+break;
+case Keyboard.KEY_F8:
+config.getSystem().setRenderChunkBoundingBoxes(!config.getSystem().isRenderChunkBoundingBoxes());
 event.consume();
 break;
 }

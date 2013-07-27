@@ -2,13 +2,12 @@
   boolean complete=true;
   int newChunkPosX=calcCamChunkOffsetX();
   int newChunkPosZ=calcCamChunkOffsetZ();
-  int viewingDistance=config.getRendering().getActiveViewingDistance();
+  int viewingDistance=config.getRendering().getViewDistance().getChunkDistance();
   chunkProvider.update();
   for (  Vector3i pos : Region3i.createFromCenterExtents(new Vector3i(newChunkPosX,0,newChunkPosZ),new Vector3i(viewingDistance / 2,0,viewingDistance / 2))) {
     Chunk chunk=chunkProvider.getChunk(pos);
-    if (chunk == null) {
+    if (chunk == null || chunk.getChunkState() != Chunk.State.COMPLETE) {
       complete=false;
-      continue;
     }
  else     if (chunk.isDirty()) {
       ChunkView view=worldProvider.getLocalView(chunk.getPos());
@@ -18,7 +17,7 @@
       chunk.setDirty(false);
       ChunkMesh[] newMeshes=new ChunkMesh[VERTICAL_SEGMENTS];
       for (int seg=0; seg < VERTICAL_SEGMENTS; seg++) {
-        newMeshes[seg]=chunkTesselator.generateMesh(view,chunk.getPos(),Chunk.SIZE_Y / VERTICAL_SEGMENTS,seg * (Chunk.SIZE_Y / VERTICAL_SEGMENTS));
+        newMeshes[seg]=chunkTessellator.generateMesh(view,chunk.getPos(),Chunk.SIZE_Y / VERTICAL_SEGMENTS,seg * (Chunk.SIZE_Y / VERTICAL_SEGMENTS));
       }
       chunk.setPendingMesh(newMeshes);
       if (chunk.getPendingMesh() != null) {

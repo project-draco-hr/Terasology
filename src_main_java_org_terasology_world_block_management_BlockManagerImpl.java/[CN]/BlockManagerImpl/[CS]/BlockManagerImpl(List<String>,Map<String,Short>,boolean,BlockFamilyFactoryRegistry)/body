@@ -1,6 +1,6 @@
 {
   this.generateNewIds=generateNewIds;
-  blockLoader=new BlockLoader(blockFamilyFactoryRegistry);
+  blockLoader=new BlockLoader(blockFamilyFactoryRegistry,new WorldAtlasBuilder(CoreRegistry.get(Config.class).getRendering().getMaxTextureAtlasResolution()));
   BlockLoader.LoadBlockDefinitionResults blockDefinitions=blockLoader.loadBlockDefinitions();
   addBlockFamily(getAirFamily(),true);
   for (  BlockFamily family : blockDefinitions.families) {

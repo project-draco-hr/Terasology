@@ -1,0 +1,26 @@
+{
+  Material material;
+  if (config.getRendering().getDebug().isEnabled()) {
+    material=Assets.getMaterial("engine:debug");
+  }
+ else {
+    material=Assets.getMaterial("engine:post");
+  }
+  material.enable();
+  bindFbo("sceneFinal");
+  if (stereoRenderState == StereoRenderState.MONO || stereoRenderState == StereoRenderState.OCULUS_LEFT_EYE) {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  }
+switch (stereoRenderState) {
+case MONO:
+    renderFullscreenQuad(0,0,rtFullWidth,rtFullHeight);
+  break;
+case OCULUS_LEFT_EYE:
+renderFullscreenQuad(0,0,rtFullWidth / 2,rtFullHeight);
+break;
+case OCULUS_RIGHT_EYE:
+renderFullscreenQuad(rtFullWidth / 2,0,rtFullWidth / 2,rtFullHeight);
+break;
+}
+unbindFbo("sceneFinal");
+}

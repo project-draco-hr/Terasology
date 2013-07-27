@@ -2,12 +2,14 @@
   if (effectsTexture == null) {
     return;
   }
-  ShaderManager.getInstance().enableDefaultTextured();
+  Material defaultTextured=Assets.getMaterial("engine:defaultTextured");
+  defaultTextured.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+  defaultTextured.enable();
   glBindTexture(GL11.GL_TEXTURE_2D,effectsTexture.getId());
   glEnable(GL11.GL_BLEND);
   glBlendFunc(GL_DST_COLOR,GL_ZERO);
   Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
-  for (  EntityRef entity : entityManager.getEntitiesWith(BlockDamagedComponent.class,HealthComponent.class)) {
+  for (  EntityRef entity : entityManager.getEntitiesWith(HealthComponent.class,BlockComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
     if (health.currentHealth == health.maxHealth) {
       continue;
@@ -26,4 +28,5 @@
     }
   }
   glDisable(GL11.GL_BLEND);
+  defaultTextured.removeFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
 }
