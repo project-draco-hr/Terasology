@@ -1,6 +1,6 @@
 {
   setSize(size);
-  _buttonType=buttonType;
+  this.buttonType=buttonType;
   setTexture("engine:gui_menu");
   setNormalState(new Vector2f(0f,0f),new Vector2f(256f,30f));
   setHoverState(new Vector2f(0f,30f),new Vector2f(256f,30f));
@@ -8,8 +8,8 @@
   setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
   addMouseMoveListener(new MouseMoveListener(){
     @Override public void leave(    UIDisplayElement element){
-      if (_buttonType == ButtonType.TOGGLE) {
-        if (_toggleState) {
+      if (UIButton.this.buttonType == ButtonType.TOGGLE) {
+        if (toggleState) {
           setBackgroundImage(states.get("pressed")[0],states.get("pressed")[1]);
         }
  else {
@@ -24,7 +24,7 @@
     }
     @Override public void enter(    UIDisplayElement element){
       CoreRegistry.get(AudioManager.class).playSound(Assets.getSound("engine:click"),1.0f);
-      if (_buttonType == ButtonType.NORMAL) {
+      if (UIButton.this.buttonType == ButtonType.NORMAL) {
         setBackgroundImage(states.get("hover")[0],states.get("hover")[1]);
       }
     }
@@ -34,14 +34,14 @@
 );
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void up(    UIDisplayElement element,    int button,    boolean intersect){
-      if (_buttonType == ButtonType.NORMAL) {
+      if (UIButton.this.buttonType == ButtonType.NORMAL) {
         setBackgroundImage(states.get("normal")[0],states.get("normal")[1]);
       }
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
       if (intersect) {
-        if (_buttonType == ButtonType.TOGGLE) {
-          setToggleState(!_toggleState);
+        if (UIButton.this.buttonType == ButtonType.TOGGLE) {
+          setToggleState(!toggleState);
         }
  else {
           setBackgroundImage(states.get("pressed")[0],states.get("pressed")[1]);
@@ -52,16 +52,16 @@
     }
   }
 );
-  _label=new UILabel("Untitled");
-  _label.addChangedListener(new ChangedListener(){
+  label=new UILabel("Untitled");
+  label.addChangedListener(new ChangedListener(){
     @Override public void changed(    UIDisplayElement element){
       layout();
     }
   }
 );
-  _label.setHorizontalAlign(EHorizontalAlign.CENTER);
-  _label.setVerticalAlign(EVerticalAlign.CENTER);
-  _label.setVisible(true);
-  _label.setTextShadow(true);
-  addDisplayElement(_label);
+  label.setHorizontalAlign(EHorizontalAlign.CENTER);
+  label.setVerticalAlign(EVerticalAlign.CENTER);
+  label.setVisible(true);
+  label.setTextShadow(true);
+  addDisplayElement(label);
 }

@@ -1,13 +1,13 @@
 {
-  _activityStack=new Stack<Activity>();
-  _metricData=new LinkedList<TObjectLongMap<String>>();
-  _runningTotals=new TObjectLongHashMap<String>();
-  _timerTicksPerSecond=Sys.getTimerResolution();
-  _currentData=new TObjectLongHashMap<String>();
-  _spikeData=new TObjectDoubleHashMap<String>();
-  _runningThreads=TCollections.synchronizedMap(new TObjectIntHashMap<String>());
-  _stoppedThreads=TCollections.synchronizedMap(new TObjectIntHashMap<String>());
-  _lastRunningThreads=new TObjectIntHashMap<String>();
-  _timeFactor=1000.0 / _timerTicksPerSecond;
-  _mainThread=Thread.currentThread();
+  activityStack=Queues.newArrayDeque();
+  metricData=Lists.newLinkedList();
+  runningTotals=new TObjectLongHashMap<>();
+  timerTicksPerSecond=Sys.getTimerResolution();
+  currentData=new TObjectLongHashMap<>();
+  spikeData=new TObjectDoubleHashMap<>();
+  runningThreads=TCollections.synchronizedMap(new TObjectIntHashMap<String>());
+  stoppedThreads=TCollections.synchronizedMap(new TObjectIntHashMap<String>());
+  lastRunningThreads=new TObjectIntHashMap<>();
+  timeFactor=1000.0 / timerTicksPerSecond;
+  mainThread=Thread.currentThread();
 }

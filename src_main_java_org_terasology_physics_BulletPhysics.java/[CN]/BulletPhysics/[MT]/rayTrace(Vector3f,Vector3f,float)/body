@@ -4,7 +4,7 @@
   to.add(from);
   CollisionWorld.ClosestRayResultWithUserDataCallback closest=new CollisionWorld.ClosestRayResultWithUserDataCallback(from,to);
   closest.collisionFilterGroup=CollisionFilterGroups.SENSOR_TRIGGER;
-  _discreteDynamicsWorld.rayTest(from,to,closest);
+  discreteDynamicsWorld.rayTest(from,to,closest);
   if (closest.userData instanceof Vector3i) {
     return new HitResult(blockEntityRegistry.getEntityAt((Vector3i)closest.userData),closest.hitPointWorld,closest.hitNormalWorld);
   }

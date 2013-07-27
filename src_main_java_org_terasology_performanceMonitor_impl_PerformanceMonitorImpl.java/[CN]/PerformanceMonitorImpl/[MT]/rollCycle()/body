@@ -1,47 +1,47 @@
 {
-  _metricData.add(_currentData);
-  _spikeData.forEachEntry(new TObjectDoubleProcedure<String>(){
+  metricData.add(currentData);
+  spikeData.forEachEntry(new TObjectDoubleProcedure<String>(){
     public boolean execute(    String s,    double v){
-      _spikeData.put(s,v * DECAY_RATE);
+      spikeData.put(s,v * DECAY_RATE);
       return true;
     }
   }
 );
-  _currentData.forEachEntry(new TObjectLongProcedure<String>(){
+  currentData.forEachEntry(new TObjectLongProcedure<String>(){
     public boolean execute(    String s,    long v){
-      _runningTotals.adjustOrPutValue(s,v,v);
-      double time=v * _timeFactor;
-      double prev=_spikeData.get(s);
+      runningTotals.adjustOrPutValue(s,v,v);
+      double time=v * timeFactor;
+      double prev=spikeData.get(s);
       if (time > prev) {
-        _spikeData.put(s,time);
+        spikeData.put(s,time);
       }
       return true;
     }
   }
 );
-  while (_metricData.size() > RETAINED_CYCLES) {
-    _metricData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
+  while (metricData.size() > RETAINED_CYCLES) {
+    metricData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
       public boolean execute(      String s,      long v){
-        _runningTotals.adjustValue(s,-v);
+        runningTotals.adjustValue(s,-v);
         return true;
       }
     }
 );
-    _metricData.remove(0);
+    metricData.remove(0);
   }
-  _currentData=new TObjectLongHashMap<String>();
-  _runningThreads.forEachEntry(new TObjectIntProcedure<String>(){
+  currentData=new TObjectLongHashMap<String>();
+  runningThreads.forEachEntry(new TObjectIntProcedure<String>(){
     public boolean execute(    String s,    int i){
-      _lastRunningThreads.adjustOrPutValue(s,i,i);
+      lastRunningThreads.adjustOrPutValue(s,i,i);
       return true;
     }
   }
 );
-  TObjectIntMap<String> temp=_runningThreads;
+  TObjectIntMap<String> temp=runningThreads;
   temp.clear();
-  _runningThreads=_stoppedThreads;
-  _stoppedThreads=temp;
-  _lastRunningThreads.retainEntries(new TObjectIntProcedure<String>(){
+  runningThreads=stoppedThreads;
+  stoppedThreads=temp;
+  lastRunningThreads.retainEntries(new TObjectIntProcedure<String>(){
     public boolean execute(    String s,    int i){
       return i > 0;
     }

@@ -9,6 +9,8 @@
     LocationComponent location=entity.getComponent(LocationComponent.class);
     Vector3f pos=location.getWorldPosition();
     pos.add(particle.position);
-    if (worldProvider.getBlock(new Vector3f(pos.x,pos.y + 2 * Math.signum(particle.velocity.y) * particle.size,pos.z)).getId() != 0x0)     particle.velocity.y=0;
+    if (!worldProvider.getBlock(new Vector3f(pos.x,pos.y + 2 * Math.signum(particle.velocity.y) * particle.size,pos.z)).isPenetrable()) {
+      particle.velocity.y=0;
+    }
   }
 }
