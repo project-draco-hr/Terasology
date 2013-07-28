@@ -3,7 +3,7 @@
   camera.lookThroughNormalized();
   skysphere.render(camera);
   Material chunkShader=Assets.getMaterial("engine:chunk");
-  chunkShader.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
+  chunkShader.activateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   if (config.getRendering().isReflectiveWater()) {
     camera.lookThrough();
     glEnable(GL_LIGHT0);
@@ -11,6 +11,6 @@
       renderChunk(renderQueueChunksOpaqueReflection.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.REFLECTION);
     }
   }
-  chunkShader.removeFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
+  chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   PerformanceMonitor.endActivity();
 }

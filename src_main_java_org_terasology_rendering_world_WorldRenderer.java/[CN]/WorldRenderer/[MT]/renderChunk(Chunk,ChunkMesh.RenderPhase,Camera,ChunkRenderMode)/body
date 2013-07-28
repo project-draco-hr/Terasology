@@ -7,10 +7,10 @@
       shader=Assets.getMaterial("engine:chunk");
       shader.enable();
       if (phase == ChunkMesh.RenderPhase.REFRACTIVE) {
-        shader.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
+        shader.activateFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
       }
  else       if (phase == ChunkMesh.RenderPhase.ALPHA_REJECT) {
-        shader.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+        shader.activateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
       }
       shader.setFloat3("chunkPositionWorld",(float)(chunk.getPos().x * Chunk.SIZE_X),(float)(chunk.getPos().y * Chunk.SIZE_Y),(float)(chunk.getPos().z * Chunk.SIZE_Z));
       shader.setFloat("animated",chunk.getAnimated() ? 1.0f : 0.0f);
@@ -32,7 +32,7 @@
     GL11.glTranslatef(chunkPositionRelToCamera.x,chunkPositionRelToCamera.y,chunkPositionRelToCamera.z);
     for (int i=0; i < VERTICAL_SEGMENTS; i++) {
       if (!chunk.getMesh()[i].isEmpty()) {
-        if (config.getSystem().isRenderChunkBoundingBoxes()) {
+        if (config.getRendering().getDebug().isRenderChunkBoundingBoxes()) {
           AABBRenderer aabbRenderer=new AABBRenderer(chunk.getSubMeshAABB(i));
           aabbRenderer.renderLocally(1f);
           statRenderedTriangles+=12;
@@ -46,10 +46,10 @@
     }
     if (mode == ChunkRenderMode.DEFAULT || mode == ChunkRenderMode.REFLECTION) {
       if (phase == ChunkMesh.RenderPhase.REFRACTIVE) {
-        shader.removeFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
+        shader.deactivateFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
       }
  else       if (phase == ChunkMesh.RenderPhase.ALPHA_REJECT) {
-        shader.removeFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+        shader.deactivateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
       }
     }
     GL11.glPopMatrix();

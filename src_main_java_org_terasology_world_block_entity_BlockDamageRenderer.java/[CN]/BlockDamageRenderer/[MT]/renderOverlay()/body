@@ -3,7 +3,7 @@
     return;
   }
   Material defaultTextured=Assets.getMaterial("engine:defaultTextured");
-  defaultTextured.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+  defaultTextured.activateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
   defaultTextured.enable();
   glBindTexture(GL11.GL_TEXTURE_2D,effectsTexture.getId());
   glEnable(GL11.GL_BLEND);
@@ -28,5 +28,5 @@
     }
   }
   glDisable(GL11.GL_BLEND);
-  defaultTextured.removeFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+  defaultTextured.deactivateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
 }

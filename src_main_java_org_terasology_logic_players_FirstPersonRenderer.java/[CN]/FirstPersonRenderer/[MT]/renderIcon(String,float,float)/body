@@ -1,6 +1,6 @@
 {
   Material shader=Assets.getMaterial("engine:block");
-  shader.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+  shader.activateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
   shader.enable();
   shader.setBoolean("textured",false,true);
   shader.setFloat("sunlight",worldRenderer.getSunlightValue(),true);
@@ -20,5 +20,5 @@
   }
   itemMesh.render();
   glPopMatrix();
-  shader.removeFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+  shader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
 }

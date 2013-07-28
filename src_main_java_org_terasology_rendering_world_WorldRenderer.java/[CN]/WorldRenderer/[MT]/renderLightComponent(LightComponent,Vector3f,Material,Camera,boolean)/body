@@ -8,10 +8,10 @@
   }
   if (!geometryOnly) {
     if (lightComponent.lightType == LightComponent.LightType.POINT) {
-      program.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_LIGHT_POINT);
+      program.activateFeature(ShaderProgramFeature.FEATURE_LIGHT_POINT);
     }
  else     if (lightComponent.lightType == LightComponent.LightType.DIRECTIONAL) {
-      program.addFeatureIfAvailable(ShaderProgramFeature.FEATURE_LIGHT_DIRECTIONAL);
+      program.activateFeature(ShaderProgramFeature.FEATURE_LIGHT_DIRECTIONAL);
     }
   }
   program.enable();
@@ -42,10 +42,10 @@
   }
   if (!geometryOnly) {
     if (lightComponent.lightType == LightComponent.LightType.POINT) {
-      program.removeFeature(ShaderProgramFeature.FEATURE_LIGHT_POINT);
+      program.deactivateFeature(ShaderProgramFeature.FEATURE_LIGHT_POINT);
     }
  else     if (lightComponent.lightType == LightComponent.LightType.DIRECTIONAL) {
-      program.removeFeature(ShaderProgramFeature.FEATURE_LIGHT_DIRECTIONAL);
+      program.deactivateFeature(ShaderProgramFeature.FEATURE_LIGHT_DIRECTIONAL);
     }
   }
   return true;
