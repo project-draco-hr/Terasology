@@ -1,0 +1,10 @@
+{
+  shaderPrograms.put(0,shader.linkShaderProgram(0));
+  for (  Set<ShaderProgramFeature> permutation : Sets.powerSet(shader.getAvailableFeatures())) {
+    int featureMask=ShaderProgramFeature.getBitset(permutation);
+    shaderPrograms.put(featureMask,shader.linkShaderProgram(featureMask));
+  }
+  if (shaderParameters != null) {
+    shaderParameters.initialParameters(this);
+  }
+}

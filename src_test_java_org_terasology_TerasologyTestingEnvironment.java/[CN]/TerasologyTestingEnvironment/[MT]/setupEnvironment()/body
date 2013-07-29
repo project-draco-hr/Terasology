@@ -14,7 +14,7 @@
     DefaultBlockFamilyFactoryRegistry blockFamilyFactoryRegistry=new DefaultBlockFamilyFactoryRegistry();
     blockFamilyFactoryRegistry.setBlockFamilyFactory("horizontal",new HorizontalBlockFamilyFactory());
     blockFamilyFactoryRegistry.setBlockFamilyFactory("alignToSurface",new AlignToSurfaceFamilyFactory());
-    blockManager=new BlockManagerImpl(blockFamilyFactoryRegistry);
+    blockManager=new BlockManagerImpl(new WorldAtlas(4096),blockFamilyFactoryRegistry);
     CoreRegistry.put(BlockManager.class,blockManager);
     config=new Config();
     CoreRegistry.put(Config.class,config);

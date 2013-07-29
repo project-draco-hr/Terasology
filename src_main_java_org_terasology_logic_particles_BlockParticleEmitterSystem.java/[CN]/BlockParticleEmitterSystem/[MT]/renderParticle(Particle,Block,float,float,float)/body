@@ -1,0 +1,9 @@
+{
+  Material mat=Assets.getMaterial("engine:particle");
+  Vector4f colorMod=block.calcColorOffsetFor(BlockPart.FRONT,temperature,humidity);
+  mat.setFloat4("colorOffset",particle.color.x * colorMod.x,particle.color.y * colorMod.y,particle.color.z * colorMod.z,particle.color.w * colorMod.w,true);
+  mat.setFloat2("texOffset",particle.texOffset.x,particle.texOffset.y,true);
+  mat.setFloat2("texScale",particle.texSize.x,particle.texSize.y,true);
+  mat.setFloat("light",light,true);
+  glCallList(displayList);
+}

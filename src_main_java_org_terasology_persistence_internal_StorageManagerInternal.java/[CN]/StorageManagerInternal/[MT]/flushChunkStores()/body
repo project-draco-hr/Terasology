@@ -1,4 +1,10 @@
 {
+  FileSystemProvider zipProvider=null;
+  for (  FileSystemProvider provider : FileSystemProvider.installedProviders()) {
+    if ("jar".equalsIgnoreCase(provider.getScheme())) {
+      zipProvider=provider;
+    }
+  }
   storageTaskMaster.shutdown(new ShutdownTask(),true);
   try {
     Path chunksPath=getWorldPath();
@@ -11,7 +17,7 @@
         if (zip == null) {
           Path targetPath=chunksPath.resolve(getChunkZipTempFilename(chunkZipPos));
           Files.deleteIfExists(targetPath);
-          zip=FileSystems.newFileSystem(URI.create("jar:file:" + (targetPath).toUri().getPath()),CREATE_ZIP_OPTIONS,null);
+          zip=zipProvider.newFileSystem(targetPath,CREATE_ZIP_OPTIONS);
           newChunkZips.put(chunkZipPos,zip);
         }
         Path chunkPath=zip.getPath(getChunkFilename(chunkStoreEntry.getKey()));

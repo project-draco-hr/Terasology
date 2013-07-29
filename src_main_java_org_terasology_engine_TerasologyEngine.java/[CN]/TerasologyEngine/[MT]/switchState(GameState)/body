@@ -4,4 +4,7 @@
   }
   currentState=newState;
   newState.init(this);
+  for (  StateChangeSubscriber subscriber : stateChangeSubscribers) {
+    subscriber.onStateChange();
+  }
 }

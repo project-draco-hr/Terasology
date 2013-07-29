@@ -1,0 +1,14 @@
+{
+  glPushMatrix();
+  glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
+  for (  Particle particle : particleEffect.particles) {
+    glPushMatrix();
+    glTranslatef(particle.position.x,particle.position.y,particle.position.z);
+    applyOrientation();
+    glScalef(particle.size,particle.size,particle.size);
+    float light=worldRenderer.getRenderingLightValueAt(new Vector3f(worldPos.x + particle.position.x,worldPos.y + particle.position.y,worldPos.z + particle.position.z));
+    renderParticle(particle,light);
+    glPopMatrix();
+  }
+  glPopMatrix();
+}

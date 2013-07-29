@@ -1,0 +1,17 @@
+{
+  removeAll();
+  if (activePropertyProvider != null) {
+    List<Property> properties=new ArrayList<Property>();
+    activePropertyProvider.addPropertiesToList(properties);
+    setLayout(new GridLayout(properties.size() >= 16 ? properties.size() : 16,1));
+    Iterator<Property> it=properties.iterator();
+    while (it.hasNext()) {
+      Property property=it.next();
+      if (property instanceof FloatProperty) {
+        add(new PropertySlider((FloatProperty)property));
+        revalidate();
+      }
+    }
+  }
+  repaint();
+}

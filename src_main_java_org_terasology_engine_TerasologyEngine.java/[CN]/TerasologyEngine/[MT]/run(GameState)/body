@@ -1,11 +1,11 @@
 {
+  CoreRegistry.putPermanently(GameEngine.class,this);
   if (!initialised) {
     init();
   }
   changeState(initialState);
   running=true;
   Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-  CoreRegistry.putPermanently(GameEngine.class,this);
   mainLoop();
   cleanup();
 }

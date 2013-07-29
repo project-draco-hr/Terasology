@@ -1,14 +1,15 @@
 {
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
+  WorldAtlas atlas=new WorldAtlas(CoreRegistry.get(Config.class).getRendering().getMaxTextureAtlasResolution());
+  CoreRegistry.put(WorldAtlas.class,atlas);
   BlockManagerImpl blockManager;
   if (networkSystem.getMode().isAuthority()) {
-    blockManager=new BlockManagerImpl(gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),true,CoreRegistry.get(BlockFamilyFactoryRegistry.class));
+    blockManager=new BlockManagerImpl(atlas,gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),true,CoreRegistry.get(BlockFamilyFactoryRegistry.class));
     blockManager.subscribe(CoreRegistry.get(NetworkSystem.class));
   }
  else {
-    blockManager=new BlockManagerImpl(gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),false,CoreRegistry.get(BlockFamilyFactoryRegistry.class));
+    blockManager=new BlockManagerImpl(atlas,gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),false,CoreRegistry.get(BlockFamilyFactoryRegistry.class));
   }
-  blockManager.buildAtlas();
   CoreRegistry.put(BlockManager.class,blockManager);
   return true;
 }

@@ -2,7 +2,7 @@
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   PerformanceMonitor.startActivity("Other");
   while (running && !Display.isCloseRequested()) {
-    if (!Display.isActive() && currentState.isHibernationAllowed()) {
+    if (!Display.isActive() && isHibernationAllowed()) {
       time.setPaused(true);
       Iterator<Float> updateCycles=time.tick();
       while (updateCycles.hasNext()) {

@@ -8,24 +8,31 @@
     if (!worldProvider.isBlockRelevant(worldPos)) {
       continue;
     }
-    float temperature=worldProvider.getBiomeProvider().getTemperatureAt((int)worldPos.x,(int)worldPos.z);
-    float humidity=worldProvider.getBiomeProvider().getHumidityAt((int)worldPos.x,(int)worldPos.z);
-    glPushMatrix();
-    glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
     BlockParticleEffectComponent particleEffect=entity.getComponent(BlockParticleEffectComponent.class);
-    if (particleEffect.blockType == null) {
-      return;
+    if (particleEffect.texture == null) {
+      Texture terrainTex=Assets.getTexture("engine:terrain");
+      if (terrainTex == null) {
+        return;
+      }
+      GL13.glActiveTexture(GL13.GL_TEXTURE0);
+      glBindTexture(GL11.GL_TEXTURE_2D,terrainTex.getId());
     }
-    for (    Particle particle : particleEffect.particles) {
-      glPushMatrix();
-      glTranslatef(particle.position.x,particle.position.y,particle.position.z);
-      applyOrientation();
-      glScalef(particle.size,particle.size,particle.size);
-      float light=worldRenderer.getRenderingLightValueAt(new Vector3f(worldPos.x + particle.position.x,worldPos.y + particle.position.y,worldPos.z + particle.position.z));
-      renderParticle(particle,particleEffect.blockType,temperature,humidity,light);
-      glPopMatrix();
+ else {
+      GL13.glActiveTexture(GL13.GL_TEXTURE0);
+      glBindTexture(GL11.GL_TEXTURE_2D,particleEffect.texture.getId());
     }
-    glPopMatrix();
+    if (particleEffect.blendMode == BlockParticleEffectComponent.ParticleBlendMode.ADD) {
+      glBlendFunc(GL_ONE,GL_ONE);
+    }
+    if (particleEffect.blockType != null) {
+      renderBlockParticles(worldPos,cameraPosition,particleEffect);
+    }
+ else {
+      renderParticles(worldPos,cameraPosition,particleEffect);
+    }
+    if (particleEffect.blendMode == BlockParticleEffectComponent.ParticleBlendMode.ADD) {
+      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    }
   }
   glEnable(GL11.GL_CULL_FACE);
 }

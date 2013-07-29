@@ -1,0 +1,20 @@
+{
+  shaderPropertyMenuEntries.clear();
+  shaderPropertiesMenu.removeAll();
+  for (  GLSLMaterial material : AssetManager.getInstance().listLoadedAssets(AssetType.MATERIAL,GLSLMaterial.class)) {
+    if (material.getShaderParameters() != null) {
+      final GLSLMaterial finalMat=material;
+      String programName=material.getURI().toString();
+      JMenuItem menuItem=new JMenuItem(programName);
+      menuItem.addActionListener(new ActionListener(){
+        @Override public void actionPerformed(        ActionEvent e){
+          propertyPanel.setActivePropertyProvider(new ReflectionProvider(finalMat.getShaderParameters()));
+          propertyPanel.setTitle(finalMat.getURI().toString());
+        }
+      }
+);
+      shaderPropertyMenuEntries.add(menuItem);
+      shaderPropertiesMenu.add(menuItem);
+    }
+  }
+}

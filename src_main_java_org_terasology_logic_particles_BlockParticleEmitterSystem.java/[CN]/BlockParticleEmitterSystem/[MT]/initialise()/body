@@ -1,3 +1,8 @@
 {
-  displayLists=new TObjectIntHashMap(blockManager.getBlockFamilyCount());
+  if (displayList == 0) {
+    displayList=glGenLists(1);
+    glNewList(displayList,GL11.GL_COMPILE);
+    drawParticle();
+    glEndList();
+  }
 }

@@ -1,11 +1,7 @@
 {
   dispose();
   shader=(GLSLShader)data.getShader();
-  shaderPrograms.put(0,shader.linkShaderProgram(0));
-  for (  Set<ShaderProgramFeature> permutation : Sets.powerSet(shader.getAvailableFeatures())) {
-    int featureMask=ShaderProgramFeature.getBitset(permutation);
-    shaderPrograms.put(featureMask,shader.linkShaderProgram(featureMask));
-  }
+  recompile();
   for (  Map.Entry<String,Texture> entry : data.getTextures().entrySet()) {
     setTexture(entry.getKey(),entry.getValue());
   }
