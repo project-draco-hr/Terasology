@@ -3,7 +3,7 @@
   for (int i=0; i < results.length; i++) {
     results[i].distance=Float.MAX_VALUE;
   }
-  at.scale(densityAdjustment);
+  at.scale(DENSITY_ADJUSTMENT);
   at.add(offset);
   int cellX=TeraMath.floorToInt(at.x);
   int cellY=TeraMath.floorToInt(at.y);
@@ -38,8 +38,8 @@
     processCell(cellX + 1,cellY - 1,at,results);
   }
   for (int i=0; i < results.length; i++) {
-    results[i].delta.scale(inverseDensityAdjustment);
-    results[i].distance*=inverseDensityAdjustment * inverseDensityAdjustment;
+    results[i].delta.scale(INVERSE_DENSITY_ADJUSTMENT);
+    results[i].distance*=INVERSE_DENSITY_ADJUSTMENT * INVERSE_DENSITY_ADJUSTMENT;
   }
   return results;
 }

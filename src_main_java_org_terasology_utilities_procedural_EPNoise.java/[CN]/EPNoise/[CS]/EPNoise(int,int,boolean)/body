@@ -1,10 +1,16 @@
 {
   FastRandom rand=new FastRandom(seed);
   on=true;
-  _noisePermutations=new int[512];
-  int[] _noiseTable=new int[256];
-  for (int i=0; i < 256; i++)   if (random)   _noiseTable[i]=(int)(rand.randomDouble() % 256);
- else   _noiseTable[i]=i;
+  noisePermutations=new int[512];
+  int[] noiseTable=new int[256];
+  for (int i=0; i < 256; i++) {
+    if (random) {
+      noiseTable[i]=(int)(rand.randomDouble() % 256);
+    }
+ else {
+      noiseTable[i]=i;
+    }
+  }
   for (int i=0; i < 256; i++) {
     int j=0;
 switch (type) {
@@ -53,10 +59,12 @@ System.out.print("values out of range 255:" + j + "\n");
 j=255;
 }
 if (type != -1) {
-int swap=_noiseTable[i];
-_noiseTable[i]=_noiseTable[j];
-_noiseTable[j]=swap;
+int swap=noiseTable[i];
+noiseTable[i]=noiseTable[j];
+noiseTable[j]=swap;
 }
 }
-for (int i=0; i < 256; i++) _noisePermutations[i]=_noisePermutations[i + 256]=_noiseTable[i];
+for (int i=0; i < 256; i++) {
+noisePermutations[i]=noisePermutations[i + 256]=noiseTable[i];
+}
 }

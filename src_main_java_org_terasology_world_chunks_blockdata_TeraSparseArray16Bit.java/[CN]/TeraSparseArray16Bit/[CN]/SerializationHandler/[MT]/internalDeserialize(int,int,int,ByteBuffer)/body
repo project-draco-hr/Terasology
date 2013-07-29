@@ -10,7 +10,9 @@
   final short[] def=array.deflated=new short[sizeY];
   for (int y=0; y < sizeY; y++) {
     final byte hasRow=buffer.get();
-    if (hasRow == 0)     def[y]=buffer.getShort();
+    if (hasRow == 0) {
+      def[y]=buffer.getShort();
+    }
  else {
       final short[] row=inf[y]=new short[rowSize];
       getRow(row,rowSize,buffer);

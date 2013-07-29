@@ -1,9 +1,16 @@
 {
-  int X=(int)TeraMath.fastFloor(x) & 255, Y=(int)TeraMath.fastFloor(y) & 255, Z=(int)TeraMath.fastFloor(z) & 255;
+  int xInt=(int)TeraMath.fastFloor(x) & 255;
+  int yInt=(int)TeraMath.fastFloor(y) & 255;
+  int zInt=(int)TeraMath.fastFloor(z) & 255;
   x-=TeraMath.fastFloor(x);
   y-=TeraMath.fastFloor(y);
   z-=TeraMath.fastFloor(z);
   double u=fade(x), v=fade(y), w=fade(z);
-  int A=_noisePermutations[X] + Y, AA=_noisePermutations[A] + Z, AB=_noisePermutations[(A + 1)] + Z, B=_noisePermutations[(X + 1)] + Y, BA=_noisePermutations[B] + Z, BB=_noisePermutations[(B + 1)] + Z;
-  return lerp(w,lerp(v,lerp(u,grad(_noisePermutations[AA],x,y,z),grad(_noisePermutations[BA],x - 1,y,z)),lerp(u,grad(_noisePermutations[AB],x,y - 1,z),grad(_noisePermutations[BB],x - 1,y - 1,z))),lerp(v,lerp(u,grad(_noisePermutations[(AA + 1)],x,y,z - 1),grad(_noisePermutations[(BA + 1)],x - 1,y,z - 1)),lerp(u,grad(_noisePermutations[(AB + 1)],x,y - 1,z - 1),grad(_noisePermutations[(BB + 1)],x - 1,y - 1,z - 1))));
+  int a=noisePermutations[xInt] + yInt;
+  int aa=noisePermutations[a] + zInt;
+  int ab=noisePermutations[(a + 1)] + zInt;
+  int b=noisePermutations[(xInt + 1)] + yInt;
+  int ba=noisePermutations[b] + zInt;
+  int bb=noisePermutations[(b + 1)] + zInt;
+  return lerp(w,lerp(v,lerp(u,grad(noisePermutations[aa],x,y,z),grad(noisePermutations[ba],x - 1,y,z)),lerp(u,grad(noisePermutations[ab],x,y - 1,z),grad(noisePermutations[bb],x - 1,y - 1,z))),lerp(v,lerp(u,grad(noisePermutations[(aa + 1)],x,y,z - 1),grad(noisePermutations[(ba + 1)],x - 1,y,z - 1)),lerp(u,grad(noisePermutations[(ab + 1)],x,y - 1,z - 1),grad(noisePermutations[(bb + 1)],x - 1,y - 1,z - 1))));
 }

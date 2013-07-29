@@ -8,8 +8,9 @@
     for (int z=0; z < MiniatureChunk.SIZE_Z; z++) {
       for (int y=0; y < MiniatureChunk.SIZE_Y; y++) {
         Block block=miniatureChunk.getBlock(x,y,z);
-        if (block == null || block.isInvisible())         continue;
-        generateBlockVertices(localChunkView,mesh,x,y,z,0.0f,0.0f);
+        if (block != null && !block.isInvisible()) {
+          generateBlockVertices(localChunkView,mesh,x,y,z,0.0f,0.0f);
+        }
       }
     }
   }

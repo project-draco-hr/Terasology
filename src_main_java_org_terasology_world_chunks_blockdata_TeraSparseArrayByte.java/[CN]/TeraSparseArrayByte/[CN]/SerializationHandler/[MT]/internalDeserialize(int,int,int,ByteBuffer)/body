@@ -10,7 +10,9 @@
   final byte[] def=array.deflated=new byte[sizeY];
   for (int y=0; y < sizeY; y++) {
     final byte hasRow=buffer.get();
-    if (hasRow == 0)     def[y]=buffer.get();
+    if (hasRow == 0) {
+      def[y]=buffer.get();
+    }
  else {
       final byte[] row=inf[y]=new byte[rowSize];
       buffer.get(row,0,rowSize);

@@ -21,20 +21,34 @@
           c.setBlock(x,y,z,water);
           c.setLiquid(x,y,z,new LiquidData(LiquidType.WATER,Chunk.MAX_LIQUID_DEPTH));
           if (y == 32) {
-            if (type == WorldBiomeProvider.Biome.SNOW)             c.setBlock(x,y,z,ice);
+            if (type == WorldBiomeProvider.Biome.SNOW) {
+              c.setBlock(x,y,z,ice);
+            }
           }
         }
         double dens=densityMap[x][y][z];
         if ((dens >= 0 && dens < 32)) {
-          if (firstBlockHeight == -1)           firstBlockHeight=y;
-          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.7)           GenerateOuterLayer(x,y,z,firstBlockHeight,c,type);
- else           c.setBlock(x,y,z,air);
+          if (firstBlockHeight == -1) {
+            firstBlockHeight=y;
+          }
+          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.7) {
+            generateOuterLayer(x,y,z,firstBlockHeight,c,type);
+          }
+ else {
+            c.setBlock(x,y,z,air);
+          }
           continue;
         }
  else         if (dens >= 32) {
-          if (firstBlockHeight == -1)           firstBlockHeight=y;
-          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6)           GenerateInnerLayer(x,y,z,c,type);
- else           c.setBlock(x,y,z,air);
+          if (firstBlockHeight == -1) {
+            firstBlockHeight=y;
+          }
+          if (calcCaveDensity(c.getBlockWorldPosX(x),y,c.getBlockWorldPosZ(z)) > -0.6) {
+            generateInnerLayer(x,y,z,c,type);
+          }
+ else {
+            c.setBlock(x,y,z,air);
+          }
           continue;
         }
         firstBlockHeight=-1;

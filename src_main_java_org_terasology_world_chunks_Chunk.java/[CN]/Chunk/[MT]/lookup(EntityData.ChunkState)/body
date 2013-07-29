@@ -1,5 +1,7 @@
 {
-  State result=lookup.get(Preconditions.checkNotNull(state,"The parameter 'state' must not be null"));
-  if (result == null)   throw new IllegalStateException("Unable to lookup the supplied state: " + state);
+  State result=LOOKUP.get(Preconditions.checkNotNull(state,"The parameter 'state' must not be null"));
+  if (result == null) {
+    throw new IllegalStateException("Unable to lookup the supplied state: " + state);
+  }
   return result;
 }

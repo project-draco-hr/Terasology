@@ -2,7 +2,9 @@
   int pos=pos(x,z);
   if (inflated == null) {
     int old=rowGet(pos,fill);
-    if (old == value)     return old;
+    if (old == value) {
+      return old;
+    }
  else {
       this.inflated=new byte[getSizeY()][];
       this.deflated=new byte[getSizeY()];
@@ -10,9 +12,13 @@
     }
   }
   byte[] row=inflated[y];
-  if (row != null)   return rowSetGetOld(row,pos,value);
+  if (row != null) {
+    return rowSetGetOld(row,pos,value);
+  }
   int old=rowGet(pos,deflated[y]);
-  if (old == value)   return old;
+  if (old == value) {
+    return old;
+  }
   row=inflated[y]=new byte[rowSize()];
   Arrays.fill(row,deflated[y]);
   return rowSetGetOld(row,pos,value);
