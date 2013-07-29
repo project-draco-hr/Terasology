@@ -1,10 +1,12 @@
 {
+  List<Property<?>> result=Lists.newArrayList();
   Skysphere skysphere=CoreRegistry.get(WorldRenderer.class).getSkysphere();
   if (skysphere != null) {
-    new ReflectionProvider(skysphere).addPropertiesToList(properties);
+    result.addAll(new ReflectionProvider(skysphere).getProperties());
   }
   DefaultRenderingProcess postRenderer=DefaultRenderingProcess.getInstance();
   if (postRenderer != null) {
-    new ReflectionProvider(postRenderer).addPropertiesToList(properties);
+    result.addAll(new ReflectionProvider(postRenderer).getProperties());
   }
+  return result;
 }
