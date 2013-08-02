@@ -4,29 +4,22 @@
   if (lengthSquared > 1) {
     desiredVelocity.normalize();
   }
-  float maxSpeed=movementComp.maxGroundSpeed;
+  float maxSpeed=movementComp.maxClimbSpeed;
   if (input.isRunning()) {
     maxSpeed*=movementComp.runFactor;
   }
-  if (desiredVelocity.y != 0) {
-    float speed=desiredVelocity.length();
-    desiredVelocity.y=0;
-    if (desiredVelocity.x != 0 || desiredVelocity.z != 0) {
-      desiredVelocity.normalize();
-      desiredVelocity.scale(speed);
-    }
-  }
   desiredVelocity.scale(maxSpeed);
+  desiredVelocity.y-=CLIMB_GRAVITY;
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(state.getVelocity());
   velocityDiff.scale(Math.min(movementComp.groundFriction * input.getDelta(),1.0f));
   Vector3f endVelocity=new Vector3f(state.getVelocity());
   endVelocity.x+=velocityDiff.x;
+  endVelocity.y+=velocityDiff.y;
   endVelocity.z+=velocityDiff.z;
-  endVelocity.y=Math.max(-TERMINAL_VELOCITY,(state.getVelocity().y - GRAVITY * input.getDelta()));
   Vector3f moveDelta=new Vector3f(endVelocity);
   moveDelta.scale(input.getDelta());
-  MoveResult moveResult=move(state.getPosition(),moveDelta,(state.isGrounded()) ? movementComp.stepHeight : 0,movementComp.slopeFactor,movementComp.collider);
+  MoveResult moveResult=move(state.getPosition(),moveDelta,0,movementComp.slopeFactor,movementComp.collider);
   Vector3f distanceMoved=new Vector3f(moveResult.getFinalPosition());
   distanceMoved.sub(state.getPosition());
   state.getPosition().set(moveResult.getFinalPosition());
@@ -39,23 +32,15 @@
       if (input.isFirstRun()) {
         Vector3f landVelocity=new Vector3f(state.getVelocity());
         landVelocity.y+=(distanceMoved.y / moveDelta.y) * (endVelocity.y - state.getVelocity().y);
-        logger.debug("Landed at " + landVelocity);
         entity.send(new VerticalCollisionEvent(state.getPosition(),landVelocity));
       }
       state.setGrounded(true);
     }
     endVelocity.y=0;
-    if (input.isJumpRequested()) {
-      state.setGrounded(false);
-      endVelocity.y+=movementComp.jumpSpeed;
-      if (input.isFirstRun()) {
-        entity.send(new JumpEvent());
-      }
-    }
   }
  else {
     if (moveResult.isTopHit() && endVelocity.y > 0) {
-      endVelocity.y=-0.5f * endVelocity.y;
+      endVelocity.y=0;
     }
     state.setGrounded(false);
   }
