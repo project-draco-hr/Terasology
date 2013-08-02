@@ -2,5 +2,8 @@
   if (currentBlock.isLiquid() && blockToCheck.isLiquid()) {
     return false;
   }
+  if (currentBlock.isWaving() != blockToCheck.isWaving()) {
+    return true;
+  }
   return blockToCheck.isInvisible() || !blockToCheck.isFullSide(side.reverse()) || (!currentBlock.isTranslucent() && blockToCheck.isTranslucent());
 }
