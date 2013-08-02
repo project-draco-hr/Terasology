@@ -1,0 +1,9 @@
+{
+  if (event.isDown()) {
+    for (    UIDisplayElement element : CoreRegistry.get(GUIManager.class).getWindowById("hud").getDisplayElements()) {
+      element.setVisible(!element.isVisible());
+    }
+    config.getRendering().getDebug().setFirstPersonElementsHidden(!config.getRendering().getDebug().isFirstPersonElementsHidden());
+    event.consume();
+  }
+}
