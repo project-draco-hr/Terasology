@@ -2,15 +2,16 @@
   threadPool.execute(new Runnable(){
     @Override public void run(){
       Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-      PerformanceMonitor.startThread(name);
-      try {
+      Thread.currentThread().setName("Engine-Task-Pool");
+      try (ThreadActivity ignored=ThreadMonitor.startThreadActivity(task.getClass().getSimpleName())){
         task.run();
       }
  catch (      RejectedExecutionException e) {
+        ThreadMonitor.addError(e);
         logger.error("Thread submitted after shutdown requested: {}",name);
       }
- finally {
-        PerformanceMonitor.endThread(name);
+catch (      Throwable e) {
+        ThreadMonitor.addError(e);
       }
     }
   }

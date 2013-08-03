@@ -1,18 +1,23 @@
 {
   boolean running=true;
   Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+  Thread.currentThread().setName(name);
   while (running) {
     try {
       T task=queue.take();
-      task.enact();
-      if (task.isTerminateSignal()) {
+      try (ThreadActivity ignored=ThreadMonitor.startThreadActivity(task.getName())){
+        task.enact();
+      }
+       if (task.isTerminateSignal()) {
         running=false;
       }
     }
  catch (    InterruptedException e) {
+      ThreadMonitor.addError(e);
       logger.error("Thread interrupted",e);
     }
-catch (    Exception e) {
+catch (    Throwable e) {
+      ThreadMonitor.addError(e);
       logger.error("Error in thread",e);
     }
   }

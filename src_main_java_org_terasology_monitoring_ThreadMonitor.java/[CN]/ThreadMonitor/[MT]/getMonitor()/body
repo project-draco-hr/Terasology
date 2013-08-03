@@ -1,0 +1,9 @@
+{
+  SingleThreadMonitor monitor=threadInfoById.get(Thread.currentThread());
+  if (monitor == null) {
+    monitor=new SingleThreadMonitorImpl(Thread.currentThread());
+    threadInfoById.put(Thread.currentThread(),monitor);
+    eventbus.post(new ThreadMonitorEvent(monitor,ThreadMonitorEvent.Type.MonitorAdded));
+  }
+  return monitor;
+}

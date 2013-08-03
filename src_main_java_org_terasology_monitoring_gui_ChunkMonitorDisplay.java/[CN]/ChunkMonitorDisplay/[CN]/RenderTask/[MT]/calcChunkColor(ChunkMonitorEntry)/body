@@ -1,0 +1,18 @@
+{
+  final Chunk chunk=entry.getLatestChunk();
+  if (chunk == null)   return ColorDead;
+  if (chunk.getMesh() != null)   return ColorHighlightTessellation;
+switch (chunk.getChunkState()) {
+case ADJACENCY_GENERATION_PENDING:
+    return ColorAdjacencyGenerationPending;
+case FULL_LIGHT_CONNECTIVITY_PENDING:
+  return ColorFullLightConnectivityPending;
+case LIGHT_PROPAGATION_PENDING:
+return ColorLightPropagationPending;
+case INTERNAL_LIGHT_GENERATION_PENDING:
+return ColorInternalLighGenerationPending;
+case COMPLETE:
+return ColorComplete;
+}
+return ColorInvalid;
+}

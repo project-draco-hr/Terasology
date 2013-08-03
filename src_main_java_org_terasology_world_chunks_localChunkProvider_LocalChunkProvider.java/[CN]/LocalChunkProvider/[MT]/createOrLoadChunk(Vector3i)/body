@@ -8,6 +8,9 @@
       }
  else       if (storageManager.containsChunkStoreFor(chunkPos)) {
         pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
+          @Override public String getName(){
+            return "Load Chunk";
+          }
           @Override public void enact(){
             ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
             Chunk chunk=chunkStore.getChunk();
@@ -27,6 +30,9 @@
       }
  else {
         pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
+          @Override public String getName(){
+            return "Generate Chunk";
+          }
           @Override public void enact(){
             Chunk chunk=generator.generateChunk(getPosition());
             if (nearCache.putIfAbsent(getPosition(),chunk) != null) {

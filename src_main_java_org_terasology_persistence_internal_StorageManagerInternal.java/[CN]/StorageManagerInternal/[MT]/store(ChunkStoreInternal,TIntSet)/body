@@ -6,6 +6,9 @@
   pendingProcessingChunkStore.put(chunkStore.getChunkPosition(),chunkStore);
   try {
     storageTaskMaster.put(new AbstractTask(){
+      @Override public String getName(){
+        return "Compress chunk";
+      }
       @Override public void enact(){
         EntityData.ChunkStore store=chunkStore.getStore();
         ByteArrayOutputStream baos=new ByteArrayOutputStream();

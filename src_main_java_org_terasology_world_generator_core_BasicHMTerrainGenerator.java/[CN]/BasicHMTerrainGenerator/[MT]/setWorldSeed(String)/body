@@ -3,8 +3,8 @@
   try {
     heightmap=HeightmapFileReader.readFile("Heightmap.txt","\n");
   }
- catch (  Exception e) {
-    e.printStackTrace();
+ catch (  IOException e) {
+    logger.error("Failed to read heightmap",e);
   }
   heightmap=shiftArray(rotateArray(heightmap),-50,-100);
 }

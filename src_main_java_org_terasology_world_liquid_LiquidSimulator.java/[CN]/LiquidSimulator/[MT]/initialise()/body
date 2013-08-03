@@ -1,5 +1,5 @@
 {
-  air=blockManager.getAir();
+  air=BlockManager.getAir();
   grass=blockManager.getBlock("engine:Grass");
   snow=blockManager.getBlock("engine:Snow");
   dirt=blockManager.getBlock("engine:Dirt");
@@ -17,12 +17,16 @@
             if (task.shutdownThread()) {
               break;
             }
-            task.run();
-          }
+            try (ThreadActivity ignored=ThreadMonitor.startThreadActivity(task.getName())){
+              task.run();
+            }
+           }
  catch (          InterruptedException e) {
+            ThreadMonitor.addError(e);
             logger.debug("Interrupted");
           }
 catch (          Exception e) {
+            ThreadMonitor.addError(e);
             logger.error("Error in water simulation",e);
           }
         }

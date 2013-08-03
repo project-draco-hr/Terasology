@@ -1,0 +1,37 @@
+{
+  Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+  final LinkedList<Request> requests=new LinkedList<>();
+  try {
+    while (true) {
+      final long slept=poll(requests);
+      boolean needsRendering=false, fastResume=false;
+      for (      Request r : requests) {
+        try (ThreadActivity ignored=ThreadMonitor.startThreadActivity(r.getName())){
+          r.execute();
+        }
+ catch (        Exception e) {
+          ThreadMonitor.addError(e);
+          logger.error("Thread error",e);
+        }
+ finally {
+          needsRendering|=r.needsRendering();
+          fastResume|=r.fastResume();
+        }
+      }
+      requests.clear();
+      if (followPlayer) {
+        doFollowPlayer();
+      }
+      if (needsRendering) {
+        render();
+      }
+      if (!fastResume && (slept <= 400)) {
+        Thread.sleep(500 - slept);
+      }
+    }
+  }
+ catch (  Exception e) {
+    ThreadMonitor.addError(e);
+    logger.error("Thread error",e);
+  }
+}

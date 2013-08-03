@@ -1,12 +1,5 @@
 {
   final SortedSet<String> threads=new TreeSet<>();
-  PerformanceMonitor.getRunningThreads().forEachEntry(new TObjectIntProcedure<String>(){
-    public boolean execute(    String s,    int i){
-      threads.add(String.format("%s (%d)",s,i));
-      return true;
-    }
-  }
-);
   int line=0;
   for (  String thread : threads) {
     lines.get(line).setVisible(true);

@@ -1,0 +1,12 @@
+{
+  lock.writeLock().lock();
+  try {
+    final BufferedImage tmp=imageA;
+    imageA=imageB;
+    imageB=tmp;
+    resize(width,height);
+  }
+  finally {
+    lock.writeLock().unlock();
+  }
+}

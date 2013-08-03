@@ -1,0 +1,30 @@
+{
+  if (event instanceof ChunkMonitorEvent.ChunkProviderInitialized) {
+    chunks.clear();
+    map.clear();
+    ChunkMonitor.getChunks(chunks);
+    for (    ChunkMonitorEntry e : chunks)     map.put(e.getPosition(),e);
+    recomputeRenderY();
+  }
+ else   if (event instanceof ChunkMonitorEvent.ChunkProviderDisposed) {
+    chunks.clear();
+    map.clear();
+    recomputeRenderY();
+  }
+ else   if (event instanceof ChunkMonitorEvent.BasicChunkEvent) {
+    final ChunkMonitorEvent.BasicChunkEvent bEvent=(ChunkMonitorEvent.BasicChunkEvent)event;
+    final Vector3i pos=bEvent.getPosition();
+    final ChunkMonitorEntry entry;
+    if (event instanceof ChunkMonitorEvent.Created) {
+      final ChunkMonitorEvent.Created cEvent=(ChunkMonitorEvent.Created)event;
+      entry=cEvent.getEntry();
+      if (pos.y < minRenderY)       minRenderY=pos.y;
+      if (pos.y > maxRenderY)       maxRenderY=pos.y;
+      chunks.add(entry);
+      map.put(pos,entry);
+    }
+ else     entry=map.get(pos);
+    if (entry != null)     entry.addEvent(bEvent);
+ else     logger.error("No chunk monitor entry found for position {}",pos);
+  }
+}

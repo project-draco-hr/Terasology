@@ -5,7 +5,8 @@
   CoreRegistry.putPermanently(NetworkSystem.class,new NetworkSystemImpl(time));
   CoreRegistry.putPermanently(Game.class,new Game(time));
   AssetType.registerAssetTypes();
-  AssetManager.getInstance().addAssetSource(new ClasspathSource(ModManager.ENGINE_PACKAGE,getClass().getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY));
+  ClasspathSource source=new ClasspathSource(ModManager.ENGINE_PACKAGE,getClass().getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY);
+  AssetManager.getInstance().addAssetSource(source);
   CoreRegistry.get(ShaderManager.class).initShaders();
   VertexBufferObjectManager.getInstance();
 }

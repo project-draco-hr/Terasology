@@ -1,0 +1,7 @@
+{
+  Preconditions.checkNotNull(chunk,"The parameter 'chunk' must not be null");
+  final ChunkMonitorEntry entry=registerChunk(chunk);
+  if (entry != null) {
+    post(new ChunkMonitorEvent.Created(entry));
+  }
+}

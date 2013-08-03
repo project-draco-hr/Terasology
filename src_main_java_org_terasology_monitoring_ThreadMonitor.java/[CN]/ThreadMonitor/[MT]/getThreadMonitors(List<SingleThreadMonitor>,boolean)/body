@@ -1,0 +1,10 @@
+{
+  Preconditions.checkNotNull(output,"The parameter 'output' must not be null");
+  output.clear();
+  for (  SingleThreadMonitor entry : threadInfoById.values()) {
+    if (!aliveThreadsOnly || entry.isAlive()) {
+      output.add(entry);
+    }
+  }
+  return output;
+}

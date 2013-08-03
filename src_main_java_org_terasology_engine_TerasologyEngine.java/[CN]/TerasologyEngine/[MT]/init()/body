@@ -18,5 +18,8 @@
   updateInputConfig();
   CoreRegistry.putPermanently(GUIManager.class,new GUIManager(this));
   initSecurity();
+  if (config.getSystem().isMonitoringEnabled()) {
+    new AdvancedMonitor().setVisible(true);
+  }
   initialised=true;
 }

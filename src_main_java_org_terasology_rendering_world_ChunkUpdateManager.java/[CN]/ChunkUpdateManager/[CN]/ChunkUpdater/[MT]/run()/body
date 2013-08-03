@@ -7,6 +7,7 @@
       newMeshes[seg]=tessellator.generateMesh(chunkView,c.getPos(),Chunk.SIZE_Y / WorldRenderer.VERTICAL_SEGMENTS,seg * (Chunk.SIZE_Y / WorldRenderer.VERTICAL_SEGMENTS));
     }
     c.setPendingMesh(newMeshes);
+    ChunkMonitor.fireChunkTessellated(c.getPos(),newMeshes);
   }
   chunkUpdateManager.finishedProcessing(c);
   c=null;
