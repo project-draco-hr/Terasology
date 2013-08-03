@@ -11,17 +11,60 @@
     AssetType.registerAssetTypes();
     AssetManager.getInstance().addAssetSource(new ClasspathSource(ModManager.ENGINE_PACKAGE,Terasology.class.getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY));
     AssetManager.getInstance().addAssetSource(new ClasspathSource("unittest",TerasologyTestingEnvironment.class.getProtectionDomain().getCodeSource(),ModManager.ASSETS_SUBDIRECTORY,ModManager.OVERRIDES_SUBDIRECTORY));
+    config=new Config();
+    CoreRegistry.put(Config.class,config);
+    Display.setDisplayMode(new DisplayMode(0,0));
+    Display.create(CoreRegistry.get(Config.class).getRendering().getPixelFormat());
+    AssetManager.getInstance().setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
+      @Override public Texture buildAsset(      AssetUri uri,      TextureData data){
+        return new OpenGLTexture(uri,data);
+      }
+    }
+);
+    AssetManager.getInstance().setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
+      @Override public Font buildAsset(      AssetUri uri,      FontData data){
+        return new OpenGLFont(uri,data);
+      }
+    }
+);
+    AssetManager.getInstance().setAssetFactory(AssetType.SHADER,new AssetFactory<ShaderData,Shader>(){
+      @Override public Shader buildAsset(      AssetUri uri,      ShaderData data){
+        return new GLSLShader(uri,data);
+      }
+    }
+);
+    AssetManager.getInstance().setAssetFactory(AssetType.MATERIAL,new AssetFactory<MaterialData,Material>(){
+      @Override public Material buildAsset(      AssetUri uri,      MaterialData data){
+        return new GLSLMaterial(uri,data);
+      }
+    }
+);
+    AssetManager.getInstance().setAssetFactory(AssetType.MESH,new AssetFactory<MeshData,Mesh>(){
+      @Override public Mesh buildAsset(      AssetUri uri,      MeshData data){
+        return new OpenGLMesh(uri,data);
+      }
+    }
+);
+    AssetManager.getInstance().setAssetFactory(AssetType.SKELETON_MESH,new AssetFactory<SkeletalMeshData,SkeletalMesh>(){
+      @Override public SkeletalMesh buildAsset(      AssetUri uri,      SkeletalMeshData data){
+        return new OpenGLSkeletalMesh(uri,data);
+      }
+    }
+);
+    AssetManager.getInstance().setAssetFactory(AssetType.ANIMATION,new AssetFactory<MeshAnimationData,MeshAnimation>(){
+      @Override public MeshAnimation buildAsset(      AssetUri uri,      MeshAnimationData data){
+        return new MeshAnimationImpl(uri,data);
+      }
+    }
+);
+    CoreRegistry.put(ShaderManager.class,new ShaderManager()).initShaders();
     DefaultBlockFamilyFactoryRegistry blockFamilyFactoryRegistry=new DefaultBlockFamilyFactoryRegistry();
     blockFamilyFactoryRegistry.setBlockFamilyFactory("horizontal",new HorizontalBlockFamilyFactory());
     blockFamilyFactoryRegistry.setBlockFamilyFactory("alignToSurface",new AlignToSurfaceFamilyFactory());
     blockManager=new BlockManagerImpl(new WorldAtlas(4096),blockFamilyFactoryRegistry);
     CoreRegistry.put(BlockManager.class,blockManager);
-    config=new Config();
-    CoreRegistry.put(Config.class,config);
     audioManager=new NullAudioManager();
     CoreRegistry.put(AudioManager.class,audioManager);
-    Display.setDisplayMode(new DisplayMode(0,0));
-    Display.create(CoreRegistry.get(Config.class).getRendering().getPixelFormat());
     collisionGroupManager=new CollisionGroupManager();
     CoreRegistry.put(CollisionGroupManager.class,collisionGroupManager);
   }
