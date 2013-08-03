@@ -9,7 +9,7 @@
       boolean consumed=sendMouseEvent(button,buttonDown,delta);
       BindableButtonImpl bind=mouseButtonBinds.get(button);
       if (bind != null) {
-        bind.updateBindState(buttonDown,delta,getInputEntities(),cameraTargetSystem.getTarget(),cameraTargetSystem.getTargetBlockPosition(),cameraTargetSystem.getHitPosition(),cameraTargetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
+        bind.updateBindState(buttonDown,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
       }
     }
  else     if (Mouse.getEventDWheel() != 0) {
@@ -17,8 +17,8 @@
       boolean consumed=sendMouseWheelEvent(wheelMoved / 120,delta);
       BindableButtonImpl bind=(wheelMoved > 0) ? mouseWheelUpBind : mouseWheelDownBind;
       if (bind != null) {
-        bind.updateBindState(true,delta,getInputEntities(),cameraTargetSystem.getTarget(),cameraTargetSystem.getTargetBlockPosition(),cameraTargetSystem.getHitPosition(),cameraTargetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
-        bind.updateBindState(false,delta,getInputEntities(),cameraTargetSystem.getTarget(),cameraTargetSystem.getTargetBlockPosition(),cameraTargetSystem.getHitPosition(),cameraTargetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
+        bind.updateBindState(true,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
+        bind.updateBindState(false,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
       }
     }
   }

@@ -20,6 +20,7 @@
     for (    NetData.ModuleInfo moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
       Mod mod=modManager.getMod(moduleInfo.getModuleId());
       if (mod == null) {
+        CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Missing required module: " + moduleInfo.getModuleId()));
       }
  else {
         logger.debug("Activating module: {}",moduleInfo.getModuleId());

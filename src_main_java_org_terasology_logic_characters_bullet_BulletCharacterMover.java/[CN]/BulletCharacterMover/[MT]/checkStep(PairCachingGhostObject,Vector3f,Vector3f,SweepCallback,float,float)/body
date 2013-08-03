@@ -14,7 +14,10 @@
     toWorld.y-=0.05f;
     toWorld.add(lookAheadOffset);
     CollisionWorld.ClosestRayResultCallback rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
-    CollisionWorld.rayTestSingle(new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f)),new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f)),callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),callback.hitCollisionObject.getWorldTransform(new Transform()),rayResult);
+    Transform transformFrom=new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f));
+    Transform transformTo=new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f));
+    Transform targetTransform=callback.hitCollisionObject.getWorldTransform(new Transform());
+    CollisionWorld.rayTestSingle(transformFrom,transformTo,callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),targetTransform,rayResult);
     if (rayResult.hasHit()) {
       hitStep=true;
       stepSlope=rayResult.hitNormalWorld.dot(new Vector3f(0,1,0));
@@ -22,7 +25,10 @@
     fromWorld.add(lookAheadOffset);
     toWorld.add(lookAheadOffset);
     rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
-    CollisionWorld.rayTestSingle(new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f)),new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f)),callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),callback.hitCollisionObject.getWorldTransform(new Transform()),rayResult);
+    transformFrom=new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f));
+    transformTo=new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f));
+    targetTransform=callback.hitCollisionObject.getWorldTransform(new Transform());
+    CollisionWorld.rayTestSingle(transformFrom,transformTo,callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),targetTransform,rayResult);
     if (rayResult.hasHit()) {
       hitStep=true;
       stepSlope=Math.min(stepSlope,rayResult.hitNormalWorld.dot(new Vector3f(0,1,0)));

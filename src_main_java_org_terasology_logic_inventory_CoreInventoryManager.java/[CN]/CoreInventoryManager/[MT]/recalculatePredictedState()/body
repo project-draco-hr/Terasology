@@ -9,7 +9,8 @@
     InventoryComponent from=getPredictedInventoryComponent(request.getFromInventory());
     InventoryComponent to=getPredictedInventoryComponent(request.getToInventory());
     if (request instanceof MoveItemAmountRequest) {
-      moveItemAmountCommon(request.getFromInventory(),from,request.getFromSlot(),request.getToInventory(),to,request.getToSlot(),((MoveItemAmountRequest)request).getAmount());
+      int amount=((MoveItemAmountRequest)request).getAmount();
+      moveItemAmountCommon(request.getFromInventory(),from,request.getFromSlot(),request.getToInventory(),to,request.getToSlot(),amount);
     }
  else {
       moveItemCommon(request.getFromInventory(),from,request.getFromSlot(),request.getToInventory(),to,request.getToSlot());

@@ -30,7 +30,10 @@
         Vector3f toWorld=new Vector3f(contactPoint);
         toWorld.y-=0.2f;
         CollisionWorld.ClosestRayResultCallback rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
-        CollisionWorld.rayTestSingle(new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f)),new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f)),callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),callback.hitCollisionObject.getWorldTransform(new Transform()),rayResult);
+        Transform from=new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f));
+        Transform to=new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f));
+        Transform targetTransform=callback.hitCollisionObject.getWorldTransform(new Transform());
+        CollisionWorld.rayTestSingle(from,to,callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),targetTransform,rayResult);
         if (rayResult.hasHit()) {
           foundSlope=true;
           slope=Math.min(slope,(rayResult.hitNormalWorld.dot(new Vector3f(0,1,0))));
@@ -42,7 +45,10 @@
         fromWorld.add(secondTraceOffset);
         toWorld.add(secondTraceOffset);
         rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
-        CollisionWorld.rayTestSingle(new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f)),new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f)),callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),callback.hitCollisionObject.getWorldTransform(new Transform()),rayResult);
+        from=new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f));
+        to=new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f));
+        targetTransform=callback.hitCollisionObject.getWorldTransform(new Transform());
+        CollisionWorld.rayTestSingle(from,to,callback.hitCollisionObject,callback.hitCollisionObject.getCollisionShape(),targetTransform,rayResult);
         if (rayResult.hasHit()) {
           foundSlope=true;
           slope=Math.min(slope,(rayResult.hitNormalWorld.dot(new Vector3f(0,1,0))));
