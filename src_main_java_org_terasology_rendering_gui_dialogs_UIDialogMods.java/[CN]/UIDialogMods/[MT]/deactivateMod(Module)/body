@@ -1,0 +1,9 @@
+{
+  modConfig.removeMod(module.getModuleInfo().getId());
+  for (  String activeModName : Lists.newArrayList(modConfig.listMods())) {
+    Module activeModule=moduleManager.getMod(activeModName);
+    if (activeModule != null && activeModule.getModuleInfo().getDependencies().contains(module.getModuleInfo().getId())) {
+      deactivateMod(activeModule);
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  List<URL> urls=Lists.newArrayList();
+  for (  Module module : getActiveMods()) {
+    if (module.isCodeMod()) {
+      urls.add(module.getModClasspathUrl());
+    }
+  }
+  if (activeModClassLoader != null) {
+    try {
+      activeModClassLoader.close();
+    }
+ catch (    IOException e) {
+      logger.error("Failed to close activeModClassLoader",e);
+    }
+  }
+  activeModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
+  for (  Module module : getActiveMods()) {
+    module.setActiveClassLoader(activeModClassLoader);
+  }
+  activeModReflections=new Reflections(new ConfigurationBuilder().addClassLoader(getClass().getClassLoader()).addClassLoader(activeModClassLoader));
+  activeModReflections.merge(getEngineReflections());
+  for (  Module module : getActiveMods()) {
+    if (module.isCodeMod()) {
+      activeModReflections.merge(module.getReflections());
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
-  ModManager modManager=CoreRegistry.get(ModManager.class);
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   LocalPlayerSystem localPlayerSystem=new LocalPlayerSystem();
   componentSystemManager.register(localPlayerSystem,"engine:localPlayerSystem");
   CoreRegistry.put(LocalPlayerSystem.class,localPlayerSystem);
@@ -11,12 +11,12 @@
   BindsConfig bindsConfig=CoreRegistry.get(Config.class).getInput().getBinds();
   CoreRegistry.put(InputSystem.class,inputSystem);
   componentSystemManager.register(inputSystem,"engine:InputSystem");
-  registerButtonBinds(inputSystem,ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class),bindsConfig);
-  registerAxisBinds(inputSystem,ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
-  for (  Mod mod : modManager.getActiveMods()) {
-    if (mod.isCodeMod()) {
-      registerButtonBinds(inputSystem,mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class),bindsConfig);
-      registerAxisBinds(inputSystem,mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
+  registerButtonBinds(inputSystem,ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class),bindsConfig);
+  registerAxisBinds(inputSystem,ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
+  for (  Module module : moduleManager.getActiveMods()) {
+    if (module.isCodeMod()) {
+      registerButtonBinds(inputSystem,module.getModuleInfo().getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class),bindsConfig);
+      registerAxisBinds(inputSystem,module.getModuleInfo().getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
     }
   }
   registerToolbarShortcuts(inputSystem,bindsConfig);

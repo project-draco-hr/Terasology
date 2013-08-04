@@ -1,0 +1,22 @@
+{
+  if (allReflections == null) {
+    List<URL> urls=Lists.newArrayList();
+    for (    Module module : getMods()) {
+      if (module.isCodeMod()) {
+        urls.add(module.getModClasspathUrl());
+      }
+    }
+    ConfigurationBuilder builder=new ConfigurationBuilder().addUrls(urls).addClassLoader(allModClassLoader);
+    for (    ClassLoader engineLoader : engineClassLoaders) {
+      builder.addClassLoader(engineLoader).addUrls(ClasspathHelper.forPackage("org.terasology",engineLoader));
+    }
+    allReflections=new Reflections(builder);
+    allReflections.merge(getEngineReflections());
+    for (    Module module : getMods()) {
+      if (module.isCodeMod()) {
+        allReflections.merge(module.getReflections());
+      }
+    }
+  }
+  return allReflections;
+}

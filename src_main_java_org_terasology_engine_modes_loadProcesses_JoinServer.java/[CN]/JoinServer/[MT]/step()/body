@@ -16,10 +16,10 @@
     gameManifest.setBlockIdMap(blockMap);
     gameManifest.setTime(networkSystem.getServer().getInfo().getTime());
     ModConfig modConfig=gameManifest.getModConfiguration();
-    ModManager modManager=CoreRegistry.get(ModManager.class);
+    ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
     for (    NetData.ModuleInfo moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
-      Mod mod=modManager.getMod(moduleInfo.getModuleId());
-      if (mod == null) {
+      Module module=moduleManager.getMod(moduleInfo.getModuleId());
+      if (module == null) {
         CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Missing required module: " + moduleInfo.getModuleId()));
       }
  else {

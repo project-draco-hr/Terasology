@@ -1,10 +1,10 @@
 {
-  ModManager modManager=CoreRegistry.get(ModManager.class);
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   BindsConfig config=new BindsConfig();
-  config.addDefaultsFor(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
-  for (  Mod mod : modManager.getMods()) {
-    if (mod.isCodeMod()) {
-      config.addDefaultsFor(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  config.addDefaultsFor(ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  for (  Module module : moduleManager.getMods()) {
+    if (module.isCodeMod()) {
+      config.addDefaultsFor(module.getModuleInfo().getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
     }
   }
   return config;

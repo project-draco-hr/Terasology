@@ -4,7 +4,7 @@
   blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl(new WorldAtlas(4096),new DefaultBlockFamilyFactoryRegistry()));
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  entityManager=builder.build(modManager,networkSystem);
+  entityManager=builder.build(moduleManager,networkSystem);
   PrefabManager prefabManager=entityManager.getPrefabManager();
   worldStub=new WorldProviderCoreStub(BlockManager.getAir());
   worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);

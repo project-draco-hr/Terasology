@@ -8,9 +8,9 @@
     worldInfoBuilder.setTitle(world.getTitle());
     serverInfoMessageBuilder.addWorldInfo(worldInfoBuilder);
   }
-  for (  Mod mod : CoreRegistry.get(ModManager.class).getActiveMods()) {
-    if (!mod.getModInfo().isServersideOnly()) {
-      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(mod.getModInfo().getId()).build());
+  for (  Module module : CoreRegistry.get(ModuleManager.class).getActiveMods()) {
+    if (!module.getModuleInfo().isServersideOnly()) {
+      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(module.getModuleInfo().getId()).build());
     }
   }
   for (  Map.Entry<String,Short> blockMapping : blockManager.getBlockIdMap().entrySet()) {

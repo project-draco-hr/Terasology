@@ -1,10 +1,10 @@
 {
   componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
-  modManager=CoreRegistry.get(ModManager.class);
-  componentSystemManager.loadSystems(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections(),netMode);
-  for (  Mod mod : modManager.getActiveMods()) {
-    if (!registeredMods.contains(mod.getModInfo().getId().toLowerCase(Locale.ENGLISH))) {
-      loadMod(mod);
+  moduleManager=CoreRegistry.get(ModuleManager.class);
+  componentSystemManager.loadSystems(ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections(),netMode);
+  for (  Module module : moduleManager.getActiveMods()) {
+    if (!registeredMods.contains(module.getModuleInfo().getId().toLowerCase(Locale.ENGLISH))) {
+      loadMod(module);
     }
   }
   return true;

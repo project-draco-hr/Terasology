@@ -1,10 +1,10 @@
 {
   DefaultBlockFamilyFactoryRegistry registry=new DefaultBlockFamilyFactoryRegistry();
-  ModManager modManager=CoreRegistry.get(ModManager.class);
-  loadFamilies(registry,modManager.getEngineReflections());
-  for (  Mod mod : modManager.getActiveMods()) {
-    if (mod.isCodeMod()) {
-      loadFamilies(registry,mod.getReflections());
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  loadFamilies(registry,moduleManager.getEngineReflections());
+  for (  Module module : moduleManager.getActiveMods()) {
+    if (module.isCodeMod()) {
+      loadFamilies(registry,module.getReflections());
     }
   }
   CoreRegistry.put(BlockFamilyFactoryRegistry.class,registry);

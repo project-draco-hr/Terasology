@@ -1,14 +1,14 @@
 {
-  ModManager modManager=CoreRegistry.get(ModManager.class);
-  updateInputsFor(ModManager.ENGINE_PACKAGE,modManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
-  for (  Mod mod : modManager.getMods()) {
-    if (mod.isCodeMod()) {
-      updateInputsFor(mod.getModInfo().getId(),mod.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  updateInputsFor(ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  for (  Module module : moduleManager.getMods()) {
+    if (module.isCodeMod()) {
+      updateInputsFor(module.getModuleInfo().getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
     }
   }
   for (int i=0; i < 10; ++i) {
-    if (!hasBinds(ModManager.ENGINE_PACKAGE,"toolbarSlot" + i)) {
-      setBinds(ModManager.ENGINE_PACKAGE,"toolbarSlot" + i,new Input(InputType.KEY,Keyboard.KEY_1 + i));
+    if (!hasBinds(ModuleManager.ENGINE_PACKAGE,"toolbarSlot" + i)) {
+      setBinds(ModuleManager.ENGINE_PACKAGE,"toolbarSlot" + i,new Input(InputType.KEY,Keyboard.KEY_1 + i));
     }
   }
 }
