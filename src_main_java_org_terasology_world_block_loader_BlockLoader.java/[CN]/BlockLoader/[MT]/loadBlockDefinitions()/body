@@ -12,13 +12,13 @@
         logger.debug("Loading {}",blockDefUri);
         BlockDefinition blockDef=createBlockDefinition(inheritData(blockDefUri,blockDefJson));
         if (isShapelessBlockFamily(blockDef)) {
-          result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getPackage(),blockDefUri.getAssetName()),blockDef.categories));
+          result.shapelessDefinitions.add(new FreeformFamily(new BlockUri(blockDefUri.getModuleName(),blockDefUri.getAssetName()),blockDef.categories));
         }
  else {
           if (blockDef.liquid) {
             blockDef.rotation=null;
             blockDef.shapes.clear();
-            blockDef.shape=trimmedLoweredShape.getURI().getSimpleString();
+            blockDef.shape=trimmedLoweredShape.getURI().toSimpleString();
           }
           if (blockDef.shapes.isEmpty()) {
             BlockFamilyFactory familyFactory=blockFamilyFactoryRegistry.getBlockFamilyFactory(blockDef.rotation);

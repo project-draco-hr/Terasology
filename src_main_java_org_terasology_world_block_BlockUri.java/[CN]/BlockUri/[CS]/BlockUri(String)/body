@@ -1,18 +1,18 @@
 {
-  String[] split=uri.toLowerCase(Locale.ENGLISH).split(PACKAGE_SEPARATOR,4);
+  String[] split=uri.split(MODULE_SEPARATOR,4);
   if (split.length > 1) {
-    packageName=split[0];
+    moduleName=split[0];
   }
   if (split.length == 4) {
     familyName=split[1];
-    shapePackageName=split[2];
+    String shapeModuleName=split[2];
     split=split[3].split(IDENTIFIER_SEPARATOR_REGEX,2);
     if (split.length > 1) {
-      shapeName=split[0];
+      shape=new AssetUri(AssetType.SHAPE,shapeModuleName,split[0]);
       blockIdentifier=split[1];
     }
  else     if (split.length == 1) {
-      shapeName=split[0];
+      shape=new AssetUri(AssetType.SHAPE,shapeModuleName,split[0]);
     }
   }
  else   if (split.length == 2) {
@@ -25,4 +25,7 @@
       familyName=split[0];
     }
   }
+  normalisedModuleName=normalise(moduleName);
+  normalisedFamilyName=normalise(familyName);
+  normalisedBlockIdentifier=normalise(blockIdentifier);
 }

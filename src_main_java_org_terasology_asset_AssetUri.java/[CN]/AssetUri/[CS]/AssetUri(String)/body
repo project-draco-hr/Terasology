@@ -2,12 +2,12 @@
   String[] typeSplit=uri.split(TYPE_SEPARATOR,2);
   if (typeSplit.length > 1) {
     type=AssetType.getTypeForId(typeSplit[0]);
-    String[] packageSplit=typeSplit[1].split(PACKAGE_SEPARATOR,2);
+    String[] packageSplit=typeSplit[1].split(MODULE_SEPARATOR,2);
     if (packageSplit.length > 1) {
-      packageName=packageSplit[0];
+      moduleName=packageSplit[0];
       assetName=packageSplit[1];
-      normalisedPackageName=packageSplit[0].toLowerCase(Locale.ENGLISH);
-      normalisedAssetName=packageSplit[1].toLowerCase(Locale.ENGLISH);
+      normalisedModuleName=normalise(packageSplit[0]);
+      normalisedAssetName=normalise(packageSplit[1]);
     }
   }
 }

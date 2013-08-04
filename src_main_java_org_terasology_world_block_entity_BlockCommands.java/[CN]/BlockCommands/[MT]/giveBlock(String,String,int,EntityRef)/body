@@ -18,14 +18,14 @@
     builder.append("Non-unique shape name, possible matches: ");
     Iterator<AssetUri> shapeUris=resolvedShapeUris.iterator();
     while (shapeUris.hasNext()) {
-      builder.append(shapeUris.next().getSimpleString());
+      builder.append(shapeUris.next().toSimpleString());
       if (shapeUris.hasNext()) {
         builder.append(", ");
       }
     }
     return builder.toString();
   }
-  BlockUri blockUri=new BlockUri(resolvedBlockUris.get(0).toString() + BlockUri.PACKAGE_SEPARATOR + resolvedShapeUris.get(0).getSimpleString());
+  BlockUri blockUri=new BlockUri(resolvedBlockUris.get(0).toString() + BlockUri.PACKAGE_SEPARATOR + resolvedShapeUris.get(0).toSimpleString());
   if (blockUri.isValid()) {
     return giveBlock(blockManager.getBlockFamily(blockUri),quantity,client);
   }

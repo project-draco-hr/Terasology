@@ -10,7 +10,7 @@
       return null;
     }
   }
-  AssetUri blockDefUri=new AssetUri(AssetType.BLOCK_DEFINITION,uri.getPackage(),uri.getFamily());
+  AssetUri blockDefUri=new AssetUri(AssetType.BLOCK_DEFINITION,uri.getPackage(),uri.getFamilyName());
   BlockDefinition def;
   if (AssetManager.getInstance().getAssetURLs(blockDefUri).isEmpty()) {
     def=new BlockDefinition();
@@ -18,7 +18,7 @@
  else {
     def=createBlockDefinition(inheritData(blockDefUri,readJson(blockDefUri).getAsJsonObject()));
   }
-  def.shape=(shape.getURI().getSimpleString());
+  def.shape=(shape.getURI().toSimpleString());
   if (shape.isCollisionYawSymmetric()) {
     Block block=constructSingleBlock(blockDefUri,def);
     return new SymmetricFamily(uri,block,def.categories);
