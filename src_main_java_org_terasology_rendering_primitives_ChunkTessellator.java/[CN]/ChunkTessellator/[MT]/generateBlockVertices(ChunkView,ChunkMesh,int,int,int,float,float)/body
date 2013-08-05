@@ -47,7 +47,8 @@
       Vector3i offset=side.getVector3i();
       Block adjacentBelow=view.getBlock(x + offset.x,y - 1,z + offset.z);
       Block adjacent=adjacentBlocks.get(side);
-      drawDir[side.ordinal()]|=(blockAppearance.getPart(BlockPart.fromSide(side)) != null && isSideVisibleForBlockTypes(adjacentBelow,block,side) && !isSideVisibleForBlockTypes(bottomBlock,adjacent,side.reverse()));
+      boolean visible=(blockAppearance.getPart(BlockPart.fromSide(side)) != null && isSideVisibleForBlockTypes(adjacentBelow,block,side) && !isSideVisibleForBlockTypes(bottomBlock,adjacent,side.reverse()));
+      drawDir[side.ordinal()]|=visible;
     }
     Block blockToCheck=adjacentBlocks.get(Side.TOP);
     drawDir[Side.TOP.ordinal()]|=!blockToCheck.isLiquid();

@@ -12,7 +12,7 @@
  else       if (phase == ChunkMesh.RenderPhase.ALPHA_REJECT) {
         shader.activateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
       }
-      shader.setFloat3("chunkPositionWorld",(float)(chunk.getPos().x * Chunk.SIZE_X),(float)(chunk.getPos().y * Chunk.SIZE_Y),(float)(chunk.getPos().z * Chunk.SIZE_Z));
+      shader.setFloat3("chunkPositionWorld",chunk.getPos().x * Chunk.SIZE_X,chunk.getPos().y * Chunk.SIZE_Y,chunk.getPos().z * Chunk.SIZE_Z);
       shader.setFloat("animated",chunk.getAnimated() ? 1.0f : 0.0f);
       if (mode == ChunkRenderMode.REFLECTION) {
         shader.setFloat("clip",camera.getClipHeight());

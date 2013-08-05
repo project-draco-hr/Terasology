@@ -1,0 +1,22 @@
+{
+  Path modInfoFile=modPath.resolve("module.txt");
+  if (Files.isRegularFile(modInfoFile)) {
+    try (Reader reader=Files.newBufferedReader(modInfoFile,TerasologyConstants.CHARSET)){
+      ModuleInfo moduleInfo=gson.fromJson(reader,ModuleInfo.class);
+      if (!mods.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
+        Path assetLocation=modPath.resolve(ASSETS_SUBDIRECTORY);
+        Path overridesLocation=modPath.resolve(OVERRIDES_SUBDIRECTORY);
+        AssetSource source=new DirectorySource(moduleInfo.getId(),assetLocation,overridesLocation);
+        Module module=new Module(modPath,moduleInfo,source);
+        mods.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
+        logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeMod());
+      }
+ else {
+        logger.info("Discovered duplicate module: {}, skipping",moduleInfo.getDisplayName());
+      }
+    }
+ catch (    FileNotFoundException|JsonIOException e) {
+      logger.warn("Failed to load module manifest for module at {}",modPath,e);
+    }
+  }
+}

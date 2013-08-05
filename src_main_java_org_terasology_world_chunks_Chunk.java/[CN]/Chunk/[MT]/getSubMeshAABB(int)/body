@@ -4,7 +4,8 @@
     int heightHalf=SIZE_Y / VERTICAL_SEGMENTS / 2;
     for (int i=0; i < subMeshAABB.length; i++) {
       Vector3f dimensions=new Vector3f(8,heightHalf,8);
-      Vector3f position=new Vector3f(getChunkWorldPosX() + dimensions.x - 0.5f,(i * heightHalf * 2) + dimensions.y - 0.5f,getChunkWorldPosZ() + dimensions.z - 0.5f);
+      Vector3f position=new Vector3f(getChunkWorldPosX() - 0.5f,(i * heightHalf * 2) - 0.5f,getChunkWorldPosZ() - 0.5f);
+      position.add(dimensions);
       subMeshAABB[i]=AABB.createCenterExtent(position,dimensions);
     }
   }

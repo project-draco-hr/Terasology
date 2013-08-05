@@ -4,10 +4,12 @@
     value.addDouble(primitive.getAsDouble());
     value.addFloat(primitive.getAsFloat());
     try {
-      value.addLong(primitive.getAsLong());
       value.addInteger(primitive.getAsInt());
+      value.addLong(primitive.getAsLong());
     }
  catch (    NumberFormatException e) {
+      value.addInteger(0);
+      value.addLong(0);
     }
   }
   if (primitive.isBoolean()) {

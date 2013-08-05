@@ -11,7 +11,8 @@
     return false;
   }
   if (!block.isPenetrable()) {
-    return !CoreRegistry.get(BulletPhysics.class).scanArea(block.getBounds(blockPos),Lists.<CollisionGroup>newArrayList(StandardCollisionGroup.DEFAULT,StandardCollisionGroup.CHARACTER)).iterator().hasNext();
+    BulletPhysics physics=CoreRegistry.get(BulletPhysics.class);
+    return physics.scanArea(block.getBounds(blockPos),StandardCollisionGroup.DEFAULT,StandardCollisionGroup.CHARACTER).isEmpty();
   }
   return true;
 }

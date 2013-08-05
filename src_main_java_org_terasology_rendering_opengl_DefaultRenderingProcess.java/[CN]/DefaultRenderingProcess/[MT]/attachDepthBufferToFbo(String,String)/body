@@ -4,9 +4,9 @@
   if (source == null || target == null) {
     return false;
   }
-  EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,target.fboId);
-  EXTFramebufferObject.glFramebufferRenderbufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,EXTFramebufferObject.GL_RENDERBUFFER_EXT,source.depthStencilRboId);
-  EXTFramebufferObject.glFramebufferTexture2DEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,EXTFramebufferObject.GL_DEPTH_ATTACHMENT_EXT,GL11.GL_TEXTURE_2D,source.depthStencilTextureId,0);
-  EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT,0);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,target.fboId);
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT,source.depthStencilRboId);
+  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL11.GL_TEXTURE_2D,source.depthStencilTextureId,0);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
   return true;
 }
