@@ -1,9 +1,8 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   BindsConfig config=new BindsConfig();
-  config.addDefaultsFor(ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
-  for (  Module module : moduleManager.getMods()) {
-    if (module.isCodeMod()) {
+  for (  Module module : moduleManager.getModules()) {
+    if (module.isCodeModule()) {
       config.addDefaultsFor(module.getModuleInfo().getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
     }
   }

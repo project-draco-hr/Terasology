@@ -1,0 +1,16 @@
+{
+  if (reflections == null) {
+    URL url=getModuleClasspathUrl();
+    if (url != null) {
+      ConfigurationBuilder configurationBuilder=new ConfigurationBuilder().addUrls(url).setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
+      if (activeClassLoader != null) {
+        configurationBuilder.addClassLoader(activeClassLoader);
+      }
+ else {
+        configurationBuilder.addClassLoader(inactiveClassLoader);
+      }
+      reflections=new Reflections(configurationBuilder);
+    }
+  }
+  return reflections;
+}

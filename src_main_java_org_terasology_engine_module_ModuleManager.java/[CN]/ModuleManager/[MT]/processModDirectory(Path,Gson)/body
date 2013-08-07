@@ -3,13 +3,13 @@
   if (Files.isRegularFile(modInfoFile)) {
     try (Reader reader=Files.newBufferedReader(modInfoFile,TerasologyConstants.CHARSET)){
       ModuleInfo moduleInfo=gson.fromJson(reader,ModuleInfo.class);
-      if (!mods.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
+      if (!modules.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
         Path assetLocation=modPath.resolve(ASSETS_SUBDIRECTORY);
         Path overridesLocation=modPath.resolve(OVERRIDES_SUBDIRECTORY);
         AssetSource source=new DirectorySource(moduleInfo.getId(),assetLocation,overridesLocation);
-        Module module=new Module(modPath,moduleInfo,source);
-        mods.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
-        logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeMod());
+        ExtensionModule module=new ExtensionModule(modPath,moduleInfo,source);
+        modules.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
+        logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeModule());
       }
  else {
         logger.info("Discovered duplicate module: {}, skipping",moduleInfo.getDisplayName());

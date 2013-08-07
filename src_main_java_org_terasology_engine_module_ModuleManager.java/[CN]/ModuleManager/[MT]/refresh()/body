@@ -1,5 +1,5 @@
 {
-  mods.clear();
+  modules.clear();
   Gson gson=new Gson();
   for (  Path rootModPath : PathManager.getInstance().getModPaths()) {
     try {
@@ -8,7 +8,7 @@
       }
     }
  catch (    IOException e) {
-      logger.error("Failed to scan for directory mods",e);
+      logger.error("Failed to scan for directory modules",e);
     }
     try {
       for (      Path modPath : Files.newDirectoryStream(rootModPath,new DirectoryStream.Filter<Path>(){
@@ -21,33 +21,33 @@
       }
     }
  catch (    IOException e) {
-      logger.error("Failed to scan for jar and zip mods",e);
+      logger.error("Failed to scan for jar and zip modules",e);
     }
   }
   List<URL> urls=Lists.newArrayList();
-  for (  Module module : getMods()) {
-    if (module.isCodeMod()) {
-      urls.add(module.getModClasspathUrl());
+  for (  ExtensionModule module : getExtensionModules()) {
+    if (module.isCodeModule()) {
+      urls.add(module.getModuleClasspathUrl());
     }
   }
-  if (allModClassLoader != null) {
+  if (allModuleClassLoader != null) {
     try {
-      allModClassLoader.close();
+      allModuleClassLoader.close();
     }
  catch (    IOException e) {
-      logger.error("Failed to cloase allModClassLoader",e);
+      logger.error("Failed to cloase allModuleClassLoader",e);
     }
   }
-  allModClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
-  for (  Module module : getMods()) {
-    module.setInactiveClassLoader(allModClassLoader);
+  allModuleClassLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]),getClass().getClassLoader());
+  for (  ExtensionModule module : getExtensionModules()) {
+    module.setInactiveClassLoader(allModuleClassLoader);
   }
-  if (activeModClassLoader != null) {
+  if (activeModuleClassLoader != null) {
     try {
-      activeModClassLoader.close();
+      activeModuleClassLoader.close();
     }
  catch (    IOException e) {
-      logger.error("Failed to close activeModClassLoader",e);
+      logger.error("Failed to close activeModuleClassLoader",e);
     }
   }
   allReflections=null;

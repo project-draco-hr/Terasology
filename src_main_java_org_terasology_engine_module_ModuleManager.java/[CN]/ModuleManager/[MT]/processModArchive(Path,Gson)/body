@@ -4,11 +4,11 @@
     if (modInfoEntry != null) {
       try {
         ModuleInfo moduleInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry)),ModuleInfo.class);
-        if (!mods.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
+        if (!modules.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
           ArchiveSource source=new ArchiveSource(moduleInfo.getId(),modPath.toFile(),ASSETS_SUBDIRECTORY,OVERRIDES_SUBDIRECTORY);
-          Module module=new Module(modPath,moduleInfo,source);
-          mods.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
-          logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeMod());
+          ExtensionModule module=new ExtensionModule(modPath,moduleInfo,source);
+          modules.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
+          logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeModule());
         }
  else {
           logger.info("Discovered duplicate module: " + moduleInfo.getDisplayName() + ", skipping");

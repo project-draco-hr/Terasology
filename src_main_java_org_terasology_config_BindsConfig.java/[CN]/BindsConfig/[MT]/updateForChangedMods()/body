@@ -1,14 +1,13 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  updateInputsFor(ModuleManager.ENGINE_PACKAGE,moduleManager.getEngineReflections().getTypesAnnotatedWith(RegisterBindButton.class));
-  for (  Module module : moduleManager.getMods()) {
-    if (module.isCodeMod()) {
+  for (  Module module : moduleManager.getModules()) {
+    if (module.isCodeModule()) {
       updateInputsFor(module.getModuleInfo().getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
     }
   }
   for (int i=0; i < 10; ++i) {
-    if (!hasBinds(ModuleManager.ENGINE_PACKAGE,"toolbarSlot" + i)) {
-      setBinds(ModuleManager.ENGINE_PACKAGE,"toolbarSlot" + i,new Input(InputType.KEY,Keyboard.KEY_1 + i));
+    if (!hasBinds(ModuleManager.ENGINE_MODULE,"toolbarSlot" + i)) {
+      setBinds(ModuleManager.ENGINE_MODULE,"toolbarSlot" + i,new Input(InputType.KEY,Keyboard.KEY_1 + i));
     }
   }
 }
