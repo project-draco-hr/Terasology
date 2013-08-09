@@ -1,6 +1,19 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  CoreRegistry.get(ModuleManager.class).getAllReflections();
+  CoreRegistry.get(ModuleManager.class).loadInactiveReflections();
+  List<WorldGeneratorInfo> infos=Lists.newArrayList();
   for (  Module module : moduleManager.getModules()) {
+    for (    Class<?> generatorClass : module.getReflections().getTypesAnnotatedWith(RegisterWorldGenerator.class)) {
+      RegisterWorldGenerator annotation=generatorClass.getAnnotation(RegisterWorldGenerator.class);
+      if (isValidWorldGenerator(generatorClass)) {
+        WorldGeneratorUri uri=new WorldGeneratorUri(module.getModuleInfo().getId(),annotation.id());
+        infos.add(new WorldGeneratorInfo(uri,annotation.displayName(),annotation.description()));
+      }
+ else {
+        logger.error("{} marked to be registered as a World Generator, but is not a subclass of WorldGenerator or lacks the correct constructor",generatorClass);
+      }
+    }
   }
+  Collections.sort(infos);
+  generatorInfo=ImmutableList.copyOf(infos);
 }

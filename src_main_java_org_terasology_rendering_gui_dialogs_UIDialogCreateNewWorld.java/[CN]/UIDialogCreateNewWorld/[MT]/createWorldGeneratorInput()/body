@@ -1,0 +1,32 @@
+{
+  worldGeneratorLabel=createLabel("Choose World Generator:");
+  final WorldGeneratorManager worldGeneratorManager=CoreRegistry.get(WorldGeneratorManager.class);
+  worldGenerators=worldGeneratorManager.getWorldGenerators();
+  worldGenerator=new UIComboBox(new Vector2f(COMPONENT_WIDTH,COMPONENT_HEIGHT),new Vector2f(COMPONENT_WIDTH,2 * COMPONENT_HEIGHT));
+  WorldGeneratorUri defaultMapGenerator=CoreRegistry.get(Config.class).getWorldGeneration().getDefaultGenerator();
+  UIListItem item;
+  int index=0;
+  int defaultIndex=0;
+  for (  WorldGeneratorInfo generator : worldGenerators) {
+    if (generator.getUri().equals(defaultMapGenerator)) {
+      defaultIndex=index;
+    }
+    item=new UIListItem(generator.getDisplayName(),index);
+    item.setTextColor(Color.black);
+    item.setPadding(new Vector4f(2f,2f,2f,2f));
+    item.setValue(generator);
+    worldGenerator.addItem(item);
+    index++;
+  }
+  worldGenerator.setVisible(true);
+  worldGenerator.addSelectionListener(new SelectionListener(){
+    @Override public void changed(    UIDisplayElement element){
+      WorldGeneratorInfo generator=getSelectedWorldGenerator();
+      if (modConfig != null) {
+        modConfig.addMod(generator.getUri().getModuleName());
+      }
+    }
+  }
+);
+  worldGenerator.select(defaultIndex);
+}

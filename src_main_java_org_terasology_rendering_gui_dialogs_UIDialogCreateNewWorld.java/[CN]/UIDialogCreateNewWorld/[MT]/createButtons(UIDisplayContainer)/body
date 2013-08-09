@@ -1,82 +1,8 @@
 {
-  okButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
-  okButton.getLabel().setText("Play");
-  okButton.setPosition(new Vector2f(getSize().x / 2 - okButton.getSize().x - 16f,getSize().y - okButton.getSize().y - 10));
-  okButton.setVisible(true);
-  okButton.addClickListener(new ClickListener(){
-    @Override public void click(    UIDisplayElement element,    int button){
-      Config config=CoreRegistry.get(Config.class);
-      if (inputWorldTitle.getText().isEmpty()) {
-        getGUIManager().showMessage("Error","Please enter a world name");
-        return;
-      }
- else       if (Files.isRegularFile(PathManager.getInstance().getSavePath(inputWorldTitle.getText()).resolve(GameManifest.DEFAULT_FILE_NAME))) {
-        getGUIManager().showMessage("Error","A World with this name already exists");
-        return;
-      }
-      if (inputSeed.getText().length() > 0) {
-        config.getWorldGeneration().setDefaultSeed(inputSeed.getText());
-      }
- else {
-        FastRandom random=new FastRandom();
-        config.getWorldGeneration().setDefaultSeed(random.randomCharacterString(32));
-      }
-      if (inputWorldTitle.getText().length() > 0) {
-        config.getWorldGeneration().setWorldTitle(inputWorldTitle.getText());
-      }
- else {
-        config.getWorldGeneration().setWorldTitle(getWorldName());
-      }
-      List<String> chunkList=new ArrayList<String>();
-switch (chunkGenerator.getSelectionIndex()) {
-case 1:
-        chunkList.add(FlatTerrainGenerator.class.getName());
-      chunkList.add(FloraGenerator.class.getName());
-    chunkList.add(LiquidsGenerator.class.getName());
-  chunkList.add(ForestGenerator.class.getName());
-break;
-case 2:
-chunkList.add(MultiTerrainGenerator.class.getName());
-chunkList.add(FloraGenerator.class.getName());
-chunkList.add(LiquidsGenerator.class.getName());
-chunkList.add(ForestGenerator.class.getName());
-break;
-case 3:
-chunkList.add(BasicHMTerrainGenerator.class.getName());
-chunkList.add(FloraGenerator.class.getName());
-chunkList.add(LiquidsGenerator.class.getName());
-chunkList.add(ForestGenerator.class.getName());
-break;
-default :
-chunkList.add(PerlinTerrainGenerator.class.getName());
-chunkList.add(FloraGenerator.class.getName());
-chunkList.add(LiquidsGenerator.class.getName());
-chunkList.add(ForestGenerator.class.getName());
-break;
-}
-String[] chunksListArr=chunkList.toArray(new String[chunkList.size()]);
-config.getDefaultModSelection().copy(modConfig);
-config.save();
-GameManifest gameManifest=new GameManifest();
-gameManifest.setTitle(config.getWorldGeneration().getWorldTitle());
-gameManifest.setSeed(config.getWorldGeneration().getDefaultSeed());
-gameManifest.getModConfiguration().copy(modConfig);
-WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getWorldGeneration().getDefaultSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),chunksListArr);
-gameManifest.addWorldInfo(worldInfo);
-CoreRegistry.get(GameEngine.class).changeState(new StateLoading(gameManifest,(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
-}
-}
-);
-cancelButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
-cancelButton.setPosition(new Vector2f(okButton.getPosition().x + okButton.getSize().x + 16f,okButton.getPosition().y));
-cancelButton.getLabel().setText("Cancel");
-cancelButton.setVisible(true);
-cancelButton.addClickListener(new ClickListener(){
-@Override public void click(UIDisplayElement element,int button){
-close();
-}
-}
-);
-parent.addDisplayElement(okButton);
-parent.addDisplayElement(cancelButton);
+  createOkayButton();
+  createCancelButton();
+  createModButton();
+  parent.addDisplayElement(modButton);
+  parent.addDisplayElement(okButton);
+  parent.addDisplayElement(cancelButton);
 }

@@ -1,0 +1,42 @@
+{
+  okButton=new UIButton(new Vector2f(128f,32f),UIButton.ButtonType.NORMAL);
+  okButton.getLabel().setText("Play");
+  okButton.setVisible(true);
+  okButton.addClickListener(new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      Config config=CoreRegistry.get(Config.class);
+      if (inputWorldTitle.getText().isEmpty()) {
+        getGUIManager().showMessage("Error","Please enter a world name");
+        return;
+      }
+ else       if (Files.isRegularFile(PathManager.getInstance().getSavePath(inputWorldTitle.getText()).resolve(GameManifest.DEFAULT_FILE_NAME))) {
+        getGUIManager().showMessage("Error","A World with this name already exists");
+        return;
+      }
+      if (inputSeed.getText().length() > 0) {
+        config.getWorldGeneration().setDefaultSeed(inputSeed.getText());
+      }
+ else {
+        FastRandom random=new FastRandom();
+        config.getWorldGeneration().setDefaultSeed(random.randomCharacterString(32));
+      }
+      if (inputWorldTitle.getText().length() > 0) {
+        config.getWorldGeneration().setWorldTitle(inputWorldTitle.getText());
+      }
+ else {
+        config.getWorldGeneration().setWorldTitle(getWorldName());
+      }
+      CoreRegistry.get(Config.class).getDefaultModSelection().copy(modConfig);
+      CoreRegistry.get(Config.class).save();
+      WorldGeneratorInfo worldGeneratorInfo=getSelectedWorldGenerator();
+      GameManifest gameManifest=new GameManifest();
+      gameManifest.setTitle(config.getWorldGeneration().getWorldTitle());
+      gameManifest.setSeed(config.getWorldGeneration().getDefaultSeed());
+      gameManifest.getModConfiguration().copy(modConfig);
+      WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getWorldGeneration().getDefaultSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorInfo.getUri());
+      gameManifest.addWorldInfo(worldInfo);
+      CoreRegistry.get(GameEngine.class).changeState(new StateLoading(gameManifest,(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
+    }
+  }
+);
+}

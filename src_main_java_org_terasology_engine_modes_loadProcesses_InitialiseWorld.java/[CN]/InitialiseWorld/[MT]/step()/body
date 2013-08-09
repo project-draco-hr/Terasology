@@ -6,10 +6,18 @@
     worldInfo.setSeed(random.randomCharacterString(16));
   }
   logger.info("World seed: \"{}\"",worldInfo.getSeed());
-  ChunkGeneratorManager chunkGeneratorManager=ChunkGeneratorManagerImpl.buildChunkGenerator(Arrays.asList(worldInfo.getChunkGenerators()));
-  chunkGeneratorManager.setWorldSeed(worldInfo.getSeed());
-  chunkGeneratorManager.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
-  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,chunkGeneratorManager);
+  WorldGenerator worldGenerator;
+  try {
+    worldGenerator=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(worldInfo.getWorldGenerator());
+    worldGenerator.setWorldSeed(worldInfo.getSeed());
+    worldGenerator.setWorldBiomeProvider(new WorldBiomeProviderImpl(worldInfo.getSeed()));
+  }
+ catch (  UnresolvedWorldGeneratorException e) {
+    logger.error("Unable to load world generator",e);
+    CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Failed to resolve world generator."));
+    return false;
+  }
+  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,worldGenerator);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);

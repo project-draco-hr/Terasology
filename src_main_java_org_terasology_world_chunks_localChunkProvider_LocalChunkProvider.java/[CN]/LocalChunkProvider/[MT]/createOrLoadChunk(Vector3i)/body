@@ -34,7 +34,7 @@
             return "Generate Chunk";
           }
           @Override public void enact(){
-            Chunk chunk=generator.generateChunk(getPosition());
+            Chunk chunk=generator.createChunk(getPosition());
             if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
               logger.warn("Chunk {} is already in the near cache",getPosition());
             }

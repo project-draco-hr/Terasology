@@ -1,0 +1,13 @@
+{
+  if (title == null) {
+    title=seed;
+  }
+  this.title=title;
+  this.seed=seed;
+  this.worldGenerator=worldGenerator;
+  this.biomeProvider=new WorldBiomeProviderImpl(seed);
+  this.chunkProvider=chunkProvider;
+  CoreRegistry.put(ChunkProvider.class,chunkProvider);
+  this.worldTime=new WorldTimeImpl();
+  worldTime.setMilliseconds(time);
+}
