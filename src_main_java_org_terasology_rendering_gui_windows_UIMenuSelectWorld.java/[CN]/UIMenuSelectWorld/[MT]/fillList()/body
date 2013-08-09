@@ -1,0 +1,34 @@
+{
+  list.removeAll();
+  Path savedGames=PathManager.getInstance().getSavesPath();
+  SortedMap<FileTime,Path> savedGamePaths=Maps.newTreeMap(Collections.reverseOrder());
+  try (DirectoryStream<Path> stream=Files.newDirectoryStream(savedGames)){
+    for (    Path entry : stream) {
+      if (Files.isRegularFile(entry.resolve(GameManifest.DEFAULT_FILE_NAME))) {
+        savedGamePaths.put(Files.getLastModifiedTime(entry),entry);
+      }
+    }
+  }
+ catch (  IOException e) {
+    logger.error("Failed to read saved games path",e);
+  }
+  DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  for (  Map.Entry<FileTime,Path> world : savedGamePaths.entrySet()) {
+    Path gameManifest=world.getValue().resolve(GameManifest.DEFAULT_FILE_NAME);
+    if (!Files.isRegularFile(gameManifest)) {
+      continue;
+    }
+    try {
+      GameManifest info=GameManifest.load(gameManifest);
+      if (!info.getTitle().isEmpty()) {
+        Date date=new Date(world.getKey().toMillis());
+        UIListItem item=new UIListItem(info.getTitle() + "\n" + dateFormat.format(date),info);
+        item.setPadding(new Vector4f(10f,5f,10f,5f));
+        list.addItem(item);
+      }
+    }
+ catch (    IOException e) {
+      logger.error("Failed reading world data object.",e);
+    }
+  }
+}
