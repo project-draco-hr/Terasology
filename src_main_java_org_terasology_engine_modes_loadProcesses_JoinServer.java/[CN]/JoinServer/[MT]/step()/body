@@ -15,7 +15,7 @@
     gameManifest.setRegisteredBlockFamilies(serverInfo.getRegisterBlockFamilyList());
     gameManifest.setBlockIdMap(blockMap);
     gameManifest.setTime(networkSystem.getServer().getInfo().getTime());
-    ModConfig modConfig=gameManifest.getModConfiguration();
+    ModuleConfig moduleConfig=gameManifest.getModuleConfiguration();
     ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
     for (    NetData.ModuleInfo moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
       Module module=moduleManager.getModule(moduleInfo.getModuleId());
@@ -25,7 +25,7 @@
       }
  else {
         logger.debug("Activating module: {}",moduleInfo.getModuleId());
-        modConfig.addMod(moduleInfo.getModuleId());
+        moduleConfig.addMod(moduleInfo.getModuleId());
       }
     }
     CoreRegistry.get(Game.class).load(gameManifest);

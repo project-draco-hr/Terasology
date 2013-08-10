@@ -1,9 +1,9 @@
 {
   try (BufferedReader reader=Files.newBufferedReader(filePath,TerasologyConstants.CHARSET)){
     GameManifest result=createGson().fromJson(reader,GameManifest.class);
-    if (result.modConfiguration.size() == 0) {
+    if (result.moduleConfiguration.size() == 0) {
       for (      Module module : CoreRegistry.get(ModuleManager.class).getModules()) {
-        result.modConfiguration.addMod(module.getModuleInfo().getId());
+        result.moduleConfiguration.addMod(module.getModuleInfo().getId());
       }
     }
     return result;

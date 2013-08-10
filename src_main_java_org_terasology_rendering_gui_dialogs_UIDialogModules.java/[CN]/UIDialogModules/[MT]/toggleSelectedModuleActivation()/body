@@ -1,0 +1,15 @@
+{
+  Module selectedModule=(Module)modList.getSelection().getValue();
+  if (selectedModule.getModuleInfo().getId().equals("core")) {
+    return;
+  }
+  if (moduleConfig.hasMod(selectedModule.getModuleInfo().getId())) {
+    deactivateMod(selectedModule);
+    toggleButton.getLabel().setText(ACTIVATE_TEXT);
+  }
+ else {
+    activateMod(selectedModule);
+    toggleButton.getLabel().setText(DEACTIVATE_TEXT);
+  }
+  refreshListItemActivation();
+}

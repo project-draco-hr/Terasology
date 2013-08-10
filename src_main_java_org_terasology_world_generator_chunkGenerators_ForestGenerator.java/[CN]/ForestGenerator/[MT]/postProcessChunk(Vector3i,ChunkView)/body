@@ -10,6 +10,10 @@
         int randX=x + random.randomInt(3);
         int randZ=z + random.randomInt(3);
         Block posBlock=view.getBlock(randX,y,randZ);
+        if (posBlock == null) {
+          logger.error("WorldView.getBlock({}, {}, {}) return null, skipping forest generation (watchdog for issue #534)",randX,y,randZ);
+          return;
+        }
         if (posBlock.equals(sandBlock) || posBlock.equals(grassBlock) || posBlock.equals(snowBlock)) {
           double rand=Math.abs(random.randomDouble());
           int randomGeneratorId;
