@@ -1,5 +1,7 @@
 {
-  if (dirt.equals(world.getBlock(blockPos)) && world.getSunlight(new Vector3i(blockPos.x,blockPos.y + 1,blockPos.z)) == Chunk.MAX_LIGHT) {
+  final byte sunlight=world.getSunlight(new Vector3i(blockPos.x,blockPos.y + 1,blockPos.z));
+  final boolean isDirt=dirt.equals(world.getBlock(blockPos));
+  if (isDirt && sunlight == Chunk.MAX_LIGHT) {
     WorldBiomeProvider.Biome biome=world.getBiomeProvider().getBiomeAt(blockPos.x,blockPos.z);
     if (biome.isVegetationFriendly()) {
       Block bLeft=world.getBlock(blockPos.x - 1,blockPos.y,blockPos.z);
