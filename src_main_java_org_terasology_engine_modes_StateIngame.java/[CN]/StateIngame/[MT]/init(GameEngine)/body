@@ -14,4 +14,8 @@
     logger.info("Updating Oculus projection parameters from device...");
     OculusVrHelper.updateFromDevice();
   }
+  final boolean hudHidden=CoreRegistry.get(Config.class).getRendering().getDebug().isHudHidden();
+  for (  UIDisplayElement element : CoreRegistry.get(GUIManager.class).getWindowById("hud").getDisplayElements()) {
+    element.setVisible(!hudHidden);
+  }
 }

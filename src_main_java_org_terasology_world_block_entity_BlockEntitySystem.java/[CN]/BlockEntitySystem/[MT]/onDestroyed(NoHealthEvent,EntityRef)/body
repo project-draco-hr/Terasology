@@ -1,22 +1,31 @@
 {
   BlockComponent blockComp=entity.getComponent(BlockComponent.class);
   Block oldBlock=worldProvider.getBlock(blockComp.getPosition());
+  BlockDamageComponent blockDamageComponent=event.getDamageType().getComponent(BlockDamageComponent.class);
   Block upperBlock=worldProvider.getBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z);
   if (upperBlock.isSupportRequired()) {
     worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,BlockManager.getAir(),upperBlock);
   }
-  entity.send(new PlaySoundEvent(Assets.getSound("engine:RemoveBlock"),0.6f));
-  EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily());
-  entity.send(new OnBlockToItem(item));
-  if ((oldBlock.isDirectPickup())) {
-    if (!inventoryManager.giveItem(event.getInstigator(),item)) {
+  if (blockDamageComponent == null || !blockDamageComponent.skipPerBlockEffects) {
+    entity.send(new PlaySoundEvent(Assets.getSound("engine:RemoveBlock"),0.6f));
+  }
+  float chanceOfBlockDrop=1;
+  if (blockDamageComponent != null) {
+    chanceOfBlockDrop=1 - blockDamageComponent.blockAnnihilationChance;
+  }
+  if ((random.randomFloat() + 1) / 2 < chanceOfBlockDrop) {
+    EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily());
+    entity.send(new OnBlockToItem(item));
+    if ((oldBlock.isDirectPickup())) {
+      if (!inventoryManager.giveItem(event.getInstigator(),item)) {
+        EntityRef pickup=itemPickupFactory.newInstance(blockComp.getPosition().toVector3f(),20,item);
+        pickup.send(new ImpulseEvent(random.randomVector3f(30)));
+      }
+    }
+ else {
       EntityRef pickup=itemPickupFactory.newInstance(blockComp.getPosition().toVector3f(),20,item);
       pickup.send(new ImpulseEvent(random.randomVector3f(30)));
     }
-  }
- else {
-    EntityRef pickup=itemPickupFactory.newInstance(blockComp.getPosition().toVector3f(),20,item);
-    pickup.send(new ImpulseEvent(random.randomVector3f(30)));
   }
   worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir(),oldBlock);
 }

@@ -2,8 +2,9 @@
   Vector3f dir=new Vector3f(event.getDirection());
   Vector3f origin=new Vector3f(event.getOrigin());
   Vector3i blockPos=new Vector3i();
+  int particleEffects=0;
   int blockCounter=MAX_DESTROYED_BLOCKS;
-  for (int s=4; s <= 10000; s+=30) {
+  for (int s=4; s <= 5000; s+=30) {
     origin.add(dir);
     for (int i=0; i < 64; i++) {
       Vector3f direction=random.randomVector3f();
@@ -18,9 +19,15 @@
         blockPos.set((int)target.x,(int)target.y,(int)target.z);
         Block currentBlock=worldProvider.getBlock(blockPos);
         if (currentBlock.isDestructible()) {
+          if (particleEffects < MAX_PARTICLE_EFFECTS) {
+            EntityBuilder builder=entityManager.newBuilder("engine:smokeExplosion");
+            builder.getComponent(LocationComponent.class).setWorldPosition(target);
+            builder.build();
+            particleEffects++;
+          }
           if (random.randomInt(6) == 0) {
             EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
-            blockEntity.send(new DoDamageEvent(1000,EngineDamageTypes.DIRECT.get(),EntityRef.NULL));
+            blockEntity.send(new DoDamageEvent(1000,EngineDamageTypes.EXPLOSIVE.get(),EntityRef.NULL));
           }
           blockCounter--;
         }
