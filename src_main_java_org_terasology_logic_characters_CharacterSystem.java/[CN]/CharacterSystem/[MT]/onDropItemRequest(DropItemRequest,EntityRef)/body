@@ -2,15 +2,6 @@
   if (!event.getItem().exists() || !networkSystem.getOwnerEntity(event.getItem()).equals(networkSystem.getOwnerEntity(character))) {
     return;
   }
-  EntityRef itemEntity=inventoryManager.removeItem(event.getInventoryEntity(),event.getItem(),1);
-  if (networkSystem.getMode().isAuthority()) {
-    Vector3f impulse=event.getImpulse();
-    Vector3f newPosition=event.getNewPosition();
-    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
-    ItemPickupFactory itemPickupFactory=new ItemPickupFactory(entityManager);
-    EntityRef droppedItem=itemPickupFactory.newInstance(new Vector3f(newPosition),200,itemEntity);
-    if (!droppedItem.equals(EntityRef.NULL)) {
-      droppedItem.send(new ImpulseEvent(new Vector3f(impulse)));
-    }
-  }
+  EntityRef pickup=pickupBuilder.createPickupFor(event.getItem(),event.getNewPosition(),200);
+  pickup.send(new ImpulseEvent(event.getImpulse()));
 }

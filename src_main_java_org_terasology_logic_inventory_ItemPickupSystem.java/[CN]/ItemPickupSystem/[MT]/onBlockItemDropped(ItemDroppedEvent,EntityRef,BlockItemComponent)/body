@@ -1,0 +1,18 @@
+{
+  EntityBuilder builder=event.getPickup();
+  BlockFamily blockFamily=blockItemComponent.blockFamily;
+  if (builder.hasComponent(MeshComponent.class)) {
+    MeshComponent mesh=builder.getComponent(MeshComponent.class);
+    mesh.mesh=blockFamily.getArchetypeBlock().getMesh();
+    mesh.material=Assets.getMaterial("engine:terrain");
+  }
+  if (blockFamily.getArchetypeBlock().getLuminance() > 0 && !builder.hasComponent(LightComponent.class)) {
+    LightComponent lightComponent=builder.addComponent(new LightComponent());
+    Vector3f randColor=new Vector3f(rand.randomPosFloat(),rand.randomPosFloat(),rand.randomPosFloat());
+    lightComponent.lightColorDiffuse.set(randColor);
+    lightComponent.lightColorAmbient.set(randColor);
+  }
+  if (builder.hasComponent(RigidBodyComponent.class)) {
+    builder.getComponent(RigidBodyComponent.class).mass=blockItemComponent.blockFamily.getArchetypeBlock().getMass();
+  }
+}
