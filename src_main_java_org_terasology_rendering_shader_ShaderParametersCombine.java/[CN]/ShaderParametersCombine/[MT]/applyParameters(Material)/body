@@ -23,8 +23,9 @@
       Vector3f fogWorldPosition=new Vector3f(activeCamera.getPosition().x,32.0f,activeCamera.getPosition().y);
       fogWorldPosition.sub(activeCamera.getPosition());
       program.setFloat3("fogWorldPosition",fogWorldPosition.x,fogWorldPosition.y,fogWorldPosition.z,true);
+      final float worldFog=Math.min(CoreRegistry.get(WorldProvider.class).getFog(activeCamera.getPosition()),0.5f);
+      program.setFloat4("volumetricFogSettings",volFogDensityAtViewer,volFogGlobalDensity,volFogHeightFalloff,worldFog);
     }
-    program.setFloat4("volumetricFogSettings",volFogDensityAtViewer,volFogGlobalDensity,volFogHeightFalloff,0.0f,true);
   }
   DefaultRenderingProcess.FBO sceneTransparent=DefaultRenderingProcess.getInstance().getFBO("sceneTransparent");
   if (sceneTransparent != null) {
