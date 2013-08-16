@@ -1,0 +1,12 @@
+{
+  if (blockItemComponent.blockFamily.getArchetypeBlock().getLuminance() == 0) {
+    return;
+  }
+  int slot=inventoryManager.findSlotWithItem(item.getOwner(),item);
+  if (slot != -1 && item.getOwner().hasComponent(CharacterComponent.class)) {
+    CharacterComponent character=item.getOwner().getComponent(CharacterComponent.class);
+    if (slot == character.selectedItem) {
+      item.getOwner().removeComponent(LightComponent.class);
+    }
+  }
+}

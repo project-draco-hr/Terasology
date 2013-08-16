@@ -1,5 +1,5 @@
 {
   CharacterComponent character=entity.getComponent(CharacterComponent.class);
-  character.selectedTool=event.getSlot();
-  localPlayer.getCharacterEntity().saveComponent(character);
+  localPlayer.getCharacterEntity().send(new SelectItemRequest(event.getSlot()));
+  event.consume();
 }

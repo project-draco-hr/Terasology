@@ -1,6 +1,6 @@
 {
   CharacterComponent character=localPlayer.getCharacterEntity().getComponent(CharacterComponent.class);
-  character.selectedTool=(character.selectedTool + 1) % 10;
-  localPlayer.getCharacterEntity().saveComponent(character);
+  int nextSlot=(character.selectedItem + 1) % 10;
+  localPlayer.getCharacterEntity().send(new SelectItemRequest(nextSlot));
   event.consume();
 }

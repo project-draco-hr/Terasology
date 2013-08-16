@@ -1,5 +1,7 @@
 {
+  EntityRef oldItem=inventory.itemSlots.get(slot);
   inventory.itemSlots.set(slot,item);
+  inventoryEntity.send(new InventorySlotChangedEvent(slot,oldItem,item));
   if (networkSystem.getMode().isAuthority()) {
     inventoryEntity.saveComponent(inventory);
     if (item.exists()) {

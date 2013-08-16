@@ -1,0 +1,25 @@
+{
+  byte oldLuminance=getLuminance(oldItem);
+  byte newLuminance=getLuminance(newItem);
+  if (oldLuminance != newLuminance) {
+    if (newLuminance == 0) {
+      entity.removeComponent(LightComponent.class);
+    }
+ else     if (oldLuminance > 0) {
+      LightComponent light=entity.getComponent(LightComponent.class);
+      light.lightColorAmbient.set(1.0f,0.6f,0.6f);
+      light.lightColorDiffuse.set(1.0f,0.6f,0.6f);
+      light.lightDiffuseIntensity=1.0f;
+      light.lightAmbientIntensity=1.0f;
+      entity.saveComponent(light);
+    }
+ else {
+      LightComponent light=new LightComponent();
+      light.lightColorAmbient.set(1.0f,0.6f,0.6f);
+      light.lightColorDiffuse.set(1.0f,0.6f,0.6f);
+      light.lightDiffuseIntensity=1.0f;
+      light.lightAmbientIntensity=1.0f;
+      entity.addComponent(light);
+    }
+  }
+}
