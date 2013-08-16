@@ -3,7 +3,8 @@
     if (physicsObj.getKey().hasComponent(NetworkComponent.class)) {
       Transform transform=physicsObj.getValue().getWorldTransform(new Transform());
       if (physicsObj.getValue().getActivationState() == RigidBody.ACTIVE_TAG) {
-        physicsObj.getKey().send(new PhysicsResynchEvent(transform.origin,transform.getRotation(new Quat4f()),physicsObj.getValue().getLinearVelocity(new Vector3f()),physicsObj.getValue().getAngularVelocity(new Vector3f())));
+        PhysicsResynchEvent event=new PhysicsResynchEvent(transform.origin,transform.getRotation(new Quat4f()),physicsObj.getValue().getLinearVelocity(new Vector3f()),physicsObj.getValue().getAngularVelocity(new Vector3f()));
+        physicsObj.getKey().send(event);
       }
     }
   }

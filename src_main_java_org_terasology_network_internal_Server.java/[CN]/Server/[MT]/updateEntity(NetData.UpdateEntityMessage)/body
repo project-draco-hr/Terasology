@@ -1,10 +1,12 @@
 {
   EntityRef currentEntity=networkSystem.getEntity(updateEntity.getNetId());
   if (currentEntity.exists()) {
-    if (currentEntity.getComponent(NetworkComponent.class) == null) {
+    NetworkComponent netComp=currentEntity.getComponent(NetworkComponent.class);
+    if (netComp == null) {
       logger.error("Updating entity with no network component: {}, expected netId {}",currentEntity,updateEntity.getNetId());
+      return;
     }
-    if (currentEntity.getComponent(NetworkComponent.class).getNetworkId() != updateEntity.getNetId()) {
+    if (netComp.getNetworkId() != updateEntity.getNetId()) {
       logger.error("Network ID wrong before update");
     }
     boolean blockEntityBefore=currentEntity.hasComponent(BlockComponent.class);
@@ -15,8 +17,8 @@
         logger.error("Failed to associated new block entity");
       }
     }
-    if (currentEntity.getComponent(NetworkComponent.class).getNetworkId() != updateEntity.getNetId()) {
-      logger.error("Network ID lost in update: {}, {} -> {}",currentEntity,updateEntity.getNetId(),currentEntity.getComponent(NetworkComponent.class).getNetworkId());
+    if (netComp.getNetworkId() != updateEntity.getNetId()) {
+      logger.error("Network ID lost in update: {}, {} -> {}",currentEntity,updateEntity.getNetId(),netComp.getNetworkId());
     }
   }
  else {
