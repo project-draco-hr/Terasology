@@ -1,0 +1,13 @@
+{
+  for (  EntityRef entity : entityManager.getEntitiesWith(DrowningComponent.class,DrownsComponent.class,LocationComponent.class)) {
+    DrowningComponent drowning=entity.getComponent(DrowningComponent.class);
+    if (drowning.nextDrownDamageTime < time.getGameTimeInMs()) {
+      DrownsComponent drowns=entity.getComponent(DrownsComponent.class);
+      drowning.nextDrownDamageTime=time.getGameTimeInMs() + (long)(drowns.timeBetweenDrownDamage * 1000);
+      entity.saveComponent(drowning);
+      LocationComponent loc=entity.getComponent(LocationComponent.class);
+      EntityRef liquidBlock=blockEntityProvider.getBlockEntityAt(loc.getWorldPosition());
+      entity.send(new DoDamageEvent(drowns.drownDamage,EngineDamageTypes.DROWNING.get(),liquidBlock));
+    }
+  }
+}
