@@ -1,38 +1,8 @@
 {
-  Assets.getMaterial("engine:particle").enable();
-  glDisable(GL11.GL_CULL_FACE);
-  Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  for (  EntityRef entity : entityManager.getEntitiesWith(BlockParticleEffectComponent.class,LocationComponent.class)) {
-    LocationComponent location=entity.getComponent(LocationComponent.class);
-    Vector3f worldPos=location.getWorldPosition();
-    if (!worldProvider.isBlockRelevant(worldPos)) {
-      continue;
-    }
-    BlockParticleEffectComponent particleEffect=entity.getComponent(BlockParticleEffectComponent.class);
-    if (particleEffect.texture == null) {
-      Texture terrainTex=Assets.getTexture("engine:terrain");
-      if (terrainTex == null) {
-        return;
-      }
-      GL13.glActiveTexture(GL13.GL_TEXTURE0);
-      glBindTexture(GL11.GL_TEXTURE_2D,terrainTex.getId());
-    }
- else {
-      GL13.glActiveTexture(GL13.GL_TEXTURE0);
-      glBindTexture(GL11.GL_TEXTURE_2D,particleEffect.texture.getId());
-    }
-    if (particleEffect.blendMode == BlockParticleEffectComponent.ParticleBlendMode.ADD) {
-      glBlendFunc(GL_ONE,GL_ONE);
-    }
-    if (particleEffect.blockType != null) {
-      renderBlockParticles(worldPos,cameraPosition,particleEffect);
-    }
- else {
-      renderParticles(worldPos,cameraPosition,particleEffect);
-    }
-    if (particleEffect.blendMode == BlockParticleEffectComponent.ParticleBlendMode.ADD) {
-      glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    }
+  if (config.getRendering().isRenderNearest()) {
+    render(Arrays.asList(sorter.getNearest(config.getRendering().getParticleEffectLimit())));
   }
-  glEnable(GL11.GL_CULL_FACE);
+ else {
+    render(entityManager.getEntitiesWith(BlockParticleEffectComponent.class,LocationComponent.class));
+  }
 }

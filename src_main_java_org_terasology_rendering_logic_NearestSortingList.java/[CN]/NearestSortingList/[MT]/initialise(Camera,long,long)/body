@@ -1,0 +1,10 @@
+{
+  if (sortingTask != null || timer != null) {
+    logger.error("Mis-usages of initialise detected! Initialising again" + " before stopping the sorting process. Sorting is " + "stopped now, but it should be done by the user of "+ "this class.");
+    stop();
+  }
+  sortPeriod=period;
+  timer=new Timer();
+  sortingTask=new SortTask(origin);
+  timer.scheduleAtFixedRate(sortingTask,initialDelay,sortPeriod);
+}

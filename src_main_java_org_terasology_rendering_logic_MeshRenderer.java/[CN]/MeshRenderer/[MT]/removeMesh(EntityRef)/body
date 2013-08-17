@@ -1,14 +1,14 @@
 {
-  if (!gelatinous.remove(entity)) {
-    Material mat=opaqueEntities.remove(entity);
-    if (mat != null) {
-      opaqueMesh.remove(mat,entity);
-    }
+  Material mat=opaqueEntities.remove(entity);
+  if (mat != null) {
+    opaqueMesh.remove(mat,entity);
+    opaqueMeshSorter.remove(entity);
+  }
  else {
-      mat=translucentEntities.remove(entity);
-      if (mat != null) {
-        translucentMesh.remove(mat,entity);
-      }
+    mat=translucentEntities.remove(entity);
+    if (mat != null) {
+      translucentMesh.remove(mat,entity);
+      translucentMeshSorter.remove(entity);
     }
   }
 }

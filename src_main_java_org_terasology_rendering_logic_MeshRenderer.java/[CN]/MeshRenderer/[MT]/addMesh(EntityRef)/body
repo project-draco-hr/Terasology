@@ -6,11 +6,16 @@
       return;
     }
   }
-  if (meshComp.renderType == MeshComponent.RenderType.GelatinousCube) {
-    gelatinous.add(entity);
-  }
- else   if (meshComp.material != null) {
-    opaqueMesh.put(meshComp.material,entity);
-    opaqueEntities.put(entity,meshComp.material);
+  if (meshComp.material != null) {
+    if (meshComp.translucent) {
+      translucentMesh.put(meshComp.material,entity);
+      translucentEntities.put(entity,meshComp.material);
+      translucentMeshSorter.add(entity);
+    }
+ else {
+      opaqueMesh.put(meshComp.material,entity);
+      opaqueEntities.put(entity,meshComp.material);
+      opaqueMeshSorter.add(entity);
+    }
   }
 }

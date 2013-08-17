@@ -1,0 +1,17 @@
+{
+  comparator.setOrigin(originCamera.getPosition());
+  if (!commands.isEmpty()) {
+    logger.warn("The commands list was not emptied properly!");
+    commands.clear();
+  }
+  List<EntityRef> newEnts=cloneAndSetSorting();
+  try {
+    Collections.sort(newEnts,comparator);
+  }
+ catch (  IllegalArgumentException ex) {
+    logger.warn("Entities destroyed during sorting process. Sorting is skipped this round.");
+    clearQueue();
+    return;
+  }
+  processQueueAndSetEntities(newEnts);
+}

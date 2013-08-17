@@ -1,62 +1,15 @@
 {
-  Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
-  Quat4f worldRot=new Quat4f();
-  Vector3f worldPos=new Vector3f();
-  Matrix4f matrixWorldSpace=new Matrix4f();
-  Transform transWorldSpace=new Transform();
-  Matrix4f matrixCameraSpace=new Matrix4f();
-  FloatBuffer tempMatrixBuffer44=BufferUtils.createFloatBuffer(16);
-  FloatBuffer tempMatrixBuffer33=BufferUtils.createFloatBuffer(12);
-  for (  Material material : opaqueMesh.keys()) {
-    OpenGLMesh lastMesh=null;
-    material.enable();
-    material.setFloat("sunlight",1.0f);
-    material.setFloat("blockLight",1.0f);
-    material.setMatrix4("projectionMatrix",worldRenderer.getActiveCamera().getProjectionMatrix());
-    material.bindTextures();
-    lastRendered=opaqueMesh.get(material).size();
-    for (    EntityRef entity : opaqueMesh.get(material)) {
+  if (config.getRendering().isRenderNearest()) {
+    SetMultimap<Material,EntityRef> entitiesToRender=HashMultimap.create();
+    for (    EntityRef entity : Arrays.asList(opaqueMeshSorter.getNearest(config.getRendering().getMeshLimit()))) {
       MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-      LocationComponent location=entity.getComponent(LocationComponent.class);
-      if (location == null || meshComp.mesh == null) {
-        continue;
-      }
-      if (meshComp.mesh.isDisposed()) {
-        logger.error("Attempted to render disposed mesh");
-        continue;
-      }
-      location.getWorldRotation(worldRot);
-      location.getWorldPosition(worldPos);
-      float worldScale=location.getWorldScale();
-      matrixWorldSpace.set(worldRot,worldPos,worldScale);
-      transWorldSpace.set(matrixWorldSpace);
-      Vector3f worldPositionCameraSpace=new Vector3f();
-      worldPositionCameraSpace.sub(worldPos,cameraPosition);
-      matrixCameraSpace.set(worldRot,worldPositionCameraSpace,worldScale);
-      AABB aabb=meshComp.mesh.getAABB().transform(transWorldSpace);
-      boolean visible=worldRenderer.isAABBVisible(aabb);
-      if (visible) {
-        if (worldRenderer.isAABBVisible(aabb)) {
-          if (meshComp.mesh != lastMesh) {
-            if (lastMesh != null) {
-              lastMesh.postRender();
-            }
-            lastMesh=(OpenGLMesh)meshComp.mesh;
-            lastMesh.preRender();
-          }
-          Matrix4f modelViewMatrix=TeraMath.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
-          TeraMath.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
-          material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
-          TeraMath.matrixToFloatBuffer(TeraMath.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
-          material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
-          material.setFloat("sunlight",worldRenderer.getSunlightValueAt(worldPos),true);
-          material.setFloat("blockLight",worldRenderer.getBlockLightValueAt(worldPos),true);
-          lastMesh.doRender();
-        }
+      if (meshComp != null && meshComp.material != null) {
+        entitiesToRender.put(meshComp.material,entity);
       }
     }
-    if (lastMesh != null) {
-      lastMesh.postRender();
-    }
+    renderOpaque(entitiesToRender);
+  }
+ else {
+    renderOpaque(opaqueMesh);
   }
 }

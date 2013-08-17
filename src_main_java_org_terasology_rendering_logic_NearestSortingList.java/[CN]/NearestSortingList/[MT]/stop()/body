@@ -1,0 +1,17 @@
+{
+  if (timer != null) {
+    timer.cancel();
+    timer.purge();
+    timer=null;
+  }
+  if (sortingThread != null) {
+    try {
+      sortingThread.join();
+    }
+ catch (    InterruptedException ex) {
+      logger.error("Joining of sorting thread was interrupted!");
+    }
+  }
+  sortingThread=null;
+  sortingTask=null;
+}
