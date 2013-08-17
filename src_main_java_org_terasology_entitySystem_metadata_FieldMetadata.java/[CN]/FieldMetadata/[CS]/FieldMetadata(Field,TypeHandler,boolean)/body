@@ -9,7 +9,7 @@
     replicated=true;
   }
   this.replicationInfo=field.getAnnotation(Replicate.class);
-  ownedReference=field.getAnnotation(Owns.class) != null && (EntityRef.class.isAssignableFrom(field.getType()) || isCollectionOf(EntityRef.class,field));
-  getter=findGetter(field);
-  setter=findSetter(field);
+  ownedReference=field.getAnnotation(Owns.class) != null && (EntityRef.class.isAssignableFrom(field.getType()) || isCollectionOf(EntityRef.class));
+  getter=findGetter();
+  setter=findSetter();
 }

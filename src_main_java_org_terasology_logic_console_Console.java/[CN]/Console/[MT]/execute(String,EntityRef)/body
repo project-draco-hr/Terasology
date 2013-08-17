@@ -1,17 +1,16 @@
 {
-  str=str.replaceAll("\\s\\s+"," ");
-  int commandEndIndex=str.indexOf(" ");
+  String cleanedCommand=command.replaceAll("\\s\\s+"," ");
+  int commandEndIndex=cleanedCommand.indexOf(" ");
   String commandName;
   if (commandEndIndex >= 0) {
-    commandName=str.substring(0,commandEndIndex);
+    commandName=cleanedCommand.substring(0,commandEndIndex);
   }
  else {
-    commandName=str;
-    str="";
-    commandEndIndex=0;
+    commandName=cleanedCommand;
+    commandEndIndex=commandName.length();
   }
-  str=str.substring(commandEndIndex).trim();
-  List<String> params=splitParameters(str);
+  String parameterPart=cleanedCommand.substring(commandEndIndex).trim();
+  List<String> params=splitParameters(parameterPart);
   String paramsStr=PARAMETER_JOINER.join(params);
   CommandInfo cmd=commandLookup.get(commandName,params.size());
   if (cmd == null) {
