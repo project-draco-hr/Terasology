@@ -1,7 +1,7 @@
 {
-  rot=applySymmetry(rot);
-  if (rot.equals(Rotation.none())) {
+  Rotation simplifiedRot=applySymmetry(rot);
+  if (simplifiedRot.equals(Rotation.none())) {
     return new Vector3f(baseCollisionOffset);
   }
-  return QuaternionUtil.quatRotate(rot.getQuat4f(),baseCollisionOffset,new Vector3f());
+  return QuaternionUtil.quatRotate(simplifiedRot.getQuat4f(),baseCollisionOffset,new Vector3f());
 }

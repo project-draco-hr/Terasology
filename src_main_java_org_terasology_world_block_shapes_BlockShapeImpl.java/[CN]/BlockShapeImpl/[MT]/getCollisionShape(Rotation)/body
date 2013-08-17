@@ -1,9 +1,9 @@
 {
-  rot=applySymmetry(rot);
-  CollisionShape result=collisionShape.get(rot);
+  Rotation simplifiedRot=applySymmetry(rot);
+  CollisionShape result=collisionShape.get(simplifiedRot);
   if (result == null && baseCollisionShape != null) {
-    result=rotate(baseCollisionShape,rot.getQuat4f());
-    collisionShape.put(rot,result);
+    result=rotate(baseCollisionShape,simplifiedRot.getQuat4f());
+    collisionShape.put(simplifiedRot,result);
   }
   return result;
 }

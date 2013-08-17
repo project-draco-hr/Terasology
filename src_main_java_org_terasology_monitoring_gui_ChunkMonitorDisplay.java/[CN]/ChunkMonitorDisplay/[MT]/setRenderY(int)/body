@@ -1,12 +1,13 @@
 {
+  int clampedValue=value;
   if (value < minRenderY) {
-    value=minRenderY;
+    clampedValue=minRenderY;
   }
   if (value > maxRenderY) {
-    value=maxRenderY;
+    clampedValue=maxRenderY;
   }
-  if (renderY != value) {
-    renderY=value;
+  if (renderY != clampedValue) {
+    renderY=clampedValue;
     updateDisplay(true);
   }
   return this;

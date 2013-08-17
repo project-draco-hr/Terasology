@@ -1,7 +1,7 @@
 {
   Preconditions.checkNotNull(chunk,"The parameter 'chunk' must not be null");
   final TeraArrays t=TeraArrays.getInstance();
-  final EntityData.ChunkStore.Builder b=EntityData.ChunkStore.newBuilder().setX(chunk.pos.x).setY(chunk.pos.y).setZ(chunk.pos.z).setState(chunk.chunkState.protobufState).setBlockData(t.encode(chunk.blockData));
+  final EntityData.ChunkStore.Builder b=EntityData.ChunkStore.newBuilder().setX(chunk.chunkPos.x).setY(chunk.chunkPos.y).setZ(chunk.chunkPos.z).setState(chunk.chunkState.protobufState).setBlockData(t.encode(chunk.blockData));
   if (!coreOnly) {
     b.setSunlightData(t.encode(chunk.sunlightData)).setLightData(t.encode(chunk.lightData)).setLiquidData(t.encode(chunk.extraData));
   }

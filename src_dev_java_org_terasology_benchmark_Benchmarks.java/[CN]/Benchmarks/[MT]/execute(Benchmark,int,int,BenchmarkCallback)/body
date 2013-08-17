@@ -33,7 +33,8 @@
     }
     return result;
   }
-  int repsTotal=0, repsSoFar=0;
+  int repsTotal=0;
+  int repsSoFar=0;
   for (  int reps : repetitions) {
     repsTotal+=reps;
   }
@@ -52,24 +53,26 @@
       }
       break;
     }
-    long start=time(), elapsed=0;
+    long start=time();
+    long elapsed;
     try {
       result.setStartTime(repIndex,TimeUnit.MILLISECONDS.convert(start,TimeUnit.NANOSECONDS));
-      while (reps > repsPart) {
+      int currentReps=reps;
+      while (currentReps > repsPart) {
         for (int i=0; i < repsPart; ++i) {
           benchmark.run();
         }
-        reps-=repsPart;
+        currentReps-=repsPart;
         repsSoFar+=repsPart;
         if (callback != null) {
           callback.progress(benchmark,100d / (double)repsTotal * (double)repsSoFar);
         }
       }
-      if (reps <= repsPart) {
-        for (int i=0; i < reps; ++i) {
+      if (currentReps <= repsPart) {
+        for (int i=0; i < currentReps; ++i) {
           benchmark.run();
         }
-        repsSoFar+=reps;
+        repsSoFar+=currentReps;
         if (callback != null) {
           callback.progress(benchmark,100d / (double)repsTotal * (double)repsSoFar);
         }

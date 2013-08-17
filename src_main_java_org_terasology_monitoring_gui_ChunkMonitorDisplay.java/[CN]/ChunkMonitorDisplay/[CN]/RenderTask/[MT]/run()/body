@@ -4,7 +4,8 @@
   try {
     while (true) {
       final long slept=poll(requests);
-      boolean needsRendering=false, fastResume=false;
+      boolean needsRendering;
+      boolean fastResume;
       for (      Request r : requests) {
         try (ThreadActivity ignored=ThreadMonitor.startThreadActivity(r.getName())){
           r.execute();

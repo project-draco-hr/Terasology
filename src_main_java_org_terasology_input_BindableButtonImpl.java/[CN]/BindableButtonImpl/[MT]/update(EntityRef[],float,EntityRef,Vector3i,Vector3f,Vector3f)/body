@@ -1,7 +1,7 @@
 {
-  long time=this.time.getGameTimeInMs();
-  if (repeating && getState() == ButtonState.DOWN && mode.isActivatedOnPress() && time - lastActivateTime > repeatTime) {
-    lastActivateTime=time;
+  long activateTime=this.time.getGameTimeInMs();
+  if (repeating && getState() == ButtonState.DOWN && mode.isActivatedOnPress() && activateTime - lastActivateTime > repeatTime) {
+    lastActivateTime=activateTime;
     if (!CoreRegistry.get(GUIManager.class).isConsumingInput()) {
       boolean consumed=triggerOnRepeat(delta,target);
       if (!consumed) {
