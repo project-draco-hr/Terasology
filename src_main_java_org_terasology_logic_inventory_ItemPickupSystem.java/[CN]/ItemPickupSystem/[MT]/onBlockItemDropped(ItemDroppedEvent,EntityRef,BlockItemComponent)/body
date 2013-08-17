@@ -6,6 +6,12 @@
     mesh.mesh=blockFamily.getArchetypeBlock().getMesh();
     mesh.material=Assets.getMaterial("engine:terrain");
   }
+  if (blockFamily.getArchetypeBlock().getCollisionShape() instanceof BoxShape && builder.hasComponent(BoxShapeComponent.class)) {
+    Vector3f extents=((BoxShape)blockFamily.getArchetypeBlock().getCollisionShape()).getHalfExtentsWithoutMargin(new Vector3f());
+    extents.scale(2.0f);
+    extents.clampMin(0.5f);
+    builder.getComponent(BoxShapeComponent.class).extents.set(extents);
+  }
   if (blockFamily.getArchetypeBlock().getLuminance() > 0 && !builder.hasComponent(LightComponent.class)) {
     LightComponent lightComponent=builder.addComponent(new LightComponent());
     Vector3f randColor=new Vector3f(rand.randomPosFloat(),rand.randomPosFloat(),rand.randomPosFloat());
