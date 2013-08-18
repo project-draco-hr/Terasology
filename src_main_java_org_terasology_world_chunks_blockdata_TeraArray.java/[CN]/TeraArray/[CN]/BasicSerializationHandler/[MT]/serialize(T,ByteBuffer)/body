@@ -1,15 +1,13 @@
 {
-  Preconditions.checkNotNull(array,"The parameter 'array' must not be null");
-  Preconditions.checkArgument(canHandle(array.getClass()),"Unable to handle the supplied array (" + array.getClass().getName() + ")");
-  if (buffer == null) {
-    buffer=ByteBuffer.allocateDirect(computeMinimumBufferSize(array));
-  }
-  final int lengthPos=buffer.position();
-  buffer.putInt(0);
-  buffer.putInt(array.getSizeX());
-  buffer.putInt(array.getSizeY());
-  buffer.putInt(array.getSizeZ());
-  internalSerialize(array,buffer);
-  buffer.putInt(lengthPos,buffer.position() - lengthPos - 4);
-  return buffer;
+  checkNotNull(array,"The parameter 'array' must not be null");
+  checkNotNull(toBuffer,"The parameter 'toBuffer' must not be null");
+  checkArgument(canHandle(array.getClass()),"Unable to handle the supplied array (" + array.getClass().getName() + ")");
+  final int lengthPos=toBuffer.position();
+  toBuffer.putInt(0);
+  toBuffer.putInt(array.getSizeX());
+  toBuffer.putInt(array.getSizeY());
+  toBuffer.putInt(array.getSizeZ());
+  internalSerialize(array,toBuffer);
+  toBuffer.putInt(lengthPos,toBuffer.position() - lengthPos - 4);
+  return toBuffer;
 }

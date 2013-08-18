@@ -3,6 +3,7 @@
   Collection<Vector3i> nextWave=Lists.newArrayList();
   nextWave.add(new Vector3i(x,y,z));
   Region3i affectedRegion=Region3i.createFromMinAndSize(new Vector3i(x,y,z),Vector3i.one());
+  byte lightLevel=initialLightLevel;
   while (lightLevel > 1 && !nextWave.isEmpty()) {
     Collection<Vector3i> temp=currentWave;
     currentWave=nextWave;

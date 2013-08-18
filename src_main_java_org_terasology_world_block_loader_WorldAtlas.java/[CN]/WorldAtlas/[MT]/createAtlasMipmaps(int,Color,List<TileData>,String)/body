@@ -1,7 +1,7 @@
 {
   ByteBuffer[] data=new ByteBuffer[numMipMaps];
   for (int i=0; i < numMipMaps; ++i) {
-    BufferedImage image=generateAtlas(i,tilesToImage,initialColor);
+    BufferedImage image=generateAtlas(i,tileImages,initialColor);
     if (i == 0) {
       try (OutputStream stream=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getScreenshotPath().resolve(screenshotName)))){
         ImageIO.write(image,"png",stream);

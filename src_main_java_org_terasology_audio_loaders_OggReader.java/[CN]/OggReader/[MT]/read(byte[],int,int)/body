@@ -3,15 +3,17 @@
     return -1;
   }
   int bytesRead=0;
-  while (!eos && (len > 0)) {
+  int bytesRemaining=len;
+  int offset=off;
+  while (!eos && (bytesRemaining > 0)) {
     fillConvbuffer();
     if (!eos) {
-      int bytesToCopy=Math.min(len,convbufferSize - convbufferOff);
-      System.arraycopy(convbuffer,convbufferOff,b,off,bytesToCopy);
+      int bytesToCopy=Math.min(bytesRemaining,convbufferSize - convbufferOff);
+      System.arraycopy(convbuffer,convbufferOff,b,offset,bytesToCopy);
       convbufferOff+=bytesToCopy;
       bytesRead+=bytesToCopy;
-      len-=bytesToCopy;
-      off+=bytesToCopy;
+      bytesRemaining-=bytesToCopy;
+      offset+=bytesToCopy;
     }
   }
   return bytesRead;

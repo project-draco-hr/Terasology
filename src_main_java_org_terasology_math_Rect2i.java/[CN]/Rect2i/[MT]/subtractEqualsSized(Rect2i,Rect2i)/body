@@ -1,7 +1,7 @@
 {
   ArrayList<Rect2i> result=new ArrayList<Rect2i>();
   boolean overlap=a.overlaps(b);
-  boolean equal=(a.x == b.x) && (a.y == b.y);
+  boolean equal=(a.posX == b.posX) && (a.posY == b.posY);
   if (equal) {
     return result;
   }
@@ -9,8 +9,8 @@
     result.add(a);
     return result;
   }
-  int splitCenterX=(a.x < b.x) ? b.minX() : b.maxX();
-  int splitCenterY=(a.y < b.y) ? b.minY() : b.maxY();
+  int splitCenterX=(a.posX < b.posX) ? b.minX() : b.maxX();
+  int splitCenterY=(a.posY < b.posY) ? b.minY() : b.maxY();
   subtractEqualsSizedHelper(a.minX(),a.minY(),b,splitCenterX,splitCenterY,result);
   subtractEqualsSizedHelper(a.maxX(),a.minY(),b,splitCenterX,splitCenterY,result);
   subtractEqualsSizedHelper(a.minX(),a.maxY(),b,splitCenterX,splitCenterY,result);

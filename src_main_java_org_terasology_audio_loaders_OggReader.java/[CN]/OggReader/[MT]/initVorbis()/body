@@ -1,8 +1,8 @@
 {
   syncState.init();
-  int index=syncState.buffer(4096);
+  int bufferIndex=syncState.buffer(4096);
   byte[] buffer=syncState.data;
-  int bytes=in.read(buffer,index,4096);
+  int bytes=in.read(buffer,bufferIndex,4096);
   syncState.wrote(bytes);
   if (syncState.pageout(page) != 1) {
     if (bytes < 4096) {
@@ -44,9 +44,9 @@
         }
       }
     }
-    index=syncState.buffer(4096);
+    bufferIndex=syncState.buffer(4096);
     buffer=syncState.data;
-    bytes=in.read(buffer,index,4096);
+    bytes=in.read(buffer,bufferIndex,4096);
     if (bytes < 0) {
       bytes=0;
     }

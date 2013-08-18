@@ -6,13 +6,13 @@
   int convOff=0;
   int samples;
   while ((samples=dspState.synthesis_pcmout(pcm,index)) > 0) {
-    float[][] pcm=this.pcm[0];
+    float[][] localPcm=this.pcm[0];
     int bout=(samples < convsize ? samples : convsize);
     for (int i=0; i < info.channels; i++) {
       int ptr=(i << 1) + convOff;
       int mono=index[i];
       for (int j=0; j < bout; j++) {
-        int val=(int)(pcm[i][mono + j] * 32767);
+        int val=(int)(localPcm[i][mono + j] * 32767);
         val=Math.max(-32768,Math.min(32767,val));
         val|=(val < 0 ? 0x8000 : 0);
         convbuffer[ptr + 0]=(byte)(bigEndian ? val >>> 8 : val);

@@ -3,14 +3,12 @@
   if (itemComp == null || !itemComp.pickupPrefab.exists()) {
     return EntityRef.NULL;
   }
+  EntityRef pickupItem=itemEntity;
   EntityRef owner=itemEntity.getOwner();
   if (owner.hasComponent(InventoryComponent.class)) {
-    itemEntity=inventoryManager.removeItem(owner,itemEntity,1);
+    pickupItem=inventoryManager.removeItem(owner,itemEntity,1);
   }
-  if (!itemEntity.exists()) {
-    return EntityRef.NULL;
-  }
-  if (itemEntity.exists()) {
+  if (pickupItem.exists()) {
     EntityBuilder builder=entityManager.newBuilder(itemComp.pickupPrefab);
     if (builder.hasComponent(LocationComponent.class)) {
       builder.getComponent(LocationComponent.class).setWorldPosition(pos);
@@ -20,14 +18,14 @@
     }
     boolean destroyItem=false;
     if (builder.hasComponent(PickupComponent.class)) {
-      builder.getComponent(PickupComponent.class).itemEntity=itemEntity;
+      builder.getComponent(PickupComponent.class).itemEntity=pickupItem;
     }
  else {
       destroyItem=true;
     }
-    itemEntity.send(new ItemDroppedEvent(builder));
+    pickupItem.send(new ItemDroppedEvent(builder));
     if (destroyItem) {
-      itemEntity.destroy();
+      pickupItem.destroy();
     }
     return builder.build();
   }

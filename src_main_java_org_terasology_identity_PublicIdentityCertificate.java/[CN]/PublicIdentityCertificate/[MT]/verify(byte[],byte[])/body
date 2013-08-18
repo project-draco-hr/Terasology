@@ -6,7 +6,7 @@
     Signature signatureVerifier=Signature.getInstance(IdentityConstants.SIGNATURE_ALGORITHM);
     signatureVerifier.initVerify(key);
     signatureVerifier.update(data);
-    return signatureVerifier.verify(signature);
+    return signatureVerifier.verify(signedData);
   }
  catch (  NoSuchAlgorithmException e) {
     throw new RuntimeException("Insufficient support for '" + IdentityConstants.CERTIFICATE_ALGORITHM + "', required for identity management",e);

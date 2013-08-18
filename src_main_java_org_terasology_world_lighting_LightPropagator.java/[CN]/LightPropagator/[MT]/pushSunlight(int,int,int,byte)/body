@@ -2,12 +2,12 @@
   Collection<Vector3i> currentWave=Lists.newArrayList();
   Collection<Vector3i> nextWave=Lists.newArrayList();
   nextWave.add(new Vector3i(x,y,z));
-  if (lightLevel == Chunk.MAX_LIGHT && chunkView.getSunlight(x,y - 1,z) < Chunk.MAX_LIGHT) {
+  if (initialLightLevel == Chunk.MAX_LIGHT && chunkView.getSunlight(x,y - 1,z) < Chunk.MAX_LIGHT) {
     Block lastBlock=BlockManager.getAir();
     for (int columnY=y - 1; columnY >= 0; columnY--) {
       Block block=chunkView.getBlock(x,columnY,z);
       if (LightingUtil.canSpreadLightOutOf(lastBlock,Side.BOTTOM) && LightingUtil.canSpreadLightInto(block,Side.TOP) && LightingUtil.doesSunlightRetainsFullStrengthIn(block)) {
-        chunkView.setSunlight(x,columnY,z,lightLevel);
+        chunkView.setSunlight(x,columnY,z,initialLightLevel);
         lastBlock=block;
         nextWave.add(new Vector3i(x,columnY,z));
       }
@@ -17,6 +17,7 @@
     }
   }
   Region3i affectedRegion=Region3i.createFromMinAndSize(new Vector3i(x,y,z),Vector3i.one());
+  byte lightLevel=initialLightLevel;
   while (lightLevel > 1 && !nextWave.isEmpty()) {
     Collection<Vector3i> temp=currentWave;
     currentWave=nextWave;

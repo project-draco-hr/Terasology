@@ -1,11 +1,12 @@
 {
+  float clampedValue=value;
   if (minValue < 0) {
-    value+=-minValue;
+    clampedValue+=-minValue;
   }
  else {
-    value-=minValue;
+    clampedValue-=minValue;
   }
-  float pos=value * ((getSize().x - slider.getSize().x) / (float)range);
+  float pos=clampedValue * ((getSize().x - slider.getSize().x) / (float)range);
   if (pos < 0) {
     pos=0;
   }
