@@ -1,4 +1,8 @@
 {
+  Client owner=networkSystem.getOwner(callingClient);
+  if (owner != null && owner.isLocal()) {
+    localCommandHistory.add(command);
+  }
   String cleanedCommand=command.replaceAll("\\s\\s+"," ");
   int commandEndIndex=cleanedCommand.indexOf(" ");
   String commandName;
