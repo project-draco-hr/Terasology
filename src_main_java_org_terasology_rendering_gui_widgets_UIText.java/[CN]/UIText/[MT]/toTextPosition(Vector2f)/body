@@ -1,11 +1,11 @@
 {
   Vector2f textAbsPos=text.getAbsolutePosition();
-  mousePos=new Vector2f(Math.max(mousePos.x,textAbsPos.x),Math.max(mousePos.y,textAbsPos.y));
-  Vector2f relative=new Vector2f(mousePos.x - textAbsPos.x,mousePos.y - textAbsPos.y);
-  if (mousePos.y >= (textAbsPos.y + getSize().y + getScrollPosition())) {
+  Vector2f clampedMousePos=new Vector2f(Math.max(mousePos.x,textAbsPos.x),Math.max(mousePos.y,textAbsPos.y));
+  Vector2f relative=new Vector2f(clampedMousePos.x - textAbsPos.x,clampedMousePos.y - textAbsPos.y);
+  if (clampedMousePos.y >= (textAbsPos.y + getSize().y + getScrollPosition())) {
     return text.getText().length();
   }
- else   if (mousePos.y <= textAbsPos.y) {
+ else   if (clampedMousePos.y <= textAbsPos.y) {
     return 0;
   }
  else {

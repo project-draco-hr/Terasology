@@ -2,13 +2,13 @@
   if (isMultiLine()) {
     int lastSpace=0;
     int lastWrap=0;
-    StringBuilder wrapText=new StringBuilder(text + " ");
+    StringBuilder wrapText=new StringBuilder(string + " ");
     wrapPosition.clear();
     for (int i=0; i < wrapText.length(); i++) {
       if (wrapText.charAt(i) == ' ') {
         if (calcTextWidth(wrapText.substring(lastWrap,i)) > getScrollContainerSize().x) {
           wrapText.insert(lastSpace + 1,'\n');
-          wrapPosition.add(new Integer(lastSpace + 1));
+          wrapPosition.add(lastSpace + 1);
           lastWrap=lastSpace + 1;
         }
         lastSpace=i;
@@ -22,6 +22,6 @@
     return wrapText.toString();
   }
  else {
-    return text;
+    return string;
   }
 }

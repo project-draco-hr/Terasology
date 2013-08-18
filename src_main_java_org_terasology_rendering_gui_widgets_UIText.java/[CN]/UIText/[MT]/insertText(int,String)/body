@@ -4,15 +4,16 @@
   int diff;
   boolean scrollbarVisibility=isScrollbarVisible();
   StringBuilder str=new StringBuilder(getText());
+  String clampedString=string;
   if (maxLength > 0) {
     if (str.length() >= maxLength) {
       return 0;
     }
-    if (str.length() + text.length() > maxLength) {
-      text=text.substring(0,maxLength - str.length());
+    if (str.length() + string.length() > maxLength) {
+      clampedString=string.substring(0,maxLength - str.length());
     }
   }
-  setText(str.insert(offset,text).toString());
+  setText(str.insert(offset,clampedString).toString());
   calcContentHeight();
   if (scrollbarVisibility != isScrollbarVisible()) {
     setText(getText());
@@ -20,5 +21,5 @@
   currentWraps=getWrapOffset(cursorPosition);
   diff=currentWraps - prevWraps;
   cursorPosition=cursorPosition - diff;
-  return text.length();
+  return clampedString.length();
 }

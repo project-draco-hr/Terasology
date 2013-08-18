@@ -1,11 +1,12 @@
 {
-  for (int i=0; i < text.getText().length(); ) {
-    if (calcTextHeight(text.getText().substring(0,i)) >= local.y) {
+  int charIndex=0;
+  while (charIndex < text.getText().length()) {
+    if (calcTextHeight(text.getText().substring(0,charIndex)) >= local.y) {
       if (local.x <= 0) {
-        return i;
+        return charIndex;
       }
-      for (int j=i; j < text.getText().length(); j++) {
-        if (calcTextWidth(text.getText().substring(i,j)) > local.x || text.getText().charAt(j) == '\n') {
+      for (int j=charIndex; j < text.getText().length(); j++) {
+        if (calcTextWidth(text.getText().substring(charIndex,j)) > local.x || text.getText().charAt(j) == '\n') {
           return j;
         }
  else         if (j == text.getText().length() - 1) {
@@ -13,7 +14,7 @@
         }
       }
     }
-    i=findNextChar(i,'\n',false);
+    charIndex=findNextChar(charIndex,'\n',false);
   }
   return text.getText().length();
 }

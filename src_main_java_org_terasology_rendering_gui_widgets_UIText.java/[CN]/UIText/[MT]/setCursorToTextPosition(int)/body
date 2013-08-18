@@ -1,12 +1,13 @@
 {
-  if (index < 0) {
-    index=0;
+  int clampedIndex=index;
+  if (clampedIndex < 0) {
+    clampedIndex=0;
   }
- else   if (index > text.getText().length()) {
-    index=text.getText().length();
+ else   if (clampedIndex > text.getText().length()) {
+    clampedIndex=text.getText().length();
   }
-  if (index != cursorPosition) {
-    Vector2f newPos=toDisplayPosition(index);
+  if (clampedIndex != cursorPosition) {
+    Vector2f newPos=toDisplayPosition(clampedIndex);
     newPos.y-=cursorSize.y;
     cursor.setPosition(newPos);
     if (isMultiLine()) {
@@ -27,7 +28,7 @@
         text.setPosition(new Vector2f(-cursor.getPosition().x,0f));
       }
     }
-    cursorPosition=index;
+    cursorPosition=clampedIndex;
     notifySelectionListeners();
   }
 }

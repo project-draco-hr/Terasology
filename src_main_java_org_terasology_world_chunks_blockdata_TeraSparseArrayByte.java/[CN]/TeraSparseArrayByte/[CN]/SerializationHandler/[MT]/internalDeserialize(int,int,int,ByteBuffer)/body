@@ -5,17 +5,17 @@
     array.fill=buffer.get();
     return array;
   }
-  final int rowSize=array.rowSize();
-  final byte[][] inf=array.inflated=new byte[sizeY][];
-  final byte[] def=array.deflated=new byte[sizeY];
+  int rowSize=array.rowSize();
+  array.inflated=new byte[sizeY][];
+  array.deflated=new byte[sizeY];
   for (int y=0; y < sizeY; y++) {
     final byte hasRow=buffer.get();
     if (hasRow == 0) {
-      def[y]=buffer.get();
+      array.deflated[y]=buffer.get();
     }
  else {
-      final byte[] row=inf[y]=new byte[rowSize];
-      buffer.get(row,0,rowSize);
+      array.inflated[y]=new byte[rowSize];
+      buffer.get(array.inflated[y],0,rowSize);
     }
   }
   return array;

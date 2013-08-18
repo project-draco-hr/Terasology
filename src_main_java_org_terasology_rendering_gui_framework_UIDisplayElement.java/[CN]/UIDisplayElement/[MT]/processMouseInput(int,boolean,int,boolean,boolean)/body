@@ -1,11 +1,13 @@
 {
   if (!isVisible()) {
-    return consumed;
+    return previouslyConsumed;
   }
+  boolean cropped=previouslyCropped;
+  boolean consumed=previouslyConsumed;
   if (mouseMoveListeners.size() > 0 || mouseButtonListeners.size() > 0 || clickListeners.size() > 0 || doubleClickListeners.size() > 0) {
     if (intersects(new Vector2f(Mouse.getX(),Display.getHeight() - Mouse.getY()))) {
-      if (!croped) {
-        if (lastMouseState == EMouseEvents.ENTER && (consumed || croped)) {
+      if (!cropped) {
+        if (lastMouseState == EMouseEvents.ENTER && (consumed || cropped)) {
           notifyMouseMoveListeners(EMouseEvents.LEAVE,consumed);
           lastMouseState=EMouseEvents.LEAVE;
         }

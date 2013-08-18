@@ -1,15 +1,14 @@
 {
   if (start != end) {
     rectangles.clear();
-    int nextLine;
-    Vector2f pos;
-    for (int i=start; i < end; ) {
-      nextLine=findNextChar(i,'\n',false);
-      pos=toDisplayPosition(i);
+    int charIndex=start;
+    while (charIndex < end) {
+      int nextLineStart=findNextChar(charIndex,'\n',false);
+      Vector2f pos=toDisplayPosition(charIndex);
       pos.y-=cursor.getSize().y;
-      Vector2f size=new Vector2f(calcTextWidth(text.getText().substring(i,Math.min(end,nextLine))),cursor.getSize().y);
+      Vector2f size=new Vector2f(calcTextWidth(text.getText().substring(charIndex,Math.min(end,nextLineStart))),cursor.getSize().y);
       rectangles.add(new Vector2f[]{pos,size});
-      i=nextLine;
+      charIndex=nextLineStart;
     }
     selectionRectangle.setVisible(true);
   }

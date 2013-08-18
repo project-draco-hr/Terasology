@@ -1,15 +1,16 @@
 {
   boolean scrollbarVisibility=isScrollbarVisible();
+  String clampedString=value;
   if (maxLength > 0) {
-    if (text.length() > maxLength) {
-      text=text.substring(0,maxLength);
+    if (value.length() > maxLength) {
+      clampedString=value.substring(0,maxLength);
     }
   }
-  this.text.setText(wrapText(text));
+  this.text.setText(wrapText(clampedString));
   calcContentHeight();
   if (scrollbarVisibility != isScrollbarVisible()) {
     setText(getText());
   }
   notifyChangedListeners();
-  return text.length();
+  return clampedString.length();
 }
