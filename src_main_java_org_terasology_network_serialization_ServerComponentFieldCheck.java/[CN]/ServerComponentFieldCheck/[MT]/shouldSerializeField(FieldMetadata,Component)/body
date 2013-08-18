@@ -1,7 +1,3 @@
 {
-  boolean result=field.isReplicated() && (initial || !field.getReplicationInfo().initialOnly() && (field.getReplicationInfo().value() == FieldReplicateType.SERVER_TO_CLIENT || (field.getReplicationInfo().value() == FieldReplicateType.SERVER_TO_OWNER && owned) || (field.getReplicationInfo().value().isReplicateFromOwner() && !owned)));
-  if (result && component instanceof ReplicationCheck) {
-    return ((ReplicationCheck)component).shouldReplicate(field,initial,owned);
-  }
-  return result;
+  return shouldSerializeField(field,object,false);
 }

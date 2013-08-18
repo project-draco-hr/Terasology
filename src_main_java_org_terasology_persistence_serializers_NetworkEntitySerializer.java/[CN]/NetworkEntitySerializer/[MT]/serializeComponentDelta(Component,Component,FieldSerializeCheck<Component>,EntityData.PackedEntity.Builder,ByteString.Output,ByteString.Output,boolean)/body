@@ -6,7 +6,7 @@
   }
   byte fieldCount=0;
   for (  FieldMetadata field : componentMetadata.iterateFields()) {
-    if (fieldCheck.shouldSerializeField(field,newComponent)) {
+    if (fieldCheck.shouldSerializeField(field,newComponent,componentInitial)) {
       Object oldValue=field.getValue(oldComponent);
       Object newValue=field.getValue(newComponent);
       if (!Objects.equal(oldValue,newValue)) {

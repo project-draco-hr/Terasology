@@ -5,7 +5,7 @@
   }
   byte fieldCount=0;
   for (  FieldMetadata field : componentMetadata.iterateFields()) {
-    if (fieldCheck.shouldSerializeField(field,component)) {
+    if (fieldCheck.shouldSerializeField(field,component,componentInitial)) {
       EntityData.Value fieldValue=field.serialize(component);
       if (fieldValue != null) {
         entityFieldIds.write(field.getId());

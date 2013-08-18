@@ -7,12 +7,12 @@
     if (component == null) {
       logger.error("Non-existent component marked as added: {}",componentType);
     }
-    serializeComponentFull(entityRef.getComponent(componentType),false,fieldCheck,entity,fieldIds,componentFieldCounts);
+    serializeComponentFull(entityRef.getComponent(componentType),false,fieldCheck,entity,fieldIds,componentFieldCounts,true);
   }
   for (  Class<? extends Component> componentType : changed) {
     Component comp=entityRef.getComponent(componentType);
     if (comp != null) {
-      serializeComponentFull(comp,true,fieldCheck,entity,fieldIds,componentFieldCounts);
+      serializeComponentFull(comp,true,fieldCheck,entity,fieldIds,componentFieldCounts,false);
     }
  else {
       logger.error("Non-existent component marked as changed: {}",componentType);
