@@ -32,7 +32,7 @@
   }
   if (blockAppearance.getPart(BlockPart.CENTER) != null) {
     Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.CENTER,temp,hum);
-    blockAppearance.getPart(BlockPart.CENTER).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex(),vertexFlag);
+    blockAppearance.getPart(BlockPart.CENTER).appendTo(mesh,x,y,z,colorOffset,renderType,vertexFlag);
   }
   boolean[] drawDir=new boolean[6];
   for (  Side side : Side.values()) {
@@ -56,7 +56,7 @@
       for (      Side dir : Side.values()) {
         if (drawDir[dir.ordinal()]) {
           Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),temp,hum);
-          block.getLoweredLiquidMesh(dir).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex(),vertexFlag);
+          block.getLoweredLiquidMesh(dir).appendTo(mesh,x,y,z,colorOffset,renderType,vertexFlag);
         }
       }
       return;
@@ -66,10 +66,10 @@
     if (drawDir[dir.ordinal()]) {
       Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),temp,hum);
       if (block.getURI().toNormalisedString().equals("engine:grass") && dir != Side.TOP && dir != Side.BOTTOM) {
-        blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex(),ChunkVertexFlag.COLOR_MASK);
+        blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType,ChunkVertexFlag.COLOR_MASK);
       }
  else {
-        blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType.getIndex(),vertexFlag);
+        blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType,vertexFlag);
       }
     }
   }

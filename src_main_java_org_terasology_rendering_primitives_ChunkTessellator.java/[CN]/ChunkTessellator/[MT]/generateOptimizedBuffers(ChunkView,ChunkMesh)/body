@@ -1,37 +1,38 @@
 {
   PerformanceMonitor.startActivity("OptimizeBuffers");
-  for (int j=0; j < mesh.vertexElements.length; j++) {
-    mesh.vertexElements[j].finalVertices=BufferUtils.createByteBuffer(mesh.vertexElements[j].vertices.size() * 4 + mesh.vertexElements[j].tex.size() * 4 + mesh.vertexElements[j].tex.size() * 4 + mesh.vertexElements[j].flags.size() * 4 + mesh.vertexElements[j].color.size() * 4 + mesh.vertexElements[j].normals.size() * 4);
+  for (  ChunkMesh.RenderType type : ChunkMesh.RenderType.values()) {
+    ChunkMesh.VertexElements elements=mesh.getVertexElements(type);
+    elements.finalVertices=BufferUtils.createByteBuffer(elements.vertices.size() * 4 + elements.tex.size() * 4 + elements.tex.size() * 4 + elements.flags.size() * 4 + elements.color.size() * 4 + elements.normals.size() * 4);
     int cTex=0;
     int cColor=0;
     int cFlags=0;
-    for (int i=0; i < mesh.vertexElements[j].vertices.size(); i+=3, cTex+=2, cColor+=4, cFlags++) {
-      Vector3f vertexPos=new Vector3f(mesh.vertexElements[j].vertices.get(i),mesh.vertexElements[j].vertices.get(i + 1),mesh.vertexElements[j].vertices.get(i + 2));
-      mesh.vertexElements[j].finalVertices.putFloat(vertexPos.x);
-      mesh.vertexElements[j].finalVertices.putFloat(vertexPos.y);
-      mesh.vertexElements[j].finalVertices.putFloat(vertexPos.z);
-      mesh.vertexElements[j].finalVertices.putFloat(mesh.vertexElements[j].tex.get(cTex));
-      mesh.vertexElements[j].finalVertices.putFloat(mesh.vertexElements[j].tex.get(cTex + 1));
-      mesh.vertexElements[j].finalVertices.putFloat(mesh.vertexElements[j].flags.get(cFlags));
+    for (int i=0; i < elements.vertices.size(); i+=3, cTex+=2, cColor+=4, cFlags++) {
+      Vector3f vertexPos=new Vector3f(elements.vertices.get(i),elements.vertices.get(i + 1),elements.vertices.get(i + 2));
+      elements.finalVertices.putFloat(vertexPos.x);
+      elements.finalVertices.putFloat(vertexPos.y);
+      elements.finalVertices.putFloat(vertexPos.z);
+      elements.finalVertices.putFloat(elements.tex.get(cTex));
+      elements.finalVertices.putFloat(elements.tex.get(cTex + 1));
+      elements.finalVertices.putFloat(elements.flags.get(cFlags));
       float[] result=new float[3];
-      Vector3f normal=new Vector3f(mesh.vertexElements[j].normals.get(i),mesh.vertexElements[j].normals.get(i + 1),mesh.vertexElements[j].normals.get(i + 2));
+      Vector3f normal=new Vector3f(elements.normals.get(i),elements.normals.get(i + 1),elements.normals.get(i + 2));
       calcLightingValuesForVertexPos(chunkView,vertexPos,result,normal);
-      mesh.vertexElements[j].finalVertices.putFloat(result[0]);
-      mesh.vertexElements[j].finalVertices.putFloat(result[1]);
-      mesh.vertexElements[j].finalVertices.putFloat(result[2]);
-      final int packedColor=RenderMath.packColor(mesh.vertexElements[j].color.get(cColor),mesh.vertexElements[j].color.get(cColor + 1),mesh.vertexElements[j].color.get(cColor + 2),mesh.vertexElements[j].color.get(cColor + 3));
-      mesh.vertexElements[j].finalVertices.putInt(packedColor);
-      mesh.vertexElements[j].finalVertices.putFloat(normal.x);
-      mesh.vertexElements[j].finalVertices.putFloat(normal.y);
-      mesh.vertexElements[j].finalVertices.putFloat(normal.z);
+      elements.finalVertices.putFloat(result[0]);
+      elements.finalVertices.putFloat(result[1]);
+      elements.finalVertices.putFloat(result[2]);
+      final int packedColor=RenderMath.packColor(elements.color.get(cColor),elements.color.get(cColor + 1),elements.color.get(cColor + 2),elements.color.get(cColor + 3));
+      elements.finalVertices.putInt(packedColor);
+      elements.finalVertices.putFloat(normal.x);
+      elements.finalVertices.putFloat(normal.y);
+      elements.finalVertices.putFloat(normal.z);
     }
-    mesh.vertexElements[j].finalIndices=BufferUtils.createIntBuffer(mesh.vertexElements[j].indices.size());
-    TIntIterator indexIterator=mesh.vertexElements[j].indices.iterator();
+    elements.finalIndices=BufferUtils.createIntBuffer(elements.indices.size());
+    TIntIterator indexIterator=elements.indices.iterator();
     while (indexIterator.hasNext()) {
-      mesh.vertexElements[j].finalIndices.put(indexIterator.next());
+      elements.finalIndices.put(indexIterator.next());
     }
-    mesh.vertexElements[j].finalVertices.flip();
-    mesh.vertexElements[j].finalIndices.flip();
+    elements.finalVertices.flip();
+    elements.finalIndices.flip();
   }
   PerformanceMonitor.endActivity();
 }

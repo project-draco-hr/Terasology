@@ -1,0 +1,25 @@
+{
+  ChunkMesh.VertexElements elements=chunk.getVertexElements(renderType);
+  for (  Vector2f texCoord : texCoords) {
+    elements.tex.add(texCoord.x);
+    elements.tex.add(texCoord.y);
+  }
+  int nextIndex=elements.vertexCount;
+  for (int vIdx=0; vIdx < vertices.length; ++vIdx) {
+    elements.color.add(colorOffset.x);
+    elements.color.add(colorOffset.y);
+    elements.color.add(colorOffset.z);
+    elements.color.add(colorOffset.w);
+    elements.vertices.add(vertices[vIdx].x + offsetX);
+    elements.vertices.add(vertices[vIdx].y + offsetY);
+    elements.vertices.add(vertices[vIdx].z + offsetZ);
+    elements.normals.add(normals[vIdx].x);
+    elements.normals.add(normals[vIdx].y);
+    elements.normals.add(normals[vIdx].z);
+    elements.flags.add(flags.getValue());
+  }
+  elements.vertexCount+=vertices.length;
+  for (  int index : indices) {
+    elements.indices.add(index + nextIndex);
+  }
+}

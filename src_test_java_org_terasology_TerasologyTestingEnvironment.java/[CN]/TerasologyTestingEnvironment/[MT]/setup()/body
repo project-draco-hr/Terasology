@@ -9,7 +9,8 @@
   CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
   LoadPrefabs prefabLoadStep=new LoadPrefabs();
   boolean complete=false;
-  for (prefabLoadStep.begin(); !complete; ) {
+  prefabLoadStep.begin();
+  while (!complete) {
     complete=prefabLoadStep.step();
   }
   CoreRegistry.get(ComponentSystemManager.class).initialise();
