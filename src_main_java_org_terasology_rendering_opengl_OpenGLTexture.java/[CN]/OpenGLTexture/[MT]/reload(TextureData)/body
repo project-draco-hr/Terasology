@@ -1,4 +1,5 @@
 {
+  Util.checkGLError();
   dispose();
   this.width=data.getWidth();
   this.height=data.getHeight();
@@ -23,7 +24,6 @@ GL11.glTexImage2D(GL11.GL_TEXTURE_2D,i,GL11.GL_RGBA,width >> i,height >> i,0,GL1
 }
 break;
 case TEXTURE3D:
-Util.checkGLError();
 id=glGenTextures();
 logger.debug("Bound texture '{}' - {}",getURI(),id);
 glBindTexture(GL12.GL_TEXTURE_3D,id);
@@ -37,7 +37,7 @@ GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL12.GL_TEXTURE_MAX_LEVEL,data.getBuffer
 for (int i=0; i < data.getBuffers().length; i++) {
 GL12.glTexImage3D(GL12.GL_TEXTURE_3D,i,GL11.GL_RGBA,width,height,depth,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,data.getBuffers()[i]);
 }
-Util.checkGLError();
 break;
 }
+Util.checkGLError();
 }
