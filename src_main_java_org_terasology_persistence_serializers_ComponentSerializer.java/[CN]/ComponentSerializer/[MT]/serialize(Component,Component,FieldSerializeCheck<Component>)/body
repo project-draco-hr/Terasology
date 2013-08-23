@@ -7,7 +7,7 @@
   EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
   serializeComponentType(delta,componentMessage);
   boolean changed=false;
-  for (  FieldMetadata field : componentMetadata.iterateFields()) {
+  for (  FieldMetadata field : componentMetadata.getFields()) {
     if (check.shouldSerializeField(field,delta)) {
       Object origValue=field.getValue(base);
       Object deltaValue=field.getValue(delta);

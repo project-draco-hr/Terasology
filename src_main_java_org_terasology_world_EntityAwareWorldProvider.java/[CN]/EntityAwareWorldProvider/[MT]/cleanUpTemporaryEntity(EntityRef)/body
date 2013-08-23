@@ -15,7 +15,7 @@
  else {
         ComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
         boolean changed=false;
-        for (        FieldMetadata field : metadata.iterateFields()) {
+        for (        FieldMetadata field : metadata.getFields()) {
           Object expected=field.getValue(comp);
           if (!Objects.equal(expected,field.getValue(currentComp))) {
             field.setValue(currentComp,expected);

@@ -16,11 +16,11 @@
   this.entitySystemLibrary=new EntitySystemLibraryImpl(builder.build());
   EventLibrary eventLibrary=entitySystemLibrary.getEventLibrary();
   for (  ClassMetadata<? extends Event> eventMetadata : library.getEventLibrary()) {
-    eventLibrary.register(eventMetadata.getType(),eventMetadata.getNames());
+    eventLibrary.register(eventMetadata.getType(),eventMetadata.getName(),eventMetadata.getNames());
   }
   ComponentLibrary componentLibrary=entitySystemLibrary.getComponentLibrary();
   for (  ClassMetadata<? extends Component> componentMetadata : library.getComponentLibrary()) {
-    componentLibrary.register(componentMetadata.getType(),componentMetadata.getNames());
+    componentLibrary.register(componentMetadata.getType(),componentMetadata.getName(),componentMetadata.getNames());
   }
   eventSerializer=new EventSerializer(eventLibrary);
   entitySerializer=new NetworkEntitySerializer(newEntityManager,componentLibrary);

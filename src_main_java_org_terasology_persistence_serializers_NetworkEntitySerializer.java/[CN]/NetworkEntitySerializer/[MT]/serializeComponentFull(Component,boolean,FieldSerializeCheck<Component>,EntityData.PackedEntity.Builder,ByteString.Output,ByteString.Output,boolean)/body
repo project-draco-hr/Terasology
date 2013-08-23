@@ -4,7 +4,7 @@
     logger.error("Unregistered component type: {}",component.getClass());
   }
   byte fieldCount=0;
-  for (  FieldMetadata field : componentMetadata.iterateFields()) {
+  for (  FieldMetadata field : componentMetadata.getFields()) {
     if (fieldCheck.shouldSerializeField(field,component,componentInitial)) {
       EntityData.Value fieldValue=field.serialize(component);
       if (fieldValue != null) {

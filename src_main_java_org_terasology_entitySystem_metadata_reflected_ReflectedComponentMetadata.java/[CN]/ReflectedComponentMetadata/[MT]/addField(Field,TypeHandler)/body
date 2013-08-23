@@ -1,0 +1,13 @@
+{
+  ReflectedFieldMetadata<T,?> metadata=new ReflectedFieldMetadata(this,field,typeHandler,false);
+  if (metadata.isReplicated()) {
+    replicated=true;
+    if (metadata.getReplicationInfo().value().isReplicateFromOwner()) {
+      replicatedFromOwner=true;
+    }
+  }
+  if (metadata.isOwnedReference()) {
+    referenceOwner=true;
+  }
+  return metadata;
+}

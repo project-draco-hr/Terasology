@@ -7,7 +7,7 @@
   EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
   serializeEventType(event,eventData);
   ByteString.Output fieldIds=ByteString.newOutput();
-  for (  FieldMetadata field : eventMetadata.iterateFields()) {
+  for (  FieldMetadata field : eventMetadata.getFields()) {
     if (field.isReplicated()) {
       EntityData.Value serializedValue=field.serialize(event);
       if (serializedValue != null) {

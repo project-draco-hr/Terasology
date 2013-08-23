@@ -23,9 +23,9 @@
   }
   if (newPrefab != null) {
     for (    Component comp : newPrefab.iterateComponents()) {
-      ComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
+      ReflectedComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
       if (!blockEntity.hasComponent(comp.getClass())) {
-        blockEntity.addComponent(metadata.clone(comp));
+        blockEntity.addComponent(metadata.copy(comp));
       }
  else       if (!metadata.isRetainUnalteredOnBlockChange() && !retainComponents.contains(metadata.getType())) {
         updateComponent(blockEntity,metadata,comp);

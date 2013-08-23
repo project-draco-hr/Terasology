@@ -1,0 +1,12 @@
+{
+  try {
+    if (getter != null) {
+      return type.cast(getter.invoke(obj));
+    }
+    return type.cast(field.get(obj));
+  }
+ catch (  InvocationTargetException|IllegalAccessException e) {
+    logger.error("Exception during access of {} from {}",field.getName(),obj.getClass(),e);
+  }
+  return null;
+}

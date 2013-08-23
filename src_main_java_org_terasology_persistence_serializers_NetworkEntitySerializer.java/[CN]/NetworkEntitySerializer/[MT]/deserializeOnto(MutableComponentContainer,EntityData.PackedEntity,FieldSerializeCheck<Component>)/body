@@ -20,7 +20,7 @@
     }
     for (int fieldIndex=0; fieldIndex < UnsignedBytes.toInt(entityData.getComponentFieldCounts().byteAt(componentIndex)); ++fieldIndex) {
       byte fieldId=entityData.getFieldIds().byteAt(fieldPos);
-      FieldMetadata fieldMetadata=metadata.getFieldById(fieldId);
+      FieldMetadata fieldMetadata=metadata.getField(fieldId);
       if (fieldMetadata != null && fieldCheck.shouldDeserializeField(fieldMetadata)) {
         logger.trace("Deserializing field {} of component {} as value {}",fieldMetadata,metadata,entityData.getFieldValue(fieldPos));
         fieldMetadata.deserializeOnto(component,entityData.getFieldValue(fieldPos));

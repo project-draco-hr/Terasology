@@ -1,0 +1,11 @@
+{
+  super(simpleClass,typeHandlers,primaryName,additionalNames);
+  replicated=simpleClass.getAnnotation(Replicate.class) != null;
+  blockLifecycleEventsRequired=simpleClass.getAnnotation(RequiresBlockLifecycleEvents.class) != null;
+  ForceBlockActive forceBlockActiveAnnotation=simpleClass.getAnnotation(ForceBlockActive.class);
+  if (forceBlockActiveAnnotation != null) {
+    forceBlockActive=true;
+    retainUnalteredOnBlockChange=forceBlockActiveAnnotation.retainUnalteredOnBlockChange();
+  }
+  addFields(typeHandlers);
+}
