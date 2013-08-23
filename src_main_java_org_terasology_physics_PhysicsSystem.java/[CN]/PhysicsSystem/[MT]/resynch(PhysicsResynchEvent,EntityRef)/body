@@ -3,10 +3,10 @@
   LocationComponent loc=entity.getComponent(LocationComponent.class);
   Vector3f delta=new Vector3f(event.getPosition());
   delta.sub(loc.getWorldPosition());
-  pendingResynch.put(entity,new ResynchData(delta,new Quat4f()));
   RigidBody body=entityRigidBodies.get(entity);
   if (body != null) {
     body.setLinearVelocity(event.getVelocity());
     body.setAngularVelocity(event.getAngularVelocity());
+    body.proceedToTransform(new Transform(new Matrix4f(event.getRotation(),event.getPosition(),1)));
   }
 }

@@ -10,11 +10,24 @@
     RigidBodyConstructionInfo info=new RigidBodyConstructionInfo(rigidBody.mass,new EntityMotionState(entity),shape,fallInertia);
     RigidBody collider=new RigidBody(info);
     collider.setUserPointer(entity);
+    collider.setLinearVelocity(rigidBody.velocity);
+    collider.setAngularVelocity(rigidBody.angularVelocity);
     updateKinematicSettings(rigidBody,collider);
     RigidBody oldBody=entityRigidBodies.put(entity,collider);
     physics.addRigidBody(collider,Lists.<CollisionGroup>newArrayList(rigidBody.collisionGroup),rigidBody.collidesWith);
     if (oldBody != null) {
       physics.removeRigidBody(oldBody);
+    }
+    List<Vector3f> impulses=pendingImpulses.removeAll(entity);
+    if (networkSystem.getMode().isAuthority()) {
+      for (      Vector3f impulse : impulses) {
+        collider.applyCentralImpulse(impulse);
+      }
+    }
+    if (!impulses.isEmpty()) {
+      collider.getLinearVelocity(rigidBody.velocity);
+      collider.getAngularVelocity(rigidBody.angularVelocity);
+      entity.saveComponent(rigidBody);
     }
   }
 }

@@ -1,8 +1,11 @@
 {
-  for (  Map.Entry<EntityRef,Vector3f> impulse : pendingImpulses.entrySet()) {
-    RigidBody body=entityRigidBodies.get(impulse.getKey());
+  for (  EntityRef impulseEntity : pendingImpulses.keySet()) {
+    RigidBody body=entityRigidBodies.get(impulseEntity);
     if (body != null) {
-      body.applyCentralImpulse(impulse.getValue());
+      List<Vector3f> impulses=pendingImpulses.get(impulseEntity);
+      for (      Vector3f impulse : impulses) {
+        body.applyCentralImpulse(impulse);
+      }
     }
   }
   pendingImpulses.clear();
