@@ -1,0 +1,14 @@
+{
+  try {
+    ClassMetadataImpl<T> classMetadata=new ClassMetadataImpl(target.getClass(),copyStrategies,reflectFactory,"");
+    for (    Field field : getAllFields(target.getClass(),and(withAnnotation(EditorRange.class),or(withType(Float.TYPE),withType(Float.class))))) {
+      EditorRange range=field.getAnnotation(EditorRange.class);
+      FieldMetadata<T,Float> fieldMetadata=classMetadata.getField(field.getName(),Float.class);
+      Property property=new FloatProperty(target,fieldMetadata,range.min(),range.max());
+      properties.add(property);
+    }
+  }
+ catch (  NoSuchMethodException e) {
+    logger.error("Cannot provide provide inspection for {}, does not have a default constructor",target.getClass());
+  }
+}

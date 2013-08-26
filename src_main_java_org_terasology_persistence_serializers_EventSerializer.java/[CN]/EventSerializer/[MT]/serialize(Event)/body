@@ -6,10 +6,11 @@
   }
   EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
   serializeEventType(event,eventData);
+  Serializer eventSerializer=typeSerializationLibrary.getSerializerFor(eventMetadata);
   ByteString.Output fieldIds=ByteString.newOutput();
   for (  FieldMetadata field : eventMetadata.getFields()) {
     if (field.isReplicated()) {
-      EntityData.Value serializedValue=field.serialize(event);
+      EntityData.Value serializedValue=eventSerializer.serialize(field,event);
       if (serializedValue != null) {
         eventData.addFieldValue(serializedValue);
         fieldIds.write(field.getId());

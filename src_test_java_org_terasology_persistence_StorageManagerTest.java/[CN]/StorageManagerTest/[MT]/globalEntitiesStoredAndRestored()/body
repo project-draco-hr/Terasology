@@ -5,7 +5,7 @@
   globalStore.store(entity);
   globalStore.save();
   esm.flush();
-  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager,networkSystem);
+  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager,networkSystem,new ReflectionReflectFactory());
   StorageManager newSM=new StorageManagerInternal(newEntityManager,false);
   newSM.loadGlobalStore();
   List<EntityRef> entities=Lists.newArrayList(newEntityManager.getEntitiesWith(StringComponent.class));

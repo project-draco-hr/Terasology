@@ -1,5 +1,5 @@
 {
-  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl(new TypeHandlerLibraryBuilder().add(EntityRef.class,new EntityRefTypeHandler(null)).build());
+  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl(reflectFactory,copyStrategies,new TypeSerializationLibrary(reflectFactory,copyStrategies));
   ComponentLibrary lib=entitySystemLibrary.getComponentLibrary();
   lib.register(OwnerComponent.class);
   ComponentMetadata<OwnerComponent> metadata=lib.getMetadata(OwnerComponent.class);

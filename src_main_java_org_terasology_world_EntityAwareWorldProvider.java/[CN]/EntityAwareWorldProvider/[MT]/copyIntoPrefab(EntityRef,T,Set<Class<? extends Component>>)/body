@@ -1,0 +1,9 @@
+{
+  ComponentMetadata<T> metadata=entityManager.getComponentLibrary().getMetadata((Class<T>)comp.getClass());
+  if (!blockEntity.hasComponent(comp.getClass())) {
+    blockEntity.addComponent(metadata.copyRaw(comp));
+  }
+ else   if (!metadata.isRetainUnalteredOnBlockChange() && !retainComponents.contains(metadata.getType())) {
+    updateComponent(blockEntity,metadata,comp);
+  }
+}

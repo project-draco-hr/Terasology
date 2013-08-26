@@ -1,6 +1,8 @@
 {
-  TypeHandlerLibrary lib=new TypeHandlerLibraryBuilder().build();
-  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl(lib);
+  ReflectFactory reflectFactory=new ReflectionReflectFactory();
+  CopyStrategyLibrary copyStrategies=CopyStrategyLibrary.create(reflectFactory);
+  TypeSerializationLibrary serializationLibrary=new TypeSerializationLibrary(reflectFactory,copyStrategies);
+  EntitySystemLibrary entitySystemLibrary=new EntitySystemLibraryImpl(reflectFactory,copyStrategies,serializationLibrary);
   compLibrary=entitySystemLibrary.getComponentLibrary();
   entityManager=new PojoEntityManager();
   entityManager.setEntitySystemLibrary(entitySystemLibrary);

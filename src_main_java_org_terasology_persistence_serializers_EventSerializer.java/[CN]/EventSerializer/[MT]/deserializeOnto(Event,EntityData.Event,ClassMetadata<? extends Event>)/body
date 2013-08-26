@@ -1,4 +1,5 @@
 {
+  Serializer serializer=typeSerializationLibrary.getSerializerFor(eventMetadata);
   for (int i=0; i < eventData.getFieldIds().size(); ++i) {
     byte fieldId=eventData.getFieldIds().byteAt(i);
     FieldMetadata fieldInfo=eventMetadata.getField(fieldId);
@@ -7,7 +8,7 @@
       continue;
     }
     if (fieldInfo.isReplicated()) {
-      fieldInfo.deserializeOnto(targetEvent,eventData.getFieldValue(i));
+      serializer.deserializeOnto(targetEvent,fieldInfo,eventData.getFieldValue(i));
     }
   }
   return targetEvent;

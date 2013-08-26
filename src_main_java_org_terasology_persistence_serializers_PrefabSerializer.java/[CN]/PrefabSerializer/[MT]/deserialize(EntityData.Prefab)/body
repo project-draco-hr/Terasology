@@ -7,6 +7,9 @@
     if (parentUri.isValid()) {
       result.setParent(Assets.get(parentUri,Prefab.class));
     }
+ else {
+      logger.error("Asset has invalid parent: {}",parentUri);
+    }
   }
   if (result.getParent() != null) {
     for (    Component comp : result.getParent().iterateComponents()) {

@@ -1,0 +1,10 @@
+{
+  for (  Field field : Reflections.getAllFields(clazz,Predicates.alwaysTrue())) {
+    if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())) {
+      continue;
+    }
+    CopyStrategy<?> copyStrategy=copyStrategyLibrary.getStrategy(field.getGenericType());
+    FieldMetadata<T,?> metadata=createField(field,copyStrategy,factory);
+    fields.put(metadata.getName().toLowerCase(Locale.ENGLISH),metadata);
+  }
+}

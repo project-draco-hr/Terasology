@@ -1,8 +1,0 @@
-{
-  for (  Field field : getAllFields(target.getClass(),and(withAnnotation(EditorRange.class),or(withType(Float.TYPE),withType(Float.class))))) {
-    EditorRange range=field.getAnnotation(EditorRange.class);
-    field.setAccessible(true);
-    Property property=new FloatProperty(target,field,field.getName(),range.min(),range.max());
-    properties.add(property);
-  }
-}

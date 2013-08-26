@@ -1,0 +1,62 @@
+{
+  Class<?> typeClass=ReflectionUtil.getClassOfType(genericType);
+  if (typeClass == null) {
+    logger.error("Unabled to get class from type {}",genericType);
+    return null;
+  }
+  if (Enum.class.isAssignableFrom(typeClass)) {
+    return new EnumTypeHandler(typeClass);
+  }
+ else   if (List.class.isAssignableFrom(typeClass)) {
+    Type parameter=ReflectionUtil.getTypeParameter(genericType,0);
+    if (parameter != null) {
+      TypeHandler<?> innerHandler=getHandlerFor(parameter);
+      if (innerHandler != null) {
+        return new ListTypeHandler<>(innerHandler);
+      }
+    }
+    logger.error("List field is not parametrized, or holds unsupported type");
+    return null;
+  }
+ else   if (Set.class.isAssignableFrom(typeClass)) {
+    Type parameter=ReflectionUtil.getTypeParameter(genericType,0);
+    if (parameter != null) {
+      TypeHandler<?> innerHandler=getHandlerFor(parameter);
+      if (innerHandler != null) {
+        return new SetTypeHandler<>(innerHandler);
+      }
+    }
+    logger.error("Set field is not parametrized, or holds unsupported type");
+    return null;
+  }
+ else   if (Map.class.isAssignableFrom(typeClass)) {
+    Type keyParameter=ReflectionUtil.getTypeParameter(genericType,0);
+    Type contentsParameter=ReflectionUtil.getTypeParameter(genericType,1);
+    if (keyParameter != null && contentsParameter != null && String.class == keyParameter) {
+      TypeHandler<?> valueHandler=getHandlerFor(contentsParameter);
+      if (valueHandler != null) {
+        return new StringMapTypeHandler<>(valueHandler);
+      }
+    }
+    logger.error("Map field is not parametrized, does not have a String key, or holds unsupported values");
+  }
+ else   if (typeHandlers.containsKey(typeClass)) {
+    return typeHandlers.get(typeClass);
+  }
+ else   if (typeClass.getAnnotation(MappedContainer.class) != null && !Modifier.isAbstract(typeClass.getModifiers()) && !typeClass.isLocalClass() && !(typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
+    try {
+      ClassMetadata<?> metadata=new ClassMetadataImpl<>(typeClass,copyStrategies,reflectFactory,"");
+      MappedContainerTypeHandler<?> mappedHandler=new MappedContainerTypeHandler(typeClass,getFieldHandlerMap(metadata));
+      typeHandlers.put(typeClass,mappedHandler);
+      return mappedHandler;
+    }
+ catch (    NoSuchMethodException e) {
+      logger.error("Unable to register field of type {}: no publicly accessible default constructor",typeClass.getSimpleName());
+      return null;
+    }
+  }
+ else {
+    logger.error("Unable to register field of type {}: not a supported type or MappedContainer",typeClass.getSimpleName());
+  }
+  return null;
+}

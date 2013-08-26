@@ -1,0 +1,19 @@
+{
+  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.put(CopyStrategyLibrary.class,buildCopyStrategyLibrary(reflectFactory));
+  PojoEntityManager entityManager=CoreRegistry.put(EntityManager.class,new PojoEntityManager());
+  CoreRegistry.put(EngineEntityManager.class,entityManager);
+  TypeSerializationLibrary typeSerializationLibrary=buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary);
+  entityManager.setTypeSerializerLibrary(buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary));
+  EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibraryImpl(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
+  entityManager.setEntitySystemLibrary(library);
+  CoreRegistry.put(ComponentLibrary.class,library.getComponentLibrary());
+  CoreRegistry.put(EventLibrary.class,library.getEventLibrary());
+  PrefabManager prefabManager=new PojoPrefabManager();
+  entityManager.setPrefabManager(prefabManager);
+  CoreRegistry.put(PrefabManager.class,prefabManager);
+  entityManager.setEventSystem(new EventSystemImpl(library.getEventLibrary(),networkSystem));
+  CoreRegistry.put(EventSystem.class,entityManager.getEventSystem());
+  registerComponents(library.getComponentLibrary(),moduleManager);
+  registerEvents(entityManager.getEventSystem(),moduleManager);
+  return entityManager;
+}

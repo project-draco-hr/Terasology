@@ -1,4 +1,5 @@
 {
-  FieldMetadata metadata=new ReflectedFieldMetadata(OwnerComponent.class.getDeclaredField("child"),new EntityRefTypeHandler(null),false);
+  ClassMetadata<OwnerComponent> classMetadata=new ClassMetadataImpl<>(OwnerComponent.class,copyStrategyLibrary,factory,"");
+  FieldMetadata metadata=classMetadata.getField("child");
   assertTrue(metadata.isOwnedReference());
 }

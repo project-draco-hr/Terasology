@@ -1,0 +1,18 @@
+{
+  try {
+    T result=clazz.newInstance();
+    for (    EntityData.NameValue entry : value.getNameValueList()) {
+      FieldMetadata fieldInfo=fieldByName.get(entry.getName().toLowerCase(Locale.ENGLISH));
+      if (fieldInfo != null) {
+        TypeHandler handler=mappedFields.get(fieldInfo);
+        Object val=handler.deserialize(entry.getValue());
+        fieldInfo.setValue(result,val);
+      }
+    }
+    return result;
+  }
+ catch (  Exception e) {
+    logger.error("Unable to deserialize {}",value,e);
+  }
+  return null;
+}

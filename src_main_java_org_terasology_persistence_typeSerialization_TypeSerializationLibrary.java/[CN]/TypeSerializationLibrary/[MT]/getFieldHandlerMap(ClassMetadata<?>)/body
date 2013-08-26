@@ -1,0 +1,10 @@
+{
+  Map<FieldMetadata<?,?>,TypeHandler> handlerMap=Maps.newHashMap();
+  for (  FieldMetadata<?,?> field : type.getFields()) {
+    TypeHandler<?> handler=getHandlerFor(field.getField().getGenericType());
+    if (handler != null) {
+      handlerMap.put(field,handler);
+    }
+  }
+  return handlerMap;
+}

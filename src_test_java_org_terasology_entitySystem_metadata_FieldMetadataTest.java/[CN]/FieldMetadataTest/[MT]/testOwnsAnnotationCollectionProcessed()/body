@@ -1,4 +1,5 @@
 {
-  FieldMetadata metadata=new ReflectedFieldMetadata(InventoryComponent.class.getDeclaredField("itemSlots"),new ListTypeHandler<>(new EntityRefTypeHandler(null)),false);
+  ClassMetadata<InventoryComponent> classMetadata=new ClassMetadataImpl<>(InventoryComponent.class,copyStrategyLibrary,factory,"");
+  FieldMetadata metadata=classMetadata.getField("itemSlots");
   assertTrue(metadata.isOwnedReference());
 }

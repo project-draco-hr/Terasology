@@ -1,0 +1,16 @@
+{
+  Object rawValue=fieldMetadata.getValue(container);
+  if (rawValue == null) {
+    return null;
+  }
+  EntityData.Value value=serializeValue(fieldMetadata,rawValue);
+  if (value != null) {
+    if (usingFieldIds) {
+      return EntityData.NameValue.newBuilder().setNameIndex(fieldMetadata.getId()).setValue(value).build();
+    }
+ else {
+      return EntityData.NameValue.newBuilder().setName(fieldMetadata.getName()).setValue(value).build();
+    }
+  }
+  return null;
+}

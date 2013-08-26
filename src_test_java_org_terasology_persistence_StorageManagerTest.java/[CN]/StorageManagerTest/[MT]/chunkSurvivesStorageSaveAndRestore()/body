@@ -5,7 +5,7 @@
   chunkStore.save();
   esm.createGlobalStoreForSave().save();
   esm.flush();
-  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager,networkSystem);
+  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager,networkSystem,new ReflectionReflectFactory());
   StorageManager newSM=new StorageManagerInternal(newEntityManager,false);
   newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);

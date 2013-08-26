@@ -1,10 +1,13 @@
 {
+  TypeSerializationLibrary serializationLibrary=new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary);
+  serializationLibrary.add(Vector3f.class,new Vector3fTypeHandler());
+  serializationLibrary.add(Quat4f.class,new Quat4fTypeHandler());
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   EntitySystemBuilder builder=new EntitySystemBuilder();
-  EngineEntityManager entityManager=builder.build(moduleManager,networkSystem);
+  EngineEntityManager entityManager=builder.build(moduleManager,networkSystem,new ReflectionReflectFactory());
   entityManager.getComponentLibrary().register(GetterSetterComponent.class);
   entityManager.getComponentLibrary().register(StringComponent.class);
   entityManager.getComponentLibrary().register(IntegerComponent.class);
   ComponentLibrary componentLibrary=entityManager.getComponentLibrary();
-  componentSerializer=new ComponentSerializer(componentLibrary);
+  componentSerializer=new ComponentSerializer(componentLibrary,serializationLibrary);
 }

@@ -5,12 +5,13 @@
     return;
   }
   byte fieldCount=0;
+  Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
   for (  FieldMetadata field : componentMetadata.getFields()) {
     if (fieldCheck.shouldSerializeField(field,newComponent,componentInitial)) {
       Object oldValue=field.getValue(oldComponent);
       Object newValue=field.getValue(newComponent);
       if (!Objects.equal(oldValue,newValue)) {
-        EntityData.Value fieldValue=field.serializeValue(newValue);
+        EntityData.Value fieldValue=serializer.serializeValue(field,newValue);
         if (fieldValue != null) {
           entityFieldIds.write(field.getId());
           entityData.addFieldValue(fieldValue);

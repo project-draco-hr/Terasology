@@ -6,9 +6,10 @@
   }
   EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
   serializeComponentType(component,componentMessage);
+  Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
   for (  FieldMetadata field : componentMetadata.getFields()) {
     if (check.shouldSerializeField(field,component)) {
-      EntityData.NameValue fieldData=field.serializeNameValue(component,usingFieldIds);
+      EntityData.NameValue fieldData=serializer.serializeNameValue(field,component,usingFieldIds);
       if (fieldData != null) {
         componentMessage.addField(fieldData);
       }

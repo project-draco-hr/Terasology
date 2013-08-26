@@ -2,7 +2,8 @@
   BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
   EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
   if (prefabData != null) {
-    return new PrefabSerializer(CoreRegistry.get(ComponentLibrary.class)).deserialize(prefabData);
+    EngineEntityManager entityManager=CoreRegistry.get(EngineEntityManager.class);
+    return new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary()).deserialize(prefabData);
   }
   return null;
 }
