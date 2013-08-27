@@ -3,7 +3,7 @@
   this.store=EntityData.GlobalStore.newBuilder();
   this.entitySerializer=new EntitySerializer(entityManager);
   Map<Class<? extends Component>,Integer> componentIdTable=Maps.newHashMap();
-  for (  ClassMetadata<? extends Component> componentMetadata : entityManager.getComponentLibrary()) {
+  for (  ComponentMetadata<?> componentMetadata : entityManager.getComponentLibrary().iterateComponentMetadata()) {
     store.addComponentClass(componentMetadata.getName());
     componentIdTable.put(componentMetadata.getType(),componentIdTable.size());
   }

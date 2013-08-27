@@ -1,5 +1,5 @@
 {
-  ClassMetadata<?> eventMetadata=eventLibrary.getMetadata(event.getClass());
+  EventMetadata<?> eventMetadata=eventLibrary.getMetadata(event.getClass());
   if (eventMetadata == null) {
     logger.error("Unregistered event type: {}",event.getClass());
     return null;
@@ -8,7 +8,7 @@
   serializeEventType(event,eventData);
   Serializer eventSerializer=typeSerializationLibrary.getSerializerFor(eventMetadata);
   ByteString.Output fieldIds=ByteString.newOutput();
-  for (  FieldMetadata field : eventMetadata.getFields()) {
+  for (  ReplicatedFieldMetadata field : eventMetadata.getFields()) {
     if (field.isReplicated()) {
       EntityData.Value serializedValue=eventSerializer.serialize(field,event);
       if (serializedValue != null) {

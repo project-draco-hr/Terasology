@@ -1,5 +1,5 @@
 {
-  ClassMetadata<?> componentMetadata=componentLibrary.getMetadata(component.getClass());
+  ComponentMetadata<?> componentMetadata=componentLibrary.getMetadata(component.getClass());
   if (componentMetadata == null) {
     logger.error("Unregistered component type: {}",component.getClass());
     return null;
@@ -7,7 +7,7 @@
   EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
   serializeComponentType(component,componentMessage);
   Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
-  for (  FieldMetadata field : componentMetadata.getFields()) {
+  for (  ReplicatedFieldMetadata field : componentMetadata.getFields()) {
     if (check.shouldSerializeField(field,component)) {
       EntityData.NameValue fieldData=serializer.serializeNameValue(field,component,usingFieldIds);
       if (fieldData != null) {

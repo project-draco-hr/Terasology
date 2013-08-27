@@ -1,0 +1,15 @@
+{
+  Serializer serializer=typeSerializationLibrary.getSerializerFor(eventMetadata);
+  for (int i=0; i < eventData.getFieldIds().size(); ++i) {
+    byte fieldId=eventData.getFieldIds().byteAt(i);
+    ReplicatedFieldMetadata<?,?> fieldInfo=eventMetadata.getField(fieldId);
+    if (fieldInfo == null) {
+      logger.error("Unable to serialize field {}, out of bounds",fieldId);
+      continue;
+    }
+    if (fieldInfo.isReplicated()) {
+      serializer.deserializeOnto(targetEvent,fieldInfo,eventData.getFieldValue(i));
+    }
+  }
+  return targetEvent;
+}

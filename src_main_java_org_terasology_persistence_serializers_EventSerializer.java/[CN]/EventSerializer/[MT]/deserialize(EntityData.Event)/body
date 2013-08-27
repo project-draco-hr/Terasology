@@ -1,7 +1,7 @@
 {
   Class<? extends Event> eventClass=getEventClass(eventData);
   if (eventClass != null) {
-    ClassMetadata<? extends Event> eventMetadata=eventLibrary.getMetadata(eventClass);
+    EventMetadata<?> eventMetadata=eventLibrary.getMetadata(eventClass);
     Event event=eventMetadata.newInstance();
     return deserializeOnto(event,eventData,eventMetadata);
   }

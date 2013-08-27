@@ -1,0 +1,11 @@
+{
+  super(owner,field,copyStrategy,factory);
+  this.replicated=replicatedByDefault;
+  if (field.getAnnotation(NoReplicate.class) != null) {
+    replicated=false;
+  }
+  if (field.getAnnotation(Replicate.class) != null) {
+    replicated=true;
+  }
+  this.replicationInfo=field.getAnnotation(Replicate.class);
+}

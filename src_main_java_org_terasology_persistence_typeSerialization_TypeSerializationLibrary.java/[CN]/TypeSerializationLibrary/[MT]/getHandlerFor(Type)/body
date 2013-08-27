@@ -45,7 +45,7 @@
   }
  else   if (typeClass.getAnnotation(MappedContainer.class) != null && !Modifier.isAbstract(typeClass.getModifiers()) && !typeClass.isLocalClass() && !(typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
     try {
-      ClassMetadata<?> metadata=new ClassMetadata<>(typeClass,reflectFactory,copyStrategies,"");
+      ClassMetadata<?,?> metadata=new DefaultClassMetadata<>(typeClass,reflectFactory,copyStrategies,"");
       MappedContainerTypeHandler<?> mappedHandler=new MappedContainerTypeHandler(typeClass,getFieldHandlerMap(metadata));
       typeHandlers.put(typeClass,mappedHandler);
       return mappedHandler;
