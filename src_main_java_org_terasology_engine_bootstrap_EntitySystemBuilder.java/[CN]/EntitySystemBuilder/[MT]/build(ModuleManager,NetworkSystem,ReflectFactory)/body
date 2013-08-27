@@ -4,7 +4,7 @@
   CoreRegistry.put(EngineEntityManager.class,entityManager);
   TypeSerializationLibrary typeSerializationLibrary=buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary);
   entityManager.setTypeSerializerLibrary(buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary));
-  EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibraryImpl(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
+  EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
   entityManager.setEntitySystemLibrary(library);
   CoreRegistry.put(ComponentLibrary.class,library.getComponentLibrary());
   CoreRegistry.put(EventLibrary.class,library.getEventLibrary());

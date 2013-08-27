@@ -2,7 +2,7 @@
   if (block.isKeepActive()) {
     return false;
   }
-  for (  ComponentMetadata<?> metadata : entityManager.getComponentLibrary()) {
+  for (  ComponentMetadata<?> metadata : entityManager.getComponentLibrary().iterateComponentMetadata()) {
     if (metadata.isForceBlockActive() && ignoreComponent != metadata.getType()) {
       if (entity.hasComponent(metadata.getType())) {
         return false;

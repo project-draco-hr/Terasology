@@ -1,0 +1,68 @@
+{
+  Class<?> typeClass=ReflectionUtil.getClassOfType(genericType);
+  if (typeClass == null) {
+    logger.error("Cannot obtain class for type {}, using default strategy",genericType);
+    return defaultStrategy;
+  }
+  if (List.class.isAssignableFrom(typeClass)) {
+    Type parameter=ReflectionUtil.getTypeParameter(genericType,0);
+    if (parameter != null) {
+      CopyStrategy<?> contentStrategy=getStrategy(parameter);
+      return new ListCopyStrategy<>(contentStrategy);
+    }
+    logger.error("List field is not parametrized - using default strategy");
+    return new ListCopyStrategy<>(defaultStrategy);
+  }
+ else   if (Set.class.isAssignableFrom(typeClass)) {
+    Type parameter=ReflectionUtil.getTypeParameter(genericType,0);
+    if (parameter != null) {
+      CopyStrategy<?> contentStrategy=getStrategy(parameter);
+      return new SetCopyStrategy<>(contentStrategy);
+    }
+    logger.error("Set field is not parametrized - using default strategy");
+    return new SetCopyStrategy<>(defaultStrategy);
+  }
+ else   if (Map.class.isAssignableFrom(typeClass)) {
+    Type keyParameter=ReflectionUtil.getTypeParameter(genericType,0);
+    CopyStrategy<?> keyStrategy;
+    if (keyParameter != null) {
+      keyStrategy=getStrategy(keyParameter);
+    }
+ else {
+      logger.error("Map field is missing key parameter - using default strategy");
+      keyStrategy=defaultStrategy;
+    }
+    Type valueParameter=ReflectionUtil.getTypeParameter(genericType,1);
+    CopyStrategy<?> valueStrategy;
+    if (valueParameter != null) {
+      valueStrategy=getStrategy(valueParameter);
+    }
+ else {
+      logger.error("Map field is missing value parameter - using default strategy");
+      valueStrategy=defaultStrategy;
+    }
+    return new MapCopyStrategy<>(keyStrategy,valueStrategy);
+  }
+ else   if (strategies.containsKey(typeClass)) {
+    return strategies.get(typeClass);
+  }
+ else   if (typeClass.getAnnotation(MappedContainer.class) != null) {
+    if (Modifier.isAbstract(typeClass.getModifiers()) || typeClass.isLocalClass() || (typeClass.isMemberClass() && !Modifier.isStatic(typeClass.getModifiers()))) {
+      logger.error("Type {} is not a valid mapped class",typeClass);
+      return defaultStrategy;
+    }
+    try {
+      ClassMetadata<?> classMetadata=new ClassMetadata<>(typeClass,reflectFactory,this,typeClass.getSimpleName());
+      return new MappedContainerCopyStrategy<>(classMetadata);
+    }
+ catch (    NoSuchMethodException e) {
+      logger.error("Unable to create copy strategy for field of type {}: no publicly accessible default constructor",typeClass.getSimpleName());
+      return defaultStrategy;
+    }
+  }
+ else {
+    logger.debug("Using default copy strategy for {}",typeClass);
+    strategies.put(typeClass,defaultStrategy);
+    return defaultStrategy;
+  }
+}

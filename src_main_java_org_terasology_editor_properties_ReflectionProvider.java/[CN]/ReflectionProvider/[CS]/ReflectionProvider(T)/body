@@ -1,6 +1,6 @@
 {
   try {
-    ClassMetadataImpl<T> classMetadata=new ClassMetadataImpl(target.getClass(),copyStrategies,reflectFactory,"");
+    ClassMetadata<T> classMetadata=new ClassMetadata(target.getClass(),reflectFactory,copyStrategies,"");
     for (    Field field : getAllFields(target.getClass(),and(withAnnotation(EditorRange.class),or(withType(Float.TYPE),withType(Float.class))))) {
       EditorRange range=field.getAnnotation(EditorRange.class);
       FieldMetadata<T,Float> fieldMetadata=classMetadata.getField(field.getName(),Float.class);

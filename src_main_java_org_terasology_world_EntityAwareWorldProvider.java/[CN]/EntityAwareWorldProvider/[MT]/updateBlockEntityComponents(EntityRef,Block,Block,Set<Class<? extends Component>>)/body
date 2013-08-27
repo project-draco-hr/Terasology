@@ -1,7 +1,7 @@
 {
   Prefab oldPrefab=entityManager.getPrefabManager().getPrefab(oldType.getPrefab());
   Prefab newPrefab=entityManager.getPrefabManager().getPrefab(type.getPrefab());
-  for (  ComponentMetadata<?> metadata : entityManager.getComponentLibrary()) {
+  for (  ComponentMetadata<?> metadata : entityManager.getComponentLibrary().iterateComponentMetadata()) {
     if (!COMMON_BLOCK_COMPONENTS.contains(metadata.getType()) && !metadata.isRetainUnalteredOnBlockChange() && (newPrefab == null || !newPrefab.hasComponent(metadata.getType()))&& !retainComponents.contains(metadata.getType())) {
       blockEntity.removeComponent(metadata.getType());
     }
