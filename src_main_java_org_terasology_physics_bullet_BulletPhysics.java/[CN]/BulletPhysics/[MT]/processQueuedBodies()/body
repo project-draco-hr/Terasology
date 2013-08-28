@@ -1,0 +1,10 @@
+{
+  while (!insertionQueue.isEmpty()) {
+    RigidBodyRequest request=insertionQueue.poll();
+    discreteDynamicsWorld.addRigidBody(request.body.rb,request.groups,request.filter);
+  }
+  while (!removalQueue.isEmpty()) {
+    BulletRigidBody body=removalQueue.poll();
+    discreteDynamicsWorld.removeRigidBody(body.rb);
+  }
+}

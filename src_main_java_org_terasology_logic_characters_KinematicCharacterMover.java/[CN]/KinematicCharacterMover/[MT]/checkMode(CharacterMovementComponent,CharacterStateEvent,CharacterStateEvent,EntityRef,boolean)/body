@@ -1,0 +1,56 @@
+{
+  if (state.getMode() == MovementMode.GHOSTING) {
+    return;
+  }
+  Vector3f worldPos=state.getPosition();
+  Vector3f top=new Vector3f(worldPos);
+  Vector3f bottom=new Vector3f(worldPos);
+  top.y+=0.25f * movementComp.height;
+  bottom.y-=0.25f * movementComp.height;
+  final boolean topUnderwater=worldProvider.getBlock(top).isLiquid();
+  final boolean bottomUnderwater=worldProvider.getBlock(bottom).isLiquid();
+  final boolean newSwimming=topUnderwater && bottomUnderwater;
+  boolean newClimbing=false;
+  if (!newSwimming) {
+    Vector3f[] sides={new Vector3f(worldPos),new Vector3f(worldPos),new Vector3f(worldPos),new Vector3f(worldPos),new Vector3f(worldPos)};
+    float factor=0.18f;
+    sides[0].x+=factor * movementComp.radius;
+    sides[1].x-=factor * movementComp.radius;
+    sides[2].z+=factor * movementComp.radius;
+    sides[3].z-=factor * movementComp.radius;
+    sides[4].y-=movementComp.height;
+    for (    Vector3f side : sides) {
+      if (worldProvider.getBlock(side).isClimbable()) {
+        newClimbing=true;
+        break;
+      }
+    }
+  }
+  if (newSwimming) {
+    if (state.getMode() != MovementMode.SWIMMING) {
+      if (firstRun) {
+        entity.send(new OnEnterLiquidEvent(worldProvider.getBlock(state.getPosition())));
+      }
+      state.setMode(MovementMode.SWIMMING);
+    }
+  }
+ else   if (state.getMode() == MovementMode.SWIMMING) {
+    if (firstRun) {
+      entity.send(new OnLeaveLiquidEvent(worldProvider.getBlock(oldState.getPosition())));
+    }
+    if (newClimbing) {
+      state.setMode(MovementMode.CLIMBING);
+      state.getVelocity().y=0;
+    }
+ else {
+      if (state.getVelocity().y > 0) {
+        state.getVelocity().y+=8;
+      }
+      state.setMode(MovementMode.WALKING);
+    }
+  }
+ else   if (newClimbing != (state.getMode() == MovementMode.CLIMBING)) {
+    state.getVelocity().y=0;
+    state.setMode((newClimbing) ? MovementMode.CLIMBING : MovementMode.WALKING);
+  }
+}

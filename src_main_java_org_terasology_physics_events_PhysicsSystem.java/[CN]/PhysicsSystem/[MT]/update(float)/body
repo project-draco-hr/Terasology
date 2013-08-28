@@ -1,0 +1,27 @@
+{
+  PerformanceMonitor.startActivity("Physics Renderer");
+  physics.update(delta);
+  PerformanceMonitor.endActivity();
+  Iterator<EntityRef> iter=physics.physicsEntitiesIterator();
+  while (iter.hasNext()) {
+    EntityRef entity=iter.next();
+    RigidBodyComponent comp=entity.getComponent(RigidBodyComponent.class);
+    RigidBody body=physics.getRigidBody(entity);
+    body.getLinearVelocity(comp.velocity);
+    body.getAngularVelocity(comp.angularVelocity);
+    entity.saveComponent(comp);
+  }
+  if (networkSystem.getMode() == NetworkMode.SERVER && time.getGameTimeInMs() - TIME_BETWEEN_NETSYNCS > lastNetsync) {
+    sendSyncMessages();
+    lastNetsync=time.getGameTimeInMs();
+  }
+  List<CollisionPair> collisionPairs=physics.getCollisionPairs();
+  for (  CollisionPair pair : collisionPairs) {
+    if (pair.b.exists()) {
+      pair.a.send(new CollideEvent(pair.b));
+    }
+    if (pair.a.exists()) {
+      pair.b.send(new CollideEvent(pair.a));
+    }
+  }
+}

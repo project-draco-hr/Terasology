@@ -1,0 +1,37 @@
+{
+  Vector3f contactPoint=this.hitPointWorld;
+  float slope=1f;
+  boolean foundSlope=false;
+  Vector3f fromWorld=new Vector3f(contactPoint);
+  fromWorld.y+=0.2f;
+  Vector3f toWorld=new Vector3f(contactPoint);
+  toWorld.y-=0.2f;
+  CollisionWorld.ClosestRayResultCallback rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
+  Transform from=new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f));
+  Transform to=new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f));
+  Transform targetTransform=this.hitCollisionObject.getWorldTransform(new Transform());
+  CollisionWorld.rayTestSingle(from,to,this.hitCollisionObject,this.hitCollisionObject.getCollisionShape(),targetTransform,rayResult);
+  if (rayResult.hasHit()) {
+    foundSlope=true;
+    slope=Math.min(slope,rayResult.hitNormalWorld.dot(new Vector3f(0,1,0)));
+  }
+  Vector3f secondTraceOffset=new Vector3f(this.hitNormalWorld);
+  secondTraceOffset.y=0;
+  secondTraceOffset.normalize();
+  secondTraceOffset.scale(checkingOffset);
+  fromWorld.add(secondTraceOffset);
+  toWorld.add(secondTraceOffset);
+  rayResult=new CollisionWorld.ClosestRayResultCallback(fromWorld,toWorld);
+  from=new Transform(new Matrix4f(new Quat4f(0,0,0,1),fromWorld,1.0f));
+  to=new Transform(new Matrix4f(new Quat4f(0,0,0,1),toWorld,1.0f));
+  targetTransform=this.hitCollisionObject.getWorldTransform(new Transform());
+  CollisionWorld.rayTestSingle(from,to,this.hitCollisionObject,this.hitCollisionObject.getCollisionShape(),targetTransform,rayResult);
+  if (rayResult.hasHit()) {
+    foundSlope=true;
+    slope=Math.min(slope,rayResult.hitNormalWorld.dot(new Vector3f(0,1,0)));
+  }
+  if (!foundSlope) {
+    slope=originalSlope;
+  }
+  return slope;
+}

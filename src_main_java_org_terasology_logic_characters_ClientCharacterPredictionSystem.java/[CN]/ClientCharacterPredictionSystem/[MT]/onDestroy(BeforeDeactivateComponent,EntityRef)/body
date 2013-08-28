@@ -1,5 +1,4 @@
 {
-  CharacterMovementComponent comp=entity.getComponent(CharacterMovementComponent.class);
   CharacterComponent character=entity.getComponent(CharacterComponent.class);
   ClientComponent controller=character.controller.getComponent(ClientComponent.class);
   if (controller != null && controller.local) {
@@ -7,8 +6,6 @@
     authoritiveState=null;
     inputs.clear();
   }
-  if (comp.collider != null) {
-    physics.removeCollider(comp.collider);
-  }
+  physics.removeCharacterCollider(entity);
   playerStates.remove(entity);
 }

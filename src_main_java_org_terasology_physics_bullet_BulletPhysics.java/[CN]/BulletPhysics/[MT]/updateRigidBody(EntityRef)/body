@@ -1,0 +1,21 @@
+{
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  BulletRigidBody rigidBody=entityRigidBodies.get(entity);
+  if (location == null) {
+    logger.warn("Updating rigid body of entity that has no " + "LocationComponent?! Nothing is done, except log this" + " warning instead. Entity: {}",entity);
+    return false;
+  }
+ else   if (rigidBody != null) {
+    float scale=location.getWorldScale();
+    if (Math.abs(rigidBody.rb.getCollisionShape().getLocalScaling(new Vector3f()).x - scale) > BulletGlobals.SIMD_EPSILON) {
+      removeRigidBody(rigidBody);
+      newRigidBody(entity);
+    }
+    updateKinematicSettings(entity.getComponent(RigidBodyComponent.class),rigidBody);
+    return true;
+  }
+ else {
+    newRigidBody(entity);
+    return false;
+  }
+}
