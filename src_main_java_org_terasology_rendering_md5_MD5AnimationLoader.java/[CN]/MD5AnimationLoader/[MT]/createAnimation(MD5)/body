@@ -46,6 +46,7 @@
       rotations.add(MD5ParserCommon.completeQuat4f(rot.x,rot.y,rot.z));
     }
     rotations.set(0,MD5ParserCommon.correctQuat4f(rotations.get(0)));
+    positions.set(0,MD5ParserCommon.correctOffset(positions.get(0)));
     frames.add(new MeshAnimationFrame(positions,rotations));
   }
   return new MeshAnimationData(boneNames,boneParents,frames,timePerFrame);

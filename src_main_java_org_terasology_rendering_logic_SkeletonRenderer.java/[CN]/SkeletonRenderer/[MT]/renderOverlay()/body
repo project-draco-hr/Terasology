@@ -1,2 +1,31 @@
 {
+  if (config.getRendering().getDebug().isRenderSkeletons()) {
+    glDisable(GL_DEPTH_TEST);
+    Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
+    Material material=Assets.getMaterial("engine:white");
+    material.setFloat("sunlight",1.0f,true);
+    material.setFloat("blockLight",1.0f,true);
+    material.setMatrix4("projectionMatrix",worldRenderer.getActiveCamera().getProjectionMatrix());
+    glLineWidth(2);
+    Vector3f worldPos=new Vector3f();
+    Matrix4f matrixCameraSpace=new Matrix4f();
+    FloatBuffer tempMatrixBuffer44=BufferUtils.createFloatBuffer(16);
+    FloatBuffer tempMatrixBuffer33=BufferUtils.createFloatBuffer(12);
+    for (    EntityRef entity : entityManager.getEntitiesWith(SkeletalMeshComponent.class,LocationComponent.class)) {
+      LocationComponent location=entity.getComponent(LocationComponent.class);
+      location.getWorldPosition(worldPos);
+      Vector3f worldPositionCameraSpace=new Vector3f();
+      worldPositionCameraSpace.sub(worldPos,cameraPosition);
+      float worldScale=location.getWorldScale();
+      matrixCameraSpace.set(new Quat4f(0,0,0,1),worldPositionCameraSpace,worldScale);
+      Matrix4f modelViewMatrix=TeraMath.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
+      TeraMath.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
+      material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
+      TeraMath.matrixToFloatBuffer(TeraMath.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
+      material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
+      SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
+      renderBone(skeletalMesh.rootBone,worldPos);
+    }
+    glEnable(GL_DEPTH_TEST);
+  }
 }
