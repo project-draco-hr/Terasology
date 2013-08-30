@@ -1,5 +1,6 @@
 {
-  PrefabData protoPrefab=prefabSerializer.deserialize(prefabData);
+  SimpleUri uri=new SimpleUri(prefabData.getName());
+  PrefabData protoPrefab=prefabSerializer.deserialize(prefabData,moduleManager.getModule(uri.getModuleName()));
   Prefab prefab=Assets.generateAsset(new AssetUri(AssetType.PREFAB,prefabData.getName()),protoPrefab,Prefab.class);
   prefabManager.registerPrefab(prefab);
 }

@@ -5,7 +5,7 @@
   store.save();
   esm.flush();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager,networkSystem,new ReflectionReflectFactory());
-  StorageManager newSM=new StorageManagerInternal(newEntityManager);
+  StorageManager newSM=new StorageManagerInternal(moduleManager,newEntityManager);
   newSM.loadGlobalStore();
   assertNotNull(newSM.loadPlayerStore(PLAYER_ID));
 }

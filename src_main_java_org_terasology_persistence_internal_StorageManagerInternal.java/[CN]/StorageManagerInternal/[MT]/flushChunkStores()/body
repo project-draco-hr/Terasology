@@ -5,6 +5,10 @@
       zipProvider=provider;
     }
   }
+  if (zipProvider == null) {
+    logger.error("Zip archive support missing! Unable to save chunks.");
+    return;
+  }
   storageTaskMaster.shutdown(new ShutdownTask(),true);
   try {
     Path chunksPath=getWorldPath();

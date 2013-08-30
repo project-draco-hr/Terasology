@@ -1,7 +1,7 @@
 {
   shaderPropertyMenuEntries.clear();
   shaderPropertiesMenu.removeAll();
-  for (  GLSLMaterial material : AssetManager.getInstance().listLoadedAssets(AssetType.MATERIAL,GLSLMaterial.class)) {
+  for (  GLSLMaterial material : CoreRegistry.get(AssetManager.class).listLoadedAssets(AssetType.MATERIAL,GLSLMaterial.class)) {
     if (material.getShaderParameters() != null) {
       GLSLMaterial finalMat=material;
       final PropertyProvider provider=new ReflectionProvider(finalMat.getShaderParameters());

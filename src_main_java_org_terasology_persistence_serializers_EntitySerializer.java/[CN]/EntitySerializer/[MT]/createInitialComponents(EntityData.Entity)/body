@@ -1,10 +1,17 @@
 {
+  Set<ComponentMetadata<?>> removedComponents=Sets.newHashSet();
+  for (  String removedComp : entityData.getRemovedComponentList()) {
+    ComponentMetadata<?> removedMetadata=componentLibrary.resolve(removedComp);
+    if (removedMetadata != null) {
+      removedComponents.add(removedMetadata);
+    }
+  }
   Map<Class<? extends Component>,Component> componentMap=Maps.newHashMap();
   if (entityData.hasParentPrefab() && !entityData.getParentPrefab().isEmpty() && prefabManager.exists(entityData.getParentPrefab())) {
     Prefab prefab=prefabManager.getPrefab(entityData.getParentPrefab());
     for (    Component component : prefab.iterateComponents()) {
-      String componentName=MetadataUtil.getComponentClassName(component.getClass());
-      if (!containsIgnoreCase(componentName,entityData.getRemovedComponentList())) {
+      ComponentMetadata<?> metadata=componentLibrary.getMetadata(component);
+      if (!removedComponents.contains(metadata)) {
         componentMap.put(component.getClass(),componentLibrary.copy(component));
       }
     }

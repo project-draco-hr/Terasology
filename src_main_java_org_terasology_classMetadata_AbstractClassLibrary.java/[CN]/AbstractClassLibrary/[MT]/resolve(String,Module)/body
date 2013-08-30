@@ -1,0 +1,28 @@
+{
+  SimpleUri uri=new SimpleUri(name);
+  if (uri.isValid()) {
+    return getMetadata(uri);
+  }
+  List<ClassMetadata<? extends T,?>> possibilities=getMetadata(name);
+switch (possibilities.size()) {
+case 0:
+    return null;
+case 1:
+  return possibilities.get(0);
+default :
+if (context != null) {
+  Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
+  Iterator<ClassMetadata<? extends T,?>> iterator=possibilities.iterator();
+  while (iterator.hasNext()) {
+    ClassMetadata<? extends T,?> metadata=iterator.next();
+    if (!dependencies.contains(metadata.getUri().getModuleName())) {
+      iterator.remove();
+    }
+  }
+  if (possibilities.size() == 1) {
+    return possibilities.get(0);
+  }
+}
+return null;
+}
+}

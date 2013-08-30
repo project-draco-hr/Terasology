@@ -1,7 +1,7 @@
 {
   Map<Class<? extends Component>,Integer> componentIdTable=Maps.newHashMap();
   for (int index=0; index < globalStore.getComponentClassCount(); ++index) {
-    ClassMetadata componentMetadata=componentLibrary.getMetadata(globalStore.getComponentClass(index));
+    ComponentMetadata<?> componentMetadata=componentLibrary.resolve(globalStore.getComponentClass(index));
     if (componentMetadata != null) {
       componentIdTable.put(componentMetadata.getType(),index);
     }

@@ -1,9 +1,10 @@
 {
-  Reflections reflections=moduleManager.getActiveModuleReflections();
-  Set<Class<? extends Component>> componentTypes=reflections.getSubTypesOf(Component.class);
-  for (  Class<? extends Component> componentType : componentTypes) {
-    if (componentType.getAnnotation(DoNotAutoRegister.class) == null) {
-      library.register(componentType);
+  for (  Module module : moduleManager.getActiveCodeModules()) {
+    for (    Class<? extends Component> componentType : module.getReflections().getSubTypesOf(Component.class)) {
+      if (componentType.getAnnotation(DoNotAutoRegister.class) == null) {
+        String componentName=MetadataUtil.getComponentClassName(componentType);
+        library.register(new SimpleUri(module.getModuleInfo().getId(),componentName),componentType);
+      }
     }
   }
 }

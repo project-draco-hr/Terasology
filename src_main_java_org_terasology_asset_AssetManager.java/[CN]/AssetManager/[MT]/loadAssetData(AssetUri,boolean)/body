@@ -23,12 +23,13 @@
     if (loader == null) {
       continue;
     }
+    Module module=moduleManager.getModule(uri.getModuleName());
     InputStream stream=null;
     try {
       stream=url.openStream();
       urls.remove(url);
       urls.add(0,url);
-      return loader.load(uri,stream,urls);
+      return loader.load(module,stream,urls);
     }
  catch (    IOException ioe) {
       logger.error("Error reading asset {}",uri,ioe);

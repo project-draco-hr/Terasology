@@ -1,0 +1,32 @@
+{
+  if (componentData.hasTypeIndex()) {
+    ComponentMetadata<? extends Component> metadata=null;
+    if (!idTable.isEmpty()) {
+      Class<? extends Component> componentClass=idTable.inverse().get(componentData.getTypeIndex());
+      if (componentClass != null) {
+        metadata=componentLibrary.getMetadata(componentClass);
+      }
+    }
+    if (metadata == null) {
+      logger.warn("Unable to deserialize unknown component with id: {}",componentData.getTypeIndex());
+      return null;
+    }
+    return metadata;
+  }
+ else   if (componentData.hasType()) {
+    ComponentMetadata<? extends Component> metadata;
+    if (context != null) {
+      metadata=componentLibrary.resolve(componentData.getType(),context);
+    }
+ else {
+      metadata=componentLibrary.resolve(componentData.getType());
+    }
+    if (metadata == null) {
+      logger.warn("Unable to deserialize unknown component type: {}",componentData.getType());
+      return null;
+    }
+    return metadata;
+  }
+  logger.warn("Unable to deserialize component, no type provided.");
+  return null;
+}

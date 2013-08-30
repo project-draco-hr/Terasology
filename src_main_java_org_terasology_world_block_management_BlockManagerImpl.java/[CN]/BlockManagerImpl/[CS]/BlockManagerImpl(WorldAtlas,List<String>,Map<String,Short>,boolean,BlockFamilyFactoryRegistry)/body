@@ -1,6 +1,6 @@
 {
   this.generateNewIds=generateNewIds;
-  blockLoader=new BlockLoader(blockFamilyFactoryRegistry,atlas);
+  blockLoader=new BlockLoader(CoreRegistry.get(AssetManager.class),blockFamilyFactoryRegistry,atlas);
   BlockLoader.LoadBlockDefinitionResults blockDefinitions=blockLoader.loadBlockDefinitions();
   addBlockFamily(getAirFamily(),true);
   for (  BlockFamily family : blockDefinitions.families) {

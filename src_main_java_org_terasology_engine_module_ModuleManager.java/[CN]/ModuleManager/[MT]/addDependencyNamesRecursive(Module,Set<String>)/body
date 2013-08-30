@@ -1,0 +1,9 @@
+{
+  for (  String dependencyId : module.getModuleInfo().getDependencies()) {
+    Module dependency=getModule(dependencyId);
+    if (dependency != null) {
+      dependencies.add(module.getId());
+      addDependencyNamesRecursive(dependency,dependencies);
+    }
+  }
+}

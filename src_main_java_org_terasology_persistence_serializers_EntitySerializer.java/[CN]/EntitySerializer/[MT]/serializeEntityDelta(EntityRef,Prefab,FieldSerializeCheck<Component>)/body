@@ -30,8 +30,9 @@
     }
   }
   for (  Component prefabComponent : prefab.iterateComponents()) {
-    if (!presentClasses.contains(prefabComponent.getClass()) && componentSerializeCheck.serialize(componentLibrary.getMetadata(prefabComponent.getClass()))) {
-      entity.addRemovedComponent(MetadataUtil.getComponentClassName(prefabComponent.getClass()));
+    ComponentMetadata<?> metadata=componentLibrary.getMetadata(prefabComponent.getClass());
+    if (!presentClasses.contains(prefabComponent.getClass()) && componentSerializeCheck.serialize(metadata)) {
+      entity.addRemovedComponent(metadata.getUri().toString());
     }
   }
   return entity.build();

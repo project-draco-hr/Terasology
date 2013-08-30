@@ -1,14 +1,13 @@
 {
+  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManager());
+  AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager(moduleManager));
   CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
   CoreRegistry.putPermanently(CollisionGroupManager.class,new CollisionGroupManager());
-  CoreRegistry.putPermanently(ModuleManager.class,new ModuleManager());
   CoreRegistry.putPermanently(WorldGeneratorManager.class,new WorldGeneratorManager());
   CoreRegistry.putPermanently(ComponentSystemManager.class,new ComponentSystemManager());
   CoreRegistry.putPermanently(NetworkSystem.class,new NetworkSystemImpl(time));
   CoreRegistry.putPermanently(Game.class,new Game(time));
-  AssetType.registerAssetTypes();
+  AssetType.registerAssetTypes(assetManager);
   ClasspathSource source=new ClasspathSource(ModuleManager.ENGINE_MODULE,getClass().getProtectionDomain().getCodeSource(),ModuleManager.ASSETS_SUBDIRECTORY,ModuleManager.OVERRIDES_SUBDIRECTORY);
-  AssetManager.getInstance().addAssetSource(source);
-  CoreRegistry.get(ShaderManager.class).initShaders();
-  VertexBufferObjectManager.getInstance();
+  assetManager.addAssetSource(source);
 }

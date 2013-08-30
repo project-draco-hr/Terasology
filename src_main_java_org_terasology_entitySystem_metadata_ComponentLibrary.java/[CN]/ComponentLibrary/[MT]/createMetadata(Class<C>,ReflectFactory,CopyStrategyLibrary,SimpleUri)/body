@@ -1,0 +1,11 @@
+{
+  ComponentMetadata<C> info;
+  try {
+    info=new ComponentMetadata<>(uri,type,factory,copyStrategies);
+  }
+ catch (  NoSuchMethodException e) {
+    logger.error("Unable to register class {}: Default Constructor Required",type.getSimpleName(),e);
+    return null;
+  }
+  return info;
+}

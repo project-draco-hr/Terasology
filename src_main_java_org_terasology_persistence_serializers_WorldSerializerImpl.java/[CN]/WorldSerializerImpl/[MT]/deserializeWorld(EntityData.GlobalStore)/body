@@ -5,7 +5,7 @@
   }
   Map<Class<? extends Component>,Integer> componentIdTable=Maps.newHashMap();
   for (int index=0; index < world.getComponentClassCount(); ++index) {
-    ClassMetadata componentMetadata=componentLibrary.getMetadata(world.getComponentClass(index));
+    ComponentMetadata<?> componentMetadata=componentLibrary.resolve(world.getComponentClass(index));
     if (componentMetadata != null) {
       componentIdTable.put(componentMetadata.getType(),index);
     }

@@ -6,6 +6,7 @@
     audioManager=new OpenALManager(config.getAudio());
   }
   CoreRegistry.putPermanently(AudioManager.class,audioManager);
-  AssetManager.getInstance().setAssetFactory(AssetType.SOUND,audioManager.getStaticSoundFactory());
-  AssetManager.getInstance().setAssetFactory(AssetType.MUSIC,audioManager.getStreamingSoundFactory());
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  assetManager.setAssetFactory(AssetType.SOUND,audioManager.getStaticSoundFactory());
+  assetManager.setAssetFactory(AssetType.MUSIC,audioManager.getStreamingSoundFactory());
 }

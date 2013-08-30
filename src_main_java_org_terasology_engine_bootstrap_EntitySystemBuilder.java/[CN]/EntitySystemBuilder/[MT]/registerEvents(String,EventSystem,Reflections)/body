@@ -1,8 +1,7 @@
 {
-  Set<Class<? extends Event>> eventTypes=reflections.getSubTypesOf(Event.class);
-  for (  Class<? extends Event> eventType : eventTypes) {
+  for (  Class<? extends Event> eventType : reflections.getSubTypesOf(Event.class)) {
     if (eventType.getAnnotation(DoNotAutoRegister.class) == null) {
-      eventSystem.registerEvent(packageName + ":" + eventType.getSimpleName(),eventType);
+      eventSystem.registerEvent(new SimpleUri(moduleName,eventType.getSimpleName()),eventType);
     }
   }
 }

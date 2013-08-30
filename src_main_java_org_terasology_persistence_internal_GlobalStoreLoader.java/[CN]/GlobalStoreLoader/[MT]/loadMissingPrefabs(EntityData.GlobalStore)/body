@@ -2,8 +2,9 @@
   Map<String,EntityData.Prefab> pendingPrefabs=Maps.newHashMap();
   for (  EntityData.Prefab prefabData : globalStore.getPrefabList()) {
     if (!prefabManager.exists(prefabData.getName())) {
+      Module module=moduleManager.getModule(new SimpleUri(prefabData.getName()).getModuleName());
       if (!prefabData.hasParentName()) {
-        createPrefab(prefabData);
+        createPrefab(prefabData,module);
       }
  else {
         pendingPrefabs.put(prefabData.getName(),prefabData);

@@ -5,9 +5,9 @@
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   EntitySystemBuilder builder=new EntitySystemBuilder();
   EngineEntityManager entityManager=builder.build(moduleManager,networkSystem,new ReflectionReflectFactory());
-  entityManager.getComponentLibrary().register(GetterSetterComponent.class);
-  entityManager.getComponentLibrary().register(StringComponent.class);
-  entityManager.getComponentLibrary().register(IntegerComponent.class);
+  entityManager.getComponentLibrary().register(new SimpleUri("test","gettersetter"),GetterSetterComponent.class);
+  entityManager.getComponentLibrary().register(new SimpleUri("test","string"),StringComponent.class);
+  entityManager.getComponentLibrary().register(new SimpleUri("test","integer"),IntegerComponent.class);
   ComponentLibrary componentLibrary=entityManager.getComponentLibrary();
   componentSerializer=new ComponentSerializer(componentLibrary,serializationLibrary);
 }

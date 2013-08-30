@@ -4,7 +4,8 @@
     if (prefabManager.getPrefab(prefabData.getParentName()) == null) {
       loadPrefab(pendingPrefabs.get(prefabData.getParentName()),pendingPrefabs);
     }
-    result=createPrefab(prefabData);
+    Module module=moduleManager.getModule(new SimpleUri(prefabData.getName()).getModuleName());
+    result=createPrefab(prefabData,module);
   }
   return result;
 }

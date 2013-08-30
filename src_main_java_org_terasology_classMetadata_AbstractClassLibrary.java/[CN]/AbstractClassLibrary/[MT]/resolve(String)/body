@@ -1,0 +1,11 @@
+{
+  SimpleUri uri=new SimpleUri(name);
+  if (uri.isValid()) {
+    return getMetadata(uri);
+  }
+  List<ClassMetadata<? extends T,?>> possibilities=getMetadata(name);
+  if (possibilities.size() == 1) {
+    return possibilities.get(0);
+  }
+  return null;
+}

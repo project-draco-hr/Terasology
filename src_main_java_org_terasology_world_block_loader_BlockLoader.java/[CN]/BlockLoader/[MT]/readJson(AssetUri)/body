@@ -1,5 +1,5 @@
 {
-  try (InputStream stream=AssetManager.assetStream(blockDefUri)){
+  try (InputStream stream=CoreRegistry.get(AssetManager.class).getAssetStream(blockDefUri)){
     if (stream != null) {
       BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
       return parser.parse(reader);

@@ -5,7 +5,7 @@
     return null;
   }
   EntityData.Component.Builder componentMessage=EntityData.Component.newBuilder();
-  serializeComponentType(component,componentMessage);
+  serializeComponentType(componentMetadata,componentMessage);
   Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
   for (  ReplicatedFieldMetadata field : componentMetadata.getFields()) {
     if (check.shouldSerializeField(field,component)) {

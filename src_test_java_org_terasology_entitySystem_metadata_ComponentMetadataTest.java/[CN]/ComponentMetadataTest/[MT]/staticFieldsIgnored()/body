@@ -1,7 +1,7 @@
 {
   EntitySystemLibrary entitySystemLibrary=new EntitySystemLibrary(reflectFactory,copyStrategies,new TypeSerializationLibrary(reflectFactory,copyStrategies));
   ComponentLibrary lib=entitySystemLibrary.getComponentLibrary();
-  lib.register(StringComponent.class);
+  lib.register(new SimpleUri("unittest:string"),StringComponent.class);
   ComponentMetadata<StringComponent> metadata=lib.getMetadata(StringComponent.class);
   assertNull(metadata.getField("STATIC_VALUE"));
 }

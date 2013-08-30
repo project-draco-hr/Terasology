@@ -1,7 +1,7 @@
 {
   EntitySystemLibrary entitySystemLibrary=new EntitySystemLibrary(reflectFactory,copyStrategies,new TypeSerializationLibrary(reflectFactory,copyStrategies));
   ComponentLibrary lib=entitySystemLibrary.getComponentLibrary();
-  lib.register(OwnerComponent.class);
+  lib.register(new SimpleUri("unittest:owner"),OwnerComponent.class);
   ComponentMetadata<OwnerComponent> metadata=lib.getMetadata(OwnerComponent.class);
   assertTrue(metadata.isReferenceOwner());
 }
