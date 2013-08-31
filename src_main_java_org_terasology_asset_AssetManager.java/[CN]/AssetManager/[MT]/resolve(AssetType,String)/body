@@ -1,0 +1,29 @@
+{
+  AssetUri uri=new AssetUri(type,name);
+  if (uri.isValid()) {
+    return uri;
+  }
+  List<AssetUri> possibilities=resolveAll(type,name);
+switch (possibilities.size()) {
+case 0:
+    return null;
+case 1:
+  return possibilities.get(0);
+default :
+Module context=ModuleContext.getContext();
+if (context != null) {
+Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
+Iterator<AssetUri> iterator=possibilities.iterator();
+while (iterator.hasNext()) {
+  AssetUri possibleUri=iterator.next();
+  if (!dependencies.contains(possibleUri.getModuleName())) {
+    iterator.remove();
+  }
+}
+if (possibilities.size() == 1) {
+  return possibilities.get(0);
+}
+}
+return null;
+}
+}

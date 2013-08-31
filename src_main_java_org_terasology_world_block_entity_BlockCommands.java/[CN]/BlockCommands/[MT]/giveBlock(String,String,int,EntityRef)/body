@@ -9,7 +9,7 @@
     Joiner.on(", ").appendTo(builder,resolvedBlockUris);
     return builder.toString();
   }
-  List<AssetUri> resolvedShapeUris=resolveShapeUri(shapeUri);
+  List<AssetUri> resolvedShapeUris=Assets.resolveAllUri(AssetType.SHAPE,shapeUri);
   if (resolvedShapeUris.isEmpty()) {
     return "No shape found for '" + shapeUri + "'";
   }

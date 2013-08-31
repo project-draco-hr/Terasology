@@ -1,11 +1,8 @@
 {
   if (value.getStringCount() > 0) {
-    AssetUri uri=new AssetUri(type,value.getString(0));
-    if (uri.isValid()) {
-      Asset asset=Assets.get(uri);
-      if (asset != null && assetClass.isAssignableFrom(asset.getClass())) {
-        return assetClass.cast(asset);
-      }
+    Asset asset=Assets.resolve(type,value.getString(0));
+    if (asset != null && assetClass.isAssignableFrom(asset.getClass())) {
+      return assetClass.cast(asset);
     }
   }
   return null;

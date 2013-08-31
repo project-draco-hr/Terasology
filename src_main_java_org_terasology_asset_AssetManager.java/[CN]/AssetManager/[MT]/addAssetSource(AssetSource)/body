@@ -1,3 +1,6 @@
 {
   assetSources.put(source.getSourceId().toLowerCase(Locale.ENGLISH),source);
+  for (  AssetUri asset : source.list()) {
+    uriLookup.get(asset.getAssetType()).put(asset.getNormalisedAssetName(),asset.getNormalisedModuleName(),asset);
+  }
 }

@@ -1,11 +1,15 @@
 {
   Prefab result=prefabManager.getPrefab(prefabData.getName());
   if (result == null) {
-    if (prefabManager.getPrefab(prefabData.getParentName()) == null) {
+    if (prefabData.hasParentName()) {
       loadPrefab(pendingPrefabs.get(prefabData.getParentName()),pendingPrefabs);
     }
-    Module module=moduleManager.getModule(new SimpleUri(prefabData.getName()).getModuleName());
-    result=createPrefab(prefabData,module);
+    try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getModule(new SimpleUri(prefabData.getName()).getModuleName()))){
+      result=createPrefab(prefabData);
+    }
+ catch (    Exception e) {
+      logger.error("Failed to load prefab {}",prefabData.getParentName(),e);
+    }
   }
   return result;
 }

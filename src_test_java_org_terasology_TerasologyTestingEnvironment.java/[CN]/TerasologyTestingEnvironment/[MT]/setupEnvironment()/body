@@ -8,10 +8,10 @@
     moduleManager=new ModuleManager();
     moduleManager.applyActiveModules();
     CoreRegistry.put(ModuleManager.class,moduleManager);
-    AssetManager assetManager=new AssetManager(moduleManager);
+    assetManager=new AssetManager(moduleManager);
     CoreRegistry.put(AssetManager.class,assetManager);
     AssetType.registerAssetTypes(assetManager);
-    assetManager.addAssetSource(new ClasspathSource(ModuleManager.ENGINE_MODULE,Terasology.class.getProtectionDomain().getCodeSource(),ModuleManager.ASSETS_SUBDIRECTORY,ModuleManager.OVERRIDES_SUBDIRECTORY));
+    assetManager.addAssetSource(new ClasspathSource(TerasologyConstants.ENGINE_MODULE,Terasology.class.getProtectionDomain().getCodeSource(),ModuleManager.ASSETS_SUBDIRECTORY,ModuleManager.OVERRIDES_SUBDIRECTORY));
     assetManager.addAssetSource(new ClasspathSource("unittest",TerasologyTestingEnvironment.class.getProtectionDomain().getCodeSource(),ModuleManager.ASSETS_SUBDIRECTORY,ModuleManager.OVERRIDES_SUBDIRECTORY));
     config=new Config();
     CoreRegistry.put(Config.class,config);
@@ -71,6 +71,7 @@
     CoreRegistry.put(CollisionGroupManager.class,collisionGroupManager);
   }
  else {
+    CoreRegistry.put(AssetManager.class,assetManager);
     CoreRegistry.put(BlockManager.class,blockManager);
     CoreRegistry.put(Config.class,config);
     CoreRegistry.put(AudioManager.class,audioManager);

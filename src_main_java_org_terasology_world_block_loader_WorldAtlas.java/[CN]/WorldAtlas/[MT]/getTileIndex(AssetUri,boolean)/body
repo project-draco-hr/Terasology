@@ -2,5 +2,8 @@
   if (tileIndexes.containsKey(uri)) {
     return tileIndexes.get(uri);
   }
-  return indexTile(uri,warnOnError);
+  if (warnOnError) {
+    logger.warn("Tile {} could not be resolved",uri);
+  }
+  return 0;
 }

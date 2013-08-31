@@ -1,12 +1,9 @@
 {
   List<T> result=Lists.newArrayListWithCapacity(value.getStringCount());
   for (  String item : value.getStringList()) {
-    AssetUri uri=new AssetUri(type,item);
-    if (uri.isValid()) {
-      Asset asset=Assets.get(uri);
-      if (asset != null && assetClass.isAssignableFrom(asset.getClass())) {
-        result.add(assetClass.cast(asset));
-      }
+    Asset asset=Assets.resolve(type,item);
+    if (asset != null && assetClass.isAssignableFrom(asset.getClass())) {
+      result.add(assetClass.cast(asset));
     }
   }
   return result;

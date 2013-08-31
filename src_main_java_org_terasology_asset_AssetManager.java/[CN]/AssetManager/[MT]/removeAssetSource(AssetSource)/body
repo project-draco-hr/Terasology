@@ -1,3 +1,29 @@
 {
   assetSources.remove(source.getSourceId().toLowerCase(Locale.ENGLISH));
+  for (  AssetUri override : source.listOverrides()) {
+    if (overrides.get(override).equals(source)) {
+      overrides.remove(override);
+      Asset asset=assetCache.get(override);
+      if (asset != null) {
+        if (override.getModuleName().equals(TerasologyConstants.ENGINE_MODULE)) {
+          AssetData data=loadAssetData(override,true);
+          asset.reload(data);
+        }
+ else {
+          asset.dispose();
+          assetCache.remove(override);
+        }
+      }
+    }
+  }
+  for (  Table<String,String,AssetUri> table : uriLookup.values()) {
+    Map<String,AssetUri> columnMap=table.column(SimpleUri.normalise(source.getSourceId()));
+    for (    AssetUri value : columnMap.values()) {
+      Asset asset=assetCache.remove(value);
+      if (asset != null) {
+        asset.dispose();
+      }
+    }
+    columnMap.clear();
+  }
 }

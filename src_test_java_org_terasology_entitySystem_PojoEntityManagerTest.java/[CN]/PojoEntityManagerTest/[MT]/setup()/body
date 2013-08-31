@@ -1,9 +1,7 @@
 {
   EntitySystemBuilder builder=new EntitySystemBuilder();
   entityManager=(PojoEntityManager)builder.build(moduleManager,mock(NetworkSystem.class),new ReflectionReflectFactory());
-  PrefabManager prefabManager=entityManager.getPrefabManager();
   PrefabData protoPrefab=new PrefabData();
   protoPrefab.addComponent(new StringComponent("Test"));
   prefab=Assets.generateAsset(new AssetUri(AssetType.PREFAB,"unittest:myprefab"),protoPrefab,Prefab.class);
-  prefabManager.registerPrefab(prefab);
 }

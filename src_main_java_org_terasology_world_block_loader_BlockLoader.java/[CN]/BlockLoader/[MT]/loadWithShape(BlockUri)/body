@@ -1,31 +1,37 @@
 {
-  BlockShape shape=cubeShape;
-  if (uri.hasShape()) {
-    AssetUri shapeUri=uri.getShapeUri();
-    if (!shapeUri.isValid()) {
-      return null;
+  try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(uri.getModuleName())){
+    BlockShape shape=cubeShape;
+    if (uri.hasShape()) {
+      AssetUri shapeUri=uri.getShapeUri();
+      if (!shapeUri.isValid()) {
+        return null;
+      }
+      shape=(BlockShape)Assets.get(shapeUri);
+      if (shape == null) {
+        return null;
+      }
     }
-    shape=(BlockShape)Assets.get(shapeUri);
-    if (shape == null) {
-      return null;
+    AssetUri blockDefUri=new AssetUri(AssetType.BLOCK_DEFINITION,uri.getModuleName(),uri.getFamilyName());
+    BlockDefinition def;
+    if (assetManager.getAssetURLs(blockDefUri).isEmpty()) {
+      def=new BlockDefinition();
+    }
+ else {
+      def=createBlockDefinition(inheritData(blockDefUri,readJson(blockDefUri).getAsJsonObject()));
+    }
+    def.shape=(shape.getURI().toSimpleString());
+    if (shape.isCollisionYawSymmetric()) {
+      Block block=constructSingleBlock(blockDefUri,def);
+      return new SymmetricFamily(uri,block,def.categories);
+    }
+ else {
+      Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+      constructHorizontalBlocks(blockDefUri,def,blockMap);
+      return new HorizontalBlockFamily(uri,blockMap,def.categories);
     }
   }
-  AssetUri blockDefUri=new AssetUri(AssetType.BLOCK_DEFINITION,uri.getModuleName(),uri.getFamilyName());
-  BlockDefinition def;
-  if (assetManager.getAssetURLs(blockDefUri).isEmpty()) {
-    def=new BlockDefinition();
+ catch (  Exception e) {
+    logger.error("Error loading block shape {}",uri,e);
   }
- else {
-    def=createBlockDefinition(inheritData(blockDefUri,readJson(blockDefUri).getAsJsonObject()));
-  }
-  def.shape=(shape.getURI().toSimpleString());
-  if (shape.isCollisionYawSymmetric()) {
-    Block block=constructSingleBlock(blockDefUri,def);
-    return new SymmetricFamily(uri,block,def.categories);
-  }
- else {
-    Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
-    constructHorizontalBlocks(blockDefUri,def,blockMap);
-    return new HorizontalBlockFamily(uri,blockMap,def.categories);
-  }
+  return null;
 }

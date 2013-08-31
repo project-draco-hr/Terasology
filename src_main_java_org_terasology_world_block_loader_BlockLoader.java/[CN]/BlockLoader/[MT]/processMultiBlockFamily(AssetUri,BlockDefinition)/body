@@ -1,15 +1,14 @@
 {
   List<BlockFamily> result=Lists.newArrayList();
   for (  String shapeString : blockDef.shapes) {
-    AssetUri shapeUri=new AssetUri(AssetType.SHAPE,shapeString);
-    BlockShape shape=(BlockShape)Assets.get(shapeUri);
+    BlockShape shape=(BlockShape)Assets.get(AssetType.SHAPE,shapeString);
     if (shape != null) {
       BlockUri familyUri;
       if (shape.equals(cubeShape)) {
         familyUri=new BlockUri(blockDefUri.getModuleName(),blockDefUri.getAssetName());
       }
  else {
-        familyUri=new BlockUri(blockDefUri.getModuleName(),blockDefUri.getAssetName(),shapeUri.getModuleName(),shapeUri.getAssetName());
+        familyUri=new BlockUri(blockDefUri.getModuleName(),blockDefUri.getAssetName(),shape.getURI().getModuleName(),shape.getURI().getAssetName());
       }
       blockDef.shape=shapeString;
       if (shape.isCollisionYawSymmetric()) {

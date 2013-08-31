@@ -11,13 +11,18 @@
     logger.error("No asset factory set for assets of type {}",uri.getAssetType());
     return null;
   }
-  AssetData data=loadAssetData(uri,logErrors);
-  if (data != null) {
-    asset=factory.buildAsset(uri,data);
-    if (asset != null) {
-      logger.debug("Loaded {}",uri);
-      assetCache.put(uri,asset);
+  try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getModule(uri.getModuleName()))){
+    AssetData data=loadAssetData(uri,logErrors);
+    if (data != null) {
+      asset=factory.buildAsset(uri,data);
+      if (asset != null) {
+        logger.debug("Loaded {}",uri);
+        assetCache.put(uri,asset);
+      }
     }
+  }
+ catch (  Exception e) {
+    logger.error("Error loading asset: {}",e);
   }
   return asset;
 }
