@@ -1,0 +1,13 @@
+{
+  Iterator<EntityRef> iter=physics.physicsEntitiesIterator();
+  while (iter.hasNext()) {
+    EntityRef entity=iter.next();
+    if (entity.hasComponent(NetworkComponent.class)) {
+      RigidBody body=physics.getRigidBody(entity);
+      if (body.isActive()) {
+        PhysicsResynchEvent event=new PhysicsResynchEvent(body.getLocation(new Vector3f()),body.getOrientation(new Quat4f()),body.getLinearVelocity(new Vector3f()),body.getAngularVelocity(new Vector3f()));
+        entity.send(event);
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  broadphase=new DbvtBroadphase();
+  broadphase.getOverlappingPairCache().setInternalGhostPairCallback(new GhostPairCallback());
+  defaultCollisionConfiguration=new DefaultCollisionConfiguration();
+  dispatcher=new CollisionDispatcher(defaultCollisionConfiguration);
+  sequentialImpulseConstraintSolver=new SequentialImpulseConstraintSolver();
+  discreteDynamicsWorld=new DiscreteDynamicsWorld(dispatcher,broadphase,sequentialImpulseConstraintSolver,defaultCollisionConfiguration);
+  discreteDynamicsWorld.setGravity(new Vector3f(0f,-15f,0f));
+  blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
+  wrapper=new PhysicsWorldWrapper(world);
+  VoxelWorldShape worldShape=new VoxelWorldShape(wrapper);
+  Matrix3f rot=new Matrix3f();
+  rot.setIdentity();
+  DefaultMotionState blockMotionState=new DefaultMotionState(new Transform(new Matrix4f(rot,new Vector3f(0,0,0),1.0f)));
+  RigidBodyConstructionInfo blockConsInf=new RigidBodyConstructionInfo(0,blockMotionState,worldShape,new Vector3f());
+  BulletRigidBody rigidBody=new BulletRigidBody(blockConsInf);
+  rigidBody.rb.setCollisionFlags(CollisionFlags.STATIC_OBJECT | rigidBody.rb.getCollisionFlags());
+  short mask=(short)(CollisionFilterGroups.ALL_FILTER ^ CollisionFilterGroups.STATIC_FILTER);
+  discreteDynamicsWorld.addRigidBody(rigidBody.rb,combineGroups(StandardCollisionGroup.WORLD),mask);
+}

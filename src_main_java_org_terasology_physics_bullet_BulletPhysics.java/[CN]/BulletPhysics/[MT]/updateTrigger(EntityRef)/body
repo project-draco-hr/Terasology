@@ -1,0 +1,23 @@
+{
+  LocationComponent location=entity.getComponent(LocationComponent.class);
+  PairCachingGhostObject triggerObj=entityTriggers.get(entity);
+  if (location == null) {
+    logger.warn("Trying to update or create trigger of entity that has no LocationComponent?! Entity: {}",entity);
+    return false;
+  }
+  if (triggerObj != null) {
+    float scale=location.getWorldScale();
+    if (Math.abs(triggerObj.getCollisionShape().getLocalScaling(new Vector3f()).x - scale) > BulletGlobals.SIMD_EPSILON) {
+      discreteDynamicsWorld.removeCollisionObject(triggerObj);
+      newTrigger(entity);
+    }
+ else {
+      triggerObj.setWorldTransform(new Transform(new Matrix4f(location.getWorldRotation(),location.getWorldPosition(),1.0f)));
+    }
+    return true;
+  }
+ else {
+    newTrigger(entity);
+    return false;
+  }
+}
