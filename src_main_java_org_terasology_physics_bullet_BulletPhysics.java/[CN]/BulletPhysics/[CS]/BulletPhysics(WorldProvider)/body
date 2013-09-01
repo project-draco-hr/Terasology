@@ -1,9 +1,9 @@
 {
   broadphase=new DbvtBroadphase();
   broadphase.getOverlappingPairCache().setInternalGhostPairCallback(new GhostPairCallback());
-  defaultCollisionConfiguration=new DefaultCollisionConfiguration();
+  CollisionConfiguration defaultCollisionConfiguration=new DefaultCollisionConfiguration();
   dispatcher=new CollisionDispatcher(defaultCollisionConfiguration);
-  sequentialImpulseConstraintSolver=new SequentialImpulseConstraintSolver();
+  SequentialImpulseConstraintSolver sequentialImpulseConstraintSolver=new SequentialImpulseConstraintSolver();
   discreteDynamicsWorld=new DiscreteDynamicsWorld(dispatcher,broadphase,sequentialImpulseConstraintSolver,defaultCollisionConfiguration);
   discreteDynamicsWorld.setGravity(new Vector3f(0f,-15f,0f));
   blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
@@ -15,6 +15,6 @@
   RigidBodyConstructionInfo blockConsInf=new RigidBodyConstructionInfo(0,blockMotionState,worldShape,new Vector3f());
   BulletRigidBody rigidBody=new BulletRigidBody(blockConsInf);
   rigidBody.rb.setCollisionFlags(CollisionFlags.STATIC_OBJECT | rigidBody.rb.getCollisionFlags());
-  short mask=(short)(CollisionFilterGroups.ALL_FILTER ^ CollisionFilterGroups.STATIC_FILTER);
+  short mask=(short)(~CollisionFilterGroups.STATIC_FILTER);
   discreteDynamicsWorld.addRigidBody(rigidBody.rb,combineGroups(StandardCollisionGroup.WORLD),mask);
 }

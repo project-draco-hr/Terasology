@@ -6,7 +6,7 @@
     float scale=location.getWorldScale();
     shape.setLocalScaling(new Vector3f(scale,scale,scale));
     if (rigidBody.mass < 1) {
-      logger.warn("RigidBodyComponent.mass is set to less than 1.0, this can lead to strange behaviour, such as the objects moving through walls. Entity: {}",entity);
+      logger.warn("RigidBodyComponent.mass is set to less than 1.0, this can lead to strange behaviour, such as the objects moving through walls. " + "Entity: {}",entity);
     }
     Vector3f fallInertia=new Vector3f();
     shape.calculateLocalInertia(rigidBody.mass,fallInertia);
@@ -24,6 +24,6 @@
     return collider;
   }
  else {
-    throw new IllegalArgumentException("Can only create a new rigid body for entities with a LocationComponent, RigidBodyComponent and ShapeComponent, this entity misses at least one: " + entity);
+    throw new IllegalArgumentException("Can only create a new rigid body for entities with a LocationComponent," + " RigidBodyComponent and ShapeComponent, this entity misses at least one: " + entity);
   }
 }

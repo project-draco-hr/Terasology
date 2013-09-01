@@ -22,7 +22,7 @@
     if (callback.hasHit()) {
       float originalSlope=callback.getHitNormalWorld().dot(new Vector3f(0,1,0));
       if (originalSlope < slopeFactor) {
-        float slope=callback.calculateSafeSlope(originalSlope,CHECK_FORWARD_DIST);
+        float slope=callback.calculateAverageSlope(originalSlope,CHECK_FORWARD_DIST);
         if (slope < slopeFactor) {
           remainingDist-=actualDist;
           expectedMove.set(targetPos);
