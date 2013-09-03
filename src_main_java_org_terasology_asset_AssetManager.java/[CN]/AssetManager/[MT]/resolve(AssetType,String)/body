@@ -16,7 +16,10 @@ Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
 Iterator<AssetUri> iterator=possibilities.iterator();
 while (iterator.hasNext()) {
   AssetUri possibleUri=iterator.next();
-  if (!dependencies.contains(possibleUri.getModuleName())) {
+  if (context.getId().equals(possibleUri.getNormalisedModuleName())) {
+    return possibleUri;
+  }
+  if (!dependencies.contains(possibleUri.getNormalisedModuleName())) {
     iterator.remove();
   }
 }

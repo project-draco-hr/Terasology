@@ -1,7 +1,6 @@
 {
-  if (module instanceof ExtensionModule) {
-    if (activeModules.remove(module)) {
-      ((ExtensionModule)module).disable();
-    }
+  Module removedModule=activeModules.remove(module.getId());
+  if (removedModule != null && removedModule instanceof ExtensionModule) {
+    ((ExtensionModule)module).disable();
   }
 }

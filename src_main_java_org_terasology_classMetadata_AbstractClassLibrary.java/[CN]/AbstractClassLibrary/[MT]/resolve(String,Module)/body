@@ -15,7 +15,10 @@ if (context != null) {
   Iterator<ClassMetadata<? extends T,?>> iterator=possibilities.iterator();
   while (iterator.hasNext()) {
     ClassMetadata<? extends T,?> metadata=iterator.next();
-    if (!dependencies.contains(metadata.getUri().getModuleName())) {
+    if (context.getId().equals(metadata.getUri().getNormalisedModuleName())) {
+      return metadata;
+    }
+    if (!dependencies.contains(metadata.getUri().getNormalisedModuleName())) {
       iterator.remove();
     }
   }

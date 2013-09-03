@@ -11,7 +11,7 @@
     logger.error("No asset factory set for assets of type {}",uri.getAssetType());
     return null;
   }
-  try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getModule(uri.getModuleName()))){
+  try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getActiveModule(uri.getNormalisedModuleName()))){
     AssetData data=loadAssetData(uri,logErrors);
     if (data != null) {
       asset=factory.buildAsset(uri,data);

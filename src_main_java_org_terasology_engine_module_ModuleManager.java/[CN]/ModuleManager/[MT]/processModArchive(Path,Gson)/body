@@ -4,15 +4,8 @@
     if (modInfoEntry != null) {
       try {
         ModuleInfo moduleInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry)),ModuleInfo.class);
-        if (!modules.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
-          ArchiveSource source=new ArchiveSource(moduleInfo.getId(),modPath.toFile(),ASSETS_SUBDIRECTORY,OVERRIDES_SUBDIRECTORY);
-          ExtensionModule module=new ExtensionModule(modPath,moduleInfo,source);
-          modules.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
-          logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeModule());
-        }
- else {
-          logger.info("Discovered duplicate module: " + moduleInfo.getDisplayName() + ", skipping");
-        }
+        AssetSource source=new ArchiveSource(moduleInfo.getId(),modPath.toFile(),ASSETS_SUBDIRECTORY,OVERRIDES_SUBDIRECTORY);
+        processModuleInfo(moduleInfo,modPath,source);
       }
  catch (      FileNotFoundException|JsonIOException e) {
         logger.warn("Failed to load module manifest for module at {}",modPath,e);
