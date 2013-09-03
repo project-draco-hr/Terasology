@@ -5,7 +5,12 @@
     builder.addClassLoader(loader).addUrls(ClasspathHelper.forPackage("org.terasology",loader));
   }
   engineReflections=new Reflections(builder);
-  engineModule=new EngineModule(engineReflections);
-  activeModules.add(engineModule);
+  try (InputStreamReader reader=new InputStreamReader(getClass().getResourceAsStream("/" + ASSETS_SUBDIRECTORY + "/"+ "module.txt"))){
+    engineModule=new EngineModule(engineReflections,new Gson().fromJson(reader,ModuleInfo.class));
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to load engine module info",e);
+  }
+  activeModules.put(engineModule.getId(),engineModule);
   refresh();
 }

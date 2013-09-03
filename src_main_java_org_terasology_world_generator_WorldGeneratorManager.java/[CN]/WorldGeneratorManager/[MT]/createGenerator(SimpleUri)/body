@@ -1,13 +1,13 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  Module module=moduleManager.getModule(uri.getModuleName());
+  Module module=moduleManager.getActiveModule(uri.getModuleName());
   if (module == null) {
     throw new UnresolvedWorldGeneratorException("Unknown module '" + uri.getModuleName() + "' for world generator '"+ uri+ "'");
   }
   if (moduleManager.isEnabled(module)) {
     for (    Class<?> generatorClass : module.getReflections().getTypesAnnotatedWith(RegisterWorldGenerator.class)) {
       RegisterWorldGenerator annotation=generatorClass.getAnnotation(RegisterWorldGenerator.class);
-      SimpleUri generatorUri=new SimpleUri(module.getModuleInfo().getId(),annotation.id());
+      SimpleUri generatorUri=new SimpleUri(module.getId(),annotation.id());
       if (generatorUri.equals(uri)) {
         return loadGenerator(generatorClass,generatorUri);
       }

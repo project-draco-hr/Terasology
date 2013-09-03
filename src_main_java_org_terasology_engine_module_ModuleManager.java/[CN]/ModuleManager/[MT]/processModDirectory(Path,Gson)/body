@@ -3,17 +3,10 @@
   if (Files.isRegularFile(modInfoFile)) {
     try (Reader reader=Files.newBufferedReader(modInfoFile,TerasologyConstants.CHARSET)){
       ModuleInfo moduleInfo=gson.fromJson(reader,ModuleInfo.class);
-      if (!modules.containsKey(moduleInfo.getId().toLowerCase(Locale.ENGLISH))) {
-        Path assetLocation=modPath.resolve(ASSETS_SUBDIRECTORY);
-        Path overridesLocation=modPath.resolve(OVERRIDES_SUBDIRECTORY);
-        AssetSource source=new DirectorySource(moduleInfo.getId(),assetLocation,overridesLocation);
-        ExtensionModule module=new ExtensionModule(modPath,moduleInfo,source);
-        modules.put(moduleInfo.getId().toLowerCase(Locale.ENGLISH),module);
-        logger.info("Discovered module: {} (hasCode = {})",moduleInfo.getDisplayName(),module.isCodeModule());
-      }
- else {
-        logger.info("Discovered duplicate module: {}, skipping",moduleInfo.getDisplayName());
-      }
+      Path assetLocation=modPath.resolve(ASSETS_SUBDIRECTORY);
+      Path overridesLocation=modPath.resolve(OVERRIDES_SUBDIRECTORY);
+      AssetSource source=new DirectorySource(moduleInfo.getId(),assetLocation,overridesLocation);
+      processModuleInfo(moduleInfo,modPath,source);
     }
  catch (    FileNotFoundException|JsonIOException e) {
       logger.warn("Failed to load module manifest for module at {}",modPath,e);

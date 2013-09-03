@@ -1,13 +1,13 @@
 {
-  logger.debug("Loading {}",module.getModuleInfo().getId());
-  for (  String dependency : module.getModuleInfo().getDependencies()) {
-    if (!registeredMods.contains(dependency.toLowerCase(Locale.ENGLISH))) {
+  logger.debug("Loading {}",module);
+  for (  DependencyInfo dependency : module.getModuleInfo().getDependencies()) {
+    if (!registeredMods.contains(UriUtil.normalise(dependency.getId()))) {
       logger.debug("Requesting {} due to dependency",dependency);
-      loadMod(moduleManager.getModule(dependency));
+      loadMod(moduleManager.getLatestModuleVersion(dependency.getId()));
     }
   }
   if (module.isCodeModule()) {
-    componentSystemManager.loadSystems(module.getModuleInfo().getId(),module.getReflections(),netMode);
+    componentSystemManager.loadSystems(module.getId(),module.getReflections(),netMode);
   }
-  registeredMods.add(module.getModuleInfo().getId().toLowerCase(Locale.ENGLISH));
+  registeredMods.add(module.getId().toLowerCase(Locale.ENGLISH));
 }

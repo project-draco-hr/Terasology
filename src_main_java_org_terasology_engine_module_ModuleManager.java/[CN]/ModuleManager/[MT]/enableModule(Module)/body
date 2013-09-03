@@ -1,5 +1,11 @@
 {
-  if (activeModules.add(module) && module instanceof ExtensionModule) {
-    ((ExtensionModule)module).enable();
+  Module oldModule=activeModules.put(module.getId(),module);
+  if (!module.equals(oldModule)) {
+    if (oldModule != null && oldModule instanceof ExtensionModule) {
+      ((ExtensionModule)oldModule).disable();
+    }
+    if (module instanceof ExtensionModule) {
+      ((ExtensionModule)module).enable();
+    }
   }
 }
