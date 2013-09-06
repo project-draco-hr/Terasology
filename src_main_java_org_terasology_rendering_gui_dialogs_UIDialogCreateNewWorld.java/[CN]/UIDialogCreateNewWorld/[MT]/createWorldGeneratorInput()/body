@@ -1,7 +1,7 @@
 {
   worldGeneratorLabel=createLabel("Choose World Generator:");
   final WorldGeneratorManager worldGeneratorManager=CoreRegistry.get(WorldGeneratorManager.class);
-  worldGenerators=worldGeneratorManager.getWorldGenerators();
+  List<WorldGeneratorInfo> worldGenerators=worldGeneratorManager.getWorldGenerators();
   worldGenerator=new UIComboBox(new Vector2f(COMPONENT_WIDTH,COMPONENT_HEIGHT),new Vector2f(COMPONENT_WIDTH,2 * COMPONENT_HEIGHT));
   SimpleUri defaultMapGenerator=CoreRegistry.get(Config.class).getWorldGeneration().getDefaultGenerator();
   UIListItem item;
@@ -23,7 +23,7 @@
     @Override public void changed(    UIDisplayElement element){
       WorldGeneratorInfo generator=getSelectedWorldGenerator();
       if (moduleConfig != null) {
-        moduleConfig.addMod(generator.getUri().getModuleName());
+        moduleConfig.addModule(generator.getUri().getModuleName());
       }
     }
   }

@@ -1,6 +1,6 @@
 {
-  moduleConfig.removeMod(module.getId());
-  for (  String activeModName : Lists.newArrayList(moduleConfig.listMods())) {
+  moduleConfig.removeModule(module.getId());
+  for (  String activeModName : Lists.newArrayList(moduleConfig.listModules())) {
     Module activeModule=moduleManager.getLatestModuleVersion(activeModName);
     if (activeModule != null && activeModule.dependsOn(module)) {
       deactivateModule(activeModule);

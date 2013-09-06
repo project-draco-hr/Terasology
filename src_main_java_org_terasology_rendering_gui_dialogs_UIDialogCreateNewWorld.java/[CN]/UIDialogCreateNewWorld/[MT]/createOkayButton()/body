@@ -32,7 +32,13 @@
       GameManifest gameManifest=new GameManifest();
       gameManifest.setTitle(config.getWorldGeneration().getWorldTitle());
       gameManifest.setSeed(config.getWorldGeneration().getDefaultSeed());
-      gameManifest.getModuleConfiguration().copy(moduleConfig);
+      ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+      for (      String id : moduleConfig.listModules()) {
+        Module module=moduleManager.getLatestModuleVersion(id);
+        if (module != null) {
+          gameManifest.addModule(module.getId(),module.getVersion());
+        }
+      }
       WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getWorldGeneration().getDefaultSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorInfo.getUri());
       gameManifest.addWorld(worldInfo);
       CoreRegistry.get(GameEngine.class).changeState(new StateLoading(gameManifest,(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));

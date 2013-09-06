@@ -15,17 +15,17 @@
     gameManifest.setRegisteredBlockFamilies(serverInfo.getRegisterBlockFamilyList());
     gameManifest.setBlockIdMap(blockMap);
     gameManifest.setTime(networkSystem.getServer().getInfo().getTime());
-    ModuleConfig moduleConfig=gameManifest.getModuleConfiguration();
     ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
     for (    NetData.ModuleInfo moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
       Module module=moduleManager.getLatestModuleVersion(moduleInfo.getModuleId());
       if (module == null) {
-        CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Missing required module: " + moduleInfo.getModuleId()));
+        StateMainMenu mainMenu=new StateMainMenu("Missing required module: " + moduleInfo.getModuleId() + ":"+ moduleInfo.getModuleVersion());
+        CoreRegistry.get(GameEngine.class).changeState(mainMenu);
         return false;
       }
  else {
-        logger.debug("Activating module: {}",moduleInfo.getModuleId());
-        moduleConfig.addMod(moduleInfo.getModuleId());
+        logger.debug("Activating module: {}:{}",moduleInfo.getModuleId(),moduleInfo.getModuleVersion());
+        gameManifest.addModule(module.getId(),module.getVersion());
       }
     }
     CoreRegistry.get(Game.class).load(gameManifest);
