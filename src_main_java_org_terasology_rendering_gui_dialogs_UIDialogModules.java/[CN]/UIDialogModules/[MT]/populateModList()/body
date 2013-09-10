@@ -1,22 +1,29 @@
 {
-  List<Module> modules=Lists.newArrayList(moduleManager.getModules());
-  Collections.sort(modules,new Comparator<Module>(){
-    @Override public int compare(    Module o1,    Module o2){
-      return o1.getModuleInfo().getDisplayName().compareTo(o2.getModuleInfo().getDisplayName());
+  List<String> modules=Lists.newArrayList(moduleManager.getModuleIds());
+  Collections.sort(modules,new Comparator<String>(){
+    @Override public int compare(    String o1,    String o2){
+      Module mod1=moduleManager.getLatestModuleVersion(o1);
+      Module mod2=moduleManager.getLatestModuleVersion(o2);
+      return mod1.getModuleInfo().getDisplayName().compareTo(mod2.getModuleInfo().getDisplayName());
     }
   }
 );
-  for (  Module module : modules) {
-    if (!module.getId().equals(TerasologyConstants.ENGINE_MODULE)) {
+  for (  String moduleId : modules) {
+    if (!moduleId.equals(TerasologyConstants.ENGINE_MODULE)) {
+      Module module=moduleManager.getLatestModuleVersion(moduleId);
       UIListItem item=new UIListItem(module.getModuleInfo().getDisplayName(),module);
       item.setPadding(new Vector4f(2f,5f,2f,5f));
-      if (moduleConfig.hasModule(module.getId())) {
+      if (selection.contains(module.getId())) {
         item.setTextColor(ACTIVE_TEXT_COLOR);
         item.setTextSelectionColor(ACTIVE_SELECTED_TEXT_COLOR);
       }
- else {
+ else       if (selection.add(module.getId()).isValid()) {
         item.setTextColor(INACTIVE_TEXT_COLOR);
         item.setTextSelectionColor(INACTIVE_SELECTED_TEXT_COLOR);
+      }
+ else {
+        item.setTextColor(INVALID_TEXT_COLOR);
+        item.setTextSelectionColor(INVALID_SELECTED_TEXT_COLOR);
       }
       modList.addItem(item);
     }
@@ -26,15 +33,27 @@
       Module module=(Module)modList.getSelection().getValue();
       detailPanel.setVisible(true);
       nameLabel.setText(module.getModuleInfo().getDisplayName());
-      descriptionLabel.setText(module.getModuleInfo().getDescription());
-      boolean active=moduleConfig.hasModule(module.getId());
-      if (active) {
-        toggleButton.getLabel().setText(DEACTIVATE_TEXT);
+      versionLabel.setText(module.getVersion().toString());
+      ModuleSelection tryAddModule=selection.add(module);
+      if (!tryAddModule.isValid()) {
+        errorLabel.setText(tryAddModule.getValidationMessages().get(0));
       }
  else {
-        toggleButton.getLabel().setText(ACTIVATE_TEXT);
+        errorLabel.setText("");
       }
-      toggleButton.setVisible(!module.getId().equals("core"));
+      descriptionLabel.setText(module.getModuleInfo().getDescription());
+      boolean active=selection.contains(module.getId());
+      if (tryAddModule.isValid()) {
+        if (active) {
+          toggleButton.getLabel().setText(DEACTIVATE_TEXT);
+        }
+ else {
+          toggleButton.getLabel().setText(ACTIVATE_TEXT);
+        }
+      }
+ else {
+        toggleButton.setVisible(false);
+      }
     }
   }
 );

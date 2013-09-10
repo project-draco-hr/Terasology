@@ -3,13 +3,17 @@
   if (selectedModule.getId().equals("core")) {
     return;
   }
-  if (moduleConfig.hasModule(selectedModule.getId())) {
-    deactivateModule(selectedModule);
+  if (selection.contains(selectedModule.getId())) {
+    selection=selection.remove(selectedModule.getId());
+    refreshListItemActivation();
     toggleButton.getLabel().setText(ACTIVATE_TEXT);
   }
  else {
-    activateModule(selectedModule);
-    toggleButton.getLabel().setText(DEACTIVATE_TEXT);
+    ModuleSelection newSelection=selection.add(selectedModule);
+    if (newSelection.isValid()) {
+      selection=newSelection;
+      refreshListItemActivation();
+      toggleButton.getLabel().setText(DEACTIVATE_TEXT);
+    }
   }
-  refreshListItemActivation();
 }

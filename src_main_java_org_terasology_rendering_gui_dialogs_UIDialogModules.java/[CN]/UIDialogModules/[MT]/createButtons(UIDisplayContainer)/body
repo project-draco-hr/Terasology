@@ -5,7 +5,11 @@
   okButton.setVisible(true);
   okButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      originalModuleConfig.copy(moduleConfig);
+      ModuleConfig config=CoreRegistry.get(Config.class).getDefaultModSelection();
+      config.clear();
+      for (      Module module : selection.getSelection()) {
+        config.addModule(module.getId());
+      }
       close();
     }
   }

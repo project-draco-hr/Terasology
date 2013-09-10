@@ -1,5 +1,5 @@
 {
-  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManager());
+  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManagerImpl());
   AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager(moduleManager));
   CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
   CoreRegistry.putPermanently(CollisionGroupManager.class,new CollisionGroupManager());
@@ -8,6 +8,6 @@
   CoreRegistry.putPermanently(NetworkSystem.class,new NetworkSystemImpl(time));
   CoreRegistry.putPermanently(Game.class,new Game(time));
   AssetType.registerAssetTypes(assetManager);
-  ClasspathSource source=new ClasspathSource(TerasologyConstants.ENGINE_MODULE,getClass().getProtectionDomain().getCodeSource(),ModuleManager.ASSETS_SUBDIRECTORY,ModuleManager.OVERRIDES_SUBDIRECTORY);
+  ClasspathSource source=new ClasspathSource(TerasologyConstants.ENGINE_MODULE,getClass().getProtectionDomain().getCodeSource(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY);
   assetManager.addAssetSource(source);
 }

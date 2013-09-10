@@ -16,19 +16,30 @@
     gameManifest.setBlockIdMap(blockMap);
     gameManifest.setTime(networkSystem.getServer().getInfo().getTime());
     ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+    moduleManager.disableAllModules();
     for (    NetData.ModuleInfo moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
-      Module module=moduleManager.getLatestModuleVersion(moduleInfo.getModuleId());
-      if (module == null) {
-        StateMainMenu mainMenu=new StateMainMenu("Missing required module: " + moduleInfo.getModuleId() + ":"+ moduleInfo.getModuleVersion());
-        CoreRegistry.get(GameEngine.class).changeState(mainMenu);
-        return false;
+      if (!moduleInfo.hasModuleId() || !moduleInfo.hasModuleVersion() || Version.create(moduleInfo.getModuleVersion()) == null) {
+        logger.error("Received incomplete module info");
       }
  else {
-        logger.debug("Activating module: {}:{}",moduleInfo.getModuleId(),moduleInfo.getModuleVersion());
-        gameManifest.addModule(module.getId(),module.getVersion());
+        Module module=moduleManager.getModule(moduleInfo.getModuleId(),Version.create(moduleInfo.getModuleVersion()));
+        if (module == null) {
+          StateMainMenu mainMenu=new StateMainMenu("Missing required module: " + moduleInfo.getModuleId() + ":"+ moduleInfo.getModuleVersion());
+          CoreRegistry.get(GameEngine.class).changeState(mainMenu);
+          return false;
+        }
+ else {
+          logger.debug("Activating module: {}:{}",moduleInfo.getModuleId(),moduleInfo.getModuleVersion());
+          gameManifest.addModule(module.getId(),module.getVersion());
+          moduleManager.enableModule(module);
+        }
       }
     }
     CoreRegistry.get(Game.class).load(gameManifest);
+    moduleManager.applyActiveModules();
+    AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+    assetManager.clear();
+    assetManager.applyOverrides();
     return true;
   }
  else {

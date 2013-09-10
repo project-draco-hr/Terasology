@@ -1,0 +1,16 @@
+{
+  this.engineClassLoaders=Arrays.copyOf(engineClassLoaders,engineClassLoaders.length);
+  ConfigurationBuilder builder=new ConfigurationBuilder().setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
+  for (  ClassLoader loader : engineClassLoaders) {
+    builder.addClassLoader(loader).addUrls(ClasspathHelper.forPackage("org.terasology",loader));
+  }
+  engineReflections=new Reflections(builder);
+  try (InputStreamReader reader=new InputStreamReader(getClass().getResourceAsStream("/" + TerasologyConstants.ASSETS_SUBDIRECTORY + "/"+ "module.txt"))){
+    engineModule=new EngineModule(engineReflections,new Gson().fromJson(reader,ModuleInfo.class));
+  }
+ catch (  Exception e) {
+    throw new RuntimeException("Failed to load engine module info",e);
+  }
+  activeModules.put(engineModule.getId(),engineModule);
+  refresh();
+}

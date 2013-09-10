@@ -1,13 +1,17 @@
 {
   for (  UIListItem item : modList.getItems()) {
     Module module=(Module)item.getValue();
-    if (moduleConfig.hasModule(module.getId())) {
+    if (selection.contains(module.getId())) {
       item.setTextColor(ACTIVE_TEXT_COLOR);
       item.setTextSelectionColor(ACTIVE_SELECTED_TEXT_COLOR);
     }
- else {
+ else     if (selection.add(module.getId()).isValid()) {
       item.setTextColor(INACTIVE_TEXT_COLOR);
       item.setTextSelectionColor(INACTIVE_SELECTED_TEXT_COLOR);
+    }
+ else {
+      item.setTextColor(INVALID_TEXT_COLOR);
+      item.setTextSelectionColor(INVALID_SELECTED_TEXT_COLOR);
     }
   }
 }

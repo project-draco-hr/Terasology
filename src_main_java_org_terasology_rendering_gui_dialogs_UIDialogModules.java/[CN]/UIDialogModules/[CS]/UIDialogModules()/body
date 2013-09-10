@@ -1,0 +1,13 @@
+{
+  super(new Vector2f(640f,480f));
+  selection=new ModuleSelection(moduleManager);
+  for (  String moduleId : CoreRegistry.get(Config.class).getDefaultModSelection().listModules()) {
+    ModuleSelection newSelection=selection.add(moduleId);
+    if (newSelection.isValid()) {
+      selection=newSelection;
+    }
+  }
+  this.setEnableScrolling(false);
+  populateModList();
+  setTitle("Select Modules...");
+}

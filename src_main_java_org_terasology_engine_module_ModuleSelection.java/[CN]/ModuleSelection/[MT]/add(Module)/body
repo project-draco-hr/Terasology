@@ -1,0 +1,26 @@
+{
+  ModuleSelection result=new ModuleSelection(this);
+  for (  DependencyInfo dependency : module.getModuleInfo().getDependencies()) {
+    Module existing=modulesById.get(UriUtil.normalise(dependency.getId()));
+    if (existing != null) {
+      if (dependency.getMinVersion().compareTo(existing.getVersion()) > 0 || dependency.getMaxVersion().compareTo(existing.getVersion()) <= 0) {
+        result.valid=false;
+        result.validationMessages.add("'" + module.toString() + "' incompatible with '"+ existing.toString()+ "'");
+      }
+    }
+ else {
+      Module newDependency=moduleManager.getLatestModuleVersion(dependency.getId(),dependency.getMinVersion(),dependency.getMaxVersion());
+      if (newDependency != null) {
+        result=result.add(newDependency);
+      }
+ else {
+        result.valid=false;
+        result.validationMessages.add("Missing dependency '" + dependency.getId() + ":["+ dependency.getMinVersion()+ "-"+ dependency.getMaxVersion()+ ")'");
+      }
+    }
+  }
+  if (result.isValid()) {
+    result.modulesById.put(UriUtil.normalise(module.getId()),module);
+  }
+  return result;
+}

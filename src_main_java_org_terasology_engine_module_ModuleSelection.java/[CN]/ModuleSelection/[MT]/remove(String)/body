@@ -1,0 +1,16 @@
+{
+  Module removeModule=modulesById.get(UriUtil.normalise(id));
+  if (removeModule != null) {
+    ModuleSelection result=new ModuleSelection(moduleManager);
+    for (    Module module : modulesById.values()) {
+      if (module != removeModule) {
+        ModuleSelection newResult=result.add(module);
+        if (newResult.isValid() && !newResult.contains(id)) {
+          result=newResult;
+        }
+      }
+    }
+    return result;
+  }
+  return this;
+}
