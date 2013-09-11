@@ -30,7 +30,7 @@
     debugShaderType="VERTEX";
   }
   final String strippedTitle=getURI().toString().replace(":","-");
-  Path path=PathManager.getInstance().getLogPath().resolve(debugShaderType.toLowerCase() + "_" + strippedTitle+ "_"+ featureHash+ ".glsl");
+  Path path=PathManager.getInstance().getShaderLogPath().resolve(debugShaderType.toLowerCase() + "_" + strippedTitle+ "_"+ featureHash+ ".glsl");
   try (BufferedWriter writer=Files.newBufferedWriter(path,TerasologyConstants.CHARSET)){
     writer.write(shader.toString());
   }
