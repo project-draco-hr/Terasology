@@ -1,17 +1,5 @@
 {
   Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
-  for (  EntityData.NameValue field : componentData.getFieldList()) {
-    ReplicatedFieldMetadata<T,?> fieldInfo=null;
-    if (field.hasNameIndex()) {
-      fieldInfo=componentMetadata.getField(field.getNameIndex());
-    }
- else     if (field.hasName()) {
-      fieldInfo=componentMetadata.getField(field.getName());
-    }
-    if (fieldInfo == null || !fieldCheck.shouldDeserializeField(fieldInfo)) {
-      continue;
-    }
-    serializer.deserializeOnto(targetComponent,fieldInfo,field.getValue());
-  }
+  serializer.deserializeOnto(targetComponent,componentData.getFieldList(),fieldCheck);
   return targetComponent;
 }

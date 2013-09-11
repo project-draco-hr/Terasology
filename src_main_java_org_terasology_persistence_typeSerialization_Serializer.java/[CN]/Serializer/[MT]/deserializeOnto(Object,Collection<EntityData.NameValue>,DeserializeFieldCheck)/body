@@ -1,0 +1,17 @@
+{
+  for (  EntityData.NameValue field : values) {
+    FieldMetadata<?,?> fieldInfo=null;
+    if (field.hasNameIndex()) {
+      fieldInfo=classMetadata.getField(field.getNameIndex());
+    }
+ else     if (field.hasName()) {
+      fieldInfo=classMetadata.getField(field.getName());
+    }
+    if (fieldInfo != null && check.shouldDeserialize(classMetadata,fieldInfo)) {
+      deserializeOnto(target,fieldInfo,field.getValue());
+    }
+ else     if (fieldInfo == null && field.hasName()) {
+      logger.warn("Cannot deserialize unknown field '{}' onto '{}'",field.getName(),classMetadata.getUri());
+    }
+  }
+}
