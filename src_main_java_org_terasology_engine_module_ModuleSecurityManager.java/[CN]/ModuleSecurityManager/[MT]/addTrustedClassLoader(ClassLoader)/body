@@ -1,0 +1,10 @@
+{
+  if (System.getSecurityManager() != null) {
+    System.getSecurityManager().checkPermission(ADD_TRUSTED_CLASSLOADER);
+  }
+  ClassLoader nextClassLoader=classLoader;
+  while (nextClassLoader != null) {
+    trustedClassLoaders.add(nextClassLoader);
+    nextClassLoader=nextClassLoader.getParent();
+  }
+}

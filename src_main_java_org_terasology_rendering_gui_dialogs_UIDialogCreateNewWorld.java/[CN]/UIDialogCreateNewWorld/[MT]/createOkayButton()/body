@@ -26,18 +26,18 @@
  else {
         config.getWorldGeneration().setWorldTitle(getWorldName());
       }
-      CoreRegistry.get(Config.class).getDefaultModSelection().copy(moduleConfig);
+      ModuleConfig moduleConfig=CoreRegistry.get(Config.class).getDefaultModSelection();
+      moduleConfig.clear();
+      for (      Module module : selection.getSelection()) {
+        moduleConfig.addModule(module.getId());
+      }
       CoreRegistry.get(Config.class).save();
       WorldGeneratorInfo worldGeneratorInfo=getSelectedWorldGenerator();
       GameManifest gameManifest=new GameManifest();
       gameManifest.setTitle(config.getWorldGeneration().getWorldTitle());
       gameManifest.setSeed(config.getWorldGeneration().getDefaultSeed());
-      ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-      for (      String id : moduleConfig.listModules()) {
-        Module module=moduleManager.getLatestModuleVersion(id);
-        if (module != null) {
-          gameManifest.addModule(module.getId(),module.getVersion());
-        }
+      for (      Module module : selection.getSelection()) {
+        gameManifest.addModule(module.getId(),module.getVersion());
       }
       WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getWorldGeneration().getDefaultSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorInfo.getUri());
       gameManifest.addWorld(worldInfo);

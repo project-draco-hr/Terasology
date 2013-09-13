@@ -1,5 +1,13 @@
 {
-  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManagerImpl());
+  ModuleSecurityManager moduleSecurityManager=new ModuleSecurityManager();
+  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManagerImpl(moduleSecurityManager));
+  moduleSecurityManager.addAPIPackage("java.lang");
+  moduleSecurityManager.addAPIClass(IOException.class);
+  moduleSecurityManager.addAPIClass(LoggerFactory.class);
+  moduleSecurityManager.addAPIClass(Logger.class);
+  for (  Class<?> apiClass : moduleManager.getActiveModuleReflections().getTypesAnnotatedWith(API.class)) {
+    moduleSecurityManager.addAPIClass(apiClass);
+  }
   AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager(moduleManager));
   CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
   CoreRegistry.putPermanently(CollisionGroupManager.class,new CollisionGroupManager());

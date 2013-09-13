@@ -5,7 +5,7 @@
   if (!setup) {
     setup=true;
     bindLwjgl();
-    moduleManager=new ModuleManagerImpl();
+    moduleManager=new ModuleManagerImpl(new ModuleSecurityManager());
     moduleManager.applyActiveModules();
     CoreRegistry.put(ModuleManager.class,moduleManager);
     assetManager=new AssetManager(moduleManager);

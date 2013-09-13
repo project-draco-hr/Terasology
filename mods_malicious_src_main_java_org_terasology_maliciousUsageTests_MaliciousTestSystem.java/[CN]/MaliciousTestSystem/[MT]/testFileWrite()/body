@@ -1,0 +1,12 @@
+{
+  numTests++;
+  try {
+    Files.write(FileSystems.getDefault().getPath("garbage.out"),Lists.newArrayList("Blah","Balh"),Charset.defaultCharset());
+  }
+ catch (  IOException e) {
+    logger.info("IO exception in test file write",e);
+  }
+catch (  NoClassDefFoundError|SecurityException e) {
+    passedTests++;
+  }
+}

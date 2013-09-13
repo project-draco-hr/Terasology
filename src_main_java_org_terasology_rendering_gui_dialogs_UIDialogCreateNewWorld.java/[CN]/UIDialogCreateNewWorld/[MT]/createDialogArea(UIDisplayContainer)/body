@@ -1,4 +1,11 @@
 {
+  selection=new ModuleSelection(CoreRegistry.get(ModuleManager.class));
+  for (  String moduleId : CoreRegistry.get(Config.class).getDefaultModSelection().listModules()) {
+    ModuleSelection newSelection=selection.add(moduleId);
+    if (newSelection.isValid()) {
+      selection=newSelection;
+    }
+  }
   createWorldTitleInput();
   createSeedInput();
   createWorldGeneratorInput();

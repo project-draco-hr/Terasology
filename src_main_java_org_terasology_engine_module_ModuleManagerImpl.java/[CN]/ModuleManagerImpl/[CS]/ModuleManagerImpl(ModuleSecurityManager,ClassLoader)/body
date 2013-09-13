@@ -1,5 +1,6 @@
 {
   this.engineClassLoaders=Arrays.copyOf(engineClassLoaders,engineClassLoaders.length);
+  this.moduleSecurityManager=moduleSecurityManager;
   ConfigurationBuilder builder=new ConfigurationBuilder().setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
   for (  ClassLoader loader : engineClassLoaders) {
     builder.addClassLoader(loader).addUrls(ClasspathHelper.forPackage("org.terasology",loader));

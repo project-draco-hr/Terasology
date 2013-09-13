@@ -1,4 +1,6 @@
 {
+  AssetManager assetManager=CoreRegistry.put(AssetManager.class,mock(AssetManager.class));
+  when(assetManager.listLoadedAssets(AssetType.PREFAB,Prefab.class)).thenReturn(Collections.<Prefab>emptyList());
   EntitySystemBuilder builder=new EntitySystemBuilder();
   entityManager=builder.build(moduleManager,mock(NetworkSystem.class),new ReflectionReflectFactory());
   entityManager.getComponentLibrary().register(new SimpleUri("test","gettersetter"),GetterSetterComponent.class);

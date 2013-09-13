@@ -22,8 +22,9 @@
   worldGenerator.addSelectionListener(new SelectionListener(){
     @Override public void changed(    UIDisplayElement element){
       WorldGeneratorInfo generator=getSelectedWorldGenerator();
-      if (moduleConfig != null) {
-        moduleConfig.addModule(generator.getUri().getModuleName());
+      ModuleSelection newSelection=selection.add(generator.getUri().getModuleName());
+      if (newSelection.isValid()) {
+        selection=newSelection;
       }
     }
   }
