@@ -1,12 +1,17 @@
 {
-  for (  Field field : Reflections.getAllFields(clazz,Predicates.alwaysTrue())) {
+  for (  Field field : ReflectionUtils.getAllFields(clazz,Predicates.alwaysTrue())) {
     if (Modifier.isTransient(field.getModifiers()) || Modifier.isStatic(field.getModifiers())) {
       continue;
     }
     CopyStrategy<?> copyStrategy=copyStrategyLibrary.getStrategy(field.getGenericType());
-    FIELD metadata=createField(field,copyStrategy,factory);
-    if (metadata != null) {
-      fields.put(metadata.getName().toLowerCase(Locale.ENGLISH),metadata);
+    try {
+      FIELD metadata=createField(field,copyStrategy,factory);
+      if (metadata != null) {
+        fields.put(metadata.getName().toLowerCase(Locale.ENGLISH),metadata);
+      }
+    }
+ catch (    InaccessibleFieldException e) {
+      logger.error("Could not create metadata for field '{}' of type '{}', may be private.'",field,clazz);
     }
   }
 }

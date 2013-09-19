@@ -1,0 +1,20 @@
+{
+  methodAccess=MethodAccess.get(ownerType);
+  Method getter=ReflectionUtil.findGetter(field);
+  if (getter != null) {
+    getterIndex=methodAccess.getIndex(getter.getName());
+  }
+  Method setter=ReflectionUtil.findSetter(field);
+  if (setter != null) {
+    setterIndex=methodAccess.getIndex(setter.getName());
+  }
+  if (getterIndex == NO_METHOD || setterIndex == NO_METHOD) {
+    fieldAccess=FieldAccess.get(ownerType);
+    try {
+      fieldIndex=fieldAccess.getIndex(field.getName());
+    }
+ catch (    IllegalArgumentException e) {
+      throw new InaccessibleFieldException("Failed to create accessor for field '" + field.getName() + "' of type '"+ ownerType.getName()+ "'",e);
+    }
+  }
+}

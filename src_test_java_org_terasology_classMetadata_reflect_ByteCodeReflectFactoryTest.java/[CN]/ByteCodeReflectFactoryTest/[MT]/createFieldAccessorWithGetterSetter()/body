@@ -1,0 +1,10 @@
+{
+  ReflectFactory reflectFactory=new ByteCodeReflectFactory();
+  FieldAccessor<GetterSetterComponent,Vector3f> fieldAccessor=reflectFactory.createFieldAccessor(GetterSetterComponent.class,GetterSetterComponent.class.getDeclaredField("value"),Vector3f.class);
+  GetterSetterComponent comp=new GetterSetterComponent();
+  Vector3f newVal=new Vector3f(1,2,3);
+  fieldAccessor.setValue(comp,newVal);
+  assertTrue(comp.setterUsed);
+  assertEquals(newVal,fieldAccessor.getValue(comp));
+  assertTrue(comp.getterUsed);
+}

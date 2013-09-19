@@ -1,0 +1,24 @@
+{
+  String constructorClassName=type.getName() + "_ReflectConstructor";
+  try {
+    return (ObjectConstructor<T>)type.getClassLoader().loadClass(constructorClassName).getConstructor().newInstance();
+  }
+ catch (  ClassNotFoundException ignored) {
+    if (Modifier.isPrivate(type.getDeclaredConstructor().getModifiers())) {
+      throw new NoSuchMethodException("Constructor for '" + type + "' exists but is private");
+    }
+    CtClass constructorClass=pool.makeClass(type.getName() + "_ReflectConstructor");
+    constructorClass.setInterfaces(new CtClass[]{objectConstructorInterface});
+    try {
+      CtMethod method=CtNewMethod.make("public Object construct() { return new " + type.getName() + "();}",constructorClass);
+      constructorClass.addMethod(method);
+      return (ObjectConstructor<T>)(constructorClass.toClass().getConstructor().newInstance());
+    }
+ catch (    InstantiationException|IllegalAccessException|InvocationTargetException|CannotCompileException e) {
+      throw new RuntimeException("Error instantiating constructor object for " + type,e);
+    }
+  }
+catch (  InvocationTargetException|InstantiationException|IllegalAccessException e) {
+    throw new RuntimeException("Error instantiating constructor object for " + type,e);
+  }
+}

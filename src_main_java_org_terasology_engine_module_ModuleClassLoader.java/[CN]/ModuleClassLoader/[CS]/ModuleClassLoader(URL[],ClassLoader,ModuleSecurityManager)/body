@@ -1,4 +1,13 @@
 {
   super(urls,parent);
   this.securityManager=securityManager;
+  pool=new ClassPool(ClassPool.getDefault());
+  for (  URL url : urls) {
+    try {
+      pool.appendClassPath(url.getFile());
+    }
+ catch (    NotFoundException e) {
+      logger.error("Failed to process module url: {}",url);
+    }
+  }
 }

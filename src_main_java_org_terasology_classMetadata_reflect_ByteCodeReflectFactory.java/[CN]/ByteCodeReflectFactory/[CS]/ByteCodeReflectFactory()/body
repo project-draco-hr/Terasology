@@ -1,0 +1,10 @@
+{
+  try {
+    ClassPool.doPruning=true;
+    pool=ClassPool.getDefault();
+    objectConstructorInterface=pool.get(ObjectConstructor.class.getName());
+  }
+ catch (  NotFoundException e) {
+    throw new RuntimeException("Error establishing reflection factory",e);
+  }
+}

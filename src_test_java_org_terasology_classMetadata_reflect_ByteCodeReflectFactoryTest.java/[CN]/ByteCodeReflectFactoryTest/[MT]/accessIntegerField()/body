@@ -1,0 +1,7 @@
+{
+  ReflectFactory reflectFactory=new ByteCodeReflectFactory();
+  FieldAccessor fieldAccessor=reflectFactory.createFieldAccessor(IntegerComponent.class,IntegerComponent.class.getDeclaredField("value"));
+  IntegerComponent comp=new IntegerComponent();
+  fieldAccessor.setValue(comp,1);
+  assertEquals(1,fieldAccessor.getValue(comp));
+}

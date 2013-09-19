@@ -1,0 +1,10 @@
+{
+  final List<Benchmark> benchmarks=Lists.newArrayList();
+  benchmarks.add(new FieldAccessBenchmark(new ReflectionReflectFactory()));
+  benchmarks.add(new FieldAccessBenchmark(new ByteCodeReflectFactory()));
+  benchmarks.add(new GetterSetterAccessBenchmark(new ReflectionReflectFactory()));
+  benchmarks.add(new GetterSetterAccessBenchmark(new ByteCodeReflectFactory()));
+  benchmarks.add(new ConstructionBenchmark(new ReflectionReflectFactory()));
+  benchmarks.add(new ConstructionBenchmark(new ByteCodeReflectFactory()));
+  Benchmarks.execute(benchmarks,new PrintToConsoleCallback());
+}
