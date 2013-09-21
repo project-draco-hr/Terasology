@@ -1,10 +1,10 @@
 {
   logger.info("New client connected: {}",client.getName());
   client.connected(entityManager,entitySerializer,eventSerializer,entitySystemLibrary);
+  client.send(NetData.NetMessage.newBuilder().setJoinComplete(NetData.JoinCompleteMessage.newBuilder().setClientId(client.getEntity().getComponent(NetworkComponent.class).getNetworkId())).build());
   clientList.add(client);
   netClientList.add(client);
   clientPlayerLookup.put(client.getEntity(),client);
-  sendServerInfo(client);
   connectClient(client);
   logger.info("New client entity: {}",client.getEntity());
   for (  EntityRef netEntity : entityManager.getEntitiesWith(NetworkComponent.class)) {

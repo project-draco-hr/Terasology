@@ -34,8 +34,8 @@
       return false;
     }
   }
-  if (hasClientConnect()) {
-    if (!getClientConnect().isInitialized()) {
+  if (hasServerInfoRequest()) {
+    if (!getServerInfoRequest().isInitialized()) {
       return false;
     }
   }
@@ -46,6 +46,16 @@
   }
   for (int i=0; i < getBlockFamilyRegisteredCount(); i++) {
     if (!getBlockFamilyRegistered(i).isInitialized()) {
+      return false;
+    }
+  }
+  if (hasJoin()) {
+    if (!getJoin().isInitialized()) {
+      return false;
+    }
+  }
+  if (hasJoinComplete()) {
+    if (!getJoinComplete().isInitialized()) {
       return false;
     }
   }

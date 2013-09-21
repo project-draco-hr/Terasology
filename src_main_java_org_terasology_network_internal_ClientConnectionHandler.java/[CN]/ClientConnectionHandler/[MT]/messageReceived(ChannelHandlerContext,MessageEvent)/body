@@ -1,0 +1,12 @@
+{
+  NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
+  if (message.hasServerInfo()) {
+    receivedServerInfo(message.getServerInfo());
+  }
+ else   if (message.hasJoinComplete()) {
+    completeJoin(message.getJoinComplete());
+  }
+ else {
+    logger.error("Received unexpected message");
+  }
+}

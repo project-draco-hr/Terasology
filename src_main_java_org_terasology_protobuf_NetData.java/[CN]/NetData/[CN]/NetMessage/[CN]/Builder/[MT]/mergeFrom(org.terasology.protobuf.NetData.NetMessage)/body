@@ -192,8 +192,8 @@
   if (other.hasTime()) {
     setTime(other.getTime());
   }
-  if (other.hasClientConnect()) {
-    mergeClientConnect(other.getClientConnect());
+  if (other.hasServerInfoRequest()) {
+    mergeServerInfoRequest(other.getServerInfoRequest());
   }
   if (other.hasServerInfo()) {
     mergeServerInfo(other.getServerInfo());
@@ -224,6 +224,12 @@
         blockFamilyRegisteredBuilder_.addAllMessages(other.blockFamilyRegistered_);
       }
     }
+  }
+  if (other.hasJoin()) {
+    mergeJoin(other.getJoin());
+  }
+  if (other.hasJoinComplete()) {
+    mergeJoinComplete(other.getJoinComplete());
   }
   if (other.hasHandshakeHello()) {
     mergeHandshakeHello(other.getHandshakeHello());

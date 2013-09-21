@@ -88,14 +88,14 @@ break;
 }
 case 122:
 {
-org.terasology.protobuf.NetData.ClientConnectMessage.Builder subBuilder=null;
+org.terasology.protobuf.NetData.ServerInfoRequest.Builder subBuilder=null;
 if (((bitField0_ & 0x00000002) == 0x00000002)) {
-subBuilder=clientConnect_.toBuilder();
+subBuilder=serverInfoRequest_.toBuilder();
 }
-clientConnect_=input.readMessage(org.terasology.protobuf.NetData.ClientConnectMessage.PARSER,extensionRegistry);
+serverInfoRequest_=input.readMessage(org.terasology.protobuf.NetData.ServerInfoRequest.PARSER,extensionRegistry);
 if (subBuilder != null) {
-subBuilder.mergeFrom(clientConnect_);
-clientConnect_=subBuilder.buildPartial();
+subBuilder.mergeFrom(serverInfoRequest_);
+serverInfoRequest_=subBuilder.buildPartial();
 }
 bitField0_|=0x00000002;
 break;
@@ -123,10 +123,38 @@ mutable_bitField0_|=0x00000400;
 blockFamilyRegistered_.add(input.readMessage(org.terasology.protobuf.NetData.BlockFamilyRegisteredMessage.PARSER,extensionRegistry));
 break;
 }
+case 146:
+{
+org.terasology.protobuf.NetData.JoinMessage.Builder subBuilder=null;
+if (((bitField0_ & 0x00000008) == 0x00000008)) {
+subBuilder=join_.toBuilder();
+}
+join_=input.readMessage(org.terasology.protobuf.NetData.JoinMessage.PARSER,extensionRegistry);
+if (subBuilder != null) {
+subBuilder.mergeFrom(join_);
+join_=subBuilder.buildPartial();
+}
+bitField0_|=0x00000008;
+break;
+}
+case 154:
+{
+org.terasology.protobuf.NetData.JoinCompleteMessage.Builder subBuilder=null;
+if (((bitField0_ & 0x00000010) == 0x00000010)) {
+subBuilder=joinComplete_.toBuilder();
+}
+joinComplete_=input.readMessage(org.terasology.protobuf.NetData.JoinCompleteMessage.PARSER,extensionRegistry);
+if (subBuilder != null) {
+subBuilder.mergeFrom(joinComplete_);
+joinComplete_=subBuilder.buildPartial();
+}
+bitField0_|=0x00000010;
+break;
+}
 case 802:
 {
 org.terasology.protobuf.NetData.HandshakeHello.Builder subBuilder=null;
-if (((bitField0_ & 0x00000008) == 0x00000008)) {
+if (((bitField0_ & 0x00000020) == 0x00000020)) {
 subBuilder=handshakeHello_.toBuilder();
 }
 handshakeHello_=input.readMessage(org.terasology.protobuf.NetData.HandshakeHello.PARSER,extensionRegistry);
@@ -134,13 +162,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(handshakeHello_);
 handshakeHello_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000008;
+bitField0_|=0x00000020;
 break;
 }
 case 810:
 {
 org.terasology.protobuf.NetData.NewIdentityRequest.Builder subBuilder=null;
-if (((bitField0_ & 0x00000010) == 0x00000010)) {
+if (((bitField0_ & 0x00000040) == 0x00000040)) {
 subBuilder=newIdentityRequest_.toBuilder();
 }
 newIdentityRequest_=input.readMessage(org.terasology.protobuf.NetData.NewIdentityRequest.PARSER,extensionRegistry);
@@ -148,13 +176,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(newIdentityRequest_);
 newIdentityRequest_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000010;
+bitField0_|=0x00000040;
 break;
 }
 case 818:
 {
 org.terasology.protobuf.NetData.ProvisionIdentity.Builder subBuilder=null;
-if (((bitField0_ & 0x00000020) == 0x00000020)) {
+if (((bitField0_ & 0x00000080) == 0x00000080)) {
 subBuilder=provisionIdentity_.toBuilder();
 }
 provisionIdentity_=input.readMessage(org.terasology.protobuf.NetData.ProvisionIdentity.PARSER,extensionRegistry);
@@ -162,13 +190,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(provisionIdentity_);
 provisionIdentity_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000020;
+bitField0_|=0x00000080;
 break;
 }
 case 826:
 {
 org.terasology.protobuf.NetData.HandshakeVerification.Builder subBuilder=null;
-if (((bitField0_ & 0x00000040) == 0x00000040)) {
+if (((bitField0_ & 0x00000100) == 0x00000100)) {
 subBuilder=handshakeVerification_.toBuilder();
 }
 handshakeVerification_=input.readMessage(org.terasology.protobuf.NetData.HandshakeVerification.PARSER,extensionRegistry);
@@ -176,7 +204,7 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(handshakeVerification_);
 handshakeVerification_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000040;
+bitField0_|=0x00000100;
 break;
 }
 }

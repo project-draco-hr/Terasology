@@ -8,6 +8,7 @@
   p.addLast("frameEncoder",new ProtobufVarint32LengthFieldPrepender());
   p.addLast("protobufEncoder",new ProtobufEncoder());
   p.addLast("authenticationHandler",new ServerHandshakeHandler());
+  p.addLast("connectionHandler",new ServerConnectionHandler(networkSystem));
   p.addLast("handler",new ServerHandler(networkSystem));
   return p;
 }

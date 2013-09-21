@@ -26,7 +26,7 @@
     output.writeInt64(9,time_);
   }
   if (((bitField0_ & 0x00000002) == 0x00000002)) {
-    output.writeMessage(15,clientConnect_);
+    output.writeMessage(15,serverInfoRequest_);
   }
   if (((bitField0_ & 0x00000004) == 0x00000004)) {
     output.writeMessage(16,serverInfo_);
@@ -35,15 +35,21 @@
     output.writeMessage(17,blockFamilyRegistered_.get(i));
   }
   if (((bitField0_ & 0x00000008) == 0x00000008)) {
-    output.writeMessage(100,handshakeHello_);
+    output.writeMessage(18,join_);
   }
   if (((bitField0_ & 0x00000010) == 0x00000010)) {
-    output.writeMessage(101,newIdentityRequest_);
+    output.writeMessage(19,joinComplete_);
   }
   if (((bitField0_ & 0x00000020) == 0x00000020)) {
-    output.writeMessage(102,provisionIdentity_);
+    output.writeMessage(100,handshakeHello_);
   }
   if (((bitField0_ & 0x00000040) == 0x00000040)) {
+    output.writeMessage(101,newIdentityRequest_);
+  }
+  if (((bitField0_ & 0x00000080) == 0x00000080)) {
+    output.writeMessage(102,provisionIdentity_);
+  }
+  if (((bitField0_ & 0x00000100) == 0x00000100)) {
     output.writeMessage(103,handshakeVerification_);
   }
   extensionWriter.writeUntil(536870912,output);

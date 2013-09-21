@@ -1,0 +1,8 @@
+{
+  logger.info("Received Start Join");
+  NetClient client=new NetClient(channelHandlerContext.getChannel(),networkSystem,identity);
+  client.setName(message.getName());
+  client.setViewDistanceMode(ViewDistance.forIndex(message.getViewDistanceLevel()));
+  channelHandlerContext.getPipeline().remove(this);
+  serverHandler.connectionComplete(client);
+}

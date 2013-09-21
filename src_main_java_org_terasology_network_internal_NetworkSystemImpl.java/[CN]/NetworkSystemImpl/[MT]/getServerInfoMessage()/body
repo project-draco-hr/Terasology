@@ -1,0 +1,26 @@
+{
+  NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
+  serverInfoMessageBuilder.setTime(time.getGameTimeInMs());
+  WorldProvider world=CoreRegistry.get(WorldProvider.class);
+  if (world != null) {
+    NetData.WorldInfo.Builder worldInfoBuilder=NetData.WorldInfo.newBuilder();
+    worldInfoBuilder.setTime(world.getTime().getMilliseconds());
+    worldInfoBuilder.setTitle(world.getTitle());
+    serverInfoMessageBuilder.addWorldInfo(worldInfoBuilder);
+  }
+  for (  Module module : CoreRegistry.get(ModuleManager.class).getActiveModules()) {
+    if (!module.getModuleInfo().isServersideOnly()) {
+      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(module.getId()).setModuleVersion(module.getVersion().toString()).build());
+    }
+  }
+  for (  Map.Entry<String,Short> blockMapping : blockManager.getBlockIdMap().entrySet()) {
+    serverInfoMessageBuilder.addBlockId(blockMapping.getValue());
+    serverInfoMessageBuilder.addBlockName(blockMapping.getKey());
+  }
+  for (  BlockFamily registeredBlockFamily : blockManager.listRegisteredBlockFamilies()) {
+    serverInfoMessageBuilder.addRegisterBlockFamily(registeredBlockFamily.getURI().toString());
+  }
+  serializeComponentInfo(serverInfoMessageBuilder);
+  serializeEventInfo(serverInfoMessageBuilder);
+  return serverInfoMessageBuilder.build();
+}

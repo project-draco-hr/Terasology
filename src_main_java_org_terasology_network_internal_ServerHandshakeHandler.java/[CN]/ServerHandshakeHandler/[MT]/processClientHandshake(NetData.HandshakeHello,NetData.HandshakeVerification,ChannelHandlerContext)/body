@@ -17,5 +17,5 @@
   byte[] serverSignature=config.getSecurity().getServerPrivateCertificate().sign(signatureData);
   ctx.getChannel().write(NetData.NetMessage.newBuilder().setHandshakeVerification(NetData.HandshakeVerification.newBuilder().setSignature(ByteString.copyFrom(serverSignature))).build());
   ctx.getPipeline().remove(this);
-  serverHandler.channelAuthenticated(clientCert,ctx);
+  serverConnectionHandler.channelAuthenticated(clientCert,ctx);
 }

@@ -19,7 +19,7 @@
     }
     ctx.getChannel().write(NetData.NetMessage.newBuilder().setProvisionIdentity(NetData.ProvisionIdentity.newBuilder().setEncryptedCertificates(ByteString.copyFrom(encryptedCert))).build());
     ctx.getPipeline().remove(this);
-    serverHandler.channelAuthenticated(clientCertificates.getPublicCert(),ctx);
+    serverConnectionHandler.channelAuthenticated(clientCertificates.getPublicCert(),ctx);
   }
  catch (  BadEncryptedDataException e) {
     logger.error("Received invalid encrypted pre-master secret, ending connection attempt");

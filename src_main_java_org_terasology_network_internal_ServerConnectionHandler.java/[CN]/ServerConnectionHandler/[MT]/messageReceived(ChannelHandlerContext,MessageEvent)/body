@@ -1,0 +1,13 @@
+{
+  NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
+  if (message.hasServerInfoRequest()) {
+    NetData.ServerInfoMessage serverInfo=networkSystem.getServerInfoMessage();
+    ctx.getChannel().write(NetData.NetMessage.newBuilder().setServerInfo(serverInfo).setTime(serverInfo.getTime()).build());
+  }
+ else   if (message.hasJoin()) {
+    receivedConnect(message.getJoin());
+  }
+ else {
+    logger.error("Received unexpected message");
+  }
+}

@@ -1,0 +1,6 @@
+{
+  logger.info("Join complete received");
+  server.setClientId(joinComplete.getClientId());
+  channelHandlerContext.getPipeline().remove(this);
+  channelHandlerContext.getPipeline().get(ClientHandler.class).joinComplete(server);
+}
