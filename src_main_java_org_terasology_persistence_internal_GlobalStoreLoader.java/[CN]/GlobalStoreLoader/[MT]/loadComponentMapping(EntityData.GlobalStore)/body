@@ -5,6 +5,9 @@
     if (componentMetadata != null) {
       componentIdTable.put(componentMetadata.getType(),index);
     }
+ else {
+      logger.warn("Unable to resolve component '{}'",globalStore.getComponentClass(index));
+    }
   }
   prefabSerializer.setComponentIdMapping(componentIdTable);
   entitySerializer.setComponentIdMapping(componentIdTable);
