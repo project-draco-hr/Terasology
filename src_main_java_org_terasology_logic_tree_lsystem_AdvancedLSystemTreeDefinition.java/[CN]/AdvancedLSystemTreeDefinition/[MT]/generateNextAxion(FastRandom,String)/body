@@ -1,0 +1,14 @@
+{
+  StringBuilder result=new StringBuilder();
+  for (  AxionElement axion : parseAxions(currentAxion)) {
+    final AxionElementReplacement axionElementReplacement=axionElementReplacements.get(axion.key);
+    if (axionElementReplacement != null) {
+      result.append(axionElementReplacement.getReplacement(rand.randomPosFloat()));
+    }
+ else {
+      result.append(axion.key);
+      if (axion.parameter != null)       result.append("(").append(axion.parameter).append(")");
+    }
+  }
+  return result.toString();
+}
