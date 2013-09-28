@@ -3,6 +3,21 @@
   ((EngineTime)CoreRegistry.get(Time.class)).setGameTime(message.getTime());
   this.server=new ServerImpl(networkSystem,channelHandlerContext.getChannel());
   server.setServerInfo(message);
-  Config config=CoreRegistry.get(Config.class);
-  channelHandlerContext.getChannel().write(NetData.NetMessage.newBuilder().setJoin(NetData.JoinMessage.newBuilder().setName(config.getPlayer().getName()).setViewDistanceLevel(config.getRendering().getViewDistance().getIndex())).build());
+  for (  NetData.ModuleInfo info : message.getModuleList()) {
+    if (null == moduleManager.getModule(info.getModuleId(),Version.create(info.getModuleVersion()))) {
+      missingModules.add(info.getModuleId().toLowerCase(Locale.ENGLISH));
+    }
+  }
+  if (missingModules.isEmpty()) {
+    joinStatus.setCurrentActivity("Finalizing join");
+    sendJoin();
+  }
+ else {
+    joinStatus.setCurrentActivity("Requesting missing modules");
+    NetData.NetMessage.Builder builder=NetData.NetMessage.newBuilder();
+    for (    String module : missingModules) {
+      builder.addModuleRequest(NetData.ModuleRequest.newBuilder().setModuleId(module));
+    }
+    channelHandlerContext.getChannel().write(builder.build());
+  }
 }

@@ -11,15 +11,23 @@
       logger.warn("Failed to connect to server",connectCheck.getCause());
       connectCheck.getChannel().getCloseFuture().awaitUninterruptibly();
       factory.releaseExternalResources();
-      return false;
+      return new JoinStatusImpl("Failed to connect to server - " + connectCheck.getCause().getMessage());
     }
  else {
       allChannels.add(connectCheck.getChannel());
-      logger.info("Connected to server");
       mode=NetworkMode.CLIENT;
       nextNetworkTick=time.getRawTimeInMs();
-      return true;
+      logger.info("Connected to server");
+      ClientConnectionHandler connectionHandler=connectCheck.getChannel().getPipeline().get(ClientConnectionHandler.class);
+      if (connectionHandler == null) {
+        JoinStatusImpl status=new JoinStatusImpl();
+        status.setComplete();
+        return status;
+      }
+ else {
+        return connectionHandler.getJoinStatus();
+      }
     }
   }
-  return false;
+  return new JoinStatusImpl("Network system already active");
 }

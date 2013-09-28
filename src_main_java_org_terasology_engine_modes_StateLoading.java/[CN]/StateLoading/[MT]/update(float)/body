@@ -4,21 +4,13 @@
     if (current.step()) {
       popStep();
     }
- else {
-      completedSteps++;
-    }
   }
   if (current == null) {
     CoreRegistry.get(GUIManager.class).closeWindow("loading");
     CoreRegistry.get(GameEngine.class).changeState(new StateIngame());
   }
  else {
-    if (currentExpectedSteps > 0) {
-      loadingScreen.updateStatus(current.getMessage(),Math.min(100f,100f * completedSteps / currentExpectedSteps));
-    }
- else {
-      loadingScreen.updateStatus(current.getMessage(),0);
-    }
+    loadingScreen.updateStatus(current.getMessage(),100f * current.getProgress());
     guiManager.update();
   }
 }

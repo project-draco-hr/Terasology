@@ -228,6 +228,39 @@
   if (other.hasJoin()) {
     mergeJoin(other.getJoin());
   }
+  if (moduleRequestBuilder_ == null) {
+    if (!other.moduleRequest_.isEmpty()) {
+      if (moduleRequest_.isEmpty()) {
+        moduleRequest_=other.moduleRequest_;
+        bitField0_=(bitField0_ & ~0x00001000);
+      }
+ else {
+        ensureModuleRequestIsMutable();
+        moduleRequest_.addAll(other.moduleRequest_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.moduleRequest_.isEmpty()) {
+      if (moduleRequestBuilder_.isEmpty()) {
+        moduleRequestBuilder_.dispose();
+        moduleRequestBuilder_=null;
+        moduleRequest_=other.moduleRequest_;
+        bitField0_=(bitField0_ & ~0x00001000);
+        moduleRequestBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getModuleRequestFieldBuilder() : null;
+      }
+ else {
+        moduleRequestBuilder_.addAllMessages(other.moduleRequest_);
+      }
+    }
+  }
+  if (other.hasModuleDataHeader()) {
+    mergeModuleDataHeader(other.getModuleDataHeader());
+  }
+  if (other.hasModuleData()) {
+    mergeModuleData(other.getModuleData());
+  }
   if (other.hasJoinComplete()) {
     mergeJoinComplete(other.getJoinComplete());
   }

@@ -67,6 +67,24 @@
       return false;
     }
   }
+  for (int i=0; i < getModuleRequestCount(); i++) {
+    if (!getModuleRequest(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasModuleDataHeader()) {
+    if (!getModuleDataHeader().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
+  if (hasModuleData()) {
+    if (!getModuleData().isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
   if (hasJoinComplete()) {
     if (!getJoinComplete().isInitialized()) {
       memoizedIsInitialized=0;

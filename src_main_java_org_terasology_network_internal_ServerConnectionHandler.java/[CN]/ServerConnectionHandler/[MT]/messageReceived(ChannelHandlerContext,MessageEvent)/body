@@ -7,6 +7,9 @@
  else   if (message.hasJoin()) {
     receivedConnect(message.getJoin());
   }
+ else   if (message.getModuleRequestCount() > 0) {
+    sendModules(message.getModuleRequestList());
+  }
  else {
     logger.error("Received unexpected message");
   }

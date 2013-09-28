@@ -1,0 +1,35 @@
+{
+  if (receivingModule != null) {
+    joinStatus.setErrorMessage("Module download error");
+    channelHandlerContext.getChannel().close();
+    return;
+  }
+  String moduleId=moduleDataHeader.getId();
+  if (missingModules.remove(moduleId.toLowerCase(Locale.ENGLISH))) {
+    if (moduleDataHeader.hasError()) {
+      joinStatus.setErrorMessage("Module download error: " + moduleDataHeader.getError());
+      channelHandlerContext.getChannel().close();
+    }
+ else {
+      String sizeString=getSizeString(moduleDataHeader.getSize());
+      joinStatus.setCurrentActivity("Downloading " + moduleDataHeader.getId() + ":"+ moduleDataHeader.getVersion()+ " ("+ sizeString+ ")");
+      receivingModule=moduleDataHeader;
+      lengthReceived=0;
+      try {
+        tempModuleLocation=Files.createTempFile("terasologyDownload",".tmp");
+        tempModuleLocation.toFile().deleteOnExit();
+        downloadingModule=new BufferedOutputStream(Files.newOutputStream(tempModuleLocation,StandardOpenOption.WRITE));
+      }
+ catch (      IOException e) {
+        logger.error("Failed to write received module",e);
+        joinStatus.setErrorMessage("Module download error");
+        channelHandlerContext.getChannel().close();
+      }
+    }
+  }
+ else {
+    logger.error("Received unwanted module {}:{} from server",moduleDataHeader.getId(),moduleDataHeader.getVersion());
+    joinStatus.setErrorMessage("Module download error");
+    channelHandlerContext.getChannel().close();
+  }
+}

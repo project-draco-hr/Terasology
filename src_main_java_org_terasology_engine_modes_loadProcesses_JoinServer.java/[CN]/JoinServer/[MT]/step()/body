@@ -1,5 +1,5 @@
 {
-  if (networkSystem.getServer() != null) {
+  if (joinStatus.getStatus() == JoinStatus.Status.COMPLETE) {
     NetData.ServerInfoMessage serverInfo=networkSystem.getServer().getInfo();
     gameManifest.setTitle(serverInfo.getGameName());
     for (    NetData.WorldInfo worldInfo : serverInfo.getWorldInfoList()) {
@@ -42,7 +42,9 @@
     assetManager.applyOverrides();
     return true;
   }
- else {
-    return false;
+ else   if (joinStatus.getStatus() == JoinStatus.Status.FAILED) {
+    StateMainMenu mainMenu=new StateMainMenu("Failed to connect to server: " + joinStatus.getErrorMessage());
+    CoreRegistry.get(GameEngine.class).changeState(mainMenu);
   }
+  return false;
 }

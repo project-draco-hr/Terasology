@@ -2,6 +2,7 @@
   logger.info("Received identity from server");
   if (!requestedCertificate) {
     logger.error("Received identity without requesting it: cancelling authentication");
+    joinStatus.setErrorMessage(AUTHENTICATION_FAILURE);
     ctx.getChannel().close();
     return;
   }
@@ -15,6 +16,7 @@
     }
  catch (    NoSuchAlgorithmException|NoSuchPaddingException|InvalidKeyException|BadPaddingException|IllegalBlockSizeException e) {
       logger.error("Unexpected error decrypting received certificate, ending connection attempt",e);
+      joinStatus.setErrorMessage(AUTHENTICATION_FAILURE);
       ctx.getChannel().close();
       return;
     }
@@ -23,6 +25,7 @@
     PublicIdentityCertificate publicCert=NetMessageUtil.convert(publicCertData);
     if (!publicCert.verifySignedBy(serverCertificate)) {
       logger.error("Received invalid certificate, not signed by server: cancelling authentication");
+      joinStatus.setErrorMessage(AUTHENTICATION_FAILURE);
       ctx.getChannel().close();
       return;
     }
@@ -36,7 +39,7 @@
   }
  catch (  InvalidProtocolBufferException e) {
     logger.error("Received invalid certificate data: cancelling authentication",e);
+    joinStatus.setErrorMessage(AUTHENTICATION_FAILURE);
     ctx.getChannel().close();
-    return;
   }
 }

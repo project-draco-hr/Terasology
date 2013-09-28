@@ -3,6 +3,12 @@
   if (message.hasServerInfo()) {
     receivedServerInfo(message.getServerInfo());
   }
+ else   if (message.hasModuleDataHeader()) {
+    receiveModuleStart(message.getModuleDataHeader());
+  }
+ else   if (message.hasModuleData()) {
+    receiveModule(message.getModuleData());
+  }
  else   if (message.hasJoinComplete()) {
     completeJoin(message.getJoinComplete());
   }

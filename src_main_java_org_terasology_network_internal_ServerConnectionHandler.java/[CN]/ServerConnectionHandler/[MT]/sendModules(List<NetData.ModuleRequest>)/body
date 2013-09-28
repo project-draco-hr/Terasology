@@ -1,0 +1,35 @@
+{
+  for (  NetData.ModuleRequest request : moduleRequestList) {
+    Module module=moduleManager.getActiveModule(request.getModuleId());
+    NetData.ModuleDataHeader.Builder result=NetData.ModuleDataHeader.newBuilder();
+    result.setId(request.getModuleId());
+    if (module == null) {
+      result.setError("Module not available");
+    }
+ else     if (!module.isDataAvailable()) {
+      result.setError("Module not available for download");
+    }
+ else {
+      result.setVersion(module.getVersion().toString());
+      result.setSize(module.getSize());
+    }
+    channelHandlerContext.getChannel().write(NetData.NetMessage.newBuilder().setModuleDataHeader(result).build());
+    if (module != null && module.isDataAvailable()) {
+      try {
+        InputStream input=module.getData();
+        long remainingData=module.getSize();
+        byte[] data=new byte[1024];
+        while (remainingData > 0) {
+          int nextBlock=(int)Math.min(remainingData,1024);
+          ByteStreams.read(input,data,0,nextBlock);
+          channelHandlerContext.getChannel().write(NetData.NetMessage.newBuilder().setModuleData(NetData.ModuleData.newBuilder().setModule(ByteString.copyFrom(data,0,nextBlock))).build());
+          remainingData-=nextBlock;
+        }
+      }
+ catch (      IOException e) {
+        logger.error("Error sending module",e);
+        channelHandlerContext.getChannel().close();
+      }
+    }
+  }
+}

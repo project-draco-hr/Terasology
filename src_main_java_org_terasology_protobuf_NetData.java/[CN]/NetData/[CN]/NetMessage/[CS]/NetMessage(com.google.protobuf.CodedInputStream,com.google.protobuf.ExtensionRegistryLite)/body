@@ -139,8 +139,45 @@ break;
 }
 case 154:
 {
-org.terasology.protobuf.NetData.JoinCompleteMessage.Builder subBuilder=null;
+if (!((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
+moduleRequest_=new java.util.ArrayList<org.terasology.protobuf.NetData.ModuleRequest>();
+mutable_bitField0_|=0x00001000;
+}
+moduleRequest_.add(input.readMessage(org.terasology.protobuf.NetData.ModuleRequest.PARSER,extensionRegistry));
+break;
+}
+case 162:
+{
+org.terasology.protobuf.NetData.ModuleDataHeader.Builder subBuilder=null;
 if (((bitField0_ & 0x00000010) == 0x00000010)) {
+subBuilder=moduleDataHeader_.toBuilder();
+}
+moduleDataHeader_=input.readMessage(org.terasology.protobuf.NetData.ModuleDataHeader.PARSER,extensionRegistry);
+if (subBuilder != null) {
+subBuilder.mergeFrom(moduleDataHeader_);
+moduleDataHeader_=subBuilder.buildPartial();
+}
+bitField0_|=0x00000010;
+break;
+}
+case 170:
+{
+org.terasology.protobuf.NetData.ModuleData.Builder subBuilder=null;
+if (((bitField0_ & 0x00000020) == 0x00000020)) {
+subBuilder=moduleData_.toBuilder();
+}
+moduleData_=input.readMessage(org.terasology.protobuf.NetData.ModuleData.PARSER,extensionRegistry);
+if (subBuilder != null) {
+subBuilder.mergeFrom(moduleData_);
+moduleData_=subBuilder.buildPartial();
+}
+bitField0_|=0x00000020;
+break;
+}
+case 178:
+{
+org.terasology.protobuf.NetData.JoinCompleteMessage.Builder subBuilder=null;
+if (((bitField0_ & 0x00000040) == 0x00000040)) {
 subBuilder=joinComplete_.toBuilder();
 }
 joinComplete_=input.readMessage(org.terasology.protobuf.NetData.JoinCompleteMessage.PARSER,extensionRegistry);
@@ -148,13 +185,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(joinComplete_);
 joinComplete_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000010;
+bitField0_|=0x00000040;
 break;
 }
 case 802:
 {
 org.terasology.protobuf.NetData.HandshakeHello.Builder subBuilder=null;
-if (((bitField0_ & 0x00000020) == 0x00000020)) {
+if (((bitField0_ & 0x00000080) == 0x00000080)) {
 subBuilder=handshakeHello_.toBuilder();
 }
 handshakeHello_=input.readMessage(org.terasology.protobuf.NetData.HandshakeHello.PARSER,extensionRegistry);
@@ -162,13 +199,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(handshakeHello_);
 handshakeHello_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000020;
+bitField0_|=0x00000080;
 break;
 }
 case 810:
 {
 org.terasology.protobuf.NetData.NewIdentityRequest.Builder subBuilder=null;
-if (((bitField0_ & 0x00000040) == 0x00000040)) {
+if (((bitField0_ & 0x00000100) == 0x00000100)) {
 subBuilder=newIdentityRequest_.toBuilder();
 }
 newIdentityRequest_=input.readMessage(org.terasology.protobuf.NetData.NewIdentityRequest.PARSER,extensionRegistry);
@@ -176,13 +213,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(newIdentityRequest_);
 newIdentityRequest_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000040;
+bitField0_|=0x00000100;
 break;
 }
 case 818:
 {
 org.terasology.protobuf.NetData.ProvisionIdentity.Builder subBuilder=null;
-if (((bitField0_ & 0x00000080) == 0x00000080)) {
+if (((bitField0_ & 0x00000200) == 0x00000200)) {
 subBuilder=provisionIdentity_.toBuilder();
 }
 provisionIdentity_=input.readMessage(org.terasology.protobuf.NetData.ProvisionIdentity.PARSER,extensionRegistry);
@@ -190,13 +227,13 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(provisionIdentity_);
 provisionIdentity_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000080;
+bitField0_|=0x00000200;
 break;
 }
 case 826:
 {
 org.terasology.protobuf.NetData.HandshakeVerification.Builder subBuilder=null;
-if (((bitField0_ & 0x00000100) == 0x00000100)) {
+if (((bitField0_ & 0x00000400) == 0x00000400)) {
 subBuilder=handshakeVerification_.toBuilder();
 }
 handshakeVerification_=input.readMessage(org.terasology.protobuf.NetData.HandshakeVerification.PARSER,extensionRegistry);
@@ -204,7 +241,7 @@ if (subBuilder != null) {
 subBuilder.mergeFrom(handshakeVerification_);
 handshakeVerification_=subBuilder.buildPartial();
 }
-bitField0_|=0x00000100;
+bitField0_|=0x00000400;
 break;
 }
 }
@@ -240,6 +277,9 @@ event_=java.util.Collections.unmodifiableList(event_);
 }
 if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
 blockFamilyRegistered_=java.util.Collections.unmodifiableList(blockFamilyRegistered_);
+}
+if (((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
+moduleRequest_=java.util.Collections.unmodifiableList(moduleRequest_);
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();

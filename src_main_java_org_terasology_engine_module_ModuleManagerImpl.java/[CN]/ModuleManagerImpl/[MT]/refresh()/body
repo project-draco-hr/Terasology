@@ -1,5 +1,7 @@
 {
   modules.clear();
+  activeModules.clear();
+  activeModules.put(engineModule.getId(),engineModule);
   Gson gson=new GsonBuilder().registerTypeAdapter(Version.class,new VersionHandler()).create();
   for (  Path rootModulePath : PathManager.getInstance().getModulePaths()) {
     try {
