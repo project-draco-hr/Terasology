@@ -1,0 +1,41 @@
+{
+  Map<Character,AxionElementReplacement> replacementMap=Maps.newHashMap();
+  SimpleAxionElementReplacement sapling=new SimpleAxionElementReplacement("s");
+  sapling.addReplacement(1f,"Tt");
+  final FastRandom rnd=new FastRandom();
+  SimpleAxionElementReplacement trunkTop=new SimpleAxionElementReplacement("t");
+  trunkTop.addReplacement(0.5f,new SimpleAxionElementReplacement.ReplacementGenerator(){
+    @Override public String generateReplacement(){
+      int deg=138 + rnd.randomInt(17) - 8;
+      return "W+(" + deg + ")[&Mb]Wt";
+    }
+  }
+);
+  trunkTop.addReplacement(0.5f,"Wt");
+  SimpleAxionElementReplacement smallBranch=new SimpleAxionElementReplacement("b");
+  smallBranch.addReplacement(0.8f,"Bb");
+  SimpleAxionElementReplacement trunk=new SimpleAxionElementReplacement("T");
+  trunk.addReplacement(0.7f,"TN");
+  replacementMap.put('s',sapling);
+  replacementMap.put('g',sapling);
+  replacementMap.put('t',trunkTop);
+  replacementMap.put('T',trunk);
+  replacementMap.put('b',smallBranch);
+  Block oakSapling=blockManager.getBlock("engine:OakSapling");
+  Block oakSaplingGenerated=blockManager.getBlock("engine:OakSaplingGenerated");
+  Block greenLeaf=blockManager.getBlock("engine:GreenLeaf");
+  Block oakTrunk=blockManager.getBlock("engine:OakTrunk");
+  float trunkAdvance=0.2f;
+  float branchAdvance=0.25f;
+  Map<Character,AxionElementGeneration> blockMap=Maps.newHashMap();
+  blockMap.put('s',new DefaultAxionElementGeneration(oakSapling,trunkAdvance));
+  blockMap.put('g',new DefaultAxionElementGeneration(oakSaplingGenerated,trunkAdvance));
+  blockMap.put('t',new DefaultAxionElementGeneration(greenLeaf,trunkAdvance));
+  blockMap.put('T',new DefaultAxionElementGeneration(oakTrunk,trunkAdvance));
+  blockMap.put('N',new DefaultAxionElementGeneration(oakTrunk,trunkAdvance));
+  blockMap.put('W',new SurroundAxionElementGeneration(oakTrunk,greenLeaf,trunkAdvance,1.4f));
+  blockMap.put('b',new SurroundAxionElementGeneration(greenLeaf,greenLeaf,branchAdvance,1.4f));
+  blockMap.put('B',new SurroundAxionElementGeneration(oakTrunk,greenLeaf,branchAdvance,2.1f));
+  blockMap.put('M',new AdvanceAxionElementGeneration(branchAdvance));
+  return new AdvancedLSystemTreeDefinition(replacementMap,blockMap,Arrays.asList(oakTrunk,greenLeaf),(float)Math.PI / 4);
+}
