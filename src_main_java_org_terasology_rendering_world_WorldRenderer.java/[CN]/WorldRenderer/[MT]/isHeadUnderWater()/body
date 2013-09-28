@@ -1,7 +1,7 @@
 {
   Vector3f cameraPos=new Vector3f(CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition());
   if (config.getRendering().isAnimateWater()) {
-    cameraPos.y+=0.5f;
+    cameraPos.y-=RenderHelper.evaluateOceanHeightAtPosition(cameraPos,worldProvider.getTime().getDays());
   }
   if (worldProvider.isBlockRelevant(new Vector3f(cameraPos))) {
     Block block=worldProvider.getBlock(new Vector3f(cameraPos));

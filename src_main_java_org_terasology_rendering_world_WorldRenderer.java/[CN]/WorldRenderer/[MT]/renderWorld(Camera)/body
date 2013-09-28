@@ -80,15 +80,15 @@
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Chunks (Alpha blend)");
   DefaultRenderingProcess.getInstance().beginRenderSceneTransparent();
-  boolean headUnderWater=isUnderWater();
-  if (headUnderWater) {
+  boolean isHeadUnderWater=isHeadUnderWater();
+  if (isHeadUnderWater) {
     glDisable(GL11.GL_CULL_FACE);
   }
   while (renderQueueChunksAlphaBlend.size() > 0) {
     renderChunk(renderQueueChunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,camera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
-  if (headUnderWater) {
+  if (isHeadUnderWater) {
     glEnable(GL11.GL_CULL_FACE);
   }
   PerformanceMonitor.endActivity();
