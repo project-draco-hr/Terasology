@@ -3,10 +3,14 @@
   char[] chars=axionString.toCharArray();
   for (int i=0, size=chars.length; i < size; i++) {
     char c=chars[i];
-    if (c == '(' || c == ')')     throw new IllegalArgumentException("Invalid axion - parameter without key");
+    if (c == '(' || c == ')') {
+      throw new IllegalArgumentException("Invalid axion - parameter without key");
+    }
     if (i + 1 < size && chars[i + 1] == '(') {
       int closingBracket=axionString.indexOf(')',i + 1);
-      if (closingBracket < 0)       throw new IllegalArgumentException("Invalid axion - missing closing bracket");
+      if (closingBracket < 0) {
+        throw new IllegalArgumentException("Invalid axion - missing closing bracket");
+      }
       String parameter=axionString.substring(i + 2,closingBracket);
       i=closingBracket;
       result.add(new AxionElement(c,parameter));
