@@ -21,9 +21,10 @@
     if (activeCamera != null) {
       program.setMatrix4("invViewProjMatrix",activeCamera.getInverseViewProjectionMatrix(),true);
     }
-    Vector3f fogWorldPosition=new Vector3f(0.0f,32.0f - activeCamera.getPosition().y,0.0f);
+    Vector3f fogWorldPosition=new Vector3f(0.0f,-activeCamera.getPosition().y,0.0f);
     program.setFloat3("fogWorldPosition",fogWorldPosition.x,fogWorldPosition.y,fogWorldPosition.z,true);
-    final float worldFog=Math.min(CoreRegistry.get(WorldProvider.class).getFog(activeCamera.getPosition()),0.5f);
+    WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+    float worldFog=worldRenderer.getSmoothedPlayerSunlightValue() * Math.min(CoreRegistry.get(WorldProvider.class).getFog(activeCamera.getPosition()),0.5f);
     program.setFloat4("volumetricFogSettings",volFogDensityAtViewer,volFogGlobalDensity,volFogHeightFalloff,worldFog);
   }
   DefaultRenderingProcess.FBO sceneTransparent=DefaultRenderingProcess.getInstance().getFBO("sceneTransparent");

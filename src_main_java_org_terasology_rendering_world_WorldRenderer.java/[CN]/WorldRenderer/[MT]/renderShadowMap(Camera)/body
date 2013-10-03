@@ -1,5 +1,6 @@
 {
   PerformanceMonitor.startActivity("Render World (Shadow Map)");
+  glDisable(GL_CULL_FACE);
   camera.lookThrough();
   while (renderQueueChunksOpaqueShadow.size() > 0) {
     renderChunk(renderQueueChunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.SHADOW_MAP);
@@ -7,5 +8,6 @@
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderShadows();
   }
+  glEnable(GL_CULL_FACE);
   PerformanceMonitor.endActivity();
 }
