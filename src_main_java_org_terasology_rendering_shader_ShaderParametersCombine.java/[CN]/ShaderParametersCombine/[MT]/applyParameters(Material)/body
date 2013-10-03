@@ -26,38 +26,6 @@
     final float worldFog=Math.min(CoreRegistry.get(WorldProvider.class).getFog(activeCamera.getPosition()),0.5f);
     program.setFloat4("volumetricFogSettings",volFogDensityAtViewer,volFogGlobalDensity,volFogHeightFalloff,worldFog);
   }
-  if (CoreRegistry.get(Config.class).getRendering().isVolumetricFog() || CoreRegistry.get(Config.class).getRendering().isVolumetricLighting()) {
-    Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
-    if (activeCamera != null) {
-      program.setMatrix4("invViewProjMatrix",activeCamera.getInverseViewProjectionMatrix(),true);
-    }
-  }
-  if (CoreRegistry.get(Config.class).getRendering().isVolumetricLighting()) {
-    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    DefaultRenderingProcess.getInstance().bindFboDepthTexture("sceneShadowMap");
-    program.setInt("texSceneShadowMap",texId++,true);
-    Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
-    Camera lightCamera=CoreRegistry.get(WorldRenderer.class).getLightCamera();
-    if (lightCamera != null && activeCamera != null) {
-      program.setMatrix4("lightViewMatrix",lightCamera.getViewMatrix(),true);
-      program.setMatrix4("lightProjMatrix",lightCamera.getProjectionMatrix(),true);
-      program.setMatrix4("lightViewProjMatrix",lightCamera.getViewProjectionMatrix(),true);
-      program.setMatrix4("viewMatrix",activeCamera.getViewMatrix(),true);
-      Matrix4f invViewMatrix=new Matrix4f();
-      invViewMatrix.invert(activeCamera.getViewMatrix());
-      program.setMatrix4("invViewMatrix",invViewMatrix,true);
-      Vector3f activeCameraToLightSpace=new Vector3f();
-      activeCameraToLightSpace.sub(activeCamera.getPosition(),lightCamera.getPosition());
-      program.setFloat3("activeCameraToLightSpace",activeCameraToLightSpace.x,activeCameraToLightSpace.y,activeCameraToLightSpace.z,true);
-    }
-    program.setFloat4("volumetricLightingSettings",volLightingDensity,volLightingDecay,volLightingPhi,volLightingScattering,true);
-    if (CoreRegistry.get(Config.class).getRendering().isCloudShadows()) {
-      Texture clouds=Assets.getTexture("engine:perlinNoiseTileable");
-      GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-      glBindTexture(GL11.GL_TEXTURE_2D,clouds.getId());
-      program.setInt("texSceneClouds",texId++,true);
-    }
-  }
   DefaultRenderingProcess.FBO sceneTransparent=DefaultRenderingProcess.getInstance().getFBO("sceneTransparent");
   if (sceneTransparent != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
