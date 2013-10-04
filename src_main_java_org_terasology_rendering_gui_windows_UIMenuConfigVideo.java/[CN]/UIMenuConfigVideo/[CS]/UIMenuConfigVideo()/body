@@ -237,8 +237,28 @@ volumetricFogButton.addState("Volumetric Fog: Off",volumetricFogStateAction);
 volumetricFogButton.addState("Volumetric Fog: On",volumetricFogStateAction);
 volumetricFogButton.addClickListener(clickAction);
 volumetricFogButton.setHorizontalAlign(EHorizontalAlign.CENTER);
-volumetricFogButton.setPosition(new Vector2f(-fovButton.getSize().x / 2f - 10f,300f + 5 * 40f));
+volumetricFogButton.setPosition(new Vector2f(-volumetricFogButton.getSize().x / 2f - 10f,300f + 5 * 40f));
 volumetricFogButton.setVisible(true);
+vSyncButton=new UIStateButton(new Vector2f(256f,32f));
+StateButtonAction vSyncStateAction=new StateButtonAction(){
+@Override public void action(UIDisplayElement element){
+UIStateButton button=(UIStateButton)element;
+TerasologyEngine te=(TerasologyEngine)CoreRegistry.get(GameEngine.class);
+if (button.getState() == 0) {
+te.setVSync(false);
+}
+ else {
+te.setVSync(true);
+}
+}
+}
+;
+vSyncButton.addState("VSync: Off",vSyncStateAction);
+vSyncButton.addState("VSync: On",vSyncStateAction);
+vSyncButton.addClickListener(clickAction);
+vSyncButton.setHorizontalAlign(EHorizontalAlign.CENTER);
+vSyncButton.setPosition(new Vector2f(vSyncButton.getSize().x / 2f,300f + 5 * 40f));
+vSyncButton.setVisible(true);
 backToConfigMenuButton=new UIButton(new Vector2f(256f,32f),UIButton.ButtonType.NORMAL);
 backToConfigMenuButton.getLabel().setText("Back");
 backToConfigMenuButton.setHorizontalAlign(EHorizontalAlign.CENTER);
@@ -265,5 +285,6 @@ addDisplayElement(fullscreenButton);
 addDisplayElement(outlineButton);
 addDisplayElement(shadowButton);
 addDisplayElement(volumetricFogButton);
+addDisplayElement(vSyncButton);
 setup();
 }
