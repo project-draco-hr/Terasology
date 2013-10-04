@@ -1,0 +1,14 @@
+{
+  StubLightingWorldView worldView=new StubLightingWorldView();
+  for (  Vector3i pos : Region3i.createFromCenterExtents(new Vector3i(1,0,0),new Vector3i(0,30,30))) {
+    worldView.setBlockAt(pos,solid);
+  }
+  worldView.setBlockAt(new Vector3i(0,0,0),fullLight);
+  BulkLightPropagator propagator=new BulkLightPropagator(worldView);
+  propagator.process(new BlockChange(new Vector3i(0,0,0),air,fullLight));
+  assertEquals(0,worldView.getLuminanceAt(new Vector3i(1,0,0)));
+  worldView.setBlockAt(new Vector3i(1,0,0),air);
+  propagator.process(new BlockChange(new Vector3i(1,0,0),solid,air));
+  assertEquals(14,worldView.getLuminanceAt(new Vector3i(1,0,0)));
+  assertEquals(13,worldView.getLuminanceAt(new Vector3i(2,0,0)));
+}

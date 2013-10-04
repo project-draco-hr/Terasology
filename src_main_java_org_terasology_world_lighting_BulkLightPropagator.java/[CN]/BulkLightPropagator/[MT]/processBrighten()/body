@@ -1,0 +1,14 @@
+{
+  int depth=0;
+  while (depth < QUEUE_DEPTH - 1) {
+    byte luminance=(byte)(15 - depth);
+    Set<Vector3i> toProcess=brightenQueues[depth];
+    brightenQueues[depth]=Sets.newLinkedHashSetWithExpectedSize(toProcess.size());
+    for (    Vector3i pos : toProcess) {
+      push(pos,luminance);
+    }
+    if (brightenQueues[depth].isEmpty()) {
+      depth++;
+    }
+  }
+}

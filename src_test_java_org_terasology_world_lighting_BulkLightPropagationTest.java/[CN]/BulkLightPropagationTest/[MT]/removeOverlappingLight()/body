@@ -1,0 +1,16 @@
+{
+  Vector3i lightPos=new Vector3i(5,0,0);
+  StubLightingWorldView worldView=new StubLightingWorldView();
+  worldView.setBlockAt(Vector3i.zero(),fullLight);
+  worldView.setBlockAt(lightPos,fullLight);
+  BulkLightPropagator propagator=new BulkLightPropagator(worldView);
+  propagator.process(new BlockChange(Vector3i.zero(),air,fullLight),new BlockChange(lightPos,air,fullLight));
+  worldView.setBlockAt(lightPos,air);
+  propagator.process(new BlockChange(lightPos,fullLight,air));
+  for (int i=0; i < 16; ++i) {
+    byte expectedLuminance=(byte)Math.max(0,fullLight.getLuminance() - i);
+    for (    Vector3i pos : Diamond3iIterator.iterateAtDistance(Vector3i.zero(),i)) {
+      assertEquals(expectedLuminance,worldView.getLuminanceAt(pos));
+    }
+  }
+}

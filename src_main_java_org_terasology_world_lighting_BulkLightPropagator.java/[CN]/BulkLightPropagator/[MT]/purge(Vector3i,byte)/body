@@ -1,0 +1,27 @@
+{
+  Block block=world.getBlockAt(pos);
+  brightenQueues[15 - oldLuminance].remove(pos);
+  if (block.getLuminance() > 0) {
+    brighten(pos,block.getLuminance());
+  }
+ else {
+    world.setLuminanceAt(pos,NO_LUMINANCE);
+  }
+  byte expectedLuminance=(byte)(oldLuminance - 1);
+  for (  Side side : Side.values()) {
+    Vector3i adjPos=new Vector3i(pos);
+    adjPos.add(side.getVector3i());
+    if (world.isInBounds(adjPos) && LightingUtil.canSpreadLightOutOf(block,side)) {
+      byte adjLuminance=world.getLuminanceAt(adjPos);
+      if (adjLuminance == expectedLuminance) {
+        Block adjBlock=world.getBlockAt(adjPos);
+        if (LightingUtil.canSpreadLightInto(adjBlock,side.reverse())) {
+          dim(adjPos,expectedLuminance);
+        }
+      }
+ else       if (adjLuminance > 0) {
+        queueSpreadLight(adjPos,adjLuminance);
+      }
+    }
+  }
+}

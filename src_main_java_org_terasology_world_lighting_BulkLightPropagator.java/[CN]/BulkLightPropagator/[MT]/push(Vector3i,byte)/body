@@ -1,0 +1,17 @@
+{
+  byte spreadLuminance=(byte)(luminance - 1);
+  Block block=world.getBlockAt(pos);
+  for (  Side side : Side.values()) {
+    Vector3i adjPos=new Vector3i(pos);
+    adjPos.add(side.getVector3i());
+    if (world.isInBounds(adjPos) && LightingUtil.canSpreadLightOutOf(block,side)) {
+      byte adjLuminance=world.getLuminanceAt(adjPos);
+      if (adjLuminance < spreadLuminance) {
+        Block adjBlock=world.getBlockAt(adjPos);
+        if (LightingUtil.canSpreadLightInto(adjBlock,side.reverse())) {
+          brighten(adjPos,spreadLuminance);
+        }
+      }
+    }
+  }
+}

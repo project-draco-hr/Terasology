@@ -1,0 +1,35 @@
+{
+  byte newBlockLuminance=blockChange.getTo().getLuminance();
+  byte existingLuminance=world.getLuminanceAt(blockChange.getPosition());
+  if (newBlockLuminance > existingLuminance) {
+    brighten(blockChange.getPosition(),newBlockLuminance);
+  }
+  byte oldBlockLuminance=blockChange.getFrom().getLuminance();
+  if (newBlockLuminance < oldBlockLuminance) {
+    dim(blockChange.getPosition(),oldBlockLuminance);
+  }
+  for (  Side side : Side.values()) {
+    PropagationComparison comparison=LightingUtil.compareLightingPropagation(blockChange.getTo(),blockChange.getFrom(),side);
+    if (comparison.isRestricting() && existingLuminance > 0) {
+      dim(blockChange.getPosition(),existingLuminance);
+      Vector3i adjPos=new Vector3i(blockChange.getPosition());
+      adjPos.add(side.getVector3i());
+      if (world.isInBounds(adjPos)) {
+        byte adjLuminance=world.getLuminanceAt(adjPos);
+        if (adjLuminance == existingLuminance - 1) {
+          dim(adjPos,adjLuminance);
+        }
+      }
+    }
+ else     if (comparison.isPermitting()) {
+      if (existingLuminance > 0) {
+        queueSpreadLight(blockChange.getPosition(),existingLuminance);
+      }
+      Vector3i adjPos=new Vector3i(blockChange.getPosition());
+      adjPos.add(side.getVector3i());
+      if (world.isInBounds(adjPos)) {
+        queueSpreadLight(adjPos,world.getLuminanceAt(adjPos));
+      }
+    }
+  }
+}
