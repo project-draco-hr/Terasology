@@ -20,12 +20,12 @@
     Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
     if (activeCamera != null) {
       program.setMatrix4("invViewProjMatrix",activeCamera.getInverseViewProjectionMatrix(),true);
-      Vector3f fogWorldPosition=new Vector3f(activeCamera.getPosition().x,32.0f,activeCamera.getPosition().y);
-      fogWorldPosition.sub(activeCamera.getPosition());
-      program.setFloat3("fogWorldPosition",fogWorldPosition.x,fogWorldPosition.y,fogWorldPosition.z,true);
-      final float worldFog=Math.min(CoreRegistry.get(WorldProvider.class).getFog(activeCamera.getPosition()),0.5f);
-      program.setFloat4("volumetricFogSettings",volFogDensityAtViewer,volFogGlobalDensity,volFogHeightFalloff,worldFog);
     }
+    Vector3f fogWorldPosition=new Vector3f(0.0f,-activeCamera.getPosition().y,0.0f);
+    program.setFloat3("fogWorldPosition",fogWorldPosition.x,fogWorldPosition.y,fogWorldPosition.z,true);
+    WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+    float worldFog=worldRenderer.getSmoothedPlayerSunlightValue() * Math.min(CoreRegistry.get(WorldProvider.class).getFog(activeCamera.getPosition()),0.5f);
+    program.setFloat4("volumetricFogSettings",volFogDensityAtViewer,volFogGlobalDensity,volFogHeightFalloff,worldFog);
   }
   DefaultRenderingProcess.FBO sceneTransparent=DefaultRenderingProcess.getInstance().getFBO("sceneTransparent");
   if (sceneTransparent != null) {
@@ -45,12 +45,14 @@
     program.setFloat("outlineDepthThreshold",outlineDepthThreshold,true);
     program.setFloat("outlineThickness",outlineThickness,true);
   }
-  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  DefaultRenderingProcess.getInstance().bindFboTexture("sceneSkyBand1");
-  program.setInt("texSceneSkyBand",texId++,true);
-  Vector4f skyInscatteringSettingsFrag=new Vector4f();
-  skyInscatteringSettingsFrag.y=skyInscatteringStrength;
-  skyInscatteringSettingsFrag.z=skyInscatteringLength;
-  skyInscatteringSettingsFrag.w=skyInscatteringThreshold;
-  program.setFloat4("skyInscatteringSettingsFrag",skyInscatteringSettingsFrag,true);
+  if (CoreRegistry.get(Config.class).getRendering().isInscattering()) {
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    DefaultRenderingProcess.getInstance().bindFboTexture("sceneSkyBand1");
+    program.setInt("texSceneSkyBand",texId++,true);
+    Vector4f skyInscatteringSettingsFrag=new Vector4f();
+    skyInscatteringSettingsFrag.y=skyInscatteringStrength;
+    skyInscatteringSettingsFrag.z=skyInscatteringLength;
+    skyInscatteringSettingsFrag.w=skyInscatteringThreshold;
+    program.setFloat4("skyInscatteringSettingsFrag",skyInscatteringSettingsFrag,true);
+  }
 }
