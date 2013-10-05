@@ -1,0 +1,14 @@
+{
+  int depth=0;
+  while (depth < rules.getMaxValue()) {
+    byte oldValue=(byte)(rules.getMaxValue() - depth);
+    Set<Vector3i> toProcess=reduceQueues[depth];
+    reduceQueues[depth]=Sets.newLinkedHashSetWithExpectedSize(toProcess.size());
+    for (    Vector3i pos : toProcess) {
+      purge(pos,oldValue);
+    }
+    if (reduceQueues[depth].isEmpty()) {
+      depth++;
+    }
+  }
+}

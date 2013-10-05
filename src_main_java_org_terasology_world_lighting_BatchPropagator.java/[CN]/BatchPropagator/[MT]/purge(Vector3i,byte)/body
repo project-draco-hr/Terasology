@@ -1,0 +1,26 @@
+{
+  Block block=world.getBlockAt(pos);
+  increaseQueues[rules.getMaxValue() - oldValue].remove(pos);
+  if (rules.getBlockValue(block) > 0) {
+    increase(pos,rules.getBlockValue(block));
+  }
+ else {
+    world.setValueAt(pos,NO_VALUE);
+  }
+  for (  Side side : Side.values()) {
+    byte expectedValue=rules.propagateValue(oldValue,side);
+    Vector3i adjPos=side.getAdjacentPos(pos);
+    if (world.isInBounds(adjPos) && rules.canSpreadOutOf(block,side)) {
+      byte adjValue=world.getValueAt(adjPos);
+      if (adjValue == expectedValue) {
+        Block adjBlock=world.getBlockAt(adjPos);
+        if (rules.canSpreadInto(adjBlock,side.reverse())) {
+          reduce(adjPos,expectedValue);
+        }
+      }
+ else       if (adjValue > 0) {
+        queueSpreadValue(adjPos,adjValue);
+      }
+    }
+  }
+}

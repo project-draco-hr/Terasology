@@ -1,10 +1,10 @@
 {
-  StubLightingWorldView worldView=new StubLightingWorldView();
+  StubPropagatorWorldView worldView=new StubPropagatorWorldView();
   worldView.setBlockAt(new Vector3i(0,0,0),mediumLight);
-  BulkLightPropagator propagator=new BulkLightPropagator(worldView);
+  BatchPropagator propagator=new BatchPropagator(lightRules,worldView);
   propagator.process(new BlockChange(new Vector3i(0,0,0),air,mediumLight));
   worldView.setBlockAt(new Vector3i(1,0,0),solid);
   propagator.process(new BlockChange(new Vector3i(1,0,0),air,solid));
-  assertEquals(0,worldView.getLuminanceAt(new Vector3i(1,0,0)));
-  assertEquals(1,worldView.getLuminanceAt(new Vector3i(2,0,0)));
+  assertEquals(0,worldView.getValueAt(new Vector3i(1,0,0)));
+  assertEquals(1,worldView.getValueAt(new Vector3i(2,0,0)));
 }
