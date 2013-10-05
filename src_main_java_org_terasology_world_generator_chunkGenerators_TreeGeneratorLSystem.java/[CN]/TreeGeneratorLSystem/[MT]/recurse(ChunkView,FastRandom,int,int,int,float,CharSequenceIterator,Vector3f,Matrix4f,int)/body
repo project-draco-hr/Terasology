@@ -65,13 +65,21 @@ tempRotation.setRotation(new AxisAngle4f(-1f,0f,0f,angle));
 rotation.mul(tempRotation);
 break;
 default :
-if (depth == maxDepth - 1) break;
+if (depth == maxDepth - 1) {
+break;
+}
 LSystemRule rule=ruleSet.get(c);
-if (rule == null) break;
+if (rule == null) {
+break;
+}
 float randVal=rand.randomFloat();
-if (randVal < 0f) randVal=-randVal;
+if (randVal < 0f) {
+randVal=-randVal;
+}
 float weightedFailureProbability=(float)Math.pow(1f - rule.getProbability(),(double)(maxDepth - depth));
-if (randVal < weightedFailureProbability) break;
+if (randVal < weightedFailureProbability) {
+break;
+}
 recurse(view,rand,posX,posY,posZ,angleOffset,new CharSequenceIterator(rule.getAxiom()),position,rotation,depth + 1);
 }
 }
