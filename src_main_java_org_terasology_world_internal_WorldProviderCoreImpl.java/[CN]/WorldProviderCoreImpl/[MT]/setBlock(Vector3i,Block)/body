@@ -1,0 +1,26 @@
+{
+  Vector3i chunkPos=TeraMath.calcChunkPos(worldPos);
+  Chunk chunk=chunkProvider.getChunk(chunkPos);
+  if (chunk != null) {
+    Vector3i blockPos=TeraMath.calcBlockPos(worldPos);
+    Block oldBlockType=chunk.setBlock(blockPos,type);
+    if (oldBlockType != type) {
+      BlockChange oldChange=blockChanges.get(worldPos);
+      if (oldChange == null) {
+        blockChanges.put(worldPos,new BlockChange(worldPos,oldBlockType,type));
+      }
+ else {
+        oldChange.setTo(type);
+      }
+      for (      Vector3i pos : TeraMath.getChunkRegionAroundWorldPos(worldPos,1)) {
+        Chunk dirtiedChunk=chunkProvider.getChunk(pos);
+        if (dirtiedChunk != null) {
+          dirtiedChunk.setDirty(true);
+        }
+      }
+      notifyBlockChanged(worldPos,type,oldBlockType);
+    }
+    return oldBlockType;
+  }
+  return null;
+}

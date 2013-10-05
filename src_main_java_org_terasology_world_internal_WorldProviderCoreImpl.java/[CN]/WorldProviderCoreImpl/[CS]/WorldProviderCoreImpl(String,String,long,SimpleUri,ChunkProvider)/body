@@ -9,4 +9,6 @@
   CoreRegistry.put(ChunkProvider.class,chunkProvider);
   this.worldTime=new WorldTimeImpl();
   worldTime.setMilliseconds(time);
+  propagators.add(new BatchPropagator(new LightPropagationRules(),new LightWorldView(chunkProvider)));
+  propagators.add(new BatchPropagator(new SunlightPropagationRules(),new SunlightWorldView(chunkProvider)));
 }

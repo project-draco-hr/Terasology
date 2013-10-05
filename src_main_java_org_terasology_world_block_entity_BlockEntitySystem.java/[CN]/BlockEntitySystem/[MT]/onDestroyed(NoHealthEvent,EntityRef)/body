@@ -4,7 +4,7 @@
   BlockDamageComponent blockDamageComponent=event.getDamageType().getComponent(BlockDamageComponent.class);
   Block upperBlock=worldProvider.getBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z);
   if (upperBlock.isSupportRequired()) {
-    worldProvider.setBlock(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z,BlockManager.getAir(),upperBlock);
+    worldProvider.setBlock(new Vector3i(blockComp.getPosition().x,blockComp.getPosition().y + 1,blockComp.getPosition().z),BlockManager.getAir());
   }
   if (blockDamageComponent == null || !blockDamageComponent.skipPerBlockEffects) {
     entity.send(new PlaySoundEvent(Assets.getSound("engine:RemoveBlock"),0.6f));
@@ -27,5 +27,5 @@
       pickup.send(new ImpulseEvent(random.randomVector3f(30)));
     }
   }
-  worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir(),oldBlock);
+  worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir());
 }

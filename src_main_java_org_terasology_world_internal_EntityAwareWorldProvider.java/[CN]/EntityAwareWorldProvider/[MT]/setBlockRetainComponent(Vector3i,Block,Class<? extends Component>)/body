@@ -1,0 +1,11 @@
+{
+  if (Thread.currentThread().equals(mainThread)) {
+    EntityRef blockEntity=getBlockEntityAt(pos);
+    Block oldType=super.setBlock(pos,type);
+    if (oldType != null) {
+      updateBlockEntity(blockEntity,pos,oldType,type,false,Sets.newHashSet(components));
+    }
+    return oldType;
+  }
+  return null;
+}

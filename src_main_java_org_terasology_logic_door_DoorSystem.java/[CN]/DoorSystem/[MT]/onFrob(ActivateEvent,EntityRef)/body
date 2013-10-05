@@ -5,10 +5,10 @@
   BlockRegionComponent regionComp=entity.getComponent(BlockRegionComponent.class);
   Block bottomBlock=door.bottomBlockFamily.getBlockForPlacement(worldProvider,blockEntityRegistry,regionComp.region.min(),newSide,Side.TOP);
   Block oldBottomBlock=door.bottomBlockFamily.getBlockForPlacement(worldProvider,blockEntityRegistry,regionComp.region.min(),oldSide,Side.TOP);
-  worldProvider.setBlock(regionComp.region.min(),bottomBlock,oldBottomBlock);
+  worldProvider.setBlock(regionComp.region.min(),bottomBlock);
   Block topBlock=door.topBlockFamily.getBlockForPlacement(worldProvider,blockEntityRegistry,regionComp.region.max(),newSide,Side.TOP);
   Block oldTopBlock=door.topBlockFamily.getBlockForPlacement(worldProvider,blockEntityRegistry,regionComp.region.max(),oldSide,Side.TOP);
-  worldProvider.setBlock(regionComp.region.max(),topBlock,oldTopBlock);
+  worldProvider.setBlock(regionComp.region.max(),topBlock);
   Sound sound=(door.isOpen) ? door.closeSound : door.openSound;
   if (sound != null) {
     LocationComponent loc=entity.getComponent(LocationComponent.class);

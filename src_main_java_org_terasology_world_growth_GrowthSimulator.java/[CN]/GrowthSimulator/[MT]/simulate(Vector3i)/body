@@ -9,7 +9,7 @@
       Block bUp=world.getBlock(blockPos.x,blockPos.y,blockPos.z + 1);
       Block bDown=world.getBlock(blockPos.x,blockPos.y,blockPos.z - 1);
       if (bLeft == grass || bRight == grass || bDown == grass || bUp == grass) {
-        if (world.setBlock(blockPos,grass,dirt)) {
+        if (world.setBlock(blockPos,grass) != null) {
           if (bLeft == dirt) {
             blockQueue.offer(new Vector3i(blockPos.x - 1,blockPos.y,blockPos.z));
           }

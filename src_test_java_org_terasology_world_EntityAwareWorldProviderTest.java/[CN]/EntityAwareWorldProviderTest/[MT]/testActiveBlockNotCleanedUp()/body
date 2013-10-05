@@ -3,7 +3,7 @@
   testBlock.setKeepActive(true);
   BlockFamily blockFamily=new SymmetricFamily(new BlockUri("test:keepActive"),testBlock);
   blockManager.addBlockFamily(blockFamily,true);
-  worldStub.setBlock(0,0,0,testBlock,BlockManager.getAir());
+  worldStub.setBlock(Vector3i.zero(),testBlock);
   BlockEventChecker checker=new BlockEventChecker();
   entityManager.getEventSystem().registerEventHandler(checker);
   EntityRef blockEntity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));

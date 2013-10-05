@@ -1,0 +1,12 @@
+{
+  for (  Iterable<Vector3i> region : fromRegions) {
+    for (    Vector3i pos : region) {
+      byte val=world.getValueAt(pos);
+      if (val > 0) {
+        queueSpreadValue(pos,val);
+      }
+    }
+  }
+  processIncrease();
+  cleanUp();
+}

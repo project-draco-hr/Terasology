@@ -8,21 +8,21 @@
     Block newBlock=newTreeBlock.getValue();
     if (oldBlock != null && oldBlock != newBlock) {
       if (location.equals(origin)) {
-        blockEntityRegistry.setBlockRetainComponent(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z,newBlock,oldBlock,LSystemTreeComponent.class,LivingTreeComponent.class);
+        blockEntityRegistry.setBlockRetainComponent(new Vector3i(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z),newBlock,LSystemTreeComponent.class,LivingTreeComponent.class);
       }
  else {
-        worldProvider.setBlock(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z,newBlock,oldBlock);
+        worldProvider.setBlock(new Vector3i(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z),newBlock);
       }
       replaceCount++;
     }
  else     if (oldBlock == null) {
-      worldProvider.setBlock(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z,newBlock,air);
+      worldProvider.setBlock(new Vector3i(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z),newBlock);
       replaceCount++;
     }
   }
   for (  Map.Entry<Vector3i,Block> oldTreeBlock : currentTree.entrySet()) {
     Vector3i location=oldTreeBlock.getKey();
-    worldProvider.setBlock(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z,air,oldTreeBlock.getValue());
+    worldProvider.setBlock(new Vector3i(treeLocation.x + location.x,treeLocation.y + location.y,treeLocation.z + location.z),air);
     replaceCount++;
   }
   logger.debug("Replaced block count: " + replaceCount);

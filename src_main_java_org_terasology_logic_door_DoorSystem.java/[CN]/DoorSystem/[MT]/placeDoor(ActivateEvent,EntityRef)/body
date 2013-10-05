@@ -54,9 +54,9 @@
     closedSide=attachSide.yawClockwise(1);
   }
   Block newBottomBlock=door.bottomBlockFamily.getBlockForPlacement(worldProvider,blockEntityRegistry,bottomBlockPos,closedSide,Side.TOP);
-  worldProvider.setBlock(bottomBlockPos,newBottomBlock,bottomBlock);
+  worldProvider.setBlock(bottomBlockPos,newBottomBlock);
   Block newTopBlock=door.topBlockFamily.getBlockForPlacement(worldProvider,blockEntityRegistry,bottomBlockPos,closedSide,Side.TOP);
-  worldProvider.setBlock(topBlockPos,newTopBlock,topBlock);
+  worldProvider.setBlock(topBlockPos,newTopBlock);
   EntityRef newDoor=entityManager.copy(entity);
   newDoor.addComponent(new BlockRegionComponent(Region3i.createBounded(bottomBlockPos,topBlockPos)));
   Vector3f doorCenter=bottomBlockPos.toVector3f();

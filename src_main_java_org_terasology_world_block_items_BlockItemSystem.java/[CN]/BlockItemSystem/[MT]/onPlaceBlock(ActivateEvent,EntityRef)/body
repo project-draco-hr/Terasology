@@ -13,7 +13,7 @@
   Block block=type.getBlockForPlacement(worldProvider,blockEntityRegistry,placementPos,surfaceSide,secondaryDirection);
   if (canPlaceBlock(block,targetBlock,placementPos)) {
     if (networkSystem.getMode().isAuthority()) {
-      if (!worldProvider.setBlock(placementPos,block,worldProvider.getBlock(placementPos))) {
+      if (worldProvider.setBlock(placementPos,block) == null) {
         event.consume();
         return;
       }

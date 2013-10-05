@@ -1,7 +1,7 @@
 {
-  worldProvider.setBlock(0,0,0,blockWithString,BlockManager.getAir());
+  worldProvider.setBlock(Vector3i.zero(),blockWithString);
   LifecycleEventChecker checker=new LifecycleEventChecker(entityManager.getEventSystem(),StringComponent.class);
-  worldProvider.setBlock(0,0,0,blockWithDifferentString,blockWithString);
+  worldProvider.setBlock(Vector3i.zero(),blockWithDifferentString);
   EntityRef blockEntity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));
   assertTrue(blockEntity.exists());
   assertEquals(Lists.newArrayList(new EventInfo(OnChangedComponent.newInstance(),blockEntity)),checker.receivedEvents);

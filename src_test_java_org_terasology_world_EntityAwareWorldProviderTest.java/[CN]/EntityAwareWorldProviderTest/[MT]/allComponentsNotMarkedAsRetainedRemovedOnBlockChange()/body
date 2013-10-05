@@ -1,9 +1,9 @@
 {
-  worldStub.setBlock(0,0,0,blockWithString,BlockManager.getAir());
+  worldStub.setBlock(Vector3i.zero(),blockWithString);
   EntityRef entity=worldProvider.getBlockEntityAt(new Vector3i(0,0,0));
   entity.addComponent(new ForceBlockActiveComponent());
   entity.addComponent(new RetainedOnBlockChangeComponent(2));
-  worldProvider.setBlock(0,0,0,BlockManager.getAir(),blockWithString);
+  worldProvider.setBlock(Vector3i.zero(),BlockManager.getAir());
   assertTrue(entity.hasComponent(RetainedOnBlockChangeComponent.class));
   assertFalse(entity.hasComponent(ForceBlockActiveComponent.class));
 }
