@@ -40,6 +40,15 @@
     }
 );
     PerformanceMonitor.endActivity();
+    for (    Side side : Side.horizontalSides()) {
+      Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
+      Chunk adjChunk=getChunk(adjChunkPos);
+      if (adjChunk != null) {
+        for (        BatchPropagator propagator : loadEdgePropagators) {
+          propagator.propagateBetween(chunk,adjChunk,side);
+        }
+      }
+    }
     if (!loaded) {
       worldEntity.send(new OnChunkGenerated(readyChunkInfo.getPos()));
     }

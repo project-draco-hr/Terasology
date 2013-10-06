@@ -1,7 +1,9 @@
 {
-  List<ReadyChunkInfo> readyChunkPositions=Lists.newArrayListWithExpectedSize(readyChunks.size());
-  readyChunks.drainTo(readyChunkPositions);
-  for (  ReadyChunkInfo info : readyChunkPositions) {
-    makeChunkAvailable(info);
+  ReadyChunkInfo readyChunkInfo=readyChunks.poll();
+  if (readyChunkInfo != null) {
+    makeChunkAvailable(readyChunkInfo);
+    for (    BatchPropagator propagator : loadEdgePropagators) {
+      propagator.process();
+    }
   }
 }

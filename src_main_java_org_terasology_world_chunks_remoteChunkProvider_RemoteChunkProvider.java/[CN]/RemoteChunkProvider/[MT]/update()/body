@@ -1,8 +1,21 @@
 {
-  if (!readyChunks.isEmpty() && listener != null) {
-    List<Vector3i> ready=Lists.newArrayListWithExpectedSize(readyChunks.size());
-    readyChunks.drainTo(ready);
-    for (    Vector3i pos : ready) {
+  if (listener != null) {
+    Vector3i pos=readyChunks.poll();
+    if (pos != null) {
+      Chunk chunk=chunkCache.get(pos);
+      chunk.markReady();
+      for (      Side side : Side.horizontalSides()) {
+        Vector3i adjChunkPos=side.getAdjacentPos(pos);
+        Chunk adjChunk=getChunk(adjChunkPos);
+        if (adjChunk != null) {
+          for (          BatchPropagator propagator : loadEdgePropagators) {
+            propagator.propagateBetween(chunk,adjChunk,side);
+          }
+        }
+      }
+      for (      BatchPropagator propagator : loadEdgePropagators) {
+        propagator.process();
+      }
       listener.onChunkReady(pos);
     }
   }

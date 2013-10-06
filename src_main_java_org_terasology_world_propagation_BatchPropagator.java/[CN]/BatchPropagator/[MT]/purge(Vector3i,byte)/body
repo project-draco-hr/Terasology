@@ -10,7 +10,7 @@
   for (  Side side : Side.values()) {
     byte expectedValue=rules.propagateValue(oldValue,side);
     Vector3i adjPos=side.getAdjacentPos(pos);
-    if (world.isInBounds(adjPos) && rules.canSpreadOutOf(block,side)) {
+    if (rules.canSpreadOutOf(block,side)) {
       byte adjValue=world.getValueAt(adjPos);
       if (adjValue == expectedValue) {
         Block adjBlock=world.getBlockAt(adjPos);

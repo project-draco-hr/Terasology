@@ -3,9 +3,9 @@
   for (  Side side : Side.values()) {
     byte spreadValue=rules.propagateValue(value,side);
     Vector3i adjPos=side.getAdjacentPos(pos);
-    if (world.isInBounds(adjPos) && rules.canSpreadOutOf(block,side)) {
+    if (rules.canSpreadOutOf(block,side)) {
       byte adjValue=world.getValueAt(adjPos);
-      if (adjValue < spreadValue) {
+      if (adjValue < spreadValue && adjValue != PropagatorWorldView.UNAVAILABLE) {
         Block adjBlock=world.getBlockAt(adjPos);
         if (rules.canSpreadInto(adjBlock,side.reverse())) {
           increase(adjPos,spreadValue);

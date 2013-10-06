@@ -2,7 +2,7 @@
   Chunk[] chunks=new Chunk[region.size().x * region.size().y * region.size().z];
   for (  Vector3i chunkPos : region) {
     Chunk chunk=nearCache.get(chunkPos);
-    if (chunk == null || chunk.getChunkState().compareTo(Chunk.State.FULL_LIGHT_CONNECTIVITY_PENDING) == -1) {
+    if (chunk == null || chunk.getChunkState() != Chunk.State.COMPLETE) {
       return null;
     }
     int index=(chunkPos.x - region.min().x) + region.size().x * (chunkPos.z - region.min().z);
