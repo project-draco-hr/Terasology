@@ -18,7 +18,10 @@
               logger.warn("Chunk {} is already in the near cache",getPosition());
             }
             preparingChunks.remove(getPosition());
-            if (chunk.getChunkState() == Chunk.State.COMPLETE) {
+            if (chunk.getChunkState() == Chunk.State.INTERNAL_LIGHT_GENERATION_PENDING) {
+              InternalLightProcessor.generateInternalLighting(chunk);
+              chunk.deflate();
+              chunk.setChunkState(Chunk.State.COMPLETE);
               readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
             }
  else {

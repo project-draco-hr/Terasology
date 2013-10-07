@@ -14,26 +14,8 @@
   final TeraArrays t=TeraArrays.getInstance();
   final TeraArray blockData=t.decode(message.getBlockData());
   Chunks c=Chunks.getInstance();
-  TeraArray sunlightData;
-  if (message.hasSunlightData()) {
-    sunlightData=t.decode(message.getSunlightData());
-  }
- else {
-    sunlightData=c.getSunlightDataEntry().factory.create(SIZE_X,SIZE_Y,SIZE_Z);
-    if (state == State.COMPLETE) {
-      state=State.INTERNAL_LIGHT_GENERATION_PENDING;
-    }
-  }
-  TeraArray lightData;
-  if (message.hasLightData()) {
-    lightData=t.decode(message.getLightData());
-  }
- else {
-    lightData=c.getLightDataEntry().factory.create(SIZE_X,SIZE_Y,SIZE_Z);
-    if (state == State.COMPLETE) {
-      state=State.INTERNAL_LIGHT_GENERATION_PENDING;
-    }
-  }
+  TeraArray sunlightData=c.getSunlightDataEntry().factory.create(SIZE_X,SIZE_Y,SIZE_Z);
+  TeraArray lightData=c.getLightDataEntry().factory.create(SIZE_X,SIZE_Y,SIZE_Z);
   TeraArray extraData;
   if (message.hasLiquidData()) {
     extraData=t.decode(message.getLiquidData());
@@ -41,5 +23,9 @@
  else {
     extraData=c.getExtraDataEntry().factory.create(SIZE_X,SIZE_Y,SIZE_Z);
   }
-  return new Chunk(pos,state,blockData,sunlightData,lightData,extraData,state == State.COMPLETE);
+  boolean previouslyComplete=state == State.COMPLETE;
+  if (previouslyComplete) {
+    state=State.INTERNAL_LIGHT_GENERATION_PENDING;
+  }
+  return new Chunk(pos,state,blockData,sunlightData,lightData,extraData,previouslyComplete);
 }
