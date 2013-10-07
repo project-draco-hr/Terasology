@@ -1,0 +1,10 @@
+{
+  if (Thread.currentThread() != gameThread) {
+    BlockingProcess blockingProcess=new BlockingProcess(process);
+    pendingRunnables.push(blockingProcess);
+    blockingProcess.waitForCompletion();
+  }
+ else {
+    process.run();
+  }
+}

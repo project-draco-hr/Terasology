@@ -7,6 +7,7 @@
   networkSystem.shutdown();
   eventSystem.process();
   componentSystemManager.shutdown();
+  GameThread.processWaitingProcesses();
   guiManager.closeAllWindows();
   if (worldRenderer != null) {
     worldRenderer.dispose();
@@ -20,4 +21,5 @@
   CoreRegistry.get(Console.class).dispose();
   CoreRegistry.clear();
   BlockManager.getAir().setEntity(EntityRef.NULL);
+  GameThread.clearWaitingProcesses();
 }
