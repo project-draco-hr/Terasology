@@ -14,7 +14,7 @@
       reduce(blockChange.getPosition(),existingValue);
       Vector3i adjPos=side.getAdjacentPos(blockChange.getPosition());
       byte adjValue=world.getValueAt(adjPos);
-      if (adjValue == rules.propagateValue(existingValue,side)) {
+      if (adjValue == rules.propagateValue(existingValue,side,blockChange.getFrom())) {
         reduce(adjPos,adjValue);
       }
     }

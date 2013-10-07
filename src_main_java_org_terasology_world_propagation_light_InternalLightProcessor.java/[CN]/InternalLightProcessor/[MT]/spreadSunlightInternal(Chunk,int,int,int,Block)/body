@@ -1,0 +1,32 @@
+{
+  byte lightValue=chunk.getSunlight(x,y,z);
+  if (y > 0 && SUNLIGHT_RULES.canSpreadOutOf(block,Side.BOTTOM)) {
+    Block adjBlock=chunk.getBlock(x,y - 1,z);
+    if (chunk.getSunlight(x,y - 1,z) < lightValue - 1 && SUNLIGHT_RULES.canSpreadInto(adjBlock,Side.TOP)) {
+      chunk.setSunlight(x,y - 1,z,(byte)(lightValue - 1));
+      spreadSunlightInternal(chunk,x,y - 1,z,adjBlock);
+    }
+  }
+  if (y < Chunk.SIZE_Y && lightValue < Chunk.MAX_LIGHT && SUNLIGHT_RULES.canSpreadOutOf(block,Side.TOP)) {
+    Block adjBlock=chunk.getBlock(x,y + 1,z);
+    if (chunk.getSunlight(x,y + 1,z) < lightValue - 1 && SUNLIGHT_RULES.canSpreadInto(adjBlock,Side.BOTTOM)) {
+      chunk.setSunlight(x,y + 1,z,(byte)(lightValue - 1));
+      spreadSunlightInternal(chunk,x,y + 1,z,adjBlock);
+    }
+  }
+  if (lightValue <= 1) {
+    return;
+  }
+  for (  Side adjDir : Side.horizontalSides()) {
+    int adjX=x + adjDir.getVector3i().x;
+    int adjZ=z + adjDir.getVector3i().z;
+    if (chunk.isInBounds(adjX,y,adjZ) && SUNLIGHT_RULES.canSpreadOutOf(block,adjDir)) {
+      byte adjLightValue=chunk.getSunlight(adjX,y,adjZ);
+      Block adjBlock=chunk.getBlock(adjX,y,adjZ);
+      if (adjLightValue < lightValue - 1 && SUNLIGHT_RULES.canSpreadInto(adjBlock,adjDir.reverse())) {
+        chunk.setSunlight(adjX,y,adjZ,(byte)(lightValue - 1));
+        spreadSunlightInternal(chunk,adjX,y,adjZ,adjBlock);
+      }
+    }
+  }
+}

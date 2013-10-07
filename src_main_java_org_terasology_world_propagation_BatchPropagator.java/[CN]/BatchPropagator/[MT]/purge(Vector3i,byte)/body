@@ -8,7 +8,7 @@
     world.setValueAt(pos,NO_VALUE);
   }
   for (  Side side : Side.values()) {
-    byte expectedValue=rules.propagateValue(oldValue,side);
+    byte expectedValue=rules.propagateValue(oldValue,side,block);
     Vector3i adjPos=side.getAdjacentPos(pos);
     if (rules.canSpreadOutOf(block,side)) {
       byte adjValue=world.getValueAt(adjPos);
