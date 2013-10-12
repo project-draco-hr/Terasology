@@ -1,10 +1,16 @@
 {
-  if (!running) {
-    disposed=true;
-    initialised=false;
-    Mouse.destroy();
-    Keyboard.destroy();
-    Display.destroy();
-    audioManager.dispose();
+  try {
+    if (!running) {
+      disposed=true;
+      initialised=false;
+      Mouse.destroy();
+      Keyboard.destroy();
+      Display.destroy();
+      audioManager.dispose();
+    }
+  }
+ catch (  Throwable t) {
+    logger.error("Uncaught exception",t);
+    throw new RuntimeException("Uncaught exception",t);
   }
 }

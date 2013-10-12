@@ -1,0 +1,43 @@
+{
+  float top=y + character.getyOffset();
+  float bottom=top + character.getHeight();
+  float left=x + character.getxOffset();
+  float right=left + character.getWidth();
+  float texTop=character.getY();
+  float texBottom=texTop + character.getTexHeight();
+  float texLeft=character.getX();
+  float texRight=texLeft + character.getTexWidth();
+  meshData.getVertices().add(left);
+  meshData.getVertices().add(top);
+  meshData.getVertices().add(0);
+  meshData.getTexCoord0().add(texLeft);
+  meshData.getTexCoord0().add(texTop);
+  meshData.getVertices().add(right);
+  meshData.getVertices().add(top);
+  meshData.getVertices().add(0);
+  meshData.getTexCoord0().add(texRight);
+  meshData.getTexCoord0().add(texTop);
+  meshData.getVertices().add(right);
+  meshData.getVertices().add(bottom);
+  meshData.getVertices().add(0);
+  meshData.getTexCoord0().add(texRight);
+  meshData.getTexCoord0().add(texBottom);
+  meshData.getVertices().add(left);
+  meshData.getVertices().add(bottom);
+  meshData.getVertices().add(0);
+  meshData.getTexCoord0().add(texLeft);
+  meshData.getTexCoord0().add(texBottom);
+  for (int i=0; i < 4; ++i) {
+    meshData.getColors().add(color.rf());
+    meshData.getColors().add(color.gf());
+    meshData.getColors().add(color.bf());
+    meshData.getColors().add(color.af());
+  }
+  meshData.getIndices().add(vertCount);
+  meshData.getIndices().add(vertCount + 1);
+  meshData.getIndices().add(vertCount + 2);
+  meshData.getIndices().add(vertCount);
+  meshData.getIndices().add(vertCount + 2);
+  meshData.getIndices().add(vertCount + 3);
+  vertCount+=4;
+}

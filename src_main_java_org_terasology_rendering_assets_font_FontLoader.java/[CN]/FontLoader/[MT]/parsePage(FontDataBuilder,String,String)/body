@@ -7,7 +7,11 @@
     if (texture == null) {
       throw new IOException("Failed to load font - unable to resolve font page '" + textureName + "'");
     }
-    builder.addPage(pageId,texture);
+    MaterialData materialData=new MaterialData(Assets.getShader("engine:font"));
+    materialData.setParam("texture",texture);
+    AssetUri matName=new AssetUri(AssetType.MATERIAL,moduleName,textureName + "_font");
+    Material pageMat=Assets.generateAsset(matName,materialData,Material.class);
+    builder.addPage(pageId,texture,pageMat);
   }
  else {
     throw new IOException("Failed to load font - invalid page line '" + pageInfo + "'");

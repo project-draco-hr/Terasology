@@ -1,0 +1,27 @@
+{
+  int wordWidth=font.getWidth(word);
+  if (wordWidth > maxWidth) {
+    if (currentLineLength > 0) {
+      endLine();
+    }
+    for (    char c : word.toCharArray()) {
+      int charWidth=font.getWidth(c);
+      if (currentLineLength + charWidth > maxWidth) {
+        endLine();
+      }
+      lineBuilder.append(c);
+      currentLineLength+=charWidth;
+    }
+  }
+ else {
+    if (currentLineLength > 0 && currentLineLength + spaceWidth + wordWidth > maxWidth) {
+      endLine();
+    }
+    if (currentLineLength != 0) {
+      lineBuilder.append(' ');
+      currentLineLength+=spaceWidth;
+    }
+    lineBuilder.append(word);
+    currentLineLength+=wordWidth;
+  }
+}

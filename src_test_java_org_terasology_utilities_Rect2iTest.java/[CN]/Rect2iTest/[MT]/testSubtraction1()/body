@@ -1,14 +1,7 @@
 {
-  Rect2i a=new Rect2i(1,2,3,3);
-  Rect2i b=new Rect2i(3,2,3,3);
-  List<Rect2i> sub=Rect2i.subtractEqualsSized(a,b);
+  Rect2i a=Rect2i.createFromMinAndSize(1,2,3,3);
+  Rect2i b=Rect2i.createFromMinAndSize(3,2,3,3);
+  List<Rect2i> sub=Rect2i.difference(a,b);
   assertEquals(1,sub.size());
-  int area=0;
-  for (  Rect2i r : sub) {
-    area+=r.area();
-  }
-  assertEquals(6,area);
-  Rect2i r0=findAnyRectWithArea(sub,6);
-  assertEquals(1,r0.posX);
-  assertEquals(2,r0.posY);
+  assertEquals(Rect2i.createFromMinAndSize(1,2,2,3),sub.get(0));
 }

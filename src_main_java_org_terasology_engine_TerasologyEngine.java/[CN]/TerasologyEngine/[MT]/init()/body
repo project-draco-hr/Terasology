@@ -3,23 +3,29 @@
     return;
   }
   initLogger();
-  logger.info("Initializing Terasology...");
-  logger.info(TerasologyVersion.getInstance().toString());
-  logger.info("Home path: {}",PathManager.getInstance().getHomePath());
-  logger.info("Install path: {}",PathManager.getInstance().getInstallPath());
-  logger.info("Java version: {}",System.getProperty("java.version"));
-  initConfig();
-  initNativeLibs();
-  initTimer();
-  initManagers();
-  initDisplay();
-  initOpenGL();
-  initOpenAL();
-  initControls();
-  updateInputConfig();
-  CoreRegistry.putPermanently(GUIManager.class,new GUIManager(this));
-  if (config.getSystem().isMonitoringEnabled()) {
-    new AdvancedMonitor().setVisible(true);
+  try {
+    logger.info("Initializing Terasology...");
+    logger.info(TerasologyVersion.getInstance().toString());
+    logger.info("Home path: {}",PathManager.getInstance().getHomePath());
+    logger.info("Install path: {}",PathManager.getInstance().getInstallPath());
+    logger.info("Java version: {}",System.getProperty("java.version"));
+    initConfig();
+    initNativeLibs();
+    initTimer();
+    initManagers();
+    initDisplay();
+    initOpenGL();
+    initOpenAL();
+    initControls();
+    updateInputConfig();
+    CoreRegistry.putPermanently(GUIManager.class,new GUIManager(this));
+    if (config.getSystem().isMonitoringEnabled()) {
+      new AdvancedMonitor().setVisible(true);
+    }
+    initialised=true;
   }
-  initialised=true;
+ catch (  Throwable t) {
+    logger.error("Failed to initialise Terasology",t);
+    throw new RuntimeException("Failed to initialise Terasology",t);
+  }
 }

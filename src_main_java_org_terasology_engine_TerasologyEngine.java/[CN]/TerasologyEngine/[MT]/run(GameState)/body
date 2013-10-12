@@ -1,11 +1,17 @@
 {
-  CoreRegistry.putPermanently(GameEngine.class,this);
-  if (!initialised) {
-    init();
+  try {
+    CoreRegistry.putPermanently(GameEngine.class,this);
+    if (!initialised) {
+      init();
+    }
+    changeState(initialState);
+    running=true;
+    Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+    mainLoop();
+    cleanup();
   }
-  changeState(initialState);
-  running=true;
-  Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-  mainLoop();
-  cleanup();
+ catch (  Throwable t) {
+    logger.error("Uncaught exception",t);
+    throw new RuntimeException("Uncaught exception",t);
+  }
 }

@@ -1,0 +1,15 @@
+{
+  TextCacheKey key=new TextCacheKey(text,font,state.textColor,shadowColor);
+  usedText.add(key);
+  Map<Material,Mesh> fontMesh=cachedText.get(key);
+  if (fontMesh == null) {
+    List<String> lines=Arrays.asList(text.split("\\r?\\n"));
+    fontMesh=font.createStringMesh(lines,state.textColor,shadowColor);
+    cachedText.put(key,fontMesh);
+  }
+  for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
+    entry.getKey().bindTextures();
+    entry.getKey().setFloat2("offset",state.offset.x,state.offset.y);
+    entry.getValue().render();
+  }
+}
