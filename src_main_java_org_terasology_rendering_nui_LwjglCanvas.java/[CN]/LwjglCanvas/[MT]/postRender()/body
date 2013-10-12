@@ -1,4 +1,11 @@
 {
+  glDisable(GL_SCISSOR_TEST);
+  if (!subregionStack.isEmpty()) {
+    logger.error("Subregions are not being correctly ended");
+    while (!subregionStack.isEmpty()) {
+      subregionStack.pop().close();
+    }
+  }
   Iterator<Map.Entry<TextCacheKey,Map<Material,Mesh>>> textIterator=cachedText.entrySet().iterator();
   while (textIterator.hasNext()) {
     Map.Entry<TextCacheKey,Map<Material,Mesh>> entry=textIterator.next();

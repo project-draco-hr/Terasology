@@ -1,0 +1,20 @@
+{
+  previousState=state;
+  subregionStack.push(this);
+  int left=region.minX() + state.region.minX();
+  int right=region.maxX() + state.region.minX();
+  int top=region.minY() + state.region.minY();
+  int bottom=region.maxY() + state.region.minY();
+  Rect2i subRegion=Rect2i.createFromMinAndMax(left,top,right,bottom);
+  if (crop) {
+    int cropLeft=Math.max(left,state.cropRegion.minX());
+    int cropRight=Math.min(right,state.cropRegion.maxX());
+    int cropTop=Math.max(top,state.cropRegion.minY());
+    int cropBottom=Math.min(bottom,state.cropRegion.maxY());
+    state=new CanvasState(subRegion,Rect2i.createFromMinAndMax(cropLeft,cropTop,cropRight,cropBottom));
+    glScissor(cropLeft,cropTop,cropRight - cropLeft,cropBottom - cropTop);
+  }
+ else {
+    state=new CanvasState(subRegion);
+  }
+}
