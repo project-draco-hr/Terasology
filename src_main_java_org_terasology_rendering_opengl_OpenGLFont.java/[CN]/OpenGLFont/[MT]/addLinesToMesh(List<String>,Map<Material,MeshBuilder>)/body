@@ -1,0 +1,19 @@
+{
+  int y=0;
+  for (  String line : lines) {
+    int x=0;
+    for (    char c : line.toCharArray()) {
+      FontCharacter character=data.getCharacter(c);
+      if (character != null && character.getPage() != null) {
+        MeshBuilder builder=meshBuilders.get(character.getPageMat());
+        if (builder == null) {
+          builder=new MeshBuilder();
+          meshBuilders.put(character.getPageMat(),builder);
+        }
+        builder.addCharacter(character,x,y);
+        x+=character.getxAdvance();
+      }
+    }
+    y+=data.getLineHeight();
+  }
+}
