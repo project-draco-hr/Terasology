@@ -1,0 +1,21 @@
+{
+  if (exp <= 0) {
+    if (exp == 0 || base == 1) {
+      return 1L;
+    }
+    return 0L;
+  }
+  long temp=base;
+  exp--;
+  while (true) {
+    if ((exp & 1) != 0) {
+      base*=temp;
+    }
+    exp>>=1;
+    if (exp == 0) {
+      break;
+    }
+    temp*=temp;
+  }
+  return base;
+}
