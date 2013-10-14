@@ -12,6 +12,9 @@
           chunk.setSunlight(x,y,z,sunlightMax);
           lastBlock=block;
         }
+ else {
+          break;
+        }
       }
       tops[x + Chunk.SIZE_X * z]=(short)y;
     }
@@ -28,8 +31,7 @@
         if (y > tops[x + Chunk.SIZE_X * z] && ((x > 0 && tops[(x - 1) + Chunk.SIZE_X * z] >= y) || (x < Chunk.SIZE_X - 1 && tops[(x + 1) + Chunk.SIZE_X * z] >= y) || (z > 0 && tops[x + Chunk.SIZE_X * (z - 1)] >= y)|| (z < Chunk.SIZE_Z - 1 && tops[x + Chunk.SIZE_X * (z + 1)] >= y))) {
           spreadSunlightInternal(chunk,x,y,z,block);
         }
-        if (block.getLuminance() > 0) {
-          chunk.setLight(x,y,z,block.getLuminance());
+        if (block.getLuminance() > 1) {
           lightPropagator.propagateFrom(new Vector3i(x,y,z),block);
         }
       }

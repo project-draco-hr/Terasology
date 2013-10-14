@@ -1,5 +1,8 @@
 {
   byte lightValue=chunk.getSunlight(x,y,z);
+  if (lightValue <= 1) {
+    return;
+  }
   if (y > 0 && SUNLIGHT_RULES.canSpreadOutOf(block,Side.BOTTOM)) {
     Block adjBlock=chunk.getBlock(x,y - 1,z);
     if (chunk.getSunlight(x,y - 1,z) < lightValue - 1 && SUNLIGHT_RULES.canSpreadInto(adjBlock,Side.TOP)) {
@@ -13,9 +16,6 @@
       chunk.setSunlight(x,y + 1,z,(byte)(lightValue - 1));
       spreadSunlightInternal(chunk,x,y + 1,z,adjBlock);
     }
-  }
-  if (lightValue <= 1) {
-    return;
   }
   for (  Side adjDir : Side.horizontalSides()) {
     int adjX=x + adjDir.getVector3i().x;
