@@ -5,8 +5,8 @@
   tempRightVector.cross(viewingDirection,up);
   tempRightVector.scale(bobbingRotationOffsetFactor);
   projectionMatrix=createPerspectiveProjectionMatrix(fov,getzNear(),getzFar());
-  viewMatrix=TeraMath.createViewMatrix(0f,bobbingVerticalOffsetFactor * 2.0f,0f,viewingDirection.x,viewingDirection.y + bobbingVerticalOffsetFactor * 2.0f,viewingDirection.z,up.x + tempRightVector.x,up.y + tempRightVector.y,up.z + tempRightVector.z);
-  normViewMatrix=TeraMath.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x + tempRightVector.x,up.y + tempRightVector.y,up.z + tempRightVector.z);
+  viewMatrix=MatrixUtils.createViewMatrix(0f,bobbingVerticalOffsetFactor * 2.0f,0f,viewingDirection.x,viewingDirection.y + bobbingVerticalOffsetFactor * 2.0f,viewingDirection.z,up.x + tempRightVector.x,up.y + tempRightVector.y,up.z + tempRightVector.z);
+  normViewMatrix=MatrixUtils.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x + tempRightVector.x,up.y + tempRightVector.y,up.z + tempRightVector.z);
   reflectionMatrix.setRow(0,1.0f,0.0f,0.0f,0.0f);
   reflectionMatrix.setRow(1,0.0f,-1.0f,0.0f,2f * (-position.y + 32f));
   reflectionMatrix.setRow(2,0.0f,0.0f,1.0f,0.0f);
@@ -14,7 +14,7 @@
   viewMatrixReflected.mul(viewMatrix,reflectionMatrix);
   reflectionMatrix.setRow(1,0.0f,-1.0f,0.0f,0.0f);
   normViewMatrixReflected.mul(normViewMatrix,reflectionMatrix);
-  viewProjectionMatrix=TeraMath.calcViewProjectionMatrix(viewMatrix,projectionMatrix);
+  viewProjectionMatrix=MatrixUtils.calcViewProjectionMatrix(viewMatrix,projectionMatrix);
   inverseProjectionMatrix.invert(projectionMatrix);
   inverseViewProjectionMatrix.invert(viewProjectionMatrix);
   cachedPosition.set(getPosition());
