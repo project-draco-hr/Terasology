@@ -1,7 +1,23 @@
 {
-  uiMat.setFloat2("scale",toArea.width(),toArea.height());
-  uiMat.setFloat2("offset",toArea.minX(),toArea.minY());
+  Util.checkGLError();
+  Vector2f scale=mode.scaleForRegion(toArea,texture.getWidth(),texture.getHeight());
+  uiMat.setFloat2("scale",scale);
+  uiMat.setFloat2("offset",state.region.minX() + toArea.minX() + 0.5f * (toArea.width() - scale.x),state.region.minY() + toArea.minY() + 0.5f * (toArea.height() - scale.y));
   uiMat.setTexture("texture",texture);
   uiMat.bindTextures();
-  simpleMesh.render();
+  if (mode == ScaleMode.SCALE_FILL) {
+    Rect2i cropRegion=Rect2i.createFromMinAndSize(toArea.minX() + state.region.minX(),toArea.minY() + state.region.minY(),toArea.width(),toArea.height());
+    if (!cropRegion.equals(state.cropRegion)) {
+      crop(cropRegion);
+      simpleMesh.render();
+      crop(state.cropRegion);
+    }
+ else {
+      simpleMesh.render();
+    }
+  }
+ else {
+    simpleMesh.render();
+  }
+  Util.checkGLError();
 }

@@ -7,13 +7,17 @@
   int bottom=region.maxY() + state.region.minY();
   Rect2i subRegion=Rect2i.createFromMinAndMax(left,top,right,bottom);
   if (crop) {
-    int cropLeft=Math.max(left,state.cropRegion.minX());
-    int cropRight=Math.min(right,state.cropRegion.maxX());
-    int cropTop=Math.max(top,state.cropRegion.minY());
-    int cropBottom=Math.min(bottom,state.cropRegion.maxY());
-    state=new CanvasState(subRegion,Rect2i.createFromMinAndMax(cropLeft,cropTop,cropRight,cropBottom));
-    glScissor(cropLeft,cropTop,cropRight - cropLeft,cropBottom - cropTop);
-    croppingRegion=true;
+    Rect2i cropRegion=subRegion.intersect(state.cropRegion);
+    if (cropRegion.isEmpty()) {
+    }
+ else     if (!cropRegion.equals(state.cropRegion)) {
+      state=new CanvasState(subRegion,cropRegion);
+      crop(cropRegion);
+      croppingRegion=true;
+    }
+ else {
+      state=new CanvasState(subRegion);
+    }
   }
  else {
     state=new CanvasState(subRegion);
