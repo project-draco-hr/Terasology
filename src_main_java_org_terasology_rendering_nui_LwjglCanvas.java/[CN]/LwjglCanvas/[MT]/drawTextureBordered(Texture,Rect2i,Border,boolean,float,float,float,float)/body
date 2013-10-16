@@ -1,0 +1,36 @@
+{
+  float top=(float)border.getTop() / texture.getHeight();
+  float left=(float)border.getLeft() / texture.getWidth();
+  float bottom=(float)border.getBottom() / texture.getHeight();
+  float right=(float)border.getRight() / texture.getWidth();
+  int centerHoriz=toArea.width() - border.getLeft() - border.getRight();
+  int centerVert=toArea.height() - border.getTop() - border.getBottom();
+  if (border.getTop() != 0) {
+    if (border.getLeft() != 0) {
+      drawTexture(texture,Rect2i.createFromMinAndSize(toArea.minX(),toArea.minY(),border.getLeft(),border.getTop()),ScaleMode.STRETCH,ux,uy,left,top);
+    }
+    drawTexture(texture,Rect2i.createFromMinAndSize(toArea.minX() + border.getLeft(),toArea.minY(),centerHoriz,border.getTop()),ScaleMode.STRETCH,ux + left,uy,uw - left - right,top);
+    if (border.getRight() != 0) {
+      Rect2i area=Rect2i.createFromMinAndSize(toArea.maxX() - border.getRight(),toArea.minY(),border.getRight(),border.getTop());
+      drawTexture(texture,area,ScaleMode.STRETCH,ux + uw - right,uy,right,top);
+    }
+  }
+  if (border.getLeft() != 0) {
+    Rect2i area=Rect2i.createFromMinAndSize(toArea.minX(),toArea.minY() + border.getTop(),border.getLeft(),centerVert);
+    drawTexture(texture,area,ScaleMode.STRETCH,ux,uy + top,left,uh - top - bottom);
+  }
+  drawTexture(texture,Rect2i.createFromMinAndSize(toArea.minX() + border.getLeft(),toArea.minY() + border.getTop(),centerHoriz,centerVert),ScaleMode.STRETCH,ux + left,uy + top,uw - left - right,uh - top - bottom);
+  if (border.getRight() != 0) {
+    Rect2i area=Rect2i.createFromMinAndSize(toArea.maxX() - border.getRight(),toArea.minY() + border.getTop(),border.getRight(),centerVert);
+    drawTexture(texture,area,ScaleMode.STRETCH,ux + uw - right,uy + top,right,uh - top - bottom);
+  }
+  if (border.getBottom() != 0) {
+    if (border.getLeft() != 0) {
+      drawTexture(texture,Rect2i.createFromMinAndSize(toArea.minX(),toArea.maxY() - border.getBottom(),border.getLeft(),border.getBottom()),ScaleMode.STRETCH,ux,uy + uw - bottom,left,bottom);
+    }
+    drawTexture(texture,Rect2i.createFromMinAndSize(toArea.minX() + border.getLeft(),toArea.maxY() - border.getBottom(),centerHoriz,border.getBottom()),ScaleMode.STRETCH,ux + left,uy + uw - bottom,uw - left - right,bottom);
+    if (border.getRight() != 0) {
+      drawTexture(texture,Rect2i.createFromMinAndSize(toArea.maxX() - border.getRight(),toArea.maxY() - border.getBottom(),border.getRight(),border.getBottom()),ScaleMode.STRETCH,ux + uw - right,uy + uw - bottom,right,bottom);
+    }
+  }
+}
