@@ -5,7 +5,7 @@
   if (currentOnly) {
     enable();
     int id=getUniformLocation(getActiveShaderProgramId(),desc);
-    GL20.glUniformMatrix4(id,false,TeraMath.matrixToFloatBuffer(value));
+    GL20.glUniformMatrix4(id,false,MatrixUtils.matrixToFloatBuffer(value));
   }
  else {
     TIntIntIterator it=shaderPrograms.iterator();
@@ -13,7 +13,7 @@
       it.advance();
       GL20.glUseProgram(it.value());
       int id=getUniformLocation(it.value(),desc);
-      GL20.glUniformMatrix4(id,false,TeraMath.matrixToFloatBuffer(value));
+      GL20.glUniformMatrix4(id,false,MatrixUtils.matrixToFloatBuffer(value));
     }
     restoreStateAfterUniformsSet();
   }
