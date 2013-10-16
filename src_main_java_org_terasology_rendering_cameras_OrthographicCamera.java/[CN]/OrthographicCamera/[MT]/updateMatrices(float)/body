@@ -3,10 +3,10 @@
   if (cachedPosition.equals(getPosition()) && cachedViewigDirection.equals(getViewingDirection()) && cachedZFar == zFar && cachedZNear == zNear) {
     return;
   }
-  projectionMatrix=TeraMath.createOrthogonalProjectionMatrix(left,right,top,bottom,zNear,zFar);
-  viewMatrix=TeraMath.createViewMatrix(0f,0.0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
-  normViewMatrix=TeraMath.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
-  viewProjectionMatrix=TeraMath.calcViewProjectionMatrix(viewMatrix,projectionMatrix);
+  projectionMatrix=MatrixUtils.createOrthogonalProjectionMatrix(left,right,top,bottom,zNear,zFar);
+  viewMatrix=MatrixUtils.createViewMatrix(0f,0.0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
+  normViewMatrix=MatrixUtils.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
+  viewProjectionMatrix=MatrixUtils.calcViewProjectionMatrix(viewMatrix,projectionMatrix);
   inverseViewProjectionMatrix.invert(viewProjectionMatrix);
   cachedPosition.set(getPosition());
   cachedViewigDirection.set(getViewingDirection());

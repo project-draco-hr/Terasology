@@ -3,15 +3,15 @@
   if (cachedPosition.equals(getPosition()) && cachedViewigDirection.equals(getViewingDirection()) && cachedZFar == zFar && cachedZNear == zNear) {
     return;
   }
-  projectionMatrix=TeraMath.createPerspectiveProjectionMatrix(OculusVrHelper.getyFov(),OculusVrHelper.getAspectRatio(),zNear,zFar);
+  projectionMatrix=MatrixUtils.createPerspectiveProjectionMatrix(OculusVrHelper.getyFov(),OculusVrHelper.getAspectRatio(),zNear,zFar);
   projTranslationLeftEye.setIdentity();
   projTranslationLeftEye.setTranslation(new Vector3f(OculusVrHelper.getProjectionCenterOffset(),0.0f,0.0f));
   projTranslationRightEye.setIdentity();
   projTranslationRightEye.setTranslation(new Vector3f(-OculusVrHelper.getProjectionCenterOffset(),0.0f,0.0f));
   projectionMatrixLeftEye.mul(projTranslationLeftEye,projectionMatrix);
   projectionMatrixRightEye.mul(projTranslationRightEye,projectionMatrix);
-  viewMatrix=TeraMath.createViewMatrix(0f,0.0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
-  normViewMatrix=TeraMath.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
+  viewMatrix=MatrixUtils.createViewMatrix(0f,0.0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
+  normViewMatrix=MatrixUtils.createViewMatrix(0f,0f,0f,viewingDirection.x,viewingDirection.y,viewingDirection.z,up.x,up.y,up.z);
   reflectionMatrix.setRow(0,1.0f,0.0f,0.0f,0.0f);
   reflectionMatrix.setRow(1,0.0f,-1.0f,0.0f,2f * (-position.y + 32f));
   reflectionMatrix.setRow(2,0.0f,0.0f,1.0f,0.0f);
@@ -28,8 +28,8 @@
   viewMatrixRightEye.mul(viewMatrix,viewTranslationRightEye);
   viewMatrixReflectedLeftEye.mul(viewMatrixReflected,viewTranslationLeftEye);
   viewMatrixReflectedRightEye.mul(viewMatrixReflected,viewTranslationRightEye);
-  viewProjectionMatrixLeftEye=TeraMath.calcViewProjectionMatrix(viewMatrixLeftEye,projectionMatrixLeftEye);
-  viewProjectionMatrixRightEye=TeraMath.calcViewProjectionMatrix(viewMatrixRightEye,projectionMatrixRightEye);
+  viewProjectionMatrixLeftEye=MatrixUtils.calcViewProjectionMatrix(viewMatrixLeftEye,projectionMatrixLeftEye);
+  viewProjectionMatrixRightEye=MatrixUtils.calcViewProjectionMatrix(viewMatrixRightEye,projectionMatrixRightEye);
   inverseViewProjectionMatrixLeftEye.invert(viewProjectionMatrixLeftEye);
   inverseViewProjectionMatrixRightEye.invert(viewProjectionMatrixRightEye);
   inverseProjectionMatrixLeftEye.invert(projectionMatrixLeftEye);

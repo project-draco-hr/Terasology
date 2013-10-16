@@ -44,10 +44,10 @@
             lastMesh=(OpenGLMesh)meshComp.mesh;
             lastMesh.preRender();
           }
-          Matrix4f modelViewMatrix=TeraMath.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
-          TeraMath.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
+          Matrix4f modelViewMatrix=MatrixUtils.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
+          MatrixUtils.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
           material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
-          TeraMath.matrixToFloatBuffer(TeraMath.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
+          MatrixUtils.matrixToFloatBuffer(MatrixUtils.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
           material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
           material.setFloat("sunlight",worldRenderer.getSunlightValueAt(worldPos),true);
           material.setFloat("blockLight",worldRenderer.getBlockLightValueAt(worldPos),true);

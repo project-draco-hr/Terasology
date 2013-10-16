@@ -18,10 +18,10 @@
       worldPositionCameraSpace.sub(worldPos,cameraPosition);
       float worldScale=location.getWorldScale();
       matrixCameraSpace.set(new Quat4f(0,0,0,1),worldPositionCameraSpace,worldScale);
-      Matrix4f modelViewMatrix=TeraMath.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
-      TeraMath.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
+      Matrix4f modelViewMatrix=MatrixUtils.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
+      MatrixUtils.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
       material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
-      TeraMath.matrixToFloatBuffer(TeraMath.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
+      MatrixUtils.matrixToFloatBuffer(MatrixUtils.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
       material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
       SkeletalMeshComponent skeletalMesh=entity.getComponent(SkeletalMeshComponent.class);
       renderBone(skeletalMesh.rootBone,worldPos);
