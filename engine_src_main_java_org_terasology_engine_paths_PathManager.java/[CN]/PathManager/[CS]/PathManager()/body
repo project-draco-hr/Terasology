@@ -2,8 +2,10 @@
   try {
     URL urlToSource=PathManager.class.getProtectionDomain().getCodeSource().getLocation();
     Path codeLocation=Paths.get(urlToSource.toURI());
+    System.out.println("codeLocation: " + codeLocation);
     if (Files.isRegularFile(codeLocation)) {
-      installPath=codeLocation.getParent();
+      installPath=codeLocation.getParent().getParent();
+      System.out.println("Running from a file (jar). Setting installPath to: " + installPath);
     }
   }
  catch (  URISyntaxException e) {
@@ -11,6 +13,7 @@
   }
   if (installPath == null) {
     installPath=Paths.get("").toAbsolutePath();
+    System.out.println("installPath was null, running from IDE. Setting it to: " + installPath);
   }
   homePath=installPath;
 }
