@@ -1,8 +1,0 @@
-{
-  if (distance < 0)   throw new IllegalArgumentException("distance must be >= 0");
-  TwoNetworkNodes nodePair=new TwoNetworkNodes(from,to);
-  final Integer cachedDistance=distanceCache.get(nodePair);
-  if (cachedDistance != null)   return cachedDistance <= distance;
-  if ((!hasNetworkingNode(from) && !hasLeafNode(from)) || (!hasNetworkingNode(to) && !hasLeafNode(to)))   throw new IllegalArgumentException("Cannot test nodes not in network");
-  return isInDistanceInternal(distance,from,to,nodePair);
-}
