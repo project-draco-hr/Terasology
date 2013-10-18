@@ -14,11 +14,15 @@
     entry.getKey().bindTextures();
     if (shadowColor.a() != 0) {
       entry.getKey().setFloat2("offset",state.getAbsoluteOffsetX() + 1,state.getAbsoluteOffsetY() + 1);
-      entry.getKey().setFloat4("color",shadowColor.toVector4f());
+      Vector4f shadowValues=shadowColor.toVector4f();
+      shadowValues.w*=state.getAlpha();
+      entry.getKey().setFloat4("color",shadowValues);
       entry.getValue().render();
     }
     entry.getKey().setFloat2("offset",state.getAbsoluteOffsetX(),state.getAbsoluteOffsetY());
-    entry.getKey().setFloat4("color",state.textColor.toVector4f());
+    Vector4f colorValues=state.textColor.toVector4f();
+    colorValues.w*=state.getAlpha();
+    entry.getKey().setFloat4("color",colorValues);
     entry.getValue().render();
   }
   state.offset.y+=lines.size() * font.getLineHeight();

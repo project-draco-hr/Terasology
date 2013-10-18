@@ -12,20 +12,21 @@
     textureMat.setFloat2("texOffset",ux,uy);
     textureMat.setFloat2("texSize",uw,uh);
     textureMat.setTexture("texture",texture);
+    textureMat.setFloat4("color",1.0f,1.0f,1.0f,state.getAlpha());
     textureMat.bindTextures();
     if (mode == ScaleMode.SCALE_FILL) {
       Rect2i cropRegion=relativeToAbsolute(toArea).intersect(state.cropRegion);
       if (!cropRegion.equals(state.cropRegion)) {
         crop(cropRegion);
-        simpleMesh.render();
+        billboard.render();
         crop(state.cropRegion);
       }
  else {
-        simpleMesh.render();
+        billboard.render();
       }
     }
  else {
-      simpleMesh.render();
+      billboard.render();
     }
   }
 }
