@@ -1,0 +1,53 @@
+{
+  if (material == null) {
+    logger.warn("Attempted to draw with nonexistent material");
+    return;
+  }
+  if (mesh == null) {
+    logger.warn("Attempted to draw nonexistent mesh");
+    return;
+  }
+  if (!state.cropRegion.overlaps(relativeToAbsolute(region))) {
+    return;
+  }
+  AABB meshAABB=mesh.getAABB();
+  Vector3f meshExtents=meshAABB.getExtents();
+  float fitScale=0.45f * Math.min(region.width(),region.height()) / Math.max(meshExtents.x,Math.max(meshExtents.y,meshExtents.z));
+  Vector3f centerOffset=meshAABB.getCenter();
+  centerOffset.scale(-1.0f);
+  Quat4f fixRotation=new Quat4f();
+  QuaternionUtil.setEuler(fixRotation,0,0,TeraMath.PI);
+  Matrix4f centerTransform=new Matrix4f(IDENTITY_ROT,centerOffset,1.0f);
+  Matrix4f userTransform=new Matrix4f(rotation,offset,scale);
+  Matrix4f fixRotationTransform=new Matrix4f(fixRotation,ZERO_VECTOR,fitScale);
+  Matrix4f translateTransform=new Matrix4f(IDENTITY_ROT,new Vector3f(state.drawRegion.minX() + region.minX() + region.width() / 2,state.drawRegion.minY() + region.minY() + region.height() / 2,0),1);
+  userTransform.mul(centerTransform);
+  fixRotationTransform.mul(userTransform);
+  translateTransform.mul(fixRotationTransform);
+  Transform transform=new Transform(translateTransform);
+  float[] data=new float[16];
+  transform.getOpenGLMatrix(data);
+  FloatBuffer model=BufferUtils.createFloatBuffer(16);
+  model.put(data);
+  model.rewind();
+  Rect2i cropRegion=relativeToAbsolute(region).intersect(state.cropRegion);
+  crop(cropRegion);
+  glEnable(GL11.GL_DEPTH_TEST);
+  glClear(GL11.GL_DEPTH_BUFFER_BIT);
+  glMatrixMode(GL11.GL_MODELVIEW);
+  glPushMatrix();
+  glLoadMatrix(model);
+  boolean matrixStackSupported=material.supportsFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+  if (matrixStackSupported) {
+    material.activateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+  }
+  material.setFloat("alpha",state.getAlpha());
+  material.bindTextures();
+  mesh.render();
+  if (matrixStackSupported) {
+    material.deactivateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
+  }
+  glPopMatrix();
+  glDisable(GL11.GL_DEPTH_TEST);
+  crop(state.cropRegion);
+}
