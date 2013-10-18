@@ -1,15 +1,18 @@
 {
-  TextCacheKey key=new TextCacheKey(text,font,maxWidth,alignment);
+  TextCacheKey key=new TextCacheKey(text,font,drawWidth,alignment);
   usedText.add(key);
   Map<Material,Mesh> fontMesh=cachedText.get(key);
-  List<String> lines=LineBuilder.getLines(font,text,maxWidth);
+  List<String> lines=LineBuilder.getLines(font,text,drawWidth);
+  if (!state.cropRegion.overlaps(Rect2i.createFromMinAndSize(state.getAbsoluteOffsetX(),state.getAbsoluteOffsetY(),drawWidth,lines.size() * font.getLineHeight()))) {
+    return;
+  }
   if (fontMesh == null) {
-    fontMesh=font.createTextMesh(lines,maxWidth,alignment);
+    fontMesh=font.createTextMesh(lines,drawWidth,alignment);
     cachedText.put(key,fontMesh);
   }
   for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
     entry.getKey().bindTextures();
-    if (shadowColor != null) {
+    if (shadowColor.a() != 0) {
       entry.getKey().setFloat2("offset",state.getAbsoluteOffsetX() + 1,state.getAbsoluteOffsetY() + 1);
       entry.getKey().setFloat4("color",shadowColor.toVector4f());
       entry.getValue().render();

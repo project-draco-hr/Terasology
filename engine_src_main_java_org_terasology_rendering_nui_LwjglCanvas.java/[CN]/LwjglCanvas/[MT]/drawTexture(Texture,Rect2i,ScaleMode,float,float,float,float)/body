@@ -1,25 +1,31 @@
 {
-  Util.checkGLError();
-  Vector2f scale=mode.scaleForRegion(toArea,texture.getWidth(),texture.getHeight());
-  textureMat.setFloat2("scale",scale);
-  textureMat.setFloat2("offset",state.region.minX() + toArea.minX() + 0.5f * (toArea.width() - scale.x),state.region.minY() + toArea.minY() + 0.5f * (toArea.height() - scale.y));
-  textureMat.setFloat2("texOffset",ux,uy);
-  textureMat.setFloat2("texSize",uw,uh);
-  textureMat.setTexture("texture",texture);
-  textureMat.bindTextures();
-  if (mode == ScaleMode.SCALE_FILL) {
-    Rect2i cropRegion=Rect2i.createFromMinAndSize(toArea.minX() + state.region.minX(),toArea.minY() + state.region.minY(),toArea.width(),toArea.height());
-    if (!cropRegion.equals(state.cropRegion)) {
-      crop(cropRegion);
-      simpleMesh.render();
-      crop(state.cropRegion);
+  if (!state.cropRegion.overlaps(relativeToAbsolute(toArea))) {
+    return;
+  }
+  if (mode == ScaleMode.TILED) {
+    drawTextureTiled(texture,toArea,ux,uy,uw,uh);
+  }
+ else {
+    Vector2f scale=mode.scaleForRegion(toArea,texture.getWidth(),texture.getHeight());
+    textureMat.setFloat2("scale",scale);
+    textureMat.setFloat2("offset",state.drawRegion.minX() + toArea.minX() + 0.5f * (toArea.width() - scale.x),state.drawRegion.minY() + toArea.minY() + 0.5f * (toArea.height() - scale.y));
+    textureMat.setFloat2("texOffset",ux,uy);
+    textureMat.setFloat2("texSize",uw,uh);
+    textureMat.setTexture("texture",texture);
+    textureMat.bindTextures();
+    if (mode == ScaleMode.SCALE_FILL) {
+      Rect2i cropRegion=relativeToAbsolute(toArea).intersect(state.cropRegion);
+      if (!cropRegion.equals(state.cropRegion)) {
+        crop(cropRegion);
+        simpleMesh.render();
+        crop(state.cropRegion);
+      }
+ else {
+        simpleMesh.render();
+      }
     }
  else {
       simpleMesh.render();
     }
   }
- else {
-    simpleMesh.render();
-  }
-  Util.checkGLError();
 }

@@ -4,12 +4,12 @@
     disposed=true;
     LwjglSubRegion region=subregionStack.pop();
     while (!region.equals(this)) {
-      logger.error("UI Subregions being closed in an incorrect order");
+      logger.error("UI SubRegions being closed in an incorrect order");
       region.close();
       region=subregionStack.pop();
     }
     if (croppingRegion) {
-      glScissor(previousState.region.minX(),previousState.region.minY(),previousState.region.width(),previousState.region.height());
+      glScissor(previousState.drawRegion.minX(),previousState.drawRegion.minY(),previousState.drawRegion.width(),previousState.drawRegion.height());
     }
     state=previousState;
   }
