@@ -1,6 +1,6 @@
 {
   FastRandom rand=new FastRandom(seed);
-  on=true;
+  on=type.isUsingFBM();
   int[] noiseTable=new int[256];
   for (int i=0; i < 256; i++) {
     if (random) {
@@ -11,53 +11,21 @@
     }
   }
   for (int i=0; i < 256; i++) {
-    int j=0;
-switch (type) {
-case RANDOM:
-      j=rand.randomIntAbs(256);
-    break;
-case SINE:
-  j=TeraMath.fastAbs((int)(Math.sin(rand.randomDouble() * Math.PI) * 255.0));
-break;
-case TANGENT:
-j=TeraMath.fastAbs((int)Math.tan(rand.randomDouble() * TAN_BYTE));
-break;
-case HYPERBOLIC_SINE:
-j=TeraMath.fastAbs((int)Math.sinh(rand.randomDouble() * 6.238328));
-break;
-case HYPERBOLIC_TANGENT:
-j=(int)TeraMath.fastFloor((Math.tanh(rand.randomDouble() % 3) / Math.tanh(3)) * 256);
-j=(j < 0) ? -j : j;
-break;
-case LOGARYTHM:
-j=(int)(TeraMath.fastFloor((Math.log(rand.randomDouble() % 4) / 4) * 256)) % 256;
-j=(j < 0) ? -j : j;
-break;
-case ARCSINE:
-j=TeraMath.fastAbs((int)(Math.acos(rand.randomDouble()) * 256.0 / Math.PI));
-break;
-case ZEROES:
-on=false;
-break;
-case NONE:
-break;
-default :
-throw new IllegalArgumentException("Invalid swapping type");
-}
-if (j < 0) {
-j=0;
-}
- else if (j > 255) {
-j=255;
-}
-if (type != NoiseType.NONE) {
-int swap=noiseTable[i];
-noiseTable[i]=noiseTable[j];
-noiseTable[j]=swap;
-}
-}
-for (int i=0; i < 256; i++) {
-noisePermutations[i + 256]=noiseTable[i];
-noisePermutations[i]=noiseTable[i];
-}
+    int j=type.generate(rand);
+    if (j < 0) {
+      j=0;
+    }
+ else     if (j > 255) {
+      j=255;
+    }
+    if (type != NoiseType.NONE) {
+      int swap=noiseTable[i];
+      noiseTable[i]=noiseTable[j];
+      noiseTable[j]=swap;
+    }
+  }
+  for (int i=0; i < 256; i++) {
+    noisePermutations[i + 256]=noiseTable[i];
+    noisePermutations[i]=noiseTable[i];
+  }
 }
