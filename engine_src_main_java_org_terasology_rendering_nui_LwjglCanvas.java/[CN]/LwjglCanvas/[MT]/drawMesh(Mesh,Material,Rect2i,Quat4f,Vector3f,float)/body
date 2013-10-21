@@ -27,16 +27,16 @@
   Transform transform=new Transform(translateTransform);
   float[] data=new float[16];
   transform.getOpenGLMatrix(data);
-  FloatBuffer model=BufferUtils.createFloatBuffer(16);
-  model.put(data);
-  model.rewind();
+  matrixBuffer.put(data);
+  matrixBuffer.rewind();
   Rect2i cropRegion=relativeToAbsolute(region).intersect(state.cropRegion);
   crop(cropRegion);
   glEnable(GL11.GL_DEPTH_TEST);
   glClear(GL11.GL_DEPTH_BUFFER_BIT);
   glMatrixMode(GL11.GL_MODELVIEW);
   glPushMatrix();
-  glLoadMatrix(model);
+  glLoadMatrix(matrixBuffer);
+  matrixBuffer.rewind();
   boolean matrixStackSupported=material.supportsFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
   if (matrixStackSupported) {
     material.activateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
