@@ -17,12 +17,16 @@
       Vector4f shadowValues=shadowColor.toVector4f();
       shadowValues.w*=state.getAlpha();
       entry.getKey().setFloat4("color",shadowValues);
+      entry.getKey().setFloat4("croppingBoundaries",state.cropRegion.minX(),state.cropRegion.maxX() + 1,state.cropRegion.minY(),state.cropRegion.maxY() + 1);
       entry.getValue().render();
     }
     entry.getKey().setFloat2("offset",state.getAbsoluteOffsetX(),state.getAbsoluteOffsetY());
     Vector4f colorValues=state.textColor.toVector4f();
     colorValues.w*=state.getAlpha();
     entry.getKey().setFloat4("color",colorValues);
+    if (shadowColor.a() == 0) {
+      entry.getKey().setFloat4("croppingBoundaries",state.cropRegion.minX(),state.cropRegion.maxX() + 1,state.cropRegion.minY(),state.cropRegion.maxY() + 1);
+    }
     entry.getValue().render();
   }
   state.textCursorPos.y+=lines.size() * font.getLineHeight();

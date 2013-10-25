@@ -1,6 +1,5 @@
 {
   Util.checkGLError();
-  glDisable(GL_SCISSOR_TEST);
   if (!subregionStack.isEmpty()) {
     logger.error("UI Subregions are not being correctly ended");
     while (!subregionStack.isEmpty()) {
@@ -18,4 +17,10 @@
     }
   }
   usedText.clear();
+  glMatrixMode(GL_MODELVIEW);
+  glPopMatrix();
+  glMatrixMode(GL_PROJECTION);
+  glPopMatrix();
+  glMatrixMode(GL_MODELVIEW);
+  checkGLError();
 }
