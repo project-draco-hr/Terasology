@@ -1,0 +1,11 @@
+{
+  for (  InteractionRegion next : mouseOverRegions) {
+    if (next.region.contains(pos)) {
+      Vector2i relPos=new Vector2i(pos).sub(next.region.min());
+      if (next.listener.onMouseClick(button,relPos)) {
+        clickedRegion=next;
+        break;
+      }
+    }
+  }
+}

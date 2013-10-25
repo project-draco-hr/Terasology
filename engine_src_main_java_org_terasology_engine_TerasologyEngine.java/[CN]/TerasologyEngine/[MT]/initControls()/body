@@ -4,6 +4,8 @@
     Keyboard.enableRepeatEvents(true);
     Mouse.create();
     Mouse.setGrabbed(false);
+    InputSystem inputSystem=CoreRegistry.putPermanently(InputSystem.class,new InputSystem());
+    inputSystem.setMouseDevice(new LwjglMouseDevice());
   }
  catch (  LWJGLException e) {
     logger.error("Could not initialize controls.",e);

@@ -2,29 +2,9 @@
   if (!engine.hasFocus()) {
     return;
   }
-  while (Mouse.next()) {
-    if (Mouse.getEventButton() != -1) {
-      int button=Mouse.getEventButton();
-      boolean buttonDown=Mouse.getEventButtonState();
-      boolean consumed=sendMouseEvent(button,buttonDown,delta);
-      BindableButtonImpl bind=mouseButtonBinds.get(button);
-      if (bind != null) {
-        bind.updateBindState(buttonDown,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
-      }
-    }
- else     if (Mouse.getEventDWheel() != 0) {
-      int wheelMoved=Mouse.getEventDWheel();
-      boolean consumed=sendMouseWheelEvent(wheelMoved / 120,delta);
-      BindableButtonImpl bind=(wheelMoved > 0) ? mouseWheelUpBind : mouseWheelDownBind;
-      if (bind != null) {
-        bind.updateBindState(true,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
-        bind.updateBindState(false,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiManager.isConsumingInput());
-      }
-    }
-  }
-  int deltaX=Mouse.getDX();
-  if (deltaX != 0) {
-    MouseAxisEvent event=new MouseXAxisEvent(deltaX * config.getInput().getMouseSensitivity(),delta);
+  Vector2i deltaMouse=mouse.getDelta();
+  if (deltaMouse.x != 0) {
+    MouseAxisEvent event=new MouseXAxisEvent(deltaMouse.x * config.getInput().getMouseSensitivity(),delta);
     setupTarget(event);
     for (    EntityRef entity : getInputEntities()) {
       entity.send(event);
@@ -33,9 +13,8 @@
       }
     }
   }
-  int deltaY=Mouse.getDY();
-  if (deltaY != 0) {
-    MouseAxisEvent event=new MouseYAxisEvent(deltaY * config.getInput().getMouseSensitivity(),delta);
+  if (deltaMouse.y != 0) {
+    MouseAxisEvent event=new MouseYAxisEvent(deltaMouse.y * config.getInput().getMouseSensitivity(),delta);
     setupTarget(event);
     for (    EntityRef entity : getInputEntities()) {
       entity.send(event);
@@ -44,4 +23,33 @@
       }
     }
   }
+  for (  InputAction action : mouse.getInputQueue()) {
+switch (action.getInput().getType()) {
+case MOUSE_BUTTON:
+      int id=action.getInput().getId();
+    if (id != -1) {
+      boolean consumed=sendMouseEvent(id,action.getState().isDown(),delta);
+      BindableButtonImpl bind=mouseButtonBinds.get(id);
+      if (bind != null) {
+        bind.updateBindState(action.getState().isDown(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+      }
+    }
+  break;
+case MOUSE_WHEEL:
+int dir=action.getInput().getId();
+if (dir != 0 && action.getTurns() != 0) {
+boolean consumed=sendMouseWheelEvent(dir * action.getTurns(),delta);
+BindableButtonImpl bind=(dir == 1) ? mouseWheelUpBind : mouseWheelDownBind;
+if (bind != null) {
+  for (int i=0; i < action.getTurns(); ++i) {
+    bind.updateBindState(true,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+    bind.updateBindState(false,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+  }
+}
+}
+break;
+case KEY:
+break;
+}
+}
 }

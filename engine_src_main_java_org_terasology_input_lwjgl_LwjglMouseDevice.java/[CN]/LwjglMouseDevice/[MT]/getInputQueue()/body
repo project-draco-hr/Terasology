@@ -1,0 +1,14 @@
+{
+  Queue<InputAction> result=Queues.newArrayDeque();
+  while (Mouse.next()) {
+    if (Mouse.getEventButton() != -1) {
+      ButtonState state=(Mouse.getEventButtonState()) ? ButtonState.DOWN : ButtonState.UP;
+      result.add(new InputAction(InputType.MOUSE_BUTTON,Mouse.getEventButton(),state));
+    }
+    if (Mouse.getEventDWheel() != 0) {
+      int id=(Mouse.getEventDWheel() > 0) ? 1 : -1;
+      result.add(new InputAction(InputType.MOUSE_WHEEL,id,id * Mouse.getEventDWheel() / 120));
+    }
+  }
+  return result;
+}

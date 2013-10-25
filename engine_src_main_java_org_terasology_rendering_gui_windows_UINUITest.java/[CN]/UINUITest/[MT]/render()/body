@@ -1,14 +1,18 @@
 {
   canvas.preRender();
-  canvas.drawTexture(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(0,0,128,128),ScaleMode.STRETCH);
+  canvas.drawTextureBordered(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y),new Border(6,6,6,6),true);
+  canvas.drawTexture(getTexture(c1),Rect2i.createFromMinAndSize(0,0,128,128),ScaleMode.STRETCH);
+  canvas.addInteractionRegion(Rect2i.createFromMinAndSize(0,0,128,128),c1);
   canvas.drawTexture(Assets.getTexture("engine:loadingBackground"),Rect2i.createFromMinAndSize(12,12,104,104),ScaleMode.STRETCH);
   canvas.setTextCursor(15,100);
   canvas.drawTextShadowed(font,"Stretched",Color.BLACK);
-  canvas.drawTexture(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(128,0,128,128),ScaleMode.STRETCH);
+  canvas.drawTexture(getTexture(c2),Rect2i.createFromMinAndSize(128,0,128,128),ScaleMode.STRETCH);
+  canvas.addInteractionRegion(Rect2i.createFromMinAndSize(128,0,128,128),c2);
   canvas.drawTexture(Assets.getTexture("engine:loadingBackground"),Rect2i.createFromMinAndSize(140,12,104,104),ScaleMode.SCALE_FIT);
   canvas.setTextCursor(143,75);
   canvas.drawTextShadowed(font,"Scaled Fit",Color.BLACK);
-  canvas.drawTexture(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(256,0,128,128),ScaleMode.STRETCH);
+  canvas.drawTexture(getTexture(c3),Rect2i.createFromMinAndSize(256,0,128,128),ScaleMode.STRETCH);
+  canvas.addInteractionRegion(Rect2i.createFromMinAndSize(256,0,128,128),c3);
   canvas.drawTexture(Assets.getTexture("engine:loadingBackground"),Rect2i.createFromMinAndSize(268,12,104,104),ScaleMode.SCALE_FILL);
   canvas.setTextCursor(270,100);
   canvas.drawTextShadowed(font,"Scaled Fill",Color.BLACK);

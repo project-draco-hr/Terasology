@@ -1,12 +1,11 @@
 {
-  boolean guiConsumingInput=guiManager.isConsumingInput();
   while (Keyboard.next()) {
     int key=Keyboard.getEventKey();
     ButtonState state=getButtonState(Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
     boolean consumed=sendKeyEvent(key,state,delta);
     BindableButtonImpl bind=keyBinds.get(key);
     if (bind != null && !Keyboard.isRepeatEvent()) {
-      bind.updateBindState(Keyboard.getEventKeyState(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed,guiConsumingInput);
+      bind.updateBindState(Keyboard.getEventKeyState(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
     }
   }
 }
