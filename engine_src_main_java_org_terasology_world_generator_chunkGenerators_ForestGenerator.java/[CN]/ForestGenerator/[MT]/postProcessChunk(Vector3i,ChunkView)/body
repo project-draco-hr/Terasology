@@ -9,16 +9,9 @@
         WorldBiomeProvider.Biome biome=biomeProvider.getBiomeAt(worldPos.x,worldPos.z);
         int randX=x + random.nextInt(-3,3);
         int randZ=z + random.nextInt(-3,3);
-        Block posBlock=view.getBlock(randX,y,randZ);
-        if (posBlock == null) {
-          logger.error("WorldView.getBlock({}, {}, {}) return null, skipping forest generation (watchdog for issue #534)",randX,y,randZ);
-          return;
-        }
-        if (posBlock.equals(sandBlock) || posBlock.equals(grassBlock) || posBlock.equals(snowBlock)) {
-          TreeGenerator treeGen=random.nextItem(treeGenerators.get(biome));
-          if (treeGen != null && random.nextDouble() < treeGen.getGenerationProbability()) {
-            generateTree(view,treeGen,randX,y,randZ,random);
-          }
+        TreeGenerator treeGen=random.nextItem(treeGenerators.get(biome));
+        if (treeGen != null && treeGen.canGenerateAt(view,randX,y,randZ) && random.nextFloat() < treeGen.getGenerationProbability()) {
+          treeGen.generate(view,random,randX,y,randZ);
         }
       }
     }

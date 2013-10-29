@@ -1,0 +1,16 @@
+{
+  Block posBlock=view.getBlock(x,y - 1,z);
+  if (posBlock == null) {
+    logger.error("WorldView.getBlock({}, {}, {}) return null, skipping forest generation (watchdog for issue #534)",x,y,z);
+    return false;
+  }
+  if (!posBlock.equals(sandBlock) && !posBlock.equals(grassBlock) && !posBlock.equals(snowBlock)) {
+    return false;
+  }
+  for (int checkY=y; checkY < Chunk.SIZE_Y; ++checkY) {
+    if (!view.getBlock(x,checkY,z).isTranslucent()) {
+      return false;
+    }
+  }
+  return true;
+}
