@@ -1,0 +1,39 @@
+{
+  Block targetBlock=c.getBlock(x,y,z);
+  if ((targetBlock.equals(grassBlock) || targetBlock.equals(sandBlock) || targetBlock.equals(snowBlock)) && c.getBlock(x,y + 1,z).equals(airBlock)) {
+    double grassProb=1.0;
+    WorldBiomeProvider.Biome biome=biomeProvider.getBiomeAt(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
+switch (biome) {
+case PLAINS:
+      grassProb=config.getPlainsGrassDensity();
+    break;
+case MOUNTAINS:
+  grassProb=config.getMountainGrassDensity();
+break;
+case FOREST:
+grassProb=config.getForestGrassDensity();
+break;
+case SNOW:
+grassProb=config.getSnowGrassDensity();
+break;
+case DESERT:
+grassProb=config.getDesertGrassDensity();
+break;
+}
+if (random.nextFloat() < grassProb) {
+double rand=random.nextStandNormalDistrDouble();
+if (rand > -0.4 && rand < 0.4) {
+c.setBlock(x,y + 1,z,tallGrass1);
+}
+ else if (rand > -0.6 && rand < 0.6) {
+c.setBlock(x,y + 1,z,tallGrass2);
+}
+ else {
+c.setBlock(x,y + 1,z,tallGrass3);
+}
+if (random.nextStandNormalDistrDouble() < -2) {
+c.setBlock(x,y + 1,z,random.nextItem(flowers));
+}
+}
+}
+}
