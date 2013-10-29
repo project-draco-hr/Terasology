@@ -3,11 +3,11 @@
     ssaoSamples=BufferUtils.createFloatBuffer(SSAO_KERNEL_ELEMENTS * 3);
     for (int i=0; i < SSAO_KERNEL_ELEMENTS; ++i) {
       Vector3f vec=new Vector3f();
-      vec.x=RAND.randomFloat();
-      vec.y=RAND.randomFloat();
-      vec.z=RAND.randomPosFloat();
+      vec.x=random.nextFloat(-1.0f,1.0f);
+      vec.y=random.nextFloat(-1.0f,1.0f);
+      vec.z=random.nextFloat();
       vec.normalize();
-      vec.scale(RAND.randomPosFloat());
+      vec.scale(random.nextFloat(0.0f,1.0f));
       float scale=i / (float)SSAO_KERNEL_ELEMENTS;
       scale=TeraMath.lerpf(0.25f,1.0f,scale * scale);
       vec.scale(scale);

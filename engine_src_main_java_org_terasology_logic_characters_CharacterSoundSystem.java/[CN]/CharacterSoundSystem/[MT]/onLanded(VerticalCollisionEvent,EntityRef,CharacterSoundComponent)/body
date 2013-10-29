@@ -5,10 +5,10 @@
   if (characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs()) {
     Sound sound=null;
     if (characterSounds.landingSounds.size() > 0) {
-      sound=random.randomItem(characterSounds.landingSounds);
+      sound=random.nextItem(characterSounds.landingSounds);
     }
  else     if (characterSounds.footstepSounds.size() > 0) {
-      sound=random.randomItem(characterSounds.footstepSounds);
+      sound=random.nextItem(characterSounds.footstepSounds);
     }
     if (sound != null) {
       entity.send(new PlaySoundEvent(entity,sound,characterSounds.landingVolume));

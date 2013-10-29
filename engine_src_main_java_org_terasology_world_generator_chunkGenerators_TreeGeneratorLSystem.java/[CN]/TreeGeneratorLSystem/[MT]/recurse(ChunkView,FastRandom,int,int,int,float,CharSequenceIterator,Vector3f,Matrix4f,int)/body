@@ -72,12 +72,8 @@ LSystemRule rule=ruleSet.get(c);
 if (rule == null) {
 break;
 }
-float randVal=rand.randomFloat();
-if (randVal < 0f) {
-randVal=-randVal;
-}
 float weightedFailureProbability=TeraMath.pow(1f - rule.getProbability(),maxDepth - depth);
-if (randVal < weightedFailureProbability) {
+if (rand.nextFloat() < weightedFailureProbability) {
 break;
 }
 recurse(view,rand,posX,posY,posZ,angleOffset,new CharSequenceIterator(rule.getAxiom()),position,rotation,depth + 1);

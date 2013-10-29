@@ -3,10 +3,10 @@
     DamageSoundComponent damageSounds=event.getType().getComponent(DamageSoundComponent.class);
     Sound sound=null;
     if (damageSounds != null && !damageSounds.sounds.isEmpty()) {
-      sound=random.randomItem(damageSounds.sounds);
+      sound=random.nextItem(damageSounds.sounds);
     }
  else     if (!characterSounds.damageSounds.isEmpty()) {
-      sound=random.randomItem(characterSounds.damageSounds);
+      sound=random.nextItem(characterSounds.damageSounds);
     }
     if (sound != null) {
       entity.send(new PlaySoundEvent(entity,sound,characterSounds.damageVolume));

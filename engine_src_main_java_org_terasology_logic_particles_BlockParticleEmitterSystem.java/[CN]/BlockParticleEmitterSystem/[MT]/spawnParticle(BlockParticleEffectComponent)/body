@@ -1,9 +1,9 @@
 {
   Particle p=new Particle();
-  p.lifeRemaining=random.randomPosFloat() * (particleEffect.maxLifespan - particleEffect.minLifespan) + particleEffect.minLifespan;
-  p.velocity.set(particleEffect.initialVelocityRange.x * random.randomFloat(),particleEffect.initialVelocityRange.y * random.randomFloat(),particleEffect.initialVelocityRange.z * random.randomFloat());
-  p.size=random.randomPosFloat() * (particleEffect.maxSize - particleEffect.minSize) + particleEffect.minSize;
-  p.position.set(particleEffect.spawnRange.x * random.randomFloat(),particleEffect.spawnRange.y * random.randomFloat(),particleEffect.spawnRange.z * random.randomFloat());
+  p.lifeRemaining=random.nextFloat() * (particleEffect.maxLifespan - particleEffect.minLifespan) + particleEffect.minLifespan;
+  p.velocity=random.nextVector3f();
+  p.size=random.nextFloat() * (particleEffect.maxSize - particleEffect.minSize) + particleEffect.minSize;
+  p.position.set(random.nextFloat(-particleEffect.spawnRange.x,particleEffect.spawnRange.x),random.nextFloat(-particleEffect.spawnRange.y,particleEffect.spawnRange.y),random.nextFloat(-particleEffect.spawnRange.z,particleEffect.spawnRange.z));
   p.color=particleEffect.color;
   if (particleEffect.blockType != null) {
     final float tileSize=worldAtlas.getRelativeTileSize();
@@ -15,7 +15,7 @@
       Vector2f particleTexSize=new Vector2f(relTileSize * particleEffect.randBlockTexDisplacementScale.y,relTileSize * particleEffect.randBlockTexDisplacementScale.y);
       p.texSize.x*=particleEffect.randBlockTexDisplacementScale.x;
       p.texSize.y*=particleEffect.randBlockTexDisplacementScale.y;
-      p.texOffset.set(p.texOffset.x + random.randomPosFloat() * (tileSize - particleTexSize.x),p.texOffset.y + random.randomPosFloat() * (tileSize - particleTexSize.y));
+      p.texOffset.set(p.texOffset.x + random.nextFloat() * (tileSize - particleTexSize.x),p.texOffset.y + random.nextFloat() * (tileSize - particleTexSize.y));
     }
   }
   particleEffect.particles.add(p);

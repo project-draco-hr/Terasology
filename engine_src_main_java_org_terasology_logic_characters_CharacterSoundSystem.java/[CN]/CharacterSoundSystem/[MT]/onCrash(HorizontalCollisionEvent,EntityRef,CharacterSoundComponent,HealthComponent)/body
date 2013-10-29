@@ -4,7 +4,7 @@
   float velocity=horizVelocity.length();
   if (velocity > healthComponent.horizontalDamageSpeedThreshold) {
     if (characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs()) {
-      Sound sound=random.randomItem(characterSounds.landingSounds);
+      Sound sound=random.nextItem(characterSounds.landingSounds);
       if (sound != null) {
         entity.send(new PlaySoundEvent(entity,sound,characterSounds.landingVolume));
         characterSounds.lastSoundTime=time.getGameTimeInMs();

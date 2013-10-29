@@ -13,18 +13,18 @@
   if (blockDamageComponent != null) {
     chanceOfBlockDrop=1 - blockDamageComponent.blockAnnihilationChance;
   }
-  if ((random.randomFloat() + 1) / 2 < chanceOfBlockDrop) {
+  if (random.nextFloat() < chanceOfBlockDrop) {
     EntityRef item=blockItemFactory.newInstance(oldBlock.getBlockFamily());
     entity.send(new OnBlockToItem(item));
     if ((oldBlock.isDirectPickup())) {
       if (!inventoryManager.giveItem(event.getInstigator(),item)) {
         EntityRef pickup=pickupBuilder.createPickupFor(item,blockComp.getPosition().toVector3f(),20);
-        pickup.send(new ImpulseEvent(random.randomVector3f(30)));
+        pickup.send(new ImpulseEvent(random.nextVector3f(30.0f)));
       }
     }
  else {
       EntityRef pickup=pickupBuilder.createPickupFor(item,blockComp.getPosition().toVector3f(),20);
-      pickup.send(new ImpulseEvent(random.randomVector3f(30)));
+      pickup.send(new ImpulseEvent(random.nextVector3f(30.0f)));
     }
   }
   worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir());
