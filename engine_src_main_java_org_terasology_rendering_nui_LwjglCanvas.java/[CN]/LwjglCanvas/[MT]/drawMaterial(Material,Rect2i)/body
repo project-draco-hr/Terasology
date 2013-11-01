@@ -1,12 +1,12 @@
 {
-  if (!state.cropRegion.overlaps(relativeToAbsolute(toArea))) {
+  if (!state.cropRegion.overlaps(relativeToAbsolute(region))) {
     return;
   }
   material.setFloat("alpha",state.getAlpha());
   material.bindTextures();
   glPushMatrix();
-  glTranslatef(state.drawRegion.minX() + toArea.minX(),state.drawRegion.minY() + toArea.minY(),0f);
-  glScalef(toArea.width(),toArea.height(),1);
+  glTranslatef(state.drawRegion.minX() + region.minX(),state.drawRegion.minY() + region.minY(),0f);
+  glScalef(region.width(),region.height(),1);
   billboard.render();
   glPopMatrix();
 }

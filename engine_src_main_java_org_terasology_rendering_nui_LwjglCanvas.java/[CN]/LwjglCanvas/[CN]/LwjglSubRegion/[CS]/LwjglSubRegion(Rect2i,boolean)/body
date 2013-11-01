@@ -9,19 +9,18 @@
   if (crop) {
     Rect2i cropRegion=subRegion.intersect(state.cropRegion);
     if (cropRegion.isEmpty()) {
-      state=new CanvasState(subRegion,cropRegion);
+      state=new CanvasState(state,subRegion,cropRegion);
     }
  else     if (!cropRegion.equals(state.cropRegion)) {
-      state=new CanvasState(subRegion,cropRegion);
+      state=new CanvasState(state,subRegion,cropRegion);
       crop(cropRegion);
       croppingRegion=true;
     }
  else {
-      state=new CanvasState(subRegion);
+      state=new CanvasState(state,subRegion);
     }
   }
  else {
-    state=new CanvasState(subRegion);
+    state=new CanvasState(state,subRegion);
   }
-  state.baseAlpha=previousState.getAlpha();
 }

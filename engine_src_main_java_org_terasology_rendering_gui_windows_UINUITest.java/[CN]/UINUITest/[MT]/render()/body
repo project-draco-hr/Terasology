@@ -1,28 +1,11 @@
 {
   checkGLError();
   canvas.preRender();
-  canvas.drawTextureBordered(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y),new Border(6,6,6,6),true);
-  canvas.drawTexture(getTexture(c1),Rect2i.createFromMinAndSize(0,0,128,128),ScaleMode.STRETCH);
-  canvas.addInteractionRegion(Rect2i.createFromMinAndSize(0,0,128,128),c1);
-  canvas.drawTexture(Assets.getTexture("engine:loadingBackground"),Rect2i.createFromMinAndSize(12,12,104,104),ScaleMode.STRETCH);
-  try (SubRegion ignored=canvas.subRegion(Rect2i.createFromMinAndSize(12,12,104,104),true)){
-    canvas.setTextCursor(3,88);
-    canvas.drawTextShadowed(font,"Stretched with a lot more text than there should be",160,Color.BLACK);
+  canvas.setSkin(skin);
+  try (SubRegion ignored=canvas.subRegion(Rect2i.createFromMinAndSize(0,0,120,80),true)){
+    canvas.setWidget(button.getClass());
+    button.draw(canvas);
   }
-   canvas.setTextCursor(0,150);
-  canvas.setTextColor(Color.GREY);
-  canvas.drawText(font,"Some Text");
-  canvas.drawText(font,"Some More Text");
-  canvas.drawText(font,"A little to the right",canvas.size().x,HorizontalAlignment.RIGHT);
-  canvas.drawText(font,"Smack in the middle",canvas.size().x,HorizontalAlignment.CENTER);
-  canvas.drawTexture(Assets.getTexture("engine:icons"),Rect2i.createFromMinAndSize(0,256,64,64),ScaleMode.STRETCH,52,0,9,9);
-  canvas.drawTextureBordered(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(256,128,512,128),new Border(6,6,6,6),false);
-  canvas.drawTextureBordered(Assets.getTexture("engine:testWindowBorder"),Rect2i.createFromMinAndSize(256,256,512,128),new Border(6,6,6,6),true);
-  canvas.drawMaterial(Assets.getMaterial("engine:testMaterial"),Rect2i.createFromMinAndSize(0,128,256,256));
-  canvas.drawTexture(Assets.getTexture("engine:icons"),Rect2i.createFromMinAndSize(0,128,256,256),ScaleMode.STRETCH,52,0,9,9);
-  Quat4f rot=new Quat4f(0,0,0,1);
-  QuaternionUtil.setEuler(rot,CoreRegistry.get(Time.class).getGameTime(),0,0);
-  canvas.drawMesh(Assets.getMesh("engine:testmonkey"),Assets.getTexture("engine:mhead"),Rect2i.createFromMinAndSize(0,128,256,256),rot,new Vector3f(0,0,0),1.5f);
-  canvas.postRender();
+   canvas.postRender();
   checkGLError();
 }
