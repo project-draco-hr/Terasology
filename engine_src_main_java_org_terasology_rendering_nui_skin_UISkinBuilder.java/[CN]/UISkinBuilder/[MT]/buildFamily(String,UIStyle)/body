@@ -1,0 +1,34 @@
+{
+  UIStyle baseStyle=new UIStyle(defaultStyle);
+  UIStyleFragment fragment=baseStyles.get(family);
+  fragment.applyTo(baseStyle);
+  Table<Class<? extends UIWidget>,String,UIStyle> familyStyles=HashBasedTable.create();
+  Table<Class<? extends UIWidget>,String,UIStyleFragment> table=getWidgetTable(family);
+  for (  Class<? extends UIWidget> widget : widgetClasses) {
+    UIStyle widgetStyle=new UIStyle(baseStyle);
+    UIStyleFragment widgetFrag=table.get(widget,"");
+    UIStyleFragment defaultWidgetFrag=getDefaultWidgetStyleFrag(widget);
+    if (defaultWidgetFrag != null) {
+      defaultWidgetFrag.applyTo(widgetStyle);
+    }
+    if (widgetFrag != null) {
+      widgetFrag.applyTo(widgetStyle);
+    }
+    if (widgetFrag != null || defaultWidgetFrag != null) {
+      familyStyles.put(widget,"",widgetStyle);
+      for (      String mode : modes.get(widget)) {
+        UIStyleFragment defaultMode=getDefaultWidgetModeFrag(widget,mode);
+        UIStyleFragment widgetMode=table.get(widget,mode);
+        UIStyle widgetModeStyle=new UIStyle(widgetStyle);
+        if (defaultMode != null) {
+          defaultMode.applyTo(widgetModeStyle);
+        }
+        if (widgetMode != null) {
+          widgetMode.applyTo(widgetModeStyle);
+        }
+        familyStyles.put(widget,mode,widgetModeStyle);
+      }
+    }
+  }
+  return new UIStyleFamily(baseStyle,familyStyles);
+}

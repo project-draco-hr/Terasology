@@ -1,12 +1,11 @@
 {
   if (down) {
-    canvas.drawText(text,activeStyle);
+    canvas.setMode(DOWN_MODE);
   }
  else   if (listener.isMouseOver()) {
-    canvas.drawText(text,mouseOverStyle);
+    canvas.setMode(HOVER_MODE);
   }
- else {
-    canvas.drawText(text,style);
-  }
+  canvas.drawBackground();
+  canvas.drawText(text);
   canvas.addInteractionRegion(listener);
 }

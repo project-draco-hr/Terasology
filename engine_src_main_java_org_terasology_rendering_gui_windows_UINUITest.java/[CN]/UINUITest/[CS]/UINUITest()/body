@@ -3,13 +3,13 @@
   setModal(true);
   maximize();
   canvas=new LwjglCanvas();
-  baseStyle=new UIStyle();
-  buttonStyle=new UIStyle();
-  buttonStyle.setBackground(Assets.getTexture("engine","button"));
-  buttonStyle.setTextAlignmentH(HorizontalAlignment.CENTER);
-  buttonHoverStyle=new UIStyle(buttonStyle);
-  buttonHoverStyle.setBackground(Assets.getTexture("engine","buttonOver"));
-  buttonActiveStyle=new UIStyle();
-  buttonActiveStyle.setBackground(Assets.getTexture("engine","buttonDown"));
-  button=new UIButton("Click Me",buttonStyle,buttonHoverStyle,buttonActiveStyle);
+  CoreRegistry.get(AssetManager.class).setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
+    @Override public UISkin buildAsset(    AssetUri uri,    UISkinData data){
+      return new UISkin(uri,data);
+    }
+  }
+);
+  UISkinData skinData=new UISkinBuilder().setWidgetClass(UIButton.class).setBackground(Assets.getTexture("engine","button")).setTextHorizontalAlignment(HorizontalAlign.CENTER).setTextVerticalAlignment(VerticalAlign.MIDDLE).setBackgroundBorder(new Border(1,1,1,1)).setMargin(new Border(4,4,4,4)).setTextShadowed(true).setWidgetMode("hover").setBackground(Assets.getTexture("engine","buttonOver")).setWidgetMode("down").setBackground(Assets.getTexture("engine","buttonDown")).setTextColor(Color.YELLOW).build();
+  skin=Assets.generateAsset(new AssetUri(AssetType.UI_SKIN,"engine:defaultSkin"),skinData,UISkin.class);
+  button=new UIButton("Click Me please and lots of other text to demonstrate margin");
 }
