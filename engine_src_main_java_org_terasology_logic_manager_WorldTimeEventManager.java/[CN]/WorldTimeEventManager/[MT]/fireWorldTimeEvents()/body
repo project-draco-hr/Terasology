@@ -1,6 +1,6 @@
 {
-  for (int i=worldTimeEvents.size() - 1; i >= 0; i--) {
-    final WorldTimeEvent event=worldTimeEvents.get(i);
+  for (int i=timerEvents.size() - 1; i >= 0; i--) {
+    final TimerEvent event=timerEvents.get(i);
     if (event.getExecutionTime() > parent.getTime().getDays() % 1.0) {
       event.setCanFire(true);
     }
@@ -9,7 +9,7 @@
       event.execute();
     }
     if (!event.isRepeatingEvent()) {
-      worldTimeEvents.remove(i);
+      timerEvents.remove(i);
     }
   }
 }
