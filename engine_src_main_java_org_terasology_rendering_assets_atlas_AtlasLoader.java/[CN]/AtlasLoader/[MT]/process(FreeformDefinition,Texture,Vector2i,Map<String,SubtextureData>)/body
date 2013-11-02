@@ -1,0 +1,20 @@
+{
+  if (freeform.getName() == null || freeform.getName().isEmpty()) {
+    logger.error("Bad subimage definition - missing mandatory property name");
+    return;
+  }
+  if (freeform.getMin() == null) {
+    logger.error("Bad subimage definition '{}' - missing mandatory property min",freeform.getName());
+    return;
+  }
+  if (freeform.getSize() == null && freeform.getMax() == null) {
+    logger.error("Bad subimage definition '{}' - requires one of max or size",freeform.getName());
+    return;
+  }
+  if (freeform.getSize() != null) {
+    out.put(freeform.getName(),new SubtextureData(texture,Rect2f.createFromMinAndSize(freeform.getMin(),freeform.getSize())));
+  }
+ else   if (freeform.getMax() != null) {
+    out.put(freeform.getName(),new SubtextureData(texture,Rect2f.createFromMinAndMax(freeform.getMin(),freeform.getMax())));
+  }
+}

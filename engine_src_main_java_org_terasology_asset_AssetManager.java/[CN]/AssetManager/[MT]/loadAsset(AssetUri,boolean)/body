@@ -11,6 +11,13 @@
     logger.error("No asset factory set for assets of type {}",uri.getAssetType());
     return null;
   }
+  for (  AssetResolver resolver : resolvers.get(uri.getAssetType())) {
+    Asset result=resolver.resolve(uri,factory);
+    if (result != null) {
+      assetCache.put(uri,asset);
+      return result;
+    }
+  }
   try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getActiveModule(uri.getNormalisedModuleName()))){
     AssetData data=loadAssetData(uri,logErrors);
     if (data != null) {

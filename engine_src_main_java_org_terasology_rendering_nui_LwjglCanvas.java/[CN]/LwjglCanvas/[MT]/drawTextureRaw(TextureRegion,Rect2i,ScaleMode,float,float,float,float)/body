@@ -1,0 +1,33 @@
+{
+  if (!state.cropRegion.overlaps(relativeToAbsolute(region))) {
+    return;
+  }
+  if (mode == ScaleMode.TILED) {
+    drawTextureRawTiled(texture,region,ux,uy,uw,uh);
+  }
+ else {
+    Vector2f scale=mode.scaleForRegion(region,texture.getWidth(),texture.getHeight());
+    Rect2f textureArea=texture.getRegion();
+    textureMat.setFloat2("scale",scale);
+    textureMat.setFloat2("offset",state.drawRegion.minX() + region.minX() + 0.5f * (region.width() - scale.x),state.drawRegion.minY() + region.minY() + 0.5f * (region.height() - scale.y));
+    textureMat.setFloat2("texOffset",textureArea.minX() + ux * textureArea.width(),textureArea.minY() + uy * textureArea.height());
+    textureMat.setFloat2("texSize",uw * textureArea.width(),uh * textureArea.height());
+    textureMat.setTexture("texture",texture.getTexture());
+    textureMat.setFloat4("color",1.0f,1.0f,1.0f,state.getAlpha());
+    textureMat.bindTextures();
+    if (mode == ScaleMode.SCALE_FILL) {
+      Rect2i cropRegion=relativeToAbsolute(region).intersect(state.cropRegion);
+      if (!cropRegion.equals(state.cropRegion)) {
+        crop(cropRegion);
+        billboard.render();
+        crop(state.cropRegion);
+      }
+ else {
+        billboard.render();
+      }
+    }
+ else {
+      billboard.render();
+    }
+  }
+}

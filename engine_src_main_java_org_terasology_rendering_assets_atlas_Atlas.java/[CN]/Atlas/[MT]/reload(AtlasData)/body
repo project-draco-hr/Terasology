@@ -1,0 +1,10 @@
+{
+  subtextures.clear();
+  for (  Map.Entry<String,SubtextureData> entry : data.getSubtextures().entrySet()) {
+    String subtextureName=getURI().getAssetName() + "." + entry.getKey();
+    Subtexture subtexture=Assets.generateAsset(new AssetUri(AssetType.SUBTEXTURE,getURI().getModuleName(),subtextureName),entry.getValue(),Subtexture.class);
+    if (subtexture != null) {
+      subtextures.put(entry.getKey().toLowerCase(Locale.ENGLISH),subtexture);
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  AtlasDefinition def=gson.fromJson(new InputStreamReader(stream),AtlasDefinition.class);
+  Texture texture=Assets.getTexture(def.getTexture());
+  if (texture != null) {
+    Vector2i size=def.getTextureSize();
+    if (size == null) {
+      size=new Vector2i(texture.getWidth(),texture.getHeight());
+    }
+    Map<String,SubtextureData> result=Maps.newHashMap();
+    if (def.getGrid() != null) {
+      process(def.getGrid(),texture,size,result);
+    }
+    if (def.getGrids() != null) {
+      for (      GridDefinition grid : def.getGrids()) {
+        process(grid,texture,size,result);
+      }
+    }
+    if (def.getSubimage() != null) {
+      process(def.getSubimage(),texture,size,result);
+    }
+    if (def.getSubimages() != null) {
+      for (      FreeformDefinition freeform : def.getSubimages()) {
+        process(freeform,texture,size,result);
+      }
+    }
+    return new AtlasData(result);
+  }
+  return null;
+}

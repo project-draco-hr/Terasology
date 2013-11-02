@@ -45,6 +45,19 @@
     }
   }
 );
+  assetManager.setAssetFactory(AssetType.ATLAS,new AssetFactory<AtlasData,Atlas>(){
+    @Override public Atlas buildAsset(    AssetUri uri,    AtlasData data){
+      return new Atlas(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SUBTEXTURE,new AssetFactory<SubtextureData,Subtexture>(){
+    @Override public Subtexture buildAsset(    AssetUri uri,    SubtextureData data){
+      return new Subtexture(uri,data);
+    }
+  }
+);
+  assetManager.addResolver(AssetType.SUBTEXTURE,new SubtextureFromAtlasResolver());
   CoreRegistry.putPermanently(ShaderManager.class,new ShaderManager());
   CoreRegistry.get(ShaderManager.class).initShaders();
   VertexBufferObjectManager.getInstance();
