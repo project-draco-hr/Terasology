@@ -2,10 +2,8 @@
   checkGLError();
   canvas.preRender();
   canvas.setSkin(skin);
-  try (SubRegion ignored=canvas.subRegion(Rect2i.createFromMinAndSize(0,0,120,80),true)){
-    canvas.setWidget(button.getClass());
-    button.draw(canvas);
-  }
-   canvas.postRender();
+  canvas.drawTextureRaw(Assets.getTexture("engine:menuBackground"),Rect2i.createFromMinAndSize(Vector2i.zero(),canvas.size()),ScaleMode.SCALE_FILL);
+  canvas.drawWidget(grid,Rect2i.createFromMinAndSize((canvas.size().x - 280) / 2,(canvas.size().y - 192) / 2,280,192));
+  canvas.postRender();
   checkGLError();
 }
