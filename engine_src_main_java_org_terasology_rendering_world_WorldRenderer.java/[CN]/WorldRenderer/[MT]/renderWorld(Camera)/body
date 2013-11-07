@@ -27,6 +27,11 @@
     renderChunk(renderQueueChunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,camera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Render Overlays");
+  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+    renderer.renderOverlay();
+  }
+  PerformanceMonitor.endActivity();
   if (activeCamera != null && !config.getRendering().getDebug().isFirstPersonElementsHidden()) {
     PerformanceMonitor.startActivity("Render First Person");
     glPushMatrix();
@@ -43,11 +48,6 @@
     glPopMatrix();
     PerformanceMonitor.endActivity();
   }
-  PerformanceMonitor.startActivity("Render Overlays");
-  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
-    renderer.renderOverlay();
-  }
-  PerformanceMonitor.endActivity();
   DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
   PerformanceMonitor.startActivity("Render Light Geometry");
   DefaultRenderingProcess.getInstance().beginRenderLightGeometryStencilPass();
