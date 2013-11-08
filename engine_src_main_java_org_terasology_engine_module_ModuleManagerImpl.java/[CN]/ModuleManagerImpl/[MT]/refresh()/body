@@ -2,7 +2,7 @@
   modules.clear();
   activeModules.clear();
   activeModules.put(engineModule.getId(),engineModule);
-  Gson gson=new GsonBuilder().registerTypeAdapter(Version.class,new VersionHandler()).create();
+  Gson gson=new GsonBuilder().registerTypeAdapter(Version.class,new VersionTypeAdapter()).create();
   for (  Path rootModulePath : PathManager.getInstance().getModulePaths()) {
     try {
       for (      Path modulePath : Files.newDirectoryStream(rootModulePath,FilesUtil.DIRECTORY_FILTER)) {

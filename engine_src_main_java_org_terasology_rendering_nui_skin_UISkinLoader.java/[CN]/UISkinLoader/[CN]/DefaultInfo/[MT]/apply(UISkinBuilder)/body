@@ -1,0 +1,9 @@
+{
+  super.apply(builder);
+  if (families != null) {
+    for (    Map.Entry<String,FamilyInfo> entry : families.entrySet()) {
+      builder.setFamily(entry.getKey());
+      entry.getValue().apply(builder);
+    }
+  }
+}

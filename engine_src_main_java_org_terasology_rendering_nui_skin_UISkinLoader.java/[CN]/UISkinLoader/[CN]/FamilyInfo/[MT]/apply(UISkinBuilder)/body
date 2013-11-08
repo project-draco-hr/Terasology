@@ -1,0 +1,16 @@
+{
+  super.apply(builder);
+  if (widgets != null) {
+    for (    Map.Entry<String,WidgetInfo> entry : widgets.entrySet()) {
+      ClassLibrary<UIWidget> library=CoreRegistry.get(NUIManager.class).getWidgetMetadataLibrary();
+      ClassMetadata<? extends UIWidget,?> metadata=library.resolve(entry.getKey(),ModuleContext.getContext());
+      if (metadata != null) {
+        builder.setWidgetClass(metadata.getType());
+        entry.getValue().apply(builder);
+      }
+ else {
+        logger.warn("Failed to resolve widget class {}, skipping style information",entry.getKey());
+      }
+    }
+  }
+}

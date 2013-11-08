@@ -1,0 +1,26 @@
+{
+  MouseButtonEvent event;
+switch (button) {
+case MOUSE_NONE:
+    return false;
+case MOUSE_LEFT:
+  event=(buttonDown) ? LeftMouseDownButtonEvent.create(position,delta) : LeftMouseUpButtonEvent.create(position,delta);
+break;
+case MOUSE_RIGHT:
+event=(buttonDown) ? RightMouseDownButtonEvent.create(position,delta) : RightMouseUpButtonEvent.create(position,delta);
+break;
+default :
+event=(buttonDown) ? MouseDownButtonEvent.create(button,position,delta) : MouseUpButtonEvent.create(button,position,delta);
+break;
+}
+setupTarget(event);
+for (EntityRef entity : getInputEntities()) {
+entity.send(event);
+if (event.isConsumed()) {
+break;
+}
+}
+boolean consumed=event.isConsumed();
+event.reset();
+return consumed;
+}

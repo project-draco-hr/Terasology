@@ -17,6 +17,18 @@
     CoreRegistry.put(Config.class,config);
     Display.setDisplayMode(new DisplayMode(0,0));
     Display.create(CoreRegistry.get(Config.class).getRendering().getPixelFormat());
+    assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
+      @Override public Prefab buildAsset(      AssetUri uri,      PrefabData data){
+        return new PojoPrefab(uri,data);
+      }
+    }
+);
+    assetManager.setAssetFactory(AssetType.SHAPE,new AssetFactory<BlockShapeData,BlockShape>(){
+      @Override public BlockShape buildAsset(      AssetUri uri,      BlockShapeData data){
+        return new BlockShapeImpl(uri,data);
+      }
+    }
+);
     assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
       @Override public Texture buildAsset(      AssetUri uri,      TextureData data){
         return new OpenGLTexture(uri,data);
@@ -56,6 +68,12 @@
     assetManager.setAssetFactory(AssetType.ANIMATION,new AssetFactory<MeshAnimationData,MeshAnimation>(){
       @Override public MeshAnimation buildAsset(      AssetUri uri,      MeshAnimationData data){
         return new MeshAnimationImpl(uri,data);
+      }
+    }
+);
+    CoreRegistry.get(AssetManager.class).setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
+      @Override public UISkin buildAsset(      AssetUri uri,      UISkinData data){
+        return new UISkin(uri,data);
       }
     }
 );

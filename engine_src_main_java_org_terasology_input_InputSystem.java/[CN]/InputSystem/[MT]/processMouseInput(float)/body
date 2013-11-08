@@ -28,8 +28,9 @@ switch (action.getInput().getType()) {
 case MOUSE_BUTTON:
       int id=action.getInput().getId();
     if (id != -1) {
-      boolean consumed=sendMouseEvent(id,action.getState().isDown(),delta);
-      BindableButtonImpl bind=mouseButtonBinds.get(id);
+      MouseInput button=MouseInput.getInputFor(action.getInput().getType(),action.getInput().getId());
+      boolean consumed=sendMouseEvent(button,action.getState().isDown(),mouse.getPosition(),delta);
+      BindableButtonImpl bind=mouseButtonBinds.get(button);
       if (bind != null) {
         bind.updateBindState(action.getState().isDown(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
       }

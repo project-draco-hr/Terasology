@@ -1,0 +1,20 @@
+{
+  interactionRegions.clear();
+  state=new CanvasState(null,Rect2i.createFromMinAndSize(0,0,Display.getWidth(),Display.getHeight()));
+  glDisable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  checkGLError();
+  glMatrixMode(GL_PROJECTION);
+  glPushMatrix();
+  glLoadIdentity();
+  glOrtho(0,Display.getWidth(),Display.getHeight(),0,0,2048f);
+  glMatrixMode(GL_MODELVIEW);
+  glPushMatrix();
+  modelView=new Matrix4f();
+  modelView.setIdentity();
+  modelView.setTranslation(new Vector3f(0,0,-1024f));
+  MatrixUtils.matrixToFloatBuffer(modelView,matrixBuffer);
+  glLoadMatrix(matrixBuffer);
+  matrixBuffer.rewind();
+}

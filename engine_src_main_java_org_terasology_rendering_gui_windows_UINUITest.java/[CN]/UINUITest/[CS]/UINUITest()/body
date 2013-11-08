@@ -3,20 +3,4 @@
   setModal(true);
   maximize();
   canvas=new LwjglCanvas();
-  CoreRegistry.get(AssetManager.class).setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
-    @Override public UISkin buildAsset(    AssetUri uri,    UISkinData data){
-      return new UISkin(uri,data);
-    }
-  }
-);
-  UISkinData skinData=new UISkinBuilder().setWidgetClass(UIButton.class).setBackground(Assets.getTexture("engine","button")).setTextHorizontalAlignment(HorizontalAlign.CENTER).setTextVerticalAlignment(VerticalAlign.MIDDLE).setBackgroundBorder(new Border(2,2,2,2)).setMargin(new Border(4,4,4,4)).setTextShadowed(true).setTextureScaleMode(ScaleMode.SCALE_FIT).setWidgetMode("hover").setBackground(Assets.getTexture("engine","buttonOver")).setWidgetMode("down").setBackground(Assets.getTexture("engine","buttonDown")).setTextColor(Color.YELLOW).build();
-  skin=Assets.generateAsset(new AssetUri(AssetType.UI_SKIN,"engine:defaultSkin"),skinData,UISkin.class);
-  grid=new ColumnLayout();
-  grid.addWidget(new UIButton("Single Player"));
-  grid.addWidget(new UIButton("Host Game"));
-  grid.addWidget(new UIButton("Join Game"));
-  grid.addWidget(new UIButton("Settings"));
-  grid.addWidget(null);
-  grid.addWidget(new UIButton("Exit"));
-  grid.setPadding(new Border(0,0,4,4));
 }

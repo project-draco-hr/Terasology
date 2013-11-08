@@ -1,0 +1,21 @@
+{
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
+    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
+      return new PojoPrefab(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SHAPE,new AssetFactory<BlockShapeData,BlockShape>(){
+    @Override public BlockShape buildAsset(    AssetUri uri,    BlockShapeData data){
+      return new BlockShapeImpl(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
+    @Override public UISkin buildAsset(    AssetUri uri,    UISkinData data){
+      return new UISkin(uri,data);
+    }
+  }
+);
+}
