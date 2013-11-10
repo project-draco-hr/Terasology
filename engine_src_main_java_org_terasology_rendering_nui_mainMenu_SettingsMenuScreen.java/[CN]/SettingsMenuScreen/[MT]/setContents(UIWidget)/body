@@ -1,0 +1,27 @@
+{
+  super.setContents(contents);
+  find("video",UIButton.class).subscribe(new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      UIScreen videoScreen=new VideoSettingsScreen();
+      videoScreen.setSkin(getSkin());
+      nuiManager.pushScreen(videoScreen);
+    }
+  }
+);
+  find("audio",UIButton.class).subscribe(new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+    }
+  }
+);
+  find("controls",UIButton.class).subscribe(new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+    }
+  }
+);
+  find("close",UIButton.class).subscribe(new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      nuiManager.popScreen();
+    }
+  }
+);
+}

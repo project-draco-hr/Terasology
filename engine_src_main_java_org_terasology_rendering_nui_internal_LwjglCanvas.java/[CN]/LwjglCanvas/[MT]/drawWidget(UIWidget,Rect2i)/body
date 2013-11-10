@@ -1,6 +1,9 @@
 {
   try (SubRegion ignored=subRegion(region,true)){
     setWidget(widget.getClass());
+    if (widget.getFamily() != null) {
+      setFamily(widget.getFamily());
+    }
     setMode(widget.getMode());
     drawBackground();
     widget.onDraw(this);

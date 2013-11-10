@@ -14,10 +14,13 @@
         Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x + padding.getLeft(),currentOffset.y + padding.getTop(),drawSize.x,drawSize.y);
         canvas.drawWidget(widget,drawRegion);
       }
-      currentOffset.add(cellSize);
       if (++currentColumn == columns) {
         currentColumn=0;
         currentOffset.x=0;
+        currentOffset.y+=cellSize.y;
+      }
+ else {
+        currentOffset.x+=cellSize.x;
       }
     }
   }
