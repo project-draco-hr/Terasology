@@ -13,7 +13,7 @@
     cachedText.put(key,fontMesh);
   }
   Vector2i offset=new Vector2i(absoluteRegion.minX(),absoluteRegion.minY());
-  offset.y+=vAlign.getOffset(region.height(),lines.size() * font.getLineHeight());
+  offset.y+=vAlign.getOffset(lines.size() * font.getLineHeight(),region.height());
   for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
     entry.getKey().bindTextures();
     entry.getKey().setFloat4("croppingBoundaries",croppingRegion.minX(),croppingRegion.maxX() + 1,croppingRegion.minY(),croppingRegion.maxY() + 1);
