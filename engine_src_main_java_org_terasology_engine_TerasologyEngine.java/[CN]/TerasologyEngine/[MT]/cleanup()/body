@@ -1,5 +1,9 @@
 {
   logger.info("Shutting down Terasology...");
+  if (!Display.isFullscreen()) {
+    config.getRendering().setWindowPosX(Display.getX());
+    config.getRendering().setWindowPosY(Display.getY());
+  }
   config.save();
   if (currentState != null) {
     currentState.dispose();
