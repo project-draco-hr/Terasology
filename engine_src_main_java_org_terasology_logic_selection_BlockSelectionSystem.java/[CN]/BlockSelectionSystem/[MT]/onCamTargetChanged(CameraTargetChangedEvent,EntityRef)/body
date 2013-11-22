@@ -1,0 +1,12 @@
+{
+  if (startPos == null) {
+    return;
+  }
+  EntityRef target=event.getNewTarget();
+  LocationComponent locationComponent=target.getComponent(LocationComponent.class);
+  if (locationComponent != null) {
+    Vector3f worldPosition=locationComponent.getWorldPosition();
+    Vector3i currentEndPos=new Vector3i(worldPosition.x,worldPosition.y,worldPosition.z);
+    currentSelection=Region3i.createBounded(startPos,currentEndPos);
+  }
+}
