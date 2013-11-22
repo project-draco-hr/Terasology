@@ -1,0 +1,34 @@
+{
+  ColumnLayout grid=new ColumnLayout();
+  grid.setColumns(4);
+  grid.addWidget(new UILabel("Graphics Quality:"));
+  grid.addWidget(new UIDropdown<>("quality"));
+  grid.addWidget(new UILabel("Environment Effects:"));
+  grid.addWidget(new UIButton("environmentEffects","Off"));
+  grid.addWidget(new UILabel("Viewing Distance:"));
+  grid.addWidget(new UIButton("viewDistance","Near"));
+  grid.addWidget(new UILabel("Reflections:"));
+  grid.addWidget(new UIButton("reflections","Local Reflections (SSR)"));
+  grid.addWidget(new UILabel("FOV:"));
+  grid.addWidget(new UIButton("fov","This is a slider"));
+  grid.addWidget(new UILabel("Blur Intensity:"));
+  grid.addWidget(new UIButton("blur","Normal"));
+  grid.addWidget(new UILabel("Bobbing:"));
+  grid.addWidget(new UICheckbox("bobbing"));
+  grid.addWidget(new UILabel("Fullscreen:"));
+  grid.addWidget(new UICheckbox("fullscreen"));
+  grid.addWidget(new UILabel("Dynamic Shadows:"));
+  grid.addWidget(new UIButton("shadows","Off"));
+  grid.addWidget(new UILabel("Outline:"));
+  grid.addWidget(new UICheckbox("outline"));
+  grid.addWidget(new UILabel("VSync:"));
+  grid.addWidget(new UICheckbox("vsync"));
+  grid.setPadding(new Border(0,0,4,4));
+  grid.setFamily("option-grid");
+  ArbitraryLayout layout=new ArbitraryLayout();
+  layout.addFixedWidget(new UIImage(Assets.getTexture("engine:terasology")),new Vector2i(512,128),new Vector2f(0.5f,0.2f));
+  layout.addFillWidget(new UILabel("Pre Alpha"),Rect2f.createFromMinAndSize(0.0f,0.3f,1.0f,0.1f));
+  layout.addFixedWidget(grid,new Vector2i(560,192),new Vector2f(0.5f,0.6f));
+  layout.addFixedWidget(new UIButton("close","Back"),new Vector2i(280,32),new Vector2f(0.5f,0.95f));
+  setContents(layout);
+}

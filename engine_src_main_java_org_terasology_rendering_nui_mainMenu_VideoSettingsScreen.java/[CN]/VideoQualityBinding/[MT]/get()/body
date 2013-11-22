@@ -1,0 +1,21 @@
+{
+  if (config.isVolumetricLighting()) {
+    if (config.isAnimateWater() && config.isAnimateGrass() && config.isVolumetricFog()) {
+      return VideoQuality.UBER;
+    }
+  }
+ else   if (config.isAnimateWater()) {
+    if (config.isAnimateGrass() && config.isVolumetricFog()) {
+      return VideoQuality.INSANE;
+    }
+  }
+ else   if (config.isAnimateGrass()) {
+    if (config.isVolumetricFog()) {
+      return VideoQuality.EPIC;
+    }
+  }
+ else   if (!config.isVolumetricFog()) {
+    return VideoQuality.NICE;
+  }
+  return VideoQuality.CUSTOM;
+}

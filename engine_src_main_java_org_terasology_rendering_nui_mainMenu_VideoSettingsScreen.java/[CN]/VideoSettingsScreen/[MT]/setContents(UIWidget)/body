@@ -1,5 +1,8 @@
 {
   super.setContents(contents);
+  UIDropdown<VideoQuality> quality=find("quality",UIDropdown.class);
+  quality.setOptions(Lists.newArrayList(VideoQuality.NICE,VideoQuality.EPIC,VideoQuality.INSANE,VideoQuality.UBER));
+  quality.bindSelection(new VideoQualityBinding(config.getRendering()));
   find("fullscreen",UICheckbox.class).bindChecked(new Binding<Boolean>(){
     @Override public Boolean get(){
       return ((TerasologyEngine)engine).isFullscreen();
