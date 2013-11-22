@@ -1,0 +1,10 @@
+{
+  Set<Class<? extends T>> result=Sets.newLinkedHashSet();
+  for (  Class<?> interfaceType : forClass.getInterfaces()) {
+    if (baseClass.isAssignableFrom(interfaceType)) {
+      addInterfaceToInheritanceTree((Class<? extends T>)interfaceType,baseClass,result);
+    }
+  }
+  addClassToInheritanceTree(forClass,baseClass,result);
+  return Lists.newArrayList(result);
+}

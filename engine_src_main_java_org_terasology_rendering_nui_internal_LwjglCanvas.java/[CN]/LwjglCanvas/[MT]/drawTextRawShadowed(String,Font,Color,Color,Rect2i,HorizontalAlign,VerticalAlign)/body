@@ -1,33 +1,12 @@
 {
-  TextCacheKey key=new TextCacheKey(text,font,region.width(),hAlign);
-  usedText.add(key);
-  Map<Material,Mesh> fontMesh=cachedText.get(key);
-  List<String> lines=LineBuilder.getLines(font,text,region.width());
   Rect2i absoluteRegion=relativeToAbsolute(region);
-  Rect2i croppingRegion=absoluteRegion.intersect(state.cropRegion);
-  if (croppingRegion.isEmpty()) {
-    return;
-  }
-  if (fontMesh == null) {
-    fontMesh=font.createTextMesh(lines,absoluteRegion.width(),hAlign);
-    cachedText.put(key,fontMesh);
-  }
-  Vector2i offset=new Vector2i(absoluteRegion.minX(),absoluteRegion.minY());
-  offset.y+=vAlign.getOffset(region.height(),lines.size() * font.getLineHeight());
-  for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
-    entry.getKey().bindTextures();
-    entry.getKey().setFloat4("croppingBoundaries",croppingRegion.minX(),croppingRegion.maxX() + 1,croppingRegion.minY(),croppingRegion.maxY() + 1);
-    if (shadowColor.a() != 0) {
-      entry.getKey().setFloat2("offset",offset.x + 1,offset.y + 1);
-      Vector4f shadowValues=shadowColor.toVector4f();
-      shadowValues.w*=state.getAlpha();
-      entry.getKey().setFloat4("color",shadowValues);
-      entry.getValue().render();
+  Rect2i cropRegion=absoluteRegion.intersect(state.cropRegion);
+  if (!cropRegion.isEmpty()) {
+    if (state.drawOnTop) {
+      drawOnTopOperations.add(new DrawTextOperation(text,font,hAlign,vAlign,absoluteRegion,cropRegion,color,shadowColor,state.getAlpha()));
     }
-    entry.getKey().setFloat2("offset",offset.x,offset.y);
-    Vector4f colorValues=color.toVector4f();
-    colorValues.w*=state.getAlpha();
-    entry.getKey().setFloat4("color",colorValues);
-    entry.getValue().render();
+ else {
+      drawTextInternal(text,font,hAlign,vAlign,absoluteRegion,cropRegion,color,shadowColor,state.getAlpha());
+    }
   }
 }

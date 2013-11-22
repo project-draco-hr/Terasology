@@ -1,10 +1,12 @@
 {
   try {
     setDisplayMode();
+    RenderingConfig rc=config.getRendering();
+    Display.setLocation(rc.getWindowPosX(),rc.getWindowPosY());
     Display.setParent(customViewPort);
     Display.setTitle("Terasology" + " | " + "Pre Alpha");
-    Display.create(config.getRendering().getPixelFormat());
-    Display.setVSyncEnabled(config.getRendering().isVSync());
+    Display.create(rc.getPixelFormat());
+    Display.setVSyncEnabled(rc.isVSync());
   }
  catch (  LWJGLException e) {
     logger.error("Can not initialize graphics device.",e);

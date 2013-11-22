@@ -1,7 +1,51 @@
 {
   super.setContents(contents);
+  UIDropdown<VideoQuality> quality=find("quality",UIDropdown.class);
+  quality.setOptions(Lists.newArrayList(VideoQuality.NICE,VideoQuality.EPIC,VideoQuality.INSANE,VideoQuality.UBER));
+  quality.bindSelection(new VideoQualityBinding(config.getRendering()));
+  find("fullscreen",UICheckbox.class).bindChecked(new Binding<Boolean>(){
+    @Override public Boolean get(){
+      return ((TerasologyEngine)engine).isFullscreen();
+    }
+    @Override public void set(    Boolean value){
+      ((TerasologyEngine)engine).setFullscreen(value);
+    }
+  }
+);
+  find("bobbing",UICheckbox.class).bindChecked(new Binding<Boolean>(){
+    @Override public Boolean get(){
+      return config.getRendering().isCameraBobbing();
+    }
+    @Override public void set(    Boolean value){
+      config.getRendering().setCameraBobbing(value);
+    }
+  }
+);
+  find("outline",UICheckbox.class).bindChecked(new Binding<Boolean>(){
+    @Override public Boolean get(){
+      return config.getRendering().isOutline();
+    }
+    @Override public void set(    Boolean value){
+      config.getRendering().setOutline(value);
+    }
+  }
+);
+  find("vsync",UICheckbox.class).bindChecked(new Binding<Boolean>(){
+    @Override public Boolean get(){
+      return config.getRendering().isVSync();
+    }
+    @Override public void set(    Boolean value){
+      config.getRendering().setVSync(value);
+    }
+  }
+);
   find("close",UIButton.class).subscribe(new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
+      CoreRegistry.get(ShaderManager.class).recompileAllShaders();
+      TerasologyEngine te=(TerasologyEngine)engine;
+      if (te.isFullscreen() != find("fullscreen",UICheckbox.class).isChecked()) {
+        te.setFullscreen(!te.isFullscreen());
+      }
       nuiManager.popScreen();
     }
   }

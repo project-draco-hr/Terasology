@@ -2,31 +2,31 @@
   UIStyle baseStyle=new UIStyle(defaultStyle);
   UIStyleFragment fragment=baseStyles.get(family);
   fragment.applyTo(baseStyle);
-  Table<Class<? extends UIWidget>,String,UIStyle> familyStyles=HashBasedTable.create();
-  Table<Class<? extends UIWidget>,String,UIStyleFragment> table=getWidgetTable(family);
-  for (  Class<? extends UIWidget> widget : widgetClasses) {
-    UIStyle widgetStyle=new UIStyle(baseStyle);
-    UIStyleFragment widgetFrag=table.get(widget,"");
-    UIStyleFragment defaultWidgetFrag=getDefaultWidgetStyleFrag(widget);
-    if (defaultWidgetFrag != null) {
-      defaultWidgetFrag.applyTo(widgetStyle);
+  Table<Class<? extends UIElement>,String,UIStyle> familyStyles=HashBasedTable.create();
+  Table<Class<? extends UIElement>,String,UIStyleFragment> table=getElementTable(family);
+  for (  Class<? extends UIElement> element : elementClasses) {
+    UIStyle elementStyle=new UIStyle(baseStyle);
+    UIStyleFragment elementFrag=table.get(element,"");
+    UIStyleFragment defaultElementFrag=getDefaultElementStyleFrag(element);
+    if (defaultElementFrag != null) {
+      defaultElementFrag.applyTo(elementStyle);
     }
-    if (widgetFrag != null) {
-      widgetFrag.applyTo(widgetStyle);
+    if (elementFrag != null) {
+      elementFrag.applyTo(elementStyle);
     }
-    if (widgetFrag != null || defaultWidgetFrag != null) {
-      familyStyles.put(widget,"",widgetStyle);
-      for (      String mode : modes.get(widget)) {
-        UIStyleFragment defaultMode=getDefaultWidgetModeFrag(widget,mode);
-        UIStyleFragment widgetMode=table.get(widget,mode);
-        UIStyle widgetModeStyle=new UIStyle(widgetStyle);
+    if (elementFrag != null || defaultElementFrag != null) {
+      familyStyles.put(element,"",elementStyle);
+      for (      String mode : modes.get(element)) {
+        UIStyleFragment defaultMode=getDefaultElementModeFrag(element,mode);
+        UIStyleFragment elementMode=table.get(element,mode);
+        UIStyle elementModeStyle=new UIStyle(elementStyle);
         if (defaultMode != null) {
-          defaultMode.applyTo(widgetModeStyle);
+          defaultMode.applyTo(elementModeStyle);
         }
-        if (widgetMode != null) {
-          widgetMode.applyTo(widgetModeStyle);
+        if (elementMode != null) {
+          elementMode.applyTo(elementModeStyle);
         }
-        familyStyles.put(widget,mode,widgetModeStyle);
+        familyStyles.put(element,mode,elementModeStyle);
       }
     }
   }

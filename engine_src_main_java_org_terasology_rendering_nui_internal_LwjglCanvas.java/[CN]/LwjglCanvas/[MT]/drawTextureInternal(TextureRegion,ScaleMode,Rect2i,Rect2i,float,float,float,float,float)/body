@@ -1,0 +1,24 @@
+{
+  Vector2f scale=mode.scaleForRegion(absoluteRegion,texture.getWidth(),texture.getHeight());
+  Rect2f textureArea=texture.getRegion();
+  textureMat.setFloat2("scale",scale);
+  textureMat.setFloat2("offset",absoluteRegion.minX() + 0.5f * (absoluteRegion.width() - scale.x),absoluteRegion.minY() + 0.5f * (absoluteRegion.height() - scale.y));
+  textureMat.setFloat2("texOffset",textureArea.minX() + ux * textureArea.width(),textureArea.minY() + uy * textureArea.height());
+  textureMat.setFloat2("texSize",uw * textureArea.width(),uh * textureArea.height());
+  textureMat.setTexture("texture",texture.getTexture());
+  textureMat.setFloat4("color",1.0f,1.0f,1.0f,alpha);
+  textureMat.bindTextures();
+  if (mode == ScaleMode.SCALE_FILL) {
+    if (!cropRegion.equals(state.cropRegion)) {
+      crop(cropRegion);
+      billboard.render();
+      crop(state.cropRegion);
+    }
+ else {
+      billboard.render();
+    }
+  }
+ else {
+    billboard.render();
+  }
+}
