@@ -8,7 +8,9 @@
   sliderWidth=canvas.size().x - tickerWidth;
   int drawLocation=pixelOffsetFor(getValue(),sliderWidth);
   Rect2i tickerRegion=Rect2i.createFromMinAndSize(drawLocation,0,tickerWidth,canvas.size().y);
-  canvas.drawBackground(tickerRegion);
-  canvas.drawText(display,tickerRegion);
-  canvas.addInteractionRegion(tickerListener,tickerRegion);
-}
+  try (SubRegion ignored=canvas.subRegion(tickerRegion,false)){
+    canvas.drawBackground();
+    canvas.drawText(display);
+    canvas.addInteractionRegion(tickerListener);
+  }
+ }

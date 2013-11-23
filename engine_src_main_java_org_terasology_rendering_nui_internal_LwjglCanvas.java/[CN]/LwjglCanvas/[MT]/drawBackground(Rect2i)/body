@@ -1,19 +1,11 @@
 {
   UIStyle style=getCurrentStyle();
   if (style.getBackground() != null) {
-    Rect2i regionArea=region;
-    if (style.getFixedWidth() != 0 || style.getFixedHeight() != 0) {
-      int newWidth=(style.getFixedWidth() != 0) ? style.getFixedWidth() : region.width();
-      int newHeight=(style.getFixedHeight() != 0) ? style.getFixedHeight() : region.height();
-      int newMinX=region.minX() + style.getHorizontalAlignment().getOffset(newWidth,region.width());
-      int newMinY=region.minY() + style.getVerticalAlignment().getOffset(newHeight,region.height());
-      regionArea=Rect2i.createFromMinAndSize(newMinX,newMinY,newWidth,newHeight);
-    }
     if (style.getBackgroundBorder().isEmpty()) {
-      drawTextureRaw(style.getBackground(),regionArea,style.getBackgroundScaleMode());
+      drawTextureRaw(style.getBackground(),region,style.getBackgroundScaleMode());
     }
  else {
-      drawTextureRawBordered(style.getBackground(),regionArea,style.getBackgroundBorder(),style.getBackgroundScaleMode() == ScaleMode.TILED);
+      drawTextureRawBordered(style.getBackground(),region,style.getBackgroundBorder(),style.getBackgroundScaleMode() == ScaleMode.TILED);
     }
   }
 }

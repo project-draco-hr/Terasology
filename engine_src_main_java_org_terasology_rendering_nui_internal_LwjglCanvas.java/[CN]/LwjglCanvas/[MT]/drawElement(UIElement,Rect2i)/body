@@ -1,13 +1,6 @@
 {
   UIStyle newStyle=state.skin.getStyleFor((element.getFamily() != null) ? element.getFamily() : state.family,element.getClass(),element.getMode());
-  Rect2i regionArea=region;
-  if (newStyle.getFixedWidth() != 0 || newStyle.getFixedHeight() != 0) {
-    int newWidth=(newStyle.getFixedWidth() != 0) ? newStyle.getFixedWidth() : region.width();
-    int newHeight=(newStyle.getFixedHeight() != 0) ? newStyle.getFixedHeight() : region.height();
-    int newMinX=region.minX() + newStyle.getHorizontalAlignment().getOffset(newWidth,region.width());
-    int newMinY=region.minY() + newStyle.getVerticalAlignment().getOffset(newHeight,region.height());
-    regionArea=Rect2i.createFromMinAndSize(newMinX,newMinY,newWidth,newHeight);
-  }
+  Rect2i regionArea=applyFixedSizesToRegion(region);
   try (SubRegion ignored=subRegion(regionArea,false)){
     state.element=element;
     if (element.getFamily() != null) {
