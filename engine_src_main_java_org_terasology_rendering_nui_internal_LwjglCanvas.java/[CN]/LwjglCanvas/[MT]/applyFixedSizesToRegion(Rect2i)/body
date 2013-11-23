@@ -1,11 +1,3 @@
 {
-  UIStyle style=getCurrentStyle();
-  if (style.getFixedWidth() != 0 || style.getFixedHeight() != 0) {
-    int newWidth=(style.getFixedWidth() != 0) ? style.getFixedWidth() : region.width();
-    int newHeight=(style.getFixedHeight() != 0) ? style.getFixedHeight() : region.height();
-    int newMinX=region.minX() + style.getHorizontalAlignment().getOffset(newWidth,region.width());
-    int newMinY=region.minY() + style.getVerticalAlignment().getOffset(newHeight,region.height());
-    return Rect2i.createFromMinAndSize(newMinX,newMinY,newWidth,newHeight);
-  }
-  return region;
+  return applyFixedSizesToRegion(region,getCurrentStyle());
 }
