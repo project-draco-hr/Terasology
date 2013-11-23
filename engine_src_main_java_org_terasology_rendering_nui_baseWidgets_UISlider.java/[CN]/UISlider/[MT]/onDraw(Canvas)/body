@@ -1,0 +1,14 @@
+{
+  canvas.setPart(SLIDER);
+  canvas.drawBackground();
+  canvas.setPart(TICKER);
+  String display=String.format("%." + precision + "f",value.get());
+  int tickerWidth=canvas.getCurrentStyle().getFont().getWidth(display);
+  tickerWidth+=canvas.getCurrentStyle().getMargin().getTotalWidth();
+  sliderWidth=canvas.size().x - tickerWidth;
+  int drawLocation=pixelOffsetFor(getValue(),sliderWidth);
+  Rect2i tickerRegion=Rect2i.createFromMinAndSize(drawLocation,0,tickerWidth,canvas.size().y);
+  canvas.drawBackground(tickerRegion);
+  canvas.drawText(display,tickerRegion);
+  canvas.addInteractionRegion(tickerListener,tickerRegion);
+}

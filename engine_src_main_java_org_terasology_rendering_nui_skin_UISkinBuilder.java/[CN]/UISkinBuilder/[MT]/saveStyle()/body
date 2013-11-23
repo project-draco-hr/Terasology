@@ -1,7 +1,9 @@
 {
+  if (currentFamily.isEmpty() && currentElement != null) {
+    baseStyleKeys.add(new StyleKey(currentElement,currentPart,currentMode));
+  }
   if (currentElement != null) {
-    Table<Class<? extends UIElement>,String,UIStyleFragment> elementTable=getElementTable(currentFamily);
-    elementTable.put(currentElement,currentMode,currentStyle);
+    elementStyles.put(currentFamily,new StyleKey(currentElement,currentPart,currentMode),currentStyle);
   }
  else {
     baseStyles.put(currentFamily,currentStyle);

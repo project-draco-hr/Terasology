@@ -1,0 +1,13 @@
+{
+  for (  Class<? extends UIElement> element : inheritanceTree) {
+    StyleKey key=new StyleKey(element,part,mode);
+    UIStyleFragment baseElementStyle=baseStyleLookup.get(key);
+    if (baseElementStyle != null) {
+      baseElementStyle.applyTo(elementStyle);
+    }
+    UIStyleFragment elemStyle=styleLookup.get(key);
+    if (elemStyle != null) {
+      elemStyle.applyTo(elementStyle);
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  if (clickedRegion != null) {
+    Vector2i relPos=new Vector2i(position).sub(clickedRegion.region.min());
+    clickedRegion.listener.onMouseDrag(relPos);
+  }
+  Set<InteractionRegion> newMouseOverRegions=Sets.newLinkedHashSet();
+  Iterator<InteractionRegion> iter=interactionRegions.descendingIterator();
+  while (iter.hasNext()) {
+    InteractionRegion next=iter.next();
+    if (next.region.contains(position)) {
+      Vector2i relPos=new Vector2i(position).sub(next.region.min());
+      next.listener.onMouseOver(relPos,newMouseOverRegions.isEmpty());
+      newMouseOverRegions.add(next);
+    }
+  }
+  for (  InteractionRegion region : mouseOverRegions) {
+    if (!newMouseOverRegions.contains(region) && interactionRegions.contains(region)) {
+      region.listener.onMouseLeave();
+    }
+  }
+  if (clickedRegion != null && !interactionRegions.contains(clickedRegion)) {
+    clickedRegion=null;
+  }
+  mouseOverRegions=newMouseOverRegions;
+}
