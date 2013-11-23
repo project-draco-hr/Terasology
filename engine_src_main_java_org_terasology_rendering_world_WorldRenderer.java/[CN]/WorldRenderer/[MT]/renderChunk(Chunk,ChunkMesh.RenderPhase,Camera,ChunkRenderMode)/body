@@ -45,11 +45,13 @@
       }
     }
     if (mode == ChunkRenderMode.DEFAULT || mode == ChunkRenderMode.REFLECTION) {
-      if (phase == ChunkMesh.RenderPhase.REFRACTIVE) {
-        shader.deactivateFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
-      }
- else       if (phase == ChunkMesh.RenderPhase.ALPHA_REJECT) {
-        shader.deactivateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+      if (shader != null) {
+        if (phase == ChunkMesh.RenderPhase.REFRACTIVE) {
+          shader.deactivateFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
+        }
+ else         if (phase == ChunkMesh.RenderPhase.ALPHA_REJECT) {
+          shader.deactivateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
+        }
       }
     }
     GL11.glPopMatrix();
