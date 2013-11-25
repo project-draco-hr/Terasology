@@ -3,6 +3,7 @@
   LiquidData newState=calcStateFor(blockPos,view);
   if (!newState.equals(current)) {
     try {
+      view.lock();
       if (view.isValidView() && world.setLiquid(blockPos,newState,current)) {
         if (newState.getDepth() > 0) {
           world.setBlock(blockPos,((newState.getType() == LiquidType.WATER) ? water : lava));

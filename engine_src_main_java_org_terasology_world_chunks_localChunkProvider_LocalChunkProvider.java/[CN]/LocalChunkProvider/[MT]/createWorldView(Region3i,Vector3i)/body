@@ -1,12 +1,12 @@
 {
-  Chunk[] chunks=new Chunk[region.size().x * region.size().y * region.size().z];
+  ChunkImpl[] chunks=new ChunkImpl[region.size().x * region.size().y * region.size().z];
   for (  Vector3i chunkPos : region) {
-    Chunk chunk=nearCache.get(chunkPos);
-    if (chunk == null || chunk.getChunkState() != Chunk.State.COMPLETE) {
+    ChunkImpl chunk=nearCache.get(chunkPos);
+    if (chunk == null || chunk.getChunkState() != ChunkImpl.State.COMPLETE) {
       return null;
     }
     int index=(chunkPos.x - region.min().x) + region.size().x * (chunkPos.z - region.min().z);
     chunks[index]=chunk;
   }
-  return new RegionalChunkView(chunks,region,offset);
+  return new ChunkViewCoreImpl(chunks,region,offset);
 }

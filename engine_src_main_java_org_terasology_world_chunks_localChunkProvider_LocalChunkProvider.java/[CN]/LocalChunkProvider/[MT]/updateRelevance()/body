@@ -4,8 +4,8 @@
     if (chunkRelevanceRegion.isDirty()) {
       boolean produceChunks=false;
       for (      Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
-        Chunk chunk=nearCache.get(pos);
-        if (chunk != null && chunk.getChunkState() == Chunk.State.COMPLETE) {
+        ChunkImpl chunk=nearCache.get(pos);
+        if (chunk != null && chunk.getChunkState() == ChunkImpl.State.COMPLETE) {
           chunkRelevanceRegion.chunkReady(chunk);
         }
  else {

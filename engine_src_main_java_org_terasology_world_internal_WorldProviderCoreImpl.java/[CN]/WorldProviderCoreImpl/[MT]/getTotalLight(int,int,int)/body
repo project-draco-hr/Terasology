@@ -1,10 +1,10 @@
 {
-  if (y >= Chunk.SIZE_Y || y < 0) {
+  if (y >= ChunkConstants.SIZE_Y || y < 0) {
     logger.warn("Accessed total light value outside of the height range");
     return 0;
   }
   Vector3i chunkPos=TeraMath.calcChunkPos(x,y,z);
-  Chunk chunk=chunkProvider.getChunk(chunkPos);
+  ChunkImpl chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
     Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
     return (byte)Math.max(chunk.getSunlight(blockPos),chunk.getLight(blockPos));

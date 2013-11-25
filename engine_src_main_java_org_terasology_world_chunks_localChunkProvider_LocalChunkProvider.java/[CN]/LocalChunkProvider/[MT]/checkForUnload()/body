@@ -14,16 +14,16 @@
         }
       }
       if (!keep) {
-        Chunk chunk=nearCache.get(pos);
+        ChunkImpl chunk=nearCache.get(pos);
         if (chunk.isLocked()) {
           continue;
         }
         chunk.lock();
         try {
-          if (chunk.getChunkState() == Chunk.State.COMPLETE && !chunk.isReady()) {
+          if (chunk.getChunkState() == ChunkImpl.State.COMPLETE && !chunk.isReady()) {
             continue;
           }
-          if (chunk.getChunkState() == Chunk.State.COMPLETE) {
+          if (chunk.getChunkState() == ChunkImpl.State.COMPLETE) {
             worldEntity.send(new BeforeChunkUnload(pos));
             for (            ChunkRelevanceRegion region : regions.values()) {
               region.chunkUnloaded(pos);
