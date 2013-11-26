@@ -1,9 +1,9 @@
 {
   for (  Class<?> buttonEvent : classes) {
     if (ButtonEvent.class.isAssignableFrom(buttonEvent)) {
-      RegisterBindButton info=(RegisterBindButton)buttonEvent.getAnnotation(RegisterBindButton.class);
-      if (!hasBinds(packageName,info.id())) {
-        addBind(packageName,buttonEvent,info);
+      RegisterBindButton info=buttonEvent.getAnnotation(RegisterBindButton.class);
+      if (!hasBinds(moduleId,info.id())) {
+        addBind(moduleId,buttonEvent,info);
       }
     }
   }

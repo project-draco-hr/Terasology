@@ -1,0 +1,22 @@
+{
+  if (canvas.size().y < contentSize.y) {
+    Border margin=canvas.getCurrentStyle().getMargin();
+    try (SubRegion ignored=canvas.subRegion(margin.shrink(canvas.getRegion()),true)){
+      canvas.drawElement(content,Rect2i.createFromMinAndSize(0,-offset,contentSize.x,contentSize.y));
+    }
+     try (SubRegion ignored=canvas.subRegion(Rect2i.createFromMinAndSize(canvas.size().x - scrollbarWidth - margin.getRight(),margin.getTop(),scrollbarWidth,canvas.size().y - margin.getTotalHeight()),false)){
+      canvasHeight=canvas.size().y;
+      canvas.setPart("scrollbar-slider");
+      canvas.drawBackground();
+      canvas.setPart("scrollbar-handle");
+      sliderHeight=canvasHeight - canvas.getCurrentStyle().getFixedHeight();
+      int drawLocation=pixelOffsetFor(offset);
+      Rect2i handleRegion=Rect2i.createFromMinAndSize(0,drawLocation,canvas.getCurrentStyle().getFixedWidth(),canvas.getCurrentStyle().getFixedHeight());
+      canvas.drawBackground(handleRegion);
+      canvas.addInteractionRegion(handleListener,handleRegion);
+    }
+   }
+ else {
+    canvas.drawElement(content,canvas.getRegion());
+  }
+}

@@ -1,8 +1,18 @@
 {
+  if (focus != null) {
+    focus.onMouseButtonEvent(event);
+    if (event.isConsumed()) {
+      return;
+    }
+  }
   if (event.isDown()) {
-    canvas.processMouseClick(event.getButton(),Mouse.getPosition());
+    if (canvas.processMouseClick(event.getButton(),Mouse.getPosition())) {
+      event.consume();
+    }
   }
  else {
-    canvas.processMouseRelease(event.getButton(),Mouse.getPosition());
+    if (canvas.processMouseRelease(event.getButton(),Mouse.getPosition())) {
+      event.consume();
+    }
   }
 }

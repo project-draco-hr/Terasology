@@ -1,10 +1,7 @@
 {
   String[] parts=uri.split(":",2);
   if (parts.length == 2) {
-    Multimap<String,Input> packageMap=getPackageMap(parts[0]);
-    if (packageMap != null) {
-      return packageMap.get(parts[1]);
-    }
+    return getBinds(parts[0],parts[1]);
   }
-  return Lists.newArrayList();
+  return Collections.emptyList();
 }

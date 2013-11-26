@@ -1,5 +1,9 @@
 {
-  UIStyle newStyle=state.skin.getStyleFor((element.getFamily() != null) ? element.getFamily() : state.family,element.getClass(),element.getMode());
+  if (element == null) {
+    return;
+  }
+  String family=(element.getFamily() != null) ? element.getFamily() : state.family;
+  UIStyle newStyle=state.skin.getStyleFor(family,element.getClass(),element.getMode());
   Rect2i regionArea=applyFixedSizesToRegion(region,newStyle);
   try (SubRegion ignored=subRegion(regionArea,false)){
     state.element=element;
