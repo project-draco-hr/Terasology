@@ -1,0 +1,14 @@
+{
+  UIButton selected=null;
+  for (  UIButton btn : radioGroup) {
+    if (btn.getToggleState()) {
+      selected=btn;
+      break;
+    }
+  }
+  int scale=zoomSlider.getValue();
+  if (selected != null) {
+    ColorFunction colorFunc=(ColorFunction)selected.getUserData();
+    imagePreview.setTexture(createTexture(imageSize,imageSize,scale,colorFunc));
+  }
+}
