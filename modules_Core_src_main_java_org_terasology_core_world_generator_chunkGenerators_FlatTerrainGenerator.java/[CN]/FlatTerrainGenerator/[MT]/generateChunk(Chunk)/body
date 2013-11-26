@@ -1,0 +1,53 @@
+{
+  for (int x=0; x < chunk.getChunkSizeX(); x++) {
+    for (int z=0; z < chunk.getChunkSizeZ(); z++) {
+      final WorldBiomeProvider.Biome type=biomeProvider.getBiomeAt(chunk.getBlockWorldPosX(x),chunk.getBlockWorldPosZ(z));
+      for (int y=chunk.getChunkSizeY() - 1; y >= 0; y--) {
+        if (y == 0) {
+          chunk.setBlock(x,y,z,mantle);
+        }
+ else         if (y < surfaceHeight) {
+switch (type) {
+case FOREST:
+            chunk.setBlock(x,y,z,dirt);
+          break;
+case PLAINS:
+        chunk.setBlock(x,y,z,dirt);
+      break;
+case MOUNTAINS:
+    chunk.setBlock(x,y,z,stone);
+  break;
+case SNOW:
+chunk.setBlock(x,y,z,snow);
+break;
+case DESERT:
+chunk.setBlock(x,y,z,sand);
+break;
+}
+}
+ else if (y == surfaceHeight) {
+switch (type) {
+case FOREST:
+chunk.setBlock(x,y,z,dirt);
+break;
+case PLAINS:
+chunk.setBlock(x,y,z,grass);
+break;
+case MOUNTAINS:
+chunk.setBlock(x,y,z,stone);
+break;
+case SNOW:
+chunk.setBlock(x,y,z,snow);
+break;
+case DESERT:
+chunk.setBlock(x,y,z,sand);
+break;
+}
+}
+ else {
+chunk.setBlock(x,y,z,air);
+}
+}
+}
+}
+}

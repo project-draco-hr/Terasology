@@ -1,5 +1,5 @@
 {
-  Chunk chunk=getChunk(readyChunkInfo.getPos());
+  ChunkImpl chunk=getChunk(readyChunkInfo.getPos());
   if (chunk == null) {
     return;
   }
@@ -42,7 +42,7 @@
     PerformanceMonitor.endActivity();
     for (    Side side : Side.horizontalSides()) {
       Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
-      Chunk adjChunk=getChunk(adjChunkPos);
+      ChunkImpl adjChunk=getChunk(adjChunkPos);
       if (adjChunk != null) {
         for (        BatchPropagator propagator : loadEdgePropagators) {
           propagator.propagateBetween(chunk,adjChunk,side);
