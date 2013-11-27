@@ -1,18 +1,18 @@
 {
-  List<AssetUri> possibilities=resolveAll(type,name);
-switch (possibilities.size()) {
+  List<BlockUri> matches=resolveAllBlockFamilyUri(uri);
+switch (matches.size()) {
 case 0:
-    logger.warn("Failed to resolve {}:{}",type,name);
+    logger.warn("Failed to resolve block family '{}'",uri);
   return null;
 case 1:
-return possibilities.get(0);
+return matches.get(0);
 default :
 Module context=ModuleContext.getContext();
 if (context != null) {
 Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
-Iterator<AssetUri> iterator=possibilities.iterator();
+Iterator<BlockUri> iterator=matches.iterator();
 while (iterator.hasNext()) {
-AssetUri possibleUri=iterator.next();
+BlockUri possibleUri=iterator.next();
 if (context.getId().equals(possibleUri.getNormalisedModuleName())) {
   return possibleUri;
 }
@@ -20,11 +20,11 @@ if (!dependencies.contains(possibleUri.getNormalisedModuleName())) {
   iterator.remove();
 }
 }
-if (possibilities.size() == 1) {
-return possibilities.get(0);
+if (matches.size() == 1) {
+return matches.get(0);
 }
 }
-logger.warn("Failed to resolve {}:{} - too many valid matches {}",type,name,possibilities);
+logger.warn("Failed to resolve block family '{}' - too many valid matches {}",uri,matches);
 return null;
 }
 }

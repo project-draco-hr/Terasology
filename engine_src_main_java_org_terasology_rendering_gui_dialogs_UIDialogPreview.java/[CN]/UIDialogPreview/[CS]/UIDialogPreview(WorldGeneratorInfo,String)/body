@@ -4,7 +4,7 @@
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
   try {
-    moduleManager.enableModule(worldGeneratorModule);
+    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
     worldGenerator=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(info.getUri());
     if (worldGenerator instanceof WorldGenerator2DPreview) {
       worldGenerator.setWorldSeed(seed);
@@ -19,7 +19,7 @@
     logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
   }
  finally {
-    moduleManager.disableModule(worldGeneratorModule);
+    moduleManager.disableAllModules();
   }
   UILabel inputSeedLabel=new UILabel("Seed");
   inputSeedLabel.setColor(org.newdawn.slick.Color.darkGray);
