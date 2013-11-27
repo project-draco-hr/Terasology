@@ -1,7 +1,69 @@
 {
   super(new Vector2f(640f,480f));
   setTitle("Setup Map");
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
+  try {
+    moduleManager.enableModule(worldGeneratorModule);
+    worldGenerator=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(info.getUri());
+    if (worldGenerator instanceof WorldGenerator2DPreview) {
+      worldGenerator.setWorldSeed(seed);
+      worldGenerator2DPreview=(WorldGenerator2DPreview)worldGenerator;
+      isPreviewPossible=true;
+    }
+ else {
+      logger.info(info.getUri().toString() + " does not support a 2d preview");
+    }
+  }
+ catch (  UnresolvedWorldGeneratorException e) {
+    logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
+  }
+ finally {
+    moduleManager.disableModule(worldGeneratorModule);
+  }
+  UILabel inputSeedLabel=new UILabel("Seed");
+  inputSeedLabel.setColor(org.newdawn.slick.Color.darkGray);
+  inputSeed=new UIText();
   inputSeed.setText(seed);
-  biomeProvider=new WorldBiomeProviderImpl(seed);
+  inputSeed.setSize(new Vector2f(120,32));
+  inputSeed.addChangedListener(new ChangedListener(){
+    @Override public void changed(    UIDisplayElement element){
+      worldGenerator.setWorldSeed(inputSeed.getText());
+      updatePreview();
+    }
+  }
+);
+  detailPanel.addDisplayElement(inputSeedLabel);
+  detailPanel.addDisplayElement(inputSeed);
+  layerButtons=new ArrayList<UIButton>();
+  for (  String layerName : worldGenerator2DPreview.getLayers()) {
+    UIButton layerButton=new UIButton(defSize,ButtonType.TOGGLE);
+    layerButton.getLabel().setText(layerName);
+    layerButton.setUserData(layerName);
+    layerButtons.add(layerButton);
+  }
+  if (layerButtons.size() > 0) {
+    layerButtons.get(0).setToggleState(true);
+  }
+  ClickListener btnClick=new ClickListener(){
+    @Override public void click(    UIDisplayElement element,    int button){
+      UIButton clickedBtn=(UIButton)element;
+      for (      UIButton btn : layerButtons) {
+        if (clickedBtn != btn) {
+          btn.setToggleState(false);
+        }
+ else {
+          btn.setToggleState(true);
+        }
+      }
+      updatePreview();
+    }
+  }
+;
+  for (  UIButton btn : layerButtons) {
+    btn.addClickListener(btnClick);
+    detailPanel.addDisplayElement(btn);
+  }
+  detailPanel.layout();
   updatePreview();
 }

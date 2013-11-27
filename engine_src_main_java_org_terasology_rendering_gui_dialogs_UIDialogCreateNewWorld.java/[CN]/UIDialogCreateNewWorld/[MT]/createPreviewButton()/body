@@ -6,15 +6,21 @@
     @Override public void click(    UIDisplayElement element,    int button){
       WorldGeneratorInfo info=(WorldGeneratorInfo)worldGenerator.getSelection().getValue();
       UIDialogPreview dialog=new UIDialogPreview(info,inputSeed.getText());
-      dialog.addDialogListener(new DialogListener(){
-        @Override public void close(        UIDisplayElement closingDialog,        EReturnCode returnCode,        Object returnValue){
-          if (returnCode == EReturnCode.OK) {
-            inputSeed.setText((String)returnValue);
+      if (dialog.isPreviewPossible()) {
+        dialog.addDialogListener(new DialogListener(){
+          @Override public void close(          UIDisplayElement closingDialog,          EReturnCode returnCode,          Object returnValue){
+            if (returnCode == EReturnCode.OK) {
+              inputSeed.setText((String)returnValue);
+            }
           }
         }
-      }
 );
-      dialog.open();
+        dialog.open();
+      }
+ else {
+        UIMessageBox messageBox=new UIMessageBox("Preview Unavailable","This world generator does not support previewing");
+        messageBox.openDialog();
+      }
     }
   }
 );
