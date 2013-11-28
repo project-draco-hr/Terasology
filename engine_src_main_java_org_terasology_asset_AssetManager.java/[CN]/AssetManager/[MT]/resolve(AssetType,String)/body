@@ -2,27 +2,29 @@
   List<AssetUri> possibilities=resolveAll(type,name);
 switch (possibilities.size()) {
 case 0:
-    return null;
+    logger.warn("Failed to resolve {}:{}",type,name);
+  return null;
 case 1:
-  return possibilities.get(0);
+return possibilities.get(0);
 default :
 Module context=ModuleContext.getContext();
 if (context != null) {
 Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
 Iterator<AssetUri> iterator=possibilities.iterator();
 while (iterator.hasNext()) {
-  AssetUri possibleUri=iterator.next();
-  if (context.getId().equals(possibleUri.getNormalisedModuleName())) {
-    return possibleUri;
-  }
-  if (!dependencies.contains(possibleUri.getNormalisedModuleName())) {
-    iterator.remove();
-  }
+AssetUri possibleUri=iterator.next();
+if (context.getId().equals(possibleUri.getNormalisedModuleName())) {
+  return possibleUri;
+}
+if (!dependencies.contains(possibleUri.getNormalisedModuleName())) {
+  iterator.remove();
+}
 }
 if (possibilities.size() == 1) {
-  return possibilities.get(0);
+return possibilities.get(0);
 }
 }
+logger.warn("Failed to resolve {}:{} - too many valid matches {}",type,name,possibilities);
 return null;
 }
 }

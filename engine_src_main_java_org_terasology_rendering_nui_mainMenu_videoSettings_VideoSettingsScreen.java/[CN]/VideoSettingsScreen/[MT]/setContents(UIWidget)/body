@@ -45,6 +45,7 @@ find("outline",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("outlin
 find("vsync",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("vSync",config.getRendering(),Boolean.TYPE));
 find("close",UIButton.class).subscribe(new ButtonEventListener(){
 @Override public void onButtonActivated(UIButton button){
+logger.info("Video Settings: " + config.getRendering().toString());
 CoreRegistry.get(ShaderManager.class).recompileAllShaders();
 TerasologyEngine te=(TerasologyEngine)engine;
 if (te.isFullscreen() != find("fullscreen",UICheckbox.class).isChecked()) {

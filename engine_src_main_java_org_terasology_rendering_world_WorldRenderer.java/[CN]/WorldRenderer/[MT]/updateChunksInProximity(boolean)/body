@@ -8,8 +8,8 @@
       chunksInProximity.clear();
       for (int x=-(viewingDistance / 2); x < viewingDistance / 2; x++) {
         for (int z=-(viewingDistance / 2); z < viewingDistance / 2; z++) {
-          Chunk c=chunkProvider.getChunk(newChunkPosX + x,0,newChunkPosZ + z);
-          if (c != null && c.getChunkState() == Chunk.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
+          ChunkImpl c=chunkProvider.getChunk(newChunkPosX + x,0,newChunkPosZ + z);
+          if (c != null && c.getChunkState() == ChunkImpl.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
             chunksInProximity.add(c);
           }
  else {
@@ -26,7 +26,7 @@
       for (      Rect2i r : removeRects) {
         for (int x=r.minX(); x <= r.maxX(); ++x) {
           for (int y=r.minY(); y <= r.maxY(); ++y) {
-            Chunk c=chunkProvider.getChunk(x,0,y);
+            ChunkImpl c=chunkProvider.getChunk(x,0,y);
             if (c != null) {
               chunksInProximity.remove(c);
               c.disposeMesh();
@@ -38,8 +38,8 @@
       for (      Rect2i r : addRects) {
         for (int x=r.minX(); x <= r.maxX(); ++x) {
           for (int y=r.minY(); y <= r.maxY(); ++y) {
-            Chunk c=chunkProvider.getChunk(x,0,y);
-            if (c != null && c.getChunkState() == Chunk.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
+            ChunkImpl c=chunkProvider.getChunk(x,0,y);
+            if (c != null && c.getChunkState() == ChunkImpl.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
               chunksInProximity.add(c);
             }
  else {

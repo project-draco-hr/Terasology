@@ -1,0 +1,26 @@
+{
+  int size=4 * width * height;
+  byte[] array=new byte[size];
+  final int offX=-width / 2;
+  final int offY=-height / 2;
+  final int scaleX=scale;
+  final int scaleY=scale;
+  for (int y=0; y < height; y++) {
+    for (int x=0; x < width; x++) {
+      int px=(x + offX) * scaleX;
+      int py=(y + offY) * scaleY;
+      Color c=worldGenerator2DPreview.get(layerName,px,py);
+      array[(y * width + x) * 4 + 0]=(byte)c.r();
+      array[(y * width + x) * 4 + 1]=(byte)c.g();
+      array[(y * width + x) * 4 + 2]=(byte)c.b();
+      array[(y * width + x) * 4 + 3]=(byte)c.a();
+    }
+  }
+  ByteBuffer buf=ByteBuffer.allocateDirect(size);
+  buf.put(array);
+  buf.flip();
+  ByteBuffer[] data=new ByteBuffer[]{buf};
+  AssetUri uri=new AssetUri(AssetType.TEXTURE,"engine:terrainpreview");
+  TextureData texdata=new TextureData(width,height,data,WrapMode.Clamp,FilterMode.Nearest);
+  return new OpenGLTexture(uri,texdata);
+}
