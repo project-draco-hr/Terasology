@@ -1,10 +1,18 @@
 {
   JsonObject result=new JsonObject();
-  List<String> keys=Lists.newArrayList(src.data.keySet());
-  Collections.sort(keys);
-  for (  String packageName : keys) {
-    JsonElement map=context.serialize(src.data.get(packageName),Multimap.class);
-    result.add(packageName,map);
+  SetMultimap<String,SimpleUri> bindByModule=HashMultimap.create();
+  for (  SimpleUri key : src.data.keySet()) {
+    bindByModule.put(key.getNormalisedModuleName(),key);
+  }
+  List<String> sortedModules=Lists.newArrayList(bindByModule.keySet());
+  Collections.sort(sortedModules);
+  for (  String moduleId : sortedModules) {
+    SetMultimap<String,Input> moduleBinds=HashMultimap.create();
+    for (    SimpleUri bindUri : bindByModule.get(moduleId)) {
+      moduleBinds.putAll(bindUri.getNormalisedObjectName(),src.data.get(bindUri));
+    }
+    JsonElement map=context.serialize(moduleBinds,SetMultimap.class);
+    result.add(moduleId,map);
   }
   return result;
 }

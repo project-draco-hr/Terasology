@@ -1,3 +1,17 @@
 {
-  config.setBinds(moduleId,bindId,value);
+  List<Input> binds=Lists.newArrayList(config.getBinds(bindUri));
+  if (value == null) {
+    if (position < binds.size()) {
+      binds.remove(position);
+    }
+  }
+ else {
+    if (position < binds.size()) {
+      binds.set(position,value);
+    }
+ else {
+      binds.add(value);
+    }
+  }
+  config.setBinds(bindUri,binds);
 }

@@ -2,7 +2,7 @@
   BindsConfig bindsConfig=config.getInput().getBinds();
   for (  UIButton button : inputButtons) {
     String bindId=button.getUserData().toString();
-    Collection<Input> inputs=bindsConfig.getBinds(bindId);
+    Collection<Input> inputs=bindsConfig.getBinds(new SimpleUri(bindId));
     if (inputs.size() > 0) {
       button.getLabel().setText(inputs.iterator().next().toShortString());
     }

@@ -2,8 +2,11 @@
   BindsConfig result=new BindsConfig();
   JsonObject inputObj=json.getAsJsonObject();
   for (  Map.Entry<String,JsonElement> entry : inputObj.entrySet()) {
-    Multimap<String,Input> map=context.deserialize(entry.getValue(),Multimap.class);
-    result.data.put(entry.getKey(),map);
+    SetMultimap<String,Input> map=context.deserialize(entry.getValue(),SetMultimap.class);
+    for (    String id : map.keySet()) {
+      SimpleUri uri=new SimpleUri(entry.getKey(),id);
+      result.data.putAll(uri,map.get(id));
+    }
   }
   return result;
 }

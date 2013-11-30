@@ -1,5 +1,12 @@
 {
   super.setContents(contents);
+  find("mouseSensitivity",UISlider.class).bindValue(BindHelper.bindBeanProperty("mouseSensitivity",config.getInput(),Float.TYPE));
+  find("reset",UIButton.class).subscribe(new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      config.getInput().reset();
+    }
+  }
+);
   find("close",UIButton.class).subscribe(new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       nuiManager.popScreen();

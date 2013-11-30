@@ -1,6 +1,11 @@
 {
   if (capturingInput && event.isDown()) {
-    setInput(new Input(InputType.KEY,event.getKey()));
+    if (event.getKey() == Keyboard.KEY_ESCAPE) {
+      setInput(null);
+    }
+ else {
+      setInput(new Input(InputType.KEY,event.getKey()));
+    }
     capturingInput=false;
     event.consume();
   }

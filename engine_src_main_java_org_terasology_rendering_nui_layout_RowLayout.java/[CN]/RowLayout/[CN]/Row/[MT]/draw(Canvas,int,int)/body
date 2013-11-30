@@ -1,10 +1,11 @@
 {
   if (!items.isEmpty()) {
-    int itemWidth=canvas.size().x / items.size();
+    int xOffset=0;
     for (int i=0; i < items.size(); ++i) {
-      int xOffset=i * canvas.size().x / items.size();
+      int itemWidth=TeraMath.floorToInt(canvas.size().x * columnWidths.get(i));
       Rect2i region=Rect2i.createFromMinAndSize(xOffset + padding.getLeft(),yOffset + padding.getTop(),itemWidth - padding.getTotalWidth(),height - padding.getTotalHeight());
       canvas.drawElement(items.get(i),region);
+      xOffset+=itemWidth;
     }
   }
 }

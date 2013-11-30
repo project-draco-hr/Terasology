@@ -2,23 +2,38 @@
   RowLayout mainLayout=new RowLayout();
   mainLayout.setPadding(new Border(4,4,4,4));
   mainLayout.setFamily("option-grid");
-  mainLayout.addRow(new UILabel("Mouse Sensitivity:"),new UISlider("mouseSensitivity"));
-  mainLayout.addRow(new UILabel("Invert Mouse:"),new UICheckbox("invertMouse"));
+  UISlider mouseSensitivity=new UISlider("mouseSensitivity");
+  mouseSensitivity.setIncrement(0.025f);
+  mouseSensitivity.setPrecision(3);
+  mainLayout.addRow(new UILabel("mouseLabel","heading-input","Mouse"));
+  mainLayout.addRow(new UILabel("Mouse Sensitivity:"),mouseSensitivity).setColumnRatios(0.4f);
+  mainLayout.addRow(new UILabel("Invert Mouse:"),new UICheckbox("invertMouse")).setColumnRatios(0.4f);
+  Map<String,InputCategory> inputCategories=Maps.newHashMap();
+  Map<SimpleUri,RegisterBindButton> inputsById=Maps.newHashMap();
   for (  Module module : moduleManager.getModules()) {
     if (module.isCodeModule()) {
+      for (      Class<?> holdingType : module.getReflections().getTypesAnnotatedWith(InputCategory.class)) {
+        InputCategory inputCategory=holdingType.getAnnotation(InputCategory.class);
+        inputCategories.put(module.getId() + ":" + inputCategory.id(),inputCategory);
+      }
       for (      Class<?> bindEvent : module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class)) {
         if (BindButtonEvent.class.isAssignableFrom(bindEvent)) {
           RegisterBindButton bindRegister=bindEvent.getAnnotation(RegisterBindButton.class);
-          UIInputBind inputBind=new UIInputBind();
-          inputBind.bindInput(new InputConfigBinding(config.getInput().getBinds(),module.getId(),bindRegister.id()));
-          mainLayout.addRow(new UILabel(bindRegister.description()),inputBind);
+          inputsById.put(new SimpleUri(module.getId(),bindRegister.id()),bindRegister);
         }
       }
     }
   }
+  addInputSection(inputCategories.remove("engine:movement"),mainLayout,inputsById);
+  addInputSection(inputCategories.remove("engine:interaction"),mainLayout,inputsById);
+  addInputSection(inputCategories.remove("engine:inventory"),mainLayout,inputsById);
+  addInputSection(inputCategories.remove("engine:general"),mainLayout,inputsById);
+  for (  InputCategory category : inputCategories.values()) {
+    addInputSection(category,mainLayout,inputsById);
+  }
   ScrollableArea area=new ScrollableArea();
   area.setContent(mainLayout);
-  area.setContentSize(new Vector2i(500,mainLayout.getRowCount() * 32));
+  area.setContentHeight(mainLayout.getRowCount() * 32);
   ColumnLayout footerGrid=new ColumnLayout();
   footerGrid.setColumns(2);
   footerGrid.addWidget(new UIButton("reset","Restore Defaults"));

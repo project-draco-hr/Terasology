@@ -1,8 +1,9 @@
 {
-  if (canvas.size().y < contentSize.y) {
+  if (canvas.size().y < contentHeight) {
     Border margin=canvas.getCurrentStyle().getMargin();
-    try (SubRegion ignored=canvas.subRegion(margin.shrink(canvas.getRegion()),true)){
-      canvas.drawElement(content,Rect2i.createFromMinAndSize(0,-offset,contentSize.x,contentSize.y));
+    Rect2i contentRegion=margin.shrink(Rect2i.createFromMinAndSize(0,0,canvas.size().x - scrollbarWidth,canvas.size().y));
+    try (SubRegion ignored=canvas.subRegion(contentRegion,true)){
+      canvas.drawElement(content,Rect2i.createFromMinAndSize(0,-offset,canvas.size().x,contentHeight));
     }
      try (SubRegion ignored=canvas.subRegion(Rect2i.createFromMinAndSize(canvas.size().x - scrollbarWidth - margin.getRight(),margin.getTop(),scrollbarWidth,canvas.size().y - margin.getTotalHeight()),false)){
       canvasHeight=canvas.size().y;
@@ -17,6 +18,6 @@
     }
    }
  else {
-    canvas.drawElement(content,canvas.getRegion());
+    canvas.drawElement(content,Rect2i.createFromMinAndSize(0,0,canvas.size().x,contentHeight));
   }
 }
