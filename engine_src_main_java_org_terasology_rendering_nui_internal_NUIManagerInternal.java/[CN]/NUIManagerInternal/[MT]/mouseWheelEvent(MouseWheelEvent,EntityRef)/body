@@ -1,5 +1,11 @@
 {
   if (focus != null) {
     focus.onMouseWheelEvent(event);
+    if (event.isConsumed()) {
+      return;
+    }
+    if (canvas.processMouseWheel(event.getWheelTurns(),Mouse.getPosition())) {
+      event.consume();
+    }
   }
 }

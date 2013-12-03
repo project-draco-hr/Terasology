@@ -1,14 +1,15 @@
 {
   if (canvas.size().y < contentHeight) {
+    canvas.addInteractionRegion(scrollListener);
     Border margin=canvas.getCurrentStyle().getMargin();
     int scrollbarWidth=canvas.calculateSize(scrollbar,canvas.getRegion()).width();
+    canvas.drawElement(scrollbar,Rect2i.createFromMinAndSize(canvas.size().x - scrollbarWidth - margin.getRight(),margin.getTop(),scrollbarWidth,canvas.size().y - margin.getTotalHeight()));
     Rect2i contentRegion=margin.shrink(Rect2i.createFromMinAndSize(0,0,canvas.size().x - scrollbarWidth,canvas.size().y));
+    scrollbar.setRange(contentHeight - contentRegion.height());
     try (SubRegion ignored=canvas.subRegion(contentRegion,true)){
       canvas.drawElement(content,Rect2i.createFromMinAndSize(0,-scrollbar.getValue(),canvas.size().x,contentHeight));
     }
-     scrollbar.setRange(contentHeight - contentRegion.height());
-    canvas.drawElement(scrollbar,Rect2i.createFromMinAndSize(canvas.size().x - scrollbarWidth - margin.getRight(),margin.getTop(),scrollbarWidth,canvas.size().y - margin.getTotalHeight()));
-  }
+   }
  else {
     canvas.drawElement(content,Rect2i.createFromMinAndSize(0,0,canvas.size().x,contentHeight));
   }
