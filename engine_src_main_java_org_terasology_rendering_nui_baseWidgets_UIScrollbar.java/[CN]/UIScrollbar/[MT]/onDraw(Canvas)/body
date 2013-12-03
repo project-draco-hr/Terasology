@@ -1,0 +1,10 @@
+{
+  canvas.setPart("slider");
+  canvas.drawBackground();
+  canvas.setPart("handle");
+  sliderSize=canvas.size().y - canvas.getCurrentStyle().getFixedHeight();
+  int drawLocation=pixelOffsetFor(getValue());
+  Rect2i handleRegion=Rect2i.createFromMinAndSize(0,drawLocation,canvas.getCurrentStyle().getFixedWidth(),canvas.getCurrentStyle().getFixedHeight());
+  canvas.drawBackground(handleRegion);
+  canvas.addInteractionRegion(handleListener,handleRegion);
+}
