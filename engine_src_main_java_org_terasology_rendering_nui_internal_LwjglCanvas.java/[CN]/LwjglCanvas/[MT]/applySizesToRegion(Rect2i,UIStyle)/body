@@ -1,0 +1,19 @@
+{
+  int width=region.width();
+  if (style.getFixedWidth() != 0) {
+    width=style.getFixedWidth();
+  }
+ else {
+    width=TeraMath.clamp(width,style.getMinWidth(),style.getMaxWidth());
+  }
+  int height=region.height();
+  if (style.getFixedHeight() != 0) {
+    height=style.getFixedHeight();
+  }
+ else {
+    height=TeraMath.clamp(height,style.getMinHeight(),style.getMaxHeight());
+  }
+  int minX=region.minX() + style.getHorizontalAlignment().getOffset(width,region.width());
+  int minY=region.minY() + style.getVerticalAlignment().getOffset(height,region.height());
+  return Rect2i.createFromMinAndSize(minX,minY,width,height);
+}

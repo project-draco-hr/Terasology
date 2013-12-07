@@ -1,0 +1,9 @@
+{
+  if (element == null) {
+    return sizeHint;
+  }
+  String family=(element.getFamily() != null) ? element.getFamily() : state.family;
+  UIStyle elementStyle=state.skin.getStyleFor(family,element.getClass(),element.getMode());
+  Rect2i adjustedArea=applySizesToRegion(Rect2i.createFromMinAndSize(Vector2i.zero(),sizeHint),elementStyle);
+  return applySizesToRegion(Rect2i.createFromMinAndSize(Vector2i.zero(),element.calcContentSize(elementStyle,adjustedArea.size())),elementStyle).size();
+}

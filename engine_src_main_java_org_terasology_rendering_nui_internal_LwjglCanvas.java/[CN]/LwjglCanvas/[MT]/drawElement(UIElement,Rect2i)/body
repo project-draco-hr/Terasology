@@ -4,7 +4,7 @@
   }
   String family=(element.getFamily() != null) ? element.getFamily() : state.family;
   UIStyle newStyle=state.skin.getStyleFor(family,element.getClass(),element.getMode());
-  Rect2i regionArea=applyFixedSizesToRegion(region,newStyle);
+  Rect2i regionArea=applySizesToRegion(region,newStyle);
   try (SubRegion ignored=subRegion(regionArea,false)){
     state.element=element;
     if (element.getFamily() != null) {
@@ -12,7 +12,7 @@
     }
     setPart("");
     setMode(element.getMode());
-    if (element.isBackgroundAutomaticallyDrawn()) {
+    if (element.isSkinAppliedByCanvas()) {
       drawBackground();
     }
     element.onDraw(this);
