@@ -4,19 +4,19 @@
     LocationComponent loc=entity.getComponent(LocationComponent.class);
     DrownsComponent drowns=entity.getComponent(DrownsComponent.class);
     if (drowning.isBreathing()) {
-      drowning.breathTime+=delta * drowns.breathRechargeRate;
+      drowning.breathRemaining+=delta * drowns.breathRechargeRate;
     }
  else {
-      drowning.breathTime-=delta;
+      drowning.breathRemaining-=delta;
     }
-    if (drowning.breathTime > drowns.breathCapacity) {
+    if (drowning.breathRemaining > drowns.breathCapacity) {
       entity.removeComponent(DrowningComponent.class);
     }
  else {
-      if (drowning.breathTime <= drowns.timeBetweenDrownDamage * -1) {
+      if (drowning.breathRemaining <= drowns.timeBetweenDrownDamage * -1) {
         EntityRef liquidBlock=blockEntityProvider.getBlockEntityAt(loc.getWorldPosition());
         entity.send(new DoDamageEvent(drowns.drownDamage,EngineDamageTypes.DROWNING.get(),liquidBlock));
-        drowning.breathTime+=drowns.timeBetweenDrownDamage;
+        drowning.breathRemaining+=drowns.timeBetweenDrownDamage;
       }
       entity.saveComponent(drowning);
     }

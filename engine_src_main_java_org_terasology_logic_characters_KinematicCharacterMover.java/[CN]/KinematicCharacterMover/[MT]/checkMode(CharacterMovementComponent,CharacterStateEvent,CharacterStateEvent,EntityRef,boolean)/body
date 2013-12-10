@@ -3,15 +3,13 @@
     return;
   }
   Vector3f worldPos=state.getPosition();
-  Vector3f oldWorldPos=oldState.getPosition();
   Vector3f top=new Vector3f(worldPos);
   Vector3f bottom=new Vector3f(worldPos);
   top.y+=0.25f * movementComp.height;
   bottom.y-=0.25f * movementComp.height;
-  Block topBlock=worldProvider.getBlock(top);
-  Block bottomBlock=worldProvider.getBlock(bottom);
-  final boolean newSwimming=topBlock.isLiquid() && bottomBlock.isLiquid();
-  final boolean isUnderground=!newSwimming && topBlock.isPenetrable() && bottomBlock.isPenetrable();
+  final boolean topUnderwater=worldProvider.getBlock(top).isLiquid();
+  final boolean bottomUnderwater=worldProvider.getBlock(bottom).isLiquid();
+  final boolean newSwimming=topUnderwater && bottomUnderwater;
   boolean newClimbing=false;
   if (!newSwimming) {
     Vector3f[] sides={new Vector3f(worldPos),new Vector3f(worldPos),new Vector3f(worldPos),new Vector3f(worldPos),new Vector3f(worldPos)};
