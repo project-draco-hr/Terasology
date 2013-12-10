@@ -1,0 +1,22 @@
+{
+  if (isHeadLevel(event.getcharacterRelativePosition(),entity)) {
+    DrowningComponent drowning=entity.getComponent(DrowningComponent.class);
+    if (event.getBlock().isLiquid()) {
+      if (drowning != null) {
+        drowning.setBreathing(false);
+        entity.saveComponent(drowning);
+      }
+ else {
+        drowning=new DrowningComponent();
+        drowning.breathTime=drowns.breathCapacity;
+        entity.addComponent(drowning);
+      }
+    }
+ else {
+      if (drowning != null) {
+        drowning.setBreathing(true);
+        entity.saveComponent(drowning);
+      }
+    }
+  }
+}
