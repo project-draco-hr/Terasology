@@ -3,22 +3,17 @@
     DrowningComponent drowning=entity.getComponent(DrowningComponent.class);
     LocationComponent loc=entity.getComponent(LocationComponent.class);
     DrownsComponent drowns=entity.getComponent(DrownsComponent.class);
-    if (drowning.isBreathing()) {
-      drowning.breathRemaining+=delta * drowns.breathRechargeRate;
-    }
- else {
-      drowning.breathRemaining-=delta;
-    }
-    if (drowning.breathRemaining > drowns.breathCapacity) {
+    long gameTime=time.getGameTimeInMs();
+    if (drowning.isBreathing && gameTime > drowning.endTime) {
       entity.removeComponent(DrowningComponent.class);
     }
  else {
-      if (drowning.breathRemaining <= drowns.timeBetweenDrownDamage * -1) {
+      if (gameTime > drowning.nextDrownDamageTime) {
         EntityRef liquidBlock=blockEntityProvider.getBlockEntityAt(loc.getWorldPosition());
         entity.send(new DoDamageEvent(drowns.drownDamage,EngineDamageTypes.DROWNING.get(),liquidBlock));
-        drowning.breathRemaining+=drowns.timeBetweenDrownDamage;
+        drowning.nextDrownDamageTime=gameTime + drowns.timeBetweenDrownDamage;
+        entity.saveComponent(drowning);
       }
-      entity.saveComponent(drowning);
     }
   }
 }

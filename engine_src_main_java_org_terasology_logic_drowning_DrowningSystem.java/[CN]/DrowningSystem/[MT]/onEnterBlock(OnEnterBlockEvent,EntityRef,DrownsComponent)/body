@@ -3,18 +3,20 @@
     DrowningComponent drowning=entity.getComponent(DrowningComponent.class);
     if (event.getNewBlock().getEntity().hasComponent(UnbreathableBlockComponent.class)) {
       if (drowning != null) {
-        drowning.setBreathing(false);
-        entity.saveComponent(drowning);
+        if (drowning.isBreathing) {
+          setBreathing(false,drowning,drowns);
+          entity.saveComponent(drowning);
+        }
       }
  else {
         drowning=new DrowningComponent();
-        drowning.breathRemaining=drowns.breathCapacity;
+        setBreathing(false,drowning,drowns);
         entity.addComponent(drowning);
       }
     }
  else {
-      if (drowning != null) {
-        drowning.setBreathing(true);
+      if (drowning != null && !drowning.isBreathing) {
+        setBreathing(true,drowning,drowns);
         entity.saveComponent(drowning);
       }
     }
