@@ -1,6 +1,15 @@
 {
-  if (this.id.equals(targetId) && type.isInstance(this)) {
-    return type.cast(this);
+  if (this.id.equals(targetId)) {
+    if (type.isInstance(this)) {
+      return type.cast(this);
+    }
+    return null;
+  }
+  for (  UIWidget contents : this) {
+    T result=contents.find(targetId,type);
+    if (result != null) {
+      return result;
+    }
   }
   return null;
 }

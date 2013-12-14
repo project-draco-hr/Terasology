@@ -1,0 +1,30 @@
+{
+  List<BlockUri> matches=resolveAllBlockFamilyUri(uri);
+switch (matches.size()) {
+case 0:
+    logger.warn("Failed to resolve block family '{}'",uri);
+  return null;
+case 1:
+return matches.get(0);
+default :
+Module context=ModuleContext.getContext();
+if (context != null) {
+Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
+Iterator<BlockUri> iterator=matches.iterator();
+while (iterator.hasNext()) {
+BlockUri possibleUri=iterator.next();
+if (context.getId().equals(possibleUri.getNormalisedModuleName())) {
+  return possibleUri;
+}
+if (!dependencies.contains(possibleUri.getNormalisedModuleName())) {
+  iterator.remove();
+}
+}
+if (matches.size() == 1) {
+return matches.get(0);
+}
+}
+logger.warn("Failed to resolve block family '{}' - too many valid matches {}",uri,matches);
+return null;
+}
+}

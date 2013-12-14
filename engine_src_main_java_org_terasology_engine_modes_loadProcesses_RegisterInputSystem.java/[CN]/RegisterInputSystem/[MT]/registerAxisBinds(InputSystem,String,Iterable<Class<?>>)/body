@@ -4,8 +4,8 @@
     RegisterBindAxis info=(RegisterBindAxis)registerBindClass.getAnnotation(RegisterBindAxis.class);
     String id=prefix + info.id();
     if (BindAxisEvent.class.isAssignableFrom(registerBindClass)) {
-      BindableButton positiveButton=inputSystem.getBindButton(info.positiveButton());
-      BindableButton negativeButton=inputSystem.getBindButton(info.negativeButton());
+      BindableButton positiveButton=inputSystem.getBindButton(new SimpleUri(info.positiveButton()));
+      BindableButton negativeButton=inputSystem.getBindButton(new SimpleUri(info.negativeButton()));
       if (positiveButton == null) {
         logger.warn("Failed to register axis \"{}\", missing positive button \"{}\"",id,info.positiveButton());
         continue;

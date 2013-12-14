@@ -3,7 +3,7 @@
     pendingEvents.offer(new PendingEvent(entity,event,component));
   }
  else {
-    Multimap<Class<? extends Component>,EventHandlerInfo> handlers=componentSpecificHandlers.get(event.getClass());
+    SetMultimap<Class<? extends Component>,EventHandlerInfo> handlers=componentSpecificHandlers.get(event.getClass());
     if (handlers != null) {
       for (      EventHandlerInfo eventHandler : handlers.get(component.getClass())) {
         if (eventHandler.isValidFor(entity)) {

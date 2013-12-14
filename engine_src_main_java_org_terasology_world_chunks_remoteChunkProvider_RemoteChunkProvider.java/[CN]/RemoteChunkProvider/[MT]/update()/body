@@ -2,11 +2,11 @@
   if (listener != null) {
     Vector3i pos=readyChunks.poll();
     if (pos != null) {
-      Chunk chunk=chunkCache.get(pos);
+      ChunkImpl chunk=chunkCache.get(pos);
       chunk.markReady();
       for (      Side side : Side.horizontalSides()) {
         Vector3i adjChunkPos=side.getAdjacentPos(pos);
-        Chunk adjChunk=getChunk(adjChunkPos);
+        ChunkImpl adjChunk=getChunk(adjChunkPos);
         if (adjChunk != null) {
           for (          BatchPropagator propagator : loadEdgePropagators) {
             propagator.propagateBetween(chunk,adjChunk,side);

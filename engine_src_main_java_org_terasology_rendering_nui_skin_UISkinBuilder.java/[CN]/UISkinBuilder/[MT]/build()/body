@@ -1,13 +1,11 @@
 {
   saveStyle();
   Map<String,UIStyleFamily> skinFamilies=Maps.newHashMap();
-  UIStyle defaultStyle=new UIStyle();
-  baseStyles.get("").applyTo(defaultStyle);
-  Table<Class<? extends UIWidget>,String,UIStyle> defaultWidgetStyles=buildDefaultWidgetStyles(defaultStyle);
-  skinFamilies.put("",new UIStyleFamily(defaultStyle,defaultWidgetStyles));
-  families.remove("");
+  UIStyle rootStyle=new UIStyle();
+  baseStyles.get("").applyTo(rootStyle);
+  skinFamilies.put("",buildFamily("",rootStyle));
   for (  String family : families) {
-    skinFamilies.put(family,buildFamily(family,defaultStyle));
+    skinFamilies.put(family,buildFamily(family,rootStyle));
   }
   return new UISkinData(skinFamilies);
 }

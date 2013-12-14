@@ -1,34 +1,28 @@
 {
   UIStyle baseStyle=new UIStyle(defaultStyle);
-  UIStyleFragment fragment=baseStyles.get(family);
-  fragment.applyTo(baseStyle);
-  Table<Class<? extends UIWidget>,String,UIStyle> familyStyles=HashBasedTable.create();
-  Table<Class<? extends UIWidget>,String,UIStyleFragment> table=getWidgetTable(family);
-  for (  Class<? extends UIWidget> widget : widgetClasses) {
-    UIStyle widgetStyle=new UIStyle(baseStyle);
-    UIStyleFragment widgetFrag=table.get(widget,"");
-    UIStyleFragment defaultWidgetFrag=getDefaultWidgetStyleFrag(widget);
-    if (defaultWidgetFrag != null) {
-      defaultWidgetFrag.applyTo(widgetStyle);
+  if (!family.isEmpty()) {
+    UIStyleFragment fragment=baseStyles.get(family);
+    fragment.applyTo(baseStyle);
+  }
+  Map<Class<? extends UIElement>,Table<String,String,UIStyle>> familyStyles=Maps.newHashMap();
+  Map<StyleKey,UIStyleFragment> styleLookup=elementStyles.row(family);
+  Map<StyleKey,UIStyleFragment> baseStyleLookup=(family.isEmpty()) ? Maps.<StyleKey,UIStyleFragment>newHashMap() : elementStyles.row("");
+  for (  StyleKey styleKey : Sets.union(styleLookup.keySet(),baseStyleKeys)) {
+    UIStyle elementStyle=new UIStyle(baseStyle);
+    List<Class<? extends UIElement>> inheritanceTree=ReflectionUtil.getInheritanceTree(styleKey.element,UIElement.class);
+    applyStylesForInheritanceTree(inheritanceTree,"","",elementStyle,styleLookup,baseStyleLookup);
+    if (!styleKey.part.isEmpty()) {
+      applyStylesForInheritanceTree(inheritanceTree,styleKey.part,"",elementStyle,styleLookup,baseStyleLookup);
     }
-    if (widgetFrag != null) {
-      widgetFrag.applyTo(widgetStyle);
+    if (!styleKey.mode.isEmpty()) {
+      applyStylesForInheritanceTree(inheritanceTree,styleKey.part,styleKey.mode,elementStyle,styleLookup,baseStyleLookup);
     }
-    if (widgetFrag != null || defaultWidgetFrag != null) {
-      familyStyles.put(widget,"",widgetStyle);
-      for (      String mode : modes.get(widget)) {
-        UIStyleFragment defaultMode=getDefaultWidgetModeFrag(widget,mode);
-        UIStyleFragment widgetMode=table.get(widget,mode);
-        UIStyle widgetModeStyle=new UIStyle(widgetStyle);
-        if (defaultMode != null) {
-          defaultMode.applyTo(widgetModeStyle);
-        }
-        if (widgetMode != null) {
-          widgetMode.applyTo(widgetModeStyle);
-        }
-        familyStyles.put(widget,mode,widgetModeStyle);
-      }
+    Table<String,String,UIStyle> elementTable=familyStyles.get(styleKey.element);
+    if (elementTable == null) {
+      elementTable=HashBasedTable.create();
+      familyStyles.put(styleKey.element,elementTable);
     }
+    elementTable.put(styleKey.part,styleKey.mode,elementStyle);
   }
   return new UIStyleFamily(baseStyle,familyStyles);
 }

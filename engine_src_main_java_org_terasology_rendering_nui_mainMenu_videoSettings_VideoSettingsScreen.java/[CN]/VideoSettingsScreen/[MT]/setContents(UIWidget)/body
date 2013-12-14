@@ -1,0 +1,58 @@
+{
+  super.setContents(contents);
+  UIDropdown<VideoQuality> videoQuality=find("quality",UIDropdown.class);
+  videoQuality.setOptions(Lists.newArrayList(VideoQuality.NICE,VideoQuality.EPIC,VideoQuality.INSANE,VideoQuality.UBER));
+  videoQuality.bindSelection(new VideoQualityBinding(config.getRendering()));
+  UIDropdown<EnvironmentalEffects> environmentalEffects=find("environmentEffects",UIDropdown.class);
+  environmentalEffects.setOptions(Lists.newArrayList(EnvironmentalEffects.OFF,EnvironmentalEffects.LOW,EnvironmentalEffects.MEDIUM,EnvironmentalEffects.HIGH));
+  environmentalEffects.bindSelection(new EnvironmentEffectsBinding(config.getRendering()));
+  UIDropdown<ViewDistance> viewDistance=find("viewDistance",UIDropdown.class);
+  viewDistance.setOptions(Arrays.asList(ViewDistance.values()));
+  viewDistance.bindSelection(BindHelper.bindBeanProperty("viewDistance",config.getRendering(),ViewDistance.class));
+  UIDropdown<WaterReflection> waterReflection=find("reflections",UIDropdown.class);
+  waterReflection.setOptions(Lists.newArrayList(WaterReflection.SKY,WaterReflection.LOCAL,WaterReflection.GLOBAL));
+  waterReflection.bindSelection(new WaterReflectionBinding(config.getRendering()));
+  UIDropdown<Integer> blur=find("blur",UIDropdown.class);
+  blur.setOptions(Lists.newArrayList(0,1,2,3));
+  blur.bindSelection(BindHelper.bindBeanProperty("blurIntensity",config.getRendering(),Integer.TYPE));
+  blur.setOptionAdapter(new DisplayValueAdapter<Integer>(){
+    @Override public String convert(    Integer value){
+switch (value) {
+case 1:
+        return "Some";
+case 2:
+      return "Normal";
+case 3:
+    return "Max";
+default :
+  return "Off";
+}
+}
+}
+);
+UIDropdown<DynamicShadows> dynamicShadows=find("shadows",UIDropdown.class);
+dynamicShadows.setOptions(Arrays.asList(DynamicShadows.values()));
+dynamicShadows.bindSelection(new DynamicShadowsBinding(config.getRendering()));
+UISlider fovSlider=find("fov",UISlider.class);
+fovSlider.setIncrement(5.0f);
+fovSlider.setPrecision(0);
+fovSlider.setMinimum(70);
+fovSlider.setRange(50);
+fovSlider.bindValue(BindHelper.bindBeanProperty("fieldOfView",config.getRendering(),Float.TYPE));
+find("fullscreen",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("fullscreen",engine,Boolean.TYPE));
+find("bobbing",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("cameraBobbing",config.getRendering(),Boolean.TYPE));
+find("outline",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("outline",config.getRendering(),Boolean.TYPE));
+find("vsync",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("vSync",config.getRendering(),Boolean.TYPE));
+find("close",UIButton.class).subscribe(new ButtonEventListener(){
+@Override public void onButtonActivated(UIButton button){
+logger.info("Video Settings: " + config.getRendering().toString());
+CoreRegistry.get(ShaderManager.class).recompileAllShaders();
+TerasologyEngine te=(TerasologyEngine)engine;
+if (te.isFullscreen() != find("fullscreen",UICheckbox.class).isChecked()) {
+te.setFullscreen(!te.isFullscreen());
+}
+nuiManager.popScreen();
+}
+}
+);
+}

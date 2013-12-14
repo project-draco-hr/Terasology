@@ -1,7 +1,9 @@
 {
-  if (currentWidget != null) {
-    Table<Class<? extends UIWidget>,String,UIStyleFragment> widgetTable=getWidgetTable(currentFamily);
-    widgetTable.put(currentWidget,currentMode,currentStyle);
+  if (currentFamily.isEmpty() && currentElement != null) {
+    baseStyleKeys.add(new StyleKey(currentElement,currentPart,currentMode));
+  }
+  if (currentElement != null) {
+    elementStyles.put(currentFamily,new StyleKey(currentElement,currentPart,currentMode),currentStyle);
   }
  else {
     baseStyles.put(currentFamily,currentStyle);

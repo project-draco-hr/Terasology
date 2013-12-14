@@ -1,5 +1,12 @@
 {
-  CoreRegistry.put(AssetManager.class,new AssetManager(new ModuleManagerImpl(new ModuleSecurityManager())));
+  GameThread.setGameThread();
+  AssetManager assetManager=CoreRegistry.put(AssetManager.class,new AssetManager(new ModuleManagerImpl(new ModuleSecurityManager())));
+  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
+    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
+      return new PojoPrefab(uri,data);
+    }
+  }
+);
   EntitySystemBuilder builder=new EntitySystemBuilder();
   CoreRegistry.put(ComponentSystemManager.class,mock(ComponentSystemManager.class));
   blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl(mock(WorldAtlas.class),new DefaultBlockFamilyFactoryRegistry()));

@@ -1,7 +1,8 @@
 {
   canvas.preRender();
   if (!screens.isEmpty()) {
-    screens.peek().onDraw(canvas);
+    canvas.setSkin(screens.peek().getSkin());
+    canvas.drawElement(screens.peek(),canvas.getRegion());
   }
   canvas.postRender();
 }

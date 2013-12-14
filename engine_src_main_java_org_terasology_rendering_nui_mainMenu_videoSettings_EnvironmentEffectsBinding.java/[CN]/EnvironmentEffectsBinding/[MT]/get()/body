@@ -1,0 +1,21 @@
+{
+  if (config.isVolumetricLighting()) {
+    if (config.isAnimateWater() && config.isAnimateGrass() && config.isVolumetricFog()) {
+      return EnvironmentalEffects.HIGH;
+    }
+  }
+ else   if (config.isAnimateWater()) {
+    if (config.isAnimateGrass() && config.isVolumetricFog()) {
+      return EnvironmentalEffects.MEDIUM;
+    }
+  }
+ else   if (config.isAnimateGrass()) {
+    if (config.isVolumetricFog()) {
+      return EnvironmentalEffects.LOW;
+    }
+  }
+ else   if (!config.isVolumetricFog()) {
+    return EnvironmentalEffects.OFF;
+  }
+  return EnvironmentalEffects.CUSTOM;
+}

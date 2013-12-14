@@ -28,16 +28,10 @@
   }
   if (newSwimming) {
     if (state.getMode() != MovementMode.SWIMMING) {
-      if (firstRun) {
-        entity.send(new OnEnterLiquidEvent(worldProvider.getBlock(state.getPosition())));
-      }
       state.setMode(MovementMode.SWIMMING);
     }
   }
  else   if (state.getMode() == MovementMode.SWIMMING) {
-    if (firstRun) {
-      entity.send(new OnLeaveLiquidEvent(worldProvider.getBlock(oldState.getPosition())));
-    }
     if (newClimbing) {
       state.setMode(MovementMode.CLIMBING);
       state.getVelocity().y=0;

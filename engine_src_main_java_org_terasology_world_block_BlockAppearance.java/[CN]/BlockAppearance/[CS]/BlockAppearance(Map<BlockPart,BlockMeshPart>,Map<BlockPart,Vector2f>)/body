@@ -1,9 +1,9 @@
 {
+  Preconditions.checkNotNull(blockParts);
+  Preconditions.checkNotNull(textureAtlasPos);
   this.blockParts=blockParts;
-  this.textureAtlasPos=textureAtlasPos;
+  this.textureAtlasPos.putAll(textureAtlasPos);
   for (  BlockPart part : BlockPart.values()) {
-    if (textureAtlasPos == null) {
-      textureAtlasPos.put(part,new Vector2f());
-    }
+    Preconditions.checkNotNull("Missing texture atlas position for part " + part,textureAtlasPos.get(part));
   }
 }

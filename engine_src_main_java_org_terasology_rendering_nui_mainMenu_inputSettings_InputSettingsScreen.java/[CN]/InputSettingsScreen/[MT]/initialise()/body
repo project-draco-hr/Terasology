@@ -1,0 +1,48 @@
+{
+  RowLayout mainLayout=new RowLayout();
+  mainLayout.setPadding(new Border(4,4,4,4));
+  mainLayout.setFamily("option-grid");
+  UISlider mouseSensitivity=new UISlider("mouseSensitivity");
+  mouseSensitivity.setIncrement(0.025f);
+  mouseSensitivity.setPrecision(3);
+  mainLayout.addRow(new UILabel("mouseLabel","heading-input","Mouse"));
+  mainLayout.addRow(new UILabel("Mouse Sensitivity:"),mouseSensitivity).setColumnRatios(0.4f);
+  mainLayout.addRow(new UILabel("Invert Mouse:"),new UICheckbox("mouseYAxisInverted")).setColumnRatios(0.4f);
+  Map<String,InputCategory> inputCategories=Maps.newHashMap();
+  Map<SimpleUri,RegisterBindButton> inputsById=Maps.newHashMap();
+  for (  Module module : moduleManager.getModules()) {
+    if (module.isCodeModule()) {
+      for (      Class<?> holdingType : module.getReflections().getTypesAnnotatedWith(InputCategory.class)) {
+        InputCategory inputCategory=holdingType.getAnnotation(InputCategory.class);
+        inputCategories.put(module.getId() + ":" + inputCategory.id(),inputCategory);
+      }
+      for (      Class<?> bindEvent : module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class)) {
+        if (BindButtonEvent.class.isAssignableFrom(bindEvent)) {
+          RegisterBindButton bindRegister=bindEvent.getAnnotation(RegisterBindButton.class);
+          inputsById.put(new SimpleUri(module.getId(),bindRegister.id()),bindRegister);
+        }
+      }
+    }
+  }
+  addInputSection(inputCategories.remove("engine:movement"),mainLayout,inputsById);
+  addInputSection(inputCategories.remove("engine:interaction"),mainLayout,inputsById);
+  addInputSection(inputCategories.remove("engine:inventory"),mainLayout,inputsById);
+  addInputSection(inputCategories.remove("engine:general"),mainLayout,inputsById);
+  for (  InputCategory category : inputCategories.values()) {
+    addInputSection(category,mainLayout,inputsById);
+  }
+  ScrollableArea area=new ScrollableArea();
+  area.setContent(mainLayout);
+  area.setContentHeight(mainLayout.getRowCount() * 32);
+  ColumnLayout footerGrid=new ColumnLayout();
+  footerGrid.setColumns(2);
+  footerGrid.addWidget(new UIButton("reset","Restore Defaults"));
+  footerGrid.addWidget(new UIButton("close","Back"));
+  footerGrid.setPadding(new Border(4,4,0,0));
+  ArbitraryLayout layout=new ArbitraryLayout();
+  layout.addFixedWidget(new UIImage(Assets.getTexture("engine:terasology")),new Vector2i(512,128),new Vector2f(0.5f,0.1f));
+  layout.addFillWidget(new UILabel("title","title","Input Settings"),Rect2f.createFromMinAndSize(0.0f,0.2f,1.0f,0.1f));
+  layout.addFillWidget(area,Rect2f.createFromMinAndSize(0.3f,0.25f,0.4f,0.6f));
+  layout.addFixedWidget(footerGrid,new Vector2i(400,32),new Vector2f(0.50f,0.95f));
+  setContents(layout);
+}
