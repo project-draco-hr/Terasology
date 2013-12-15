@@ -4,7 +4,7 @@
   okButton.setVisible(true);
   okButton.addClickListener(new ClickListener(){
     @Override public void click(    UIDisplayElement element,    int button){
-      Config config=CoreRegistry.get(Config.class);
+      WorldGenerationConfig config=CoreRegistry.get(Config.class).getWorldGeneration();
       if (inputWorldTitle.getText().isEmpty()) {
         getGUIManager().showMessage("Error","Please enter a world name");
         return;
@@ -13,18 +13,20 @@
         getGUIManager().showMessage("Error","A World with this name already exists");
         return;
       }
+      WorldGeneratorInfo worldGeneratorInfo=getSelectedWorldGenerator();
+      config.setDefaultGenerator(worldGeneratorInfo.getUri());
       if (inputSeed.getText().length() > 0) {
-        config.getWorldGeneration().setDefaultSeed(inputSeed.getText());
+        config.setDefaultSeed(inputSeed.getText());
       }
  else {
         FastRandom random=new FastRandom();
-        config.getWorldGeneration().setDefaultSeed(random.nextString(32));
+        config.setDefaultSeed(random.nextString(32));
       }
       if (inputWorldTitle.getText().length() > 0) {
-        config.getWorldGeneration().setWorldTitle(inputWorldTitle.getText());
+        config.setWorldTitle(inputWorldTitle.getText());
       }
  else {
-        config.getWorldGeneration().setWorldTitle(getWorldName());
+        config.setWorldTitle(getWorldName());
       }
       ModuleConfig moduleConfig=CoreRegistry.get(Config.class).getDefaultModSelection();
       moduleConfig.clear();
@@ -32,14 +34,13 @@
         moduleConfig.addModule(module.getId());
       }
       CoreRegistry.get(Config.class).save();
-      WorldGeneratorInfo worldGeneratorInfo=getSelectedWorldGenerator();
       GameManifest gameManifest=new GameManifest();
-      gameManifest.setTitle(config.getWorldGeneration().getWorldTitle());
-      gameManifest.setSeed(config.getWorldGeneration().getDefaultSeed());
+      gameManifest.setTitle(config.getWorldTitle());
+      gameManifest.setSeed(config.getDefaultSeed());
       for (      Module module : selection.getSelection()) {
         gameManifest.addModule(module.getId(),module.getVersion());
       }
-      WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getWorldGeneration().getDefaultSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorInfo.getUri());
+      WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,config.getDefaultSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorInfo.getUri());
       gameManifest.addWorld(worldInfo);
       CoreRegistry.get(GameEngine.class).changeState(new StateLoading(gameManifest,(createServerGame) ? NetworkMode.SERVER : NetworkMode.NONE));
     }
