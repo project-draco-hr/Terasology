@@ -4,7 +4,7 @@
   PathManager.getInstance().useOverrideHomePath(vfs.getPath(""));
   if (!setup) {
     setup=true;
-    bindLwjgl();
+    NativeHelper.initNativeLibs();
     moduleManager=new ModuleManagerImpl(new ModuleSecurityManager());
     moduleManager.applyActiveModules();
     CoreRegistry.put(ModuleManager.class,moduleManager);
