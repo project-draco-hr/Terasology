@@ -1,0 +1,18 @@
+{
+  try {
+    T result=clazz.newInstance();
+    for (    Map.Entry<String,PersistedData> entry : data.getAsValueMap().entrySet()) {
+      FieldMetadata fieldInfo=fieldByName.get(UriUtil.normalise(entry.getKey()));
+      if (fieldInfo != null) {
+        TypeHandler handler=mappedFields.get(fieldInfo);
+        Object val=handler.deserialize(entry.getValue(),context);
+        fieldInfo.setValue(result,val);
+      }
+    }
+    return result;
+  }
+ catch (  Exception e) {
+    logger.error("Unable to deserialize {}",data,e);
+  }
+  return null;
+}

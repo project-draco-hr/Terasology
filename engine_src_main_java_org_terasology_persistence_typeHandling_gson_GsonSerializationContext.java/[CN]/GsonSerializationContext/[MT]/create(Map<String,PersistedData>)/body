@@ -1,0 +1,7 @@
+{
+  JsonObject object=new JsonObject();
+  for (  Map.Entry<String,PersistedData> entry : data.entrySet()) {
+    object.add(entry.getKey(),((GsonPersistedData)entry.getValue()).getElement());
+  }
+  return new GsonPersistedData(object);
+}

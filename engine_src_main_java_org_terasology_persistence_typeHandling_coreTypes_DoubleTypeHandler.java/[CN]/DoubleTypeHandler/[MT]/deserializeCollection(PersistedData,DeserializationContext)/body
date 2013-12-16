@@ -1,0 +1,16 @@
+{
+  if (data.isArray()) {
+    PersistedDataArray array=data.getAsArray();
+    List<Double> result=Lists.newArrayListWithCapacity(array.size());
+    for (    PersistedData item : array) {
+      if (item.isNumber()) {
+        result.add(item.getAsDouble());
+      }
+ else {
+        result.add(null);
+      }
+    }
+    return result;
+  }
+  return Lists.newArrayList();
+}

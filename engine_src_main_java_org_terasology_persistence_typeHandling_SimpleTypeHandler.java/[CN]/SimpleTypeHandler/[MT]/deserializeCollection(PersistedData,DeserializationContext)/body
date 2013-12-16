@@ -1,0 +1,11 @@
+{
+  if (data.isArray()) {
+    PersistedDataArray array=data.getAsArray();
+    List<T> result=Lists.newArrayListWithCapacity(array.size());
+    for (    PersistedData value : array) {
+      result.add(deserialize(value,context));
+    }
+    return result;
+  }
+  return Lists.newArrayList();
+}
