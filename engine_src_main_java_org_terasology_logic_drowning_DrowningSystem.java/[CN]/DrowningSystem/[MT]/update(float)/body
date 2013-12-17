@@ -2,25 +2,18 @@
   for (  EntityRef entity : entityManager.getEntitiesWith(DrowningComponent.class,DrownsComponent.class,LocationComponent.class)) {
     DrowningComponent drowning=entity.getComponent(DrowningComponent.class);
     LocationComponent loc=entity.getComponent(LocationComponent.class);
-    CharacterComponent charComp=entity.getComponent(CharacterComponent.class);
-    if (charComp != null) {
-      Vector3f worldPosition=new Vector3f(loc.getWorldPosition());
-      worldPosition.y+=charComp.eyeOffset;
-      worldPosition.y-=RenderHelper.evaluateOceanHeightAtPosition(worldPosition,worldProvider.getTime().getDays());
-      if (worldProvider.isBlockRelevant(new Vector3f(worldPosition))) {
-        Block block=worldProvider.getBlock(new Vector3f(worldPosition));
-        if (!block.isLiquid()) {
-          resetDrowning(drowning,entity.getComponent(DrownsComponent.class));
-          continue;
-        }
-      }
+    DrownsComponent drowns=entity.getComponent(DrownsComponent.class);
+    long gameTime=time.getGameTimeInMs();
+    if (drowning.isBreathing && gameTime > drowning.endTime) {
+      entity.removeComponent(DrowningComponent.class);
     }
-    if (drowning.nextDrownDamageTime < time.getGameTimeInMs()) {
-      DrownsComponent drowns=entity.getComponent(DrownsComponent.class);
-      drowning.nextDrownDamageTime=time.getGameTimeInMs() + (long)(drowns.timeBetweenDrownDamage * 1000);
-      entity.saveComponent(drowning);
-      EntityRef liquidBlock=blockEntityProvider.getBlockEntityAt(loc.getWorldPosition());
-      entity.send(new DoDamageEvent(drowns.drownDamage,EngineDamageTypes.DROWNING.get(),liquidBlock));
+ else {
+      if (gameTime > drowning.nextDrownDamageTime) {
+        EntityRef liquidBlock=blockEntityProvider.getBlockEntityAt(loc.getWorldPosition());
+        entity.send(new DoDamageEvent(drowns.drownDamage,EngineDamageTypes.DROWNING.get(),liquidBlock));
+        drowning.nextDrownDamageTime=gameTime + drowns.timeBetweenDrownDamage;
+        entity.saveComponent(drowning);
+      }
     }
   }
 }
