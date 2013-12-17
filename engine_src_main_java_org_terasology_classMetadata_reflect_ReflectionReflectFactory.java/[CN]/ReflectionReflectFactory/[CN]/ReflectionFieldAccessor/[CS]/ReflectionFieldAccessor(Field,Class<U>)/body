@@ -1,0 +1,8 @@
+{
+  this.field=field;
+  getter=ReflectionUtil.findGetter(field.getName(),field.getDeclaringClass(),fieldType);
+  setter=ReflectionUtil.findSetter(field.getName(),field.getDeclaringClass(),fieldType);
+  if (getter == null || setter == null) {
+    field.setAccessible(true);
+  }
+}
