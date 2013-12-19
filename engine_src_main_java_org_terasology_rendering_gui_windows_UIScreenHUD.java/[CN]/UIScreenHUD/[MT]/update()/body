@@ -27,7 +27,9 @@
     if (entityManager != null) {
       debugLine2.setText(String.format("Active Entities: %s, Current Target: %s",entityManager.getActiveEntityCount(),cameraTarget.toString()));
     }
-    debugLine3.setText(String.format("%s, %.2f",CoreRegistry.get(LocalPlayer.class).getPosition(),(character != null) ? character.yaw : 0));
+    Vector3f pos=CoreRegistry.get(LocalPlayer.class).getPosition();
+    float yaw=(character != null) ? character.yaw : 0;
+    debugLine3.setText(String.format(Locale.US,"Pos (%.2f, %.2f, %.2f), Yaw %.2f",pos.x,pos.y,pos.z,yaw));
     debugLine4.setText(String.format("total vus: %s | active threads: %s | worldTime: %.2f",ChunkTessellator.getVertexArrayUpdateCount(),CoreRegistry.get(GameEngine.class).getActiveTaskCount(),CoreRegistry.get(WorldProvider.class).getTime().getDays()));
   }
 }
