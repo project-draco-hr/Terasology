@@ -1,23 +1,21 @@
 {
-  find("singleplayer",UIButton.class).subscribe(new ButtonEventListener(){
+  UIScreenUtil.trySubscribe(this,"singleplayer",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
     }
   }
 );
-  find("multiplayer",UIButton.class).subscribe(new ButtonEventListener(){
+  UIScreenUtil.trySubscribe(this,"multiplayer",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
     }
   }
 );
-  find("settings",UIButton.class).subscribe(new ButtonEventListener(){
+  UIScreenUtil.trySubscribe(this,"settings",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
-      UIScreen settings=new SettingsMenuScreen();
-      settings.setSkin(getSkin());
-      nuiManager.pushScreen(settings);
+      nuiManager.pushScreen("engine:settingsMenuScreen");
     }
   }
 );
-  find("exit",UIButton.class).subscribe(new ButtonEventListener(){
+  UIScreenUtil.trySubscribe(this,"exit",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       engine.shutdown();
     }
