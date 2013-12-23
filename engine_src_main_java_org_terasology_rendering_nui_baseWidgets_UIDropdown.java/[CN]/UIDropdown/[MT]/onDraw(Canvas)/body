@@ -2,7 +2,7 @@
   canvas.setPart(BOX);
   canvas.drawBackground();
   if (selection.get() != null) {
-    canvas.drawText(optionAdapter.convert(selection.get()));
+    canvas.drawText(optionAdapter.format(selection.get()));
   }
   if (opened) {
     canvas.setPart(LIST);
@@ -24,7 +24,7 @@
       }
       Rect2i itemRegion=Rect2i.createFromMinAndSize(0,canvas.size().y + itemHeight * i,canvas.size().x,itemHeight);
       canvas.drawBackground(itemRegion);
-      canvas.drawText(optionAdapter.convert(options.get().get(i)),itemRegion);
+      canvas.drawText(optionAdapter.format(options.get().get(i)),itemRegion);
       canvas.addInteractionRegion(optionListeners.get(i),itemRegion);
     }
   }

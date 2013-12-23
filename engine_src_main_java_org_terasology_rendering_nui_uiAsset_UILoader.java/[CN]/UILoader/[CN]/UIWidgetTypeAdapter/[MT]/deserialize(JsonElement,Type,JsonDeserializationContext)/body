@@ -27,6 +27,9 @@ catch (    InvocationTargetException|InstantiationException|IllegalAccessExcepti
   }
   for (  FieldMetadata<? extends UIWidget,?> field : elementMetadata.getFields()) {
     if (jsonObject.has(field.getName())) {
+      if (field.getName().equals(CONTENTS_FIELD) && UILayout.class.isAssignableFrom(elementMetadata.getType())) {
+        continue;
+      }
       try {
         field.setValue(element,context.deserialize(jsonObject.get(field.getName()),field.getType()));
       }
@@ -38,15 +41,15 @@ catch (    InvocationTargetException|InstantiationException|IllegalAccessExcepti
   if (UILayout.class.isAssignableFrom(elementMetadata.getType())) {
     UILayout layout=(UILayout)element;
     Class<? extends LayoutHint> layoutHintType=(Class<? extends LayoutHint>)ReflectionUtil.getTypeParameter(elementMetadata.getType().getGenericSuperclass(),0);
-    if (jsonObject.has("contents")) {
-      for (      JsonElement child : jsonObject.getAsJsonArray("contents")) {
+    if (jsonObject.has(CONTENTS_FIELD)) {
+      for (      JsonElement child : jsonObject.getAsJsonArray(CONTENTS_FIELD)) {
         UIWidget childElement=context.deserialize(child,UIWidget.class);
         if (childElement != null) {
           LayoutHint hint=null;
           if (child.isJsonObject()) {
             JsonObject childObject=child.getAsJsonObject();
-            if (layoutHintType != null && childObject.has("layoutInfo")) {
-              hint=context.deserialize(childObject.get("layoutInfo"),layoutHintType);
+            if (layoutHintType != null && childObject.has(LAYOUT_INFO_FIELD)) {
+              hint=context.deserialize(childObject.get(LAYOUT_INFO_FIELD),layoutHintType);
             }
           }
           layout.addWidget(childElement,hint);

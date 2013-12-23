@@ -2,7 +2,7 @@
   TextCacheKey key=new TextCacheKey(text,font,absoluteRegion.width(),hAlign);
   usedText.add(key);
   Map<Material,Mesh> fontMesh=cachedText.get(key);
-  List<String> lines=LineBuilder.getLines(font,text,absoluteRegion.width());
+  List<String> lines=TextLineBuilder.getLines(font,text,absoluteRegion.width());
   if (fontMesh == null) {
     fontMesh=font.createTextMesh(lines,absoluteRegion.width(),hAlign);
     cachedText.put(key,fontMesh);
