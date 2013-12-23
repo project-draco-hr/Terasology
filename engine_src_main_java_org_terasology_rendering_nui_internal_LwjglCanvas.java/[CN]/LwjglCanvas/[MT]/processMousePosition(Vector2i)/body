@@ -1,6 +1,7 @@
 {
   if (clickedRegion != null) {
-    Vector2i relPos=new Vector2i(position).sub(clickedRegion.region.min());
+    Vector2i relPos=new Vector2i(position);
+    relPos.sub(clickedRegion.region.min());
     clickedRegion.listener.onMouseDrag(relPos);
   }
   Set<InteractionRegion> newMouseOverRegions=Sets.newLinkedHashSet();
@@ -8,7 +9,8 @@
   while (iter.hasNext()) {
     InteractionRegion next=iter.next();
     if (next.region.contains(position)) {
-      Vector2i relPos=new Vector2i(position).sub(next.region.min());
+      Vector2i relPos=new Vector2i(position);
+      relPos.sub(next.region.min());
       next.listener.onMouseOver(relPos,newMouseOverRegions.isEmpty());
       newMouseOverRegions.add(next);
     }

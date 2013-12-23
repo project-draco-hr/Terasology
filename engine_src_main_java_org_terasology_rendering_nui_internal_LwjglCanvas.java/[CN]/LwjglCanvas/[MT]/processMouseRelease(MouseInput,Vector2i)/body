@@ -1,6 +1,7 @@
 {
   if (clickedRegion != null) {
-    Vector2i relPos=new Vector2i(pos).sub(clickedRegion.region.min());
+    Vector2i relPos=new Vector2i(pos);
+    relPos.sub(clickedRegion.region.min());
     clickedRegion.listener.onMouseRelease(button,relPos);
     clickedRegion=null;
     return true;
