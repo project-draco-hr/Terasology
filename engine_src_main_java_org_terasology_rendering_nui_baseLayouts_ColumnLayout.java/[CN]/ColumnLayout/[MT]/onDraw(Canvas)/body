@@ -1,16 +1,17 @@
 {
   if (!widgetList.isEmpty()) {
-    Vector2i cellSize=canvas.size();
-    cellSize.x/=columns;
+    Vector2i rowSize=canvas.size();
     int numRows=TeraMath.ceilToInt((float)widgetList.size() / columns);
-    cellSize.y/=numRows;
-    Vector2i drawSize=new Vector2i(cellSize);
-    drawSize.x-=padding.getLeft() + padding.getRight();
-    drawSize.y-=padding.getTop() + padding.getBottom();
+    rowSize.y/=numRows;
     Vector2i currentOffset=new Vector2i();
     int currentColumn=0;
     for (    UIWidget widget : widgetList) {
+      Vector2i cellSize=new Vector2i(rowSize);
+      cellSize.x*=columnWidths[currentColumn];
       if (widget != null) {
+        Vector2i drawSize=new Vector2i(cellSize);
+        drawSize.x-=padding.getLeft() + padding.getRight();
+        drawSize.y-=padding.getTop() + padding.getBottom();
         Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x + padding.getLeft(),currentOffset.y + padding.getTop(),drawSize.x,drawSize.y);
         canvas.drawElement(widget,drawRegion);
       }

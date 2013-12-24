@@ -1,0 +1,87 @@
+{
+  Rect2i cachedRegion=cachedRegions.get(element);
+  if (cachedRegion != null) {
+    return cachedRegion;
+  }
+  int left=0;
+  int right=canvas.size().x;
+  int center=canvas.size().x / 2;
+  if (element.layoutHint.getPositionCenterHorizontal() != null) {
+    HorizontalInfo info=element.layoutHint.getPositionCenterHorizontal();
+    Rect2i targetRegion=getTargetRegion(info.getWidget(),canvas);
+    HorizontalAlign align=(info.getTarget() != null) ? info.getTarget() : HorizontalAlign.CENTER;
+    center=align.getStart(targetRegion) + info.getOffset();
+  }
+  if (element.layoutHint.getPositionLeft() != null) {
+    HorizontalInfo info=element.layoutHint.getPositionLeft();
+    Rect2i targetRegion=getTargetRegion(info.getWidget(),canvas);
+    HorizontalAlign align=(info.getTarget() != null) ? info.getTarget() : HorizontalAlign.LEFT;
+    left=align.getStart(targetRegion) + info.getOffset();
+  }
+  if (element.layoutHint.getPositionRight() != null) {
+    HorizontalInfo info=element.layoutHint.getPositionLeft();
+    Rect2i targetRegion=getTargetRegion(info.getWidget(),canvas);
+    HorizontalAlign align=(info.getTarget() != null) ? info.getTarget() : HorizontalAlign.RIGHT;
+    right=align.getStart(targetRegion) - info.getOffset();
+  }
+  int width=element.layoutHint.getWidth();
+  if (width == 0) {
+    width=right - left;
+  }
+ else {
+    if (element.layoutHint.getPositionCenterHorizontal() != null) {
+      left=center - width / 2;
+    }
+ else     if (element.layoutHint.getPositionRight() != null) {
+      if (element.layoutHint.getPositionLeft() != null) {
+        center=left + (right - left) / 2;
+        left=center - width / 2;
+      }
+ else {
+        left=right - width;
+      }
+    }
+  }
+  int top=0;
+  int bottom=canvas.size().y;
+  int vcenter=canvas.size().y / 2;
+  if (element.layoutHint.getPositionCenterVertical() != null) {
+    VerticalInfo info=element.layoutHint.getPositionCenterVertical();
+    Rect2i targetRegion=getTargetRegion(info.getWidget(),canvas);
+    VerticalAlign align=(info.getTarget() != null) ? info.getTarget() : VerticalAlign.MIDDLE;
+    vcenter=align.getStart(targetRegion) + info.getOffset();
+  }
+  if (element.layoutHint.getPositionTop() != null) {
+    VerticalInfo info=element.layoutHint.getPositionTop();
+    Rect2i targetRegion=getTargetRegion(info.getWidget(),canvas);
+    VerticalAlign align=(info.getTarget() != null) ? info.getTarget() : VerticalAlign.TOP;
+    top=align.getStart(targetRegion) + info.getOffset();
+  }
+  if (element.layoutHint.getPositionBottom() != null) {
+    VerticalInfo info=element.layoutHint.getPositionBottom();
+    Rect2i targetRegion=getTargetRegion(info.getWidget(),canvas);
+    VerticalAlign align=(info.getTarget() != null) ? info.getTarget() : VerticalAlign.BOTTOM;
+    bottom=align.getStart(targetRegion) - info.getOffset();
+  }
+  int height=element.layoutHint.getHeight();
+  if (height == 0) {
+    height=bottom - top;
+  }
+ else {
+    if (element.layoutHint.getPositionCenterVertical() != null) {
+      top=vcenter - height / 2;
+    }
+ else     if (element.layoutHint.getPositionBottom() != null) {
+      if (element.layoutHint.getPositionTop() != null) {
+        vcenter=top + (bottom - top) / 2;
+        top=vcenter - height / 2;
+      }
+ else {
+        top=bottom - height;
+      }
+    }
+  }
+  Rect2i region=Rect2i.createFromMinAndSize(left,top,width,height);
+  cachedRegions.put(element,region);
+  return region;
+}
