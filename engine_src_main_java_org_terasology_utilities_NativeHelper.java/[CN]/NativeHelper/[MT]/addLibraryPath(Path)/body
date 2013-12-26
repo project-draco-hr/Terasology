@@ -1,20 +1,24 @@
 {
   try {
     String envPath=System.getProperty("java.library.path");
+    System.out.println("java.library.path before adding: " + envPath);
     if (envPath == null || envPath.isEmpty()) {
       System.setProperty("java.library.path",libPath.toAbsolutePath().toString());
     }
  else {
       System.setProperty("java.library.path",libPath.toAbsolutePath().toString() + File.pathSeparator + envPath);
     }
+    System.out.println("java.library.path after adding: " + libPath.toAbsolutePath().toString() + File.pathSeparator+ envPath);
     final Field usrPathsField=ClassLoader.class.getDeclaredField("usr_paths");
     usrPathsField.setAccessible(true);
     List<String> paths=Lists.newArrayList((String[])usrPathsField.get(null));
+    System.out.println("Paths before adding: " + paths);
     if (paths.contains(libPath.toAbsolutePath().toString())) {
       return;
     }
     paths.add(0,libPath.toAbsolutePath().toString());
     usrPathsField.set(null,paths.toArray(new String[paths.size()]));
+    System.out.println("Paths before adding: " + paths);
   }
  catch (  Exception e) {
     logger.error("Couldn't link static libraries. ",e);
