@@ -2,8 +2,7 @@
   PerformanceMonitor.startActivity("GenerateMesh");
   ChunkMesh mesh=new ChunkMesh();
   Vector3f chunkOffset=new Vector3f(chunkPos.x * ChunkConstants.SIZE_X,chunkPos.y * ChunkConstants.SIZE_Y,chunkPos.z * ChunkConstants.SIZE_Z);
-  final Stopwatch watch=new Stopwatch();
-  watch.start();
+  final Stopwatch watch=Stopwatch.createStarted();
   for (int x=0; x < ChunkConstants.SIZE_X; x++) {
     for (int z=0; z < ChunkConstants.SIZE_Z; z++) {
       Vector3f worldPos=new Vector3f(chunkOffset.x + x,chunkOffset.y,chunkOffset.z + z);
@@ -18,11 +17,11 @@
     }
   }
   watch.stop();
-  mesh.setTimeToGenerateBlockVertices((int)watch.elapsedMillis());
+  mesh.setTimeToGenerateBlockVertices((int)watch.elapsed(TimeUnit.MILLISECONDS));
   watch.reset().start();
   generateOptimizedBuffers(chunkView,mesh);
   watch.stop();
-  mesh.setTimeToGenerateOptimizedBuffers((int)watch.elapsedMillis());
+  mesh.setTimeToGenerateOptimizedBuffers((int)watch.elapsed(TimeUnit.MILLISECONDS));
   statVertexArrayUpdateCount++;
   PerformanceMonitor.endActivity();
   return mesh;
