@@ -3,7 +3,7 @@
   if ((targetBlock.equals(grassBlock) || targetBlock.equals(sandBlock) || targetBlock.equals(snowBlock)) && c.getBlock(x,y + 1,z).equals(airBlock)) {
     WorldBiomeProvider.Biome biome=biomeProvider.getBiomeAt(c.getBlockWorldPosX(x),c.getBlockWorldPosZ(z));
     if (random.nextFloat() < config.getGrassDensity(biome)) {
-      double rand=random.nextStandNormalDistrDouble();
+      double rand=random.nextGaussian();
       if (rand > -0.4 && rand < 0.4) {
         c.setBlock(x,y + 1,z,tallGrass1);
       }
@@ -13,7 +13,7 @@
  else {
         c.setBlock(x,y + 1,z,tallGrass3);
       }
-      if (random.nextStandNormalDistrDouble() < -2) {
+      if (random.nextGaussian() < -2) {
         c.setBlock(x,y + 1,z,random.nextItem(flowers));
       }
     }

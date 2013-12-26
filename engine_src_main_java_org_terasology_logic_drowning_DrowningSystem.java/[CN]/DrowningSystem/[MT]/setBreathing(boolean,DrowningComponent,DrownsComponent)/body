@@ -1,0 +1,17 @@
+{
+  long gameTime=time.getGameTimeInMs();
+  float currentPercentage=drowning.startTime != 0 ? drowning.getPercentageBreath(gameTime) : 1f;
+  if (!isBreathing) {
+    currentPercentage=1f - currentPercentage;
+  }
+  float scale=isBreathing ? drowns.breathRechargeRate : 1.0f;
+  drowning.isBreathing=isBreathing;
+  drowning.startTime=gameTime - (int)(drowns.breathCapacity * currentPercentage / scale);
+  drowning.endTime=gameTime + (int)(drowns.breathCapacity * (1f - currentPercentage) / scale);
+  if (isBreathing) {
+    drowning.nextDrownDamageTime=Long.MAX_VALUE;
+  }
+ else {
+    drowning.nextDrownDamageTime=drowning.endTime + drowns.timeBetweenDrownDamage;
+  }
+}

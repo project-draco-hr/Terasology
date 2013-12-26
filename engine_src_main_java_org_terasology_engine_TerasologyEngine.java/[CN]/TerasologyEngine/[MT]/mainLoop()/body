@@ -37,9 +37,9 @@
     }
     GameThread.processWaitingProcesses();
     PerformanceMonitor.startActivity("Render");
-    currentState.render();
     Display.update();
     Display.sync(60);
+    currentState.render();
     PerformanceMonitor.endActivity();
     PerformanceMonitor.startActivity("Audio");
     audioManager.update(totalDelta / 1000f);

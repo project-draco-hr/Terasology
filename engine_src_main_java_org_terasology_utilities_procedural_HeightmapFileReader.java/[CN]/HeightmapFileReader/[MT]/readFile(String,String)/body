@@ -1,3 +1,5 @@
 {
-  return (readValues(new java.io.FileInputStream(file),delimiter));
-}
+  try (InputStream fis=new FileInputStream(file)){
+    return readValues(fis,delimiter);
+  }
+ }
