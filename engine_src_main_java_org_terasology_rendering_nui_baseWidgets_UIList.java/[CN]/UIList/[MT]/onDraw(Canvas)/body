@@ -1,0 +1,9 @@
+{
+  canvas.setPart("item");
+  int yOffset=0;
+  for (  T item : list.get()) {
+    Vector2i preferredSize=itemRenderer.getPreferredSize(item,canvas);
+    itemRenderer.draw(item,canvas,Rect2i.createFromMinAndSize(0,yOffset,canvas.size().x,preferredSize.y));
+    yOffset+=preferredSize.getY();
+  }
+}

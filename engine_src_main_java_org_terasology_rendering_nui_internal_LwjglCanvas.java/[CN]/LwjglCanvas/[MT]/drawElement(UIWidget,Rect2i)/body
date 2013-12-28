@@ -5,13 +5,7 @@
   String family=(element.getFamily() != null) ? element.getFamily() : state.family;
   UIStyle newStyle=state.skin.getStyleFor(family,element.getClass(),element.getMode());
   Rect2i regionArea=applySizesToRegion(region,newStyle);
-  try (SubRegion ignored=subRegion(regionArea,false)){
-    state.element=element;
-    if (element.getFamily() != null) {
-      setFamily(element.getFamily());
-    }
-    setPart("");
-    setMode(element.getMode());
+  try (SubRegion ignored=subRegionForWidget(element,regionArea,false)){
     if (element.isSkinAppliedByCanvas()) {
       drawBackground();
     }

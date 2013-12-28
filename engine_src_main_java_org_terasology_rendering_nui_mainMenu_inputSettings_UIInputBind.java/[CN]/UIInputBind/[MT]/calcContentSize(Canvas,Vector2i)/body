@@ -1,0 +1,13 @@
+{
+  Font font=canvas.getCurrentStyle().getFont();
+  String text="";
+  if (capturingInput) {
+    text="???";
+  }
+ else   if (input.get() != null) {
+    text=input.get().toShortString();
+  }
+  List<String> lines=TextLineBuilder.getLines(font,text,areaHint.getX());
+  Vector2i size=font.getSize(lines);
+  return size;
+}

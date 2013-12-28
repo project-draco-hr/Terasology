@@ -1,0 +1,38 @@
+{
+  UIList<GameInfo> gameList=find("gameList",UIList.class);
+  gameList.getList().clear();
+  Path savedGames=PathManager.getInstance().getSavesPath();
+  SortedMap<FileTime,Path> savedGamePaths=Maps.newTreeMap(Collections.reverseOrder());
+  try (DirectoryStream<Path> stream=Files.newDirectoryStream(savedGames)){
+    for (    Path entry : stream) {
+      if (Files.isRegularFile(entry.resolve(GameManifest.DEFAULT_FILE_NAME))) {
+        savedGamePaths.put(Files.getLastModifiedTime(entry),entry);
+      }
+    }
+  }
+ catch (  IOException e) {
+    logger.error("Failed to read saved games path",e);
+  }
+  for (  Map.Entry<FileTime,Path> world : savedGamePaths.entrySet()) {
+    Path gameManifest=world.getValue().resolve(GameManifest.DEFAULT_FILE_NAME);
+    if (!Files.isRegularFile(gameManifest)) {
+      continue;
+    }
+    try {
+      GameManifest info=GameManifest.load(gameManifest);
+      if (!info.getTitle().isEmpty()) {
+        Date date=new Date(world.getKey().toMillis());
+        gameList.getList().add(new GameInfo(info,date));
+      }
+    }
+ catch (    IOException e) {
+      logger.error("Failed reading world data object.",e);
+    }
+  }
+  UIScreenUtil.trySubscribe(this,"close",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      nuiManager.popScreen();
+    }
+  }
+);
+}
