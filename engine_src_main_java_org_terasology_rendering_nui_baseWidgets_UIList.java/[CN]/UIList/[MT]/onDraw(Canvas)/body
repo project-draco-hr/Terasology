@@ -1,9 +1,23 @@
 {
+  updateItemListeners();
   canvas.setPart("item");
   int yOffset=0;
-  for (  T item : list.get()) {
-    Vector2i preferredSize=itemRenderer.getPreferredSize(item,canvas);
-    itemRenderer.draw(item,canvas,Rect2i.createFromMinAndSize(0,yOffset,canvas.size().x,preferredSize.y));
+  for (int i=0; i < list.get().size(); ++i) {
+    T item=list.get().get(i);
+    ItemInteractionListener listener=itemListeners.get(i);
+    if (Objects.equals(item,selection.get())) {
+      canvas.setMode(ACTIVE_MODE);
+    }
+ else     if (listener.isMouseOver()) {
+      canvas.setMode(HOVER_MODE);
+    }
+ else {
+      canvas.setMode(DEFAULT_MODE);
+    }
+    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item,canvas));
+    Rect2i itemRegion=Rect2i.createFromMinAndSize(0,yOffset,canvas.size().x,preferredSize.y);
+    itemRenderer.draw(item,canvas,itemRegion);
+    canvas.addInteractionRegion(listener,itemRegion);
     yOffset+=preferredSize.getY();
   }
 }
