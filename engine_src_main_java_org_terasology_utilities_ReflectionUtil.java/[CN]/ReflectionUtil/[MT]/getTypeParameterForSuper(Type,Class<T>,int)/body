@@ -1,0 +1,10 @@
+{
+  Class targetClass=getClassOfType(target);
+  Preconditions.checkArgument(superClass.isAssignableFrom(targetClass),"Target must be a child of superClass");
+  if (superClass.isInterface()) {
+    return getTypeParameterForSuperInterface(target,superClass,index);
+  }
+ else {
+    return getTypeParameterForSuperClass(target,superClass,index);
+  }
+}

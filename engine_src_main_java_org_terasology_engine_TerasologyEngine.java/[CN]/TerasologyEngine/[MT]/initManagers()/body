@@ -1,8 +1,10 @@
 {
   GameThread.setGameThread();
   ModuleManager moduleManager=initModuleManager();
+  ReflectFactory reflectFactory=CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
+  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.putPermanently(CopyStrategyLibrary.class,new CopyStrategyLibrary(reflectFactory));
+  CoreRegistry.putPermanently(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
   AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager(moduleManager));
-  CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
   CoreRegistry.putPermanently(CollisionGroupManager.class,new CollisionGroupManager());
   CoreRegistry.putPermanently(WorldGeneratorManager.class,new WorldGeneratorManager());
   CoreRegistry.putPermanently(ComponentSystemManager.class,new ComponentSystemManager());
@@ -11,4 +13,5 @@
   AssetType.registerAssetTypes(assetManager);
   ClasspathSource source=new ClasspathSource(TerasologyConstants.ENGINE_MODULE,getClass().getProtectionDomain().getCodeSource(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY);
   assetManager.addAssetSource(source);
+  ApplyModulesUtil.applyModules();
 }

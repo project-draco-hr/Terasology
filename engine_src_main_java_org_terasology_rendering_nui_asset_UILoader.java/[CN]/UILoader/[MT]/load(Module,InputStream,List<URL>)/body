@@ -1,5 +1,8 @@
 {
   NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
+  ReflectFactory reflectFactory=CoreRegistry.get(ReflectFactory.class);
+  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.get(CopyStrategyLibrary.class);
+  TypeSerializationLibrary library=new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary);
   Gson gson=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(UIData.class,new UIDataTypeAdapter(nuiManager)).registerTypeHierarchyAdapter(UIWidget.class,new UIWidgetTypeAdapter(nuiManager)).registerTypeAdapter(Vector3i.class,new JsonTypeHandlerAdapter<>(new Vector3iTypeHandler())).registerTypeAdapter(Region3i.class,new JsonTypeHandlerAdapter<>(new Region3iTypeHandler())).registerTypeAdapter(Vector2i.class,new JsonTypeHandlerAdapter<>(new Vector2iTypeHandler())).registerTypeAdapter(Rect2i.class,new JsonTypeHandlerAdapter<>(new Rect2iTypeHandler())).registerTypeAdapter(Vector2f.class,new JsonTypeHandlerAdapter<>(new Vector2fTypeHandler())).registerTypeAdapter(Rect2f.class,new JsonTypeHandlerAdapter<>(new Rect2fTypeHandler())).registerTypeAdapter(UISkin.class,new JsonTypeHandlerAdapter<>(new AssetTypeHandler<>(AssetType.UI_SKIN,UISkin.class))).registerTypeAdapter(Border.class,new JsonTypeHandlerAdapter<>(new BorderTypeHandler())).registerTypeAdapter(TextureRegion.class,new JsonTypeHandlerAdapter<>(new TextureRegionTypeHandler())).create();
   try (JsonReader reader=new JsonReader(new InputStreamReader(stream))){
     reader.setLenient(true);

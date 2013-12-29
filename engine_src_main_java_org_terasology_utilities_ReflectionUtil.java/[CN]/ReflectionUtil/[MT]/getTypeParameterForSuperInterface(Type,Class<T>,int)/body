@@ -1,0 +1,17 @@
+{
+  Class targetClass=getClassOfType(target);
+  for (  Type superType : targetClass.getGenericInterfaces()) {
+    if (superType instanceof ParameterizedType) {
+      if (((ParameterizedType)superType).getRawType().equals(superClass)) {
+        Type boundType=((ParameterizedType)superType).getActualTypeArguments()[index];
+        if (boundType instanceof Class) {
+          return (Class<?>)boundType;
+        }
+ else {
+          return null;
+        }
+      }
+    }
+  }
+  return getTypeParameterForSuperInterface(targetClass.getGenericSuperclass(),superClass,index);
+}
