@@ -31,7 +31,20 @@ catch (    InvocationTargetException|InstantiationException|IllegalAccessExcepti
         continue;
       }
       try {
-        field.setValue(element,context.deserialize(jsonObject.get(field.getName()),field.getType()));
+        if (List.class.isAssignableFrom(field.getType())) {
+          Type contentType=ReflectionUtil.getTypeParameter(field.getField().getGenericType(),0);
+          if (contentType != null) {
+            List result=Lists.newArrayList();
+            JsonArray list=jsonObject.getAsJsonArray(field.getName());
+            for (            JsonElement item : list) {
+              result.add(context.deserialize(item,contentType));
+            }
+            field.setValue(element,result);
+          }
+        }
+ else {
+          field.setValue(element,context.deserialize(jsonObject.get(field.getName()),field.getType()));
+        }
       }
  catch (      Throwable e) {
         logger.error("Failed to deserialize field {} of {}",field.getName(),type,e);

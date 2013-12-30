@@ -1,13 +1,13 @@
 {
-  RowLayout mainLayout=new RowLayout();
+  ColumnLayout mainLayout=new ColumnLayout();
   mainLayout.setPadding(new Border(4,4,4,4));
   mainLayout.setFamily("option-grid");
   UISlider mouseSensitivity=new UISlider("mouseSensitivity");
   mouseSensitivity.setIncrement(0.025f);
   mouseSensitivity.setPrecision(3);
-  mainLayout.addRow(new UILabel("mouseLabel","heading-input","Mouse"));
-  mainLayout.addRow(new UILabel("Mouse Sensitivity:"),mouseSensitivity).setColumnRatios(0.4f);
-  mainLayout.addRow(new UILabel("Invert Mouse:"),new UICheckbox("mouseYAxisInverted")).setColumnRatios(0.4f);
+  mainLayout.addWidget(new UILabel("mouseLabel","heading-input","Mouse"));
+  mainLayout.addWidget(new RowLayout(new UILabel("Mouse Sensitivity:"),mouseSensitivity).setColumnRatios(0.4f));
+  mainLayout.addWidget(new RowLayout(new UILabel("Invert Mouse:"),new UICheckbox("mouseYAxisInverted")).setColumnRatios(0.4f));
   Map<String,InputCategory> inputCategories=Maps.newHashMap();
   Map<SimpleUri,RegisterBindButton> inputsById=Maps.newHashMap();
   for (  Module module : moduleManager.getModules()) {

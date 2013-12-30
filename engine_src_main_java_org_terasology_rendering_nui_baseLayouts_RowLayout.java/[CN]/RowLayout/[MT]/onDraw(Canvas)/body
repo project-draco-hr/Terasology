@@ -1,8 +1,15 @@
 {
-  if (!rows.isEmpty()) {
-    int yOffset=0;
-    for (    Row row : rows) {
-      yOffset+=row.draw(canvas,yOffset);
+  if (normalizedWidths == null || normalizedWidths.size() != contents.size()) {
+    calcWidths();
+  }
+  Border padding=canvas.getCurrentStyle().getMargin();
+  if (!contents.isEmpty()) {
+    int xOffset=0;
+    for (int i=0; i < contents.size(); ++i) {
+      int itemWidth=TeraMath.floorToInt(canvas.size().x * normalizedWidths.get(i));
+      Rect2i region=Rect2i.createFromMinAndSize(xOffset + padding.getLeft(),padding.getTop(),itemWidth - padding.getTotalWidth(),canvas.size().y - padding.getTotalHeight());
+      canvas.drawElement(contents.get(i),region);
+      xOffset+=itemWidth;
     }
   }
 }

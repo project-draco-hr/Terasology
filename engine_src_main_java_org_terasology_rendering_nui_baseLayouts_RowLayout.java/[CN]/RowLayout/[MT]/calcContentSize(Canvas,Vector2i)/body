@@ -1,9 +1,11 @@
 {
-  Vector2i sizeHint=new Vector2i(areaHint.x,areaHint.y / rows.size());
-  int height=0;
-  for (  Row row : rows) {
-    height+=row.calcRowHeight(canvas,sizeHint);
-    height+=padding.getTotalHeight();
+  if (normalizedWidths == null || normalizedWidths.size() != contents.size()) {
+    calcWidths();
   }
-  return new Vector2i(areaHint.x,height);
+  Vector2i result=new Vector2i(areaHint.x,0);
+  for (int i=0; i < contents.size(); ++i) {
+    Vector2i widgetSize=canvas.calculateSize(contents.get(i),new Vector2i(TeraMath.floorToInt(areaHint.x * normalizedWidths.get(i)),areaHint.y));
+    result.y=Math.max(result.y,widgetSize.y);
+  }
+  return result;
 }
