@@ -1,17 +1,34 @@
 {
-  UIList<GameInfo> gameList=find("gameList",UIList.class);
+  final UIList<GameInfo> gameList=find("gameList",UIList.class);
   refreshList(gameList);
   gameList.subscribe(new ListEventListener<GameInfo>(){
     @Override public void onItemActivated(    GameInfo item){
-      try {
-        GameManifest manifest=item.manifest;
-        Config config=CoreRegistry.get(Config.class);
-        config.getWorldGeneration().setDefaultSeed(manifest.getSeed());
-        config.getWorldGeneration().setWorldTitle(manifest.getTitle());
-        CoreRegistry.get(GameEngine.class).changeState(new StateLoading(manifest,(loadingAsServer) ? NetworkMode.SERVER : NetworkMode.NONE));
+      loadGame(item);
+    }
+  }
+);
+  UIScreenUtil.trySubscribe(this,"load",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      GameInfo gameInfo=gameList.getSelection();
+      if (gameInfo != null) {
+        loadGame(gameInfo);
       }
- catch (      Exception e) {
-        logger.error("Failed to load saved game",e);
+    }
+  }
+);
+  UIScreenUtil.trySubscribe(this,"delete",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      GameInfo gameInfo=gameList.getSelection();
+      if (gameInfo != null) {
+        Path world=PathManager.getInstance().getSavePath(gameInfo.manifest.getTitle());
+        try {
+          FilesUtil.recursiveDelete(world);
+          gameList.getList().remove(gameInfo);
+          gameList.setSelection(null);
+        }
+ catch (        Exception e) {
+          logger.error("Failed to delete saved game",e);
+        }
       }
     }
   }
