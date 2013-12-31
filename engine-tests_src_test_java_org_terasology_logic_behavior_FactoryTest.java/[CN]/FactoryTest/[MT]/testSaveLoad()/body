@@ -1,0 +1,16 @@
+{
+  AssetManager assetManager=mock(AssetManager.class);
+  CoreRegistry.put(AssetManager.class,assetManager);
+  BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  BehaviorTreeData data=buildSample();
+  OutputStream os=new ByteArrayOutputStream(10000);
+  loader.save(os,data);
+  String jsonExpected=os.toString();
+  data=loader.load(null,new ByteArrayInputStream(jsonExpected.getBytes()),null);
+  os=new ByteArrayOutputStream(10000);
+  loader=new BehaviorTreeLoader();
+  loader.save(os,data);
+  String jsonActual=os.toString();
+  Assert.assertEquals(jsonActual,jsonExpected);
+  System.out.println(jsonActual);
+}

@@ -1,0 +1,15 @@
+{
+  BehaviorTreeData data=new BehaviorTreeData();
+  try (JsonReader reader=new JsonReader(new InputStreamReader(stream))){
+    reader.setLenient(true);
+    reader.beginObject();
+    nextName(reader,"model");
+    data.setRoot(treeGson.loadTree(reader));
+    if (reader.hasNext()) {
+      nextName(reader,"renderer");
+      data.setRenderableRoot(renderableTreeGson.loadTree(reader));
+    }
+    reader.endObject();
+  }
+   return data;
+}

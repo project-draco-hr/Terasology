@@ -1,0 +1,15 @@
+{
+  if (event.getState() == ButtonState.DOWN) {
+    if (!editorMode) {
+      CoreRegistry.get(NUIManager.class).pushScreen(editor);
+      editorMode=true;
+      Mouse.setGrabbed(false);
+    }
+ else {
+      CoreRegistry.get(NUIManager.class).popScreen();
+      editorMode=false;
+      Mouse.setGrabbed(true);
+    }
+    event.consume();
+  }
+}

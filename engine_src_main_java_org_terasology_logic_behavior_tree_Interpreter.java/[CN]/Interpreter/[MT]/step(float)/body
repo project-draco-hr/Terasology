@@ -1,0 +1,16 @@
+{
+  Task current=tasks.pollFirst();
+  if (current == TERMINAL) {
+    tasks.addLast(TERMINAL);
+    return false;
+  }
+  current.tick(dt);
+  if (current.getStatus() != Status.RUNNING && current.getObserver() != null) {
+    logger.info("Finished " + current + " with status "+ current.getStatus());
+    current.getObserver().handle(current.getStatus());
+  }
+ else {
+    tasks.addLast(current);
+  }
+  return true;
+}

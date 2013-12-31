@@ -18,4 +18,10 @@
     }
   }
 );
+  assetManager.setAssetFactory(AssetType.BEHAVIOR,new AssetFactory<BehaviorTreeData,BehaviorTree>(){
+    @Override public BehaviorTree buildAsset(    AssetUri uri,    BehaviorTreeData data){
+      return new BehaviorTree(uri,data);
+    }
+  }
+);
 }

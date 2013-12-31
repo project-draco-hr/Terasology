@@ -1,0 +1,11 @@
+{
+  for (  BehaviorNodeComponent component : components) {
+    try {
+      Class<? extends Node> type=(Class<Node>)Class.forName(component.type);
+      nodes.put(type,component);
+    }
+ catch (    ClassNotFoundException e) {
+      logger.warn("Cannot find behavior node for class " + component.type + " name="+ component.name);
+    }
+  }
+}

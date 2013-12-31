@@ -1,0 +1,15 @@
+{
+  RenderableNode one=new RenderableNode();
+  one.setNode(decorator(null));
+  RenderableNode two=new RenderableNode();
+  two.setNode(node());
+  ((Port.OutputPort)one.getPortList().ports().get(0)).setTarget(two.getInputPort());
+  RenderableNode three=new RenderableNode();
+  three.setNode(node());
+  ((Port.OutputPort)one.getPortList().ports().get(0)).setTarget(three.getInputPort());
+  Assert.assertEquals(one,three.getInputPort().getTargetPort().getSourceNode());
+  Assert.assertEquals(one.getPortList().ports().get(0),three.getInputPort().getTargetPort());
+  Assert.assertEquals(null,two.getInputPort().getTargetPort());
+  Assert.assertEquals(1,one.getChildrenCount());
+  Assert.assertEquals(three,one.getChild(0));
+}

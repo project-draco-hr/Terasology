@@ -1,0 +1,23 @@
+{
+  super.onDraw(canvas);
+  try (SubRegion subRegion=canvas.subRegion(canvas.getRegion(),false)){
+    canvas.setDrawOnTop(true);
+    for (    UIWidget widget : this) {
+      if (widget instanceof RenderableNode) {
+        RenderableNode renderableNode=(RenderableNode)widget;
+        for (        Port port : renderableNode.getPorts()) {
+          int sx=worldToScreenX(renderableNode.getPosition().x + port.midX());
+          int sy=worldToScreenY(renderableNode.getPosition().y + port.midY());
+          Port targetPort=port.getTargetPort();
+          if (port.isInput() || targetPort == null) {
+            continue;
+          }
+          int ex=worldToScreenX(targetPort.getSourceNode().getPosition().x + targetPort.midX());
+          int ey=worldToScreenY(targetPort.getSourceNode().getPosition().y + targetPort.midY());
+          canvas.drawLine(sx,sy,ex,ey,Color.WHITE);
+        }
+      }
+    }
+    canvas.setDrawOnTop(false);
+  }
+ }

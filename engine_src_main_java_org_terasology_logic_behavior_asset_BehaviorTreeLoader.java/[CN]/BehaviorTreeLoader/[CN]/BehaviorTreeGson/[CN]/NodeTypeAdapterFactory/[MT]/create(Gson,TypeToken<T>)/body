@@ -1,0 +1,46 @@
+{
+  final TypeAdapter<T> delegate=gson.getDelegateAdapter(this,type);
+  return new TypeAdapter<T>(){
+    @Override public void write(    JsonWriter out,    T value) throws IOException {
+      if (value instanceof Node) {
+        idNodes.put(currentId,(Node)value);
+        nodeIds.put((Node)value,currentId);
+        TypeAdapter<T> delegateAdapter=(TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(value.getClass()));
+        out.beginObject().name("nodeType").value(value.getClass().getCanonicalName()).name("nodeId").value(currentId);
+        currentId++;
+        out.name("node");
+        delegateAdapter.write(out,value);
+        out.endObject();
+      }
+ else {
+        delegate.write(out,value);
+      }
+    }
+    @Override public T read(    JsonReader in) throws IOException {
+      if (in.peek() == JsonToken.BEGIN_OBJECT) {
+        in.beginObject();
+        nextName(in,"nodeType");
+        String nodeType=in.nextString();
+        try {
+          Class cls=Class.forName(nodeType);
+          TypeAdapter<T> delegateAdapter=(TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(cls));
+          nextName(in,"nodeId");
+          int id=in.nextInt();
+          nextName(in,"node");
+          T read=delegateAdapter.read(in);
+          idNodes.put(id,(Node)read);
+          nodeIds.put((Node)read,id);
+          in.endObject();
+          return read;
+        }
+ catch (        ClassNotFoundException e) {
+          throw new RuntimeException(e);
+        }
+      }
+ else {
+        return delegate.read(in);
+      }
+    }
+  }
+;
+}
