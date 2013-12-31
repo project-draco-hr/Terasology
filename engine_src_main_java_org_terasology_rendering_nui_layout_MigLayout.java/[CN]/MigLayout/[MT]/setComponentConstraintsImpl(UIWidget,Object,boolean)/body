@@ -1,0 +1,26 @@
+{
+  if (!noCheck && !scrConstrMap.containsKey(comp)) {
+    throw new IllegalArgumentException("Component must already be added to parent!");
+  }
+  ComponentWrapper cw;
+  if (comp instanceof MigLayout) {
+    MigLayout migLayout=(MigLayout)comp;
+    migLayout.setParent(this);
+    cw=migLayout;
+  }
+ else {
+    cw=new MigComponent(this,comp);
+  }
+  if (constr == null || constr instanceof String) {
+    String cStr=ConstraintParser.prepare((String)constr);
+    scrConstrMap.put(comp,constr);
+    ccMap.put(cw,ConstraintParser.parseComponentConstraint(cStr));
+    children.add(cw);
+  }
+ else   if (constr instanceof CC) {
+    scrConstrMap.put(comp,constr);
+    ccMap.put(cw,(CC)constr);
+    children.add(cw);
+  }
+  dirty=true;
+}
