@@ -3,7 +3,9 @@
   pipeline.shutdown();
   unloadRequestTaskMaster.shutdown(new ChunkUnloadRequest(),true);
   for (  ChunkImpl chunk : nearCache.values()) {
-    worldEntity.send(new BeforeChunkUnload(chunk.getPos()));
+    if (chunk.getChunkState() == ChunkImpl.State.COMPLETE && chunk.isReady()) {
+      worldEntity.send(new BeforeChunkUnload(chunk.getPos()));
+    }
     chunk.dispose();
     ChunkStore store=storageManager.createChunkStoreForSave(chunk);
     store.storeAllEntities();
@@ -11,6 +13,7 @@
   }
   nearCache.clear();
   storageManager.purgeChunks();
+  worldEntity.send(new PurgeWorldEvent());
   this.pipeline=new ChunkGenerationPipeline(this,generator,new ChunkTaskRelevanceComparator());
   this.unloadRequestTaskMaster=TaskMaster.createFIFOTaskMaster("Chunk-Unloader",8);
   ChunkMonitor.fireChunkProviderInitialized(this);

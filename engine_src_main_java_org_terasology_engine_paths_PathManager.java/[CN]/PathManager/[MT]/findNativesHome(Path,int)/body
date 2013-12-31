@@ -1,0 +1,19 @@
+{
+  int levelsToSearch=maxDepth;
+  Path checkedPath=startPath;
+  while (levelsToSearch > 0) {
+    File dirToTest=new File(checkedPath.toFile(),NATIVES_DIR);
+    if (dirToTest.exists()) {
+      System.out.println("Found the natives dir: " + dirToTest);
+      return checkedPath;
+    }
+    checkedPath=checkedPath.getParent();
+    if (checkedPath.equals(startPath.getRoot())) {
+      System.out.println("Uh oh, reached the root path, giving up");
+      return null;
+    }
+    levelsToSearch--;
+  }
+  System.out.println("Failed to find the natives dir within " + maxDepth + " levels of "+ startPath);
+  return null;
+}
