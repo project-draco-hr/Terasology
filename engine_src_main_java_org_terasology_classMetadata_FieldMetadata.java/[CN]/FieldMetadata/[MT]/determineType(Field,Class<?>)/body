@@ -1,0 +1,9 @@
+{
+  Method getter=ReflectionUtil.findGetter(field.getName(),ownerType);
+  if (getter != null && getter.getReturnType() != null) {
+    if (ReflectionUtil.findSetter(field.getName(),ownerType,getter.getReturnType()) != null) {
+      return getter.getReturnType();
+    }
+  }
+  return field.getType();
+}

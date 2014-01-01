@@ -4,12 +4,12 @@
     UIStyleFragment fragment=baseStyles.get(family);
     fragment.applyTo(baseStyle);
   }
-  Map<Class<? extends UIElement>,Table<String,String,UIStyle>> familyStyles=Maps.newHashMap();
+  Map<Class<? extends UIWidget>,Table<String,String,UIStyle>> familyStyles=Maps.newHashMap();
   Map<StyleKey,UIStyleFragment> styleLookup=elementStyles.row(family);
   Map<StyleKey,UIStyleFragment> baseStyleLookup=(family.isEmpty()) ? Maps.<StyleKey,UIStyleFragment>newHashMap() : elementStyles.row("");
   for (  StyleKey styleKey : Sets.union(styleLookup.keySet(),baseStyleKeys)) {
     UIStyle elementStyle=new UIStyle(baseStyle);
-    List<Class<? extends UIElement>> inheritanceTree=ReflectionUtil.getInheritanceTree(styleKey.element,UIElement.class);
+    List<Class<? extends UIWidget>> inheritanceTree=ReflectionUtil.getInheritanceTree(styleKey.element,UIWidget.class);
     applyStylesForInheritanceTree(inheritanceTree,"","",elementStyle,styleLookup,baseStyleLookup);
     if (!styleKey.part.isEmpty()) {
       applyStylesForInheritanceTree(inheritanceTree,styleKey.part,"",elementStyle,styleLookup,baseStyleLookup);

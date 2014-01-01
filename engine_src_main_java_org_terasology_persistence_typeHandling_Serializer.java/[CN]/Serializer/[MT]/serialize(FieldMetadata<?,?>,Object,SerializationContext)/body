@@ -1,0 +1,10 @@
+{
+  Object rawValue=field.getValue(container);
+  if (rawValue != null) {
+    TypeHandler handler=getHandlerFor(field);
+    if (handler != null) {
+      return handler.serialize(rawValue,context);
+    }
+  }
+  return null;
+}

@@ -19,9 +19,15 @@
             }
             preparingChunks.remove(getPosition());
             if (chunk.getChunkState() == ChunkImpl.State.INTERNAL_LIGHT_GENERATION_PENDING) {
-              InternalLightProcessor.generateInternalLighting(chunk);
-              chunk.deflate();
-              chunk.setChunkState(ChunkImpl.State.COMPLETE);
+              chunk.lock();
+              try {
+                InternalLightProcessor.generateInternalLighting(chunk);
+                chunk.deflate();
+                chunk.setChunkState(ChunkImpl.State.COMPLETE);
+              }
+  finally {
+                chunk.unlock();
+              }
               readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
             }
  else {

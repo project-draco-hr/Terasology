@@ -1,6 +1,7 @@
 {
   super.setContents(contents);
   find("mouseSensitivity",UISlider.class).bindValue(BindHelper.bindBeanProperty("mouseSensitivity",config.getInput(),Float.TYPE));
+  find("mouseYAxisInverted",UICheckbox.class).bindChecked(BindHelper.bindBeanProperty("mouseYAxisInverted",config.getInput(),Boolean.TYPE));
   find("reset",UIButton.class).subscribe(new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       config.getInput().reset();

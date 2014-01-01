@@ -1,0 +1,12 @@
+{
+  JsonArray result=new JsonArray();
+  for (  PersistedData val : data) {
+    if (val != null) {
+      result.add(((GsonPersistedData)val).getElement());
+    }
+ else {
+      result.add(JsonNull.INSTANCE);
+    }
+  }
+  return new GsonPersistedData(result);
+}

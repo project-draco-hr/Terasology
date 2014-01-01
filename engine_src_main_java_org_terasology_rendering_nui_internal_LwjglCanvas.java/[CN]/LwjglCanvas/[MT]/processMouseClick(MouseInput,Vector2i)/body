@@ -1,9 +1,19 @@
 {
+  boolean possibleDoubleClick=lastClickPosition.gridDistance(pos) < MAX_DOUBLE_CLICK_DISTANCE && lastClickButton == button && time.getGameTimeInMs() - lastClickTime < DOUBLE_CLICK_TIME;
+  lastClickPosition.set(pos);
+  lastClickButton=button;
+  lastClickTime=time.getGameTimeInMs();
   for (  InteractionRegion next : mouseOverRegions) {
     if (next.region.contains(pos)) {
       Vector2i relPos=new Vector2i(pos);
       relPos.sub(next.region.min());
-      if (next.listener.onMouseClick(button,relPos)) {
+      if (possibleDoubleClick && nuiManager.getFocus() == next.element) {
+        if (next.listener.onMouseDoubleClick(button,relPos)) {
+          clickedRegion=next;
+          return true;
+        }
+      }
+ else       if (next.listener.onMouseClick(button,relPos)) {
         clickedRegion=next;
         nuiManager.setFocus(next.element);
         return true;

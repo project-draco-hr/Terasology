@@ -1,0 +1,74 @@
+{
+  JsonObject jsonObject=json.getAsJsonObject();
+  String type=jsonObject.get("type").getAsString();
+  String id=null;
+  if (jsonObject.has("id")) {
+    id=jsonObject.get("id").getAsString();
+  }
+  ClassMetadata<? extends UIWidget,?> elementMetadata=nuiManager.getElementMetadataLibrary().resolve(type,ModuleContext.getContext());
+  UIWidget element;
+  if (id != null) {
+    try {
+      Constructor<? extends UIWidget> constructor=elementMetadata.getType().getConstructor(String.class);
+      constructor.setAccessible(true);
+      element=constructor.newInstance(id);
+    }
+ catch (    NoSuchMethodException e) {
+      logger.warn("UIWidget type {} lacks id constructor",elementMetadata.getUri());
+      element=elementMetadata.newInstance();
+    }
+catch (    InvocationTargetException|InstantiationException|IllegalAccessException e) {
+      logger.warn("Failed to construct {} with id",elementMetadata.getUri(),e);
+      element=elementMetadata.newInstance();
+    }
+  }
+ else {
+    element=elementMetadata.newInstance();
+  }
+  for (  FieldMetadata<? extends UIWidget,?> field : elementMetadata.getFields()) {
+    if (jsonObject.has(field.getName())) {
+      if (field.getName().equals(CONTENTS_FIELD) && UILayout.class.isAssignableFrom(elementMetadata.getType())) {
+        continue;
+      }
+      try {
+        if (List.class.isAssignableFrom(field.getType())) {
+          Type contentType=ReflectionUtil.getTypeParameter(field.getField().getGenericType(),0);
+          if (contentType != null) {
+            List result=Lists.newArrayList();
+            JsonArray list=jsonObject.getAsJsonArray(field.getName());
+            for (            JsonElement item : list) {
+              result.add(context.deserialize(item,contentType));
+            }
+            field.setValue(element,result);
+          }
+        }
+ else {
+          field.setValue(element,context.deserialize(jsonObject.get(field.getName()),field.getType()));
+        }
+      }
+ catch (      Throwable e) {
+        logger.error("Failed to deserialize field {} of {}",field.getName(),type,e);
+      }
+    }
+  }
+  if (UILayout.class.isAssignableFrom(elementMetadata.getType())) {
+    UILayout layout=(UILayout)element;
+    Class<? extends LayoutHint> layoutHintType=(Class<? extends LayoutHint>)ReflectionUtil.getTypeParameter(elementMetadata.getType().getGenericSuperclass(),0);
+    if (jsonObject.has(CONTENTS_FIELD)) {
+      for (      JsonElement child : jsonObject.getAsJsonArray(CONTENTS_FIELD)) {
+        UIWidget childElement=context.deserialize(child,UIWidget.class);
+        if (childElement != null) {
+          LayoutHint hint=null;
+          if (child.isJsonObject()) {
+            JsonObject childObject=child.getAsJsonObject();
+            if (layoutHintType != null && childObject.has(LAYOUT_INFO_FIELD)) {
+              hint=context.deserialize(childObject.get(LAYOUT_INFO_FIELD),layoutHintType);
+            }
+          }
+          layout.addWidget(childElement,hint);
+        }
+      }
+    }
+  }
+  return element;
+}

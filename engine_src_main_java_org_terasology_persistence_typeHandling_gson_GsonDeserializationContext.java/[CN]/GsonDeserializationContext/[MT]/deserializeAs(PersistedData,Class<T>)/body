@@ -1,0 +1,9 @@
+{
+  GsonPersistedData gsonData=(GsonPersistedData)data;
+  try {
+    return context.deserialize(gsonData.getElement(),type);
+  }
+ catch (  JsonParseException jpe) {
+    throw new DeserializationException("Failed to deserialize data as " + type,jpe);
+  }
+}

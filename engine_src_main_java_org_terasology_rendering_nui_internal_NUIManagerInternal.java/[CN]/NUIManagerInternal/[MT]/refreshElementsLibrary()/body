@@ -1,10 +1,8 @@
 {
   elementsLibrary=new DefaultClassLibrary<>(CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
   for (  Module module : CoreRegistry.get(ModuleManager.class).getActiveCodeModules()) {
-    for (    Class<? extends UIElement> elementType : module.getReflections().getSubTypesOf(UIElement.class)) {
-      if (!elementType.isInterface()) {
-        elementsLibrary.register(new SimpleUri(module.getId(),elementType.getSimpleName()),elementType);
-      }
+    for (    Class<? extends UIWidget> elementType : module.getReflections().getSubTypesOf(UIWidget.class)) {
+      elementsLibrary.register(new SimpleUri(module.getId(),elementType.getSimpleName()),elementType);
     }
   }
 }

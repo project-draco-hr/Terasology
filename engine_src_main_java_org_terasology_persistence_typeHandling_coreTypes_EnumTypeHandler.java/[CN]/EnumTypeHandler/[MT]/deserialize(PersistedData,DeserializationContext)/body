@@ -1,0 +1,10 @@
+{
+  if (data.isString()) {
+    T result=caseInsensitiveLookup.get(data.getAsString().toLowerCase(Locale.ENGLISH));
+    if (result == null) {
+      logger.warn("Unknown enum value: '{}' for enum {}",data.getAsString(),enumType.getSimpleName());
+    }
+    return result;
+  }
+  return null;
+}

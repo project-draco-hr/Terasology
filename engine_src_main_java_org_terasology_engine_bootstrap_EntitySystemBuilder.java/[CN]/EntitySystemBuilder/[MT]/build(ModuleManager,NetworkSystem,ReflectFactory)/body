@@ -1,9 +1,9 @@
 {
-  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.put(CopyStrategyLibrary.class,buildCopyStrategyLibrary(reflectFactory));
+  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.get(CopyStrategyLibrary.class);
   PojoEntityManager entityManager=CoreRegistry.put(EntityManager.class,new PojoEntityManager());
   CoreRegistry.put(EngineEntityManager.class,entityManager);
   TypeSerializationLibrary typeSerializationLibrary=buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary);
-  entityManager.setTypeSerializerLibrary(buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary));
+  entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
   EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
   entityManager.setEntitySystemLibrary(library);
   CoreRegistry.put(ComponentLibrary.class,library.getComponentLibrary());

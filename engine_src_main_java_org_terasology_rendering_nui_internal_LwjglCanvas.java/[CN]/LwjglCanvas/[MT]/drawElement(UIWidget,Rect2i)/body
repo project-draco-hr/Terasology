@@ -1,0 +1,14 @@
+{
+  if (element == null || !element.isVisible()) {
+    return;
+  }
+  String family=(element.getFamily() != null) ? element.getFamily() : state.family;
+  UIStyle newStyle=state.skin.getStyleFor(family,element.getClass(),element.getMode());
+  Rect2i regionArea=applySizesToRegion(region,newStyle);
+  try (SubRegion ignored=subRegionForWidget(element,regionArea,false)){
+    if (element.isSkinAppliedByCanvas()) {
+      drawBackground();
+    }
+    element.onDraw(this);
+  }
+ }
