@@ -1,24 +1,24 @@
 {
-  if (windowSizeX > windowSizeY) {
-    windowSizeX=windowSizeY;
+  if (windowSize.x > windowSize.y) {
+    windowSize.x=windowSize.y;
   }
-  if (windowSizeX < windowSizeY) {
-    windowSizeY=windowSizeX;
+  if (windowSize.x < windowSize.y) {
+    windowSize.y=windowSize.x;
   }
-  if ((screenSizeX != 0) && (screenSizeY != 0)) {
-    if (screenSizeX > screenSizeY) {
-      windowSizeX*=(float)screenSizeX / screenSizeY;
+  if ((screenSize.x != 0) && (screenSize.y != 0)) {
+    if (screenSize.x > screenSize.y) {
+      windowSize.x*=(float)screenSize.x / screenSize.y;
     }
  else {
-      windowSizeY*=(float)screenSizeY / screenSizeX;
+      windowSize.y*=(float)screenSize.y / screenSize.x;
     }
   }
-  if ((windowSizeX > 0) && (windowSizeY > 0)) {
-    pixelSizeX=screenSizeX / windowSizeX;
-    pixelSizeY=screenSizeY / windowSizeY;
+  if ((windowSize.x > 0) && (windowSize.y > 0)) {
+    pixelSize.x=screenSize.x / windowSize.x;
+    pixelSize.y=screenSize.y / windowSize.y;
   }
  else {
-    pixelSizeX=0;
-    pixelSizeY=0;
+    pixelSize.x=0;
+    pixelSize.y=0;
   }
 }

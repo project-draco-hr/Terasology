@@ -1,11 +1,11 @@
 {
-  float midX=windowPositionX + windowSizeX / 2.f;
-  float midY=windowPositionY + windowSizeY / 2.f;
-  float posX=screenToWorldX(mousePos.x);
-  float posY=screenToWorldY(mousePos.y);
-  windowSizeX*=zoomX;
-  windowSizeY*=zoomY;
+  Vector2f mid=new Vector2f(windowSize);
+  mid.scale(0.5f);
+  mid.add(windowPosition);
+  Vector2f pos=screenToWorld(mousePos);
+  windowSize.x*=zoomX;
+  windowSize.y*=zoomY;
   calculateSizes();
-  windowPositionX+=(posX - midX) * 0.1;
-  windowPositionY+=(posY - midY) * 0.1;
+  windowPosition.x+=(pos.x - mid.x) * 0.1;
+  windowPosition.y+=(pos.y - mid.y) * 0.1;
 }
