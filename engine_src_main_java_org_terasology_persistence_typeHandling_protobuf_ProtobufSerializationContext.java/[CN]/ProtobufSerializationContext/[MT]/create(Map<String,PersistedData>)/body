@@ -1,0 +1,7 @@
+{
+  EntityData.Value.Builder builder=EntityData.Value.newBuilder();
+  for (  Map.Entry<String,PersistedData> entry : data.entrySet()) {
+    builder.addNameValue(EntityData.NameValue.newBuilder().setName(entry.getKey()).setValue((EntityData.Value.Builder)((ProtobufPersistedData)entry.getValue()).getValue()).build());
+  }
+  return new ProtobufPersistedData(builder);
+}

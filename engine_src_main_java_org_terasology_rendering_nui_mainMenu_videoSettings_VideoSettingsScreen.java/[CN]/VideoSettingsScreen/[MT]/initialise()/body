@@ -1,34 +1,67 @@
 {
-  ColumnLayout grid=new ColumnLayout();
-  grid.setColumns(4);
-  grid.addWidget(new UILabel("Graphics Quality:"));
-  grid.addWidget(new UIDropdown<>("quality"));
-  grid.addWidget(new UILabel("Environment Effects:"));
-  grid.addWidget(new UIDropdown<>("environmentEffects"));
-  grid.addWidget(new UILabel("Viewing Distance:"));
-  grid.addWidget(new UIDropdown<>("viewDistance"));
-  grid.addWidget(new UILabel("Reflections:"));
-  grid.addWidget(new UIDropdown<>("reflections"));
-  grid.addWidget(new UILabel("FOV:"));
-  grid.addWidget(new UISlider("fov"));
-  grid.addWidget(new UILabel("Blur Intensity:"));
-  grid.addWidget(new UIDropdown<>("blur"));
-  grid.addWidget(new UILabel("Bobbing:"));
-  grid.addWidget(new UICheckbox("bobbing"));
-  grid.addWidget(new UILabel("Fullscreen:"));
-  grid.addWidget(new UICheckbox("fullscreen"));
-  grid.addWidget(new UILabel("Dynamic Shadows:"));
-  grid.addWidget(new UIDropdown<>("shadows"));
-  grid.addWidget(new UILabel("Outline:"));
-  grid.addWidget(new UICheckbox("outline"));
-  grid.addWidget(new UILabel("VSync:"));
-  grid.addWidget(new UICheckbox("vsync"));
-  grid.setPadding(new Border(4,4,4,4));
-  grid.setFamily("option-grid");
-  ArbitraryLayout layout=new ArbitraryLayout();
-  layout.addFixedWidget(new UIImage(Assets.getTexture("engine:terasology")),new Vector2i(512,128),new Vector2f(0.5f,0.2f));
-  layout.addFillWidget(new UILabel("title","title","Video Settings"),Rect2f.createFromMinAndSize(0.0f,0.3f,1.0f,0.1f));
-  layout.addFixedWidget(grid,new Vector2i(720,192),new Vector2f(0.5f,0.6f));
-  layout.addFixedWidget(new UIButton("close","Back"),new Vector2i(280,32),new Vector2f(0.5f,0.95f));
-  setContents(layout);
+  UIDropdown<VideoQuality> videoQuality=find("quality",UIDropdown.class);
+  if (videoQuality != null) {
+    videoQuality.setOptions(Lists.newArrayList(VideoQuality.NICE,VideoQuality.EPIC,VideoQuality.INSANE,VideoQuality.UBER));
+    videoQuality.bindSelection(new VideoQualityBinding(config.getRendering()));
+  }
+  UIDropdown<EnvironmentalEffects> environmentalEffects=find("environmentEffects",UIDropdown.class);
+  if (environmentalEffects != null) {
+    environmentalEffects.setOptions(Lists.newArrayList(EnvironmentalEffects.OFF,EnvironmentalEffects.LOW,EnvironmentalEffects.MEDIUM,EnvironmentalEffects.HIGH));
+    environmentalEffects.bindSelection(new EnvironmentEffectsBinding(config.getRendering()));
+  }
+  UIDropdown<ViewDistance> viewDistance=find("viewDistance",UIDropdown.class);
+  if (viewDistance != null) {
+    viewDistance.setOptions(Arrays.asList(ViewDistance.values()));
+    viewDistance.bindSelection(BindHelper.bindBeanProperty("viewDistance",config.getRendering(),ViewDistance.class));
+  }
+  UIDropdown<WaterReflection> waterReflection=find("reflections",UIDropdown.class);
+  if (waterReflection != null) {
+    waterReflection.setOptions(Lists.newArrayList(WaterReflection.SKY,WaterReflection.LOCAL,WaterReflection.GLOBAL));
+    waterReflection.bindSelection(new WaterReflectionBinding(config.getRendering()));
+  }
+  UIDropdown<Integer> blur=find("blur",UIDropdown.class);
+  if (blur != null) {
+    blur.setOptions(Lists.newArrayList(0,1,2,3));
+    blur.bindSelection(BindHelper.bindBeanProperty("blurIntensity",config.getRendering(),Integer.TYPE));
+    blur.setOptionRenderer(new StringTextRenderer<Integer>(){
+      @Override public String getString(      Integer value){
+switch (value) {
+case 1:
+          return "Some";
+case 2:
+        return "Normal";
+case 3:
+      return "Max";
+default :
+    return "Off";
+}
+}
+}
+);
+}
+UIDropdown<DynamicShadows> dynamicShadows=find("shadows",UIDropdown.class);
+if (dynamicShadows != null) {
+dynamicShadows.setOptions(Arrays.asList(DynamicShadows.values()));
+dynamicShadows.bindSelection(new DynamicShadowsBinding(config.getRendering()));
+}
+UISlider fovSlider=find("fov",UISlider.class);
+if (fovSlider != null) {
+fovSlider.setIncrement(5.0f);
+fovSlider.setPrecision(0);
+fovSlider.setMinimum(70);
+fovSlider.setRange(50);
+fovSlider.bindValue(BindHelper.bindBeanProperty("fieldOfView",config.getRendering(),Float.TYPE));
+}
+UIScreenUtil.tryBindCheckbox(this,"fullscreen",BindHelper.bindBeanProperty("fullscreen",engine,Boolean.TYPE));
+UIScreenUtil.tryBindCheckbox(this,"bobbing",BindHelper.bindBeanProperty("cameraBobbing",config.getRendering(),Boolean.TYPE));
+UIScreenUtil.tryBindCheckbox(this,"outline",BindHelper.bindBeanProperty("outline",config.getRendering(),Boolean.TYPE));
+UIScreenUtil.tryBindCheckbox(this,"vsync",BindHelper.bindBeanProperty("vSync",config.getRendering(),Boolean.TYPE));
+UIScreenUtil.trySubscribe(this,"close",new ButtonEventListener(){
+@Override public void onButtonActivated(UIButton button){
+logger.info("Video Settings: " + config.getRendering().toString());
+CoreRegistry.get(ShaderManager.class).recompileAllShaders();
+nuiManager.popScreen();
+}
+}
+);
 }

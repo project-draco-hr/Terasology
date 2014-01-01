@@ -1,0 +1,16 @@
+{
+  if (data.isArray()) {
+    PersistedDataArray array=data.getAsArray();
+    List<Boolean> result=Lists.newArrayListWithCapacity(array.size());
+    for (    PersistedData item : array) {
+      if (item.isBoolean()) {
+        result.add(item.getAsBoolean());
+      }
+ else {
+        result.add(null);
+      }
+    }
+    return result;
+  }
+  return Lists.newArrayList();
+}

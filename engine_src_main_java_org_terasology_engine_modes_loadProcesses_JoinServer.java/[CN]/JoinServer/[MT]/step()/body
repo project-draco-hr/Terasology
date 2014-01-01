@@ -36,10 +36,7 @@
       }
     }
     CoreRegistry.get(Game.class).load(gameManifest);
-    moduleManager.applyActiveModules();
-    AssetManager assetManager=CoreRegistry.get(AssetManager.class);
-    assetManager.clear();
-    assetManager.applyOverrides();
+    ApplyModulesUtil.applyModules();
     return true;
   }
  else   if (joinStatus.getStatus() == JoinStatus.Status.FAILED) {

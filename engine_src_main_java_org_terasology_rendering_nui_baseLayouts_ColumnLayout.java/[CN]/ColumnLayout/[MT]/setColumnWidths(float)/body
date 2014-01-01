@@ -1,0 +1,22 @@
+{
+  if (widths.length > columns) {
+    throw new IllegalArgumentException("More widths than columns");
+  }
+  float total=0;
+  int columnIndex=0;
+  while (columnIndex < widths.length) {
+    total+=widths[columnIndex];
+    columnWidths[columnIndex]=widths[columnIndex];
+    columnIndex++;
+  }
+  if (total > 1.0f) {
+    throw new IllegalArgumentException("Total width exceeds 1.0");
+  }
+  if (columnIndex < columnWidths.length) {
+    float remainingWidth=1.0f - total;
+    float widthPerColumn=remainingWidth / (columnWidths.length - columnIndex);
+    while (columnIndex < columnWidths.length) {
+      columnWidths[columnIndex++]=widthPerColumn;
+    }
+  }
+}

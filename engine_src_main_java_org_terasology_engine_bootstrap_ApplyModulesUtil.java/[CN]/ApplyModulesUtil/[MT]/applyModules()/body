@@ -1,0 +1,24 @@
+{
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  moduleManager.applyActiveModules();
+  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.get(CopyStrategyLibrary.class);
+  copyStrategyLibrary.clear();
+  Set<Class<? extends CopyStrategy>> copyStrategies=moduleManager.getActiveModuleReflections().getSubTypesOf(CopyStrategy.class);
+  for (  Class<? extends CopyStrategy> copyStrategy : copyStrategies) {
+    Class targetType=ReflectionUtil.getTypeParameterForSuper(copyStrategy,CopyStrategy.class,0);
+    if (targetType != null) {
+      try {
+        copyStrategyLibrary.register(targetType,copyStrategy.newInstance());
+      }
+ catch (      InstantiationException|IllegalAccessException e) {
+        logger.error("Cannot register CopyStrategy '{}' - failed to instantiate",copyStrategy,e);
+      }
+    }
+ else {
+      logger.error("Cannot register CopyStrategy '{}' - unable to determine target type",copyStrategy);
+    }
+  }
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  assetManager.clear();
+  assetManager.applyOverrides();
+}

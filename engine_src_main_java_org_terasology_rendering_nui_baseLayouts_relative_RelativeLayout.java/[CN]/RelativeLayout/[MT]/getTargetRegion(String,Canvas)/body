@@ -1,0 +1,18 @@
+{
+  if (id != null && !id.isEmpty()) {
+    if (loopDetectionId.equals(id)) {
+      logger.warn("Infinite loop detected resolving layout of element {}",loopDetectionId);
+      loopDetectionId="";
+      return canvas.getRegion();
+    }
+ else     if (loopDetectionId.isEmpty()) {
+      loopDetectionId=id;
+    }
+    WidgetInfo target=contentLookup.get(id);
+    if (target != null) {
+      return getRegion(target,canvas);
+    }
+  }
+  loopDetectionId="";
+  return canvas.getRegion();
+}
