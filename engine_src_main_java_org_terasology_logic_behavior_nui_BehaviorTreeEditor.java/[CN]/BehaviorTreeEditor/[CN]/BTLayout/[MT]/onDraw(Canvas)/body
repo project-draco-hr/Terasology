@@ -6,15 +6,17 @@
       if (widget instanceof RenderableNode) {
         RenderableNode renderableNode=(RenderableNode)widget;
         for (        Port port : renderableNode.getPorts()) {
-          int sx=worldToScreenX(renderableNode.getPosition().x + port.midX());
-          int sy=worldToScreenY(renderableNode.getPosition().y + port.midY());
+          Vector2f start=new Vector2f(renderableNode.getPosition());
+          start.add(port.mid());
           Port targetPort=port.getTargetPort();
           if (port.isInput() || targetPort == null) {
             continue;
           }
-          int ex=worldToScreenX(targetPort.getSourceNode().getPosition().x + targetPort.midX());
-          int ey=worldToScreenY(targetPort.getSourceNode().getPosition().y + targetPort.midY());
-          canvas.drawLine(sx,sy,ex,ey,Color.WHITE);
+          Vector2f end=new Vector2f(targetPort.getSourceNode().getPosition());
+          end.add(targetPort.mid());
+          Vector2i s=worldToScreen(start);
+          Vector2i e=worldToScreen(end);
+          canvas.drawLine(s.x,s.y,e.x,e.y,Color.WHITE);
         }
       }
     }
