@@ -18,6 +18,14 @@
     }
   }
 );
+  find("behavior_editor",UIButton.class).subscribe(new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      UIScreen editor=new BehaviorTreeEditor();
+      editor.setSkin(getSkin());
+      nuiManager.pushScreen(editor);
+    }
+  }
+);
   find("exit",UIButton.class).subscribe(new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       engine.shutdown();
