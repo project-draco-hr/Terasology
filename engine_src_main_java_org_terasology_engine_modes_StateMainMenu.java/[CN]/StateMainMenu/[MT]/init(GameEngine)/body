@@ -17,6 +17,9 @@
   LocalPlayer localPlayer=CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
   localPlayer.setClientEntity(localPlayerEntity);
   componentSystemManager.initialise();
+  BehaviorSystem behaviorSystem=new BehaviorSystem();
+  CoreRegistry.put(BehaviorSystem.class,behaviorSystem);
+  behaviorSystem.initialise();
   playBackgroundMusic();
   openMainMenu();
   if (!messageOnLoad.isEmpty()) {
