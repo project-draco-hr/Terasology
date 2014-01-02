@@ -44,4 +44,13 @@
     }
   }
 );
+  UIScreenUtil.trySubscribe(this,"copy",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      Clipboard systemClipboard=Toolkit.getDefaultToolkit().getSystemClipboard();
+      String tree=find("tree",BehaviorEditor.class).save();
+      StringSelection contents=new StringSelection(tree);
+      systemClipboard.setContents(contents,contents);
+    }
+  }
+);
 }
