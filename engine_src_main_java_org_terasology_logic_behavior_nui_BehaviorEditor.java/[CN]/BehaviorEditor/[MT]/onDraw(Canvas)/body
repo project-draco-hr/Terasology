@@ -1,24 +1,22 @@
 {
   super.onDraw(canvas);
+  canvas.addInteractionRegion(moveOver);
   try (SubRegion subRegion=canvas.subRegion(canvas.getRegion(),false)){
     canvas.setDrawOnTop(true);
     for (    UIWidget widget : getWidgets()) {
       if (widget instanceof RenderableNode) {
         RenderableNode renderableNode=(RenderableNode)widget;
         for (        Port port : renderableNode.getPorts()) {
-          Vector2f start=new Vector2f(renderableNode.getPosition());
-          start.add(port.mid());
           Port targetPort=port.getTargetPort();
           if (port.isInput() || targetPort == null) {
             continue;
           }
-          Vector2f end=new Vector2f(targetPort.getSourceNode().getPosition());
-          end.add(targetPort.mid());
-          Vector2i s=worldToScreen(start);
-          Vector2i e=worldToScreen(end);
-          canvas.drawLine(s.x,s.y,e.x,e.y,Color.WHITE);
+          drawConnection(canvas,port,targetPort,port == activeConnectionStart ? Color.BLACK : Color.GREY);
         }
       }
+    }
+    if (activeConnectionStart != null) {
+      drawConnection(canvas,activeConnectionStart,mousePos,Color.WHITE);
     }
     canvas.setDrawOnTop(false);
   }

@@ -5,9 +5,6 @@
       RenderableNode self=new RenderableNode(nodeComponent);
       self.setNode(node);
       if (parent != null) {
-        int total=parent.getNode().getChildrenCount();
-        int curr=parent.getChildrenCount();
-        self.setPosition(12 * curr - 6 * total,7);
         parent.withoutModel().insertChild(-1,self);
       }
       renderableNodes.put(self.getNode(),self);
@@ -15,4 +12,11 @@
     }
   }
 );
+  TreeLayout<RenderableNode> layout=new TreeLayout<>(new LayoutTree(renderableRoot),new FixedNodeExtentProvider(10,5),new DefaultConfiguration(4,2));
+  Map<RenderableNode,Rectangle2D.Double> bounds=layout.getNodeBounds();
+  for (  Map.Entry<RenderableNode,Rectangle2D.Double> entry : bounds.entrySet()) {
+    RenderableNode node=entry.getKey();
+    Rectangle2D.Double rect=entry.getValue();
+    node.setPosition((float)rect.getX(),(float)rect.getY());
+  }
 }
