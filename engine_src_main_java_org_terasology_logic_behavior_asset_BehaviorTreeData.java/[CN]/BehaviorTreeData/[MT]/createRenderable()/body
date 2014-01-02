@@ -1,13 +1,10 @@
 {
   renderableRoot=root.visit(null,new Node.Visitor<RenderableNode>(){
     @Override public RenderableNode visit(    RenderableNode parent,    Node node){
-      BehaviorNodeComponent nodeComponent=factory.getNodeComponent(node);
-      RenderableNode self=new RenderableNode(nodeComponent);
-      self.setNode(node);
+      RenderableNode self=createNode(node);
       if (parent != null) {
         parent.withoutModel().insertChild(-1,self);
       }
-      renderableNodes.put(self.getNode(),self);
       return self;
     }
   }

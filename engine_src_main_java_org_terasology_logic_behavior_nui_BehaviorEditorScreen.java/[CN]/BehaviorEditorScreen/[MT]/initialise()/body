@@ -38,4 +38,10 @@
     }
   }
 );
+  UIScreenUtil.trySubscribe(this,"create",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      find("tree",BehaviorEditor.class).createNode((BehaviorNodeComponent)find("palette",UIDropdown.class).getSelection());
+    }
+  }
+);
 }
