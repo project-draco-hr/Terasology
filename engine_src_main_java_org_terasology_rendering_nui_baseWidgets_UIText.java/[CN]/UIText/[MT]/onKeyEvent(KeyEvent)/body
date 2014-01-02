@@ -1,0 +1,74 @@
+{
+  if (event.isDown() && lastFont != null) {
+    String fullText=text.get();
+    cursorPosition=TeraMath.clamp(cursorPosition,0,fullText.length());
+switch (event.getKey()) {
+case Keyboard.KEY_BACK:
+{
+        if (cursorPosition > 0) {
+          String before=fullText.substring(0,cursorPosition - 1);
+          String after=fullText.substring(cursorPosition);
+          setText(before + after);
+          cursorPosition--;
+        }
+        break;
+      }
+case Keyboard.KEY_DELETE:
+{
+      if (cursorPosition < fullText.length()) {
+        String before=fullText.substring(0,cursorPosition);
+        String after=fullText.substring(cursorPosition + 1);
+        setText(before + after);
+      }
+      break;
+    }
+case Keyboard.KEY_LEFT:
+{
+    if (cursorPosition > 0) {
+      cursorPosition--;
+    }
+    break;
+  }
+case Keyboard.KEY_RIGHT:
+{
+  if (cursorPosition < fullText.length()) {
+    cursorPosition++;
+  }
+  break;
+}
+case Keyboard.KEY_HOME:
+{
+cursorPosition=0;
+break;
+}
+case Keyboard.KEY_END:
+{
+cursorPosition=fullText.length();
+break;
+}
+case Keyboard.KEY_RETURN:
+{
+for (TextEventListener listener : listeners) {
+listener.onEnterPressed(this);
+}
+break;
+}
+default :
+{
+if (org.terasology.input.Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) || org.terasology.input.Keyboard.isKeyDown(Keyboard.KEY_RCONTROL)) {
+if (event.getKey() == Keyboard.KEY_V) {
+paste();
+break;
+}
+}
+if (event.getKeyCharacter() != 0 && lastFont.hasCharacter(event.getKeyCharacter())) {
+String before=fullText.substring(0,cursorPosition);
+String after=fullText.substring(cursorPosition);
+setText(before + event.getKeyCharacter() + after);
+cursorPosition++;
+}
+break;
+}
+}
+}
+}

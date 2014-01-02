@@ -1,0 +1,13 @@
+{
+  if (text.get() == null) {
+    return;
+  }
+  lastMargin=canvas.getCurrentStyle().getMargin();
+  lastFont=canvas.getCurrentStyle().getFont();
+  lastWidth=canvas.size().x - lastMargin.getTotalWidth();
+  canvas.addInteractionRegion(interactionListener);
+  canvas.drawText(text.get());
+  if (isFocused()) {
+    drawCursor(canvas);
+  }
+}

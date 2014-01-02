@@ -1,11 +1,9 @@
 {
-  while (Keyboard.next()) {
-    int key=Keyboard.getEventKey();
-    ButtonState state=getButtonState(Keyboard.getEventKeyState(),Keyboard.isRepeatEvent());
-    boolean consumed=sendKeyEvent(key,state,delta);
-    BindableButtonImpl bind=keyBinds.get(key);
-    if (bind != null && !Keyboard.isRepeatEvent()) {
-      bind.updateBindState(Keyboard.getEventKeyState(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+  for (  InputAction action : keyboard.getInputQueue()) {
+    boolean consumed=sendKeyEvent(action.getInput().getId(),action.getState(),delta);
+    BindableButtonImpl bind=keyBinds.get(action.getInput().getId());
+    if (bind != null && action.getState() != ButtonState.REPEAT) {
+      bind.updateBindState((action.getState() == ButtonState.DOWN),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
     }
   }
 }

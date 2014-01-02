@@ -1,0 +1,12 @@
+{
+  Transferable t=Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+  try {
+    if (t != null && t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+      return (String)t.getTransferData(DataFlavor.stringFlavor);
+    }
+  }
+ catch (  UnsupportedFlavorException|IOException e) {
+    logger.warn("Failed to get data from clipboard",e);
+  }
+  return "";
+}
