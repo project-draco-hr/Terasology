@@ -1,6 +1,7 @@
 {
   LocalPlayerBlockSelectionByItemSystemListener listener=targetLocationEntity.getComponent(LocalPlayerBlockSelectionByItemSystemListener.class);
   localPlayer.getCharacterEntity().send(new ApplyBlockSelectionEvent(listener.getItemEntity(),event.getBlockSelectionComponent().currentSelection));
+  targetLocationEntity.send(new UnregisterBlockSelectionForRenderingEvent(event.getBlockSelectionComponent()));
   blockSelectionComponent.currentSelection=null;
   blockSelectionComponent.startPosition=null;
 }
