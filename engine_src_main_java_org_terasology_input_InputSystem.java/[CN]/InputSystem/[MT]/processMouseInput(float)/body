@@ -28,7 +28,7 @@ switch (action.getInput().getType()) {
 case MOUSE_BUTTON:
       int id=action.getInput().getId();
     if (id != -1) {
-      MouseInput button=MouseInput.getInputFor(action.getInput().getType(),action.getInput().getId());
+      MouseInput button=MouseInput.find(action.getInput().getType(),action.getInput().getId());
       boolean consumed=sendMouseEvent(button,action.getState().isDown(),mouse.getPosition(),delta);
       BindableButtonImpl bind=mouseButtonBinds.get(button);
       if (bind != null) {

@@ -1,0 +1,26 @@
+{
+  KeyEvent event;
+switch (state) {
+case UP:
+    event=KeyUpEvent.create(key,keyChar,delta);
+  break;
+case DOWN:
+event=KeyDownEvent.create(key,keyChar,delta);
+break;
+case REPEAT:
+event=KeyRepeatEvent.create(key,keyChar,delta);
+break;
+default :
+return false;
+}
+setupTarget(event);
+for (EntityRef entity : getInputEntities()) {
+entity.send(event);
+if (event.isConsumed()) {
+break;
+}
+}
+boolean consumed=event.isConsumed();
+event.reset();
+return consumed;
+}

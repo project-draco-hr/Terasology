@@ -1,6 +1,6 @@
 {
   for (  InputAction action : keyboard.getInputQueue()) {
-    boolean consumed=sendKeyEvent(action.getInput().getId(),action.getState(),delta);
+    boolean consumed=sendKeyEvent(action.getInput(),action.getInputChar(),action.getState(),delta);
     BindableButtonImpl bind=keyBinds.get(action.getInput().getId());
     if (bind != null && action.getState() != ButtonState.REPEAT) {
       bind.updateBindState((action.getState() == ButtonState.DOWN),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);

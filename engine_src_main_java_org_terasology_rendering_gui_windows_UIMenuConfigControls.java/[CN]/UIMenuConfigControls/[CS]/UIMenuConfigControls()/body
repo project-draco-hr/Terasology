@@ -6,7 +6,7 @@
   addMouseButtonListener(new MouseButtonListener(){
     @Override public void wheel(    UIDisplayElement element,    int wheel,    boolean intersect){
       if (editButton != null) {
-        changeButton(editButton,new Input(InputType.MOUSE_WHEEL,wheel));
+        changeButton(editButton,InputType.MOUSE_WHEEL.getInput(wheel));
         editButton=null;
       }
     }
@@ -14,7 +14,7 @@
     }
     @Override public void down(    UIDisplayElement element,    int button,    boolean intersect){
       if (editButton != null) {
-        changeButton(editButton,new Input(InputType.MOUSE_BUTTON,button));
+        changeButton(editButton,InputType.MOUSE_BUTTON.getInput(button));
         editButton=null;
       }
     }
@@ -23,7 +23,7 @@
   addKeyListener(new KeyListener(){
     @Override public void key(    UIDisplayElement element,    KeyEvent event){
       if (editButton != null) {
-        changeButton(editButton,new Input(InputType.KEY,event.getKey()));
+        changeButton(editButton,InputType.KEY.getInput(event.getKey().getId()));
         editButton=null;
       }
     }

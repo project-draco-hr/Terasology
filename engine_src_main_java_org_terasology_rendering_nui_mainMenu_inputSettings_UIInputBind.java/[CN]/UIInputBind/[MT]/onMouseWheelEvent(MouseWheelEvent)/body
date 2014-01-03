@@ -1,7 +1,7 @@
 {
   if (capturingInput) {
-    MouseInput mouseInput=MouseInput.getInputFor(InputType.MOUSE_WHEEL,event.getWheelTurns());
-    setInput(new Input(InputType.MOUSE_WHEEL,mouseInput.getId()));
+    MouseInput mouseInput=MouseInput.find(InputType.MOUSE_WHEEL,event.getWheelTurns());
+    setInput(InputType.MOUSE_WHEEL.getInput(mouseInput.getId()));
     capturingInput=false;
     event.consume();
   }
