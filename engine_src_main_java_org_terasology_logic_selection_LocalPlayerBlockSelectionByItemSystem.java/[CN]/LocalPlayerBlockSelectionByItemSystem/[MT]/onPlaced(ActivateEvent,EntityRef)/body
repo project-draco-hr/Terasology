@@ -1,0 +1,18 @@
+{
+  if (event.getTargetLocation() == null) {
+    return;
+  }
+  LocationComponent targetLocation=new LocationComponent();
+  targetLocation.setWorldPosition(event.getTargetLocation());
+  LocalPlayerBlockSelectionByItemSystemListener listener=new LocalPlayerBlockSelectionByItemSystemListener(itemEntity);
+  EntityRef targetLocationEntity=entityManager.create(targetLocation,listener);
+  this.blockSelectionComponent=itemEntity.getComponent(BlockSelectionComponent.class);
+  if (null == blockSelectionComponent.startPosition) {
+    Log.debug("local-player-block-selection start at" + event.getTargetLocation());
+    targetLocationEntity.send(new BlockStartSelectionEvent(blockSelectionComponent));
+  }
+ else {
+    Log.debug("local-player-block-selection end at" + event.getTargetLocation());
+    targetLocationEntity.send(new BlockEndSelectionEvent(blockSelectionComponent));
+  }
+}
