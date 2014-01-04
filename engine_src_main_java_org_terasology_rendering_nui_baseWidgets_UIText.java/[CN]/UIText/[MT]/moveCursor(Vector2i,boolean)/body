@@ -1,8 +1,9 @@
 {
   if (lastFont != null) {
     pos.x-=lastMargin.getLeft();
+    pos.x+=offset;
     pos.y-=lastMargin.getTop();
-    List<String> lines=TextLineBuilder.getLines(lastFont,getText(),lastWidth);
+    List<String> lines=TextLineBuilder.getLines(lastFont,getText(),Integer.MAX_VALUE);
     int lineIndex=TeraMath.clamp(pos.y / lastFont.getLineHeight(),0,lines.size() - 1);
     int newCursorPos=0;
     int totalWidth=0;
@@ -18,5 +19,9 @@
       newCursorPos+=lines.get(i).length() + 1;
     }
     cursorPosition=newCursorPos;
+    if (!isSelectionModifierActive() && !selecting) {
+      selectionStart=cursorPosition;
+    }
+    updateOffset();
   }
 }

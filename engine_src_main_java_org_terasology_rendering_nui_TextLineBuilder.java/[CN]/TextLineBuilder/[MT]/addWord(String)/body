@@ -11,17 +11,19 @@
       }
       lineBuilder.append(c);
       currentLineLength+=charWidth;
+      lineHasWord=true;
     }
   }
  else {
     if (currentLineLength > 0 && currentLineLength + spaceWidth + wordWidth > maxWidth) {
       endLine();
     }
-    if (currentLineLength != 0) {
+    if (lineHasWord) {
       lineBuilder.append(' ');
       currentLineLength+=spaceWidth;
     }
     lineBuilder.append(word);
     currentLineLength+=wordWidth;
+    lineHasWord=true;
   }
 }
