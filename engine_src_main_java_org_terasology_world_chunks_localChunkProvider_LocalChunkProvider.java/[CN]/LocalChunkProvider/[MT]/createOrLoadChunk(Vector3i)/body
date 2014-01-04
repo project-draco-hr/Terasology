@@ -14,24 +14,24 @@
           @Override public void enact(){
             ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
             ChunkImpl chunk=chunkStore.getChunk();
-            if (nearCache.putIfAbsent(getPosition(),chunkStore.getChunk()) != null) {
-              logger.warn("Chunk {} is already in the near cache",getPosition());
-            }
-            preparingChunks.remove(getPosition());
-            if (chunk.getChunkState() == ChunkImpl.State.INTERNAL_LIGHT_GENERATION_PENDING) {
+            try {
               chunk.lock();
-              try {
+              if (nearCache.putIfAbsent(getPosition(),chunkStore.getChunk()) != null) {
+                logger.warn("Chunk {} is already in the near cache",getPosition());
+              }
+              preparingChunks.remove(getPosition());
+              if (chunk.getChunkState() == ChunkImpl.State.INTERNAL_LIGHT_GENERATION_PENDING) {
                 InternalLightProcessor.generateInternalLighting(chunk);
                 chunk.deflate();
                 chunk.setChunkState(ChunkImpl.State.COMPLETE);
+                readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
               }
-  finally {
-                chunk.unlock();
-              }
-              readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
-            }
  else {
-              pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+                pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
+              }
+            }
+  finally {
+              chunk.unlock();
             }
           }
         }

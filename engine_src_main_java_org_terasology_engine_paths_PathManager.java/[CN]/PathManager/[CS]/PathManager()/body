@@ -4,8 +4,11 @@
     Path codeLocation=Paths.get(urlToSource.toURI());
     System.out.println("codeLocation: " + codeLocation);
     if (Files.isRegularFile(codeLocation)) {
-      installPath=codeLocation.getParent().getParent();
-      System.out.println("Running from a file (jar). Setting installPath to: " + installPath);
+      installPath=findNativesHome(codeLocation.getParent(),5);
+      if (installPath == null) {
+        System.out.println("Failed to find the natives dir - unable to launch!");
+        throw new RuntimeException("Failed to find natives from .jar launch");
+      }
     }
   }
  catch (  URISyntaxException e) {
@@ -14,6 +17,11 @@
   if (installPath == null) {
     installPath=Paths.get("").toAbsolutePath();
     System.out.println("installPath was null, running from IDE. Setting it to: " + installPath);
+    installPath=findNativesHome(installPath,5);
+    if (installPath == null) {
+      System.out.println("Failed to find the natives dir - unable to launch!");
+      throw new RuntimeException("Failed to find natives from likely IDE launch");
+    }
   }
   homePath=installPath;
 }
