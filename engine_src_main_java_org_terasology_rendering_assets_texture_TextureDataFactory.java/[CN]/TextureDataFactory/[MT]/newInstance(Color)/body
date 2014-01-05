@@ -1,0 +1,14 @@
+{
+  byte red=convertIntToByte(color.getRed());
+  byte green=convertIntToByte(color.getGreen());
+  byte blue=convertIntToByte(color.getBlue());
+  byte alpha=convertIntToByte(color.getAlpha());
+  ByteBuffer data=ByteBuffer.allocateDirect(4 * TEXTURE_WIDTH * TEXTURE_HEIGHT);
+  for (int width=0; width < TEXTURE_WIDTH; width++) {
+    for (int height=0; height < TEXTURE_HEIGHT; height++) {
+      data.put(red).put(green).put(blue).put(alpha);
+    }
+  }
+  data.rewind();
+  return new TextureData(TEXTURE_WIDTH,TEXTURE_HEIGHT,new ByteBuffer[]{data},WrapMode.Repeat,FilterMode.Nearest);
+}
