@@ -1,4 +1,14 @@
 {
+  find("tree",BehaviorEditor.class).bindSelection(new Binding<RenderableNode>(){
+    @Override public RenderableNode get(){
+      return null;
+    }
+    @Override public void set(    RenderableNode value){
+      PropertyProvider<?> provider=new PropertyProvider<>(value.getNode());
+      find("properties",PropertyLayout.class).setPropertyProvider(provider);
+    }
+  }
+);
   find("select_tree",UIDropdown.class).bindSelection(new Binding<BehaviorTree>(){
     @Override public BehaviorTree get(){
       return null;

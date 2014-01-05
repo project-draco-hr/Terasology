@@ -1,0 +1,22 @@
+{
+  if (propertyProvider != null && !propertyProvider.isEmpty()) {
+    Vector2i size=canvas.size();
+    findLabelSize(canvas,size);
+    Vector2i currentOffset=new Vector2i();
+    int heightRemaining=size.y;
+    for (    Property<?,?> property : propertyProvider.getProperties()) {
+      UILabel label=property.getLabel();
+      Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,labelSize.x,labelSize.y);
+      canvas.drawElement(label,drawRegion);
+      currentOffset.x+=labelSize.x;
+      UIWidget editor=property.getEditor();
+      int editorWidth=size.x - labelSize.x;
+      Vector2i editorSize=canvas.calculateSize(editor,new Vector2i(editorWidth,heightRemaining));
+      drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,editorSize.x,editorSize.y);
+      canvas.drawElement(editor,drawRegion);
+      currentOffset.x=0;
+      currentOffset.y+=editorSize.y;
+      heightRemaining-=editorSize.y;
+    }
+  }
+}

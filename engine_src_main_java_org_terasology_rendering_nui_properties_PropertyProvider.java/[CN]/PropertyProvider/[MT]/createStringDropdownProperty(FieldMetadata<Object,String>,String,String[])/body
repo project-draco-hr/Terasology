@@ -1,0 +1,15 @@
+{
+  UIDropdown<String> dropdown=new UIDropdown<>();
+  dropdown.bindOptions(new DefaultBinding<>(Arrays.asList(items)));
+  Binding<String> binding=new Binding<String>(){
+    @Override public String get(){
+      return fieldMetadata.getValueChecked(target);
+    }
+    @Override public void set(    String value){
+      fieldMetadata.setValue(target,value);
+    }
+  }
+;
+  dropdown.bindSelection(binding);
+  return new Property<>(label,binding,dropdown);
+}
