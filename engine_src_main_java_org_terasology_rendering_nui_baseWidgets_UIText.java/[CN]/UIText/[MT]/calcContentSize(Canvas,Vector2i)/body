@@ -1,0 +1,10 @@
+{
+  if (isMultiline()) {
+    Font font=canvas.getCurrentStyle().getFont();
+    List<String> lines=TextLineBuilder.getLines(font,text.get(),areaHint.x);
+    return font.getSize(lines);
+  }
+ else {
+    return new Vector2i(lastFont.getWidth(getText()),lastFont.getLineHeight());
+  }
+}

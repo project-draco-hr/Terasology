@@ -1,0 +1,14 @@
+{
+  Font font=canvas.getCurrentStyle().getFont();
+  int start=Math.min(cursorPosition,selectionStart);
+  int end=Math.max(cursorPosition,selectionStart);
+  String beforeCursor=text.get().substring(0,start);
+  String selectionText=text.get().substring(start,end);
+  List<String> lines=TextLineBuilder.getLines(font,beforeCursor,canvas.size().x);
+  int lastLineWidth=font.getWidth(lines.get(lines.size() - 1));
+  Vector2i selectionTopLeft=new Vector2i(lastLineWidth,(lines.size() - 1) * font.getLineHeight());
+  int selectionWidth=font.getWidth(selectionText);
+  Rect2i region=Rect2i.createFromMinAndSize(selectionTopLeft.x,selectionTopLeft.y,selectionWidth,font.getLineHeight());
+  canvas.drawTexture(cursorTexture,region,canvas.getCurrentStyle().getTextColor());
+  canvas.drawTextRaw(selectionText,font,canvas.getCurrentStyle().getTextColor().inverse(),region);
+}

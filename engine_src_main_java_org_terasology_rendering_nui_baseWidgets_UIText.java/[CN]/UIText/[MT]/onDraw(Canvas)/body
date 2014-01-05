@@ -1,0 +1,23 @@
+{
+  if (text.get() == null) {
+    return;
+  }
+  lastMargin=canvas.getCurrentStyle().getMargin();
+  lastFont=canvas.getCurrentStyle().getFont();
+  lastWidth=canvas.size().x - lastMargin.getTotalWidth();
+  canvas.addInteractionRegion(interactionListener);
+  correctCursor();
+  try (SubRegion ignored=canvas.subRegion(lastMargin.shrink(canvas.getRegion()),true)){
+    try (SubRegion ignored2=canvas.subRegion(Rect2i.createFromMinAndSize(-offset,0,lastFont.getWidth(getText()) + 1,lastFont.getLineHeight()),false)){
+      canvas.drawText(text.get(),canvas.getRegion());
+      if (isFocused()) {
+        if (hasSelection()) {
+          drawSelection(canvas);
+        }
+ else {
+          drawCursor(canvas);
+        }
+      }
+    }
+   }
+ }

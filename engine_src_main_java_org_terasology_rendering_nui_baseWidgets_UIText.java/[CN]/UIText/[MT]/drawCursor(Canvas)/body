@@ -1,0 +1,13 @@
+{
+  if (blinkCounter < BLINK_RATE) {
+    Font font=canvas.getCurrentStyle().getFont();
+    String beforeCursor=text.get();
+    if (cursorPosition < text.get().length()) {
+      beforeCursor=beforeCursor.substring(0,cursorPosition);
+    }
+    List<String> lines=TextLineBuilder.getLines(font,beforeCursor,canvas.size().x);
+    int lastLineWidth=font.getWidth(lines.get(lines.size() - 1));
+    Rect2i region=Rect2i.createFromMinAndSize(lastLineWidth,(lines.size() - 1) * font.getLineHeight(),1,font.getLineHeight());
+    canvas.drawTexture(cursorTexture,region,canvas.getCurrentStyle().getTextColor());
+  }
+}

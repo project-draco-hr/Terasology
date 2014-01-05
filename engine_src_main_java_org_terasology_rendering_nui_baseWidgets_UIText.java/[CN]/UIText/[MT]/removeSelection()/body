@@ -1,0 +1,9 @@
+{
+  if (hasSelection()) {
+    String before=getText().substring(0,Math.min(cursorPosition,selectionStart));
+    String after=getText().substring(Math.max(cursorPosition,selectionStart));
+    setText(before + after);
+    cursorPosition=Math.min(cursorPosition,selectionStart);
+    selectionStart=cursorPosition;
+  }
+}

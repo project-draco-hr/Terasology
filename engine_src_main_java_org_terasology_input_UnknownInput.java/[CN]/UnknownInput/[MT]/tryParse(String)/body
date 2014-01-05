@@ -1,0 +1,18 @@
+{
+  for (  InputType type : InputType.values()) {
+    if (string.startsWith(type.toString())) {
+      String remainder=string.substring(type.toString().length());
+      if (remainder.startsWith(UNKNOWN_PART)) {
+        String hexadecimal=remainder.substring(UNKNOWN_PART.length());
+        try {
+          int id=(int)Long.parseLong(hexadecimal,16);
+          return type.getInput(id);
+        }
+ catch (        NumberFormatException e) {
+          return null;
+        }
+      }
+    }
+  }
+  return null;
+}

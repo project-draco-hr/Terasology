@@ -2,7 +2,7 @@
   console=CoreRegistry.get(Console.class);
   localPlayer=CoreRegistry.get(LocalPlayer.class);
   commandCursor=console.previousCommandSize();
-  setCloseKeys(new int[]{Keyboard.KEY_ESCAPE});
+  setCloseKeys(new int[]{Keyboard.KeyId.ESCAPE});
   setCloseBinds(new String[]{"engine:console"});
   setId("chat");
   setModal(true);
@@ -17,20 +17,20 @@
   inputBox.addKeyListener(new KeyListener(){
     @Override public void key(    UIDisplayElement element,    KeyEvent event){
       if (event.isDown()) {
-        if (event.getKey() == Keyboard.KEY_RETURN) {
+        if (event.getKey() == Keyboard.Key.ENTER) {
           String message=inputBox.getText().trim();
           inputBox.deleteText();
           console.execute(message,localPlayer.getClientEntity());
           commandCursor=console.previousCommandSize();
         }
- else         if (event.getKey() == Keyboard.KEY_UP) {
+ else         if (event.getKey() == Keyboard.Key.UP) {
           if (commandCursor > 0) {
             commandCursor--;
             inputBox.setText(console.getPreviousCommand(commandCursor));
             inputBox.setCursorEnd();
           }
         }
- else         if (event.getKey() == Keyboard.KEY_DOWN) {
+ else         if (event.getKey() == Keyboard.Key.DOWN) {
           if (commandCursor < console.previousCommandSize()) {
             commandCursor++;
             if (commandCursor == console.previousCommandSize()) {
@@ -42,7 +42,7 @@
             inputBox.setCursorEnd();
           }
         }
- else         if (event.getKey() == Keyboard.KEY_TAB && !inputBox.getText().trim().isEmpty()) {
+ else         if (event.getKey() == Keyboard.Key.TAB && !inputBox.getText().trim().isEmpty()) {
           String message=inputBox.getText().trim();
           String commandName=message.substring(1);
           List<CommandInfo> commands=console.getCommandList();

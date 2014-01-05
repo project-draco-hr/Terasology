@@ -1,0 +1,115 @@
+{
+  correctCursor();
+  if (event.isDown() && lastFont != null) {
+    String fullText=text.get();
+switch (event.getKey().getId()) {
+case Keyboard.KeyId.BACKSPACE:
+{
+        if (hasSelection()) {
+          removeSelection();
+        }
+ else         if (cursorPosition > 0) {
+          String before=fullText.substring(0,cursorPosition - 1);
+          String after=fullText.substring(cursorPosition);
+          setText(before + after);
+          cursorPosition--;
+          selectionStart=cursorPosition;
+        }
+        break;
+      }
+case Keyboard.KeyId.DELETE:
+{
+      if (hasSelection()) {
+        removeSelection();
+      }
+ else       if (cursorPosition < fullText.length()) {
+        String before=fullText.substring(0,cursorPosition);
+        String after=fullText.substring(cursorPosition + 1);
+        setText(before + after);
+      }
+      break;
+    }
+case Keyboard.KeyId.LEFT:
+{
+    if (hasSelection() && !isSelectionModifierActive()) {
+      cursorPosition=Math.min(cursorPosition,selectionStart);
+      selectionStart=cursorPosition;
+    }
+ else     if (cursorPosition > 0) {
+      cursorPosition--;
+      if (!isSelectionModifierActive()) {
+        selectionStart=cursorPosition;
+      }
+    }
+    break;
+  }
+case Keyboard.KeyId.RIGHT:
+{
+  if (hasSelection() && !isSelectionModifierActive()) {
+    cursorPosition=Math.max(cursorPosition,selectionStart);
+    selectionStart=cursorPosition;
+  }
+ else   if (cursorPosition < fullText.length()) {
+    cursorPosition++;
+    if (!isSelectionModifierActive()) {
+      selectionStart=cursorPosition;
+    }
+  }
+  break;
+}
+case Keyboard.KeyId.HOME:
+{
+cursorPosition=0;
+offset=0;
+if (!isSelectionModifierActive()) {
+  selectionStart=cursorPosition;
+}
+break;
+}
+case Keyboard.KeyId.END:
+{
+cursorPosition=fullText.length();
+offset=lastFont.getWidth(fullText) - lastWidth + 1;
+if (!isSelectionModifierActive()) {
+selectionStart=cursorPosition;
+}
+break;
+}
+case Keyboard.KeyId.ENTER:
+{
+for (TextEventListener listener : listeners) {
+listener.onEnterPressed(this);
+}
+break;
+}
+default :
+{
+if (org.terasology.input.Keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL) || org.terasology.input.Keyboard.isKeyDown(Keyboard.KeyId.RIGHT_CTRL)) {
+if (event.getKey() == Keyboard.Key.V) {
+removeSelection();
+paste();
+break;
+}
+ else if (event.getKey() == Keyboard.Key.C) {
+copySelection();
+break;
+}
+ else if (event.getKey() == Keyboard.Key.X) {
+copySelection();
+removeSelection();
+break;
+}
+}
+if (event.getKeyCharacter() != 0 && lastFont.hasCharacter(event.getKeyCharacter())) {
+String before=fullText.substring(0,Math.min(cursorPosition,selectionStart));
+String after=fullText.substring(Math.max(cursorPosition,selectionStart));
+setText(before + event.getKeyCharacter() + after);
+cursorPosition=Math.min(cursorPosition,selectionStart) + 1;
+selectionStart=cursorPosition;
+}
+break;
+}
+}
+}
+updateOffset();
+}

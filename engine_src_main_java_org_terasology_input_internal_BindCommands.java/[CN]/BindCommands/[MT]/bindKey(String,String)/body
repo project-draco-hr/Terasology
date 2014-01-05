@@ -1,7 +1,11 @@
 {
-  inputSystem.linkBindButtonToKey(Keyboard.getKeyIndex(key),new SimpleUri(bind));
-  StringBuilder builder=new StringBuilder();
-  builder.append("Mapped ").append(Keyboard.getKeyName(Keyboard.getKeyIndex(key))).append(" to action ");
-  builder.append(bind);
-  return builder.toString();
+  Input keyInput=Keyboard.Key.find(key);
+  if (keyInput != null) {
+    inputSystem.linkBindButtonToKey(keyInput.getId(),new SimpleUri(bind));
+    StringBuilder builder=new StringBuilder();
+    builder.append("Mapped ").append(keyInput.getDisplayName()).append(" to action ");
+    builder.append(bind);
+    return builder.toString();
+  }
+  return "Unknown key: " + key;
 }
