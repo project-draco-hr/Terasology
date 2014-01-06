@@ -1,0 +1,18 @@
+{
+  for (  ComponentWrapper wrapper : children) {
+    if (wrapper instanceof MigLayout) {
+      MigLayout layout=(MigLayout)wrapper;
+      layout.layoutContainer(canvas,bounds);
+    }
+ else     if (wrapper instanceof MigComponent) {
+      MigComponent migComponent=(MigComponent)wrapper;
+      migComponent.calcPreferredSize(canvas,canvas.size());
+    }
+  }
+  checkCache();
+  if (grid.layout(bounds,lc.getAlignX(),lc.getAlignY(),debug,true)) {
+    grid=null;
+    checkCache();
+    grid.layout(bounds,lc.getAlignX(),lc.getAlignY(),debug,false);
+  }
+}
