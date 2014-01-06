@@ -1,0 +1,18 @@
+{
+  int[] bounds={0,0,canvas.size().x,canvas.size().y};
+  layoutContainer(canvas,bounds);
+  for (  ComponentWrapper wrapper : ccMap.keySet()) {
+    UIWidget component=(UIWidget)wrapper.getComponent();
+    Rect2i region=Rect2i.createFromMinAndSize(wrapper.getX(),wrapper.getY(),wrapper.getWidth(),wrapper.getHeight());
+    canvas.drawElement(component,region);
+  }
+  if (debug) {
+    grid.paintDebug();
+  }
+  for (  Rect2i region : debugRects) {
+    canvas.drawLine(region.minX(),region.minY(),region.maxX(),region.minY(),Color.WHITE);
+    canvas.drawLine(region.maxX(),region.minY(),region.maxX(),region.maxY(),Color.WHITE);
+    canvas.drawLine(region.maxX(),region.maxY(),region.minX(),region.maxY(),Color.WHITE);
+    canvas.drawLine(region.minX(),region.maxY(),region.minX(),region.minY(),Color.WHITE);
+  }
+}
