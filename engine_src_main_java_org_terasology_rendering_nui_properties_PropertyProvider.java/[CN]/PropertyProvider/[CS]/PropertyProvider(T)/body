@@ -29,6 +29,12 @@
       Property<String,UIDropdown<String>> property=createStringDropdownProperty(fieldMetadata,field.getName(),list.items());
       properties.add(property);
     }
+    for (    Field field : getAllFields(type,and(withAnnotation(TextField.class),withType(String.class)))) {
+      FieldMetadata<Object,String> fieldMetadata=(FieldMetadata<Object,String>)classMetadata.getField(field.getName());
+      TextField textField=field.getAnnotation(TextField.class);
+      Property<String,UIText> property=createStringTextProperty(fieldMetadata,field.getName());
+      properties.add(property);
+    }
   }
  catch (  NoSuchMethodException e) {
     throw new RuntimeException(e);

@@ -8,15 +8,15 @@
       UILabel label=property.getLabel();
       Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,labelSize.x,labelSize.y);
       canvas.drawElement(label,drawRegion);
-      currentOffset.x+=labelSize.x;
+      currentOffset.x+=labelSize.x + gapX;
       UIWidget editor=property.getEditor();
-      int editorWidth=size.x - labelSize.x;
+      int editorWidth=size.x - currentOffset.x;
       Vector2i editorSize=canvas.calculateSize(editor,new Vector2i(editorWidth,heightRemaining));
-      drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,editorSize.x,editorSize.y);
+      drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,editorWidth,editorSize.y);
       canvas.drawElement(editor,drawRegion);
       currentOffset.x=0;
-      currentOffset.y+=editorSize.y;
-      heightRemaining-=editorSize.y;
+      currentOffset.y+=editorSize.y + gapY;
+      heightRemaining-=editorSize.y + gapY;
     }
   }
 }

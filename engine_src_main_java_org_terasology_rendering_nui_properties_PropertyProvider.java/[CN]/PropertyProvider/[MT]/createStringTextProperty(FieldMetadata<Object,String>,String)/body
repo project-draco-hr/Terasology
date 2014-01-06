@@ -1,0 +1,14 @@
+{
+  UIText text=new UIText();
+  Binding<String> binding=new Binding<String>(){
+    @Override public String get(){
+      return fieldMetadata.getValueChecked(target);
+    }
+    @Override public void set(    String value){
+      fieldMetadata.setValue(target,value);
+    }
+  }
+;
+  text.bindText(binding);
+  return new Property<>(label,binding,text);
+}
