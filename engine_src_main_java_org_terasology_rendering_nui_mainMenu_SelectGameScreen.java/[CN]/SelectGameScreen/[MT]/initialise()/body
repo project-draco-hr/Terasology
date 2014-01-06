@@ -9,7 +9,8 @@
 );
   UIScreenUtil.trySubscribe(this,"create",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
-      nuiManager.pushScreen("engine:createGameScreen");
+      CreateGameScreen createGameScreen=(CreateGameScreen)nuiManager.pushScreen("engine:createGameScreen");
+      createGameScreen.setLoadingAsServer(loadingAsServer);
     }
   }
 );
@@ -26,7 +27,7 @@
     @Override public void onButtonActivated(    UIButton button){
       GameInfo gameInfo=gameList.getSelection();
       if (gameInfo != null) {
-        Path world=PathManager.getInstance().getSavePath(gameInfo.manifest.getTitle());
+        Path world=PathManager.getInstance().getSavePath(gameInfo.getManifest().getTitle());
         try {
           FilesUtil.recursiveDelete(world);
           gameList.getList().remove(gameInfo);

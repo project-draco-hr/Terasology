@@ -1,13 +1,14 @@
 {
   ColumnLayout mainLayout=new ColumnLayout();
-  mainLayout.setPadding(new Border(4,4,4,4));
+  mainLayout.setHorizontalSpacing(8);
+  mainLayout.setVerticalSpacing(8);
   mainLayout.setFamily("option-grid");
   UISlider mouseSensitivity=new UISlider("mouseSensitivity");
   mouseSensitivity.setIncrement(0.025f);
   mouseSensitivity.setPrecision(3);
   mainLayout.addWidget(new UILabel("mouseLabel","heading-input","Mouse"));
-  mainLayout.addWidget(new RowLayout(new UILabel("Mouse Sensitivity:"),mouseSensitivity).setColumnRatios(0.4f).setPadding(padding));
-  mainLayout.addWidget(new RowLayout(new UILabel("Invert Mouse:"),new UICheckbox("mouseYAxisInverted")).setColumnRatios(0.4f).setPadding(padding));
+  mainLayout.addWidget(new RowLayout(new UILabel("Mouse Sensitivity:"),mouseSensitivity).setColumnRatios(0.4f).setHorizontalSpacing(horizontalSpacing));
+  mainLayout.addWidget(new RowLayout(new UILabel("Invert Mouse:"),new UICheckbox("mouseYAxisInverted")).setColumnRatios(0.4f).setHorizontalSpacing(horizontalSpacing));
   Map<String,InputCategory> inputCategories=Maps.newHashMap();
   Map<SimpleUri,RegisterBindButton> inputsById=Maps.newHashMap();
   for (  Module module : moduleManager.getModules()) {
@@ -37,7 +38,7 @@
   footerGrid.setColumns(2);
   footerGrid.addWidget(new UIButton("reset","Restore Defaults"));
   footerGrid.addWidget(new UIButton("close","Back"));
-  footerGrid.setPadding(new Border(4,4,0,0));
+  footerGrid.setHorizontalSpacing(8);
   RelativeLayout layout=new RelativeLayout();
   layout.addWidget(new UIImage("title",Assets.getTexture("engine:terasology")),HorizontalHint.create().fixedWidth(512).center(),VerticalHint.create().fixedHeight(128).alignTop(48));
   layout.addWidget(new UILabel("subtitle","title","Input Settings"),HorizontalHint.create().center(),VerticalHint.create().fixedHeight(48).alignTopRelativeTo("title",VerticalAlign.BOTTOM));

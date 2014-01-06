@@ -1,6 +1,9 @@
 {
   UIData data=assetManager.loadAssetData(screenUri,UIData.class);
   if (data != null && data.getRootElement() instanceof UIScreen) {
-    pushScreen((UIScreen)data.getRootElement());
+    UIScreen result=(UIScreen)data.getRootElement();
+    pushScreen(result);
+    return result;
   }
+  return null;
 }

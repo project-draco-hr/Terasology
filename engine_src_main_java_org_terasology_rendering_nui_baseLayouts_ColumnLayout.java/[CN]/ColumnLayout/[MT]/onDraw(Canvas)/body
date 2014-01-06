@@ -1,7 +1,14 @@
 {
   if (!widgetList.isEmpty()) {
-    Vector2i rowSize=canvas.size();
+    Vector2i availableSize=canvas.size();
     int numRows=TeraMath.ceilToInt((float)widgetList.size() / columns);
+    if (numRows > 0) {
+      availableSize.y-=verticalSpacing * (numRows - 1);
+    }
+    if (columns > 0) {
+      availableSize.x-=horizontalSpacing * (columns - 1);
+    }
+    Vector2i rowSize=availableSize;
     rowSize.y/=numRows;
     Vector2i currentOffset=new Vector2i();
     int currentColumn=0;
@@ -10,18 +17,16 @@
       cellSize.x*=columnWidths[currentColumn];
       if (widget != null) {
         Vector2i drawSize=new Vector2i(cellSize);
-        drawSize.x-=padding.getLeft() + padding.getRight();
-        drawSize.y-=padding.getTop() + padding.getBottom();
-        Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x + padding.getLeft(),currentOffset.y + padding.getTop(),drawSize.x,drawSize.y);
+        Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,drawSize.x,drawSize.y);
         canvas.drawElement(widget,drawRegion);
       }
       if (++currentColumn == columns) {
         currentColumn=0;
         currentOffset.x=0;
-        currentOffset.y+=cellSize.y;
+        currentOffset.y+=cellSize.y + verticalSpacing;
       }
  else {
-        currentOffset.x+=cellSize.x;
+        currentOffset.x+=cellSize.x + horizontalSpacing;
       }
     }
   }
