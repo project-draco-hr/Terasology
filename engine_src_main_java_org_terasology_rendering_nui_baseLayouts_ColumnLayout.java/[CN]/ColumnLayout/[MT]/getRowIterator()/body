@@ -1,0 +1,21 @@
+{
+  return new Iterator<List<UIWidget>>(){
+    Iterator<UIWidget> contentIterator=iterator();
+    @Override public boolean hasNext(){
+      return contentIterator.hasNext();
+    }
+    @Override public List<UIWidget> next(){
+      List<UIWidget> row=Lists.newArrayList();
+      for (int i=0; i < columns; ++i) {
+        if (contentIterator.hasNext()) {
+          row.add(contentIterator.next());
+        }
+      }
+      return row;
+    }
+    @Override public void remove(){
+      throw new UnsupportedOperationException();
+    }
+  }
+;
+}

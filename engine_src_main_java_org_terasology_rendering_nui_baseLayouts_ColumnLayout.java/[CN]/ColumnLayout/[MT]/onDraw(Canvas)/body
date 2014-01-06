@@ -8,26 +8,23 @@
     if (columns > 0) {
       availableSize.x-=horizontalSpacing * (columns - 1);
     }
-    Vector2i rowSize=availableSize;
-    rowSize.y/=numRows;
-    Vector2i currentOffset=new Vector2i();
-    int currentColumn=0;
-    for (    UIWidget widget : widgetList) {
-      Vector2i cellSize=new Vector2i(rowSize);
-      cellSize.x*=columnWidths[currentColumn];
-      if (widget != null) {
-        Vector2i drawSize=new Vector2i(cellSize);
-        Rect2i drawRegion=Rect2i.createFromMinAndSize(currentOffset.x,currentOffset.y,drawSize.x,drawSize.y);
-        canvas.drawElement(widget,drawRegion);
+    Iterator<List<UIWidget>> rows=getRowIterator();
+    int rowOffsetY=0;
+    while (rows.hasNext()) {
+      List<UIWidget> row=rows.next();
+      RowInfo rowInfo=calculateRowSize(row,canvas,availableSize);
+      int cellOffsetX=0;
+      for (int i=0; i < row.size(); ++i) {
+        UIWidget widget=row.get(i);
+        Vector2i widgetSize=rowInfo.widgetSizes.get(i);
+        if (widget != null) {
+          int cellOffsetY=rowOffsetY + rowAlignment.getOffset(widgetSize.y,rowInfo.size.y);
+          Rect2i drawRegion=Rect2i.createFromMinAndSize(cellOffsetX,cellOffsetY,widgetSize.x,widgetSize.y);
+          canvas.drawElement(widget,drawRegion);
+        }
+        cellOffsetX+=widgetSize.x + horizontalSpacing;
       }
-      if (++currentColumn == columns) {
-        currentColumn=0;
-        currentOffset.x=0;
-        currentOffset.y+=cellSize.y + verticalSpacing;
-      }
- else {
-        currentOffset.x+=cellSize.x + horizontalSpacing;
-      }
+      rowOffsetY+=rowInfo.size.y + verticalSpacing;
     }
   }
 }
