@@ -1,24 +1,21 @@
 {
-  Vector2i totalSize=new Vector2i();
-  Vector2i rowSize=new Vector2i();
-  int availableWidth=areaHint.getX() - horizontalSpacing * (columns - 1);
-  int currentColumn=0;
-  for (  UIWidget widget : widgetList) {
-    Vector2i cellSize=new Vector2i(availableWidth,areaHint.y - totalSize.y);
-    cellSize.x*=columnWidths[currentColumn];
-    Vector2i contentSize=canvas.calculateSize(widget,cellSize);
-    rowSize.x+=contentSize.x;
-    rowSize.y=Math.max(rowSize.y,contentSize.y);
-    if (++currentColumn == columns) {
-      currentColumn=0;
-      totalSize.x=Math.max(totalSize.x,rowSize.x);
-      totalSize.y+=rowSize.y + verticalSpacing;
-      rowSize.set(0,0);
-    }
- else {
-      rowSize.x+=horizontalSpacing;
+  Vector2i availableSize=canvas.size();
+  int numRows=TeraMath.ceilToInt((float)widgetList.size() / columns);
+  if (numRows > 0) {
+    availableSize.y-=verticalSpacing * (numRows - 1);
+  }
+  if (columns > 0) {
+    availableSize.x-=horizontalSpacing * (columns - 1);
+  }
+  Iterator<List<UIWidget>> rows=getRowIterator();
+  int height=0;
+  while (rows.hasNext()) {
+    List<UIWidget> row=rows.next();
+    RowInfo rowInfo=calculateRowSize(row,canvas,availableSize);
+    height+=rowInfo.size.y;
+    if (rows.hasNext()) {
+      height+=verticalSpacing;
     }
   }
-  totalSize.y-=verticalSpacing;
-  return totalSize;
+  return new Vector2i(areaHint.x,height);
 }
