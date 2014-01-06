@@ -1,9 +1,11 @@
 {
-  try {
-    return (T)getter.invoke(bean);
-  }
- catch (  IllegalAccessException|InvocationTargetException e) {
-    logger.error("Failed to retrieve value through getter",e);
+  if (bean.get() != null) {
+    try {
+      return (T)getter.invoke(bean.get());
+    }
+ catch (    IllegalArgumentException|IllegalAccessException|InvocationTargetException e) {
+      logger.error("Failed to retrieve value through getter",e);
+    }
   }
   return null;
 }

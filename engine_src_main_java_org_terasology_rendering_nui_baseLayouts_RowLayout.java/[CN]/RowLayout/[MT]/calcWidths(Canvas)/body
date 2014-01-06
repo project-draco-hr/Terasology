@@ -1,0 +1,51 @@
+{
+  TIntList results=new TIntArrayList(contents.size());
+  if (contents.size() > 0) {
+    int width=canvas.size().x - horizontalSpacing * (contents.size() - 1);
+    int totalWidthUsed=0;
+    int unprocessedWidgets=0;
+    for (    UIWidget widget : contents) {
+      RowLayoutHint hint=hints.get(widget);
+      if (hint != null) {
+        if (!hint.isUseContentWidth() && hint.getRelativeWidth() != 0) {
+          int elementWidth=TeraMath.floorToInt(hint.getRelativeWidth() * width);
+          results.add(elementWidth);
+          totalWidthUsed+=elementWidth;
+        }
+ else {
+          results.add(0);
+          unprocessedWidgets++;
+        }
+      }
+ else {
+        results.add(0);
+        unprocessedWidgets++;
+      }
+    }
+    if (unprocessedWidgets > 0) {
+      int remainingWidthPerElement=(width - totalWidthUsed) / unprocessedWidgets;
+      for (int i=0; i < results.size(); ++i) {
+        if (results.get(i) == 0) {
+          RowLayoutHint hint=hints.get(contents.get(i));
+          if (hint != null) {
+            if (hint.isUseContentWidth()) {
+              Vector2i contentSize=contents.get(i).calcContentSize(canvas,new Vector2i(remainingWidthPerElement,canvas.size().y));
+              results.set(i,contentSize.x);
+              totalWidthUsed+=contentSize.x;
+              unprocessedWidgets--;
+            }
+          }
+        }
+      }
+    }
+    if (unprocessedWidgets > 0) {
+      int remainingWidthPerElement=(width - totalWidthUsed) / unprocessedWidgets;
+      for (int i=0; i < results.size(); ++i) {
+        if (results.get(i) == 0) {
+          results.set(i,remainingWidthPerElement);
+        }
+      }
+    }
+  }
+  return results;
+}

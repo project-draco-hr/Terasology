@@ -1,11 +1,9 @@
 {
-  if (normalizedWidths == null || normalizedWidths.size() != contents.size()) {
-    calcWidths();
-  }
+  TIntList widths=calcWidths(canvas);
   Vector2i result=new Vector2i(areaHint.x,0);
   for (int i=0; i < contents.size(); ++i) {
-    Vector2i widgetSize=canvas.calculateSize(contents.get(i),padding.shrink(new Vector2i(TeraMath.floorToInt(areaHint.x * normalizedWidths.get(i)),areaHint.y)));
+    Vector2i widgetSize=canvas.calculateSize(contents.get(i),new Vector2i(TeraMath.floorToInt(widths.get(i)),areaHint.y));
     result.y=Math.max(result.y,widgetSize.y);
   }
-  return padding.grow(result);
+  return result;
 }
