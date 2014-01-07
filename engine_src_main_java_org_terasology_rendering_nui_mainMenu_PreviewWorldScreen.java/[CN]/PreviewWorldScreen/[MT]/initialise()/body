@@ -1,0 +1,46 @@
+{
+  WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
+  Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
+  try {
+    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
+    worldGenerator=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(info.getUri());
+    seedBinding.setWorldGenerator(worldGenerator);
+    if (worldGenerator instanceof WorldGenerator2DPreview) {
+      previewGenerator=(WorldGenerator2DPreview)worldGenerator;
+    }
+ else {
+      logger.info(info.getUri().toString() + " does not support a 2d preview");
+    }
+  }
+ catch (  UnresolvedWorldGeneratorException e) {
+    logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
+  }
+ finally {
+    moduleManager.disableAllModules();
+  }
+  zoomSlider=find("zoomSlider",UISlider.class);
+  if (zoomSlider != null) {
+    zoomSlider.setMinimum(1.0f);
+    zoomSlider.setRange(99.f);
+    zoomSlider.setIncrement(1.0f);
+    zoomSlider.setValue(64f);
+    zoomSlider.setPrecision(0);
+  }
+  UIText seed=find("seed",UIText.class);
+  if (seed != null) {
+    seed.bindText(seedBinding);
+  }
+  if (previewGenerator != null) {
+    layerDropdown=find("display",UIDropdown.class);
+    layerDropdown.setOptions(Lists.newArrayList(previewGenerator.getLayers()));
+    if (!layerDropdown.getOptions().isEmpty()) {
+      layerDropdown.setSelection(layerDropdown.getOptions().get(0));
+    }
+  }
+  UIScreenUtil.trySubscribe(this,"close",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      nuiManager.popScreen();
+    }
+  }
+);
+}
