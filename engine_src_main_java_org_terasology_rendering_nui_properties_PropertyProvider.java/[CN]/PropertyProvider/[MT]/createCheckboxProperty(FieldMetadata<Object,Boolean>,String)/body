@@ -1,14 +1,6 @@
 {
   UICheckbox checkbox=new UICheckbox();
-  Binding<Boolean> binding=new Binding<Boolean>(){
-    @Override public Boolean get(){
-      return fieldMetadata.getValueChecked(target);
-    }
-    @Override public void set(    Boolean value){
-      fieldMetadata.setValue(target,value);
-    }
-  }
-;
+  Binding<Boolean> binding=createBooleanBinding(fieldMetadata);
   checkbox.bindChecked(binding);
   return new Property<>(label,binding,checkbox);
 }

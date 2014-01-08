@@ -1,0 +1,64 @@
+{
+  Class<?> type=fieldMetadata.getType();
+  Binding<String> converter;
+  if (type == String.class) {
+    converter=new Binding<String>(){
+      @Override public String get(){
+        return (String)fieldMetadata.getValueChecked(target);
+      }
+      @Override public void set(      String value){
+        fieldMetadata.setValue(target,value);
+      }
+    }
+;
+  }
+ else   if (type == Integer.TYPE || type == Integer.class) {
+    converter=new Binding<String>(){
+      @Override public String get(){
+        Integer result=(Integer)fieldMetadata.getValueChecked(target);
+        return result != null ? result.toString() : "";
+      }
+      @Override public void set(      String value){
+        int result=Integer.parseInt(value);
+        fieldMetadata.setValue(target,result);
+      }
+    }
+;
+  }
+ else   if (type == Float.TYPE || type == Float.class) {
+    converter=new Binding<String>(){
+      @Override public String get(){
+        Float result=(Float)fieldMetadata.getValueChecked(target);
+        return result != null ? result.toString() : "";
+      }
+      @Override public void set(      String value){
+        float result=Float.parseFloat(value);
+        fieldMetadata.setValue(target,result);
+      }
+    }
+;
+  }
+ else   if (type == Vector3f.class) {
+    converter=new Binding<String>(){
+      @Override public String get(){
+        Vector3f vector=(Vector3f)fieldMetadata.getValueChecked(target);
+        return vector != null ? vector.toString() : "";
+      }
+      @Override public void set(      String value){
+        Matcher matcher=VECTOR_3F.matcher(value);
+        if (matcher.matches()) {
+          Vector3f result=new Vector3f(Float.parseFloat(matcher.group(1)),Float.parseFloat(matcher.group(2)),Float.parseFloat(matcher.group(3)));
+          fieldMetadata.setValue(target,result);
+        }
+ else {
+          throw new IllegalArgumentException("Cannot parse " + value + " to Vector3f");
+        }
+      }
+    }
+;
+  }
+ else {
+    throw new IllegalArgumentException("Cannot create Binding<String> for a field of type " + type);
+  }
+  return new StringBinding(converter);
+}

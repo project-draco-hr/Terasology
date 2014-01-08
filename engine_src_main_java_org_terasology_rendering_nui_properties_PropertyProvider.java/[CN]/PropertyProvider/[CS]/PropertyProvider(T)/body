@@ -1,20 +1,15 @@
 {
+  floatFormat=NumberFormat.getNumberInstance();
   try {
     this.target=target;
     Class<?> type=target.getClass();
     ReflectFactory reflectFactory=CoreRegistry.get(ReflectFactory.class);
     CopyStrategyLibrary copyStrategies=new CopyStrategyLibrary(reflectFactory);
     ClassMetadata<?,?> classMetadata=new DefaultClassMetadata<>(new SimpleUri(),type,reflectFactory,copyStrategies);
-    for (    Field field : getAllFields(type,and(withAnnotation(Range.class),or(withType(Float.TYPE),withType(Float.class))))) {
-      FieldMetadata<Object,Float> fieldMetadata=(FieldMetadata<Object,Float>)classMetadata.getField(field.getName());
+    for (    Field field : getAllFields(type,and(withAnnotation(Range.class),or(withType(Float.TYPE),withType(Float.class),withType(Integer.class),withType(Integer.TYPE))))) {
+      FieldMetadata<Object,?> fieldMetadata=(FieldMetadata<Object,?>)classMetadata.getField(field.getName());
       Range range=field.getAnnotation(Range.class);
-      Property<Float,UISlider> property=createFloatRangeProperty(fieldMetadata,field.getName(),range);
-      properties.add(property);
-    }
-    for (    Field field : getAllFields(type,and(withAnnotation(Range.class),or(withType(Integer.TYPE),withType(Integer.class))))) {
-      FieldMetadata<Object,Integer> fieldMetadata=(FieldMetadata<Object,Integer>)classMetadata.getField(field.getName());
-      Range range=field.getAnnotation(Range.class);
-      Property<Float,UISlider> property=createIntRangeProperty(fieldMetadata,field.getName(),range);
+      Property<Float,UISlider> property=createRangeProperty(fieldMetadata,field.getName(),range);
       properties.add(property);
     }
     for (    Field field : getAllFields(type,and(withAnnotation(Checkbox.class),or(withType(Boolean.TYPE),withType(Boolean.class))))) {
@@ -29,10 +24,10 @@
       Property<String,UIDropdown<String>> property=createStringDropdownProperty(fieldMetadata,field.getName(),list.items());
       properties.add(property);
     }
-    for (    Field field : getAllFields(type,and(withAnnotation(TextField.class),withType(String.class)))) {
-      FieldMetadata<Object,String> fieldMetadata=(FieldMetadata<Object,String>)classMetadata.getField(field.getName());
+    for (    Field field : getAllFields(type,and(withAnnotation(TextField.class)))) {
+      FieldMetadata<Object,?> fieldMetadata=(FieldMetadata<Object,?>)classMetadata.getField(field.getName());
       TextField textField=field.getAnnotation(TextField.class);
-      Property<String,UIText> property=createStringTextProperty(fieldMetadata,field.getName());
+      Property<String,UIText> property=createTextProperty(fieldMetadata,field.getName());
       properties.add(property);
     }
   }
