@@ -7,9 +7,10 @@
   LocalPlayerBlockSelectionByItemSystemListener listener=new LocalPlayerBlockSelectionByItemSystemListener(itemEntity);
   EntityRef targetLocationEntity=entityManager.create(targetLocation,listener);
   this.blockSelectionComponent=itemEntity.getComponent(BlockSelectionComponent.class);
-  targetLocationEntity.send(new RegisterBlockSelectionForRenderingEvent(blockSelectionComponent));
   if (null == blockSelectionComponent.startPosition) {
     targetLocationEntity.send(new BlockStartSelectionEvent(blockSelectionComponent));
+    blockSelectionComponent.texture=Assets.get(TextureUtil.getTextureUriForColor(getNextColor()),Texture.class);
+    targetLocationEntity.send(new RegisterBlockSelectionForRenderingEvent(blockSelectionComponent));
   }
  else {
     targetLocationEntity.send(new BlockEndSelectionEvent(blockSelectionComponent));

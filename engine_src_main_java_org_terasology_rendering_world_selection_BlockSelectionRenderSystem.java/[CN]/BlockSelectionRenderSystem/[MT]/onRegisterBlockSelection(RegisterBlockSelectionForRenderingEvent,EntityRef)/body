@@ -1,0 +1,14 @@
+{
+  BlockSelectionComponent blockSelectionComponent=event.getBlockSelectionComponent();
+  Texture texture=blockSelectionComponent.texture;
+  BlockSelectionRenderer selectionRenderer;
+  if (null == texture) {
+    selectionRenderer=new BlockSelectionRenderer();
+  }
+ else {
+    selectionRenderer=new BlockSelectionRenderer(texture);
+  }
+  if (!registeredBlockSelectionComponents.containsKey(blockSelectionComponent)) {
+    registeredBlockSelectionComponents.put(blockSelectionComponent,selectionRenderer);
+  }
+}
