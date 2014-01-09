@@ -1,0 +1,15 @@
+{
+  LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
+  if (null == locationComponent) {
+    return;
+  }
+  BlockSelectionComponent blockSelectionComponent=event.getBlockSelectionComponent();
+  if (null == blockSelectionComponent) {
+    return;
+  }
+  Vector3f worldPosition=locationComponent.getWorldPosition();
+  Vector3i startPosition=new Vector3i(worldPosition.x,worldPosition.y,worldPosition.z);
+  blockSelectionComponent.startPosition=startPosition;
+  Vector3i endPosition=startPosition;
+  blockSelectionComponent.currentSelection=Region3i.createBounded(startPosition,endPosition);
+}

@@ -1,10 +1,11 @@
 {
-  if (null == blockSelectionComponent) {
+  if (null == blockSelectionComponentEntity) {
     return;
   }
+  BlockSelectionComponent blockSelectionComponent=blockSelectionComponentEntity.getComponent(BlockSelectionComponent.class);
   if (blockSelectionComponent.startPosition == null) {
     return;
   }
   EntityRef target=event.getNewTarget();
-  target.send(new BlockEndSelectionEvent(blockSelectionComponent));
+  target.send(new SetBlockSelectionEndingPointEvent(blockSelectionComponentEntity));
 }

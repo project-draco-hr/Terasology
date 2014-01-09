@@ -1,7 +1,17 @@
 {
-  for (  Entry<BlockSelectionComponent,BlockSelectionRenderer> entry : registeredBlockSelectionComponents.entrySet()) {
-    BlockSelectionComponent blockSelectionComponent=entry.getKey();
-    BlockSelectionRenderer selectionRenderer=entry.getValue();
-    renderOverlayForOneBlockSelection(blockSelectionComponent,selectionRenderer);
+  ;
+  for (  EntityRef entity : entityManager.getEntitiesWith(BlockSelectionComponent.class)) {
+    BlockSelectionComponent blockSelectionComponent=entity.getComponent(BlockSelectionComponent.class);
+    if (blockSelectionComponent.shouldRender) {
+      Texture texture=blockSelectionComponent.texture;
+      BlockSelectionRenderer selectionRenderer;
+      if (null == texture) {
+        selectionRenderer=new BlockSelectionRenderer();
+      }
+ else {
+        selectionRenderer=new BlockSelectionRenderer(texture);
+      }
+      renderOverlayForOneBlockSelection(blockSelectionComponent,selectionRenderer);
+    }
   }
 }

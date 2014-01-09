@@ -2,17 +2,19 @@
   if (event.getTargetLocation() == null) {
     return;
   }
-  LocationComponent targetLocation=new LocationComponent();
-  targetLocation.setWorldPosition(event.getTargetLocation());
-  LocalPlayerBlockSelectionByItemSystemListener listener=new LocalPlayerBlockSelectionByItemSystemListener(itemEntity);
-  EntityRef targetLocationEntity=entityManager.create(targetLocation,listener);
-  this.blockSelectionComponent=itemEntity.getComponent(BlockSelectionComponent.class);
+  EntityRef targetLocationEntity=event.getTarget();
+  this.blockSelectionComponentEntity=itemEntity;
+  BlockSelectionComponent blockSelectionComponent=itemEntity.getComponent(BlockSelectionComponent.class);
   if (null == blockSelectionComponent.startPosition) {
-    targetLocationEntity.send(new BlockStartSelectionEvent(blockSelectionComponent));
-    blockSelectionComponent.texture=Assets.get(TextureUtil.getTextureUriForColor(getNextColor()),Texture.class);
-    targetLocationEntity.send(new RegisterBlockSelectionForRenderingEvent(blockSelectionComponent));
+    targetLocationEntity.send(new SetBlockSelectionStartingPointEvent(itemEntity));
+    blockSelectionComponent.texture=Assets.getTexture("engine:selection");
+    blockSelectionComponent.shouldRender=true;
   }
  else {
-    targetLocationEntity.send(new BlockEndSelectionEvent(blockSelectionComponent));
+    targetLocationEntity.send(new SetBlockSelectionEndingPointEvent(itemEntity));
+    localPlayer.getCharacterEntity().send(new ApplyBlockSelectionEvent(itemEntity,blockSelectionComponent.currentSelection));
+    blockSelectionComponent.shouldRender=false;
+    blockSelectionComponent.currentSelection=null;
+    blockSelectionComponent.startPosition=null;
   }
 }
