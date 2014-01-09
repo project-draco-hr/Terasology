@@ -1,34 +1,22 @@
 {
-  floatFormat=NumberFormat.getNumberInstance();
+  factories.put(Range.class,new RangePropertyFactory());
+  factories.put(Checkbox.class,new CheckboxPropertyFactory());
+  factories.put(OneOf.List.class,new OneOfListPropertyFactory());
+  factories.put(TextField.class,new TextPropertyFactory());
   try {
     this.target=target;
     Class<?> type=target.getClass();
     ReflectFactory reflectFactory=CoreRegistry.get(ReflectFactory.class);
     CopyStrategyLibrary copyStrategies=new CopyStrategyLibrary(reflectFactory);
     ClassMetadata<?,?> classMetadata=new DefaultClassMetadata<>(new SimpleUri(),type,reflectFactory,copyStrategies);
-    for (    Field field : getAllFields(type,and(withAnnotation(Range.class),or(withType(Float.TYPE),withType(Float.class),withType(Integer.class),withType(Integer.TYPE))))) {
-      FieldMetadata<Object,?> fieldMetadata=(FieldMetadata<Object,?>)classMetadata.getField(field.getName());
-      Range range=field.getAnnotation(Range.class);
-      Property<Float,UISlider> property=createRangeProperty(fieldMetadata,field.getName(),range);
-      properties.add(property);
-    }
-    for (    Field field : getAllFields(type,and(withAnnotation(Checkbox.class),or(withType(Boolean.TYPE),withType(Boolean.class))))) {
-      FieldMetadata<Object,Boolean> fieldMetadata=(FieldMetadata<Object,Boolean>)classMetadata.getField(field.getName());
-      Checkbox checkbox=field.getAnnotation(Checkbox.class);
-      Property<Boolean,UICheckbox> property=createCheckboxProperty(fieldMetadata,field.getName());
-      properties.add(property);
-    }
-    for (    Field field : getAllFields(type,and(withAnnotation(OneOf.List.class),withType(String.class)))) {
-      FieldMetadata<Object,String> fieldMetadata=(FieldMetadata<Object,String>)classMetadata.getField(field.getName());
-      OneOf.List list=field.getAnnotation(OneOf.List.class);
-      Property<String,UIDropdown<String>> property=createStringDropdownProperty(fieldMetadata,field.getName(),list.items());
-      properties.add(property);
-    }
-    for (    Field field : getAllFields(type,and(withAnnotation(TextField.class)))) {
-      FieldMetadata<Object,?> fieldMetadata=(FieldMetadata<Object,?>)classMetadata.getField(field.getName());
-      TextField textField=field.getAnnotation(TextField.class);
-      Property<String,UIText> property=createTextProperty(fieldMetadata,field.getName());
-      properties.add(property);
+    for (    Field field : getAllFields(type)) {
+      Annotation annotation=getFactory(field);
+      if (annotation != null) {
+        FieldMetadata<Object,?> fieldMetadata=(FieldMetadata<Object,?>)classMetadata.getField(field.getName());
+        PropertyFactory factory=factories.get(annotation.annotationType());
+        Property property=factory.create(fieldMetadata,field.getName(),annotation);
+        properties.add(property);
+      }
     }
   }
  catch (  NoSuchMethodException e) {

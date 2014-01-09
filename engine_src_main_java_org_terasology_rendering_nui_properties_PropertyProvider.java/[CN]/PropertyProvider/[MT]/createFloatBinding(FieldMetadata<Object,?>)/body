@@ -3,7 +3,7 @@
   if (type == Integer.class || type == Integer.TYPE) {
     return new Binding<Float>(){
       @Override public Float get(){
-        return (Float)fieldMetadata.getValueChecked(target);
+        return ((Integer)fieldMetadata.getValueChecked(target)).floatValue();
       }
       @Override public void set(      Float value){
         fieldMetadata.setValue(target,value.intValue());

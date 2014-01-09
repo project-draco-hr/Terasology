@@ -1,0 +1,12 @@
+{
+  if (start == null) {
+    start=renderableRoot;
+  }
+  TreeLayout<RenderableNode> layout=new TreeLayout<>(new LayoutTree(start),new FixedNodeExtentProvider(10,5),new DefaultConfiguration(4,2));
+  Map<RenderableNode,Rectangle2D.Double> bounds=layout.getNodeBounds();
+  for (  Map.Entry<RenderableNode,Rectangle2D.Double> entry : bounds.entrySet()) {
+    RenderableNode node=entry.getKey();
+    Rectangle2D.Double rect=entry.getValue();
+    node.setPosition((float)rect.getX(),(float)rect.getY());
+  }
+}

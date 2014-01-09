@@ -1,8 +1,10 @@
 {
-  if (pause) {
-    return;
-  }
-  while (!pause && step(dt)) {
-    continue;
+  if (debugger == null || debugger.beforeTick()) {
+    while (step(dt)) {
+      continue;
+    }
+    if (debugger != null) {
+      debugger.afterTick();
+    }
   }
 }

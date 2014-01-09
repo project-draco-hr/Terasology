@@ -7,10 +7,16 @@
   current.tick(dt);
   if (current.getStatus() != Status.RUNNING && current.getObserver() != null) {
     logger.info("Finished " + current + " with status "+ current.getStatus());
+    if (debugger != null) {
+      debugger.nodeFinished(current.getNode(),current.getStatus());
+    }
     current.getObserver().handle(current.getStatus());
   }
  else {
     tasks.addLast(current);
+    if (debugger != null) {
+      debugger.nodeUpdated(current.getNode(),current.getStatus());
+    }
   }
   return true;
 }
