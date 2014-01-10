@@ -1,25 +1,25 @@
 {
-  UIScreenUtil.trySubscribe(this,"video",new ButtonEventListener(){
+  UIScreenLayerUtil.trySubscribe(this,"video",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       nuiManager.pushScreen("engine:VideoMenuScreen");
     }
   }
 );
-  UIScreenUtil.trySubscribe(this,"audio",new ButtonEventListener(){
+  UIScreenLayerUtil.trySubscribe(this,"audio",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       nuiManager.pushScreen("engine:AudioMenuScreen");
     }
   }
 );
-  UIScreenUtil.trySubscribe(this,"input",new ButtonEventListener(){
+  UIScreenLayerUtil.trySubscribe(this,"input",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
-      UIScreen inputScreen=new InputSettingsScreen();
+      UIScreenLayer inputScreen=new InputSettingsScreen();
       inputScreen.setSkin(getSkin());
       nuiManager.pushScreen(inputScreen);
     }
   }
 );
-  UIScreenUtil.trySubscribe(this,"close",new ButtonEventListener(){
+  UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
     @Override public void onButtonActivated(    UIButton button){
       config.save();
       nuiManager.popScreen();

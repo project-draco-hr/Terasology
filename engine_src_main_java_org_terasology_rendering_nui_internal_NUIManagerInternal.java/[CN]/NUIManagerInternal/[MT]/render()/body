@@ -1,8 +1,15 @@
 {
   canvas.preRender();
-  if (!screens.isEmpty()) {
-    canvas.setSkin(screens.peek().getSkin());
-    canvas.drawElement(screens.peek(),canvas.getRegion());
+  Deque<UIScreenLayer> screensToRender=Queues.newArrayDeque();
+  for (  UIScreenLayer layer : screens) {
+    screensToRender.push(layer);
+    if (!layer.isLowerLayerVisible()) {
+      break;
+    }
+  }
+  for (  UIScreenLayer screen : screensToRender) {
+    canvas.setSkin(screen.getSkin());
+    canvas.drawElement(screen,canvas.getRegion());
   }
   canvas.postRender();
 }

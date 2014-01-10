@@ -1,0 +1,9 @@
+{
+  Method getter=ReflectionUtil.findGetter(property,source.getClass(),List.class);
+  Method setter=ReflectionUtil.findSetter(property,source.getClass(),List.class);
+  if (getter == null || setter == null) {
+    logger.warn("Failed to resolve property {} of type {} - is the getter or setter missing?",property,source.getClass());
+    return new DefaultBinding<>();
+  }
+  return BeanBinding.create(source,getter,setter);
+}

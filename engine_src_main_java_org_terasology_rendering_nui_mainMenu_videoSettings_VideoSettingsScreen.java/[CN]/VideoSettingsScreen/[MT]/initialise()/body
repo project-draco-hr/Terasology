@@ -52,11 +52,11 @@ fovSlider.setMinimum(70);
 fovSlider.setRange(50);
 fovSlider.bindValue(BindHelper.bindBeanProperty("fieldOfView",config.getRendering(),Float.TYPE));
 }
-UIScreenUtil.tryBindCheckbox(this,"fullscreen",BindHelper.bindBeanProperty("fullscreen",engine,Boolean.TYPE));
-UIScreenUtil.tryBindCheckbox(this,"bobbing",BindHelper.bindBeanProperty("cameraBobbing",config.getRendering(),Boolean.TYPE));
-UIScreenUtil.tryBindCheckbox(this,"outline",BindHelper.bindBeanProperty("outline",config.getRendering(),Boolean.TYPE));
-UIScreenUtil.tryBindCheckbox(this,"vsync",BindHelper.bindBeanProperty("vSync",config.getRendering(),Boolean.TYPE));
-UIScreenUtil.trySubscribe(this,"close",new ButtonEventListener(){
+UIScreenLayerUtil.tryBindCheckbox(this,"fullscreen",BindHelper.bindBeanProperty("fullscreen",engine,Boolean.TYPE));
+UIScreenLayerUtil.tryBindCheckbox(this,"bobbing",BindHelper.bindBeanProperty("cameraBobbing",config.getRendering(),Boolean.TYPE));
+UIScreenLayerUtil.tryBindCheckbox(this,"outline",BindHelper.bindBeanProperty("outline",config.getRendering(),Boolean.TYPE));
+UIScreenLayerUtil.tryBindCheckbox(this,"vsync",BindHelper.bindBeanProperty("vSync",config.getRendering(),Boolean.TYPE));
+UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
 @Override public void onButtonActivated(UIButton button){
 logger.info("Video Settings: " + config.getRendering().toString());
 CoreRegistry.get(ShaderManager.class).recompileAllShaders();

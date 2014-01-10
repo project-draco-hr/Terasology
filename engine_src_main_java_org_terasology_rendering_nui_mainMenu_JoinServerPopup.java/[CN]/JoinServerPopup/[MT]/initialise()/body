@@ -1,0 +1,22 @@
+{
+  UIScreenLayerUtil.trySubscribe(this,"join",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      nuiManager.popScreen();
+      UIText address=find("address",UIText.class);
+      JoinStatus status=networkSystem.join(address.getText(),TerasologyConstants.DEFAULT_PORT);
+      if (status.getStatus() != JoinStatus.Status.FAILED) {
+        engine.changeState(new StateLoading(status));
+      }
+ else {
+        nuiManager.pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Failed to Join","Could not connect to server - " + status.getErrorMessage());
+      }
+    }
+  }
+);
+  UIScreenLayerUtil.trySubscribe(this,"cancel",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      nuiManager.popScreen();
+    }
+  }
+);
+}

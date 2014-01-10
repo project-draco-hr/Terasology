@@ -1,0 +1,60 @@
+{
+  serverList=find("serverList",UIList.class);
+  if (serverList != null) {
+    serverList.bindList(BindHelper.bindBeanListProperty("servers",config.getNetwork(),ServerInfo.class));
+    serverList.setItemRenderer(new StringTextRenderer<ServerInfo>(){
+      @Override public String getString(      ServerInfo value){
+        return value.getName();
+      }
+    }
+);
+    serverList.subscribe(new ListEventListener<ServerInfo>(){
+      @Override public void onItemActivated(      ServerInfo item){
+        join(item.getAddress());
+      }
+    }
+);
+    UILabel name=find("name",UILabel.class);
+    name.bindText(BindHelper.bindBoundBeanProperty("name",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
+    UILabel address=find("address",UILabel.class);
+    address.bindText(BindHelper.bindBoundBeanProperty("address",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
+    UIScreenLayerUtil.trySubscribe(this,"add",new ButtonEventListener(){
+      @Override public void onButtonActivated(      UIButton button){
+        nuiManager.pushScreen("engine:addServerPopup");
+      }
+    }
+);
+    UIScreenLayerUtil.trySubscribe(this,"remove",new ButtonEventListener(){
+      @Override public void onButtonActivated(      UIButton button){
+        if (serverList.getSelection() != null) {
+          config.getNetwork().remove(serverList.getSelection());
+          serverList.setSelection(null);
+        }
+      }
+    }
+);
+    UIScreenLayerUtil.trySubscribe(this,"join",new ButtonEventListener(){
+      @Override public void onButtonActivated(      UIButton button){
+        config.save();
+        if (serverList.getSelection() != null) {
+          join(serverList.getSelection().getAddress());
+        }
+      }
+    }
+);
+  }
+  UIScreenLayerUtil.trySubscribe(this,"joinDirect",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      config.save();
+      nuiManager.pushScreen("engine:joinServerPopup");
+    }
+  }
+);
+  UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
+    @Override public void onButtonActivated(    UIButton button){
+      config.save();
+      nuiManager.popScreen();
+    }
+  }
+);
+}
