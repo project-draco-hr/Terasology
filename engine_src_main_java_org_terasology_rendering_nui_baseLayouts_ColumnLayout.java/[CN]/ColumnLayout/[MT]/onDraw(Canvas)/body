@@ -18,8 +18,7 @@
         UIWidget widget=row.get(i);
         Vector2i widgetSize=rowInfo.widgetSizes.get(i);
         if (widget != null) {
-          int cellOffsetY=rowOffsetY + rowAlignment.getOffset(widgetSize.y,rowInfo.size.y);
-          Rect2i drawRegion=Rect2i.createFromMinAndSize(cellOffsetX,cellOffsetY,widgetSize.x,widgetSize.y);
+          Rect2i drawRegion=Rect2i.createFromMinAndSize(cellOffsetX,rowOffsetY,widgetSize.x,rowInfo.size.y);
           canvas.drawElement(widget,drawRegion);
         }
         cellOffsetX+=widgetSize.x + horizontalSpacing;
