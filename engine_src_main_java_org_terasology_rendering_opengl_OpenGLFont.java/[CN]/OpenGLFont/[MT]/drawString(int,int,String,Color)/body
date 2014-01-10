@@ -4,6 +4,7 @@
   }
   CoreRegistry.get(ShaderManager.class).enableDefaultTextured();
   Texture bound=null;
+  Color color=baseColor;
   int posX=x;
   int posY=y;
   for (  char c : text.toCharArray()) {
@@ -35,6 +36,14 @@
         glEnd();
         glPopMatrix();
         posX+=character.getxAdvance();
+      }
+ else       if (FontColor.isValid(c)) {
+        if (c == FontColor.getReset()) {
+          color=baseColor;
+        }
+ else {
+          color=FontColor.toColor(c);
+        }
       }
     }
   }
