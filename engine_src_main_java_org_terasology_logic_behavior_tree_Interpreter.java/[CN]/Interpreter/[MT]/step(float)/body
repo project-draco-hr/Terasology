@@ -4,9 +4,13 @@
     tasks.addLast(TERMINAL);
     return false;
   }
+  if (startedNodes.contains(current.getNode())) {
+    tasks.addLast(current);
+    return true;
+  }
+  startedNodes.add(current.getNode());
   current.tick(dt);
   if (current.getStatus() != Status.RUNNING && current.getObserver() != null) {
-    logger.info("Finished " + current + " with status "+ current.getStatus());
     if (debugger != null) {
       debugger.nodeFinished(current.getNode(),current.getStatus());
     }

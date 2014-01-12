@@ -1,0 +1,16 @@
+{
+  Interpreter interpreter=new Interpreter(null);
+  SequenceNode first=new SequenceNode();
+  SequenceNode left=new SequenceNode();
+  first.setChild(0,left);
+  RepeatNode root=new RepeatNode(first);
+  root.setChild(0,first);
+  first.setChild(1,new CounterNode(1));
+  left.setChild(0,new CounterNode(1));
+  left.setChild(1,new CounterNode(1));
+  interpreter.setRoot(root);
+  interpreter.start();
+  for (int i=0; i < 100; i++) {
+    interpreter.tick(0);
+  }
+}

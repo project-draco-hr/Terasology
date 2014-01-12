@@ -4,4 +4,8 @@
   if (observer != null) {
     observer.handle(result);
   }
+  tasks.remove(task);
+  if (debugger != null) {
+    debugger.nodeFinished(task.getNode(),result);
+  }
 }
