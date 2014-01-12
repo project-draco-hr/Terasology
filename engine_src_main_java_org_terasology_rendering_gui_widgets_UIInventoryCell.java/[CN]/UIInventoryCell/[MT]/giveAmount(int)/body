@@ -1,3 +1,9 @@
 {
-  inventoryManager.moveItemAmount(inventoryEntity,slot,getTransferEntity(),0,amount);
+  if (ghost) {
+    InventoryComponent ghostInventory=inventoryEntity.getComponent(InventoryComponent.class);
+    ghostInventory.itemSlots.set(slot,EntityRef.NULL);
+  }
+ else {
+    inventoryManager.moveItemAmount(inventoryEntity,slot,getTransferEntity(),0,amount);
+  }
 }
