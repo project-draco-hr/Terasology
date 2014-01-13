@@ -1,5 +1,6 @@
 {
-  logger.info("[{}] {}",message.getType(),message.getMessage());
+  String uncoloredText=FontColor.stripColor(message.getMessage());
+  logger.info("[{}] {}",message.getType(),uncoloredText);
   messageHistory.add(message);
   for (  ConsoleSubscriber subscriber : messageSubscribers) {
     subscriber.onNewConsoleMessage(message);
