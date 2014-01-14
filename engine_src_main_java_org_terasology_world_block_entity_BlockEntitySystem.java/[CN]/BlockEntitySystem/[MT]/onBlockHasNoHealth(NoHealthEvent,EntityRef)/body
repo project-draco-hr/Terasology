@@ -1,0 +1,7 @@
+{
+  BlockDamageComponent blockDamageComponent=event.getDamageType().getComponent(BlockDamageComponent.class);
+  if (blockDamageComponent == null || !blockDamageComponent.skipPerBlockEffects) {
+    entity.send(new PlaySoundEvent(Assets.getSound("engine:RemoveBlock"),0.6f));
+  }
+  entity.send(new DestroyBlockEvent(event.getInstigator(),event.getTool(),event.getDamageType()));
+}
