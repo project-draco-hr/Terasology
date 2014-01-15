@@ -1,13 +1,15 @@
 {
-  BlockDamageComponent blockDamageSettings=event.getType().getComponent(BlockDamageComponent.class);
-  boolean skipDamageEffects=false;
-  if (blockDamageSettings != null) {
-    skipDamageEffects=blockDamageSettings.skipPerBlockEffects;
-  }
-  if (!skipDamageEffects) {
-    entity.send(new PlayBlockDamagedEvent(event.getInstigator()));
-  }
-  if (!entity.hasComponent(BlockDamagedComponent.class)) {
-    entity.addComponent(new BlockDamagedComponent());
+  if (isBlockOrBlockRegion(entity)) {
+    BlockDamageComponent blockDamageSettings=event.getType().getComponent(BlockDamageComponent.class);
+    boolean skipDamageEffects=false;
+    if (blockDamageSettings != null) {
+      skipDamageEffects=blockDamageSettings.skipPerBlockEffects;
+    }
+    if (!skipDamageEffects) {
+      entity.send(new PlayBlockDamagedEvent(event.getInstigator()));
+    }
+    if (!entity.hasComponent(BlockDamagedComponent.class)) {
+      entity.addComponent(new BlockDamagedComponent());
+    }
   }
 }

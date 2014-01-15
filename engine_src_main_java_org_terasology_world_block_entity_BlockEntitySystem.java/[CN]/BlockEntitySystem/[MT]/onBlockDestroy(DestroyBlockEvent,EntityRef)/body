@@ -1,12 +1,13 @@
 {
-  BlockComponent blockComp=entity.getComponent(BlockComponent.class);
   BlockDamageComponent blockDamageComponent=event.getDamageType().getComponent(BlockDamageComponent.class);
   float chanceOfBlockDrop=1;
   if (blockDamageComponent != null) {
     chanceOfBlockDrop=1 - blockDamageComponent.blockAnnihilationChance;
   }
+  Vector3i location=getBlockLocation(entity);
   if (random.nextFloat() < chanceOfBlockDrop) {
-    BeforeBlockToItem beforeBlockToItemEvent=new BeforeBlockToItem(event.getDamageType(),event.getInstigator(),event.getTool(),blockComp.getBlock().getBlockFamily(),1);
+    Block block=worldProvider.getBlock(location);
+    BeforeBlockToItem beforeBlockToItemEvent=new BeforeBlockToItem(event.getDamageType(),event.getInstigator(),event.getTool(),block.getBlockFamily(),1);
     entity.send(beforeBlockToItemEvent);
     if (!beforeBlockToItemEvent.isConsumed()) {
       for (      BlockFamily family : beforeBlockToItemEvent.getBlockItemsToGenerate()) {
@@ -14,25 +15,26 @@
         entity.send(new OnBlockToItem(item));
         if (family.getArchetypeBlock().isDirectPickup()) {
           if (!inventoryManager.giveItem(event.getInstigator(),item)) {
-            processDropping(blockComp,item);
+            processDropping(item,location);
           }
         }
  else {
-          processDropping(blockComp,item);
+          processDropping(item,location);
         }
       }
       for (      EntityRef item : beforeBlockToItemEvent.getItemsToDrop()) {
-        processDropping(blockComp,item);
+        processDropping(item,location);
       }
     }
   }
-  BlockRegionComponent regionComponent=entity.getComponent(BlockRegionComponent.class);
-  if (regionComponent != null) {
-    for (    Vector3i blockPosition : regionComponent.region) {
+  BlockRegionComponent blockRegionComp=entity.getComponent(BlockRegionComponent.class);
+  if (blockRegionComp != null) {
+    for (    Vector3i blockPosition : blockRegionComp.region) {
       worldProvider.setBlock(blockPosition,BlockManager.getAir());
     }
+    entity.destroy();
   }
  else {
-    worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir());
+    worldProvider.setBlock(location,BlockManager.getAir());
   }
 }

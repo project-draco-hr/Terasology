@@ -1,0 +1,13 @@
+{
+  BlockComponent blockComp=entity.getComponent(BlockComponent.class);
+  BlockRegionComponent blockRegionComp=entity.getComponent(BlockRegionComponent.class);
+  if (blockComp != null) {
+    return blockComp.getPosition();
+  }
+ else   if (blockRegionComp != null) {
+    return blockRegionComp.region.iterator().next();
+  }
+ else {
+    throw new IllegalArgumentException("Provided entity without BlockComponent or BlockRegionComponent");
+  }
+}
