@@ -15,7 +15,7 @@
       continue;
     }
     BlockComponent blockComp=entity.getComponent(BlockComponent.class);
-    renderHealth(blockComp.getBlock(),blockComp.getPosition(),health,cameraPosition);
+    renderHealth(blockComp.getPosition(),health,cameraPosition);
   }
   for (  EntityRef entity : entityManager.getEntitiesWith(BlockRegionComponent.class,HealthComponent.class)) {
     HealthComponent health=entity.getComponent(HealthComponent.class);
@@ -24,7 +24,7 @@
     }
     BlockRegionComponent blockRegion=entity.getComponent(BlockRegionComponent.class);
     for (    Vector3i blockPos : blockRegion.region) {
-      renderHealth(worldProvider.getBlock(blockPos),blockPos,health,cameraPosition);
+      renderHealth(blockPos,health,cameraPosition);
     }
   }
   glDisable(GL11.GL_BLEND);
