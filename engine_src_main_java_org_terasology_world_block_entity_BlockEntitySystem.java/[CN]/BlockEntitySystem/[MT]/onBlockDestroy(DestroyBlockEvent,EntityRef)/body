@@ -26,5 +26,13 @@
       }
     }
   }
-  worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir());
+  BlockRegionComponent regionComponent=entity.getComponent(BlockRegionComponent.class);
+  if (regionComponent != null) {
+    for (    Vector3i blockPosition : regionComponent.region) {
+      worldProvider.setBlock(blockPosition,BlockManager.getAir());
+    }
+  }
+ else {
+    worldProvider.setBlock(blockComp.getPosition(),BlockManager.getAir());
+  }
 }
