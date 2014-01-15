@@ -1,11 +1,9 @@
 {
-  for (  Side side : Side.values()) {
-    Vector3i neighborLocation=new Vector3i(event.getBlockPosition());
-    neighborLocation.add(side.getVector3i());
-    Block neighborBlock=worldProvider.getBlock(neighborLocation);
-    Block neighborBlockAfterUpdate=neighborBlock.getBlockFamily().getBlockForNeighborUpdate(worldProvider,blockEntityRegistry,neighborLocation,neighborBlock);
-    if (neighborBlock != neighborBlockAfterUpdate) {
-      worldProvider.setBlock(neighborLocation,neighborBlockAfterUpdate);
-    }
+  if (largeBlockUpdateCount > 0) {
+    blocksUpdatedInLargeBlockUpdate.add(event.getBlockPosition());
+  }
+ else {
+    Vector3i blockLocation=event.getBlockPosition();
+    processUpdateForBlockLocation(blockLocation);
   }
 }
