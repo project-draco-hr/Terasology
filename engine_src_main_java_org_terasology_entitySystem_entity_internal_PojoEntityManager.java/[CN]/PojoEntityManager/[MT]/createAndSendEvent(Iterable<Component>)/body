@@ -1,6 +1,14 @@
 {
   EntityRef entity=create();
-  BeforeEntityCreated event=new BeforeEntityCreated(components);
+  String prefabName=null;
+  for (  Component component : components) {
+    if (component instanceof EntityInfoComponent) {
+      EntityInfoComponent comp=(EntityInfoComponent)component;
+      prefabName=comp.parentPrefab;
+      break;
+    }
+  }
+  BeforeEntityCreated event=new BeforeEntityCreated(prefabName,components);
   eventSystem.send(entity,event);
   components=event.getResultComponents();
   for (  Component c : components) {
