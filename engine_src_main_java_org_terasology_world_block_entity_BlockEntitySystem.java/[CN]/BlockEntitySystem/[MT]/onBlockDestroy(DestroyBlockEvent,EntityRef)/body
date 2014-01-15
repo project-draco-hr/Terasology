@@ -13,7 +13,9 @@
         EntityRef item=blockItemFactory.newInstance(family,beforeBlockToItemEvent.getQuanityForBlock(family));
         entity.send(new OnBlockToItem(item));
         if (family.getArchetypeBlock().isDirectPickup()) {
-          if (!inventoryManager.giveItem(event.getInstigator(),item))           processDropping(blockComp,item);
+          if (!inventoryManager.giveItem(event.getInstigator(),item)) {
+            processDropping(blockComp,item);
+          }
         }
  else {
           processDropping(blockComp,item);
