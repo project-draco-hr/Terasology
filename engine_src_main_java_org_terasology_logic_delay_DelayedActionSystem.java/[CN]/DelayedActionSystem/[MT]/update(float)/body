@@ -1,0 +1,15 @@
+{
+  long currentWorldTime=worldTime.getMilliseconds();
+  List<DelayedOperation> operationsToInvoke=new LinkedList<>();
+  Iterator<Long> scheduledOperationsIterator=delayedOperationsSortedByTime.keySet().iterator();
+  long time;
+  while (scheduledOperationsIterator.hasNext() && (time=scheduledOperationsIterator.next()) <= currentWorldTime) {
+    operationsToInvoke.addAll(delayedOperationsSortedByTime.get(time));
+    scheduledOperationsIterator.remove();
+  }
+  for (  DelayedOperation delayedOperation : operationsToInvoke) {
+    if (delayedOperation.entityRef.exists()) {
+      delayedOperation.entityRef.send(new DelayedActionTriggeredEvent(delayedOperation.operationId));
+    }
+  }
+}
