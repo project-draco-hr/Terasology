@@ -1,16 +1,3 @@
 {
-  String normalisedColor=color.trim().toLowerCase();
-  int r=0;
-  int g=0;
-  int b=0;
-  int a=255;
-  if (normalisedColor.matches("^#[a-f0-9]{1,8}$")) {
-    normalisedColor=normalisedColor.replace("#","");
-    int sum=Integer.parseInt(normalisedColor,16);
-    a=(sum & 0xFF000000) >> 24;
-    r=(sum & 0x00FF0000) >> 16;
-    g=(sum & 0x0000FF00) >> 8;
-    b=sum & 0x000000FF;
-  }
-  this.color=new Color(rgbToColor(r),rgbToColor(g),rgbToColor(b),rgbToColor(a));
+  this.color=ColorUtil.getColorForColorHexString(color);
 }
