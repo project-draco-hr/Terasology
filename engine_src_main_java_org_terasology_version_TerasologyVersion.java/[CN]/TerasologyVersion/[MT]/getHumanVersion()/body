@@ -1,0 +1,14 @@
+{
+  String humanVersion="";
+  TerasologyVersion ver=getInstance();
+  if (!ver.getDisplayVersion().trim().equals("")) {
+    humanVersion=displayVersion.toUpperCase();
+  }
+  if (ver.getBuildTag().trim().length() > 8) {
+    humanVersion+=" " + ver.getBuildTag().substring(8);
+  }
+  if (ver.getDateTime().trim().length() > 10) {
+    humanVersion+=" " + ver.getDateTime().substring(0,10);
+  }
+  return humanVersion;
+}

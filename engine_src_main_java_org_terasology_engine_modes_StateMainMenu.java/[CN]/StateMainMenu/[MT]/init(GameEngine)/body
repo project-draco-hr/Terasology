@@ -1,7 +1,6 @@
 {
   entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class),CoreRegistry.get(NetworkSystem.class),CoreRegistry.get(ReflectFactory.class));
   eventSystem=CoreRegistry.get(EventSystem.class);
-  guiManager=CoreRegistry.get(GUIManager.class);
   nuiManager=CoreRegistry.get(NUIManager.class);
   ((NUIManagerInternal)nuiManager).refreshElementsLibrary();
   componentSystemManager=new ComponentSystemManager();
@@ -9,7 +8,6 @@
   CameraTargetSystem cameraTargetSystem=new CameraTargetSystem();
   CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
   componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
-  eventSystem.registerEventHandler(guiManager);
   eventSystem.registerEventHandler(CoreRegistry.get(NUIManager.class));
   inputSystem=CoreRegistry.get(InputSystem.class);
   componentSystemManager.register(inputSystem,"engine:InputSystem");
@@ -23,6 +21,6 @@
   playBackgroundMusic();
   CoreRegistry.get(NUIManager.class).pushScreen("engine:mainMenuScreen");
   if (!messageOnLoad.isEmpty()) {
-    guiManager.showMessage("",messageOnLoad);
+    nuiManager.pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Error",messageOnLoad);
   }
 }

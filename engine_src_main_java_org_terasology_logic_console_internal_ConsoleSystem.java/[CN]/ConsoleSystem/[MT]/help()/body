@@ -5,7 +5,11 @@
     if (!msg.toString().isEmpty()) {
       msg.append("\n");
     }
-    msg.append(cmd.getUsageMessage()).append(" - ").append(cmd.getShortDescription());
+    msg.append(FontColor.toChar(ConsoleColors.COMMAND));
+    msg.append(cmd.getUsageMessage());
+    msg.append(FontColor.getReset());
+    msg.append(" - ");
+    msg.append(cmd.getShortDescription());
   }
   return msg.toString();
 }
