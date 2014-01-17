@@ -1,8 +1,10 @@
 {
   Vector2i result=new Vector2i();
   canvas.setPart(SLIDER);
+  result.x=canvas.getCurrentStyle().getFixedWidth();
   result.y=canvas.getCurrentStyle().getFixedHeight();
   canvas.setPart(TICKER);
+  result.x=Math.max(result.y,canvas.getCurrentStyle().getFixedWidth());
   result.y=Math.max(result.y,canvas.getCurrentStyle().getFixedHeight());
   return result;
 }
