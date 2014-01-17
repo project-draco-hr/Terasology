@@ -1,6 +1,5 @@
 {
-  EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
-  StorageManager storageManager=CoreRegistry.get(StorageManager.class);
+  StorageManager storageManager=CoreRegistry.put(StorageManager.class,new StorageManagerInternal(CoreRegistry.get(ModuleManager.class),(EngineEntityManager)CoreRegistry.get(EntityManager.class)));
   WorldInfo worldInfo=gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD);
   if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
     FastRandom random=new FastRandom();
@@ -18,9 +17,7 @@
     CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Failed to resolve world generator."));
     return false;
   }
-  EntityRef worldEntity=entityManager.getEntitiesWith(WorldComponent.class).iterator().next();
   LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,worldGenerator);
-  chunkProvider.setWorldEntity(worldEntity);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);
