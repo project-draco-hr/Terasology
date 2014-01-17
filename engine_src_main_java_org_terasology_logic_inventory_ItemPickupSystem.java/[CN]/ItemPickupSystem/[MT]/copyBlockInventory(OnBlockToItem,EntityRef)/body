@@ -1,0 +1,12 @@
+{
+  if (blockEntity.hasComponent(RetainBlockInventoryComponent.class)) {
+    EntityRef inventoryItem=event.getItem();
+    inventoryItem.addComponent(new InventoryComponent(((SlotBasedInventoryManager)CoreRegistry.get(SlotBasedInventoryManager.class)).getNumSlots(blockEntity)));
+    inventoryManager.moveAll(blockEntity,inventoryItem);
+    ItemComponent itemComponent=inventoryItem.getComponent(ItemComponent.class);
+    if (itemComponent != null && !itemComponent.stackId.isEmpty()) {
+      itemComponent.stackId="";
+      inventoryItem.saveComponent(itemComponent);
+    }
+  }
+}
