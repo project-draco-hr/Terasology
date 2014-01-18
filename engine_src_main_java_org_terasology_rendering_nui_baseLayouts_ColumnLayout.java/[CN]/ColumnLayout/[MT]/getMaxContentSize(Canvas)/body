@@ -1,0 +1,30 @@
+{
+  Iterator<List<UIWidget>> rows=getRowIterator();
+  Vector2i size=new Vector2i();
+  int[] columnSizes=new int[columns];
+  while (rows.hasNext()) {
+    List<UIWidget> row=rows.next();
+    int rowHeight=0;
+    for (int i=0; i < row.size(); ++i) {
+      Vector2i maxSize=canvas.calculateMaximumSize(row.get(i));
+      columnSizes[i]=Math.max(columnSizes[i],maxSize.x);
+      rowHeight=Math.max(rowHeight,maxSize.y);
+    }
+    size.y=TeraMath.addClampAtMax(size.y,rowHeight);
+    if (rows.hasNext()) {
+      size.y=TeraMath.addClampAtMax(size.y,verticalSpacing);
+    }
+  }
+  long width=0;
+  for (  int columnSize : columnSizes) {
+    width+=columnSize;
+  }
+  if (!autoSizeColumns) {
+    for (int i=0; i < columns; ++i) {
+      width=Math.min(width,TeraMath.floorToInt(columnSizes[i] / columnWidths[i]));
+    }
+  }
+  width+=horizontalSpacing * (columns - 1);
+  size.x=(int)Math.min(Integer.MAX_VALUE,width);
+  return size;
+}

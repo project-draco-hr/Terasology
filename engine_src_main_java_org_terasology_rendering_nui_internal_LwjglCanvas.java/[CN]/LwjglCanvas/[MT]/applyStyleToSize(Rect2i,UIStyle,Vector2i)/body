@@ -1,0 +1,11 @@
+{
+  if (region.isEmpty()) {
+    return region;
+  }
+  Vector2i size=applyStyleToSize(region.size(),style);
+  size.x=Math.min(size.x,maxSize.x);
+  size.y=Math.min(size.y,maxSize.y);
+  int minX=region.minX() + style.getHorizontalAlignment().getOffset(size.x,region.width());
+  int minY=region.minY() + style.getVerticalAlignment().getOffset(size.y,region.height());
+  return Rect2i.createFromMinAndSize(minX,minY,size.x,size.y);
+}
