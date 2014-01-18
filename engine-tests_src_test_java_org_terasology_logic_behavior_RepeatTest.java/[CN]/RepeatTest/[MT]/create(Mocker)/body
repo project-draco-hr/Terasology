@@ -1,9 +1,13 @@
 {
+  final Node node=new DebugNode(1);
   return new Node(){
     @Override public Task create(){
       Task spy=spy(new Task(null){
         @Override public Status update(        float dt){
           return null;
+        }
+        @Override public Node getNode(){
+          return node;
         }
       }
 );

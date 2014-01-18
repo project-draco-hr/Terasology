@@ -1,0 +1,22 @@
+{
+  Interpreter interpreter=new Interpreter(null);
+  DebugNode debugNode=new DebugNode(1);
+  CounterNode counterNode=new CounterNode(1,debugNode);
+  interpreter.setRoot(counterNode);
+  interpreter.start();
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  Assert.assertNull(debugNode.lastTask);
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  DebugNode.DebugTask first=debugNode.lastTask;
+  Assert.assertTrue(first.updateCalled);
+  Assert.assertTrue(first.initializeCalled);
+  Assert.assertTrue(!first.terminateCalled);
+  first.reset();
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  DebugNode.DebugTask last=debugNode.lastTask;
+  Assert.assertTrue(last.updateCalled);
+  Assert.assertTrue(!last.initializeCalled);
+  Assert.assertTrue(last.terminateCalled);
+  Assert.assertSame(first,last);
+  Assert.assertTrue(interpreter.tick(0) == 0);
+}

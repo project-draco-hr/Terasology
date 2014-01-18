@@ -1,0 +1,26 @@
+{
+  Interpreter interpreter=new Interpreter(null);
+  DebugNode debugNode=new DebugNode(1);
+  RepeatNode repeatNode=new RepeatNode(debugNode);
+  interpreter.setRoot(repeatNode);
+  interpreter.start();
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  DebugNode.DebugTask first=debugNode.lastTask;
+  Assert.assertTrue(first.updateCalled);
+  Assert.assertTrue(first.initializeCalled);
+  Assert.assertTrue(!first.terminateCalled);
+  first.reset();
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  DebugNode.DebugTask last=debugNode.lastTask2;
+  Assert.assertTrue(last.updateCalled);
+  Assert.assertTrue(!last.initializeCalled);
+  Assert.assertTrue(last.terminateCalled);
+  Assert.assertSame(first,last);
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  DebugNode.DebugTask second=debugNode.lastTask;
+  Assert.assertTrue(second.updateCalled);
+  Assert.assertTrue(second.initializeCalled);
+  Assert.assertTrue(!second.terminateCalled);
+  Assert.assertNotSame(first,second);
+  Assert.assertTrue(interpreter.tick(0) > 0);
+}
