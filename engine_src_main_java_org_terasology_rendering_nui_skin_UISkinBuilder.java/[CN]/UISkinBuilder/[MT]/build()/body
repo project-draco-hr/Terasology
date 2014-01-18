@@ -1,11 +1,27 @@
 {
   saveStyle();
   Map<String,UIStyleFamily> skinFamilies=Maps.newHashMap();
-  UIStyle rootStyle=new UIStyle();
-  baseStyles.get("").applyTo(rootStyle);
-  skinFamilies.put("",buildFamily("",rootStyle));
-  for (  String family : families) {
-    skinFamilies.put(family,buildFamily(family,rootStyle));
+  if (baseSkin != null) {
+    UIStyle rootStyle=new UIStyle(baseSkin.getDefaultStyle());
+    baseStyles.get("").applyTo(rootStyle);
+    skinFamilies.put("",buildFamily("",baseSkin));
+    for (    String family : families) {
+      skinFamilies.put(family,buildFamily(family,baseSkin));
+    }
+    for (    String family : baseSkin.getFamilies()) {
+      if (!skinFamilies.containsKey(family)) {
+        skinFamilies.put(family,baseSkin.getFamily(family));
+      }
+    }
+    return new UISkinData(skinFamilies);
   }
-  return new UISkinData(skinFamilies);
+ else {
+    UIStyle rootStyle=new UIStyle();
+    baseStyles.get("").applyTo(rootStyle);
+    skinFamilies.put("",buildFamily("",rootStyle));
+    for (    String family : families) {
+      skinFamilies.put(family,buildFamily(family,rootStyle));
+    }
+    return new UISkinData(skinFamilies);
+  }
 }

@@ -1,0 +1,41 @@
+{
+  UIStyleFamily baseFamily=skin.getFamily(family);
+  UIStyle baseStyle=new UIStyle(skin.getDefaultStyleFor(family));
+  if (!family.isEmpty()) {
+    UIStyleFragment fragment=baseStyles.get(family);
+    fragment.applyTo(baseStyle);
+  }
+  Set<StyleKey> inheritedStyleKey=Sets.newLinkedHashSet();
+  for (  Class<? extends UIWidget> widget : baseFamily.getWidgets()) {
+    inheritedStyleKey.add(new StyleKey(widget,"",""));
+    for (    String part : baseFamily.getPartsFor(widget)) {
+      inheritedStyleKey.add(new StyleKey(widget,part,""));
+      for (      String mode : baseFamily.getModesFor(widget,part)) {
+        inheritedStyleKey.add(new StyleKey(widget,part,mode));
+      }
+    }
+  }
+  Map<Class<? extends UIWidget>,Table<String,String,UIStyle>> familyStyles=Maps.newHashMap();
+  Map<StyleKey,UIStyleFragment> styleLookup=elementStyles.row(family);
+  Map<StyleKey,UIStyleFragment> baseStyleLookup=(family.isEmpty()) ? Maps.<StyleKey,UIStyleFragment>newHashMap() : elementStyles.row("");
+  for (  StyleKey styleKey : Sets.union(Sets.union(styleLookup.keySet(),baseStyleKeys),inheritedStyleKey)) {
+    UIStyle elementStyle=new UIStyle(baseSkin.getStyleFor(family,styleKey.element,styleKey.part,styleKey.mode));
+    baseStyles.get("").applyTo(elementStyle);
+    baseStyles.get(family).applyTo(elementStyle);
+    List<Class<? extends UIWidget>> inheritanceTree=ReflectionUtil.getInheritanceTree(styleKey.element,UIWidget.class);
+    applyStylesForInheritanceTree(inheritanceTree,"","",elementStyle,styleLookup,baseStyleLookup);
+    if (!styleKey.part.isEmpty()) {
+      applyStylesForInheritanceTree(inheritanceTree,styleKey.part,"",elementStyle,styleLookup,baseStyleLookup);
+    }
+    if (!styleKey.mode.isEmpty()) {
+      applyStylesForInheritanceTree(inheritanceTree,styleKey.part,styleKey.mode,elementStyle,styleLookup,baseStyleLookup);
+    }
+    Table<String,String,UIStyle> elementTable=familyStyles.get(styleKey.element);
+    if (elementTable == null) {
+      elementTable=HashBasedTable.create();
+      familyStyles.put(styleKey.element,elementTable);
+    }
+    elementTable.put(styleKey.part,styleKey.mode,elementStyle);
+  }
+  return new UIStyleFamily(baseStyle,familyStyles);
+}
