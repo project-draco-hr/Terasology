@@ -4,6 +4,9 @@
     return Status.RUNNING;
   }
  else {
-    return Status.SUCCESS;
+    if (getNode().child != null) {
+      interpreter().start(getNode().child,this);
+    }
+    return Status.RUNNING;
   }
 }
