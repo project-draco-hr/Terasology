@@ -56,8 +56,8 @@ UIScreenLayerUtil.tryBindCheckbox(this,"fullscreen",BindHelper.bindBeanProperty(
 UIScreenLayerUtil.tryBindCheckbox(this,"bobbing",BindHelper.bindBeanProperty("cameraBobbing",config.getRendering(),Boolean.TYPE));
 UIScreenLayerUtil.tryBindCheckbox(this,"outline",BindHelper.bindBeanProperty("outline",config.getRendering(),Boolean.TYPE));
 UIScreenLayerUtil.tryBindCheckbox(this,"vsync",BindHelper.bindBeanProperty("vSync",config.getRendering(),Boolean.TYPE));
-UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
-@Override public void onButtonActivated(UIButton button){
+UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
 logger.info("Video Settings: " + config.getRendering().toString());
 CoreRegistry.get(ShaderManager.class).recompileAllShaders();
 nuiManager.popScreen();

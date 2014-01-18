@@ -1,6 +1,6 @@
 {
-  UIScreenLayerUtil.trySubscribe(this,"ok",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"ok",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       UIText name=find("name",UIText.class);
       UIText address=find("address",UIText.class);
       if (name != null && address != null) {
@@ -11,8 +11,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"cancel",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"cancel",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
     }
   }

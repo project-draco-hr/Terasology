@@ -1,6 +1,6 @@
 {
-  UIScreenLayerUtil.trySubscribe(this,"join",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"join",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
       UIText address=find("address",UIText.class);
       JoinStatus status=networkSystem.join(address.getText(),TerasologyConstants.DEFAULT_PORT);
@@ -13,8 +13,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"cancel",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"cancel",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
     }
   }

@@ -1,21 +1,21 @@
 {
   final UIList<GameInfo> gameList=find("gameList",UIList.class);
   refreshList(gameList);
-  gameList.subscribe(new ListEventListener<GameInfo>(){
-    @Override public void onItemActivated(    GameInfo item){
+  gameList.subscribe(new ItemActivateEventListener<GameInfo>(){
+    @Override public void onItemActivated(    UIWidget widget,    GameInfo item){
       loadGame(item);
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"create",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"create",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       CreateGameScreen createGameScreen=(CreateGameScreen)nuiManager.pushScreen("engine:createGameScreen");
       createGameScreen.setLoadingAsServer(loadingAsServer);
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"load",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"load",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       GameInfo gameInfo=gameList.getSelection();
       if (gameInfo != null) {
         loadGame(gameInfo);
@@ -23,8 +23,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"delete",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"delete",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       GameInfo gameInfo=gameList.getSelection();
       if (gameInfo != null) {
         Path world=PathManager.getInstance().getSavePath(gameInfo.getManifest().getTitle());
@@ -41,8 +41,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
     }
   }

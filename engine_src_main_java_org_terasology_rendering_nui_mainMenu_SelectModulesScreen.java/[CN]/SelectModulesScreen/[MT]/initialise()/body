@@ -78,8 +78,8 @@
     }
     UIButton toggle=find("toggleActivation",UIButton.class);
     if (toggle != null) {
-      toggle.subscribe(new ButtonEventListener(){
-        @Override public void onButtonActivated(        UIButton button){
+      toggle.subscribe(new ActivateEventListener(){
+        @Override public void onActivated(        UIWidget button){
           if (moduleList.getSelection() != null) {
             String id=moduleList.getSelection().getId();
             if (selection.contains(id)) {
@@ -121,8 +121,8 @@
 );
     }
   }
-  UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       ModuleConfig moduleConfig=config.getDefaultModSelection();
       moduleConfig.clear();
       for (      Module module : selection.getSelection()) {

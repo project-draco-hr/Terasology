@@ -26,7 +26,7 @@
   library.add(Prefab.class,new PrefabTypeHandler());
   library.add(Border.class,new BorderTypeHandler());
   library.add(TextureRegion.class,new TextureRegionTypeHandler());
-  GsonBuilder gsonBuilder=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(UIData.class,new UIDataTypeAdapter(nuiManager)).registerTypeHierarchyAdapter(UIWidget.class,new UIWidgetTypeAdapter(nuiManager));
+  GsonBuilder gsonBuilder=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(UIData.class,new UIDataTypeAdapter()).registerTypeHierarchyAdapter(UIWidget.class,new UIWidgetTypeAdapter(nuiManager));
   for (  Class<?> handledType : library.getCoreTypes()) {
     gsonBuilder.registerTypeAdapter(handledType,new JsonTypeHandlerAdapter<>(library.getHandlerFor(handledType)));
   }

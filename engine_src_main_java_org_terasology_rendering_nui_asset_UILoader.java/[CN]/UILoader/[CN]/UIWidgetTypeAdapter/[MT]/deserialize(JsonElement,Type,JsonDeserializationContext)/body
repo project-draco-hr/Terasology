@@ -1,14 +1,14 @@
 {
   JsonObject jsonObject=json.getAsJsonObject();
   String type=jsonObject.get("type").getAsString();
-  String id=null;
-  if (jsonObject.has("id")) {
-    id=jsonObject.get("id").getAsString();
-  }
   ClassMetadata<? extends UIWidget,?> elementMetadata=nuiManager.getElementMetadataLibrary().resolve(type,ModuleContext.getContext());
   if (elementMetadata == null) {
     logger.error("Unknown UIWidget type {}",type);
     return null;
+  }
+  String id=null;
+  if (jsonObject.has("id")) {
+    id=jsonObject.get("id").getAsString();
   }
   UIWidget element;
   if (id != null) {

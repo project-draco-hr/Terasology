@@ -40,14 +40,14 @@
     }
 );
   }
-  UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"play",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"play",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       GameManifest gameManifest=new GameManifest();
       gameManifest.setTitle(worldName.getText());
       gameManifest.setSeed(seed.getText());
@@ -63,8 +63,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"previewSeed",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"previewSeed",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       PreviewWorldScreen screen=nuiManager.pushScreen("engine:previewWorldScreen",PreviewWorldScreen.class);
       if (screen != null) {
         screen.bindSeed(BindHelper.bindBeanProperty("text",seed,String.class));
@@ -72,8 +72,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"mods",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  UIScreenLayerUtil.trySubscribe(this,"mods",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       nuiManager.pushScreen("engine:selectModsScreen");
     }
   }
