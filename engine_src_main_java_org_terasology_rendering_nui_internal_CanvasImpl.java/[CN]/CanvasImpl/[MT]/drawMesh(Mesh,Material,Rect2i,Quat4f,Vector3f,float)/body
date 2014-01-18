@@ -1,0 +1,15 @@
+{
+  if (material == null) {
+    logger.warn("Attempted to draw with nonexistent material");
+    return;
+  }
+  if (mesh == null) {
+    logger.warn("Attempted to draw nonexistent mesh");
+    return;
+  }
+  Rect2i drawRegion=relativeToAbsolute(region);
+  if (!state.cropRegion.overlaps(drawRegion)) {
+    return;
+  }
+  renderer.drawMesh(mesh,material,drawRegion,drawRegion.intersect(state.cropRegion),rotation,offset,scale,state.getAlpha());
+}

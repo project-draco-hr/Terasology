@@ -40,13 +40,13 @@
     }
 );
   }
-  UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"play",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"play",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       GameManifest gameManifest=new GameManifest();
       gameManifest.setTitle(worldName.getText());
@@ -63,7 +63,7 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"previewSeed",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"previewSeed",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       PreviewWorldScreen screen=nuiManager.pushScreen("engine:previewWorldScreen",PreviewWorldScreen.class);
       if (screen != null) {
@@ -72,7 +72,7 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"mods",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"mods",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       nuiManager.pushScreen("engine:selectModsScreen");
     }

@@ -18,13 +18,13 @@
     name.bindText(BindHelper.bindBoundBeanProperty("name",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
     UILabel address=find("address",UILabel.class);
     address.bindText(BindHelper.bindBoundBeanProperty("address",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
-    UIScreenLayerUtil.trySubscribe(this,"add",new ActivateEventListener(){
+    WidgetUtil.trySubscribe(this,"add",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
         nuiManager.pushScreen("engine:addServerPopup");
       }
     }
 );
-    UIScreenLayerUtil.trySubscribe(this,"remove",new ActivateEventListener(){
+    WidgetUtil.trySubscribe(this,"remove",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
         if (serverList.getSelection() != null) {
           config.getNetwork().remove(serverList.getSelection());
@@ -33,7 +33,7 @@
       }
     }
 );
-    UIScreenLayerUtil.trySubscribe(this,"join",new ActivateEventListener(){
+    WidgetUtil.trySubscribe(this,"join",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
         config.save();
         if (serverList.getSelection() != null) {
@@ -43,14 +43,14 @@
     }
 );
   }
-  UIScreenLayerUtil.trySubscribe(this,"joinDirect",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"joinDirect",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       config.save();
       nuiManager.pushScreen("engine:joinServerPopup");
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       config.save();
       nuiManager.popScreen();

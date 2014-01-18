@@ -7,14 +7,14 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"create",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"create",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       CreateGameScreen createGameScreen=(CreateGameScreen)nuiManager.pushScreen("engine:createGameScreen");
       createGameScreen.setLoadingAsServer(loadingAsServer);
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"load",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"load",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       GameInfo gameInfo=gameList.getSelection();
       if (gameInfo != null) {
@@ -23,7 +23,7 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"delete",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"delete",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       GameInfo gameInfo=gameList.getSelection();
       if (gameInfo != null) {
@@ -41,7 +41,7 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"close",new ActivateEventListener(){
+  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       nuiManager.popScreen();
     }
