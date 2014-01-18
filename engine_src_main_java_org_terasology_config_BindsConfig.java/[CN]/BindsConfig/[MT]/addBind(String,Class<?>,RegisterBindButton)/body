@@ -3,7 +3,10 @@
   for (  Annotation annotation : buttonEvent.getAnnotations()) {
     if (annotation instanceof DefaultBinding) {
       DefaultBinding defaultBinding=(DefaultBinding)annotation;
-      defaultInputs.add(defaultBinding.type().getInput(defaultBinding.id()));
+      Input input=defaultBinding.type().getInput(defaultBinding.id());
+      if (!data.values().contains(input)) {
+        defaultInputs.add(input);
+      }
     }
   }
   SimpleUri bindUri=new SimpleUri(moduleName,info.id());

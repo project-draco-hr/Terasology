@@ -1,12 +1,13 @@
 {
-  if (capturingInput && event.isDown()) {
-    if (event.getKey() == Keyboard.Key.ESCAPE) {
-      setInput(null);
-    }
- else {
+  if (event.isDown()) {
+    if (capturingInput) {
       setInput(InputType.KEY.getInput(event.getKey().getId()));
+      capturingInput=false;
+      event.consume();
     }
-    capturingInput=false;
-    event.consume();
+ else     if (event.getKey() == Keyboard.Key.DELETE || event.getKey() == Keyboard.Key.BACKSPACE) {
+      setInput(null);
+      event.consume();
+    }
   }
 }

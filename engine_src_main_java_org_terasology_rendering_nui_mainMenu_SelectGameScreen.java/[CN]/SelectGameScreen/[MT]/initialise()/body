@@ -9,7 +9,7 @@
 );
   WidgetUtil.trySubscribe(this,"create",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      CreateGameScreen createGameScreen=(CreateGameScreen)nuiManager.pushScreen("engine:createGameScreen");
+      CreateGameScreen createGameScreen=getManager().pushScreen("engine:createGameScreen",CreateGameScreen.class);
       createGameScreen.setLoadingAsServer(loadingAsServer);
     }
   }
@@ -35,7 +35,7 @@
         }
  catch (        Exception e) {
           logger.error("Failed to delete saved game",e);
-          nuiManager.pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Error Deleting Game",e.getMessage());
+          getManager().pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Error Deleting Game",e.getMessage());
         }
       }
     }
@@ -43,7 +43,7 @@
 );
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );

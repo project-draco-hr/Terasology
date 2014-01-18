@@ -1,21 +1,21 @@
 {
   WidgetUtil.trySubscribe(this,"join",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.popScreen();
+      getManager().popScreen();
       UIText address=find("address",UIText.class);
       JoinStatus status=networkSystem.join(address.getText(),TerasologyConstants.DEFAULT_PORT);
       if (status.getStatus() != JoinStatus.Status.FAILED) {
         engine.changeState(new StateLoading(status));
       }
  else {
-        nuiManager.pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Failed to Join","Could not connect to server - " + status.getErrorMessage());
+        getManager().pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Failed to Join","Could not connect to server - " + status.getErrorMessage());
       }
     }
   }
 );
   WidgetUtil.trySubscribe(this,"cancel",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );

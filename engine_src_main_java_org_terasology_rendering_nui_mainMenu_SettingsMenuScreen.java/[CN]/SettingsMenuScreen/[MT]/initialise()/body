@@ -1,13 +1,13 @@
 {
   WidgetUtil.trySubscribe(this,"video",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.pushScreen("engine:VideoMenuScreen");
+      getManager().pushScreen("engine:VideoMenuScreen");
     }
   }
 );
   WidgetUtil.trySubscribe(this,"audio",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.pushScreen("engine:AudioMenuScreen");
+      getManager().pushScreen("engine:AudioMenuScreen");
     }
   }
 );
@@ -15,14 +15,14 @@
     @Override public void onActivated(    UIWidget button){
       UIScreenLayer inputScreen=new InputSettingsScreen();
       inputScreen.setSkin(getSkin());
-      nuiManager.pushScreen(inputScreen);
+      getManager().pushScreen(inputScreen);
     }
   }
 );
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       config.save();
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );

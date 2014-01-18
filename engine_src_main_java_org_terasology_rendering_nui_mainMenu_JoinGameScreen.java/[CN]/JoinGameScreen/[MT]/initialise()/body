@@ -20,7 +20,7 @@
     address.bindText(BindHelper.bindBoundBeanProperty("address",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
     WidgetUtil.trySubscribe(this,"add",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
-        nuiManager.pushScreen("engine:addServerPopup");
+        getManager().pushScreen("engine:addServerPopup");
       }
     }
 );
@@ -46,14 +46,14 @@
   WidgetUtil.trySubscribe(this,"joinDirect",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       config.save();
-      nuiManager.pushScreen("engine:joinServerPopup");
+      getManager().pushScreen("engine:joinServerPopup");
     }
   }
 );
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       config.save();
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );

@@ -42,7 +42,7 @@
   }
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );
@@ -65,7 +65,7 @@
 );
   WidgetUtil.trySubscribe(this,"previewSeed",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      PreviewWorldScreen screen=nuiManager.pushScreen("engine:previewWorldScreen",PreviewWorldScreen.class);
+      PreviewWorldScreen screen=getManager().pushScreen("engine:previewWorldScreen",PreviewWorldScreen.class);
       if (screen != null) {
         screen.bindSeed(BindHelper.bindBeanProperty("text",seed,String.class));
       }
@@ -74,7 +74,7 @@
 );
   WidgetUtil.trySubscribe(this,"mods",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      nuiManager.pushScreen("engine:selectModsScreen");
+      getManager().pushScreen("engine:selectModsScreen");
     }
   }
 );
