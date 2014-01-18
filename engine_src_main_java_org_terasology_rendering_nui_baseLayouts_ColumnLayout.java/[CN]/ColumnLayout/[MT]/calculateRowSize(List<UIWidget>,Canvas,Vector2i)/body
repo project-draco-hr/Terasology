@@ -1,19 +1,17 @@
 {
   int availableWidth=areaHint.x - horizontalSpacing * (columns - 1);
   RowInfo rowInfo=new RowInfo();
-  rowInfo.size.x=availableWidth;
   for (int i=0; i < columns && i < row.size(); ++i) {
     UIWidget widget=row.get(i);
     Vector2i cellSize=new Vector2i(availableWidth,areaHint.y);
     cellSize.x*=columnWidths[i];
     if (widget != null) {
       Vector2i contentSize=canvas.calculateRestrictedSize(widget,cellSize);
-      contentSize.x=cellSize.x;
       rowInfo.widgetSizes.add(contentSize);
-      rowInfo.size.y=Math.max(rowInfo.size.y,contentSize.y);
+      rowInfo.height=Math.max(rowInfo.height,contentSize.y);
     }
  else {
-      rowInfo.widgetSizes.add(new Vector2i(cellSize.x,0));
+      rowInfo.widgetSizes.add(new Vector2i(0,0));
     }
   }
   return rowInfo;

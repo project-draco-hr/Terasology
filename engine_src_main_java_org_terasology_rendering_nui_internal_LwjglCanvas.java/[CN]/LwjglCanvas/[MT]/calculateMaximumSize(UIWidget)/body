@@ -1,0 +1,10 @@
+{
+  if (widget == null) {
+    return new Vector2i(Integer.MAX_VALUE,Integer.MAX_VALUE);
+  }
+  String family=(widget.getFamily() != null) ? widget.getFamily() : state.family;
+  UIStyle elementStyle=state.skin.getStyleFor(family,widget.getClass(),widget.getMode());
+  try (SubRegion ignored=subRegionForWidget(widget,getRegion(),false)){
+    return applyStyleToSize(elementStyle.getMargin().grow(widget.getMaxContentSize(this)),elementStyle);
+  }
+ }

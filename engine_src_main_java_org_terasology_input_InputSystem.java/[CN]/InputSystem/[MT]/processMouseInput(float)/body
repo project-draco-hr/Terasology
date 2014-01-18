@@ -32,7 +32,7 @@ case MOUSE_BUTTON:
       boolean consumed=sendMouseEvent(button,action.getState().isDown(),mouse.getPosition(),delta);
       BindableButtonImpl bind=mouseButtonBinds.get(button);
       if (bind != null) {
-        bind.updateBindState(action.getState().isDown(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+        bind.updateBindState(action.getInput(),action.getState().isDown(),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
       }
     }
   break;
@@ -43,8 +43,8 @@ boolean consumed=sendMouseWheelEvent(dir * action.getTurns(),delta);
 BindableButtonImpl bind=(dir == 1) ? mouseWheelUpBind : mouseWheelDownBind;
 if (bind != null) {
   for (int i=0; i < action.getTurns(); ++i) {
-    bind.updateBindState(true,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
-    bind.updateBindState(false,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+    bind.updateBindState(action.getInput(),true,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+    bind.updateBindState(action.getInput(),false,delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
   }
 }
 }

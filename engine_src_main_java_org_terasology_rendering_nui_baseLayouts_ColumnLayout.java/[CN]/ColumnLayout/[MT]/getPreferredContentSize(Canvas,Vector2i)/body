@@ -1,5 +1,5 @@
 {
-  Vector2i availableSize=canvas.size();
+  Vector2i availableSize=new Vector2i(areaHint);
   int numRows=TeraMath.ceilToInt((float)widgetList.size() / columns);
   if (numRows > 0) {
     availableSize.y-=verticalSpacing * (numRows - 1);
@@ -8,14 +8,27 @@
     availableSize.x-=horizontalSpacing * (columns - 1);
   }
   Iterator<List<UIWidget>> rows=getRowIterator();
-  int height=0;
+  Vector2i size=new Vector2i();
+  int[] columnSizes=new int[columns];
   while (rows.hasNext()) {
     List<UIWidget> row=rows.next();
     RowInfo rowInfo=calculateRowSize(row,canvas,availableSize);
-    height+=rowInfo.size.y;
+    size.y+=rowInfo.height;
     if (rows.hasNext()) {
-      height+=verticalSpacing;
+      size.y+=verticalSpacing;
+    }
+    for (int i=0; i < rowInfo.widgetSizes.size(); ++i) {
+      columnSizes[i]=Math.max(columnSizes[i],rowInfo.widgetSizes.get(i).getX());
     }
   }
-  return new Vector2i(areaHint.x,height);
+  for (  int columnSize : columnSizes) {
+    size.x+=columnSize;
+  }
+  if (!autoSizeColumns) {
+    for (int i=0; i < columns; ++i) {
+      size.x=Math.max(size.x,TeraMath.floorToInt(columnSizes[i] / columnWidths[i]));
+    }
+  }
+  size.x+=horizontalSpacing * (columns - 1);
+  return size;
 }

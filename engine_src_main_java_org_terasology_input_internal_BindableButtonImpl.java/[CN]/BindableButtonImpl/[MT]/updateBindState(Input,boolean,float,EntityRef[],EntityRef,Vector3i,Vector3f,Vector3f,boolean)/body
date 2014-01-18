@@ -1,8 +1,9 @@
 {
   boolean keyConsumed=initialKeyConsumed;
   if (pressed) {
-    activeInputs++;
-    if (activeInputs == 1 && mode.isActivatedOnPress()) {
+    boolean previouslyEmpty=activeInputs.isEmpty();
+    activeInputs.add(input);
+    if (previouslyEmpty && mode.isActivatedOnPress()) {
       lastActivateTime=time.getGameTimeInMs();
       if (!keyConsumed) {
         keyConsumed=triggerOnPress(delta,target);
@@ -20,9 +21,9 @@
       }
     }
   }
- else   if (activeInputs != 0) {
-    activeInputs--;
-    if (activeInputs == 0 && mode.isActivatedOnRelease()) {
+ else   if (!activeInputs.isEmpty()) {
+    activeInputs.remove(input);
+    if (activeInputs.isEmpty() && mode.isActivatedOnRelease()) {
       if (!keyConsumed) {
         keyConsumed=triggerOnRelease(delta,target);
       }

@@ -4,4 +4,11 @@
   this.type=(Class<U>)determineType(field,owner.getType());
   this.accessor=factory.createFieldAccessor(owner.getType(),field,type);
   this.field=field;
+  SerializedName name=field.getAnnotation(SerializedName.class);
+  if (name != null) {
+    serializationName=name.value();
+  }
+ else {
+    serializationName=field.getName();
+  }
 }
