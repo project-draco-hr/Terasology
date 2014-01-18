@@ -5,7 +5,8 @@
     Block neighborBlock=worldProvider.getBlock(neighborLocation);
     final BlockFamily blockFamily=neighborBlock.getBlockFamily();
     if (blockFamily instanceof UpdatesWithNeighboursFamily) {
-      Block neighborBlockAfterUpdate=((UpdatesWithNeighboursFamily)blockFamily).getBlockForNeighborUpdate(worldProvider,blockEntityRegistry,neighborLocation,neighborBlock);
+      UpdatesWithNeighboursFamily neighboursFamily=(UpdatesWithNeighboursFamily)blockFamily;
+      Block neighborBlockAfterUpdate=neighboursFamily.getBlockForNeighborUpdate(worldProvider,blockEntityRegistry,neighborLocation,neighborBlock);
       if (neighborBlock != neighborBlockAfterUpdate) {
         worldProvider.setBlock(neighborLocation,neighborBlockAfterUpdate);
       }

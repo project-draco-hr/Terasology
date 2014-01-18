@@ -2,9 +2,13 @@
   long currentWorldTime=time.getGameTimeInMs();
   List<DelayedOperation> operationsToInvoke=new LinkedList<>();
   Iterator<Long> scheduledOperationsIterator=delayedOperationsSortedByTime.keySet().iterator();
-  long time;
-  while (scheduledOperationsIterator.hasNext() && (time=scheduledOperationsIterator.next()) <= currentWorldTime) {
-    operationsToInvoke.addAll(delayedOperationsSortedByTime.get(time));
+  long processedTime;
+  while (scheduledOperationsIterator.hasNext()) {
+    processedTime=scheduledOperationsIterator.next();
+    if (processedTime > currentWorldTime) {
+      break;
+    }
+    operationsToInvoke.addAll(delayedOperationsSortedByTime.get(processedTime));
     scheduledOperationsIterator.remove();
   }
   for (  DelayedOperation delayedOperation : operationsToInvoke) {

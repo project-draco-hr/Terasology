@@ -10,8 +10,8 @@
   }
   BeforeEntityCreated event=new BeforeEntityCreated(prefabName,components);
   eventSystem.send(entity,event);
-  components=event.getResultComponents();
-  for (  Component c : components) {
+  Iterable<Component> resultComponents=event.getResultComponents();
+  for (  Component c : resultComponents) {
     store.put(entity.getId(),c);
   }
   return entity;
