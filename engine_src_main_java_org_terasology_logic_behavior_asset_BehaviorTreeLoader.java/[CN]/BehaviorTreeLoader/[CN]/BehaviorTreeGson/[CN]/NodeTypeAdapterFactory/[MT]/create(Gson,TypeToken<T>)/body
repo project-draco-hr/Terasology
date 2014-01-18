@@ -21,21 +21,25 @@
         in.beginObject();
         nextName(in,"nodeType");
         String nodeType=in.nextString();
-        try {
-          Class cls=Class.forName(nodeType);
-          TypeAdapter<T> delegateAdapter=(TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(cls));
-          nextName(in,"nodeId");
-          int id=in.nextInt();
-          nextName(in,"node");
-          T read=delegateAdapter.read(in);
-          idNodes.put(id,(Node)read);
-          nodeIds.put((Node)read,id);
-          in.endObject();
-          return read;
+        ClassLoader[] classLoaders=CoreRegistry.get(ModuleManager.class).getActiveModuleReflections().getConfiguration().getClassLoaders();
+        Class cls=null;
+        for (        ClassLoader classLoader : classLoaders) {
+          try {
+            cls=(Class<? extends Node>)classLoader.loadClass(nodeType);
+            break;
+          }
+ catch (          ClassNotFoundException e) {
+          }
         }
- catch (        ClassNotFoundException e) {
-          throw new RuntimeException(e);
-        }
+        TypeAdapter<T> delegateAdapter=(TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(cls));
+        nextName(in,"nodeId");
+        int id=in.nextInt();
+        nextName(in,"node");
+        T read=delegateAdapter.read(in);
+        idNodes.put(id,(Node)read);
+        nodeIds.put((Node)read,id);
+        in.endObject();
+        return read;
       }
  else {
         return delegate.read(in);
