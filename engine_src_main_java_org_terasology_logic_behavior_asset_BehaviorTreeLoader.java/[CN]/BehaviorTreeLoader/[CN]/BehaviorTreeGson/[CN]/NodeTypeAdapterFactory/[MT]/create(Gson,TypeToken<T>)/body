@@ -21,7 +21,14 @@
         in.beginObject();
         nextName(in,"nodeType");
         String nodeType=in.nextString();
-        ClassLoader[] classLoaders=CoreRegistry.get(ModuleManager.class).getActiveModuleReflections().getConfiguration().getClassLoaders();
+        ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+        ClassLoader[] classLoaders;
+        if (moduleManager != null) {
+          classLoaders=moduleManager.getActiveModuleReflections().getConfiguration().getClassLoaders();
+        }
+ else {
+          classLoaders=new ClassLoader[]{getClass().getClassLoader()};
+        }
         Class cls=null;
         for (        ClassLoader classLoader : classLoaders) {
           try {
