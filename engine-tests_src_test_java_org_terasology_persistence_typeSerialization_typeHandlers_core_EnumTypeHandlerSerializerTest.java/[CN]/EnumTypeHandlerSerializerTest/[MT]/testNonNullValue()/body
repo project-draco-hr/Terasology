@@ -1,0 +1,7 @@
+{
+  EnumTypeHandler<TestEnum> handler=new EnumTypeHandler<TestEnum>(TestEnum.class);
+  Value serializedNonNull=handler.serialize(TestEnum.NON_NULL);
+  assertNotNull(serializedNonNull);
+  TestEnum deserializedValue=handler.deserialize(serializedNonNull);
+  assertEquals(TestEnum.NON_NULL,deserializedValue);
+}
