@@ -1,0 +1,12 @@
+{
+  BeforeDamagedEvent beforeDamage=entity.send(new BeforeDamagedEvent(amount,damageType,instigator,tool));
+  if (!beforeDamage.isConsumed()) {
+    int damageAmount=calculateTotal(beforeDamage.getBaseDamage(),beforeDamage.getMultipliers(),beforeDamage.getModifiers());
+    if (damageAmount > 0) {
+      doDamage(entity,damageAmount,damageType,instigator,tool,health);
+    }
+ else {
+      doHeal(entity,-damageAmount,instigator,health);
+    }
+  }
+}

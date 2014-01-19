@@ -1,8 +1,15 @@
 {
-  if (getTransferItem().exists()) {
-    inventoryManager.moveItem(getTransferEntity(),0,inventoryEntity,slot);
+  if (ghost) {
+    EntityRef transferSlot=inventoryManager.getItemInSlot(getTransferEntity(),0);
+    EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+    inventoryManager.putItemInSlot(inventoryEntity,slot,entityManager.copy(transferSlot));
   }
  else {
-    inventoryManager.moveItem(inventoryEntity,slot,getTransferEntity(),0);
+    if (getTransferItem().exists()) {
+      inventoryManager.moveItem(getTransferEntity(),0,inventoryEntity,slot);
+    }
+ else {
+      inventoryManager.moveItem(inventoryEntity,slot,getTransferEntity(),0);
+    }
   }
 }

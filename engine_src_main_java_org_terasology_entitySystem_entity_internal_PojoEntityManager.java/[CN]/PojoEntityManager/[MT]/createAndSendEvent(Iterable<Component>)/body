@@ -1,0 +1,18 @@
+{
+  EntityRef entity=create();
+  String prefabName=null;
+  for (  Component component : components) {
+    if (component instanceof EntityInfoComponent) {
+      EntityInfoComponent comp=(EntityInfoComponent)component;
+      prefabName=comp.parentPrefab;
+      break;
+    }
+  }
+  BeforeEntityCreated event=new BeforeEntityCreated(prefabName,components);
+  eventSystem.send(entity,event);
+  Iterable<Component> resultComponents=event.getResultComponents();
+  for (  Component c : resultComponents) {
+    store.put(entity.getId(),c);
+  }
+  return entity;
+}

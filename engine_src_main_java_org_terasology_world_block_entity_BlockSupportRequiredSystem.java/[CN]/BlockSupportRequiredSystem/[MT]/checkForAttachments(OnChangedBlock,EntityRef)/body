@@ -1,0 +1,16 @@
+{
+  if (event.getNewType() == BlockManager.getAir()) {
+    for (    Side side : Side.values()) {
+      Vector3i attachedBlockPosition=side.getAdjacentPos(event.getBlockPosition());
+      final Block attachedBlock=worldProvider.getBlock(attachedBlockPosition);
+      final BlockFamily blockFamily=attachedBlock.getBlockFamily();
+      if (blockFamily instanceof AttachedToSurfaceFamily) {
+        AttachedToSurfaceFamily attachmentFamily=(AttachedToSurfaceFamily)blockFamily;
+        final Side sideAttachedTo=attachmentFamily.getSideAttachedTo(attachedBlock);
+        if (sideAttachedTo == side) {
+          blockEntityRegistry.getBlockEntityAt(attachedBlockPosition).send(new DestroyBlockEvent(EntityRef.NULL,EntityRef.NULL,EngineDamageTypes.DIRECT.get()));
+        }
+      }
+    }
+  }
+}

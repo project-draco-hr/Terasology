@@ -7,18 +7,24 @@
   BlockFamily type=blockItem.blockFamily;
   Side surfaceSide=Side.inDirection(event.getHitNormal());
   Side secondaryDirection=TeraMath.getSecondaryPlacementDirection(event.getDirection(),event.getHitNormal());
-  Vector3i targetBlock=event.getTarget().getComponent(BlockComponent.class).getPosition();
+  BlockComponent blockComponent=event.getTarget().getComponent(BlockComponent.class);
+  if (blockComponent == null) {
+    event.consume();
+    return;
+  }
+  Vector3i targetBlock=blockComponent.getPosition();
   Vector3i placementPos=new Vector3i(targetBlock);
   placementPos.add(surfaceSide.getVector3i());
   Block block=type.getBlockForPlacement(worldProvider,blockEntityRegistry,placementPos,surfaceSide,secondaryDirection);
   if (canPlaceBlock(block,targetBlock,placementPos)) {
     if (networkSystem.getMode().isAuthority()) {
-      if (worldProvider.setBlock(placementPos,block) == null) {
-        event.consume();
-        return;
+      PlaceBlocks placeBlocks=new PlaceBlocks(placementPos,block);
+      worldProvider.getWorldEntity().send(placeBlocks);
+      if (!placeBlocks.isConsumed()) {
+        item.send(new OnBlockItemPlaced(placementPos,blockEntityRegistry.getBlockEntityAt(placementPos)));
       }
  else {
-        item.send(new OnBlockItemPlaced(placementPos,blockEntityRegistry.getBlockEntityAt(placementPos)));
+        event.consume();
       }
     }
     event.getInstigator().send(new PlaySoundEvent(event.getInstigator(),Assets.getSound("engine:PlaceBlock"),0.5f));

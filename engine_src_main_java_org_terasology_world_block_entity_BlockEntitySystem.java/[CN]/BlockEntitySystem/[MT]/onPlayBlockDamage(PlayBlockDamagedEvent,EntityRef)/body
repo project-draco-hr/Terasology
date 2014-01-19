@@ -1,0 +1,14 @@
+{
+  final Vector3i location=getBlockLocation(entity);
+  BlockFamily family=worldProvider.getBlock(location).getBlockFamily();
+  EntityBuilder builder=entityManager.newBuilder("engine:defaultBlockParticles");
+  builder.getComponent(LocationComponent.class).setWorldPosition(location.toVector3f());
+  builder.getComponent(BlockParticleEffectComponent.class).blockType=family;
+  builder.build();
+  if (family.getArchetypeBlock().isDebrisOnDestroy()) {
+    EntityBuilder dustBuilder=entityManager.newBuilder("engine:dustEffect");
+    dustBuilder.getComponent(LocationComponent.class).setWorldPosition(location.toVector3f());
+    dustBuilder.build();
+  }
+  audioManager.playSound(Assets.getSound("engine:Dig"),location.toVector3f());
+}
