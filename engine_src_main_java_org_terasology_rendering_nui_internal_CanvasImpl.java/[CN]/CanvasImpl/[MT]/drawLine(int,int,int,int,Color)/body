@@ -1,8 +1,12 @@
 {
+  int sx=startX + state.drawRegion.minX();
+  int sy=startY + state.drawRegion.minY();
+  int ex=state.drawRegion.minX() + endX;
+  int ey=state.drawRegion.minY() + endY;
   if (state.drawOnTop) {
-    drawOnTopOperations.add(new DrawLineOperation(startX + state.drawRegion.minX(),startY + state.drawRegion.minY(),state.drawRegion.minX() + endX,state.drawRegion.minY() + endY,color));
+    drawOnTopOperations.add(new DrawLineOperation(sx,sy,ex,ey,color));
   }
  else {
-    drawLineInternal(startX + state.drawRegion.minX(),startY + state.drawRegion.minY(),state.drawRegion.minX() + endX,state.drawRegion.minY() + endY,color);
+    renderer.drawLine(sx,sy,ex,ey,color);
   }
 }
