@@ -8,8 +8,8 @@
       }
     }
 );
-    serverList.subscribe(new ListEventListener<ServerInfo>(){
-      @Override public void onItemActivated(      ServerInfo item){
+    serverList.subscribe(new ItemActivateEventListener<ServerInfo>(){
+      @Override public void onItemActivated(      UIWidget widget,      ServerInfo item){
         join(item.getAddress());
       }
     }
@@ -18,14 +18,14 @@
     name.bindText(BindHelper.bindBoundBeanProperty("name",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
     UILabel address=find("address",UILabel.class);
     address.bindText(BindHelper.bindBoundBeanProperty("address",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
-    UIScreenLayerUtil.trySubscribe(this,"add",new ButtonEventListener(){
-      @Override public void onButtonActivated(      UIButton button){
-        nuiManager.pushScreen("engine:addServerPopup");
+    WidgetUtil.trySubscribe(this,"add",new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget button){
+        getManager().pushScreen("engine:addServerPopup");
       }
     }
 );
-    UIScreenLayerUtil.trySubscribe(this,"remove",new ButtonEventListener(){
-      @Override public void onButtonActivated(      UIButton button){
+    WidgetUtil.trySubscribe(this,"remove",new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget button){
         if (serverList.getSelection() != null) {
           config.getNetwork().remove(serverList.getSelection());
           serverList.setSelection(null);
@@ -33,8 +33,8 @@
       }
     }
 );
-    UIScreenLayerUtil.trySubscribe(this,"join",new ButtonEventListener(){
-      @Override public void onButtonActivated(      UIButton button){
+    WidgetUtil.trySubscribe(this,"join",new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget button){
         config.save();
         if (serverList.getSelection() != null) {
           join(serverList.getSelection().getAddress());
@@ -43,17 +43,17 @@
     }
 );
   }
-  UIScreenLayerUtil.trySubscribe(this,"joinDirect",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"joinDirect",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       config.save();
-      nuiManager.pushScreen("engine:joinServerPopup");
+      getManager().pushScreen("engine:joinServerPopup");
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"close",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       config.save();
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );

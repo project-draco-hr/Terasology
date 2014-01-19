@@ -1,0 +1,9 @@
+{
+  Rect2i drawRegion=relativeToAbsolute(region);
+  if (!state.cropRegion.overlaps(drawRegion)) {
+    return;
+  }
+  material.setFloat("alpha",state.getAlpha());
+  material.bindTextures();
+  renderer.drawMaterialAt(material,drawRegion);
+}

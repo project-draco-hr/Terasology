@@ -1,0 +1,12 @@
+{
+  if (widget != null && hint != null) {
+    WidgetInfo info=new WidgetInfo(widget,hint);
+    contents.add(info);
+    if (!widget.getId().isEmpty()) {
+      contentLookup.put(widget.getId(),info);
+    }
+  }
+ else   if (widget != null) {
+    logger.error("Attempted to add widget '{}' of type '{}' with no layout hint",widget.getId(),widget.getClass().getSimpleName());
+  }
+}

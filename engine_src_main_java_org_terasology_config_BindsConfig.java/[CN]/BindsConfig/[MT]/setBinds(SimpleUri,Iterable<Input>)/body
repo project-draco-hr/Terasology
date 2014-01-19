@@ -1,4 +1,11 @@
 {
   Set<Input> uniqueInputs=Sets.newLinkedHashSet(inputs);
+  Iterator<Input> iterator=data.values().iterator();
+  while (iterator.hasNext()) {
+    Input i=iterator.next();
+    if (uniqueInputs.contains(i)) {
+      iterator.remove();
+    }
+  }
   data.replaceValues(bindUri,uniqueInputs);
 }

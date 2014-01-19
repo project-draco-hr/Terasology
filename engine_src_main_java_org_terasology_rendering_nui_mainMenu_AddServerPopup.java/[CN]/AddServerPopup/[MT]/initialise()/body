@@ -1,19 +1,19 @@
 {
-  UIScreenLayerUtil.trySubscribe(this,"ok",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"ok",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       UIText name=find("name",UIText.class);
       UIText address=find("address",UIText.class);
       if (name != null && address != null) {
         ServerInfo result=new ServerInfo(name.getText(),address.getText());
         config.getNetwork().add(result);
       }
-      nuiManager.popScreen();
+      getManager().popScreen();
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"cancel",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
-      nuiManager.popScreen();
+  WidgetUtil.trySubscribe(this,"cancel",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
+      getManager().popScreen();
     }
   }
 );
