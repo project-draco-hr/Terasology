@@ -5,8 +5,9 @@
     final MigLayout layout=new MigLayout();
     layout.setColConstraints("[min][fill]");
     layout.setRowConstraints("[min]");
-    expand.subscribe(new ButtonEventListener(){
-      @Override public void onButtonActivated(      UIButton button){
+    expand.subscribe(new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget widget){
+        UIButton button=(UIButton)widget;
         if ("-".equals(button.getText())) {
           layout.clear();
           invalidate();

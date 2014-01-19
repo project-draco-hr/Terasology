@@ -73,14 +73,14 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"create",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"create",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       behaviorEditor.createNode(palette.getSelection());
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"copy",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"copy",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       Clipboard systemClipboard=Toolkit.getDefaultToolkit().getSystemClipboard();
       String data=behaviorEditor.save();
       StringSelection contents=new StringSelection(data);
@@ -88,8 +88,8 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"layout",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"layout",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       BehaviorTree selection=selectTree.getSelection();
       if (selection != null) {
         selection.layout(selectedNode);
@@ -97,32 +97,32 @@
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"debug_run",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"debug_run",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       if (debugger != null) {
         debugger.run();
       }
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"debug_pause",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"debug_pause",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       if (debugger != null) {
         debugger.pause();
       }
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"debug_reset",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"debug_reset",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       if (selectedInterpreter != null) {
         selectedInterpreter.reset();
       }
     }
   }
 );
-  UIScreenLayerUtil.trySubscribe(this,"debug_step",new ButtonEventListener(){
-    @Override public void onButtonActivated(    UIButton button){
+  WidgetUtil.trySubscribe(this,"debug_step",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
       if (debugger != null) {
         debugger.step();
       }
