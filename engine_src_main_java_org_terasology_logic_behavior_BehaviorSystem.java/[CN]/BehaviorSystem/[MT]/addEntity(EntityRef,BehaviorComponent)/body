@@ -1,9 +1,9 @@
 {
-  Interpreter interpreter=behaviorComponent.interpreter;
+  Interpreter interpreter=entityInterpreters.get(entityRef);
   if (interpreter == null) {
     interpreter=new Interpreter(new Actor(entityRef));
-    BehaviorTree tree=Assets.get(AssetType.BEHAVIOR,behaviorComponent.behavior,BehaviorTree.class);
-    behaviorComponent.interpreter=interpreter;
+    BehaviorTree tree=behaviorComponent.tree;
+    entityInterpreters.put(entityRef,interpreter);
     behaviorComponent.tree=tree;
     interpreter.setRoot(tree.getRoot());
     entityRef.saveComponent(behaviorComponent);
