@@ -9,6 +9,6 @@
   entity.saveComponent(health);
   entity.send(new OnDamagedEvent(damageAmount,damagedAmount,damageType,instigator));
   if (health.currentHealth == 0) {
-    entity.send(new NoHealthEvent(instigator,tool,damageType));
+    entity.send(new DestroyEvent(instigator,directCause,damageType));
   }
 }

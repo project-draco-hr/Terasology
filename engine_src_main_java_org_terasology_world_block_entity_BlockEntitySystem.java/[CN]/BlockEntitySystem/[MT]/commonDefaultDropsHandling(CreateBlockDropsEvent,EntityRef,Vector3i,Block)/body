@@ -1,0 +1,19 @@
+{
+  BlockDamageModifierComponent blockDamageModifierComponent=event.getDamageType().getComponent(BlockDamageModifierComponent.class);
+  float chanceOfBlockDrop=1;
+  if (blockDamageModifierComponent != null) {
+    chanceOfBlockDrop=1 - blockDamageModifierComponent.blockAnnihilationChance;
+  }
+  if (random.nextFloat() < chanceOfBlockDrop) {
+    EntityRef item=blockItemFactory.newInstance(block.getBlockFamily(),1);
+    entity.send(new OnBlockToItem(item));
+    if (block.isDirectPickup()) {
+      if (!inventoryManager.giveItem(event.getInstigator(),item)) {
+        processDropping(item,location);
+      }
+    }
+ else {
+      processDropping(item,location);
+    }
+  }
+}

@@ -18,7 +18,7 @@
   Block block=type.getBlockForPlacement(worldProvider,blockEntityRegistry,placementPos,surfaceSide,secondaryDirection);
   if (canPlaceBlock(block,targetBlock,placementPos)) {
     if (networkSystem.getMode().isAuthority()) {
-      PlaceBlocks placeBlocks=new PlaceBlocks(placementPos,block);
+      PlaceBlocks placeBlocks=new PlaceBlocks(placementPos,block,event.getInstigator());
       worldProvider.getWorldEntity().send(placeBlocks);
       if (!placeBlocks.isConsumed()) {
         item.send(new OnBlockItemPlaced(placementPos,blockEntityRegistry.getBlockEntityAt(placementPos)));

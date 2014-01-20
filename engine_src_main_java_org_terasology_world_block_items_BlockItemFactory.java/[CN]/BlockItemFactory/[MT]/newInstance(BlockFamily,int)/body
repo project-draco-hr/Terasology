@@ -6,13 +6,14 @@
   if (blockFamily.getArchetypeBlock().getLuminance() > 0) {
     builder.addComponent(new LightComponent());
   }
-  final EntityRef entity=entityManager.create(blockFamily.getArchetypeBlock().getPrefab());
-  for (  Component component : entity.iterateComponents()) {
-    if (component.getClass().getAnnotation(RetainWhenBlockDetached.class) != null) {
-      builder.addComponent(component);
+  Prefab prefab=Assets.getPrefab(blockFamily.getArchetypeBlock().getPrefab());
+  if (prefab != null) {
+    for (    Component component : prefab.iterateComponents()) {
+      if (component.getClass().getAnnotation(AddToBlockBasedItem.class) != null) {
+        builder.addComponent(entityManager.getComponentLibrary().copy(component));
+      }
     }
   }
-  entity.destroy();
   ItemComponent item=builder.getComponent(ItemComponent.class);
   item.name=blockFamily.getDisplayName();
   if (blockFamily.getArchetypeBlock().isStackable()) {
