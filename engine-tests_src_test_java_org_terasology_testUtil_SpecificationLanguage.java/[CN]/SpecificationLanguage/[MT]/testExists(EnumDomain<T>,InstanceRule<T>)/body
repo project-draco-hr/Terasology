@@ -1,0 +1,12 @@
+{
+  for (  T instance : domain.generateUniversalSamples()) {
+    try {
+      rule.test(instance);
+    }
+ catch (    AssertionError e) {
+      continue;
+    }
+    return;
+  }
+  fail();
+}
