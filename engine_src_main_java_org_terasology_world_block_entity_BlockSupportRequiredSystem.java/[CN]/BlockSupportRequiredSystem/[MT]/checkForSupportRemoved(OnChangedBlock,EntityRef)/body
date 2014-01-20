@@ -1,0 +1,9 @@
+{
+  if (event.getNewType() == BlockManager.getAir()) {
+    final Vector3i blockPosition=Side.TOP.getAdjacentPos(event.getBlockPosition());
+    final Block block=worldProvider.getBlock(blockPosition);
+    if (block.isSupportRequired()) {
+      blockEntityRegistry.getBlockEntityAt(blockPosition).send(new DestroyEvent(EntityRef.NULL,EntityRef.NULL,EngineDamageTypes.DIRECT.get()));
+    }
+  }
+}

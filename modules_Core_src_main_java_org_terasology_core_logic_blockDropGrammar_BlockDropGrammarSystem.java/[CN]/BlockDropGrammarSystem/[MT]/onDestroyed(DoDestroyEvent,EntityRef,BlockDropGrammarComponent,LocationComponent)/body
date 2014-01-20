@@ -1,0 +1,45 @@
+{
+  FastRandom rnd=new FastRandom();
+  if (blockDrop.blockDrops != null) {
+    for (    String drop : blockDrop.blockDrops) {
+      String dropResult=drop;
+      boolean dropping=true;
+      int pipeIndex=dropResult.indexOf('|');
+      if (pipeIndex > -1) {
+        float chance=Float.parseFloat(dropResult.substring(0,pipeIndex));
+        if (rnd.nextFloat() >= chance) {
+          dropping=false;
+        }
+        dropResult=dropResult.substring(pipeIndex + 1);
+      }
+      if (dropping) {
+        DropParser dropParser=new DropParser(rnd,dropResult).invoke();
+        EntityRef dropItem=blockItemFactory.newInstance(blockManager.getBlockFamily(dropParser.getDrop()),dropParser.getCount());
+        createDrop(dropItem,locationComp.getWorldPosition());
+      }
+    }
+  }
+  if (blockDrop.itemDrops != null) {
+    for (    String drop : blockDrop.itemDrops) {
+      String dropResult=drop;
+      boolean dropping=true;
+      int pipeIndex=dropResult.indexOf('|');
+      if (pipeIndex > -1) {
+        float chance=Float.parseFloat(dropResult.substring(0,pipeIndex));
+        if (rnd.nextFloat() >= chance) {
+          dropping=false;
+        }
+        dropResult=dropResult.substring(pipeIndex + 1);
+      }
+      if (dropping) {
+        DropParser dropParser=new DropParser(rnd,dropResult).invoke();
+        EntityBuilder dropEntity=entityManager.newBuilder(dropParser.getDrop());
+        if (dropParser.getCount() > 1) {
+          ItemComponent itemComponent=dropEntity.getComponent(ItemComponent.class);
+          itemComponent.stackCount=(byte)dropParser.getCount();
+        }
+        createDrop(dropEntity.build(),locationComp.getWorldPosition());
+      }
+    }
+  }
+}

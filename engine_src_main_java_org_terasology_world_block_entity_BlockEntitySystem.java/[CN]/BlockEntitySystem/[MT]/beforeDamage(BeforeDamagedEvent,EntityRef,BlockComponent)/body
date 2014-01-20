@@ -1,13 +1,3 @@
 {
-  if (event.getDamageType() != null) {
-    BlockDamageComponent blockDamage=event.getDamageType().getComponent(BlockDamageComponent.class);
-    if (blockDamage != null) {
-      BlockFamily block=worldProvider.getBlock(blockComp.getPosition()).getBlockFamily();
-      for (      String category : block.getCategories()) {
-        if (blockDamage.materialDamageMultiplier.containsKey(category)) {
-          event.multiply(blockDamage.materialDamageMultiplier.get(category));
-        }
-      }
-    }
-  }
+  beforeDamageCommon(event,blockComp.getBlock());
 }

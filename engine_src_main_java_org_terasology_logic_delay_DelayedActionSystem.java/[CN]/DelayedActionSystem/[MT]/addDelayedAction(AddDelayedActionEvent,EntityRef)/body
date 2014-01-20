@@ -1,0 +1,8 @@
+{
+  if (entity.hasComponent(DelayedActionComponent.class)) {
+    throw new IllegalStateException("This component is already queued for delayed action");
+  }
+  long scheduleTime=time.getGameTimeInMs() + event.getDelay();
+  DelayedActionComponent delayedComponent=new DelayedActionComponent(scheduleTime,event.getActionId());
+  entity.saveComponent(delayedComponent);
+}

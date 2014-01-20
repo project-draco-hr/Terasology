@@ -1,3 +1,6 @@
 {
-  return CoreRegistry.get(AssetManager.class).resolveAndLoad(type,uri);
+  if (uri != null && !uri.isEmpty()) {
+    return CoreRegistry.get(AssetManager.class).resolveAndLoad(type,uri);
+  }
+  return null;
 }

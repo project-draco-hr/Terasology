@@ -1,0 +1,24 @@
+{
+  EntityRef entity=create();
+  Prefab prefab=null;
+  for (  Component component : components) {
+    if (component instanceof EntityInfoComponent) {
+      EntityInfoComponent comp=(EntityInfoComponent)component;
+      prefab=prefabManager.getPrefab(comp.parentPrefab);
+      break;
+    }
+  }
+  Iterable<Component> finalComponents;
+  if (eventSystem != null) {
+    BeforeEntityCreated event=new BeforeEntityCreated(prefab,components);
+    eventSystem.send(entity,event);
+    finalComponents=event.getResultComponents();
+  }
+ else {
+    finalComponents=components;
+  }
+  for (  Component c : finalComponents) {
+    store.put(entity.getId(),c);
+  }
+  return entity;
+}

@@ -1,8 +1,5 @@
 {
-  EntityRef entity=create();
-  for (  Component c : components) {
-    store.put(entity.getId(),c);
-  }
+  EntityRef entity=createEntity(components);
   if (eventSystem != null) {
     eventSystem.send(entity,OnAddedComponent.newInstance());
     eventSystem.send(entity,OnActivatedComponent.newInstance());

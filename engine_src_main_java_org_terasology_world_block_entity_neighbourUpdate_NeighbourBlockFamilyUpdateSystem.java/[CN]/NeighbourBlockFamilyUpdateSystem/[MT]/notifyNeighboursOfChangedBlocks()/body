@@ -1,0 +1,11 @@
+{
+  largeBlockUpdateCount++;
+  while (!blocksUpdatedInLargeBlockUpdate.isEmpty()) {
+    Set<Vector3i> blocksToUpdate=blocksUpdatedInLargeBlockUpdate;
+    blocksUpdatedInLargeBlockUpdate=Sets.newHashSet();
+    for (    Vector3i blockLocation : blocksToUpdate) {
+      processUpdateForBlockLocation(blockLocation);
+    }
+  }
+  largeBlockUpdateCount--;
+}
