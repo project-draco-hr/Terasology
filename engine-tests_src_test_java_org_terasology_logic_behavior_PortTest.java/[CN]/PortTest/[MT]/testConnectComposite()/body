@@ -1,0 +1,17 @@
+{
+  RenderableNode parent=new RenderableNode();
+  parent.setNode(composite());
+  RenderableNode one=new RenderableNode();
+  one.setNode(node());
+  RenderableNode two=new RenderableNode();
+  two.setNode(node());
+  ((Port.OutputPort)parent.getPortList().ports().get(0)).setTarget(one.getInputPort());
+  ((Port.OutputPort)parent.getPortList().ports().get(2)).setTarget(two.getInputPort());
+  Assert.assertEquals(parent,one.getInputPort().getTargetPort().getSourceNode());
+  Assert.assertEquals(parent,two.getInputPort().getTargetPort().getSourceNode());
+  Assert.assertEquals(parent.getPortList().ports().get(1),one.getInputPort().getTargetPort());
+  Assert.assertEquals(parent.getPortList().ports().get(3),two.getInputPort().getTargetPort());
+  Assert.assertEquals(2,parent.getChildrenCount());
+  Assert.assertEquals(one,parent.getChild(0));
+  Assert.assertEquals(two,parent.getChild(1));
+}

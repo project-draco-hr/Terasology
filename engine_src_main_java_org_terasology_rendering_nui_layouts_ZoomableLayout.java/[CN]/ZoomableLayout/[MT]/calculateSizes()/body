@@ -1,0 +1,22 @@
+{
+  if (windowSize.x > windowSize.y) {
+    windowSize.x=windowSize.y;
+  }
+  if (windowSize.x < windowSize.y) {
+    windowSize.y=windowSize.x;
+  }
+  if ((screenSize.x != 0) && (screenSize.y != 0)) {
+    if (screenSize.x > screenSize.y) {
+      windowSize.x*=(float)screenSize.x / screenSize.y;
+    }
+ else {
+      windowSize.y*=(float)screenSize.y / screenSize.x;
+    }
+  }
+  if ((windowSize.x > 0) && (windowSize.y > 0)) {
+    pixelSize=new Vector2f(screenSize.x / windowSize.x,screenSize.y / windowSize.y);
+  }
+ else {
+    pixelSize=new Vector2f();
+  }
+}

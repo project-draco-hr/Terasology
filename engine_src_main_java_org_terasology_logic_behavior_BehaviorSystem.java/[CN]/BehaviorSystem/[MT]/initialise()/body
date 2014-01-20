@@ -1,0 +1,10 @@
+{
+  CoreRegistry.put(BehaviorSystem.class,this);
+  List<BehaviorNodeComponent> items=Lists.newArrayList();
+  Collection<Prefab> prefabs=prefabManager.listPrefabs(BehaviorNodeComponent.class);
+  for (  Prefab prefab : prefabs) {
+    EntityRef entityRef=entityManager.create(prefab);
+    items.add(entityRef.getComponent(BehaviorNodeComponent.class));
+  }
+  CoreRegistry.put(BehaviorNodeFactory.class,new BehaviorNodeFactory(items));
+}

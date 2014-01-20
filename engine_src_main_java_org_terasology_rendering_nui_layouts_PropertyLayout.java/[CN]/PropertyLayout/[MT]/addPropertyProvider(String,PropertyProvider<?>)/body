@@ -1,0 +1,31 @@
+{
+  if (propertyProvider.getProperties().size() > 0) {
+    final UIButton expand=new UIButton("","+");
+    final UILabel headline=new UILabel(label);
+    final MigLayout layout=new MigLayout();
+    layout.setColConstraints("[min][fill]");
+    layout.setRowConstraints("[min]");
+    expand.subscribe(new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget widget){
+        UIButton button=(UIButton)widget;
+        if ("-".equals(button.getText())) {
+          layout.clear();
+          invalidate();
+          button.setText("+");
+        }
+ else {
+          for (          Property<?,?> property : propertyProvider.getProperties()) {
+            layout.addWidget(property.getLabel(),new CCHint("newline"));
+            layout.addWidget(property.getEditor(),new CCHint());
+          }
+          invalidate();
+          button.setText("-");
+        }
+      }
+    }
+);
+    addWidget(expand,new CCHint("newline, w 50!"));
+    addWidget(headline,new CCHint());
+    addWidget(layout,new CCHint("newline, spanx 2"));
+  }
+}

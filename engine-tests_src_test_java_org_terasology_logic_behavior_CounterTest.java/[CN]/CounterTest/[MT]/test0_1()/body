@@ -1,0 +1,16 @@
+{
+  Interpreter interpreter=new Interpreter(null);
+  DebugNode debugNode=new DebugNode(0);
+  DelayNode delayNode=new DelayNode(1,debugNode);
+  interpreter.setRoot(delayNode);
+  interpreter.start();
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  Assert.assertNull(debugNode.lastTask);
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  DebugNode.DebugTask first=debugNode.lastTask;
+  Assert.assertTrue(first.updateCalled);
+  Assert.assertTrue(first.initializeCalled);
+  Assert.assertTrue(first.terminateCalled);
+  first.reset();
+  Assert.assertTrue(interpreter.tick(0) == 0);
+}

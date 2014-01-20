@@ -1,0 +1,13 @@
+{
+  if (result == Status.FAILURE) {
+    interpreter().stop(this,Status.FAILURE);
+    return;
+  }
+  if (iterator.hasNext()) {
+    current=iterator.next();
+    interpreter().start(current,this);
+  }
+ else {
+    interpreter().stop(this,Status.SUCCESS);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  UISlider slider=new UISlider();
+  slider.setMinimum(range.min());
+  slider.setRange(range.max() - range.min());
+  slider.setPrecision(range.precision());
+  slider.setIncrement(range.increment());
+  Binding<Float> binding=createFloatBinding(fieldMetadata);
+  slider.bindValue(binding);
+  return new Property<>(label,binding,slider);
+}
