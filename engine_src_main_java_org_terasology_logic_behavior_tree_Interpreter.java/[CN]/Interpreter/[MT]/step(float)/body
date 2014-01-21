@@ -1,0 +1,28 @@
+{
+  Task current=tasks.pollFirst();
+  if (current == TERMINAL) {
+    tasks.addLast(TERMINAL);
+    return false;
+  }
+  if (startedNodes.contains(current.getNode())) {
+    tasks.addLast(current);
+    return true;
+  }
+  startedNodes.add(current.getNode());
+  current.tick(dt);
+  if (current.getStatus() != Status.RUNNING) {
+    if (debugger != null) {
+      debugger.nodeFinished(current.getNode(),current.getStatus());
+    }
+    if (current.getObserver() != null) {
+      current.getObserver().handle(current.getStatus());
+    }
+  }
+ else {
+    tasks.addLast(current);
+    if (debugger != null) {
+      debugger.nodeUpdated(current.getNode(),current.getStatus());
+    }
+  }
+  return true;
+}

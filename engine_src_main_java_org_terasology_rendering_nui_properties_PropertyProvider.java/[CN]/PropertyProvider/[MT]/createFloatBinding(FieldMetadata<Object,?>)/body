@@ -1,0 +1,28 @@
+{
+  Class<?> type=fieldMetadata.getType();
+  if (type == Integer.class || type == Integer.TYPE) {
+    return new Binding<Float>(){
+      @Override public Float get(){
+        return ((Integer)fieldMetadata.getValueChecked(target)).floatValue();
+      }
+      @Override public void set(      Float value){
+        fieldMetadata.setValue(target,value.intValue());
+      }
+    }
+;
+  }
+ else   if (type == Float.class || type == Float.TYPE) {
+    return new Binding<Float>(){
+      @Override public Float get(){
+        return (Float)fieldMetadata.getValueChecked(target);
+      }
+      @Override public void set(      Float value){
+        fieldMetadata.setValue(target,value);
+      }
+    }
+;
+  }
+ else {
+    throw new IllegalArgumentException("Cannot create Binding<Float> for a field of type " + type);
+  }
+}

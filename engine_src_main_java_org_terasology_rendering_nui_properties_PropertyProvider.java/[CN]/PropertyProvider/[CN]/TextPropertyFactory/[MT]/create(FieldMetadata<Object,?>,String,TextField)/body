@@ -1,0 +1,8 @@
+{
+  UITextEntry<T> text=new UITextEntry<>();
+  TextBinding<T> textBinding=createTextBinding((FieldMetadata<Object,T>)fieldMetadata);
+  text.setFormatter(textBinding);
+  text.setParser(textBinding);
+  text.bindValue(textBinding);
+  return new Property<>(label,textBinding,text);
+}

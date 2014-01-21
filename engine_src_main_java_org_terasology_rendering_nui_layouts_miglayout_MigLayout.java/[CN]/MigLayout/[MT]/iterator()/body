@@ -1,0 +1,15 @@
+{
+  return new Iterator<UIWidget>(){
+    private Iterator<ComponentWrapper> it=children.iterator();
+    @Override public boolean hasNext(){
+      return it.hasNext();
+    }
+    @Override public UIWidget next(){
+      return (UIWidget)it.next().getComponent();
+    }
+    @Override public void remove(){
+      it.remove();
+    }
+  }
+;
+}

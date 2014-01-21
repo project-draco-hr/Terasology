@@ -1,0 +1,13 @@
+{
+  for (  Map.Entry<Class<? extends Node>,BehaviorNodeComponent> entry : nodes.entrySet()) {
+    if (nodeComponent == entry.getValue()) {
+      try {
+        return entry.getKey().newInstance();
+      }
+ catch (      InstantiationException|IllegalAccessException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
+  return null;
+}

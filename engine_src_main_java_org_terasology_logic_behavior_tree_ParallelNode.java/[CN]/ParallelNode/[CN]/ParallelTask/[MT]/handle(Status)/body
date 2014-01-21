@@ -1,0 +1,20 @@
+{
+  if (result == Status.SUCCESS) {
+    successCount++;
+    if (getNode().successPolicy == Policy.RequireOne) {
+      interpreter().stop(this,Status.SUCCESS);
+    }
+  }
+  if (result == Status.FAILURE) {
+    failureCount++;
+    if (getNode().failurePolicy == Policy.RequireOne) {
+      interpreter().stop(this,Status.FAILURE);
+    }
+  }
+  if (getNode().failurePolicy == Policy.RequireAll && failureCount == getNode().children().size()) {
+    interpreter().stop(this,Status.FAILURE);
+  }
+  if (getNode().successPolicy == Policy.RequireAll && successCount == getNode().children().size()) {
+    interpreter().stop(this,Status.SUCCESS);
+  }
+}

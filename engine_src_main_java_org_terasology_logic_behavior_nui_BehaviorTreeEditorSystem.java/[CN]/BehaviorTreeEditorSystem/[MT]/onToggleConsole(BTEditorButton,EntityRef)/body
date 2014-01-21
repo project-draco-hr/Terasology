@@ -1,0 +1,16 @@
+{
+  if (event.getState() == ButtonState.DOWN) {
+    if (!editorVisible) {
+      nuiManager.pushScreen("engine:behaviorEditorScreen");
+      event.consume();
+      editorVisible=true;
+      Mouse.setGrabbed(false);
+    }
+ else {
+      nuiManager.popScreen();
+      event.consume();
+      editorVisible=false;
+      Mouse.setGrabbed(true);
+    }
+  }
+}

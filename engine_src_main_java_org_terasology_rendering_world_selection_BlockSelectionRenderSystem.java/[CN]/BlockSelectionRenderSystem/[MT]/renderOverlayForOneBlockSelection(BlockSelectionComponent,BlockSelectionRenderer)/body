@@ -1,9 +1,9 @@
 {
   selectionRenderer.beginRenderOverlay();
-  Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
-  selectionRenderer.beginRenderOverlay();
   if (blockSelectionComponent.currentSelection == null) {
-    selectionRenderer.renderMark(blockSelectionComponent.startPosition,cameraPosition);
+    if (blockSelectionComponent.startPosition != null) {
+      selectionRenderer.renderMark(blockSelectionComponent.startPosition);
+    }
   }
  else {
     Vector3i size=blockSelectionComponent.currentSelection.size();
@@ -13,7 +13,7 @@
         for (int x=0; x < size.x; x++) {
           block.set(x,y,z);
           block.add(blockSelectionComponent.currentSelection.min());
-          selectionRenderer.renderMark(block,cameraPosition);
+          selectionRenderer.renderMark(block);
         }
       }
     }

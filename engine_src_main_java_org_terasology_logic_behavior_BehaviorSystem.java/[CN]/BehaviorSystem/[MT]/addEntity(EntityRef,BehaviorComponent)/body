@@ -1,0 +1,18 @@
+{
+  Interpreter interpreter=entityInterpreters.get(entityRef);
+  if (interpreter == null) {
+    interpreter=new Interpreter(new Actor(entityRef));
+    BehaviorTree tree=behaviorComponent.tree;
+    entityInterpreters.put(entityRef,interpreter);
+    behaviorComponent.tree=tree;
+    interpreter.setRoot(tree.getRoot());
+    entityRef.saveComponent(behaviorComponent);
+    interpreter.start();
+    List<Interpreter> list=interpreters.get(tree);
+    if (list == null) {
+      list=Lists.newArrayList();
+      interpreters.put(tree,list);
+    }
+    list.add(interpreter);
+  }
+}

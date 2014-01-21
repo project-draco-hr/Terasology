@@ -1,0 +1,12 @@
+{
+  if (debugger == null || debugger.beforeTick()) {
+    startedNodes.clear();
+    while (step(dt)) {
+      continue;
+    }
+    if (debugger != null) {
+      debugger.afterTick();
+    }
+  }
+  return startedNodes.size();
+}
