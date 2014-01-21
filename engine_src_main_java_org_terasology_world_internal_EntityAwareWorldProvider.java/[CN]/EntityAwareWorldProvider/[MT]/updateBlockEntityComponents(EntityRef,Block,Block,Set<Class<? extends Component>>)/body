@@ -1,6 +1,6 @@
 {
-  EntityRef oldEntitySample=(!oldType.getPrefab().isEmpty()) ? entityManager.create(oldType.getPrefab()) : EntityRef.NULL;
-  EntityRef newEntitySample=(!type.getPrefab().isEmpty()) ? entityManager.create(type.getPrefab()) : EntityRef.NULL;
+  EntityRef oldEntitySample=(!oldType.getPrefab().isEmpty()) ? entityManager.createEntityWithoutLifecycleEvents(oldType.getPrefab()) : EntityRef.NULL;
+  EntityRef newEntitySample=(!type.getPrefab().isEmpty()) ? entityManager.createEntityWithoutLifecycleEvents(type.getPrefab()) : EntityRef.NULL;
   try {
     for (    Component component : blockEntity.iterateComponents()) {
       if (!COMMON_BLOCK_COMPONENTS.contains(component.getClass()) && !entityManager.getComponentLibrary().getMetadata(component.getClass()).isRetainUnalteredOnBlockChange() && !newEntitySample.hasComponent(component.getClass())&& !retainComponents.contains(component.getClass())) {
@@ -32,7 +32,7 @@
     }
   }
   finally {
-    oldEntitySample.destroy();
-    newEntitySample.destroy();
+    entityManager.destroyEntityWithoutEvents(oldEntitySample);
+    entityManager.destroyEntityWithoutEvents(newEntitySample);
   }
 }
