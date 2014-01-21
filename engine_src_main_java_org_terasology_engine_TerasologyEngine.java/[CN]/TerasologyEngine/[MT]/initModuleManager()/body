@@ -4,6 +4,7 @@
   moduleSecurityManager.addAPIPackage("org.lwjgl.opengl");
   moduleSecurityManager.addAPIPackage("org.newdawn.slick");
   moduleSecurityManager.addAPIPackage("java.lang");
+  moduleSecurityManager.addAllowedPermission(ClassLoader.class,FilePermission.class);
   moduleSecurityManager.addAPIPackage("java.lang.ref");
   moduleSecurityManager.addAPIPackage("java.math");
   moduleSecurityManager.addAPIPackage("java.util");
@@ -41,7 +42,12 @@
   moduleSecurityManager.addAPIPackage("gnu.trove.stack.array");
   moduleSecurityManager.addAPIPackage("gnu.trove.strategy");
   moduleSecurityManager.addAPIPackage("javax.vecmath");
-  moduleSecurityManager.addAllowedPermission(new AWTPermission("accessClipboard"));
+  moduleSecurityManager.addAllowedPermission(UIText.class,new AWTPermission("accessClipboard"));
+  moduleSecurityManager.addAllowedPermission(org.terasology.rendering.nui.widgets.UIText.class,new AWTPermission("accessClipboard"));
+  moduleSecurityManager.addAllowedPermission(EventSystemImpl.class,new RuntimePermission("createClassLoader"));
+  moduleSecurityManager.addAllowedPermission(EventSystemImpl.class,ReflectPermission.class);
+  moduleSecurityManager.addAllowedPermission(ClassMetadata.class,new RuntimePermission("createClassLoader"));
+  moduleSecurityManager.addAllowedPermission(ClassMetadata.class,ReflectPermission.class);
   moduleSecurityManager.addAPIClass(Joiner.class);
   moduleSecurityManager.addAPIClass(IOException.class);
   moduleSecurityManager.addAPIClass(InvocationTargetException.class);
@@ -53,6 +59,9 @@
     }
  else {
       moduleSecurityManager.addAPIClass(apiClass);
+      for (      Class<? extends Permission> permissionType : apiClass.getAnnotation(API.class).permissions()) {
+        moduleSecurityManager.addAllowedPermission(apiClass,permissionType);
+      }
     }
   }
   System.setSecurityManager(moduleSecurityManager);
