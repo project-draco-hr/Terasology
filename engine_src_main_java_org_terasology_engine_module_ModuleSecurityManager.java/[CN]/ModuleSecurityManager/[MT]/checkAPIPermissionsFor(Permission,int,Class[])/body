@@ -1,7 +1,8 @@
 {
   Set<Class> allowed=Sets.union(allowedPermissionInstances.get(permission),allowedPermissionsTypes.get(permission.getClass()));
+  Set<String> allowedPackages=Sets.union(allowedPackagePermissionInstances.get(permission),allowedPackagePermissionsTypes.get(permission.getClass()));
   for (int i=moduleDepth - 1; i >= 0; i--) {
-    if (allowed.contains(stack[i])) {
+    if (allowed.contains(stack[i]) || allowedPackages.contains(stack[i].getPackage().getName())) {
       return;
     }
   }
