@@ -1,16 +1,5 @@
 {
-  for (  Field field : ReflectionUtils.getAllFields(system.getClass(),ReflectionUtils.withAnnotation(In.class))) {
-    Object value=CoreRegistry.get(field.getType());
-    if (value != null) {
-      try {
-        field.setAccessible(true);
-        field.set(system,value);
-      }
- catch (      IllegalAccessException e) {
-        logger.error("Failed to inject value {} into field {} of system {}",value,field,system,e);
-      }
-    }
-  }
+  InjectionHelper.inject(system);
   if (console != null) {
     console.registerCommandProvider(system);
   }
