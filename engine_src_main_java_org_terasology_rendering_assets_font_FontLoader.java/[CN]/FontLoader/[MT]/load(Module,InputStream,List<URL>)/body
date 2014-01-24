@@ -1,14 +1,15 @@
 {
-  BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
-  FontDataBuilder builder=new FontDataBuilder();
-  parseHeader(reader.readLine());
-  int numPages=parseCommon(builder,reader.readLine());
-  for (int i=0; i < numPages; ++i) {
-    parsePage(builder,module.getId(),reader.readLine());
+  try (BufferedReader reader=new BufferedReader(new InputStreamReader(stream,Charsets.UTF_8))){
+    FontDataBuilder builder=new FontDataBuilder();
+    parseHeader(reader.readLine());
+    int numPages=parseCommon(builder,reader.readLine());
+    for (int i=0; i < numPages; ++i) {
+      parsePage(builder,module.getId(),reader.readLine());
+    }
+    int charCount=getCharacterCount(reader.readLine());
+    for (int i=0; i < charCount; ++i) {
+      parseCharacter(builder,reader.readLine());
+    }
+    return builder.build();
   }
-  int charCount=getCharacterCount(reader.readLine());
-  for (int i=0; i < charCount; ++i) {
-    parseCharacter(builder,reader.readLine());
-  }
-  return builder.build();
-}
+ }

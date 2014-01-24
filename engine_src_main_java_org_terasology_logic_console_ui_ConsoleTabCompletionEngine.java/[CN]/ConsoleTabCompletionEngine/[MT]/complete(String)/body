@@ -1,0 +1,25 @@
+{
+  String cmdQuery=text.trim();
+  List<CommandInfo> commands=console.getCommandList();
+  Collection<String> commandNames=Collections2.transform(commands,new Function<CommandInfo,String>(){
+    @Override public String apply(    CommandInfo input){
+      return input.getName();
+    }
+  }
+);
+  Collection<String> matches=CamelCaseMatcher.getMatches(cmdQuery,commandNames);
+  if (matches.size() == 1) {
+    return matches.iterator().next();
+  }
+ else   if (matches.size() > 1) {
+    String commandMatches="";
+    for (    String cmd : matches) {
+      if (!commandMatches.isEmpty()) {
+        commandMatches+=" ";
+      }
+      commandMatches+=cmd;
+    }
+    console.addMessage(commandMatches);
+  }
+  return text;
+}
