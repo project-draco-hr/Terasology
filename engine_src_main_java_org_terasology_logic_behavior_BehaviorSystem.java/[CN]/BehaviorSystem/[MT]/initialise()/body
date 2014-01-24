@@ -6,5 +6,9 @@
     EntityRef entityRef=entityManager.create(prefab);
     items.add(entityRef.getComponent(BehaviorNodeComponent.class));
   }
+  for (  AssetUri uri : assetManager.listAssets(AssetType.BEHAVIOR)) {
+    BehaviorTree asset=assetManager.loadAsset(uri,BehaviorTree.class);
+    trees.add(asset);
+  }
   CoreRegistry.put(BehaviorNodeFactory.class,new BehaviorNodeFactory(items));
 }
