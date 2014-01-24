@@ -3,12 +3,6 @@
     operation.draw();
   }
   drawOnTopOperations.clear();
-  if (!subregionStack.isEmpty()) {
-    logger.error("UI Subregions are not being correctly ended");
-    while (!subregionStack.isEmpty()) {
-      subregionStack.pop().close();
-    }
-  }
   Iterator<Map.Entry<TextCacheKey,Map<Material,Mesh>>> textIterator=cachedText.entrySet().iterator();
   while (textIterator.hasNext()) {
     Map.Entry<TextCacheKey,Map<Material,Mesh>> entry=textIterator.next();

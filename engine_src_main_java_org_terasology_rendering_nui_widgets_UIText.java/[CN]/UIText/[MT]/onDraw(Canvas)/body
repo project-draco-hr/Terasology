@@ -6,17 +6,15 @@
   lastWidth=canvas.size().x;
   canvas.addInteractionRegion(interactionListener,canvas.getRegion());
   correctCursor();
-  try (SubRegion ignored=canvas.subRegion(canvas.getRegion(),true)){
-    try (SubRegion ignored2=canvas.subRegion(Rect2i.createFromMinAndSize(-offset,0,lastFont.getWidth(getText()) + 1,lastFont.getLineHeight()),false)){
-      canvas.drawText(text.get(),canvas.getRegion());
-      if (isFocused()) {
-        if (hasSelection()) {
-          drawSelection(canvas);
-        }
+  try (SubRegion ignored=canvas.subRegion(canvas.getRegion(),true);SubRegion ignored2=canvas.subRegion(Rect2i.createFromMinAndSize(-offset,0,lastFont.getWidth(getText()) + 1,lastFont.getLineHeight()),false)){
+    canvas.drawText(text.get(),canvas.getRegion());
+    if (isFocused()) {
+      if (hasSelection()) {
+        drawSelection(canvas);
+      }
  else {
-          drawCursor(canvas);
-        }
+        drawCursor(canvas);
       }
     }
-   }
+  }
  }
