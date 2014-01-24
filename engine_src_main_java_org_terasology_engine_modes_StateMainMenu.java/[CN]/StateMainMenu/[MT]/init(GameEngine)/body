@@ -1,6 +1,7 @@
 {
   entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class),CoreRegistry.get(NetworkSystem.class),CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
   eventSystem=CoreRegistry.get(EventSystem.class);
+  CoreRegistry.put(Console.class,new ConsoleImpl());
   nuiManager=CoreRegistry.get(NUIManager.class);
   ((NUIManagerInternal)nuiManager).refreshWidgetsLibrary();
   componentSystemManager=new ComponentSystemManager();
@@ -8,9 +9,11 @@
   CameraTargetSystem cameraTargetSystem=new CameraTargetSystem();
   CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
   componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
+  componentSystemManager.register(new ConsoleSystem(),"engine:ConsoleSystem");
+  componentSystemManager.register(new CoreCommands(),"engine:CoreCommands");
   eventSystem.registerEventHandler(CoreRegistry.get(NUIManager.class));
   inputSystem=CoreRegistry.get(InputSystem.class);
-  componentSystemManager.register(inputSystem,"engine:InputSystem");
+  new RegisterInputSystem().step();
   EntityRef localPlayerEntity=entityManager.create(new ClientComponent());
   LocalPlayer localPlayer=CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
   localPlayer.setClientEntity(localPlayerEntity);
