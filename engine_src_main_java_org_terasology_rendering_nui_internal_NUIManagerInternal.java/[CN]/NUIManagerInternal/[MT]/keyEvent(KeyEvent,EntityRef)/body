@@ -2,4 +2,10 @@
   if (focus != null) {
     focus.onKeyEvent(event);
   }
+  if (event.isDown() && !event.isConsumed() && event.getKey() == Keyboard.Key.ESCAPE) {
+    if (!screens.isEmpty() && screens.peek().isQuickCloseAllowed()) {
+      popScreen();
+      event.consume();
+    }
+  }
 }
