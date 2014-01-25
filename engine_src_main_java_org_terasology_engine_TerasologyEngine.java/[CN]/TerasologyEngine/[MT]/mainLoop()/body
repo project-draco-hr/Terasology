@@ -35,6 +35,9 @@
       currentState.update(delta);
       PerformanceMonitor.endActivity();
     }
+    if (hasMouseFocus()) {
+      Mouse.setGrabbed(!(nuiManager.isReleasingMouse() || guiManager.isReleasingMouse()));
+    }
     GameThread.processWaitingProcesses();
     PerformanceMonitor.startActivity("Render");
     Display.update();
