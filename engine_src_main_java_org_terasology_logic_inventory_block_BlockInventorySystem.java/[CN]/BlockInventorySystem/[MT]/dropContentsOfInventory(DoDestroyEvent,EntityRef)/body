@@ -1,0 +1,11 @@
+{
+  Vector3f position=entity.getComponent(LocationComponent.class).getWorldPosition();
+  int slotCount=inventoryManager.getNumSlots(entity);
+  for (int i=0; i < slotCount; i++) {
+    EntityRef itemInSlot=inventoryManager.getItemInSlot(entity,0);
+    if (itemInSlot.exists()) {
+      inventoryManager.removeItem(entity,itemInSlot);
+      pickupBuilder.createPickupFor(itemInSlot,position,60);
+    }
+  }
+}
