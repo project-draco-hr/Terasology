@@ -14,10 +14,10 @@ switch (textureType) {
 case TEXTURE2D:
     logger.debug("Bound texture '{}' - {}",getURI(),id);
   glBindTexture(GL11.GL_TEXTURE_2D,id);
-glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,wrapMode.getGLMode());
-glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,wrapMode.getGLMode());
-GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,filterMode.getGlMinFilter());
-GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,filterMode.getGlMagFilter());
+glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,getGLMode(wrapMode));
+glTexParameterf(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,getGLMode(wrapMode));
+GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,getGlMinFilter(filterMode));
+GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,getGlMagFilter(filterMode));
 GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT,4);
 GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL12.GL_TEXTURE_MAX_LEVEL,data.getBuffers().length - 1);
 for (int i=0; i < data.getBuffers().length; i++) {
@@ -27,11 +27,11 @@ break;
 case TEXTURE3D:
 logger.debug("Bound texture '{}' - {}",getURI(),id);
 glBindTexture(GL12.GL_TEXTURE_3D,id);
-glTexParameterf(GL12.GL_TEXTURE_3D,GL_TEXTURE_WRAP_S,wrapMode.getGLMode());
-glTexParameterf(GL12.GL_TEXTURE_3D,GL_TEXTURE_WRAP_T,wrapMode.getGLMode());
-glTexParameterf(GL12.GL_TEXTURE_3D,GL12.GL_TEXTURE_WRAP_R,wrapMode.getGLMode());
-GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL11.GL_TEXTURE_MIN_FILTER,filterMode.getGlMinFilter());
-GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL11.GL_TEXTURE_MAG_FILTER,filterMode.getGlMagFilter());
+glTexParameterf(GL12.GL_TEXTURE_3D,GL_TEXTURE_WRAP_S,getGLMode(wrapMode));
+glTexParameterf(GL12.GL_TEXTURE_3D,GL_TEXTURE_WRAP_T,getGLMode(wrapMode));
+glTexParameterf(GL12.GL_TEXTURE_3D,GL12.GL_TEXTURE_WRAP_R,getGLMode(wrapMode));
+GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL11.GL_TEXTURE_MIN_FILTER,getGlMinFilter(filterMode));
+GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL11.GL_TEXTURE_MAG_FILTER,getGlMagFilter(filterMode));
 GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT,4);
 GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL12.GL_TEXTURE_MAX_LEVEL,data.getBuffers().length - 1);
 for (int i=0; i < data.getBuffers().length; i++) {
