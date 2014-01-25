@@ -2,8 +2,7 @@
   Interpreter interpreter=new Interpreter(null);
   DebugNode debugNode=new DebugNode(1);
   DelayNode delayNode=new DelayNode(1,debugNode);
-  interpreter.setRoot(delayNode);
-  interpreter.start();
+  interpreter.start(delayNode);
   Assert.assertTrue(interpreter.tick(0) > 0);
   Assert.assertNull(debugNode.lastTask);
   Assert.assertTrue(interpreter.tick(0) > 0);

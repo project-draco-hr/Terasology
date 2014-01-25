@@ -12,8 +12,7 @@
 );
     SelectorNode node=new SelectorNode();
     node.children().add(mock);
-    SelectorNode.SelectorTask task=node.createTask();
-    interpreter.start(task);
+    Task task=interpreter.start(node);
     interpreter.tick(0);
     Assert.assertEquals(Status.RUNNING,task.getStatus());
     interpreter.tick(0);
