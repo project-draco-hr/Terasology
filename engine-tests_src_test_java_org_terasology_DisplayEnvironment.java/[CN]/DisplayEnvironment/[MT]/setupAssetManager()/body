@@ -1,0 +1,69 @@
+{
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  AssetManager assetManager=new AssetManager(moduleManager);
+  CoreRegistry.put(AssetManager.class,assetManager);
+  AssetType.registerAssetTypes(assetManager);
+  assetManager.addAssetSource(new ClasspathSource(TerasologyConstants.ENGINE_MODULE,TerasologyEngine.class.getProtectionDomain().getCodeSource(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY));
+  assetManager.addAssetSource(new ClasspathSource("unittest",DisplayEnvironment.class.getProtectionDomain().getCodeSource(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY));
+  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
+    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
+      return new PojoPrefab(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SHAPE,new AssetFactory<BlockShapeData,BlockShape>(){
+    @Override public BlockShape buildAsset(    AssetUri uri,    BlockShapeData data){
+      return new BlockShapeImpl(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
+    @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
+      return new OpenGLTexture(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
+    @Override public Font buildAsset(    AssetUri uri,    FontData data){
+      return new OpenGLFont(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SHADER,new AssetFactory<ShaderData,Shader>(){
+    @Override public Shader buildAsset(    AssetUri uri,    ShaderData data){
+      return new GLSLShader(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.MATERIAL,new AssetFactory<MaterialData,Material>(){
+    @Override public Material buildAsset(    AssetUri uri,    MaterialData data){
+      return new GLSLMaterial(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.MESH,new AssetFactory<MeshData,Mesh>(){
+    @Override public Mesh buildAsset(    AssetUri uri,    MeshData data){
+      return new OpenGLMesh(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SKELETON_MESH,new AssetFactory<SkeletalMeshData,SkeletalMesh>(){
+    @Override public SkeletalMesh buildAsset(    AssetUri uri,    SkeletalMeshData data){
+      return new OpenGLSkeletalMesh(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.ANIMATION,new AssetFactory<MeshAnimationData,MeshAnimation>(){
+    @Override public MeshAnimation buildAsset(    AssetUri uri,    MeshAnimationData data){
+      return new MeshAnimationImpl(uri,data);
+    }
+  }
+);
+  CoreRegistry.get(AssetManager.class).setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
+    @Override public UISkin buildAsset(    AssetUri uri,    UISkinData data){
+      return new UISkin(uri,data);
+    }
+  }
+);
+  CoreRegistry.put(ShaderManager.class,new ShaderManager()).initShaders();
+}

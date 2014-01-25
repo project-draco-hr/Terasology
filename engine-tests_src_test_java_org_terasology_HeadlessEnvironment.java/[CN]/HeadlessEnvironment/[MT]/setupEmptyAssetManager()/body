@@ -1,0 +1,8 @@
+{
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  AssetManager assetManager=new AssetManager(moduleManager);
+  for (  AssetType type : AssetType.values()) {
+    assetManager.setAssetFactory(type,mock(AssetFactory.class));
+  }
+  CoreRegistry.put(AssetManager.class,assetManager);
+}
