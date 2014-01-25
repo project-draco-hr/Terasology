@@ -1,13 +1,12 @@
 {
-  try {
-    T component=minion.getComponent(type);
-    if (component == null) {
-      component=type.newInstance();
-      minion.addComponent(component);
+  T component=minion.getComponent(type);
+  if (component == null) {
+    ComponentMetadata<T> metadata=CoreRegistry.get(ComponentLibrary.class).getMetadata(type);
+    if (metadata == null || !metadata.isConstructable()) {
+      throw new RuntimeException("Cannot create component for " + type);
     }
-    return component;
+    component=metadata.newInstance();
+    minion.addComponent(component);
   }
- catch (  InstantiationException|IllegalAccessException e) {
-    throw new RuntimeException(e);
-  }
+  return component;
 }

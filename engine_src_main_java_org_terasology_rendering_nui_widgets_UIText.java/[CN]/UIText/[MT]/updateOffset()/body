@@ -1,10 +1,12 @@
 {
-  String before=getText().substring(0,cursorPosition);
-  int cursorDist=lastFont.getWidth(before);
-  if (cursorDist < offset) {
-    offset=cursorDist;
-  }
-  if (cursorDist > offset + lastWidth) {
-    offset=cursorDist - lastWidth + 1;
+  if (lastFont != null) {
+    String before=getText().substring(0,cursorPosition);
+    int cursorDist=lastFont.getWidth(before);
+    if (cursorDist < offset) {
+      offset=cursorDist;
+    }
+    if (cursorDist > offset + lastWidth) {
+      offset=cursorDist - lastWidth + 1;
+    }
   }
 }

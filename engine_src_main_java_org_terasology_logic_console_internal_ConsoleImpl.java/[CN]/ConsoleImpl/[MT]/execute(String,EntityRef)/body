@@ -3,7 +3,7 @@
     return false;
   }
   Client owner=networkSystem.getOwner(callingClient);
-  if (owner != null && owner.isLocal()) {
+  if (networkSystem.getMode() == NetworkMode.NONE || (owner != null && owner.isLocal())) {
     localCommandHistory.add(command);
   }
   String cleanedCommand=command.replaceAll("\\s\\s+"," ");

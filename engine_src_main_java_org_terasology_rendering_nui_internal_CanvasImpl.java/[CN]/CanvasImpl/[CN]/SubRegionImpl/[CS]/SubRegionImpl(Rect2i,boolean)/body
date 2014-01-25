@@ -1,0 +1,25 @@
+{
+  previousState=state;
+  int left=region.minX() + state.drawRegion.minX();
+  int right=region.maxX() + state.drawRegion.minX();
+  int top=region.minY() + state.drawRegion.minY();
+  int bottom=region.maxY() + state.drawRegion.minY();
+  Rect2i subRegion=Rect2i.createFromMinAndMax(left,top,right,bottom);
+  if (crop) {
+    Rect2i cropRegion=subRegion.intersect(state.cropRegion);
+    if (cropRegion.isEmpty()) {
+      state=new CanvasState(state,subRegion,cropRegion);
+    }
+ else     if (!cropRegion.equals(state.cropRegion)) {
+      state=new CanvasState(state,subRegion,cropRegion);
+      crop(cropRegion);
+      croppingRegion=true;
+    }
+ else {
+      state=new CanvasState(state,subRegion);
+    }
+  }
+ else {
+    state=new CanvasState(state,subRegion);
+  }
+}
