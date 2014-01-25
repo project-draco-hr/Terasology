@@ -10,24 +10,15 @@
   if (jsonObject.has("id")) {
     id=jsonObject.get("id").getAsString();
   }
-  UIWidget element;
+  UIWidget element=elementMetadata.newInstance();
   if (id != null) {
-    try {
-      Constructor<? extends UIWidget> constructor=elementMetadata.getType().getConstructor(String.class);
-      constructor.setAccessible(true);
-      element=constructor.newInstance(id);
+    FieldMetadata fieldMetadata=elementMetadata.getField("id");
+    if (fieldMetadata == null) {
+      logger.warn("UIWidget type {} lacks id field",elementMetadata.getUri());
     }
- catch (    NoSuchMethodException e) {
-      logger.warn("UIWidget type {} lacks id constructor",elementMetadata.getUri());
-      element=elementMetadata.newInstance();
-    }
-catch (    InvocationTargetException|InstantiationException|IllegalAccessException e) {
-      logger.warn("Failed to construct {} with id",elementMetadata.getUri(),e);
-      element=elementMetadata.newInstance();
-    }
-  }
  else {
-    element=elementMetadata.newInstance();
+      fieldMetadata.setValue(element,id);
+    }
   }
   for (  FieldMetadata<? extends UIWidget,?> field : elementMetadata.getFields()) {
     if (jsonObject.has(field.getSerializationName())) {

@@ -1,8 +1,18 @@
 {
   if (focus != null) {
     focus.onBindEvent(event);
-    if (event.isConsumed()) {
-      return;
+  }
+  if (!event.isConsumed()) {
+    for (    UIScreenLayer layer : screens) {
+      if (layer.isReleasingMouse()) {
+        layer.onBindEvent(event);
+        if (event.isConsumed() || !layer.isLowerLayerVisible()) {
+          break;
+        }
+      }
     }
+  }
+  if (isReleasingMouse()) {
+    event.consume();
   }
 }

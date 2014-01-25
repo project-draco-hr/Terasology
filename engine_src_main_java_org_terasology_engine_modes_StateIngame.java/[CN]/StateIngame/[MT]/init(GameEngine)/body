@@ -1,5 +1,6 @@
 {
   guiManager=CoreRegistry.get(GUIManager.class);
+  nuiManager=CoreRegistry.get(NUIManager.class);
   worldRenderer=CoreRegistry.get(WorldRenderer.class);
   eventSystem=CoreRegistry.get(EventSystem.class);
   componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
@@ -7,6 +8,7 @@
   cameraTargetSystem=CoreRegistry.get(CameraTargetSystem.class);
   inputSystem=CoreRegistry.get(InputSystem.class);
   eventSystem.registerEventHandler(guiManager);
+  eventSystem.registerEventHandler(nuiManager);
   networkSystem=CoreRegistry.get(NetworkSystem.class);
   guiManager.openWindow(MenuControlSystem.HUD);
   if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport() && OculusVrHelper.isNativeLibraryLoaded()) {
