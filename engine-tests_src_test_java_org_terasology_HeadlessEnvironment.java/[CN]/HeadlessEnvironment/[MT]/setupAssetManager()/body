@@ -1,0 +1,30 @@
+{
+  setupEmptyAssetManager();
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  AudioManager audioManager=CoreRegistry.get(AudioManager.class);
+  AssetType.registerAssetTypes(assetManager);
+  CodeSource tsCodeSource=TerasologyEngine.class.getProtectionDomain().getCodeSource();
+  assetManager.addAssetSource(new ClasspathSource(TerasologyConstants.ENGINE_MODULE,tsCodeSource,TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY));
+  CodeSource thisCodeSource=HeadlessEnvironment.class.getProtectionDomain().getCodeSource();
+  assetManager.addAssetSource(new ClasspathSource("unittest",thisCodeSource,TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY));
+  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
+    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
+      return new PojoPrefab(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SHAPE,new AssetFactory<BlockShapeData,BlockShape>(){
+    @Override public BlockShape buildAsset(    AssetUri uri,    BlockShapeData data){
+      return new BlockShapeImpl(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
+    @Override public UISkin buildAsset(    AssetUri uri,    UISkinData data){
+      return new UISkin(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SOUND,audioManager.getStaticSoundFactory());
+  assetManager.setAssetFactory(AssetType.MUSIC,audioManager.getStreamingSoundFactory());
+}

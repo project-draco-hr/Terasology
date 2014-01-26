@@ -2,7 +2,7 @@
   CoreRegistry.put(ModuleManager.class,moduleManager);
   mockTime=mock(EngineTime.class);
   CoreRegistry.put(Time.class,mockTime);
-  networkSystem=new NetworkSystemImpl(mockTime);
+  NetworkSystemImpl networkSystem=new NetworkSystemImpl(mockTime);
   CoreRegistry.put(NetworkSystem.class,networkSystem);
   engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class),networkSystem,new ReflectionReflectFactory());
   CoreRegistry.put(StorageManager.class,new StorageManagerInternal(moduleManager,engineEntityManager));
