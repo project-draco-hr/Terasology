@@ -1,0 +1,8 @@
+{
+  nodesLibrary=new DefaultClassLibrary<>(CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
+  for (  Module module : moduleManager.getActiveCodeModules()) {
+    for (    Class<? extends Node> elementType : module.getReflections().getSubTypesOf(Node.class)) {
+      nodesLibrary.register(new SimpleUri(module.getId(),elementType.getSimpleName()),elementType);
+    }
+  }
+}

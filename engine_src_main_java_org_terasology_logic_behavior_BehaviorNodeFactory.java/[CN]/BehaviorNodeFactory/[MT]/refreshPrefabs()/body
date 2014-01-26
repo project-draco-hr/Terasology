@@ -1,0 +1,27 @@
+{
+  Collection<Prefab> prefabs=prefabManager.listPrefabs(BehaviorNodeComponent.class);
+  for (  Prefab prefab : prefabs) {
+    EntityRef entityRef=entityManager.create(prefab);
+    BehaviorNodeComponent component=entityRef.getComponent(BehaviorNodeComponent.class);
+    List<ClassMetadata<? extends Node,?>> metadata=nodesLibrary.getMetadata(component.type);
+    if (metadata.size() == 1) {
+      ClassMetadata<? extends Node,?> classMetadata=metadata.get(0);
+      if (classMetadata.isConstructable()) {
+        nodes.put(classMetadata,component);
+        logger.info("Found behavior node for class " + component.type + " name="+ component.name);
+        List<BehaviorNodeComponent> list=categoryComponents.get(component.category);
+        if (list == null) {
+          list=Lists.newArrayList();
+          categoryComponents.put(component.category,list);
+        }
+        list.add(component);
+      }
+ else {
+        logger.warn("Node cannot be constructed! -> ignoring " + component.type + " name="+ component.name);
+      }
+    }
+ else {
+      logger.warn("Multiple nodes found -> ignoring! " + component.type + " name="+ component.name);
+    }
+  }
+}

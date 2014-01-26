@@ -1,7 +1,13 @@
 {
-  BehaviorNodeComponent nodeComponent=nodes.get(node.getClass());
-  if (nodeComponent == null) {
-    return BehaviorNodeComponent.DEFAULT;
+  ClassMetadata<? extends Node,?> metadata=nodesLibrary.getMetadata(node.getClass());
+  if (metadata != null) {
+    BehaviorNodeComponent nodeComponent=nodes.get(metadata);
+    if (nodeComponent == null) {
+      return BehaviorNodeComponent.DEFAULT;
+    }
+    return nodeComponent;
   }
-  return nodeComponent;
+ else {
+    return null;
+  }
 }
