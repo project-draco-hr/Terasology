@@ -12,8 +12,7 @@
 );
     SequenceNode node=new SequenceNode();
     node.children().add(mock);
-    SequenceNode.SequenceTask task=node.createTask();
-    interpreter.start(task);
+    Task task=interpreter.start(node);
     interpreter.tick(0);
     Assert.assertEquals(Status.RUNNING,task.getStatus());
     interpreter.tick(0);

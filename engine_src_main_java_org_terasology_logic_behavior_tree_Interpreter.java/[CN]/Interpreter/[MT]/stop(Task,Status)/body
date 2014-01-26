@@ -1,10 +1,10 @@
 {
   task.setStatus(result);
-  Task.Observer observer=task.getObserver();
-  if (observer != null) {
-    observer.handle(result);
+  Task parent=task.getParent();
+  if (parent != null) {
+    parent.handle(result);
   }
-  tasks.remove(task);
+  stopStartedTasks(task);
   if (debugger != null) {
     debugger.nodeFinished(task.getNode(),result);
   }
