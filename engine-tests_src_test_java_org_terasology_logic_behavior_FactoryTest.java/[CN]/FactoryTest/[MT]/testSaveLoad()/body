@@ -4,6 +4,12 @@
   BehaviorNodeFactory nodeFactory=mock(BehaviorNodeFactory.class);
   CoreRegistry.put(BehaviorNodeFactory.class,nodeFactory);
   BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  ModuleManager moduleManager=new ModuleManagerImpl(new ModuleSecurityManager());
+  moduleManager.applyActiveModules();
+  ReflectionReflectFactory reflectFactory=new ReflectionReflectFactory();
+  CoreRegistry.put(ReflectFactory.class,reflectFactory);
+  CoreRegistry.put(CopyStrategyLibrary.class,new CopyStrategyLibrary(reflectFactory));
+  CoreRegistry.put(ModuleManager.class,moduleManager);
   BehaviorTreeData data=buildSample();
   OutputStream os=new ByteArrayOutputStream(10000);
   loader.save(os,data);

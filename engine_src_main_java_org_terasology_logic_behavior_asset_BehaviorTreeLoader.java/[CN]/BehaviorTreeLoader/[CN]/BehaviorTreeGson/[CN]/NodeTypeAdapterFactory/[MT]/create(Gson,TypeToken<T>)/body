@@ -4,18 +4,13 @@
     @Override public void write(    JsonWriter out,    T value) throws IOException {
       if (value instanceof Node) {
         out.beginObject();
-        if (nodeIds.containsKey(value)) {
-          out.name("nodeType").value("ref").name("nodeId").value(nodeIds.get(value));
-        }
- else {
-          idNodes.put(currentId,(Node)value);
-          nodeIds.put((Node)value,currentId);
-          TypeAdapter<T> delegateAdapter=(TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(value.getClass()));
-          out.name("nodeType").value(value.getClass().getCanonicalName()).name("nodeId").value(currentId);
-          currentId++;
-          out.name("node");
-          delegateAdapter.write(out,value);
-        }
+        idNodes.put(currentId,(Node)value);
+        nodeIds.put((Node)value,currentId);
+        TypeAdapter<T> delegateAdapter=getDelegateAdapter(value.getClass());
+        out.name("nodeType").value(nodesLibrary.getMetadata(((Node)value).getClass()).getUri().toString()).name("nodeId").value(currentId);
+        currentId++;
+        out.name("node");
+        delegateAdapter.write(out,value);
         out.endObject();
       }
  else {
@@ -27,44 +22,28 @@
         in.beginObject();
         nextName(in,"nodeType");
         String nodeType=in.nextString();
-        T result;
-        if ("ref".equals(nodeType)) {
-          nextName(in,"nodeId");
-          int id=in.nextInt();
-          result=(T)idNodes.get(id);
-        }
- else {
-          ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-          ClassLoader[] classLoaders;
-          if (moduleManager != null) {
-            classLoaders=moduleManager.getActiveModuleReflections().getConfiguration().getClassLoaders();
-          }
- else {
-            classLoaders=new ClassLoader[]{getClass().getClassLoader()};
-          }
-          Class cls=null;
-          for (          ClassLoader classLoader : classLoaders) {
-            try {
-              cls=classLoader.loadClass(nodeType);
-              break;
-            }
- catch (            ClassNotFoundException e) {
-            }
-          }
-          TypeAdapter<T> delegateAdapter=(TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(cls));
+        ClassMetadata<? extends Node,?> classMetadata=nodesLibrary.getMetadata(new SimpleUri(nodeType));
+        if (classMetadata != null) {
+          TypeAdapter<T> delegateAdapter=getDelegateAdapter(classMetadata.getType());
           nextName(in,"nodeId");
           int id=in.nextInt();
           nextName(in,"node");
-          result=delegateAdapter.read(in);
+          T result=delegateAdapter.read(in);
           idNodes.put(id,(Node)result);
           nodeIds.put((Node)result,id);
+          in.endObject();
+          return result;
         }
-        in.endObject();
-        return result;
+ else {
+          throw new RuntimeException(nodeType + " not found!");
+        }
       }
  else {
         return delegate.read(in);
       }
+    }
+    private TypeAdapter<T> getDelegateAdapter(    Class cls){
+      return (TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(cls));
     }
   }
 ;
