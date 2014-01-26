@@ -1,0 +1,29 @@
+{
+  BehaviorTreeData data=new BehaviorTreeData();
+  data.setRoot(node.getNode());
+  BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  OutputStream os=new ByteArrayOutputStream(10000);
+  try {
+    loader.save(os,data);
+    BehaviorTreeData copy=loader.load(null,new ByteArrayInputStream(os.toString().getBytes()),null);
+    Port.OutputPort parent=node.getInputPort().getTargetPort();
+    copy.createRenderable();
+    RenderableNode copyRenderable=copy.getRenderableNode(copy.getRoot());
+    addNode(copyRenderable);
+    RenderableNode nodeToLayout;
+    if (parent != null && copyRenderable.getInputPort() != null) {
+      parent.setTarget(copyRenderable.getInputPort());
+      nodeToLayout=parent.node;
+    }
+ else {
+      nodeToLayout=copyRenderable;
+    }
+    Vector2f oldPos=nodeToLayout.getPosition();
+    tree.layout(nodeToLayout);
+    oldPos.sub(nodeToLayout.getPosition());
+    nodeToLayout.move(oldPos);
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+}

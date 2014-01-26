@@ -9,8 +9,7 @@
   ParallelNode move=new ParallelNode(ParallelNode.Policy.RequireOne,ParallelNode.Policy.RequireOne);
   move.children().add(new DebugNode(3));
   move.children().add(mock);
-  Task task=move.createTask();
-  interpreter.start(task);
+  Task task=interpreter.start(move);
   interpreter.tick(0);
   Assert.assertEquals(Status.RUNNING,task.getStatus());
   interpreter.tick(0);

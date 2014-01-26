@@ -4,7 +4,7 @@
   properties=find("properties",PropertyLayout.class);
   selectTree=find("select_tree",UIDropdown.class);
   selectEntity=find("select_entity",UIDropdown.class);
-  palette=find("palette",UIDropdown.class);
+  palette=find("palette",UIList.class);
   behaviorEditor.bindSelection(new Binding<RenderableNode>(){
     @Override public RenderableNode get(){
       return selectedNode;
@@ -19,7 +19,7 @@
 );
   selectTree.bindOptions(new Binding<List<BehaviorTree>>(){
     @Override public List<BehaviorTree> get(){
-      return Lists.newArrayList(CoreRegistry.get(BehaviorSystem.class).getTrees());
+      return Lists.newArrayList(behaviorSystem.getTrees());
     }
     @Override public void set(    List<BehaviorTree> value){
     }
@@ -40,7 +40,7 @@
     @Override public List<Interpreter> get(){
       BehaviorTree selection=selectTree.getSelection();
       if (selection != null) {
-        return CoreRegistry.get(BehaviorSystem.class).getInterpreter(selection);
+        return behaviorSystem.getInterpreter(selection);
       }
  else {
         return Arrays.asList();
@@ -69,66 +69,89 @@
     }
   }
 );
-  palette.bindOptions(new ReadOnlyBinding<List<BehaviorNodeComponent>>(){
-    @Override public List<BehaviorNodeComponent> get(){
-      return Lists.newArrayList(CoreRegistry.get(BehaviorNodeFactory.class).getNodeComponents());
+  palette.bindSelection(new Binding<BehaviorNodeComponent>(){
+    @Override public BehaviorNodeComponent get(){
+      return null;
     }
-  }
-);
-  WidgetUtil.trySubscribe(this,"create",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      behaviorEditor.createNode(palette.getSelection());
-    }
-  }
-);
-  WidgetUtil.trySubscribe(this,"copy",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      Clipboard systemClipboard=Toolkit.getDefaultToolkit().getSystemClipboard();
-      String data=behaviorEditor.save();
-      StringSelection contents=new StringSelection(data);
-      systemClipboard.setContents(contents,contents);
-    }
-  }
-);
-  WidgetUtil.trySubscribe(this,"layout",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      BehaviorTree selection=selectTree.getSelection();
-      if (selection != null) {
-        selection.layout(selectedNode);
+    @Override public void set(    BehaviorNodeComponent value){
+switch (value.name.substring(0,2)) {
+case PALETTE_ITEM_OPEN:
+        int pos=paletteItems.indexOf(value) + 1;
+      while (pos < paletteItems.size() && !paletteItems.get(pos).name.startsWith(PALETTE_ITEM_OPEN)) {
+        paletteItems.remove(pos);
       }
-    }
-  }
+    paletteItems.remove(pos - 1);
+  paletteItems.add(pos - 1,createCategory(value.category,false));
+break;
+case PALETTE_ITEM_CLOSE:
+pos=paletteItems.indexOf(value);
+paletteItems.remove(pos);
+BehaviorNodeComponent categoryItem=createCategory(value.category,true);
+paletteItems.add(pos,categoryItem);
+paletteItems.addAll(pos + 1,nodeFactory.getNodesComponents(value.category));
+break;
+default :
+behaviorEditor.createNode(value);
+break;
+}
+}
+}
 );
-  WidgetUtil.trySubscribe(this,"debug_run",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      if (debugger != null) {
-        debugger.run();
-      }
-    }
-  }
+palette.bindList(new ReadOnlyBinding<List<BehaviorNodeComponent>>(){
+@Override public List<BehaviorNodeComponent> get(){
+return paletteItems;
+}
+}
 );
-  WidgetUtil.trySubscribe(this,"debug_pause",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      if (debugger != null) {
-        debugger.pause();
-      }
-    }
-  }
+WidgetUtil.trySubscribe(this,"copy",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+Clipboard systemClipboard=Toolkit.getDefaultToolkit().getSystemClipboard();
+String data=behaviorEditor.save();
+StringSelection contents=new StringSelection(data);
+systemClipboard.setContents(contents,contents);
+}
+}
 );
-  WidgetUtil.trySubscribe(this,"debug_reset",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      if (selectedInterpreter != null) {
-        selectedInterpreter.reset();
-      }
-    }
-  }
+WidgetUtil.trySubscribe(this,"layout",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+BehaviorTree selection=selectTree.getSelection();
+if (selection != null) {
+selection.layout(selectedNode);
+}
+}
+}
 );
-  WidgetUtil.trySubscribe(this,"debug_step",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      if (debugger != null) {
-        debugger.step();
-      }
-    }
-  }
+WidgetUtil.trySubscribe(this,"debug_run",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (debugger != null) {
+debugger.run();
+}
+}
+}
 );
+WidgetUtil.trySubscribe(this,"debug_pause",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (debugger != null) {
+debugger.pause();
+}
+}
+}
+);
+WidgetUtil.trySubscribe(this,"debug_reset",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (selectedInterpreter != null) {
+selectedInterpreter.reset();
+}
+}
+}
+);
+WidgetUtil.trySubscribe(this,"debug_step",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (debugger != null) {
+debugger.step();
+}
+}
+}
+);
+paletteItems=findPaletteItems();
 }

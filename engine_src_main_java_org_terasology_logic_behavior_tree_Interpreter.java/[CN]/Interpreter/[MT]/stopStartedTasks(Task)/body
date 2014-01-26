@@ -1,0 +1,15 @@
+{
+  Queue<Task> open=Queues.newArrayDeque();
+  open.offer(parent);
+  while (!open.isEmpty()) {
+    Task current=open.poll();
+    if (current.getStatus() == Status.RUNNING) {
+      current.onTerminate(Status.FAILURE);
+    }
+    tasks.remove(current);
+    List<Task> subTasks=startedTasks.remove(current);
+    if (subTasks != null) {
+      open.addAll(subTasks);
+    }
+  }
+}

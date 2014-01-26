@@ -6,11 +6,12 @@
     }
   }
   if (current == null) {
-    CoreRegistry.get(GUIManager.class).closeWindow("loading");
+    nuiManager.popScreen();
     CoreRegistry.get(GameEngine.class).changeState(new StateIngame());
   }
  else {
-    loadingScreen.updateStatus(current.getMessage(),100f * current.getProgress());
-    guiManager.update();
+    float progressValue=(progress + current.getExpectedCost() * current.getProgress()) / maxProgress;
+    loadingScreen.updateStatus(current.getMessage(),progressValue);
+    nuiManager.update(delta);
   }
 }

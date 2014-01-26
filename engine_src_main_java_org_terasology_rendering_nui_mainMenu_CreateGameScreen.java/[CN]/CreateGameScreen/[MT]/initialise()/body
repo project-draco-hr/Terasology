@@ -21,10 +21,30 @@
   }
   final UIDropdown<WorldGeneratorInfo> worldGenerator=find("worldGenerator",UIDropdown.class);
   if (worldGenerator != null) {
-    worldGenerator.setOptions(worldGeneratorManager.getWorldGenerators());
+    worldGenerator.bindOptions(new ReadOnlyBinding<List<WorldGeneratorInfo>>(){
+      @Override public List<WorldGeneratorInfo> get(){
+        List<WorldGeneratorInfo> result=Lists.newArrayList();
+        for (        WorldGeneratorInfo option : worldGeneratorManager.getWorldGenerators()) {
+          if (config.getDefaultModSelection().hasModule(option.getUri().getModuleName())) {
+            result.add(option);
+          }
+        }
+        return result;
+      }
+    }
+);
     worldGenerator.bindSelection(new Binding<WorldGeneratorInfo>(){
       @Override public WorldGeneratorInfo get(){
-        return worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
+        WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
+        if (info == null || !config.getDefaultModSelection().hasModule(info.getUri().getModuleName())) {
+          for (          WorldGeneratorInfo worldGenInfo : worldGeneratorManager.getWorldGenerators()) {
+            if (config.getDefaultModSelection().hasModule(worldGenInfo.getUri().getModuleName())) {
+              set(worldGenInfo);
+              return worldGenInfo;
+            }
+          }
+        }
+        return info;
       }
       @Override public void set(      WorldGeneratorInfo value){
         if (value != null) {
@@ -35,7 +55,10 @@
 );
     worldGenerator.setOptionRenderer(new StringTextRenderer<WorldGeneratorInfo>(){
       @Override public String getString(      WorldGeneratorInfo value){
-        return value.getDisplayName();
+        if (value != null) {
+          return value.getDisplayName();
+        }
+        return "";
       }
     }
 );
