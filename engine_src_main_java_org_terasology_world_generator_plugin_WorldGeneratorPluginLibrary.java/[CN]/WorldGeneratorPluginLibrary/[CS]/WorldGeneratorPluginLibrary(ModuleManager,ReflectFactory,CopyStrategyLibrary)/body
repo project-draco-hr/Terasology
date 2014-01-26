@@ -1,9 +1,6 @@
 {
   library=new DefaultClassLibrary<>(reflectFactory,copyStrategyLibrary);
-  for (  Module module : moduleManager.getActiveCodeModules()) {
-    for (    Class<? extends WorldGeneratorPlugin> pluginType : module.getReflections().getSubTypesOf(WorldGeneratorPlugin.class)) {
-      String pluginName=pluginType.getSimpleName();
-      library.register(new SimpleUri(module.getId(),pluginName),pluginType);
-    }
+  for (  Map.Entry<String,Class<? extends WorldGeneratorPlugin>> entry : moduleManager.findAllSubclassesOf(WorldGeneratorPlugin.class).entries()) {
+    library.register(new SimpleUri(entry.getKey(),entry.getValue().getSimpleName()),entry.getValue());
   }
 }

@@ -1,0 +1,13 @@
+{
+  if (!result.contains(module)) {
+    for (    DependencyInfo dependency : module.getModuleInfo().getDependencies()) {
+      Module dependencyModule=getActiveModule(dependency.getId());
+      if (dependencyModule != null) {
+        addModuleAfterDependencies(dependencyModule,result);
+      }
+ else {
+        throw new IllegalStateException("Active modules missing dependency '" + dependency.getId() + "'");
+      }
+    }
+  }
+}
