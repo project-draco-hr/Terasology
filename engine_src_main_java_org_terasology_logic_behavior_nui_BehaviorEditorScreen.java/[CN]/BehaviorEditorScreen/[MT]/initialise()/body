@@ -1,4 +1,5 @@
 {
+  debugger=new BehaviorDebugger();
   entityProperties=find("entity_properties",PropertyLayout.class);
   behaviorEditor=find("tree",BehaviorEditor.class);
   properties=find("properties",PropertyLayout.class);
@@ -11,20 +12,22 @@
     }
     @Override public void set(    RenderableNode value){
       selectedNode=value;
-      PropertyProvider<?> provider=new PropertyProvider<>(value.getNode());
       properties.clear();
-      properties.addPropertyProvider("Behavior Node",provider);
+      if (value != null) {
+        PropertyProvider<?> provider=new PropertyProvider<>(value.getNode());
+        properties.addPropertyProvider("Behavior Node",provider);
+      }
     }
   }
 );
-  selectTree.bindOptions(new Binding<List<BehaviorTree>>(){
+  Binding<List<BehaviorTree>> treeBinding=new ReadOnlyBinding<List<BehaviorTree>>(){
     @Override public List<BehaviorTree> get(){
-      return Lists.newArrayList(behaviorSystem.getTrees());
-    }
-    @Override public void set(    List<BehaviorTree> value){
+      return behaviorSystem.getTrees();
     }
   }
-);
+;
+  selectTree.bindOptions(treeBinding);
+  providerFactory.register("behaviorTrees",treeBinding);
   selectTree.bindSelection(new Binding<BehaviorTree>(){
     @Override public BehaviorTree get(){
       return behaviorEditor.getTree();
@@ -32,19 +35,13 @@
     @Override public void set(    BehaviorTree value){
       selectedTree=value;
       behaviorEditor.setTree(value);
-      selectEntity.setSelection(null);
+      updateDebugger();
     }
   }
 );
   selectEntity.bindOptions(new ReadOnlyBinding<List<Interpreter>>(){
     @Override public List<Interpreter> get(){
-      BehaviorTree selection=selectTree.getSelection();
-      if (selection != null) {
-        return behaviorSystem.getInterpreter(selection);
-      }
- else {
-        return Arrays.asList();
-      }
+      return behaviorSystem.getInterpreter();
     }
   }
 );
@@ -63,9 +60,8 @@
         for (        Component component : minion.iterateComponents()) {
           entityProperties.addPropertyProvider(component.getClass().getSimpleName(),new PropertyProvider<>(component));
         }
-        debugger=new BehaviorDebugger(selectedTree);
-        selectedInterpreter.setDebugger(debugger);
       }
+      updateDebugger();
     }
   }
 );
@@ -117,6 +113,61 @@ WidgetUtil.trySubscribe(this,"layout",new ActivateEventListener(){
 BehaviorTree selection=selectTree.getSelection();
 if (selection != null) {
 selection.layout(selectedNode);
+}
+}
+}
+);
+WidgetUtil.trySubscribe(this,"new",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (selectedNode != null) {
+nuiManager.pushScreen("engine:enterTextPopup",EnterTextPopup.class).bindInput(new Binding<String>(){
+@Override public String get(){
+return null;
+}
+@Override public void set(String value){
+behaviorSystem.createTree(value,selectedNode.getNode());
+}
+}
+);
+}
+}
+}
+);
+WidgetUtil.trySubscribe(this,"assign",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (selectedTree != null && selectedInterpreter != null) {
+EntityRef minion=selectedInterpreter.actor().minion();
+minion.removeComponent(BehaviorComponent.class);
+BehaviorComponent component=new BehaviorComponent();
+component.tree=selectedTree;
+minion.addComponent(component);
+List<Interpreter> interpreter=behaviorSystem.getInterpreter();
+selectEntity.setSelection(null);
+for (Interpreter i : interpreter) {
+if (i.actor().minion() == minion) {
+selectEntity.setSelection(i);
+break;
+}
+}
+}
+}
+}
+);
+WidgetUtil.trySubscribe(this,"remove",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (selectedNode != null && selectedTree != null) {
+RenderableNode targetNode=selectedNode.getInputPort().getTargetNode();
+if (targetNode != null) {
+for (int i=0; i < targetNode.getChildrenCount(); i++) {
+if (targetNode.getChild(i) == selectedNode) {
+targetNode.withModel().removeChild(i);
+break;
+}
+}
+}
+removeWidget(selectedNode);
+behaviorEditor.nodeClicked(null);
+behaviorSystem.treeModified(selectedTree);
 }
 }
 }
