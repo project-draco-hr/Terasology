@@ -1,0 +1,9 @@
+{
+  Interpreter interpreter=new Interpreter(null);
+  DebugNode debugNode=new DebugNode(0);
+  CounterNode counterNode=new CounterNode(0,debugNode);
+  interpreter.start(counterNode);
+  Assert.assertTrue(interpreter.tick(0) > 0);
+  Assert.assertNull(debugNode.lastTask);
+  Assert.assertTrue(interpreter.tick(0) == 0);
+}
