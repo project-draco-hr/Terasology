@@ -3,7 +3,7 @@
   for (  Prefab prefab : prefabs) {
     EntityRef entityRef=entityManager.create(prefab);
     BehaviorNodeComponent component=entityRef.getComponent(BehaviorNodeComponent.class);
-    ClassMetadata<? extends Node,?> classMetadata=nodesLibrary.getMetadata(new SimpleUri(component.type));
+    ClassMetadata<? extends Node,?> classMetadata=nodesClassLibrary.resolve(component.type);
     if (classMetadata != null) {
       if (classMetadata.isConstructable()) {
         nodes.put(classMetadata,component);

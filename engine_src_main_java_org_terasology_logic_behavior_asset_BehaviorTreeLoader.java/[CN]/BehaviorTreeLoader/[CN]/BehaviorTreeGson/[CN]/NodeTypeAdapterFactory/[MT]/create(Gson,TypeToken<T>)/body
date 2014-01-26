@@ -7,7 +7,7 @@
         idNodes.put(currentId,(Node)value);
         nodeIds.put((Node)value,currentId);
         TypeAdapter<T> delegateAdapter=getDelegateAdapter(value.getClass());
-        out.name("nodeType").value(nodesLibrary.getMetadata(((Node)value).getClass()).getUri().toString()).name("nodeId").value(currentId);
+        out.name("nodeType").value(CoreRegistry.get(NodesClassLibrary.class).getMetadata(((Node)value).getClass()).getUri().toString()).name("nodeId").value(currentId);
         currentId++;
         out.name("node");
         delegateAdapter.write(out,value);
@@ -22,7 +22,7 @@
         in.beginObject();
         nextName(in,"nodeType");
         String nodeType=in.nextString();
-        ClassMetadata<? extends Node,?> classMetadata=nodesLibrary.getMetadata(new SimpleUri(nodeType));
+        ClassMetadata<? extends Node,?> classMetadata=CoreRegistry.get(NodesClassLibrary.class).resolve(nodeType);
         if (classMetadata != null) {
           TypeAdapter<T> delegateAdapter=getDelegateAdapter(classMetadata.getType());
           nextName(in,"nodeId");
@@ -35,7 +35,7 @@
           return result;
         }
  else {
-          throw new RuntimeException(nodeType + " not found!");
+          throw new RuntimeException("Unambiguous type " + nodeType);
         }
       }
  else {
