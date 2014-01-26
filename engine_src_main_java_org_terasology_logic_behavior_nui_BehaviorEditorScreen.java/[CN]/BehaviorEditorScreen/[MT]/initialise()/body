@@ -17,14 +17,14 @@
     }
   }
 );
-  selectTree.bindOptions(new Binding<List<BehaviorTree>>(){
+  Binding<List<BehaviorTree>> treeBinding=new ReadOnlyBinding<List<BehaviorTree>>(){
     @Override public List<BehaviorTree> get(){
       return Lists.newArrayList(behaviorSystem.getTrees());
     }
-    @Override public void set(    List<BehaviorTree> value){
-    }
   }
-);
+;
+  selectTree.bindOptions(treeBinding);
+  providerFactory.register("behaviorTrees",treeBinding);
   selectTree.bindSelection(new Binding<BehaviorTree>(){
     @Override public BehaviorTree get(){
       return behaviorEditor.getTree();

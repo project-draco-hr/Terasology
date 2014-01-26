@@ -1,0 +1,15 @@
+{
+  UIDropdown dropdown=new UIDropdown();
+  dropdown.bindOptions(CoreRegistry.get(OneOfProviderFactory.class).get(info.name()));
+  Binding binding=new Binding(){
+    @Override public Object get(){
+      return fieldMetadata.getValueChecked(target);
+    }
+    @Override public void set(    Object value){
+      fieldMetadata.setValue(target,value);
+    }
+  }
+;
+  dropdown.bindSelection(binding);
+  return new Property<>(label,binding,dropdown);
+}

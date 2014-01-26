@@ -1,0 +1,15 @@
+{
+  if (result == Status.FAILURE) {
+    stop(Status.FAILURE);
+    return;
+  }
+  count++;
+  if (count < getNode().limit) {
+    if (getNode().child != null) {
+      start(getNode().child);
+    }
+  }
+ else {
+    stop(Status.SUCCESS);
+  }
+}
