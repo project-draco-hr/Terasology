@@ -1,0 +1,17 @@
+{
+  WidgetUtil.trySubscribe(this,"ok",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
+      if (inputBinding != null) {
+        inputBinding.set(find("text",UIText.class).getText());
+      }
+      getManager().popScreen();
+    }
+  }
+);
+  WidgetUtil.trySubscribe(this,"cancel",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
+      getManager().popScreen();
+    }
+  }
+);
+}

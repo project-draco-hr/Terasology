@@ -1,0 +1,20 @@
+{
+  Path savePath;
+  AssetUri uri=tree.getURI();
+  if (BEHAVIORS.equals(uri.getModuleName())) {
+    savePath=PathManager.getInstance().getHomeModPath().resolve(BEHAVIORS).resolve("assets").resolve("behaviors");
+  }
+ else {
+    Path overridesPath=PathManager.getInstance().getHomeModPath().resolve(BEHAVIORS).resolve("overrides");
+    savePath=overridesPath.resolve(uri.getModuleName()).resolve("behaviors");
+  }
+  BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  try {
+    Files.createDirectories(savePath);
+    Path file=savePath.resolve(uri.getAssetName() + ".behavior");
+    loader.save(new FileOutputStream(file.toFile()),tree.getData());
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("Cannot save asset " + uri + " to "+ savePath,e);
+  }
+}

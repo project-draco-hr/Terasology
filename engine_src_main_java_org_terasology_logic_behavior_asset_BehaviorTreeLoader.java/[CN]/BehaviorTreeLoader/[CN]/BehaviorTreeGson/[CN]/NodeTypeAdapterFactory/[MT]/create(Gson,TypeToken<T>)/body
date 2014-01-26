@@ -28,11 +28,22 @@
           nextName(in,"nodeId");
           int id=in.nextInt();
           nextName(in,"node");
-          T result=delegateAdapter.read(in);
-          idNodes.put(id,(Node)result);
-          nodeIds.put((Node)result,id);
+          Node result;
+          if (classMetadata.getType() == LookupNode.class) {
+            result=classMetadata.newInstance();
+            in.beginObject();
+            nextName(in,"tree");
+            String uri=in.nextString();
+            ((LookupNode)result).tree=(BehaviorTree)Assets.resolve(AssetType.BEHAVIOR,uri);
+            in.endObject();
+          }
+ else {
+            result=(Node)delegateAdapter.read(in);
+          }
+          idNodes.put(id,result);
+          nodeIds.put(result,id);
           in.endObject();
-          return result;
+          return (T)result;
         }
  else {
           throw new RuntimeException("Unambiguous type " + nodeType);

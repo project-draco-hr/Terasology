@@ -1,4 +1,5 @@
 {
+  debugger=new BehaviorDebugger();
   entityProperties=find("entity_properties",PropertyLayout.class);
   behaviorEditor=find("tree",BehaviorEditor.class);
   properties=find("properties",PropertyLayout.class);
@@ -11,9 +12,11 @@
     }
     @Override public void set(    RenderableNode value){
       selectedNode=value;
-      PropertyProvider<?> provider=new PropertyProvider<>(value.getNode());
       properties.clear();
-      properties.addPropertyProvider("Behavior Node",provider);
+      if (value != null) {
+        PropertyProvider<?> provider=new PropertyProvider<>(value.getNode());
+        properties.addPropertyProvider("Behavior Node",provider);
+      }
     }
   }
 );
@@ -117,7 +120,35 @@ selection.layout(selectedNode);
 WidgetUtil.trySubscribe(this,"new",new ActivateEventListener(){
 @Override public void onActivated(UIWidget button){
 if (selectedNode != null) {
-behaviorSystem.createTree("xyz",selectedNode.getNode());
+nuiManager.pushScreen("engine:enterTextPopup",EnterTextPopup.class).bindInput(new Binding<String>(){
+@Override public String get(){
+return null;
+}
+@Override public void set(String value){
+behaviorSystem.createTree(value,selectedNode.getNode());
+}
+}
+);
+}
+}
+}
+);
+WidgetUtil.trySubscribe(this,"assign",new ActivateEventListener(){
+@Override public void onActivated(UIWidget button){
+if (selectedTree != null && selectedInterpreter != null) {
+EntityRef minion=selectedInterpreter.actor().minion();
+minion.removeComponent(BehaviorComponent.class);
+BehaviorComponent component=new BehaviorComponent();
+component.tree=selectedTree;
+minion.addComponent(component);
+List<Interpreter> interpreter=behaviorSystem.getInterpreter();
+selectEntity.setSelection(null);
+for (Interpreter i : interpreter) {
+if (i.actor().minion() == minion) {
+selectEntity.setSelection(i);
+break;
+}
+}
 }
 }
 }
