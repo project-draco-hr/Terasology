@@ -1,6 +1,6 @@
 {
-  try {
-    for (    Path child : Files.newDirectoryStream(path)) {
+  try (DirectoryStream<Path> stream=Files.newDirectoryStream(path)){
+    for (    Path child : stream) {
       if (Files.isDirectory(child)) {
         scanAssets(child,basePath);
       }
