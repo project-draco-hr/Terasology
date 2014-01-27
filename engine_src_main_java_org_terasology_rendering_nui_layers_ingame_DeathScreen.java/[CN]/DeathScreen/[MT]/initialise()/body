@@ -1,0 +1,9 @@
+{
+  WidgetUtil.trySubscribe(this,"respawn",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget widget){
+      CoreRegistry.get(LocalPlayer.class).getClientEntity().send(new RespawnRequestEvent());
+      getManager().closeScreen(DeathScreen.this);
+    }
+  }
+);
+}

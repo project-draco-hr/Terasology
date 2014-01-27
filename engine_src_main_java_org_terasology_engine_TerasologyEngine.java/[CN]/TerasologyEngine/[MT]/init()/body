@@ -20,8 +20,8 @@
     initAssets();
     initControls();
     updateInputConfig();
-    CoreRegistry.putPermanently(GUIManager.class,new GUIManager(this));
-    CoreRegistry.putPermanently(NUIManager.class,new NUIManagerInternal(CoreRegistry.get(AssetManager.class)));
+    guiManager=CoreRegistry.putPermanently(GUIManager.class,new GUIManager(this));
+    nuiManager=CoreRegistry.putPermanently(NUIManager.class,new NUIManagerInternal(CoreRegistry.get(AssetManager.class),new LwjglCanvasRenderer()));
     if (config.getSystem().isMonitoringEnabled()) {
       new AdvancedMonitor().setVisible(true);
     }

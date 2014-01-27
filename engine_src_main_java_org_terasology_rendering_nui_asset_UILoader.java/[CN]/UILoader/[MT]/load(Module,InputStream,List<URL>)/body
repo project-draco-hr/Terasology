@@ -31,7 +31,7 @@
     gsonBuilder.registerTypeAdapter(handledType,new JsonTypeHandlerAdapter<>(library.getHandlerFor(handledType)));
   }
   Gson gson=gsonBuilder.create();
-  try (JsonReader reader=new JsonReader(new InputStreamReader(stream))){
+  try (JsonReader reader=new JsonReader(new InputStreamReader(stream,Charsets.UTF_8))){
     reader.setLenient(true);
     return gson.fromJson(reader,UIData.class);
   }

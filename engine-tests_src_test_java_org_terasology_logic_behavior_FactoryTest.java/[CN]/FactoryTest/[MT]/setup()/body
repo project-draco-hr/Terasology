@@ -1,0 +1,12 @@
+{
+  ModuleManager moduleManager=new ModuleManagerImpl(new ModuleSecurityManager());
+  moduleManager.applyActiveModules();
+  ReflectionReflectFactory reflectFactory=new ReflectionReflectFactory();
+  CoreRegistry.put(ReflectFactory.class,reflectFactory);
+  CopyStrategyLibrary copyStrategies=new CopyStrategyLibrary(reflectFactory);
+  CoreRegistry.put(CopyStrategyLibrary.class,copyStrategies);
+  CoreRegistry.put(ModuleManager.class,moduleManager);
+  NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(reflectFactory,copyStrategies);
+  CoreRegistry.put(NodesClassLibrary.class,nodesClassLibrary);
+  nodesClassLibrary.scan(moduleManager);
+}

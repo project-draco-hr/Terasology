@@ -1,8 +1,7 @@
 {
   Interpreter interpreter=new Interpreter(null);
   DebugNode debugNode=new DebugNode(10);
-  interpreter.setRoot(debugNode);
-  interpreter.start();
+  interpreter.start(debugNode);
   Assert.assertTrue(interpreter.tick(0) > 0);
   DebugNode.DebugTask first=debugNode.lastTask;
   Assert.assertTrue(first.updateCalled);

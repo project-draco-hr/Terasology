@@ -1,0 +1,43 @@
+{
+  if (event.isDown()) {
+switch (event.getKey().getId()) {
+case Keyboard.KeyId.UP:
+      if (index > 0) {
+        index--;
+        if (getCommandHistory().size() > index) {
+          setText(getCommandHistory().get(index));
+        }
+        setCursorPosition(getText().length());
+      }
+    event.consume();
+  break;
+case Keyboard.KeyId.DOWN:
+if (index < getCommandHistory().size()) {
+  index++;
+  if (index == getCommandHistory().size()) {
+    setText("");
+  }
+ else {
+    setText(getCommandHistory().get(index));
+    setCursorPosition(getText().length());
+  }
+}
+event.consume();
+break;
+case Keyboard.KeyId.TAB:
+if (tabCompletionEngine != null) {
+setText(tabCompletionEngine.complete(getText()));
+setCursorPosition(getText().length());
+event.consume();
+}
+break;
+case Keyboard.KeyId.ENTER:
+super.onKeyEvent(event);
+setText("");
+index=getCommandHistory().size();
+break;
+default :
+super.onKeyEvent(event);
+}
+}
+}

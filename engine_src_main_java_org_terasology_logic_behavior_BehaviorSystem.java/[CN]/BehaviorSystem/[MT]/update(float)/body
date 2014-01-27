@@ -1,12 +1,5 @@
 {
-  if (speed > 0) {
-    speed-=delta;
-    return;
-  }
-  speed=0.1f;
-  for (  Map.Entry<BehaviorTree,List<Interpreter>> entry : interpreters.entrySet()) {
-    for (    Interpreter interpreter : entry.getValue()) {
-      interpreter.tick(0.1f);
-    }
+  for (  Interpreter interpreter : entityInterpreters.values()) {
+    interpreter.tick(delta);
   }
 }

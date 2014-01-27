@@ -2,8 +2,7 @@
   Interpreter interpreter=new Interpreter(null);
   DebugNode debugNode=new DebugNode(0);
   RepeatNode repeatNode=new RepeatNode(debugNode);
-  interpreter.setRoot(repeatNode);
-  interpreter.start();
+  interpreter.start(repeatNode);
   Assert.assertTrue(interpreter.tick(0) > 0);
   DebugNode.DebugTask first=debugNode.lastTask2;
   Assert.assertTrue(first.updateCalled);

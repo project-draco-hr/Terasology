@@ -2,7 +2,8 @@
   UIData data=assetManager.loadAssetData(screenUri,UIData.class);
   if (data != null && data.getRootWidget() instanceof UIScreenLayer) {
     UIScreenLayer result=(UIScreenLayer)data.getRootWidget();
-    setScreen(result);
+    result.setId(screenUri.toNormalisedSimpleString());
+    setScreen(result,screenUri);
     return result;
   }
   return null;

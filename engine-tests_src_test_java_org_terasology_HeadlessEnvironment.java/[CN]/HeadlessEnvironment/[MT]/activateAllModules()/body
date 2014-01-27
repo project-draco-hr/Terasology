@@ -1,0 +1,10 @@
+{
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  for (  Module m : moduleManager.getModules()) {
+    moduleManager.enableModule(m);
+  }
+  moduleManager.applyActiveModules();
+  assetManager.clear();
+  assetManager.applyOverrides();
+}

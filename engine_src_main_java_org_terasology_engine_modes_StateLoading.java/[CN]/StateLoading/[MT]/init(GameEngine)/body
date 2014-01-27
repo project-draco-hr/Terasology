@@ -11,8 +11,12 @@ default :
 initHost();
 break;
 }
+progress=0;
+maxProgress=0;
+for (LoadProcess process : loadProcesses) {
+maxProgress+=process.getExpectedCost();
+}
 popStep();
-guiManager.closeAllWindows();
-loadingScreen=(UIScreenLoading)guiManager.openWindow("loading");
-loadingScreen.updateStatus(current.getMessage(),current.getProgress() * 100f);
+loadingScreen=nuiManager.setScreen("engine:loadingScreen",LoadingScreen.class);
+loadingScreen.updateStatus(current.getMessage(),current.getProgress());
 }

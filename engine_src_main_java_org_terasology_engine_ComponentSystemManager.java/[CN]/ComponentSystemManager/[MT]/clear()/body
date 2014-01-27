@@ -1,9 +1,8 @@
 {
-  for (  Class<?> sharedSystem : sharedSystems) {
-    CoreRegistry.remove(sharedSystem);
+  for (  ComponentSystem system : store) {
+    InjectionHelper.unshare(system);
   }
   console=null;
-  sharedSystems.clear();
   namedLookup.clear();
   store.clear();
   updateSubscribers.clear();

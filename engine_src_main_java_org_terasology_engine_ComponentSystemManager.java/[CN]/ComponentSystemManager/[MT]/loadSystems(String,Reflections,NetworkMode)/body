@@ -7,17 +7,11 @@
     }
     RegisterSystem registerInfo=system.getAnnotation(RegisterSystem.class);
     if (registerInfo.value().isValidFor(netMode,false)) {
-      String id=packageName + ":" + system.getSimpleName();
+      String id=moduleName + ":" + system.getSimpleName();
       logger.debug("Registering system {}",id);
       try {
         ComponentSystem newSystem=(ComponentSystem)system.newInstance();
-        Share share=system.getAnnotation(Share.class);
-        if (share != null && share.value() != null) {
-          for (          Class<?> interfaceType : share.value()) {
-            sharedSystems.add(interfaceType);
-            CoreRegistry.put((Class<Object>)interfaceType,newSystem);
-          }
-        }
+        InjectionHelper.share(newSystem);
         register(newSystem,id);
         logger.debug("Loaded system {}",id);
       }

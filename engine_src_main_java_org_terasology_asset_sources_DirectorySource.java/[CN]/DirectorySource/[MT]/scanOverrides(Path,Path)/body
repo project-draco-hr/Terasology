@@ -1,6 +1,6 @@
 {
-  try {
-    for (    Path child : Files.newDirectoryStream(overrideDirectory)) {
+  try (DirectoryStream<Path> stream=Files.newDirectoryStream(overrideDirectory)){
+    for (    Path child : stream) {
       if (Files.isDirectory(child)) {
         scanOverrides(child,basePath);
       }
