@@ -1,8 +1,9 @@
 {
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
+  Display display=CoreRegistry.get(Display.class);
   PerformanceMonitor.startActivity("Other");
-  while (running && !Display.isCloseRequested()) {
-    if (!Display.isActive() && isHibernationAllowed()) {
+  while (running && !display.isCloseRequested()) {
+    if (!display.isActive() && isHibernationAllowed()) {
       time.setPaused(true);
       Iterator<Float> updateCycles=time.tick();
       while (updateCycles.hasNext()) {
@@ -14,7 +15,7 @@
  catch (      InterruptedException e) {
         logger.warn("Display inactivity sleep interrupted",e);
       }
-      Display.processMessages();
+      display.processMessages();
       time.setPaused(false);
       continue;
     }
@@ -35,24 +36,20 @@
       currentState.update(delta);
       PerformanceMonitor.endActivity();
     }
-    Mouse.setGrabbed(hasMouseFocus() && !(nuiManager.isReleasingMouse() || guiManager.isReleasingMouse()));
+    float delta=totalDelta / 1000f;
+    for (    EngineSubsystem subsystem : getEngineSubsystems()) {
+      PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName());
+      subsystem.updateEarly(currentState,delta);
+      PerformanceMonitor.endActivity();
+    }
     GameThread.processWaitingProcesses();
-    PerformanceMonitor.startActivity("Render");
-    Display.update();
-    Display.sync(60);
-    currentState.render();
-    PerformanceMonitor.endActivity();
-    PerformanceMonitor.startActivity("Audio");
-    audioManager.update(totalDelta / 1000f);
-    PerformanceMonitor.endActivity();
-    PerformanceMonitor.startActivity("Input");
-    currentState.handleInput(totalDelta / 1000f);
-    PerformanceMonitor.endActivity();
+    for (    EngineSubsystem subsystem : getEngineSubsystems()) {
+      PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName());
+      subsystem.updateLate(currentState,delta);
+      PerformanceMonitor.endActivity();
+    }
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");
-    if (Display.wasResized()) {
-      resizeViewport();
-    }
   }
   PerformanceMonitor.endActivity();
   running=false;

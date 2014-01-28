@@ -15,7 +15,8 @@
  else {
       PathManager.getInstance().useDefaultHomePath();
     }
-    TerasologyEngine engine=new TerasologyEngine();
+    List<EngineSubsystem> subsystemList=Arrays.asList(new EngineSubsystem[]{new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput()});
+    TerasologyEngine engine=new TerasologyEngine(subsystemList);
     engine.init();
     engine.run(new StateMainMenu());
     engine.dispose();

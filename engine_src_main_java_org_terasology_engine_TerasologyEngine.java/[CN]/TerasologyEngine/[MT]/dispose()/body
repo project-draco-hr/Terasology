@@ -3,10 +3,9 @@
     if (!running) {
       disposed=true;
       initialised=false;
-      Mouse.destroy();
-      Keyboard.destroy();
-      Display.destroy();
-      audioManager.dispose();
+      for (      EngineSubsystem subsystem : getEngineSubsystems()) {
+        subsystem.dispose();
+      }
     }
   }
  catch (  Throwable t) {

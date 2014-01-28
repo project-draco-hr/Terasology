@@ -11,12 +11,14 @@
  catch (  Exception e) {
     logger.warn("Failed to set look and feel to Nimbus",e);
   }
-  engine=new TerasologyEngine();
+  LwjglCustomViewPort lwjglCustomViewPort=new LwjglCustomViewPort();
+  List<EngineSubsystem> subsystemList=Arrays.asList(new EngineSubsystem[]{new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput(),lwjglCustomViewPort});
+  engine=new TerasologyEngine(subsystemList);
   mainWindow=new MainWindow(this);
+  lwjglCustomViewPort.setCustomViewport(mainWindow.getViewport());
   try {
     PathManager.getInstance().useDefaultHomePath();
     engine.setHibernationAllowed(false);
-    engine.setCustomViewport(mainWindow.getViewport());
     engine.subscribeToStateChange(mainWindow);
     engine.init();
     engine.run(new StateMainMenu());
