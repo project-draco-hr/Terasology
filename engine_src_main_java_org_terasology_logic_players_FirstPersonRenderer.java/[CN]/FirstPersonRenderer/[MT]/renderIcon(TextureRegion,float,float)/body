@@ -12,13 +12,15 @@
   glRotatef(-80f,0.0f,1.0f,0.0f);
   glRotatef(45f,0.0f,0.0f,1.0f);
   glScalef(0.75f,0.75f,0.75f);
-  Mesh itemMesh=iconMeshes.get(iconName);
-  if (itemMesh == null) {
-    Icon icon=Icon.get(iconName);
-    itemMesh=MeshFactory.generateItemMesh(new AssetUri(AssetType.MESH,TerasologyConstants.ENGINE_MODULE,"icon." + iconName),icon.getTextureRegion());
-    iconMeshes.put(iconName,itemMesh);
+  if (iconTexture instanceof Asset<?>) {
+    AssetUri uri=((Asset<?>)iconTexture).getURI();
+    Mesh itemMesh=iconMeshes.get(uri.toNormalisedString());
+    if (itemMesh == null) {
+      itemMesh=MeshFactory.generateItemMesh(new AssetUri(AssetType.MESH,TerasologyConstants.ENGINE_MODULE,"pixelMesh." + uri.getAssetName()),iconTexture);
+      iconMeshes.put(uri.toNormalisedString(),itemMesh);
+    }
+    itemMesh.render();
   }
-  itemMesh.render();
   glPopMatrix();
   shader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
 }

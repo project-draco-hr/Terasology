@@ -1,11 +1,15 @@
 {
   AssetManager assetManager=CoreRegistry.get(AssetManager.class);
   AssetUri uri=assetManager.resolve(AssetType.TEXTURE,simpleUri);
-  if (uri == null) {
-    uri=assetManager.resolve(AssetType.SUBTEXTURE,simpleUri);
-  }
   if (uri != null) {
-    return (TextureRegion)assetManager.loadAsset(uri);
+    Texture result=assetManager.tryLoadAsset(uri,Texture.class);
+    if (result != null) {
+      return result;
+    }
+  }
+  uri=assetManager.resolve(AssetType.SUBTEXTURE,simpleUri);
+  if (uri != null) {
+    return assetManager.loadAsset(uri,Subtexture.class);
   }
   return null;
 }
