@@ -3,7 +3,9 @@
     if (!running) {
       disposed=true;
       initialised=false;
-      for (      EngineSubsystem subsystem : getEngineSubsystems()) {
+      Iterator<EngineSubsystem> iter=getEngineSubsystems().descendingIterator();
+      while (iter.hasNext()) {
+        EngineSubsystem subsystem=iter.next();
         subsystem.dispose();
       }
     }

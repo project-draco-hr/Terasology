@@ -1,6 +1,8 @@
 {
   logger.info("Shutting down Terasology...");
-  for (  EngineSubsystem subsystem : getEngineSubsystems()) {
+  Iterator<EngineSubsystem> iter=getEngineSubsystems().descendingIterator();
+  while (iter.hasNext()) {
+    EngineSubsystem subsystem=iter.next();
     subsystem.shutdown(config);
   }
   config.save();
