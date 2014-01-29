@@ -1,0 +1,11 @@
+{
+  super.update(delta);
+  int numSlots=inventoryManager.getNumSlots(getTargetEntity());
+  if (numSlots > cells.size()) {
+    for (int i=cells.size(); i < numSlots; ++i) {
+      InventoryCell cell=new InventoryCell();
+      cell.bindTargetItem(new SlotBinding(i));
+      cells.add(cell);
+    }
+  }
+}

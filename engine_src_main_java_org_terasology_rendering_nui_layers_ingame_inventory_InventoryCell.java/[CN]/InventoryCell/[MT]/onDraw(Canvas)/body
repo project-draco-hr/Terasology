@@ -1,0 +1,25 @@
+{
+  ItemComponent itemComponent=getTargetItem().getComponent(ItemComponent.class);
+  if (itemComponent != null) {
+    if (itemComponent.icon != null) {
+      canvas.drawTexture(itemComponent.icon);
+    }
+ else {
+      BlockItemComponent blockItem=getTargetItem().getComponent(BlockItemComponent.class);
+      if (blockItem != null) {
+        Mesh mesh=blockItem.blockFamily.getArchetypeBlock().getMesh();
+        if (mesh != null) {
+          Quat4f rot=new Quat4f(0,0,0,1);
+          QuaternionUtil.setEuler(rot,TeraMath.PI / 6,-TeraMath.PI / 12,0);
+          canvas.drawMesh(mesh,Assets.getTexture("engine:terrain"),canvas.getRegion(),rot,new Vector3f(),1.0f);
+        }
+ else {
+          canvas.drawTexture(Assets.getSubtexture("engine:items.questionMark"));
+        }
+      }
+ else {
+        canvas.drawTexture(Assets.getSubtexture("engine:items.questionMark"));
+      }
+    }
+  }
+}
