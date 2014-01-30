@@ -1,0 +1,38 @@
+{
+  if (getText().isEmpty()) {
+    return;
+  }
+  UIStyle style=canvas.getCurrentStyle();
+  Vector2i textSize=new Vector2i(style.getFont().getWidth(getText()),style.getFont().getHeight(getText()));
+  textSize.add(style.getMargin().getTotals());
+  int top;
+switch (style.getVerticalAlignment()) {
+case TOP:
+    top=Mouse.getPosition().y - textSize.y;
+  break;
+case MIDDLE:
+top=Mouse.getPosition().y;
+break;
+default :
+top=Mouse.getPosition().y + MOUSE_CURSOR_HEIGHT;
+break;
+}
+top=TeraMath.clamp(top,0,canvas.size().y - textSize.y);
+int left;
+switch (style.getHorizontalAlignment()) {
+case RIGHT:
+left=Mouse.getPosition().x - textSize.x;
+break;
+case CENTER:
+left=Mouse.getPosition().x - textSize.x / 2;
+break;
+default :
+left=Mouse.getPosition().x;
+break;
+}
+left=TeraMath.clamp(left,0,canvas.size().x - textSize.x);
+try (SubRegion ignored=canvas.subRegion(Rect2i.createFromMinAndSize(left,top,textSize.x,textSize.y),false)){
+canvas.drawBackground();
+super.onDraw(canvas);
+}
+ }

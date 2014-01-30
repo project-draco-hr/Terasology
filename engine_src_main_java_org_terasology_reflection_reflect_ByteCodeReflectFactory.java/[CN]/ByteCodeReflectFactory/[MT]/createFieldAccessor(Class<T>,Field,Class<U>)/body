@@ -1,3 +1,9 @@
 {
-  return new ReflectASMFieldAccessor<>(ownerType,field,fieldType);
+  try {
+    return new ReflectASMFieldAccessor<>(ownerType,field,fieldType);
+  }
+ catch (  IllegalArgumentException|InaccessibleFieldException e) {
+    logger.warn("Failed to create accessor for field '{}' of type '{}', falling back on reflection",field.getName(),ownerType.getName());
+    return backupFactory.createFieldAccessor(ownerType,field,fieldType);
+  }
 }
