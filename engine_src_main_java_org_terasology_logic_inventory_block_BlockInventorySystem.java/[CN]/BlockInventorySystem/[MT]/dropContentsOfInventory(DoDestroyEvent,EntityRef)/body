@@ -1,11 +1,12 @@
 {
   Vector3f position=entity.getComponent(LocationComponent.class).getWorldPosition();
+  FastRandom random=new FastRandom();
   int slotCount=inventoryManager.getNumSlots(entity);
   for (int i=0; i < slotCount; i++) {
-    EntityRef itemInSlot=inventoryManager.getItemInSlot(entity,0);
+    EntityRef itemInSlot=inventoryManager.getItemInSlot(entity,i);
     if (itemInSlot.exists()) {
-      inventoryManager.removeItem(entity,itemInSlot);
-      pickupBuilder.createPickupFor(itemInSlot,position,60);
+      EntityRef pickup=pickupBuilder.createPickupFor(itemInSlot,position,60,true);
+      pickup.send(new ImpulseEvent(random.nextVector3f(30.0f)));
     }
   }
 }
