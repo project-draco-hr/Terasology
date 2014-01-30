@@ -24,4 +24,21 @@
     clickedRegion=null;
   }
   mouseOverRegions=newMouseOverRegions;
+  if (mouseOverRegions.isEmpty()) {
+    topMouseOverRegion=null;
+  }
+ else {
+    InteractionRegion newTopMouseOverRegion=mouseOverRegions.iterator().next();
+    if (!newTopMouseOverRegion.equals(topMouseOverRegion)) {
+      topMouseOverRegion=newTopMouseOverRegion;
+      tooltipTime=time.getGameTime() + newTopMouseOverRegion.element.getTooltipDelay();
+      lastTooltipPosition.set(Mouse.getPosition());
+    }
+ else {
+      if (lastTooltipPosition.gridDistance(Mouse.getPosition()) > MAX_DOUBLE_CLICK_DISTANCE) {
+        tooltipTime=time.getGameTime() + newTopMouseOverRegion.element.getTooltipDelay();
+        lastTooltipPosition.set(Mouse.getPosition());
+      }
+    }
+  }
 }

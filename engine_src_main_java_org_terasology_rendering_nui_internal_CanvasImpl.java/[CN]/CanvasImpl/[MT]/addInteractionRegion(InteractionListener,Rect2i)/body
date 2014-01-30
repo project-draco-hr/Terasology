@@ -1,12 +1,3 @@
 {
-  Rect2i finalRegion=state.cropRegion.intersect(relativeToAbsolute(region));
-  if (!finalRegion.isEmpty()) {
-    listener.setFocusManager(nuiManager);
-    if (state.drawOnTop) {
-      drawOnTopOperations.add(new DrawInteractionRegionOperation(finalRegion,listener,state.element));
-    }
- else {
-      interactionRegions.addLast(new InteractionRegion(finalRegion,listener,state.element));
-    }
-  }
+  addInteractionRegion(listener,"",region);
 }

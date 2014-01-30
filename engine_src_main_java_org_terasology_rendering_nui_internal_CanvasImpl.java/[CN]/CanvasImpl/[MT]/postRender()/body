@@ -3,6 +3,10 @@
     operation.draw();
   }
   drawOnTopOperations.clear();
+  if (topMouseOverRegion != null && time.getGameTime() >= tooltipTime) {
+    tooltipWidget.setText(topMouseOverRegion.getTooltip());
+    drawWidget(tooltipWidget);
+  }
   Iterator<Map.Entry<TextCacheKey,Map<Material,Mesh>>> textIterator=cachedText.entrySet().iterator();
   while (textIterator.hasNext()) {
     Map.Entry<TextCacheKey,Map<Material,Mesh>> entry=textIterator.next();
