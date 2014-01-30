@@ -1,0 +1,38 @@
+{
+  ItemComponent itemComp=itemEntity.getComponent(ItemComponent.class);
+  if (itemComp == null || !itemComp.pickupPrefab.exists()) {
+    return EntityRef.NULL;
+  }
+  EntityRef pickupItem=itemEntity;
+  EntityRef owner=itemEntity.getOwner();
+  if (owner.hasComponent(InventoryComponent.class)) {
+    if (dropAll) {
+      inventoryManager.removeItem(owner,itemEntity);
+    }
+ else {
+      pickupItem=inventoryManager.removeItem(owner,itemEntity,1);
+    }
+  }
+  if (pickupItem.exists()) {
+    EntityBuilder builder=entityManager.newBuilder(itemComp.pickupPrefab);
+    if (builder.hasComponent(LocationComponent.class)) {
+      builder.getComponent(LocationComponent.class).setWorldPosition(pos);
+    }
+    if (builder.hasComponent(LifespanComponent.class)) {
+      builder.getComponent(LifespanComponent.class).lifespan=lifespan;
+    }
+    boolean destroyItem=false;
+    if (builder.hasComponent(PickupComponent.class)) {
+      builder.getComponent(PickupComponent.class).itemEntity=pickupItem;
+    }
+ else {
+      destroyItem=true;
+    }
+    pickupItem.send(new ItemDroppedEvent(builder));
+    if (destroyItem) {
+      pickupItem.destroy();
+    }
+    return builder.build();
+  }
+  return EntityRef.NULL;
+}
