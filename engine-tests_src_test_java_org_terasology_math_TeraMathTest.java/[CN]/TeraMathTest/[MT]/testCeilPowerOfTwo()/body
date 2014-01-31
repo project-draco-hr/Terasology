@@ -1,0 +1,13 @@
+{
+  List<Integer> powersOfTwo=generateAllPowersOfTwo();
+  for (int i=1; i < powersOfTwo.size(); i++) {
+    testCeilPowerOfTwo(powersOfTwo.get(i - 1),powersOfTwo.get(i));
+  }
+  int largestIntegerPowerOfTwo=powersOfTwo.get(powersOfTwo.size() - 1);
+  assertEquals("0",0,TeraMath.ceilPowerOfTwo(0));
+  assertEquals("-1",0,TeraMath.ceilPowerOfTwo(0));
+  assertEquals("Integer.MIN_VALUE",0,TeraMath.ceilPowerOfTwo(Integer.MIN_VALUE));
+  assertEquals("Largest power of two integer + 1",0,TeraMath.ceilPowerOfTwo(largestIntegerPowerOfTwo + 1));
+  assertEquals("Integer.MAX_VALUE",0,TeraMath.ceilPowerOfTwo(Integer.MIN_VALUE));
+  fail("Needs specification and tests for cases where the correct result does not fit in an int");
+}
