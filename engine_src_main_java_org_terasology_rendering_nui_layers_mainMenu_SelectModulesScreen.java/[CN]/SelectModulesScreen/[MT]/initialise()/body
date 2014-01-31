@@ -40,6 +40,24 @@
       }
     }
 );
+    moduleList.subscribe(new ItemActivateEventListener<Module>(){
+      @Override public void onItemActivated(      UIWidget widget,      Module item){
+        String id=item.getId();
+        if (selection.contains(id)) {
+          ModuleSelection newSelection=selection.remove(id);
+          if (newSelection.isValid()) {
+            selection=newSelection;
+          }
+        }
+ else {
+          ModuleSelection newSelection=selection.add(id);
+          if (newSelection.isValid()) {
+            selection=newSelection;
+          }
+        }
+      }
+    }
+);
     Binding<ModuleInfo> moduleInfoBinding=new ReadOnlyBinding<ModuleInfo>(){
       @Override public ModuleInfo get(){
         if (moduleList.getSelection() != null) {
