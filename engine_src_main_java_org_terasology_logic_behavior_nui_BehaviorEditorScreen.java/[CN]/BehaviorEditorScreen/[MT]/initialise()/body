@@ -99,6 +99,12 @@ return paletteItems;
 }
 }
 );
+palette.setItemRenderer(new ToStringTextRenderer<BehaviorNodeComponent>(){
+@Override public String getTooltip(BehaviorNodeComponent value){
+return value.description;
+}
+}
+);
 WidgetUtil.trySubscribe(this,"copy",new ActivateEventListener(){
 @Override public void onActivated(UIWidget button){
 Clipboard systemClipboard=Toolkit.getDefaultToolkit().getSystemClipboard();
