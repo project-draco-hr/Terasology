@@ -7,5 +7,9 @@
     data.setRoot(treeGson.loadTree(reader));
     reader.endObject();
   }
-   return data;
+ catch (  JsonSyntaxException e) {
+    logger.error("Cannot load tree! " + e.getMessage());
+    return null;
+  }
+  return data;
 }
