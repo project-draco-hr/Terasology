@@ -2,7 +2,6 @@
   if (initialised) {
     return;
   }
-  initLogger();
   try {
     logger.info("Initializing Terasology...");
     logger.info(TerasologyVersion.getInstance().toString());
@@ -11,17 +10,15 @@
     logger.info("Install path: {}",PathManager.getInstance().getInstallPath());
     logger.info("Java version: {}",System.getProperty("java.version"));
     initConfig();
-    LWJGLHelper.initNativeLibs();
-    initTimer();
+    for (    EngineSubsystem subsystem : getSubsystems()) {
+      subsystem.preInitialise();
+    }
+    time=(EngineTime)CoreRegistry.get(Time.class);
     initManagers();
-    initDisplay();
-    initOpenGL();
-    initOpenAL();
+    for (    EngineSubsystem subsystem : getSubsystems()) {
+      subsystem.postInitialise(config);
+    }
     initAssets();
-    initControls();
-    updateInputConfig();
-    guiManager=CoreRegistry.putPermanently(GUIManager.class,new GUIManagerLwjgl(this));
-    nuiManager=CoreRegistry.putPermanently(NUIManager.class,new NUIManagerInternal(CoreRegistry.get(AssetManager.class),new LwjglCanvasRenderer()));
     if (config.getSystem().isMonitoringEnabled()) {
       new AdvancedMonitor().setVisible(true);
     }

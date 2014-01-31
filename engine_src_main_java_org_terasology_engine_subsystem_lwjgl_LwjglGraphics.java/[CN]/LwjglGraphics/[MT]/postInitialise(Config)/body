@@ -1,0 +1,9 @@
+{
+  LwjglDisplay lwjglDisplay=new LwjglDisplay();
+  CoreRegistry.putPermanently(org.terasology.engine.subsystem.Display.class,lwjglDisplay);
+  initDisplay(config,lwjglDisplay);
+  initOpenGL(lwjglDisplay);
+  GameEngine engine=CoreRegistry.get(GameEngine.class);
+  CoreRegistry.putPermanently(GUIManager.class,new GUIManagerLwjgl(engine));
+  CoreRegistry.putPermanently(NUIManager.class,new NUIManagerInternal(CoreRegistry.get(AssetManager.class),new LwjglCanvasRenderer()));
+}
