@@ -4,6 +4,7 @@
   int posX=pixelRegion.minX();
   int posY=pixelRegion.minY();
   int stride=tex.getTexture().getWidth() * 4;
+  float textureSize=Math.max(tex.getWidth(),tex.getHeight());
   Tessellator tessellator=new Tessellator();
   for (int y=0; y < tex.getHeight(); y++) {
     for (int x=0; x < tex.getWidth(); x++) {
@@ -13,7 +14,7 @@
       int a=buffer.get((posY + y) * stride + (posX + x) * 4 + 3) & 255;
       if (a > alphaLimit) {
         Vector4f color=new Vector4f(r / 255f,g / 255f,b / 255f,a / 255f);
-        TessellatorHelper.addBlockMesh(tessellator,color,2f * 0.0625f,1.0f,0.5f,2f * 0.0625f * x - 0.5f,2f * 0.0625f * (15 - y) - 1f,0f);
+        TessellatorHelper.addBlockMesh(tessellator,color,2f / textureSize,1.0f,0.5f,2f / textureSize * x - 0.5f,2f / textureSize * (15 - y) - 1f,0f);
         if (withContour) {
           int newX=0;
           int newY=0;
