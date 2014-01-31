@@ -43,6 +43,9 @@
     moduleList.subscribe(new ItemActivateEventListener<Module>(){
       @Override public void onItemActivated(      UIWidget widget,      Module item){
         String id=item.getId();
+        if (id.equals("core")) {
+          return;
+        }
         if (selection.contains(id)) {
           ModuleSelection newSelection=selection.remove(id);
           if (newSelection.isValid()) {
@@ -100,6 +103,9 @@
         @Override public void onActivated(        UIWidget button){
           if (moduleList.getSelection() != null) {
             String id=moduleList.getSelection().getId();
+            if (id.equals("core")) {
+              return;
+            }
             if (selection.contains(id)) {
               ModuleSelection newSelection=selection.remove(id);
               if (newSelection.isValid()) {
