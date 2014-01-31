@@ -4,6 +4,9 @@
     BlockMeshPart part=primaryAppearance.getPart(dir);
     if (part != null) {
       tessellator.addMeshPart(part);
+      if (doubleSided) {
+        tessellator.addMeshPartReversed(part);
+      }
     }
   }
   mesh=tessellator.generateMesh(new AssetUri(AssetType.MESH,uri.toString()));
