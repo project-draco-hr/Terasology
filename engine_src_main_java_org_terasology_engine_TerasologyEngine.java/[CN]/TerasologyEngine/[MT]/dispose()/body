@@ -3,10 +3,11 @@
     if (!running) {
       disposed=true;
       initialised=false;
-      Mouse.destroy();
-      Keyboard.destroy();
-      Display.destroy();
-      audioManager.dispose();
+      Iterator<EngineSubsystem> iter=getSubsystems().descendingIterator();
+      while (iter.hasNext()) {
+        EngineSubsystem subsystem=iter.next();
+        subsystem.dispose();
+      }
     }
   }
  catch (  Throwable t) {

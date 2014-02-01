@@ -1,8 +1,9 @@
 {
   logger.info("Shutting down Terasology...");
-  if (!Display.isFullscreen() && Display.isVisible()) {
-    config.getRendering().setWindowPosX(Display.getX());
-    config.getRendering().setWindowPosY(Display.getY());
+  Iterator<EngineSubsystem> iter=getSubsystems().descendingIterator();
+  while (iter.hasNext()) {
+    EngineSubsystem subsystem=iter.next();
+    subsystem.shutdown(config);
   }
   config.save();
   if (currentState != null) {
