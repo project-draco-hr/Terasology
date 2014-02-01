@@ -1,0 +1,27 @@
+{
+  BoundIntParameter ann=fld.getAnnotation(BoundIntParameter.class);
+  if (ann != null) {
+    String label=ann.label();
+    Binding<Integer> binding=new Binding<Integer>(){
+      @Override public Integer get(){
+        try {
+          return fld.getInt(obj);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+      @Override public void set(      Integer value){
+        try {
+          fld.setInt(obj,value);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          logger.warn("Could not assign value",e);
+        }
+      }
+    }
+;
+    return new IntParameter(label,binding,ann.min(),ann.max());
+  }
+  return null;
+}

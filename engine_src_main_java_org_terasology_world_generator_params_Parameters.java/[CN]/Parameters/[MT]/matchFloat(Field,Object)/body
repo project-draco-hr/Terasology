@@ -1,0 +1,27 @@
+{
+  BoundFloatParameter ann=fld.getAnnotation(BoundFloatParameter.class);
+  if (ann != null) {
+    String label=ann.label();
+    Binding<Float> binding=new Binding<Float>(){
+      @Override public Float get(){
+        try {
+          return fld.getFloat(obj);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+      @Override public void set(      Float value){
+        try {
+          fld.setFloat(obj,value);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          logger.warn("Could not assign value",e);
+        }
+      }
+    }
+;
+    return new FloatParameter(label,binding,ann.min(),ann.max(),ann.step());
+  }
+  return null;
+}

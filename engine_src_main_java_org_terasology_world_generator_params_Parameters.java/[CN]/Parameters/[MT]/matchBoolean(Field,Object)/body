@@ -1,0 +1,27 @@
+{
+  BoundBooleanParameter ann=fld.getAnnotation(BoundBooleanParameter.class);
+  if (ann != null) {
+    String label=ann.label();
+    Binding<Boolean> binding=new Binding<Boolean>(){
+      @Override public Boolean get(){
+        try {
+          return fld.getBoolean(obj);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+      @Override public void set(      Boolean value){
+        try {
+          fld.setBoolean(obj,value);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          logger.warn("Could not assign value",e);
+        }
+      }
+    }
+;
+    return new BooleanParameter(label,binding);
+  }
+  return null;
+}

@@ -1,0 +1,27 @@
+{
+  BoundStringParameter ann=fld.getAnnotation(BoundStringParameter.class);
+  if (ann != null) {
+    String label=ann.label();
+    Binding<String> binding=new Binding<String>(){
+      @Override public String get(){
+        try {
+          return String.valueOf(fld.get(obj));
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          throw new RuntimeException(e);
+        }
+      }
+      @Override public void set(      String value){
+        try {
+          fld.set(obj,value);
+        }
+ catch (        IllegalArgumentException|IllegalAccessException e) {
+          logger.warn("Could not assign value",e);
+        }
+      }
+    }
+;
+    return new StringParameter(label,binding);
+  }
+  return null;
+}
