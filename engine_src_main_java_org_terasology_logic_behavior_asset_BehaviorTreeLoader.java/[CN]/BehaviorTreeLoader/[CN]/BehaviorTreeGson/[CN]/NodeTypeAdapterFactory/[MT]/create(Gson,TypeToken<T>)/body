@@ -23,11 +23,11 @@
         nextName(in,"nodeType");
         String nodeType=in.nextString();
         ClassMetadata<? extends Node,?> classMetadata=CoreRegistry.get(NodesClassLibrary.class).resolve(nodeType);
+        nextName(in,"nodeId");
+        int id=in.nextInt();
+        nextName(in,"node");
         if (classMetadata != null) {
           TypeAdapter<T> delegateAdapter=getDelegateAdapter(classMetadata.getType());
-          nextName(in,"nodeId");
-          int id=in.nextInt();
-          nextName(in,"node");
           Node result;
           if (classMetadata.getType() == LookupNode.class) {
             result=classMetadata.newInstance();
@@ -46,7 +46,7 @@
           return (T)result;
         }
  else {
-          throw new RuntimeException("Unambiguous type " + nodeType);
+          throw new NotSerializableException(nodeType);
         }
       }
  else {
