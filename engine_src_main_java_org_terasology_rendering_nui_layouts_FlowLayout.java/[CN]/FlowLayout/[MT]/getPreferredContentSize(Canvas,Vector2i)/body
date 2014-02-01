@@ -1,0 +1,21 @@
+{
+  Vector2i result=new Vector2i();
+  int filledWidth=0;
+  int filledHeight=0;
+  for (  UIWidget widget : contents) {
+    Vector2i size=canvas.calculatePreferredSize(widget);
+    if (filledWidth != 0 && filledWidth + size.x > sizeHint.x) {
+      result.x=Math.max(result.x,filledWidth);
+      result.y+=filledHeight;
+      filledWidth=size.x;
+      filledHeight=size.y;
+    }
+ else {
+      filledWidth+=size.x;
+      filledHeight=Math.max(filledHeight,size.y);
+    }
+  }
+  result.x=Math.max(result.x,filledWidth);
+  result.y+=filledHeight;
+  return result;
+}

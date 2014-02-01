@@ -6,7 +6,8 @@
     focusDrawn=true;
   }
   String family=(element.getFamily() != null) ? element.getFamily() : state.family;
-  UIStyle newStyle=state.skin.getStyleFor(family,element.getClass(),element.getMode());
+  UISkin skin=(element.getSkin() != null) ? element.getSkin() : state.skin;
+  UIStyle newStyle=skin.getStyleFor(family,element.getClass(),element.getMode());
   Rect2i regionArea;
   try (SubRegion ignored=subRegionForWidget(element,region,false)){
     regionArea=applyStyleToSize(region,newStyle,element.getMaxContentSize(this));

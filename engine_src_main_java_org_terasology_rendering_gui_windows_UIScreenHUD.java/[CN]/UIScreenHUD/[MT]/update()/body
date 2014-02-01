@@ -3,18 +3,6 @@
   updateHealthBar(localPlayer.getCharacterEntity().getComponent(HealthComponent.class));
   updateBreathBar(localPlayer.getCharacterEntity().getComponent(DrownsComponent.class),localPlayer.getCharacterEntity().getComponent(DrowningComponent.class));
   CharacterComponent character=localPlayer.getCharacterEntity().getComponent(CharacterComponent.class);
-  if (character == null) {
-    toolbar.setVisible(false);
-    leftGearWheel.setVisible(false);
-    rightGearWheel.setVisible(false);
-  }
- else {
-    toolbar.setVisible(true);
-    toolbar.linkToEntity(CoreRegistry.get(LocalPlayer.class).getCharacterEntity(),0,10);
-    toolbar.setSelected(character.selectedItem);
-    leftGearWheel.setVisible(true);
-    rightGearWheel.setVisible(true);
-  }
   boolean enableDebug=config.getSystem().isDebugEnabled();
   debugLine1.setVisible(enableDebug);
   debugLine2.setVisible(enableDebug);
