@@ -1,7 +1,9 @@
 {
   ClientComponent controller=entity.getComponent(CharacterComponent.class).controller.getComponent(ClientComponent.class);
   if (controller.local && event.getContainer().hasComponent(InventoryComponent.class)) {
-    UIScreenContainer containerScreen=(UIScreenContainer)CoreRegistry.get(GUIManager.class).openWindow("container");
-    containerScreen.openContainer(event.getContainer(),entity);
+    ContainerScreen screen=nuiManager.pushScreen("engine:containerScreen",ContainerScreen.class);
+    if (screen != null) {
+      screen.setContainerEntity(event.getContainer());
+    }
   }
 }

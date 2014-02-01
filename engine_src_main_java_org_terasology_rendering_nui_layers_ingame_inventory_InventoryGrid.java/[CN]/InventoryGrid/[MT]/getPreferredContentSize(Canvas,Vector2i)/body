@@ -1,6 +1,6 @@
 {
-  int numSlots=inventoryManager.getNumSlots(getTargetEntity());
-  if (numSlots != 0) {
+  int numSlots=Math.min(inventoryManager.getNumSlots(getTargetEntity()) - getCellOffset(),getMaxCellCount());
+  if (numSlots != 0 && !cells.isEmpty()) {
     Vector2i cellSize=canvas.calculatePreferredSize(cells.get(0));
     int horizontalCells=Math.min(maxHorizontalCells,sizeHint.getX() / cellSize.getX());
     int verticalCells=((numSlots - 1) / horizontalCells) + 1;
