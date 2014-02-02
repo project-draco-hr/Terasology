@@ -72,7 +72,10 @@
       return new TextureData(width,height,new ByteBuffer[]{data},wrapMode,filterMode);
     }
   }
-  finally {
+ catch (  UnsupportedOperationException e) {
+    throw new IOException(e);
+  }
+ finally {
     pngStream.close();
   }
 }
