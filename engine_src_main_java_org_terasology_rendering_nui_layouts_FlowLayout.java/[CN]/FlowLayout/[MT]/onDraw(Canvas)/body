@@ -1,0 +1,16 @@
+{
+  int filledWidth=0;
+  int filledHeight=0;
+  int heightOffset=0;
+  for (  UIWidget widget : contents) {
+    Vector2i size=canvas.calculatePreferredSize(widget);
+    if (filledWidth != 0 && filledWidth + size.x > canvas.size().x) {
+      heightOffset+=filledHeight;
+      filledWidth=0;
+      filledHeight=0;
+    }
+    canvas.drawWidget(widget,Rect2i.createFromMinAndSize(filledWidth,heightOffset,size.x,size.y));
+    filledWidth+=size.x;
+    filledHeight=Math.max(filledHeight,size.y);
+  }
+}

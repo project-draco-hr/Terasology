@@ -1,20 +1,25 @@
 {
   try {
-    CtClass cc=pool.get(name);
-    if (needsNonPrivateConstructor(cc)) {
-      try {
-        CtConstructor constructor=cc.getDeclaredConstructor(new CtClass[0]);
-        if ((constructor.getModifiers() & Modifier.PRIVATE) != 0) {
-          constructor.setModifiers(constructor.getModifiers() & ~Modifier.PRIVATE);
+    return (Class<?>)AccessController.doPrivileged(new PrivilegedExceptionAction<Object>(){
+      @Override public Object run() throws Exception {
+        CtClass cc=pool.get(name);
+        if (needsNonPrivateConstructor(cc)) {
+          try {
+            CtConstructor constructor=cc.getDeclaredConstructor(new CtClass[0]);
+            if ((constructor.getModifiers() & Modifier.PRIVATE) != 0) {
+              constructor.setModifiers(constructor.getModifiers() & ~Modifier.PRIVATE);
+            }
+          }
+ catch (          NotFoundException e) {
+          }
         }
-      }
- catch (      NotFoundException e) {
+        byte[] b=cc.toBytecode();
+        return defineClass(name,b,0,b.length);
       }
     }
-    byte[] b=cc.toBytecode();
-    return defineClass(name,b,0,b.length);
+);
   }
- catch (  CannotCompileException|NotFoundException|IOException e) {
-    throw new ClassNotFoundException("Failed to find or load class " + name,e);
+ catch (  PrivilegedActionException e) {
+    throw new ClassNotFoundException("Failed to find or load class " + name,e.getCause());
   }
 }
