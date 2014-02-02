@@ -1,0 +1,10 @@
+{
+  for (  HUDElement element : elements) {
+    int minX=TeraMath.floorToInt(element.region.minX() * canvas.size().x);
+    int minY=TeraMath.floorToInt(element.region.minY() * canvas.size().y);
+    int sizeX=TeraMath.floorToInt(element.region.width() * canvas.size().x);
+    int sizeY=TeraMath.floorToInt(element.region.height() * canvas.size().y);
+    Rect2i region=Rect2i.createFromMinAndSize(minX,minY,sizeX,sizeY);
+    canvas.drawWidget(element.widget,region);
+  }
+}

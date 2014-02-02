@@ -1,0 +1,38 @@
+{
+  for (int i=0; i < part.size(); ++i) {
+    Vector3f vertex=part.getVertex(i);
+    meshData.getVertices().add(vertex.x);
+    meshData.getVertices().add(vertex.y);
+    meshData.getVertices().add(vertex.z);
+    meshData.getColors().add(activeColor.x);
+    meshData.getColors().add(activeColor.y);
+    meshData.getColors().add(activeColor.z);
+    meshData.getColors().add(activeColor.w);
+    Vector3f normal=part.getNormal(i);
+    meshData.getNormals().add(normal.x);
+    meshData.getNormals().add(normal.y);
+    meshData.getNormals().add(normal.z);
+    Vector2f uv=part.getTexCoord(i);
+    meshData.getTexCoord0().add(uv.x);
+    meshData.getTexCoord0().add(uv.y);
+    meshData.getTexCoord1().add(lighting.x);
+    meshData.getTexCoord1().add(lighting.y);
+    meshData.getTexCoord1().add(lighting.z);
+  }
+  if (reversed) {
+    for (int i=0; i < part.indicesSize(); i+=3) {
+      int i1=part.getIndex(i);
+      int i2=part.getIndex(i + 1);
+      int i3=part.getIndex(i + 2);
+      meshData.getIndices().add(i1);
+      meshData.getIndices().add(i3);
+      meshData.getIndices().add(i2);
+    }
+  }
+ else {
+    for (int i=0; i < part.indicesSize(); ++i) {
+      meshData.getIndices().add(nextIndex + part.getIndex(i));
+    }
+  }
+  nextIndex+=part.size();
+}
