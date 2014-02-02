@@ -1,9 +1,9 @@
 {
   if (calculatingPermission.get() != null) {
-    return;
+    return true;
   }
   if (globallyAllowedPermissionsTypes.contains(perm.getClass()) || globallyAllowedPermissionsInstances.contains(perm)) {
-    return;
+    return true;
   }
   calculatingPermission.set(true);
   try {
@@ -11,12 +11,12 @@
     for (int i=0; i < stack.length; ++i) {
       ClassLoader owningLoader=stack[i].getClassLoader();
       if (owningLoader != null && owningLoader instanceof ModuleClassLoader) {
-        checkAPIPermissionsFor(perm,i,stack);
-        return;
+        return checkAPIPermissionsFor(perm,i,stack);
       }
     }
   }
   finally {
     calculatingPermission.set(null);
   }
+  return false;
 }

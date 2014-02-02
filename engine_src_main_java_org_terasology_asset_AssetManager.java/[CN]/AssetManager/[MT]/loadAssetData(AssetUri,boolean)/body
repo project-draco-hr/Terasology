@@ -24,12 +24,16 @@
       continue;
     }
     Module module=moduleManager.getActiveModule(uri.getNormalisedModuleName());
-    try (InputStream stream=url.openStream()){
+    try (InputStream stream=AccessController.doPrivileged(new PrivilegedOpenStream(url))){
       urls.remove(url);
       urls.add(0,url);
       return loader.load(module,stream,urls);
     }
- catch (    IOException ioe) {
+ catch (    PrivilegedActionException e) {
+      logger.error("Error reading asset {}",uri,e.getCause());
+      return null;
+    }
+catch (    IOException ioe) {
       logger.error("Error reading asset {}",uri,ioe);
       return null;
     }
