@@ -1,10 +1,16 @@
 {
-  logger.info("Initialising World");
-  try {
-    heightmap=HeightmapFileReader.readFile();
-  }
- catch (  IOException e) {
-    logger.error("Failed to read heightmap",e);
+  if (seed == null)   return;
+  logger.info("Reading height map..");
+  Texture texture=Assets.getTexture("core:platec_heightmap");
+  ByteBuffer[] bb=texture.getData().getBuffers();
+  IntBuffer intBuf=bb[0].asIntBuffer();
+  int width=texture.getWidth();
+  int height=texture.getHeight();
+  heightmap=new float[width][height];
+  while (intBuf.position() < intBuf.limit()) {
+    int pos=intBuf.position();
+    int val=intBuf.get();
+    heightmap[pos % width][pos / width]=val / (256 * 256 * 256* 12.8f);
   }
   heightmap=shiftArray(rotateArray(heightmap),-50,-100);
 }
