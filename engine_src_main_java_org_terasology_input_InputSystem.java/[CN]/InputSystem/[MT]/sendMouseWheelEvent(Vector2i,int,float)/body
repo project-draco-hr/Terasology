@@ -1,0 +1,11 @@
+{
+  MouseWheelEvent mouseWheelEvent=new MouseWheelEvent(pos,wheelTurns,delta);
+  setupTarget(mouseWheelEvent);
+  for (  EntityRef entity : getInputEntities()) {
+    entity.send(mouseWheelEvent);
+    if (mouseWheelEvent.isConsumed()) {
+      break;
+    }
+  }
+  return mouseWheelEvent.isConsumed();
+}

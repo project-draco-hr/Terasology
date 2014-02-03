@@ -43,6 +43,9 @@
     moduleList.subscribe(new ItemActivateEventListener<Module>(){
       @Override public void onItemActivated(      UIWidget widget,      Module item){
         String id=item.getId();
+        if (id.equals("core")) {
+          return;
+        }
         if (selection.contains(id)) {
           ModuleSelection newSelection=selection.remove(id);
           if (newSelection.isValid()) {
@@ -100,6 +103,9 @@
         @Override public void onActivated(        UIWidget button){
           if (moduleList.getSelection() != null) {
             String id=moduleList.getSelection().getId();
+            if (id.equals("core")) {
+              return;
+            }
             if (selection.contains(id)) {
               ModuleSelection newSelection=selection.remove(id);
               if (newSelection.isValid()) {
@@ -134,6 +140,35 @@
             }
           }
           return "";
+        }
+      }
+);
+    }
+    UIButton enableAll=find("enableAll",UIButton.class);
+    if (enableAll != null) {
+      enableAll.subscribe(new ActivateEventListener(){
+        @Override public void onActivated(        UIWidget button){
+          for (          Module m : moduleList.getList()) {
+            ModuleSelection newSelection=selection.add(m);
+            if (newSelection.isValid()) {
+              selection=newSelection;
+            }
+          }
+        }
+      }
+);
+    }
+    UIButton disableAll=find("disableAll",UIButton.class);
+    if (disableAll != null) {
+      disableAll.subscribe(new ActivateEventListener(){
+        @Override public void onActivated(        UIWidget button){
+          for (          Module m : moduleList.getList()) {
+            if (m.getId().equals("core")) {
+              continue;
+            }
+            ModuleSelection newSelection=selection.remove(m.getId());
+            selection=newSelection;
+          }
         }
       }
 );

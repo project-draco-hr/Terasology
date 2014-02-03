@@ -43,7 +43,6 @@
   moduleSecurityManager.addAPIPackage("javax.vecmath");
   moduleSecurityManager.addAPIPackage("com.yourkit.runtime");
   moduleSecurityManager.addAPIClass(com.esotericsoftware.reflectasm.MethodAccess.class);
-  moduleSecurityManager.addAPIClass(Joiner.class);
   moduleSecurityManager.addAPIClass(IOException.class);
   moduleSecurityManager.addAPIClass(InvocationTargetException.class);
   moduleSecurityManager.addAPIClass(LoggerFactory.class);
@@ -56,27 +55,10 @@
       moduleSecurityManager.addAPIClass(apiClass);
     }
   }
-  moduleSecurityManager.addAllowedPermission(Enum.class,new ReflectPermission("suppressAccessChecks"));
-  moduleSecurityManager.addAllowedPermission(LoggingPermission.class);
-  moduleSecurityManager.addAllowedPermission(ClassLoader.class,FilePermission.class);
-  moduleSecurityManager.addAllowedPermission(new AWTPermission("accessClipboard"));
-  moduleSecurityManager.addAllowedPermission(EventSystemImpl.class,new RuntimePermission("createClassLoader"));
-  moduleSecurityManager.addAllowedPermission(EventSystemImpl.class,ReflectPermission.class);
-  moduleSecurityManager.addAllowedPermission(EventSystemImpl.class,new RuntimePermission("accessClassInPackage.sun.reflect"));
-  moduleSecurityManager.addAllowedPermission(PojoEntityManager.class,new RuntimePermission("createClassLoader"));
-  moduleSecurityManager.addAllowedPermission(PojoEntityManager.class,ReflectPermission.class);
-  moduleSecurityManager.addAllowedPermission(AssetManager.class,FilePermission.class);
-  moduleSecurityManager.addAllowedPermission(EnumMap.class,ReflectPermission.class);
-  moduleSecurityManager.addAllowedPermission(WorldGeneratorPluginLibrary.class,new RuntimePermission("accessDeclaredMembers"));
-  moduleSecurityManager.addAllowedPermission(ClassMetadata.class,new RuntimePermission("createClassLoader"));
-  moduleSecurityManager.addAllowedPermission(ClassMetadata.class,new RuntimePermission("accessClassInPackage.sun.reflect"));
-  moduleSecurityManager.addAllowedPermission(ClassMetadata.class,ReflectPermission.class);
-  moduleSecurityManager.addAllowedPermission(FieldMetadata.class,new RuntimePermission("createClassLoader"));
-  moduleSecurityManager.addAllowedPermission(FieldMetadata.class,new RuntimePermission("accessClassInPackage.sun.reflect"));
-  moduleSecurityManager.addAllowedPermission(FieldMetadata.class,ReflectPermission.class);
-  moduleSecurityManager.addAllowedPermission(InjectionHelper.class,new RuntimePermission("accessDeclaredMembers"));
-  moduleSecurityManager.addAllowedPermission("java.awt",new RuntimePermission("loadLibrary.dcpr"));
-  moduleSecurityManager.addAllowedPermission(GUIManagerLwjgl.class,ReflectPermission.class);
+  moduleSecurityManager.addFullPrivilegePackage("ch.qos.logback.classic");
+  moduleSecurityManager.addAPIClass(java.nio.ByteBuffer.class);
+  moduleSecurityManager.addAPIClass(java.nio.IntBuffer.class);
+  Policy.setPolicy(new EngineModulePolicy());
   System.setSecurityManager(moduleSecurityManager);
   return moduleManager;
 }

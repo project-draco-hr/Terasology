@@ -1,7 +1,12 @@
 {
-  List<URL> assetURLs=getAssetURLs(uri);
+  final List<URL> assetURLs=getAssetURLs(uri);
   if (assetURLs.isEmpty()) {
     return null;
   }
-  return assetURLs.get(0).openStream();
+  try {
+    return AccessController.doPrivileged(new PrivilegedOpenStream(assetURLs.get(0)));
+  }
+ catch (  PrivilegedActionException e) {
+    throw new IOException(e.getCause().getMessage(),e.getCause());
+  }
 }
