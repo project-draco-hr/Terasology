@@ -13,7 +13,7 @@
         out.nullValue();
       }
  else {
-        out.value(toLowercase(value));
+        out.value(toLowercase(value).replaceAll("_"," "));
       }
     }
     @Override public T read(    JsonReader reader) throws IOException {
@@ -22,7 +22,7 @@
         return null;
       }
  else {
-        return lowercaseToConstant.get(toLowercase(reader.nextString()));
+        return lowercaseToConstant.get(toLowercase(reader.nextString()).replaceAll(" ","_"));
       }
     }
   }
