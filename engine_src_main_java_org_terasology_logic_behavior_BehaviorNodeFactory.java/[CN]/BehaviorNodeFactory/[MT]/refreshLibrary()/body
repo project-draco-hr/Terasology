@@ -1,4 +1,18 @@
 {
+  for (  AssetUri uri : assetManager.listAssets(AssetType.SOUND)) {
+    sounds.add(uri);
+  }
+  providerFactory.register("sounds",new ReadOnlyBinding<List<AssetUri>>(){
+    @Override public List<AssetUri> get(){
+      return sounds;
+    }
+  }
+,new StringTextRenderer<AssetUri>(){
+    @Override public String getString(    AssetUri value){
+      return value.getAssetName();
+    }
+  }
+);
   refreshPrefabs();
   sortLibrary();
 }
