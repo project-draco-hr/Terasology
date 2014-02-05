@@ -1,5 +1,4 @@
 {
-  InjectionHelper.inject(task);
   task.setActor(actor);
   task.setInterpreter(this);
   task.setParent(parent);
@@ -12,4 +11,11 @@
     subTasks.add(task);
   }
   tasks.addFirst(task);
+  return AccessController.doPrivileged(new PrivilegedAction<Task>(){
+    @Override public Task run(){
+      InjectionHelper.inject(task);
+      return task;
+    }
+  }
+);
 }
