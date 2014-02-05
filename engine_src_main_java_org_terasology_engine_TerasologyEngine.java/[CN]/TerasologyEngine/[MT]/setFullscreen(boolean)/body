@@ -1,9 +1,8 @@
 {
   if (config.getRendering().isFullscreen() != state) {
     config.getRendering().setFullscreen(state);
-    Display display=CoreRegistry.get(Display.class);
+    DisplayDevice display=CoreRegistry.get(DisplayDevice.class);
     display.setFullscreen(state);
-    display.resizeViewport();
     CoreRegistry.get(GUIManager.class).update(true);
   }
 }

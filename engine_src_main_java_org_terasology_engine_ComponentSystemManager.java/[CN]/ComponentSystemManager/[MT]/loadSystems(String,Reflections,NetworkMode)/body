@@ -1,4 +1,6 @@
 {
+  DisplayDevice displayDevice=CoreRegistry.get(DisplayDevice.class);
+  boolean isHeadless=displayDevice.isHeadless();
   Set<Class<?>> systems=reflections.getTypesAnnotatedWith(RegisterSystem.class);
   for (  Class<?> system : systems) {
     if (!ComponentSystem.class.isAssignableFrom(system)) {
@@ -6,7 +8,7 @@
       continue;
     }
     RegisterSystem registerInfo=system.getAnnotation(RegisterSystem.class);
-    if (registerInfo.value().isValidFor(netMode,false)) {
+    if (registerInfo.value().isValidFor(netMode,isHeadless)) {
       String id=moduleName + ":" + system.getSimpleName();
       logger.debug("Registering system {}",id);
       try {
