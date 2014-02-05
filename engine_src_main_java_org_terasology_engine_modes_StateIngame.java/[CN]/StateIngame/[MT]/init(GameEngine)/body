@@ -18,7 +18,10 @@
     OculusVrHelper.updateFromDevice();
   }
   final boolean hudHidden=CoreRegistry.get(Config.class).getRendering().getDebug().isHudHidden();
-  for (  UIDisplayElement element : CoreRegistry.get(GUIManager.class).getWindowById("hud").getDisplayElements()) {
-    element.setVisible(!hudHidden);
+  UIWindow hudWindow=CoreRegistry.get(GUIManager.class).getWindowById("hud");
+  if (null != hudWindow) {
+    for (    UIDisplayElement element : hudWindow.getDisplayElements()) {
+      element.setVisible(!hudHidden);
+    }
   }
 }
