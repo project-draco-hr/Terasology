@@ -1,6 +1,14 @@
 {
   long now=getRawTimeInMs();
   long newDelta=now - last.get();
+  if (0 == newDelta) {
+    try {
+      Thread.sleep(0,1000);
+    }
+ catch (    InterruptedException e) {
+    }
+    newDelta=now - last.get();
+  }
   if (newDelta >= UPDATE_CAP) {
     logger.warn("Delta too great ({}), capping to {}",newDelta,UPDATE_CAP);
     newDelta=UPDATE_CAP;
