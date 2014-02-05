@@ -14,7 +14,7 @@
   if (mipmaps[0].limit() != width * height * BYTES_PER_PIXEL) {
     throw new IllegalArgumentException("Texture data size incorrect, must be a set of RGBA values for each pixel (width * height)");
   }
-  if (mipmaps.length > 1 && !(TeraMath.isPowerOfTwo(width) && TeraMath.isPowerOfTwo(height))) {
+  if (mipmaps.length > 1 && !(IntMath.isPowerOfTwo(width) && IntMath.isPowerOfTwo(height))) {
     throw new IllegalArgumentException("Texture width and height must be powers of 2 for mipmapping");
   }
   for (int i=1; i < mipmaps.length; ++i) {
