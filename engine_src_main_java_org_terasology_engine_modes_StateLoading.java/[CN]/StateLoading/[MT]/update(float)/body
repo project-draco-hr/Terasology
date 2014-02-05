@@ -1,6 +1,7 @@
 {
-  long startTime=1000 * Sys.getTime() / Sys.getTimerResolution();
-  while (current != null && 1000 * Sys.getTime() / Sys.getTimerResolution() - startTime < 20) {
+  EngineTime time=(EngineTime)CoreRegistry.get(Time.class);
+  long startTime=time.getRawTimeInMs();
+  while (current != null && time.getRawTimeInMs() - startTime < 20) {
     if (current.step()) {
       popStep();
     }
