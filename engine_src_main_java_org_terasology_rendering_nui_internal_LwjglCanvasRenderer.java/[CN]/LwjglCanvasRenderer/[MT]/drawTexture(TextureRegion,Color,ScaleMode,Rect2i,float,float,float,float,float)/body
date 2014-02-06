@@ -2,6 +2,17 @@
   Vector2f scale=mode.scaleForRegion(absoluteRegion,texture.getWidth(),texture.getHeight());
   Rect2f textureArea=texture.getRegion();
   textureMat.setFloat2("scale",scale);
+  if (mode == ScaleMode.SCALE_FILL) {
+    Rect2i effectiveCropRegion=requestedCropRegion.intersect(absoluteRegion);
+    textureMat.setFloat4(CROPPING_BOUNDARIES_PARAM,effectiveCropRegion.minX(),effectiveCropRegion.maxX() + 1,effectiveCropRegion.minY(),effectiveCropRegion.maxY() + 1);
+    currentTextureCropRegion=effectiveCropRegion;
+  }
+ else {
+    if (!currentTextureCropRegion.equals(requestedCropRegion) && !(currentTextureCropRegion.encompasses(absoluteRegion) && requestedCropRegion.encompasses(absoluteRegion))) {
+      textureMat.setFloat4(CROPPING_BOUNDARIES_PARAM,requestedCropRegion.minX(),requestedCropRegion.maxX() + 1,requestedCropRegion.minY(),requestedCropRegion.maxY() + 1);
+      currentTextureCropRegion=requestedCropRegion;
+    }
+  }
   textureMat.setFloat2("offset",absoluteRegion.minX() + 0.5f * (absoluteRegion.width() - scale.x),absoluteRegion.minY() + 0.5f * (absoluteRegion.height() - scale.y));
   textureMat.setFloat2("texOffset",textureArea.minX() + ux * textureArea.width(),textureArea.minY() + uy * textureArea.height());
   textureMat.setFloat2("texSize",uw * textureArea.width(),uh * textureArea.height());
