@@ -1,0 +1,20 @@
+{
+  Vector2i result=new Vector2i();
+  canvas.setPart(part);
+  int tickerWidth=canvas.getCurrentStyle().getFont().getWidth(formatString);
+  tickerWidth+=canvas.getCurrentStyle().getMargin().getTotalWidth();
+  result.x=tickerWidth;
+  if (canvas.getCurrentStyle().getFixedWidth() != 0) {
+    result.x=Math.max(result.x,canvas.getCurrentStyle().getFixedWidth());
+  }
+ else {
+    result.x=Math.max(result.x,canvas.getCurrentStyle().getMinWidth());
+  }
+  if (canvas.getCurrentStyle().getFixedHeight() != 0) {
+    result.y=canvas.getCurrentStyle().getFixedHeight();
+  }
+ else {
+    result.y=canvas.getCurrentStyle().getMinHeight();
+  }
+  return result;
+}
