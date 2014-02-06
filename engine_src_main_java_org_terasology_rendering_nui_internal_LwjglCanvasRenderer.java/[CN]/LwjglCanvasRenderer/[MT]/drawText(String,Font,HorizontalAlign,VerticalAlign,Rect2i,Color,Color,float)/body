@@ -11,7 +11,7 @@
   offset.y+=vAlign.getOffset(lines.size() * font.getLineHeight(),absoluteRegion.height());
   for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
     entry.getKey().bindTextures();
-    entry.getKey().setFloat4("croppingBoundaries",cropRegion.minX(),cropRegion.maxX() + 1,cropRegion.minY(),cropRegion.maxY() + 1);
+    entry.getKey().setFloat4(CROPPING_BOUNDARIES_PARAM,requestedCropRegion.minX(),requestedCropRegion.maxX() + 1,requestedCropRegion.minY(),requestedCropRegion.maxY() + 1);
     if (shadowColor.a() != 0) {
       entry.getKey().setFloat2("offset",offset.x + 1,offset.y + 1);
       Vector4f shadowValues=shadowColor.toVector4f();
