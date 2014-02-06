@@ -1,5 +1,8 @@
 {
   String setterName="set" + propertyName.substring(0,1).toUpperCase(Locale.ENGLISH) + propertyName.substring(1);
   Method result=findMethod(beanClass,setterName,propertyType);
+  if (result != null) {
+    result.setAccessible(true);
+  }
   return result;
 }
