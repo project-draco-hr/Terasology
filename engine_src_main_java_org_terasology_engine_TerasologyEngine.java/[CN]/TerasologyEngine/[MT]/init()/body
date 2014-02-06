@@ -18,6 +18,9 @@
     for (    EngineSubsystem subsystem : getSubsystems()) {
       subsystem.postInitialise(config);
     }
+    if (CoreRegistry.get(DisplayDevice.class) == null) {
+      throw new IllegalStateException("DisplayDevice not registered as a core system.");
+    }
     initAssets();
     if (config.getSystem().isMonitoringEnabled()) {
       new AdvancedMonitor().setVisible(true);

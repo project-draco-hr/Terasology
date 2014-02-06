@@ -1,6 +1,6 @@
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
+  DisplayDevice displayDevice=CoreRegistry.get(DisplayDevice.class);
+  displayDevice.prepareToRender();
   if (worldRenderer != null) {
     if (!CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
       worldRenderer.render(DefaultRenderingProcess.StereoRenderState.MONO);
