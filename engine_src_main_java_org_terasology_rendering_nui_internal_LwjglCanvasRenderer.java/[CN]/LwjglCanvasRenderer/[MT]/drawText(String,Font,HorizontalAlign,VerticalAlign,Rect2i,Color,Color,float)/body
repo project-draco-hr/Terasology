@@ -1,10 +1,11 @@
 {
-  TextCacheKey key=new TextCacheKey(text,font,absoluteRegion.width(),hAlign);
+  TextCacheKey key=new TextCacheKey(text,font,absoluteRegion.width(),hAlign,color,shadowColor);
   usedText.add(key);
   Map<Material,Mesh> fontMesh=cachedText.get(key);
   List<String> lines=TextLineBuilder.getLines(font,text,absoluteRegion.width());
   if (fontMesh == null) {
-    fontMesh=font.createTextMesh(lines,absoluteRegion.width(),hAlign);
+    FontMeshBuilder meshBuilder=new FontMeshBuilder(font);
+    fontMesh=meshBuilder.createTextMesh(lines,absoluteRegion.width(),hAlign,color,shadowColor);
     cachedText.put(key,fontMesh);
   }
   Vector2i offset=new Vector2i(absoluteRegion.minX(),absoluteRegion.minY());
@@ -12,17 +13,8 @@
   for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
     entry.getKey().bindTextures();
     entry.getKey().setFloat4(CROPPING_BOUNDARIES_PARAM,requestedCropRegion.minX(),requestedCropRegion.maxX() + 1,requestedCropRegion.minY(),requestedCropRegion.maxY() + 1);
-    if (shadowColor.a() != 0) {
-      entry.getKey().setFloat2("offset",offset.x + 1,offset.y + 1);
-      Vector4f shadowValues=shadowColor.toVector4f();
-      shadowValues.w*=alpha;
-      entry.getKey().setFloat4("color",shadowValues);
-      entry.getValue().render();
-    }
     entry.getKey().setFloat2("offset",offset.x,offset.y);
-    Vector4f colorValues=color.toVector4f();
-    colorValues.w*=alpha;
-    entry.getKey().setFloat4("color",colorValues);
+    entry.getKey().setFloat("alpha",alpha);
     entry.getValue().render();
   }
 }
