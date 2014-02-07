@@ -5,22 +5,70 @@
   }
   Vector2f scale=mode.scaleForRegion(absoluteRegion,texture.getWidth(),texture.getHeight());
   Rect2f textureArea=texture.getRegion();
-  if (mode == ScaleMode.SCALE_FILL) {
+  Mesh mesh=billboard;
+switch (mode) {
+case TILED:
+{
+      TextureCacheKey key=new TextureCacheKey(texture.size(),absoluteRegion.size());
+      usedTextures.add(key);
+      mesh=cachedTextures.get(key);
+      if (mesh == null) {
+        MeshBuilder builder=new MeshBuilder();
+        int tileW=TeraMath.ceilToInt(uw * texture.getWidth());
+        int tileH=TeraMath.ceilToInt(uh * texture.getHeight());
+        int horizTiles=TeraMath.fastAbs((absoluteRegion.width() - 1) / tileW) + 1;
+        int vertTiles=TeraMath.fastAbs((absoluteRegion.height() - 1) / tileH) + 1;
+        int offsetX=absoluteRegion.width() - horizTiles * tileW;
+        int offsetY=absoluteRegion.height() - vertTiles * tileH;
+        for (int tileY=0; tileY < vertTiles; tileY++) {
+          for (int tileX=0; tileX < horizTiles; tileX++) {
+            int left=offsetX + tileW * tileX;
+            int top=offsetY + tileH * tileY;
+            float vertLeft=Math.max((float)left / absoluteRegion.width(),0);
+            float vertTop=Math.max((float)top / absoluteRegion.height(),0);
+            float vertRight=Math.min((float)(left + tileW) / absoluteRegion.width(),1);
+            float vertBottom=Math.min((float)(top + tileH) / absoluteRegion.height(),1);
+            builder.addPoly(new Vector3f(vertLeft,vertTop,0),new Vector3f(vertRight,vertTop,0),new Vector3f(vertRight,vertBottom,0),new Vector3f(vertLeft,vertBottom,0));
+            float texCoordLeft=(float)(Math.max(left,0) - left) / tileW;
+            float texCoordTop=(float)(Math.max(top,0) - top) / tileH;
+            float texCoordRight=(float)(Math.min(left + tileW,absoluteRegion.width()) - left) / tileW;
+            float texCoordBottom=(float)(Math.min(top + tileH,absoluteRegion.height()) - top) / tileH;
+            builder.addTexCoord(texCoordLeft,texCoordTop);
+            builder.addTexCoord(texCoordRight,texCoordTop);
+            builder.addTexCoord(texCoordRight,texCoordBottom);
+            builder.addTexCoord(texCoordLeft,texCoordBottom);
+          }
+        }
+        mesh=builder.build();
+        cachedTextures.put(key,mesh);
+      }
+      textureMat.setFloat2("scale",scale);
+      textureMat.setFloat2("offset",absoluteRegion.minX(),absoluteRegion.minY());
+      textureMat.setFloat2("texOffset",textureArea.minX() + ux * textureArea.width(),textureArea.minY() + uy * textureArea.height());
+      textureMat.setFloat2("texSize",uw * textureArea.width(),uh * textureArea.height());
+      break;
+    }
+case SCALE_FILL:
+{
     textureMat.setFloat2("offset",absoluteRegion.minX(),absoluteRegion.minY());
     textureMat.setFloat2("scale",absoluteRegion.width(),absoluteRegion.height());
     float texBorderX=(scale.x - absoluteRegion.width()) / scale.x * uw;
     float texBorderY=(scale.y - absoluteRegion.height()) / scale.y * uh;
     textureMat.setFloat2("texOffset",textureArea.minX() + (ux + 0.5f * texBorderX) * textureArea.width(),textureArea.minY() + (uy + 0.5f * texBorderY) * textureArea.height());
     textureMat.setFloat2("texSize",(uw - texBorderX) * textureArea.width(),(uh - texBorderY) * textureArea.height());
+    break;
   }
- else {
-    textureMat.setFloat2("scale",scale);
-    textureMat.setFloat2("offset",absoluteRegion.minX() + 0.5f * (absoluteRegion.width() - scale.x),absoluteRegion.minY() + 0.5f * (absoluteRegion.height() - scale.y));
-    textureMat.setFloat2("texOffset",textureArea.minX() + ux * textureArea.width(),textureArea.minY() + uy * textureArea.height());
-    textureMat.setFloat2("texSize",uw * textureArea.width(),uh * textureArea.height());
-  }
-  textureMat.setTexture("texture",texture.getTexture());
-  textureMat.setFloat4("color",color.rf(),color.gf(),color.bf(),color.af() * alpha);
-  textureMat.bindTextures();
-  billboard.render();
+default :
+{
+  textureMat.setFloat2("scale",scale);
+  textureMat.setFloat2("offset",absoluteRegion.minX() + 0.5f * (absoluteRegion.width() - scale.x),absoluteRegion.minY() + 0.5f * (absoluteRegion.height() - scale.y));
+  textureMat.setFloat2("texOffset",textureArea.minX() + ux * textureArea.width(),textureArea.minY() + uy * textureArea.height());
+  textureMat.setFloat2("texSize",uw * textureArea.width(),uh * textureArea.height());
+  break;
+}
+}
+textureMat.setTexture("texture",texture.getTexture());
+textureMat.setFloat4("color",color.rf(),color.gf(),color.bf(),color.af() * alpha);
+textureMat.bindTextures();
+mesh.render();
 }

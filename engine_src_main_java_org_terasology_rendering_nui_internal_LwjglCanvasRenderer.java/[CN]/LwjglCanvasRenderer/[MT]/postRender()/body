@@ -10,6 +10,15 @@
     }
   }
   usedText.clear();
+  Iterator<Map.Entry<TextureCacheKey,Mesh>> textureIterator=cachedTextures.entrySet().iterator();
+  while (textureIterator.hasNext()) {
+    Map.Entry<TextureCacheKey,Mesh> entry=textureIterator.next();
+    if (!usedTextures.contains(entry.getKey())) {
+      Assets.dispose(entry.getValue());
+      textureIterator.remove();
+    }
+  }
+  usedTextures.clear();
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);
