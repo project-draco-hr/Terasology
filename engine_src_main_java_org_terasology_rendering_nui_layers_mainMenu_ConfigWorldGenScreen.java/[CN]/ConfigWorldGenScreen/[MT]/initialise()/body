@@ -24,20 +24,9 @@
  finally {
     moduleManager.disableAllModules();
   }
-  list=find("params",ScrollableArea.class);
-  if (list != null) {
-    ColumnLayout layout=new ColumnLayout();
-    layout.setColumns(2);
-    layout.setVerticalSpacing(4);
-    layout.setHorizontalSpacing(8);
-    layout.setFamily("option-grid");
-    layout.setColumnWidths(0.25f,0.75f);
-    list.setContent(layout);
-    for (    Parameter p : worldConfig.getParams()) {
-      UILabel label=new UILabel(p.getLabel());
-      UIWidget widget=getWidgetFor(p);
-      layout.addWidget(label,null);
-      layout.addWidget(widget,null);
-    }
+  properties=find("properties",PropertyLayout.class);
+  if (properties != null) {
+    PropertyProvider<?> provider=new PropertyProvider<>(worldConfig.getObject());
+    properties.addPropertyProvider("Behavior Node",provider);
   }
 }
