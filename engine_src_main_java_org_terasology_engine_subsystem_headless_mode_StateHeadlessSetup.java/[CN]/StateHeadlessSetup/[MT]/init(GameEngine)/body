@@ -1,0 +1,18 @@
+{
+  super.init(gameEngine);
+  GameManifest gameManifest=new GameManifest();
+  gameManifest.setTitle("headless");
+  gameManifest.setSeed("headless");
+  Config config=CoreRegistry.get(Config.class);
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  for (  String moduleName : config.getDefaultModSelection().listModules()) {
+    Module module=moduleManager.getLatestModuleVersion(moduleName);
+    if (module != null) {
+      gameManifest.addModule(module.getId(),module.getVersion());
+    }
+  }
+  SimpleUri worldGeneratorUri=config.getWorldGeneration().getDefaultGenerator();
+  WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,gameManifest.getSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorUri);
+  gameManifest.addWorld(worldInfo);
+  gameEngine.changeState(new StateLoading(gameManifest,NetworkMode.SERVER));
+}
