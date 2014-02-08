@@ -1,8 +1,8 @@
 {
-  if (!InventoryUtils.moveItemAmount(entity,event.getSlotFrom(),event.getTo(),event.getSlotTo(),event.getCount())) {
+  if (!InventoryUtils.moveItemAmount(event.getInstigator(),entity,event.getSlotFrom(),event.getTo(),event.getSlotTo(),event.getCount())) {
     return;
   }
-  MoveItemAmountRequest request=new MoveItemAmountRequest(entity,event.getSlotFrom(),event.getTo(),event.getSlotTo(),event.getCount(),changeId++);
+  MoveItemAmountRequest request=new MoveItemAmountRequest(event.getInstigator(),entity,event.getSlotFrom(),event.getTo(),event.getSlotTo(),event.getCount(),changeId++);
   pendingMoves.put(request.getChangeId(),request);
   localPlayer.getClientEntity().send(request);
 }

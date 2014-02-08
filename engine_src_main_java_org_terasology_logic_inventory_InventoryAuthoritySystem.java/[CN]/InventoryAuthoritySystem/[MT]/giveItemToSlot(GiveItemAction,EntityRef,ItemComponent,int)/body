@@ -3,7 +3,7 @@
   ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
   if (itemAt == null || InventoryUtils.isSameItem(itemAt,itemToGive)) {
     if (itemAt == null) {
-      if (canPutItemIntoSlot(event.isForce(),entity,event.getItem(),slot)) {
+      if (canPutItemIntoSlot(event.getInstigator(),entity,event.getItem(),slot)) {
         InventoryUtils.putItemIntoSlot(entity,event.getItem(),slot);
         event.consume();
         return true;
