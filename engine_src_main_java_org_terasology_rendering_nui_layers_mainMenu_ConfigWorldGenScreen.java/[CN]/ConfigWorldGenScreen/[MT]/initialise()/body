@@ -26,7 +26,10 @@
   }
   properties=find("properties",PropertyLayout.class);
   if (properties != null) {
-    PropertyProvider<?> provider=new PropertyProvider<>(worldConfig.getObject());
-    properties.addPropertyProvider("Behavior Node",provider);
+    Map<String,?> props=worldConfig.getProperties();
+    for (    String label : props.keySet()) {
+      PropertyProvider<?> provider=new PropertyProvider<>(props.get(label));
+      properties.addPropertyProvider(label,provider);
+    }
   }
 }
