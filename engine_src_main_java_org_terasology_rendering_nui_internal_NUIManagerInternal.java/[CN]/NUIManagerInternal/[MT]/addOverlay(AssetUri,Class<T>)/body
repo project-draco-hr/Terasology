@@ -1,7 +1,9 @@
 {
   UIData data=assetManager.loadAssetData(screenUri,UIData.class);
   if (data != null && expectedType.isInstance(data.getRootWidget())) {
-    addOverlay(expectedType.cast(data.getRootWidget()));
+    T result=expectedType.cast(data.getRootWidget());
+    addOverlay(result);
+    return result;
   }
   return null;
 }
