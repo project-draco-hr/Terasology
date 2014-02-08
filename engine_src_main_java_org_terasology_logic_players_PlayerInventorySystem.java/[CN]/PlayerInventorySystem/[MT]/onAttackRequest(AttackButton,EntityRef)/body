@@ -3,7 +3,7 @@
     return;
   }
   CharacterComponent character=entity.getComponent(CharacterComponent.class);
-  EntityRef selectedItemEntity=inventoryManager.getItemInSlot(entity,character.selectedItem);
+  EntityRef selectedItemEntity=InventoryUtils.getItemAt(entity,character.selectedItem);
   entity.send(new AttackRequest(selectedItemEntity));
   lastInteraction=time.getGameTimeInMs();
   character.handAnimation=0.5f;

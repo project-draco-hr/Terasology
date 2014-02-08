@@ -1,0 +1,8 @@
+{
+  if (!item.exists()) {
+    return true;
+  }
+  BeforeItemPutInInventory itemPut=new BeforeItemPutInInventory(instigator,item,slot);
+  entity.send(itemPut);
+  return !itemPut.isConsumed();
+}

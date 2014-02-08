@@ -7,10 +7,14 @@
   EntityRef owner=itemEntity.getOwner();
   if (owner.hasComponent(InventoryComponent.class)) {
     if (dropAll) {
-      inventoryManager.removeItem(owner,itemEntity);
+      RemoveItemAction action=new RemoveItemAction(EntityRef.NULL,pickupItem,false);
+      owner.send(action);
+      pickupItem=action.getRemovedItem();
     }
  else {
-      pickupItem=inventoryManager.removeItem(owner,itemEntity,1);
+      RemoveItemAction action=new RemoveItemAction(EntityRef.NULL,pickupItem,false,1);
+      owner.send(action);
+      pickupItem=action.getRemovedItem();
     }
   }
   if (pickupItem.exists()) {

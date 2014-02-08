@@ -1,0 +1,21 @@
+{
+  EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
+  ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
+  if (itemAt == null || InventoryUtils.isSameItem(itemAt,itemToGive)) {
+    if (itemAt == null) {
+      if (canPutItemIntoSlot(event.getInstigator(),entity,event.getItem(),slot)) {
+        InventoryUtils.putItemIntoSlot(entity,event.getItem(),slot);
+        event.consume();
+        return true;
+      }
+    }
+ else {
+      if (itemAt.stackCount + itemToGive.stackCount <= itemToGive.maxStackSize) {
+        InventoryUtils.adjustStackSize(entity,slot,itemAt.stackCount + itemToGive.stackCount);
+        event.getItem().destroy();
+        return true;
+      }
+    }
+  }
+  return false;
+}

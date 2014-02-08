@@ -1,10 +1,10 @@
 {
   PickupComponent pickupComponent=entity.getComponent(PickupComponent.class);
-  if (inventoryManager.giveItem(event.getOtherEntity(),pickupComponent.itemEntity)) {
+  GiveItemAction action=new GiveItemAction(entity,pickupComponent.itemEntity);
+  event.getOtherEntity().send(action);
+  if (action.isConsumed()) {
     event.getOtherEntity().send(new PlaySoundForOwnerEvent(Assets.getSound("engine:Loot"),1.0f));
-    event.getOtherEntity().send(new PickedUpItem(pickupComponent.itemEntity));
     pickupComponent.itemEntity=EntityRef.NULL;
-    entity.saveComponent(pickupComponent);
     entity.destroy();
   }
 }

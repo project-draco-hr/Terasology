@@ -4,7 +4,7 @@
   }
   ClientComponent client=clientEntity.getComponent(ClientComponent.class);
   if (client != null) {
-    PlayerFactory playerFactory=new PlayerFactory(entityManager,inventoryManager);
+    PlayerFactory playerFactory=new PlayerFactory(entityManager);
     EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z),clientEntity);
     Location.attachChild(playerCharacter,clientEntity,new Vector3f(),new Quat4f(0,0,0,1));
     Client clientListener=networkSystem.getOwner(clientEntity);
