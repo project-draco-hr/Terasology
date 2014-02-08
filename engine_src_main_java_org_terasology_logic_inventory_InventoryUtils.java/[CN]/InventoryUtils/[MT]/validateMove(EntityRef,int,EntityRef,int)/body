@@ -1,0 +1,33 @@
+{
+  EntityRef itemFrom=InventoryUtils.getItemAt(from,slotFrom);
+  EntityRef itemTo=InventoryUtils.getItemAt(to,slotTo);
+  if (itemFrom.exists()) {
+    BeforeItemRemovedFromInventory removeFrom=new BeforeItemRemovedFromInventory(itemFrom,slotFrom);
+    from.send(removeFrom);
+    if (removeFrom.isConsumed()) {
+      return false;
+    }
+  }
+  if (itemTo.exists()) {
+    BeforeItemRemovedFromInventory removeTo=new BeforeItemRemovedFromInventory(itemTo,slotTo);
+    to.send(removeTo);
+    if (removeTo.isConsumed()) {
+      return false;
+    }
+  }
+  if (itemTo.exists()) {
+    BeforeItemPutInInventory putFrom=new BeforeItemPutInInventory(itemTo,slotFrom);
+    from.send(putFrom);
+    if (putFrom.isConsumed()) {
+      return false;
+    }
+  }
+  if (itemFrom.exists()) {
+    BeforeItemPutInInventory putTo=new BeforeItemPutInInventory(itemFrom,slotTo);
+    to.send(putTo);
+    if (putTo.isConsumed()) {
+      return false;
+    }
+  }
+  return true;
+}

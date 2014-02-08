@@ -1,7 +1,10 @@
 {
   EntityRef inventoryItem=event.getItem();
-  inventoryItem.addComponent(new InventoryComponent(inventoryManager.getNumSlots(blockEntity)));
-  inventoryManager.moveAll(blockEntity,inventoryItem);
+  int slotCount=InventoryUtils.getSlotCount(blockEntity);
+  inventoryItem.addComponent(new InventoryComponent(slotCount));
+  for (int i=0; i < slotCount; i++) {
+    blockEntity.send(new SwitchItemAction(i,inventoryItem,i));
+  }
   ItemComponent itemComponent=inventoryItem.getComponent(ItemComponent.class);
   if (itemComponent != null && !itemComponent.stackId.isEmpty()) {
     itemComponent.stackId="";

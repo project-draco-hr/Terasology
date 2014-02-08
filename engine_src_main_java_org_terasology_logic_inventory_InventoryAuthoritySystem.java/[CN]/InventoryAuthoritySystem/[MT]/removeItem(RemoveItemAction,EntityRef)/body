@@ -1,0 +1,41 @@
+{
+  ItemComponent itemToRemove=event.getItem().getComponent(ItemComponent.class);
+  if (itemToRemove == null) {
+    event.consume();
+    return;
+  }
+  int slotWithItem=InventoryUtils.getSlotWithItem(entity,event.getItem());
+  if (slotWithItem == -1) {
+    return;
+  }
+  Integer count=event.getCount();
+  if (count != null) {
+    if (count > itemToRemove.stackCount) {
+      return;
+    }
+  }
+  BeforeItemRemovedFromInventory removeFrom=new BeforeItemRemovedFromInventory(event.getItem(),slotWithItem);
+  entity.send(removeFrom);
+  if (removeFrom.isConsumed()) {
+    return;
+  }
+  if (count == null || count == itemToRemove.stackCount) {
+    InventoryUtils.putItemIntoSlot(entity,EntityRef.NULL,slotWithItem);
+    if (event.isDestroyRemoved()) {
+      event.getItem().destroy();
+    }
+ else {
+      event.setRemovedItem(event.getItem());
+    }
+  }
+ else {
+    if (!event.isDestroyRemoved()) {
+      EntityRef copy=entityManager.copy(event.getItem());
+      ItemComponent copyItem=copy.getComponent(ItemComponent.class);
+      copyItem.stackCount=count.byteValue();
+      copy.saveComponent(copyItem);
+      event.setRemovedItem(copy);
+    }
+    InventoryUtils.adjustStackSize(entity,slotWithItem,itemToRemove.stackCount - count);
+  }
+}

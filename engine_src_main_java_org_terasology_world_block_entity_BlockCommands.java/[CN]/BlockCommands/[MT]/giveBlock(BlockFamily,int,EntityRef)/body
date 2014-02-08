@@ -7,7 +7,9 @@
     return "Unknown block or item";
   }
   EntityRef playerEntity=client.getComponent(ClientComponent.class).character;
-  if (!inventoryManager.giveItem(playerEntity,item)) {
+  GiveItemAction action=new GiveItemAction(item);
+  playerEntity.send(action);
+  if (!action.isConsumed()) {
     item.destroy();
   }
   return "You received " + quantity + " blocks of "+ blockFamily.getDisplayName();

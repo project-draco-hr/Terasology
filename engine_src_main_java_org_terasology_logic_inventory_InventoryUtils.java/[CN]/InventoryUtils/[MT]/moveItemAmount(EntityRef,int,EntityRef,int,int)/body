@@ -1,0 +1,33 @@
+{
+  if (!InventoryUtils.validateMoveAmount(from,slotFrom,to,slotTo,amount)) {
+    return false;
+  }
+  EntityRef itemFrom=getItemAt(from,slotFrom);
+  EntityRef itemTo=getItemAt(to,slotTo);
+  if (!itemTo.exists()) {
+    EntityRef fromCopy=CoreRegistry.get(EntityManager.class).copy(itemFrom);
+    ItemComponent copyItem=fromCopy.getComponent(ItemComponent.class);
+    copyItem.stackCount=(byte)amount;
+    fromCopy.saveComponent(copyItem);
+    putItemIntoSlot(to,fromCopy,slotTo);
+    ItemComponent fromItem=itemFrom.getComponent(ItemComponent.class);
+    if (fromItem.stackCount == amount) {
+      putItemIntoSlot(from,EntityRef.NULL,slotFrom);
+    }
+ else {
+      adjustStackSize(from,slotFrom,fromItem.stackCount - amount);
+    }
+  }
+ else {
+    ItemComponent itemToComponent=itemTo.getComponent(ItemComponent.class);
+    adjustStackSize(to,slotTo,itemToComponent.stackCount + amount);
+    ItemComponent itemFromComponent=itemFrom.getComponent(ItemComponent.class);
+    if (itemFromComponent.stackCount == amount) {
+      putItemIntoSlot(from,EntityRef.NULL,slotFrom);
+    }
+ else {
+      adjustStackSize(from,slotFrom,itemFromComponent.stackCount - amount);
+    }
+  }
+  return true;
+}

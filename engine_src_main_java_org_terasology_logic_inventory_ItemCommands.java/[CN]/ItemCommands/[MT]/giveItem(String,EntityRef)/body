@@ -3,9 +3,7 @@
   if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
     EntityRef item=entityManager.create(prefab);
     EntityRef playerEntity=client.getComponent(ClientComponent.class).character;
-    if (!inventoryManager.giveItem(playerEntity,item)) {
-      item.destroy();
-    }
+    playerEntity.send(new GiveItemAction(item));
     return "You received an item of " + prefab.getName();
   }
  else {

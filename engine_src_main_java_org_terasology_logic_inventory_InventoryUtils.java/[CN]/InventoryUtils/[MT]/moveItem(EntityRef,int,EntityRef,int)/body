@@ -1,0 +1,13 @@
+{
+  if (checkForStacking(from,slotFrom,to,slotTo)) {
+    return true;
+  }
+  if (!InventoryUtils.validateMove(from,slotFrom,to,slotTo)) {
+    return false;
+  }
+  EntityRef itemFrom=getItemAt(from,slotFrom);
+  EntityRef itemTo=getItemAt(to,slotTo);
+  putItemIntoSlot(from,itemTo,slotFrom);
+  putItemIntoSlot(to,itemFrom,slotTo);
+  return true;
+}

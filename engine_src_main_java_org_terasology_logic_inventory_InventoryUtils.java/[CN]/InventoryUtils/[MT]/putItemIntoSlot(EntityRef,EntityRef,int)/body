@@ -1,0 +1,7 @@
+{
+  InventoryComponent inventory=entity.getComponent(InventoryComponent.class);
+  EntityRef oldItem=inventory.itemSlots.get(slot);
+  inventory.itemSlots.set(slot,item);
+  entity.send(new InventorySlotChangedEvent(slot,oldItem,item));
+  entity.saveComponent(inventory);
+}

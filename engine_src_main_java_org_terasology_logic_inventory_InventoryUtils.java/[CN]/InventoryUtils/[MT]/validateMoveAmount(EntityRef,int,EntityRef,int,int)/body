@@ -1,0 +1,31 @@
+{
+  ItemComponent itemFrom=InventoryUtils.getItemAt(from,slotFrom).getComponent(ItemComponent.class);
+  ItemComponent itemTo=InventoryUtils.getItemAt(to,slotTo).getComponent(ItemComponent.class);
+  if (itemFrom == null || (itemTo != null && !InventoryUtils.isSameItem(itemFrom,itemTo))) {
+    return false;
+  }
+  int countOnFrom=itemFrom.stackCount;
+  if (amount > countOnFrom) {
+    return false;
+  }
+  int countOnTo=0;
+  if (itemTo != null) {
+    countOnTo=itemTo.stackCount;
+  }
+  if (countOnTo + amount > itemFrom.maxStackSize) {
+    return false;
+  }
+  BeforeItemRemovedFromInventory removeFrom=new BeforeItemRemovedFromInventory(InventoryUtils.getItemAt(from,slotFrom),slotFrom);
+  from.send(removeFrom);
+  if (removeFrom.isConsumed()) {
+    return false;
+  }
+  if (itemTo == null) {
+    BeforeItemPutInInventory putTo=new BeforeItemPutInInventory(InventoryUtils.getItemAt(from,slotFrom),slotTo);
+    to.send(putTo);
+    if (putTo.isConsumed()) {
+      return false;
+    }
+  }
+  return true;
+}

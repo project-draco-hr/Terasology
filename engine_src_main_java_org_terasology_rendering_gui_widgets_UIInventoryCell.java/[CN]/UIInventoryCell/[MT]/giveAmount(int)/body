@@ -1,8 +1,3 @@
 {
-  if (ghost) {
-    inventoryManager.putItemInSlot(inventoryEntity,slot,EntityRef.NULL);
-  }
- else {
-    inventoryManager.moveItemAmount(inventoryEntity,slot,getTransferEntity(),0,amount);
-  }
+  inventoryEntity.send(new MoveItemAction(slot,getTransferEntity(),0,amount));
 }
