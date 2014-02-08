@@ -1,63 +1,15 @@
 {
-  float top=(float)border.getTop() / texture.getHeight();
-  float left=(float)border.getLeft() / texture.getWidth();
-  float bottom=(float)border.getBottom() / texture.getHeight();
-  float right=(float)border.getRight() / texture.getWidth();
-  int centerHoriz=region.width() - border.getLeft() - border.getRight();
-  int centerVert=region.height() - border.getTop() - border.getBottom();
-  if (border.getTop() != 0) {
-    if (border.getLeft() != 0) {
-      drawTextureRaw(texture,Rect2i.createFromMinAndSize(region.minX(),region.minY(),border.getLeft(),border.getTop()),ScaleMode.STRETCH,ux,uy,left,top);
-    }
-    Rect2i topArea=Rect2i.createFromMinAndSize(region.minX() + border.getLeft(),region.minY(),centerHoriz,border.getTop());
-    if (tile) {
-      drawTextureRaw(texture,topArea,ScaleMode.TILED,ux + left,uy,uw - left - right,top);
+  if (!state.cropRegion.overlaps(relativeToAbsolute(region))) {
+    return;
+  }
+  Rect2i absoluteRegion=relativeToAbsolute(region);
+  Rect2i cropRegion=absoluteRegion.intersect(state.cropRegion);
+  if (!cropRegion.isEmpty()) {
+    if (state.drawOnTop) {
+      drawOnTopOperations.add(new DrawBorderedTextureOperation(texture,absoluteRegion,border,tile,cropRegion,ux,uy,uw,uh,state.getAlpha()));
     }
  else {
-      drawTextureRaw(texture,topArea,ScaleMode.STRETCH,ux + left,uy,uw - left - right,top);
-    }
-    if (border.getRight() != 0) {
-      Rect2i area=Rect2i.createFromMinAndSize(region.maxX() - border.getRight() + 1,region.minY(),border.getRight(),border.getTop());
-      drawTextureRaw(texture,area,ScaleMode.STRETCH,ux + uw - right,uy,right,top);
-    }
-  }
-  if (border.getLeft() != 0) {
-    Rect2i area=Rect2i.createFromMinAndSize(region.minX(),region.minY() + border.getTop(),border.getLeft(),centerVert);
-    if (tile) {
-      drawTextureRaw(texture,area,ScaleMode.TILED,ux,uy + top,left,uh - top - bottom);
-    }
- else {
-      drawTextureRaw(texture,area,ScaleMode.STRETCH,ux,uy + top,left,uh - top - bottom);
-    }
-  }
-  if (tile) {
-    drawTextureRaw(texture,Rect2i.createFromMinAndSize(region.minX() + border.getLeft(),region.minY() + border.getTop(),centerHoriz,centerVert),ScaleMode.TILED,ux + left,uy + top,uw - left - right,uh - top - bottom);
-  }
- else {
-    drawTextureRaw(texture,Rect2i.createFromMinAndSize(region.minX() + border.getLeft(),region.minY() + border.getTop(),centerHoriz,centerVert),ScaleMode.STRETCH,ux + left,uy + top,uw - left - right,uh - top - bottom);
-  }
-  if (border.getRight() != 0) {
-    Rect2i area=Rect2i.createFromMinAndSize(region.maxX() - border.getRight() + 1,region.minY() + border.getTop(),border.getRight(),centerVert);
-    if (tile) {
-      drawTextureRaw(texture,area,ScaleMode.TILED,ux + uw - right,uy + top,right,uh - top - bottom);
-    }
- else {
-      drawTextureRaw(texture,area,ScaleMode.STRETCH,ux + uw - right,uy + top,right,uh - top - bottom);
-    }
-  }
-  if (border.getBottom() != 0) {
-    if (border.getLeft() != 0) {
-      drawTextureRaw(texture,Rect2i.createFromMinAndSize(region.minX(),region.maxY() - border.getBottom() + 1,border.getLeft(),border.getBottom()),ScaleMode.STRETCH,ux,uy + uw - bottom,left,bottom);
-    }
-    Rect2i bottomArea=Rect2i.createFromMinAndSize(region.minX() + border.getLeft(),region.maxY() - border.getBottom() + 1,centerHoriz,border.getBottom());
-    if (tile) {
-      drawTextureRaw(texture,bottomArea,ScaleMode.TILED,ux + left,uy + uw - bottom,uw - left - right,bottom);
-    }
- else {
-      drawTextureRaw(texture,bottomArea,ScaleMode.STRETCH,ux + left,uy + uw - bottom,uw - left - right,bottom);
-    }
-    if (border.getRight() != 0) {
-      drawTextureRaw(texture,Rect2i.createFromMinAndSize(region.maxX() - border.getRight() + 1,region.maxY() - border.getBottom() + 1,border.getRight(),border.getBottom()),ScaleMode.STRETCH,ux + uw - right,uy + uw - bottom,right,bottom);
+      renderer.drawTextureBordered(texture,absoluteRegion,border,tile,ux,uy,uw,uh,state.getAlpha());
     }
   }
 }

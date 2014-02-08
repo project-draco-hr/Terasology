@@ -14,31 +14,7 @@ case TILED:
       mesh=cachedTextures.get(key);
       if (mesh == null) {
         MeshBuilder builder=new MeshBuilder();
-        int tileW=TeraMath.ceilToInt(uw * texture.getWidth());
-        int tileH=TeraMath.ceilToInt(uh * texture.getHeight());
-        int horizTiles=TeraMath.fastAbs((absoluteRegion.width() - 1) / tileW) + 1;
-        int vertTiles=TeraMath.fastAbs((absoluteRegion.height() - 1) / tileH) + 1;
-        int offsetX=absoluteRegion.width() - horizTiles * tileW;
-        int offsetY=absoluteRegion.height() - vertTiles * tileH;
-        for (int tileY=0; tileY < vertTiles; tileY++) {
-          for (int tileX=0; tileX < horizTiles; tileX++) {
-            int left=offsetX + tileW * tileX;
-            int top=offsetY + tileH * tileY;
-            float vertLeft=Math.max((float)left / absoluteRegion.width(),0);
-            float vertTop=Math.max((float)top / absoluteRegion.height(),0);
-            float vertRight=Math.min((float)(left + tileW) / absoluteRegion.width(),1);
-            float vertBottom=Math.min((float)(top + tileH) / absoluteRegion.height(),1);
-            builder.addPoly(new Vector3f(vertLeft,vertTop,0),new Vector3f(vertRight,vertTop,0),new Vector3f(vertRight,vertBottom,0),new Vector3f(vertLeft,vertBottom,0));
-            float texCoordLeft=(float)(Math.max(left,0) - left) / tileW;
-            float texCoordTop=(float)(Math.max(top,0) - top) / tileH;
-            float texCoordRight=(float)(Math.min(left + tileW,absoluteRegion.width()) - left) / tileW;
-            float texCoordBottom=(float)(Math.min(top + tileH,absoluteRegion.height()) - top) / tileH;
-            builder.addTexCoord(texCoordLeft,texCoordTop);
-            builder.addTexCoord(texCoordRight,texCoordTop);
-            builder.addTexCoord(texCoordRight,texCoordBottom);
-            builder.addTexCoord(texCoordLeft,texCoordBottom);
-          }
-        }
+        addTiles(builder,absoluteRegion,FULL_REGION,texture.size(),FULL_REGION);
         mesh=builder.build();
         cachedTextures.put(key,mesh);
       }
