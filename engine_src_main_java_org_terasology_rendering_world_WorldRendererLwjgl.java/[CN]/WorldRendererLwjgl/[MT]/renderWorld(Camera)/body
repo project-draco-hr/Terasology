@@ -80,8 +80,8 @@
   renderLightComponent(mainDirectionalLight,sunlightWorldPosition,program,camera,false);
   DefaultRenderingProcess.getInstance().endRenderDirectionalLights();
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render Chunks (Alpha blend)");
-  DefaultRenderingProcess.getInstance().beginRenderSceneTransparent();
+  PerformanceMonitor.startActivity("Render Chunks (Refractive/Reflective)");
+  DefaultRenderingProcess.getInstance().beginRenderSceneReflectiveRefractive();
   boolean isHeadUnderWater=isHeadUnderWater();
   if (isHeadUnderWater) {
     glDisable(GL11.GL_CULL_FACE);
@@ -94,17 +94,7 @@
     glEnable(GL11.GL_CULL_FACE);
   }
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Render Objects (Transparent)");
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  glDepthMask(false);
-  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
-    renderer.renderAlphaBlend();
-  }
-  glDisable(GL_BLEND);
-  glDepthMask(true);
-  PerformanceMonitor.endActivity();
-  DefaultRenderingProcess.getInstance().endRenderSceneTransparent();
+  DefaultRenderingProcess.getInstance().endRenderSceneReflectiveRefractive();
   if (config.getRendering().getDebug().isWireframe()) {
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
   }

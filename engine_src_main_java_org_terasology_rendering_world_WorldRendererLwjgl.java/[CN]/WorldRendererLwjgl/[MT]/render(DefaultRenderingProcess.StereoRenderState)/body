@@ -32,8 +32,23 @@ getActiveCamera().setReflected(false);
 glCullFace(GL11.GL_BACK);
 DefaultRenderingProcess.getInstance().endRenderReflectedScene();
 renderWorld(getActiveCamera());
+PerformanceMonitor.startActivity("Render Comined Scene");
+DefaultRenderingProcess.getInstance().renderPreCombinedScene();
+PerformanceMonitor.endActivity();
+PerformanceMonitor.startActivity("Render Objects (Transparent)");
+DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
+glEnable(GL_BLEND);
+glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+glDepthMask(false);
+for (RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+renderer.renderAlphaBlend();
+}
+glDisable(GL_BLEND);
+glDepthMask(true);
+DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
+PerformanceMonitor.endActivity();
 PerformanceMonitor.startActivity("Render Post-Processing");
-DefaultRenderingProcess.getInstance().renderScene(stereoRenderState);
+DefaultRenderingProcess.getInstance().renderPost(stereoRenderState);
 PerformanceMonitor.endActivity();
 if (activeCamera != null) {
 activeCamera.updatePrevViewProjectionMatrix();
