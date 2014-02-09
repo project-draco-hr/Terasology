@@ -1,7 +1,7 @@
 {
   try {
-    return (Class<?>)AccessController.doPrivileged(new PrivilegedExceptionAction<Object>(){
-      @Override public Object run() throws Exception {
+    return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>(){
+      @Override public Class<?> run() throws Exception {
         CtClass cc=pool.get(name);
         if (needsNonPrivateConstructor(cc)) {
           try {

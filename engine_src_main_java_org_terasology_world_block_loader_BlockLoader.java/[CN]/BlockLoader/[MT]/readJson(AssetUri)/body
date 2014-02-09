@@ -1,7 +1,7 @@
 {
   try (InputStream stream=CoreRegistry.get(AssetManager.class).getAssetStream(blockDefUri)){
     if (stream != null) {
-      BufferedReader reader=new BufferedReader(new InputStreamReader(stream));
+      BufferedReader reader=new BufferedReader(new InputStreamReader(stream,Charsets.UTF_8));
       return parser.parse(reader);
     }
  else {
