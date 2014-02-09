@@ -2,5 +2,6 @@
   UICheckbox checkbox=new UICheckbox();
   Binding<Boolean> binding=new BooleanTextBinding((FieldMetadata<Object,Boolean>)fieldMetadata);
   checkbox.bindChecked(binding);
-  return new Property<>(label,binding,checkbox);
+  String label=fromLabelOrId(info.label(),id);
+  return new Property<>(label,binding,checkbox,info.description());
 }
