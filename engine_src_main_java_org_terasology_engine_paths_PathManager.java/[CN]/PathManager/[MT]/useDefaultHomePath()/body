@@ -1,7 +1,7 @@
 {
 switch (LWJGLUtil.getPlatform()) {
 case LWJGLUtil.PLATFORM_LINUX:
-    homePath=Paths.get(System.getProperty("user.home"),LINUX_CONFIG_DIR,TERASOLOGY_HIDDEN_FOLDER_NAME);
+    homePath=Paths.get(System.getProperty("user.home")).resolve(LINUX_HOME_SUBPATH);
   break;
 case LWJGLUtil.PLATFORM_MACOSX:
 homePath=Paths.get(System.getProperty("user.home"),"Library","Application Support",TERASOLOGY_FOLDER_NAME);
@@ -21,7 +21,7 @@ rawPath=new JFileChooser().getFileSystemView().getDefaultDirectory().toPath();
 homePath=rawPath.resolve(TERASOLOGY_FOLDER_NAME);
 break;
 default :
-homePath=Paths.get(System.getProperty("user.home"),LINUX_CONFIG_DIR,TERASOLOGY_HIDDEN_FOLDER_NAME);
+homePath=Paths.get(System.getProperty("user.home")).resolve(LINUX_HOME_SUBPATH);
 break;
 }
 updateDirs();
