@@ -26,6 +26,7 @@
   }
   properties=find("properties",PropertyLayout.class);
   if (properties != null) {
+    properties.setOrdering(PropertyOrdering.byLabel());
     Map<String,?> props=worldConfig.getProperties();
     for (    String label : props.keySet()) {
       PropertyProvider<?> provider=new PropertyProvider<>(props.get(label));
