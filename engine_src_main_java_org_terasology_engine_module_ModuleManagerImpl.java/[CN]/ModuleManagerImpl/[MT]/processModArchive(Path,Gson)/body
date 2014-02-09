@@ -3,7 +3,7 @@
     ZipEntry modInfoEntry=zipFile.getEntry("module.txt");
     if (modInfoEntry != null) {
       try {
-        ModuleInfo moduleInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry)),ModuleInfo.class);
+        ModuleInfo moduleInfo=gson.fromJson(new InputStreamReader(zipFile.getInputStream(modInfoEntry),Charsets.UTF_8),ModuleInfo.class);
         AssetSource source=new ArchiveSource(moduleInfo.getId(),modulePath.toFile(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY);
         processModuleInfo(moduleInfo,modulePath,source);
       }

@@ -6,5 +6,9 @@
       loadModule(module);
     }
   }
+  TerasologyEngine terasologyEngine=(TerasologyEngine)CoreRegistry.get(GameEngine.class);
+  for (  EngineSubsystem subsystem : terasologyEngine.getSubsystems()) {
+    subsystem.registerSystems(componentSystemManager);
+  }
   return true;
 }

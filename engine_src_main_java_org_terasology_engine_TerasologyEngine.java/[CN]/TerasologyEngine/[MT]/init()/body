@@ -14,9 +14,21 @@
       subsystem.preInitialise();
     }
     time=(EngineTime)CoreRegistry.get(Time.class);
+    if (time == null) {
+      throw new IllegalStateException("Time not registered as a core system.");
+    }
     initManagers();
     for (    EngineSubsystem subsystem : getSubsystems()) {
       subsystem.postInitialise(config);
+    }
+    if (CoreRegistry.get(DisplayDevice.class) == null) {
+      throw new IllegalStateException("DisplayDevice not registered as a core system.");
+    }
+    if (CoreRegistry.get(RenderingSubsystemFactory.class) == null) {
+      throw new IllegalStateException("EngineSubsystemFactory not registered as a core system.");
+    }
+    if (CoreRegistry.get(InputSystem.class) == null) {
+      throw new IllegalStateException("InputSystem not registered as a core system.");
     }
     initAssets();
     if (config.getSystem().isMonitoringEnabled()) {

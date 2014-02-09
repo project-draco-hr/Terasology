@@ -1,0 +1,31 @@
+{
+  int y=0;
+  for (  String line : lines) {
+    int w=font.getWidth(line);
+    int x=alignment.getOffset(w,maxWidth);
+    for (    char c : line.toCharArray()) {
+      FontCharacter character=font.getCharacterData(c);
+      if (character != null && character.getPage() != null) {
+        MeshBuilder builder=meshBuilders.get(character.getPageMat());
+        if (builder == null) {
+          builder=new MeshBuilder();
+          meshBuilders.put(character.getPageMat(),builder);
+        }
+        if (shadowColor.a() != 0) {
+          addCharacter(builder,character,x,y,shadowColor,1,1,SHADOW_DEPTH);
+        }
+        addCharacter(builder,character,x,y,currentColor,0,0,0);
+        x+=character.getxAdvance();
+      }
+ else       if (FontColor.isValid(c)) {
+        if (c == FontColor.getReset()) {
+          currentColor=defaultColor;
+        }
+ else {
+          currentColor=FontColor.toColor(c);
+        }
+      }
+    }
+    y+=font.getLineHeight();
+  }
+}

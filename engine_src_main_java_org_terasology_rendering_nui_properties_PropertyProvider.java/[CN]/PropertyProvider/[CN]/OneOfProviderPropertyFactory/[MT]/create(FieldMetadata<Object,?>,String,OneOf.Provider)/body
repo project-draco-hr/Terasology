@@ -1,6 +1,11 @@
 {
   UIDropdown dropdown=new UIDropdown();
-  dropdown.bindOptions(CoreRegistry.get(OneOfProviderFactory.class).get(info.name()));
+  OneOfProviderFactory factory=CoreRegistry.get(OneOfProviderFactory.class);
+  dropdown.bindOptions(factory.get(info.name()));
+  ItemRenderer<?> itemRenderer=factory.getItemRenderer(info.name());
+  if (itemRenderer != null) {
+    dropdown.setOptionRenderer(itemRenderer);
+  }
   Binding binding=new Binding(){
     @Override public Object get(){
       return fieldMetadata.getValueChecked(target);

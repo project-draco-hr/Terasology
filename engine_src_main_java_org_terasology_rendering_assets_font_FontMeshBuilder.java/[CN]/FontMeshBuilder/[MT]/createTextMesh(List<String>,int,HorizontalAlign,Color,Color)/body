@@ -1,0 +1,11 @@
+{
+  this.defaultColor=baseColor;
+  this.currentColor=baseColor;
+  Map<Material,MeshBuilder> meshBuilders=Maps.newLinkedHashMap();
+  addLinesToMesh(lines,meshBuilders,width,alignment,shadowColor);
+  Map<Material,Mesh> result=Maps.newLinkedHashMap();
+  for (  Map.Entry<Material,MeshBuilder> entry : meshBuilders.entrySet()) {
+    result.put(entry.getKey(),entry.getValue().build());
+  }
+  return result;
+}

@@ -8,7 +8,7 @@
     RSAPrivateKeySpec priv=keyFactory.getKeySpec(kp.getPrivate(),RSAPrivateKeySpec.class);
     String uuid=UUID.randomUUID().toString();
     signer.initSign(signingKey,new SecureRandom());
-    signer.update(uuid.getBytes());
+    signer.update(uuid.getBytes(Charsets.UTF_8));
     signer.update(pub.getModulus().toByteArray());
     signer.update(pub.getPublicExponent().toByteArray());
     byte[] rawSig=signer.sign();

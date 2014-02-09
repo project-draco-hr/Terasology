@@ -1,7 +1,7 @@
 {
   if (request.getSlot() >= 0 && request.getSlot() < 10 && request.getSlot() != characterComp.selectedItem) {
-    EntityRef oldItem=inventoryManager.getItemInSlot(character,characterComp.selectedItem);
-    EntityRef newItem=inventoryManager.getItemInSlot(character,request.getSlot());
+    EntityRef oldItem=InventoryUtils.getItemAt(character,characterComp.selectedItem);
+    EntityRef newItem=InventoryUtils.getItemAt(character,request.getSlot());
     characterComp.selectedItem=request.getSlot();
     character.saveComponent(characterComp);
     character.send(new SelectedItemChangedEvent(oldItem,newItem));

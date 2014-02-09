@@ -1,0 +1,23 @@
+{
+  if (LWJGLUtil.DEBUG) {
+    try {
+      System.setOut(new PrintStream(System.out,false,Charsets.UTF_8.name()){
+        private Logger logger=LoggerFactory.getLogger("org.lwjgl");
+        @Override public void print(        final String message){
+          logger.info(message);
+        }
+      }
+);
+      System.setErr(new PrintStream(System.err,false,Charsets.UTF_8.name()){
+        private Logger logger=LoggerFactory.getLogger("org.lwjgl");
+        @Override public void print(        final String message){
+          logger.error(message);
+        }
+      }
+);
+    }
+ catch (    UnsupportedEncodingException e) {
+      logger.error("Failed to map lwjgl logging",e);
+    }
+  }
+}

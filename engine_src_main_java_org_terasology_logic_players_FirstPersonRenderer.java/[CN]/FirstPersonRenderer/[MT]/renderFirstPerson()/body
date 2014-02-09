@@ -9,9 +9,8 @@
   }
   float bobOffset=calcBobbingOffset(charMoveComp.footstepDelta,(float)java.lang.Math.PI / 8f,0.05f);
   float handMovementAnimationOffset=character.handAnimation;
-  UIInventoryGrid toolbar=(UIInventoryGrid)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("toolbar");
-  int invSlotIndex=character.selectedItem + toolbar.getStartSlot();
-  EntityRef heldItem=inventoryManager.getItemInSlot(localPlayer.getCharacterEntity(),invSlotIndex);
+  int invSlotIndex=character.selectedItem;
+  EntityRef heldItem=InventoryUtils.getItemAt(localPlayer.getCharacterEntity(),invSlotIndex);
   ItemComponent heldItemComp=heldItem.getComponent(ItemComponent.class);
   BlockItemComponent blockItem=heldItem.getComponent(BlockItemComponent.class);
   if (blockItem != null && blockItem.blockFamily != null) {

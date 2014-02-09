@@ -1,9 +1,9 @@
 {
   Vector3f position=entity.getComponent(LocationComponent.class).getWorldPosition();
   FastRandom random=new FastRandom();
-  int slotCount=inventoryManager.getNumSlots(entity);
+  int slotCount=InventoryUtils.getSlotCount(entity);
   for (int i=0; i < slotCount; i++) {
-    EntityRef itemInSlot=inventoryManager.getItemInSlot(entity,i);
+    EntityRef itemInSlot=InventoryUtils.getItemAt(entity,i);
     if (itemInSlot.exists()) {
       EntityRef pickup=pickupBuilder.createPickupFor(itemInSlot,position,60,true);
       pickup.send(new ImpulseEvent(random.nextVector3f(30.0f)));

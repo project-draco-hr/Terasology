@@ -30,7 +30,7 @@
     }
     for (    URL url : urls) {
       if (url.toString().endsWith(".texinfo")) {
-        try (InputStreamReader reader=new InputStreamReader(url.openStream())){
+        try (InputStreamReader reader=new InputStreamReader(url.openStream(),Charsets.UTF_8)){
           TextureMetadata metadata=gson.fromJson(reader,TextureMetadata.class);
           if (metadata.filterMode != null) {
             filterMode=metadata.filterMode;
@@ -72,7 +72,10 @@
       return new TextureData(width,height,new ByteBuffer[]{data},wrapMode,filterMode);
     }
   }
-  finally {
+ catch (  UnsupportedOperationException e) {
+    throw new IOException(e);
+  }
+ finally {
     pngStream.close();
   }
 }

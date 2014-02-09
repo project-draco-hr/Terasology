@@ -1,0 +1,20 @@
+{
+  try {
+    if (state) {
+      Display.setDisplayMode(Display.getDesktopDisplayMode());
+      Display.setFullscreen(true);
+    }
+ else {
+      Config config=CoreRegistry.get(Config.class);
+      Display.setDisplayMode(config.getRendering().getDisplayMode());
+      Display.setResizable(true);
+    }
+  }
+ catch (  LWJGLException e) {
+    logger.error("Can not initialize graphics device.",e);
+    System.exit(1);
+  }
+  if (resize) {
+    glViewport(0,0,Display.getWidth(),Display.getHeight());
+  }
+}

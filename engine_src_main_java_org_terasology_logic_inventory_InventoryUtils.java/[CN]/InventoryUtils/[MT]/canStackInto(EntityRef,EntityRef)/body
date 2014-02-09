@@ -1,0 +1,14 @@
+{
+  ItemComponent itemFrom=from.getComponent(ItemComponent.class);
+  ItemComponent itemTo=to.getComponent(ItemComponent.class);
+  if (itemFrom == null) {
+    return false;
+  }
+  if (itemTo == null) {
+    return true;
+  }
+  if (!isSameItem(itemFrom,itemTo)) {
+    return false;
+  }
+  return itemFrom.stackCount + itemTo.stackCount <= itemFrom.maxStackSize;
+}

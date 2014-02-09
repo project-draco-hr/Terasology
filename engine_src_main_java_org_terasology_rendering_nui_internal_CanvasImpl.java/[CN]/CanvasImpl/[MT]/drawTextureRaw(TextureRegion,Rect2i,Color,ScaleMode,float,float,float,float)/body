@@ -2,19 +2,14 @@
   if (!state.cropRegion.overlaps(relativeToAbsolute(region))) {
     return;
   }
-  if (mode == ScaleMode.TILED) {
-    drawTextureRawTiled(texture,region,ux,uy,uw,uh);
-  }
+  Rect2i absoluteRegion=relativeToAbsolute(region);
+  Rect2i cropRegion=absoluteRegion.intersect(state.cropRegion);
+  if (!cropRegion.isEmpty()) {
+    if (state.drawOnTop) {
+      drawOnTopOperations.add(new DrawTextureOperation(texture,color,mode,absoluteRegion,cropRegion,ux,uy,uw,uh,state.getAlpha()));
+    }
  else {
-    Rect2i absoluteRegion=relativeToAbsolute(region);
-    Rect2i cropRegion=absoluteRegion.intersect(state.cropRegion);
-    if (!cropRegion.isEmpty()) {
-      if (state.drawOnTop) {
-        drawOnTopOperations.add(new DrawTextureOperation(texture,color,mode,absoluteRegion,cropRegion,ux,uy,uw,uh,state.getAlpha()));
-      }
- else {
-        drawTextureInternal(texture,color,mode,absoluteRegion,cropRegion,ux,uy,uw,uh,state.getAlpha());
-      }
+      renderer.drawTexture(texture,color,mode,absoluteRegion,ux,uy,uw,uh,state.getAlpha());
     }
   }
 }

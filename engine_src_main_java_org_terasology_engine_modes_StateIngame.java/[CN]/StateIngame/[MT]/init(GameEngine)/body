@@ -10,7 +10,7 @@
   eventSystem.registerEventHandler(guiManager);
   eventSystem.registerEventHandler(nuiManager);
   networkSystem=CoreRegistry.get(NetworkSystem.class);
-  guiManager.openWindow(MenuControlSystem.HUD);
+  guiManager.openWindow("hud");
   if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport() && OculusVrHelper.isNativeLibraryLoaded()) {
     logger.info("Trying to initialize Oculus SDK...");
     TeraOVR.initSDK();
@@ -18,7 +18,10 @@
     OculusVrHelper.updateFromDevice();
   }
   final boolean hudHidden=CoreRegistry.get(Config.class).getRendering().getDebug().isHudHidden();
-  for (  UIDisplayElement element : CoreRegistry.get(GUIManager.class).getWindowById("hud").getDisplayElements()) {
-    element.setVisible(!hudHidden);
+  UIWindow hudWindow=CoreRegistry.get(GUIManager.class).getWindowById("hud");
+  if (null != hudWindow) {
+    for (    UIDisplayElement element : hudWindow.getDisplayElements()) {
+      element.setVisible(!hudHidden);
+    }
   }
 }

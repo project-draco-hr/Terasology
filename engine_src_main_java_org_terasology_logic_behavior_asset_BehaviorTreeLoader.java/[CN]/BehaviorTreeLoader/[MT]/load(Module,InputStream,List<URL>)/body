@@ -1,11 +1,15 @@
 {
   BehaviorTreeData data=new BehaviorTreeData();
-  try (JsonReader reader=new JsonReader(new InputStreamReader(stream))){
+  try (JsonReader reader=new JsonReader(new InputStreamReader(stream,Charsets.UTF_8))){
     reader.setLenient(true);
     reader.beginObject();
     nextName(reader,"model");
     data.setRoot(treeGson.loadTree(reader));
     reader.endObject();
   }
-   return data;
+ catch (  JsonSyntaxException e) {
+    logger.error("Cannot load tree! " + e.getMessage());
+    return null;
+  }
+  return data;
 }

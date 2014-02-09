@@ -1,0 +1,23 @@
+{
+  int tileW=textureSize.x;
+  int tileH=textureSize.y;
+  int horizTiles=TeraMath.fastAbs((drawRegion.width() - 1) / tileW) + 1;
+  int vertTiles=TeraMath.fastAbs((drawRegion.height() - 1) / tileH) + 1;
+  int offsetX=(drawRegion.width() - horizTiles * tileW) / 2;
+  int offsetY=(drawRegion.height() - vertTiles * tileH) / 2;
+  for (int tileY=0; tileY < vertTiles; tileY++) {
+    for (int tileX=0; tileX < horizTiles; tileX++) {
+      int left=offsetX + tileW * tileX;
+      int top=offsetY + tileH * tileY;
+      float vertLeft=subDrawRegion.minX() + subDrawRegion.width() * Math.max((float)left / drawRegion.width(),0);
+      float vertTop=subDrawRegion.minY() + subDrawRegion.height() * Math.max((float)top / drawRegion.height(),0);
+      float vertRight=subDrawRegion.minX() + subDrawRegion.width() * Math.min((float)(left + tileW) / drawRegion.width(),1);
+      float vertBottom=subDrawRegion.minY() + subDrawRegion.height() * Math.min((float)(top + tileH) / drawRegion.height(),1);
+      float texCoordLeft=subTextureRegion.minX() + subTextureRegion.width() * (Math.max(left,0) - left) / tileW;
+      float texCoordTop=subTextureRegion.minY() + subTextureRegion.height() * (Math.max(top,0) - top) / tileH;
+      float texCoordRight=subTextureRegion.minX() + subTextureRegion.width() * (Math.min(left + tileW,drawRegion.width()) - left) / tileW;
+      float texCoordBottom=subTextureRegion.minY() + subTextureRegion.height() * (Math.min(top + tileH,drawRegion.height()) - top) / tileH;
+      addRectPoly(builder,vertLeft,vertTop,vertRight,vertBottom,texCoordLeft,texCoordTop,texCoordRight,texCoordBottom);
+    }
+  }
+}

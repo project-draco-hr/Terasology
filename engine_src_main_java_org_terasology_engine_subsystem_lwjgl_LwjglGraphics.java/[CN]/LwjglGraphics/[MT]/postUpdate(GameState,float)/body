@@ -2,8 +2,7 @@
   Display.update();
   Display.sync(60);
   currentState.render();
-  org.terasology.engine.subsystem.Display display=CoreRegistry.get(org.terasology.engine.subsystem.Display.class);
-  if (display.wasResized()) {
-    display.resizeViewport();
+  if (Display.wasResized()) {
+    glViewport(0,0,Display.getWidth(),Display.getHeight());
   }
 }

@@ -7,12 +7,7 @@
   if (random.nextFloat() < chanceOfBlockDrop) {
     EntityRef item=blockItemFactory.newInstance(block.getBlockFamily(),1);
     entity.send(new OnBlockToItem(item));
-    if (block.isDirectPickup()) {
-      if (!inventoryManager.giveItem(event.getInstigator(),item)) {
-        processDropping(item,location);
-      }
-    }
- else {
+    if (shouldDropToWorld(event,block,blockDamageModifierComponent,item)) {
       processDropping(item,location);
     }
   }

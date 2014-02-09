@@ -1,5 +1,6 @@
 {
   try {
+    boolean isHeadless=false;
     Path homePath=null;
     for (    String arg : args) {
       if (arg.startsWith(HOME_ARG)) {
@@ -8,6 +9,9 @@
  else       if (arg.equals(LOCAL_ARG)) {
         homePath=Paths.get("");
       }
+ else       if (arg.equals(HEADLESS_ARG)) {
+        isHeadless=true;
+      }
     }
     if (homePath != null) {
       PathManager.getInstance().useOverrideHomePath(homePath);
@@ -15,10 +19,21 @@
  else {
       PathManager.getInstance().useDefaultHomePath();
     }
-    List<EngineSubsystem> subsystemList=Lists.newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput());
+    Collection<EngineSubsystem> subsystemList;
+    if (isHeadless) {
+      subsystemList=Lists.newArrayList(new HeadlessGraphics(),new HeadlessTimer(),new HeadlessAudio(),new HeadlessInput());
+    }
+ else {
+      subsystemList=Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput());
+    }
     TerasologyEngine engine=new TerasologyEngine(subsystemList);
     engine.init();
-    engine.run(new StateMainMenu());
+    if (isHeadless) {
+      engine.run(new StateHeadlessSetup());
+    }
+ else {
+      engine.run(new StateMainMenu());
+    }
     engine.dispose();
   }
  catch (  Throwable t) {

@@ -1,0 +1,17 @@
+{
+  canvas.setPart(part);
+  String display=String.format("%." + precision + "f",value.get());
+  int tickerWidth=canvas.getCurrentStyle().getFont().getWidth(formatString);
+  tickerWidth+=canvas.getCurrentStyle().getMargin().getTotalWidth();
+  sliderWidth=canvas.size().x - tickerWidth * 2;
+  int drawLocation=pixelOffsetFor(value.get(),sliderWidth);
+  if (rightTicker) {
+    drawLocation+=tickerWidth;
+  }
+  Rect2i tickerRegion=Rect2i.createFromMinAndSize(drawLocation,0,tickerWidth,canvas.size().y);
+  try (SubRegion ignored=canvas.subRegion(tickerRegion,false)){
+    canvas.drawBackground();
+    canvas.drawText(display);
+    canvas.addInteractionRegion(tickerListener);
+  }
+ }

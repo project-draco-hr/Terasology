@@ -1,4 +1,24 @@
 {
+  Iterator<Map.Entry<TextCacheKey,Map<Material,Mesh>>> textIterator=cachedText.entrySet().iterator();
+  while (textIterator.hasNext()) {
+    Map.Entry<TextCacheKey,Map<Material,Mesh>> entry=textIterator.next();
+    if (!usedText.contains(entry.getKey())) {
+      for (      Mesh mesh : entry.getValue().values()) {
+        Assets.dispose(mesh);
+      }
+      textIterator.remove();
+    }
+  }
+  usedText.clear();
+  Iterator<Map.Entry<TextureCacheKey,Mesh>> textureIterator=cachedTextures.entrySet().iterator();
+  while (textureIterator.hasNext()) {
+    Map.Entry<TextureCacheKey,Mesh> entry=textureIterator.next();
+    if (!usedTextures.contains(entry.getKey())) {
+      Assets.dispose(entry.getValue());
+      textureIterator.remove();
+    }
+  }
+  usedTextures.clear();
   glMatrixMode(GL_MODELVIEW);
   glPopMatrix();
   glMatrixMode(GL_PROJECTION);
@@ -6,5 +26,4 @@
   glMatrixMode(GL_MODELVIEW);
   glEnable(GL_DEPTH_TEST);
   glDisable(GL_BLEND);
-  checkGLError();
 }
