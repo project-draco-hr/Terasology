@@ -1,0 +1,9 @@
+{
+  entity.addComponent(new IntegerComponent());
+  TestEventHandler handler=new TestEventHandler();
+  eventSystem.registerEvent(new SimpleUri("test:childEvent"),TestChildEvent.class);
+  eventSystem.registerEventHandler(handler);
+  TestChildEvent event=new TestChildEvent();
+  eventSystem.send(entity,event);
+  assertEquals(1,handler.unfilteredEvents.size());
+}

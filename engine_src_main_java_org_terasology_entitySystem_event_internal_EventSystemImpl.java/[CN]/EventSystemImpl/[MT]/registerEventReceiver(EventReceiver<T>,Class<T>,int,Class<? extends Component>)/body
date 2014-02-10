@@ -1,9 +1,4 @@
 {
   EventHandlerInfo info=new ReceiverEventHandlerInfo<T>(eventReceiver,priority,componentTypes);
-  for (  Class<? extends Component> c : componentTypes) {
-    addEventHandler(eventClass,info,c);
-    for (    Class<? extends Event> childType : childEvents.get(eventClass)) {
-      addEventHandler(childType,info,c);
-    }
-  }
+  addEventHandler(eventClass,info,Arrays.asList(componentTypes));
 }
