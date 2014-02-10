@@ -6,5 +6,6 @@
   slider.setIncrement(range.increment());
   Binding<Float> binding=createFloatBinding(fieldMetadata);
   slider.bindValue(binding);
-  return new Property<>(label,binding,slider);
+  String label=fromLabelOrId(range.label(),id);
+  return new Property<>(label,binding,slider,range.description());
 }

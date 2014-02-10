@@ -3,5 +3,6 @@
   dropdown.bindOptions(new DefaultBinding<>(Arrays.asList(info.items())));
   Binding<String> binding=createTextBinding((FieldMetadata<Object,String>)fieldMetadata);
   dropdown.bindSelection(binding);
-  return new Property<>(label,binding,dropdown);
+  String label=fromLabelOrId(info.label(),id);
+  return new Property<>(label,binding,dropdown,info.description());
 }

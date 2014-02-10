@@ -1,7 +1,8 @@
 {
   if (propertyProvider.getProperties().size() > 0) {
     final UIButton expand=new UIButton("","+");
-    final UILabel headline=new UILabel(label);
+    expand.setTooltip("Click to expand");
+    final UILabel headline=new UILabel(groupLabel);
     final MigLayout layout=new MigLayout();
     layout.setColConstraints("[min][fill]");
     layout.setRowConstraints("[min]");
@@ -12,19 +13,26 @@
           layout.clear();
           invalidate();
           button.setText("+");
+          button.setTooltip("Click to expand");
         }
  else {
-          for (          Property<?,?> property : propertyProvider.getProperties()) {
-            layout.addWidget(property.getLabel(),new CCHint("newline"));
-            layout.addWidget(property.getEditor(),new CCHint());
+          List<Property<?,?>> props=Lists.newArrayList(propertyProvider.getProperties());
+          Collections.sort(props,propertyComparator);
+          for (          Property<?,?> property : props) {
+            UILabel label=property.getLabel();
+            UIWidget editor=property.getEditor();
+            editor.setTooltip(property.getDescription());
+            layout.addWidget(label,new CCHint("newline"));
+            layout.addWidget(editor,new CCHint());
           }
           invalidate();
           button.setText("-");
+          button.setTooltip("Click to contract");
         }
       }
     }
 );
-    addWidget(expand,new CCHint("newline, w 25!"));
+    addWidget(expand,new CCHint("newline, w 45!, h 22!"));
     addWidget(headline,new CCHint());
     addWidget(layout,new CCHint("newline, spanx 2"));
   }
