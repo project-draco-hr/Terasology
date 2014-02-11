@@ -3,10 +3,15 @@
   for (  AssetUri uri : assetManager.listAssets(AssetType.SOUND)) {
     uris.add(uri);
   }
+  BehaviorTree defaultTree=null;
   for (  AssetUri uri : assetManager.listAssets(AssetType.BEHAVIOR)) {
     BehaviorTree asset=assetManager.loadAsset(uri,BehaviorTree.class);
     if (asset != null) {
       trees.add(asset);
+      if (asset.getURI().getAssetName().equals("default")) {
+        defaultTree=asset;
+      }
     }
   }
+  createGlobalEntity(defaultTree);
 }
