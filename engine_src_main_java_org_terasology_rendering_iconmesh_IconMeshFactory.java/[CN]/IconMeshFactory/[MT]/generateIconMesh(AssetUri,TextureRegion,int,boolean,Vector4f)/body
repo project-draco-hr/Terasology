@@ -1,0 +1,69 @@
+{
+  ByteBuffer buffer=tex.getTexture().getData().getBuffers()[0];
+  Rect2i pixelRegion=tex.getPixelRegion();
+  int posX=pixelRegion.minX();
+  int posY=pixelRegion.minY();
+  int stride=tex.getTexture().getWidth() * 4;
+  float textureSize=Math.max(tex.getWidth(),tex.getHeight());
+  Tessellator tessellator=new Tessellator();
+  for (int y=0; y < tex.getHeight(); y++) {
+    for (int x=0; x < tex.getWidth(); x++) {
+      int r=buffer.get((posY + y) * stride + (posX + x) * 4) & 255;
+      int g=buffer.get((posY + y) * stride + (posX + x) * 4 + 1) & 255;
+      int b=buffer.get((posY + y) * stride + (posX + x) * 4 + 2) & 255;
+      int a=buffer.get((posY + y) * stride + (posX + x) * 4 + 3) & 255;
+      if (a > alphaLimit) {
+        Vector4f color=new Vector4f(r / 255f,g / 255f,b / 255f,a / 255f);
+        TessellatorHelper.addBlockMesh(tessellator,color,2f / textureSize,1.0f,0.5f,2f / textureSize * x - 0.5f,2f / textureSize * (15 - y) - 1f,0f);
+        if (withContour) {
+          int newX=0;
+          int newY=0;
+          int newA=0;
+          for (int i=0; i < 4; i++) {
+            newA=alphaLimit + 1;
+switch (i) {
+case 0:
+              if (x > 0) {
+                newX=x - 1;
+                newY=y;
+                newA=buffer.get((posY + newY) * stride + (posX + newX) * 4 + 3) & 255;
+              }
+            break;
+case 1:
+          if (y > 0) {
+            newX=x;
+            newY=y - 1;
+            newA=buffer.get((posY + newY) * stride + (posX + newX) * 4 + 3) & 255;
+          }
+        break;
+case 2:
+      if (x < 16) {
+        newX=x + 1;
+        newY=y;
+        newA=buffer.get((posY + newY) * stride + (posX + newX) * 4 + 3) & 255;
+      }
+    break;
+case 3:
+  if (y < 16) {
+    newX=x;
+    newY=y + 1;
+    newA=buffer.get((posY + newY) * stride + (posX + newX) * 4 + 3) & 255;
+  }
+break;
+}
+if (newA < alphaLimit) {
+Vector4f cColor=new Vector4f(colorContour.x / 255f,colorContour.y / 255f,colorContour.z / 255f,colorContour.w);
+TessellatorHelper.addBlockMesh(tessellator,cColor,0.125f,1.0f,0.5f,2f * 0.0625f * newX - 0.5f,0.125f * (15 - newY) - 1f,0f);
+}
+}
+}
+}
+}
+}
+if (uri == null) {
+return tessellator.generateMesh();
+}
+ else {
+return tessellator.generateMesh(uri);
+}
+}

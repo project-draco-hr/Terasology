@@ -1,5 +1,5 @@
 {
-  widgetsLibrary=new DefaultClassLibrary<>(CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
+  widgetsLibrary=new WidgetLibrary(CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
   for (  Map.Entry<String,Class<? extends UIWidget>> entry : CoreRegistry.get(ModuleManager.class).findAllSubclassesOf(UIWidget.class).entries()) {
     widgetsLibrary.register(new SimpleUri(entry.getKey(),entry.getValue().getSimpleName()),entry.getValue());
   }

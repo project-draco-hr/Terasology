@@ -1,0 +1,9 @@
+{
+  if (region instanceof Asset) {
+    AssetUri iconUri=((Asset)region).getURI();
+    return Assets.get(new AssetUri(AssetType.MESH,iconUri.getModuleName(),IconMeshResolver.ICON_DISCRIMINATOR + "." + iconUri.getAssetName()),Mesh.class);
+  }
+ else {
+    return generateIconMesh(region);
+  }
+}

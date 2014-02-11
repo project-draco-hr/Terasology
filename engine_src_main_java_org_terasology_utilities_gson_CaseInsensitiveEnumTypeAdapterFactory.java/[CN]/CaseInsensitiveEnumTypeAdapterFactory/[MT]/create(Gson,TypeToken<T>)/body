@@ -7,7 +7,6 @@
   for (  T constant : rawType.getEnumConstants()) {
     String lowercase=toLowercase(constant);
     lowercaseToConstant.put(lowercase,constant);
-    lowercaseToConstant.put(lowercase.replaceAll("_"," "),constant);
   }
   return new TypeAdapter<T>(){
     @Override public void write(    JsonWriter out,    T value) throws IOException {
@@ -15,7 +14,7 @@
         out.nullValue();
       }
  else {
-        out.value(toLowercase(value).replaceAll("_"," "));
+        out.value(toLowercase(value));
       }
     }
     @Override public T read(    JsonReader reader) throws IOException {

@@ -1,0 +1,9 @@
+{
+  try {
+    return new WidgetMetadata<>(name,type,factory,copyStrategies);
+  }
+ catch (  NoSuchMethodException e) {
+    logger.error("Unable to register class {}: Default Constructor Required",type.getSimpleName(),e);
+    return null;
+  }
+}
