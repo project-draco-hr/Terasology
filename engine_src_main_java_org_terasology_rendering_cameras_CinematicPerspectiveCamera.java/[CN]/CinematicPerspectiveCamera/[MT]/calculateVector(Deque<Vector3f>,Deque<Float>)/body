@@ -1,0 +1,20 @@
+{
+  int i=0;
+  float x=0;
+  float y=0;
+  float z=0;
+  float factorMult=0;
+  Iterator<Vector3f> vectorIterator=vectors.iterator();
+  Iterator<Float> deltaIterator=deltas.iterator();
+  while (vectorIterator.hasNext()) {
+    Vector3f vector=vectorIterator.next();
+    Float delta=deltaIterator.next();
+    double factor=Math.pow(multiplier,i);
+    factorMult+=factor;
+    x+=vector.x * factor;
+    y+=vector.y * factor;
+    z+=vector.z * factor;
+    i++;
+  }
+  return new Vector3f(x / factorMult,y / factorMult,z / factorMult);
+}
