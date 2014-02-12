@@ -10,15 +10,20 @@
     if (module.getReflections() == null) {
       logger.error("Module has no reflections: {}",module.getId());
     }
-    for (    Class<?> generatorClass : module.getReflections().getTypesAnnotatedWith(RegisterWorldGenerator.class)) {
-      RegisterWorldGenerator annotation=generatorClass.getAnnotation(RegisterWorldGenerator.class);
-      if (isValidWorldGenerator(generatorClass)) {
-        SimpleUri uri=new SimpleUri(module.getId(),annotation.id());
-        infos.add(new WorldGeneratorInfo(uri,annotation.displayName(),annotation.description()));
-      }
+    try {
+      for (      Class<?> generatorClass : module.getReflections().getTypesAnnotatedWith(RegisterWorldGenerator.class)) {
+        RegisterWorldGenerator annotation=generatorClass.getAnnotation(RegisterWorldGenerator.class);
+        if (isValidWorldGenerator(generatorClass)) {
+          SimpleUri uri=new SimpleUri(module.getId(),annotation.id());
+          infos.add(new WorldGeneratorInfo(uri,annotation.displayName(),annotation.description()));
+        }
  else {
-        logger.error("{} marked to be registered as a World Generator, but is not a subclass of WorldGenerator or lacks the correct constructor",generatorClass);
+          logger.error("{} marked to be registered as a World Generator, but is not a subclass of WorldGenerator or lacks the correct constructor",generatorClass);
+        }
       }
+    }
+ catch (    Exception e) {
+      logger.error("Error loading world generator in module {}, skipping",module.getId(),e);
     }
   }
   Collections.sort(infos);

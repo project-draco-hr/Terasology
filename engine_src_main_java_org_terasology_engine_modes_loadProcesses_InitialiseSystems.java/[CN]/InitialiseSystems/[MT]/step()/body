@@ -3,6 +3,10 @@
   EntitySystemLibrary entitySystemLibrary=CoreRegistry.get(EntitySystemLibrary.class);
   BlockEntityRegistry blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
   CoreRegistry.get(NetworkSystem.class).connectToEntitySystem(entityManager,entitySystemLibrary,blockEntityRegistry);
-  CoreRegistry.get(ComponentSystemManager.class).initialise();
+  ComponentSystemManager csm=CoreRegistry.get(ComponentSystemManager.class);
+  csm.initialise();
+  for (  ComponentSystem system : csm.iterateAll()) {
+    system.preBegin();
+  }
   return true;
 }
