@@ -1,13 +1,11 @@
 {
   previousPositions.addFirst(new Vector3f(position));
   previousViewingDirections.addFirst(new Vector3f(viewingDirection));
-  previousDeltas.addFirst(deltaT);
   if (previousPositions.size() > lastCount) {
     previousPositions.removeLast();
     previousViewingDirections.removeLast();
-    previousDeltas.removeLast();
   }
-  position.set(calculateVector(previousPositions,previousDeltas));
-  viewingDirection.set(calculateVector(previousViewingDirections,previousDeltas));
+  position.set(calculateVector(previousPositions));
+  viewingDirection.set(calculateVector(previousViewingDirections));
   super.update(deltaT);
 }
