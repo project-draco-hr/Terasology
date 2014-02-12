@@ -4,7 +4,7 @@
   }
   Activity newActivity=new Activity();
   newActivity.name=activity;
-  newActivity.startTime=Sys.getTime();
+  newActivity.startTime=timer.getRawTimeInMs();
   if (!activityStack.isEmpty()) {
     Activity currentActivity=activityStack.peek();
     currentActivity.ownTime+=newActivity.startTime - ((currentActivity.resumeTime > 0) ? currentActivity.resumeTime : currentActivity.startTime);

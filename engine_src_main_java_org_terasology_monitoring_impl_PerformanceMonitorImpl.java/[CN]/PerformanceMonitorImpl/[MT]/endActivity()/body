@@ -3,7 +3,7 @@
     return;
   }
   Activity oldActivity=activityStack.pop();
-  long time=Sys.getTime();
+  long time=timer.getRawTimeInMs();
   long total=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + time - oldActivity.resumeTime : time - oldActivity.startTime;
   currentData.adjustOrPutValue(oldActivity.name,total,total);
   if (!activityStack.isEmpty()) {
