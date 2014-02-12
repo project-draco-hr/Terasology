@@ -27,6 +27,7 @@
  else {
       event.setRemovedItem(event.getItem());
     }
+    event.consume();
   }
  else {
     if (!event.isDestroyRemoved()) {
@@ -37,5 +38,6 @@
       event.setRemovedItem(copy);
     }
     InventoryUtils.adjustStackSize(entity,slotWithItem,itemToRemove.stackCount - count);
+    event.consume();
   }
 }
