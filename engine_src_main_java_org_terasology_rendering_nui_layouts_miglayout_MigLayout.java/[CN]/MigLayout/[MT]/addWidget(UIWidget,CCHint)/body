@@ -1,13 +1,13 @@
 {
   final ComponentWrapper cw=getWrapper(element);
   final String cStr=ConstraintParser.prepare(hint != null ? hint.cc : "");
-  AccessController.doPrivileged(new PrivilegedAction<Task>(){
-    @Override public Task run(){
-      ccMap.put(cw,ConstraintParser.parseComponentConstraint(cStr));
-      return null;
+  CC constraint=AccessController.doPrivileged(new PrivilegedAction<CC>(){
+    @Override public CC run(){
+      return ConstraintParser.parseComponentConstraint(cStr);
     }
   }
 );
+  ccMap.put(cw,constraint);
   wrappers.put(element,cw);
   children.add(cw);
   dirty=true;
