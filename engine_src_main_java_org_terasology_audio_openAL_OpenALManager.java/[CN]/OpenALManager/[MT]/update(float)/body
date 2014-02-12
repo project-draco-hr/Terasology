@@ -2,4 +2,12 @@
   for (  SoundPool pool : pools.values()) {
     pool.update(delta);
   }
+  Iterator<SoundSource> iterator=activeSounds.iterator();
+  while (iterator.hasNext()) {
+    SoundSource source=iterator.next();
+    if (!source.isPlaying()) {
+      iterator.remove();
+      notifyEndListeners(source.getAudio());
+    }
+  }
 }
