@@ -1,4 +1,8 @@
 {
+  ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
+  for (  ComponentSystem sys : componentSystemManager.iterateAll()) {
+    sys.preSave();
+  }
   StorageManager storageManager=CoreRegistry.get(StorageManager.class);
   if (storageManager != null) {
     BlockManager blockManager=CoreRegistry.get(BlockManager.class);
@@ -31,5 +35,8 @@
       logger.error("Failed to save game",e);
     }
     storageManager.shutdown();
+  }
+  for (  ComponentSystem sys : componentSystemManager.iterateAll()) {
+    sys.postSave();
   }
 }
