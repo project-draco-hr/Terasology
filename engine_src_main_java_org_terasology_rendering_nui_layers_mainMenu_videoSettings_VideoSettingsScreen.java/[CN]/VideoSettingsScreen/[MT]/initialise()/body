@@ -52,6 +52,11 @@ fovSlider.setMinimum(70);
 fovSlider.setRange(50);
 fovSlider.bindValue(BindHelper.bindBeanProperty("fieldOfView",config.getRendering(),Float.TYPE));
 }
+UIDropdown<CameraSetting> cameraSetting=find("camera",UIDropdown.class);
+if (cameraSetting != null) {
+cameraSetting.setOptions(Arrays.asList(CameraSetting.values()));
+cameraSetting.bindSelection(new CameraSettingBinding(config.getRendering()));
+}
 WidgetUtil.tryBindCheckbox(this,"fullscreen",BindHelper.bindBeanProperty("fullscreen",engine,Boolean.TYPE));
 WidgetUtil.tryBindCheckbox(this,"bobbing",BindHelper.bindBeanProperty("cameraBobbing",config.getRendering(),Boolean.TYPE));
 WidgetUtil.tryBindCheckbox(this,"outline",BindHelper.bindBeanProperty("outline",config.getRendering(),Boolean.TYPE));
