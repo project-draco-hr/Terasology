@@ -1,11 +1,10 @@
 {
   previousPositions.addFirst(new Vector3f(position));
   previousViewingDirections.addFirst(new Vector3f(viewingDirection));
-  if (previousPositions.size() > lastCount) {
+  if (previousPositions.size() > cameraSmoothingFrames) {
     previousPositions.removeLast();
     previousViewingDirections.removeLast();
   }
   position.set(calculateVector(previousPositions));
   viewingDirection.set(calculateVector(previousViewingDirections));
-  super.update(deltaT);
 }
