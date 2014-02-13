@@ -11,7 +11,7 @@
     localPlayerCamera=new OculusStereoCamera();
   }
  else {
-    localPlayerCamera=CoreRegistry.get(Config.class).getRendering().getCamera();
+    localPlayerCamera=new PerspectiveCamera(CoreRegistry.get(Config.class).getRendering().getCameraSettings());
   }
   activeCamera=localPlayerCamera;
   mainDirectionalLight.lightType=LightComponent.LightType.DIRECTIONAL;

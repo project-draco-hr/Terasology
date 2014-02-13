@@ -1,7 +1,8 @@
 {
   previousPositions.addFirst(new Vector3f(position));
   previousViewingDirections.addFirst(new Vector3f(viewingDirection));
-  if (previousPositions.size() > cameraSmoothingFrames) {
+  CameraSetting cameraSetting=cameraSettings.getCameraSetting();
+  while (previousPositions.size() > cameraSetting.getSmoothingFrames()) {
     previousPositions.removeLast();
     previousViewingDirections.removeLast();
   }
