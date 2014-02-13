@@ -6,7 +6,9 @@
   }
   Integer slot=event.getSlot();
   if (slot != null) {
-    giveItemToSlot(event,entity,itemToGive,slot);
+    if (giveItemToSlot(event,entity,itemToGive,slot)) {
+      event.consume();
+    }
     return;
   }
   int slotCount=InventoryUtils.getSlotCount(entity);
