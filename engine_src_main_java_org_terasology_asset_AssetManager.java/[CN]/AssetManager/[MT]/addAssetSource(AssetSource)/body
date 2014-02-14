@@ -3,15 +3,12 @@
   AssetSource originalSource=assetSources.get(idKey);
   if (null == originalSource) {
     assetSources.put(idKey,newSource);
-    for (    AssetUri asset : newSource.list()) {
-      uriLookup.get(asset.getAssetType()).put(asset.getNormalisedAssetName(),asset.getNormalisedModuleName(),asset);
-    }
   }
  else {
     AssetSourceCollection combinedSource=new AssetSourceCollection(idKey,originalSource,newSource);
     assetSources.put(idKey,combinedSource);
-    for (    AssetUri asset : newSource.list()) {
-      uriLookup.get(asset.getAssetType()).put(asset.getNormalisedAssetName(),asset.getNormalisedModuleName(),asset);
-    }
+  }
+  for (  AssetUri asset : newSource.list()) {
+    uriLookup.get(asset.getAssetType()).put(asset.getNormalisedAssetName(),asset.getNormalisedModuleName(),asset);
   }
 }
