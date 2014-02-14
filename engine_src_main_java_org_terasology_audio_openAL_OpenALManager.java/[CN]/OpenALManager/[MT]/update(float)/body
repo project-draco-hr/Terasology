@@ -2,12 +2,13 @@
   for (  SoundPool pool : pools.values()) {
     pool.update(delta);
   }
-  Iterator<SoundSource> iterator=activeSounds.iterator();
+  Iterator<Map.Entry<SoundSource,AudioEndListener>> iterator=endListeners.entrySet().iterator();
   while (iterator.hasNext()) {
-    SoundSource source=iterator.next();
-    if (!source.isPlaying()) {
+    Map.Entry<SoundSource,AudioEndListener> entry=iterator.next();
+    if (!entry.getKey().isPlaying()) {
       iterator.remove();
-      notifyEndListeners(source.getAudio());
+      entry.getValue().onAudioEnd();
     }
   }
+  logger.warn("Active sounds: " + endListeners.size());
 }

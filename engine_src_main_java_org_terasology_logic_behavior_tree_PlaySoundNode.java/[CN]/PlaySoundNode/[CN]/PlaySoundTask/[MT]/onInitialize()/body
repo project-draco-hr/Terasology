@@ -1,10 +1,15 @@
 {
-  audioManager.registerListener(this);
   AssetUri uri=getNode().sound;
   if (uri != null) {
     Sound snd=assetManager.loadAsset(uri,Sound.class);
     if (snd != null) {
-      audioManager.playSound(snd,getNode().volume);
+      if (actor().hasLocation()) {
+        Vector3f worldPosition=actor().location().getWorldPosition();
+        audioManager.playSound(snd,worldPosition,getNode().volume,AudioManager.PRIORITY_NORMAL,this);
+      }
+ else {
+        audioManager.playSound(snd,new Vector3f(),getNode().volume,AudioManager.PRIORITY_NORMAL,this);
+      }
       playing=true;
     }
   }
