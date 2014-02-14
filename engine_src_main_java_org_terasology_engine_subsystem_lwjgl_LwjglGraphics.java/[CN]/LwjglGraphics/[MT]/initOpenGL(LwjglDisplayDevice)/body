@@ -5,6 +5,9 @@
   AssetManager assetManager=CoreRegistry.get(AssetManager.class);
   assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
     @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
+      if (data == null) {
+        return new BaseOpenGLTexture(uri);
+      }
       return new OpenGLTexture(uri,data);
     }
   }
