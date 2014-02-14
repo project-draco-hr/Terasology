@@ -1,9 +1,11 @@
 {
+  canvas.setPart(ICON_PART);
   if (icon != null) {
-    int icons=TeraMath.ceilToInt(getValue() / iconValue);
-    int maxHorizontalIcons=TeraMath.floorToInt(sizeHint.x / icon.getWidth());
-    int rows=((icons - 1) / maxHorizontalIcons) + 1;
-    return new Vector2i(Math.min(icons,maxHorizontalIcons) * icon.getWidth(),rows * icon.getHeight());
+    Vector2i iconSize=getIconSize(canvas);
+    int maxHorizontalIcons=TeraMath.floorToInt(sizeHint.x / iconSize.x);
+    int rows=((maxIcons - 1) / maxHorizontalIcons) + 1;
+    int columns=Math.min(maxIcons,maxHorizontalIcons);
+    return new Vector2i(columns * iconSize.x + (columns - 1) * spacing,rows * iconSize.y + (rows - 1) * spacing);
   }
  else {
     return Vector2i.zero();
