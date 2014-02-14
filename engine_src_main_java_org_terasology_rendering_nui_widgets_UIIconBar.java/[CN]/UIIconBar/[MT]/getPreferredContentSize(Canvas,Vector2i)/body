@@ -1,0 +1,11 @@
+{
+  if (icon != null) {
+    int icons=TeraMath.ceilToInt(getValue() / iconValue);
+    int maxHorizontalIcons=TeraMath.floorToInt(sizeHint.x / icon.getWidth());
+    int rows=((icons - 1) / maxHorizontalIcons) + 1;
+    return new Vector2i(Math.min(icons,maxHorizontalIcons) * icon.getWidth(),rows * icon.getHeight());
+  }
+ else {
+    return Vector2i.zero();
+  }
+}

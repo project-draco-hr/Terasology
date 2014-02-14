@@ -1,0 +1,30 @@
+{
+  if (icon != null) {
+    int fullIcons=TeraMath.floorToInt(getValue() / iconValue);
+    int halfIcons=TeraMath.ceilToInt(getValue() / iconValue) - fullIcons;
+    Vector2i offset=new Vector2i();
+    for (int i=0; i < fullIcons; ++i) {
+      canvas.drawTexture(icon,Rect2i.createFromMinAndSize(offset,icon.size()));
+      offset.x+=icon.getWidth();
+      if (offset.x + icon.getWidth() > canvas.size().x) {
+        offset.x=0;
+        offset.y+=icon.getHeight();
+      }
+    }
+    for (int i=0; i < halfIcons; ++i) {
+switch (halfIconMode) {
+case SHRINK:
+        Vector2i halfSize=new Vector2i(icon.size());
+      halfSize.x/=2;
+    halfSize.y/=2;
+  canvas.drawTexture(icon,Rect2i.createFromMinAndSize(new Vector2i(offset.x + halfSize.x,offset.y + halfSize.y),halfSize));
+break;
+case SPLIT:
+canvas.drawTextureRaw(icon,Rect2i.createFromMinAndSize(offset,new Vector2i(icon.getWidth() / 2,icon.getHeight())),ScaleMode.STRETCH,0f,0f,0.5f,1.0f);
+break;
+default :
+break;
+}
+}
+}
+}
