@@ -2,9 +2,6 @@
   if (lastTimeThrowInteraction == 0) {
     return 0;
   }
-  float dropPower=(float)Math.floor((time.getGameTimeInMs() - lastTimeThrowInteraction) / 200);
-  if (dropPower > 6) {
-    dropPower=6;
-  }
-  return dropPower;
+  float dropPower=(float)(time.getGameTimeInMs() - lastTimeThrowInteraction) / 1200f;
+  return Math.min(1.0f,dropPower);
 }
