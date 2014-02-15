@@ -7,7 +7,10 @@
   if (itemTo == null) {
     return true;
   }
-  if (!isSameItem(itemFrom,itemTo)) {
+  if (!isSameStackId(itemFrom,itemTo)) {
+    return false;
+  }
+  if (!hasSameAttributes(from,to)) {
     return false;
   }
   return itemFrom.stackCount + itemTo.stackCount <= itemFrom.maxStackSize;
