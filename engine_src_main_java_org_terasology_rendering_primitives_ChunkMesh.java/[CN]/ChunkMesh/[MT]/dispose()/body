@@ -4,10 +4,10 @@
     if (!disposed) {
       for (int i=0; i < vertexBuffers.length; i++) {
         int id=vertexBuffers[i];
-        VertexBufferObjectManager.getInstance().putVboId(id);
+        GL15.glDeleteBuffers(id);
         vertexBuffers[i]=0;
         id=idxBuffers[i];
-        VertexBufferObjectManager.getInstance().putVboId(id);
+        GL15.glDeleteBuffers(id);
         idxBuffers[i]=0;
       }
       disposed=true;

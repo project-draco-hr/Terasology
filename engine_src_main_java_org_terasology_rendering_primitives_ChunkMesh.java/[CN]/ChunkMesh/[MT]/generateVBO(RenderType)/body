@@ -2,11 +2,13 @@
   VertexElements elements=vertexElements.get(type);
   int id=type.getIndex();
   if (!disposed && elements.finalIndices.limit() > 0 && elements.finalVertices.limit() > 0) {
-    vertexBuffers[id]=VertexBufferObjectManager.getInstance().getVboId();
-    idxBuffers[id]=VertexBufferObjectManager.getInstance().getVboId();
+    IntBuffer buffer=BufferUtils.createIntBuffer(2);
+    GL15.glGenBuffers(buffer);
+    vertexBuffers[id]=buffer.get(0);
+    idxBuffers[id]=buffer.get(1);
     vertexCount[id]=elements.finalIndices.limit();
-    VertexBufferObjectManager.getInstance().bufferVboElementData(idxBuffers[id],elements.finalIndices,GL15.GL_STATIC_DRAW);
-    VertexBufferObjectManager.getInstance().bufferVboData(vertexBuffers[id],elements.finalVertices,GL15.GL_STATIC_DRAW);
+    VertexBufferObjectUtil.bufferVboElementData(idxBuffers[id],elements.finalIndices,GL15.GL_STATIC_DRAW);
+    VertexBufferObjectUtil.bufferVboData(vertexBuffers[id],elements.finalVertices,GL15.GL_STATIC_DRAW);
   }
  else {
     vertexBuffers[id]=0;

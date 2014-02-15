@@ -5,7 +5,9 @@
     indexBuffer.put(iterator.next());
   }
   indexBuffer.flip();
-  vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  VertexBufferObjectManager.getInstance().bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
+  if (vboIndexBuffer == 0) {
+    vboIndexBuffer=GL15.glGenBuffers();
+  }
+  VertexBufferObjectUtil.bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
   indexBuffer.flip();
 }
