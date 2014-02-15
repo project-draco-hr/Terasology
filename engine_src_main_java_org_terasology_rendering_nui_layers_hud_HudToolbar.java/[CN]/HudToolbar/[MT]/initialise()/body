@@ -29,4 +29,23 @@
     }
   }
 );
+  UIIconBar breathBar=find("breathBar",UIIconBar.class);
+  breathBar.bindVisible(new ReadOnlyBinding<Boolean>(){
+    @Override public Boolean get(){
+      EntityRef characterEntity=localPlayer.getCharacterEntity();
+      return characterEntity.hasComponent(DrowningComponent.class) && characterEntity.hasComponent(DrownsComponent.class);
+    }
+  }
+);
+  breathBar.setMaxValue(1.0f);
+  breathBar.bindValue(new ReadOnlyBinding<Float>(){
+    @Override public Float get(){
+      DrowningComponent drowningComponent=localPlayer.getCharacterEntity().getComponent(DrowningComponent.class);
+      if (drowningComponent != null) {
+        return drowningComponent.getRemainingBreath(time.getGameTimeInMs());
+      }
+      return 0f;
+    }
+  }
+);
 }
