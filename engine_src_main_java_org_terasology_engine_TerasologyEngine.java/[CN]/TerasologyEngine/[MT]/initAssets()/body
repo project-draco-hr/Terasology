@@ -24,4 +24,10 @@
     }
   }
 );
+  assetManager.setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
+    @Override public Font buildAsset(    AssetUri uri,    FontData data){
+      return new FontImpl(uri,data);
+    }
+  }
+);
 }
