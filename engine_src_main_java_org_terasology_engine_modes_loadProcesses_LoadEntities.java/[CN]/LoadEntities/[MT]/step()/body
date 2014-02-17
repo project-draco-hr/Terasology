@@ -1,4 +1,8 @@
 {
+  EntityManager em=CoreRegistry.get(EntityManager.class);
+  for (  EntityRef entity : em.getAllEntities()) {
+    logger.error("Entity created before load, and will be destroyed: {}",entity.toFullDescription());
+  }
   StorageManager storageManager=CoreRegistry.get(StorageManager.class);
   try {
     storageManager.loadGlobalStore();
