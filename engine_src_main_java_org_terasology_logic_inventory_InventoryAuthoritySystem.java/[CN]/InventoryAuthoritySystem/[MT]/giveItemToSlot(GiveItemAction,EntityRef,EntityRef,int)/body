@@ -1,7 +1,7 @@
 {
   EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
   ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
-  if (itemAt == null || InventoryUtils.isSameItem(itemAt,itemToGive)) {
+  if (InventoryUtils.canStackInto(item,itemAtEntity)) {
     if (itemAt == null) {
       if (canPutItemIntoSlot(event.getInstigator(),entity,event.getItem(),slot)) {
         InventoryUtils.putItemIntoSlot(entity,event.getItem(),slot);
@@ -9,8 +9,9 @@
       }
     }
  else {
-      if (itemAt.stackCount + itemToGive.stackCount <= itemToGive.maxStackSize) {
-        InventoryUtils.adjustStackSize(entity,slot,itemAt.stackCount + itemToGive.stackCount);
+      ItemComponent sourceItem=item.getComponent(ItemComponent.class);
+      if (sourceItem != null) {
+        InventoryUtils.adjustStackSize(entity,slot,itemAt.stackCount + sourceItem.stackCount);
         event.getItem().destroy();
         return true;
       }

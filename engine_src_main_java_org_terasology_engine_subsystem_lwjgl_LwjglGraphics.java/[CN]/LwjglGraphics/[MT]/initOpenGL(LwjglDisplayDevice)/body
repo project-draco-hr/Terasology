@@ -3,6 +3,12 @@
   glViewport(0,0,Display.getWidth(),Display.getHeight());
   initOpenGLParams();
   AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  assetManager.setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
+    @Override public Font buildAsset(    AssetUri uri,    FontData data){
+      return new FontImpl(uri,data);
+    }
+  }
+);
   assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
     @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
       return new OpenGLTexture(uri,data);
