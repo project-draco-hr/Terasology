@@ -176,15 +176,6 @@
   }
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      ModuleConfig moduleConfig=config.getDefaultModSelection();
-      moduleConfig.clear();
-      for (      Module module : selection.getSelection()) {
-        moduleConfig.addModule(module.getId());
-      }
-      if (!moduleConfig.hasModule(config.getWorldGeneration().getDefaultGenerator().getModuleName())) {
-        config.getWorldGeneration().setDefaultGenerator(new SimpleUri());
-      }
-      config.save();
       getManager().popScreen();
     }
   }
