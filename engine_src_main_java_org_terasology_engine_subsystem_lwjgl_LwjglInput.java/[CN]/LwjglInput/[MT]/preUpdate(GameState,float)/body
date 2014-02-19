@@ -1,5 +1,9 @@
 {
   NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
   GameEngine engine=CoreRegistry.get(GameEngine.class);
-  Mouse.setGrabbed(engine.hasMouseFocus() && !(nuiManager.isReleasingMouse()));
+  boolean newGrabbed=engine.hasMouseFocus() && !(nuiManager.isReleasingMouse());
+  if (newGrabbed != mouseGrabbed) {
+    Mouse.setGrabbed(newGrabbed);
+    mouseGrabbed=newGrabbed;
+  }
 }
