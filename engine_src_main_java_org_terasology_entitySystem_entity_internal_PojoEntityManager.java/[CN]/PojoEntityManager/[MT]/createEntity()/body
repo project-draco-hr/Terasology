@@ -1,0 +1,14 @@
+{
+  if (!freedIds.isEmpty()) {
+    TIntIterator iterator=freedIds.iterator();
+    int id=iterator.next();
+    iterator.remove();
+    loadedIds.add(id);
+    return id;
+  }
+  if (nextEntityId == NULL_ID) {
+    nextEntityId++;
+  }
+  loadedIds.add(nextEntityId);
+  return nextEntityId++;
+}

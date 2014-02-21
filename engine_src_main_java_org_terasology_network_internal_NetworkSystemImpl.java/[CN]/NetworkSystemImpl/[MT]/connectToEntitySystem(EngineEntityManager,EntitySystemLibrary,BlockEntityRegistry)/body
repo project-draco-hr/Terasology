@@ -15,6 +15,7 @@
   entitySerializer=new NetworkEntitySerializer(newEntityManager,entityManager.getComponentLibrary(),typeSerializationLibrary);
   entitySerializer.setComponentSerializeCheck(new NetComponentSerializeCheck());
   if (mode == NetworkMode.CLIENT) {
+    entityManager.setEntityRefStrategy(new NetworkClientRefStrategy(this));
     applySerializationTables();
   }
   if (server != null) {
