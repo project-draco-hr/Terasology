@@ -1,5 +1,5 @@
 {
-  EntityRef entity=create();
+  int entityId=createEntity();
   Prefab prefab=null;
   for (  Component component : components) {
     if (component instanceof EntityInfoComponent) {
@@ -11,14 +11,16 @@
   Iterable<Component> finalComponents;
   if (eventSystem != null) {
     BeforeEntityCreated event=new BeforeEntityCreated(prefab,components);
-    eventSystem.send(entity,event);
+    BaseEntityRef tempRef=refStrategy.createRefFor(entityId,this);
+    eventSystem.send(tempRef,event);
+    tempRef.invalidate();
     finalComponents=event.getResultComponents();
   }
  else {
     finalComponents=components;
   }
   for (  Component c : finalComponents) {
-    store.put(entity.getId(),c);
+    store.put(entityId,c);
   }
-  return entity;
+  return createEntityRef(entityId);
 }

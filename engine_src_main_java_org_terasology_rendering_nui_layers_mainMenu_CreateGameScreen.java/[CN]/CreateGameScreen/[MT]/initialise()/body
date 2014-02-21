@@ -94,6 +94,13 @@
     }
   }
 );
+  UIButton previewSeed=find("previewSeed",UIButton.class);
+  previewSeed.bindVisible(new ReadOnlyBinding<Boolean>(){
+    @Override public Boolean get(){
+      return worldGenerator != null && worldGenerator.getSelection() != null;
+    }
+  }
+);
   WidgetUtil.trySubscribe(this,"previewSeed",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       PreviewWorldScreen screen=getManager().pushScreen("engine:previewWorldScreen",PreviewWorldScreen.class);

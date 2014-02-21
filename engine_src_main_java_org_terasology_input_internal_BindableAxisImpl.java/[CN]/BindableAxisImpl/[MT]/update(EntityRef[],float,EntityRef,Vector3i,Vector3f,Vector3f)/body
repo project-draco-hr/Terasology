@@ -2,13 +2,11 @@
   boolean posInput=positiveInput.getState() == ButtonState.DOWN;
   boolean negInput=negativeInput.getState() == ButtonState.DOWN;
   float targetValue=0;
-  if (!CoreRegistry.get(GUIManager.class).isConsumingInput()) {
-    if (posInput) {
-      targetValue+=1.0f;
-    }
-    if (negInput) {
-      targetValue-=1.0f;
-    }
+  if (posInput) {
+    targetValue+=1.0f;
+  }
+  if (negInput) {
+    targetValue-=1.0f;
   }
   float newValue=targetValue;
   if (sendEventMode.shouldSendEvent(value,newValue)) {

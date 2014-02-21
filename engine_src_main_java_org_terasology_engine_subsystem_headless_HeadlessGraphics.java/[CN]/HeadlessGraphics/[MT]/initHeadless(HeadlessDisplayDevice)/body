@@ -1,14 +1,14 @@
 {
   AssetManager assetManager=CoreRegistry.get(AssetManager.class);
-  assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
-    @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
-      return new HeadlessTexture(uri,data);
+  assetManager.setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
+    @Override public Font buildAsset(    AssetUri uri,    FontData data){
+      return new FontImpl(uri,data);
     }
   }
 );
-  assetManager.setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
-    @Override public Font buildAsset(    AssetUri uri,    FontData data){
-      return new HeadlessFont(uri,data);
+  assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
+    @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
+      return new HeadlessTexture(uri,data);
     }
   }
 );
@@ -59,5 +59,4 @@
   assetManager.addResolver(AssetType.MESH,new IconMeshResolver());
   CoreRegistry.putPermanently(ShaderManager.class,new ShaderManagerHeadless());
   CoreRegistry.get(ShaderManager.class).initShaders();
-  VertexBufferObjectManager.getInstance();
 }

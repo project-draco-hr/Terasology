@@ -2,17 +2,15 @@
   long activateTime=this.time.getGameTimeInMs();
   if (repeating && getState() == ButtonState.DOWN && mode.isActivatedOnPress() && activateTime - lastActivateTime > repeatTime) {
     lastActivateTime=activateTime;
-    if (!CoreRegistry.get(GUIManager.class).isConsumingInput()) {
-      if (!consumedActivation) {
-        boolean consumed=triggerOnRepeat(delta,target);
-        if (!consumed) {
-          buttonEvent.prepare(id,ButtonState.REPEAT,delta);
-          buttonEvent.setTargetInfo(target,targetBlockPos,hitPosition,hitNormal);
-          for (          EntityRef entity : inputEntities) {
-            entity.send(buttonEvent);
-            if (buttonEvent.isConsumed()) {
-              break;
-            }
+    if (!consumedActivation) {
+      boolean consumed=triggerOnRepeat(delta,target);
+      if (!consumed) {
+        buttonEvent.prepare(id,ButtonState.REPEAT,delta);
+        buttonEvent.setTargetInfo(target,targetBlockPos,hitPosition,hitNormal);
+        for (        EntityRef entity : inputEntities) {
+          entity.send(buttonEvent);
+          if (buttonEvent.isConsumed()) {
+            break;
           }
         }
       }

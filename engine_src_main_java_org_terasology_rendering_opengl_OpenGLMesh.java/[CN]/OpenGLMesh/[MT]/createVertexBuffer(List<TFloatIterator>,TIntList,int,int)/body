@@ -9,7 +9,9 @@
     }
   }
   vertexBuffer.flip();
-  vboVertexBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  VertexBufferObjectManager.getInstance().bufferVboData(vboVertexBuffer,vertexBuffer,GL15.GL_STATIC_DRAW);
+  if (vboVertexBuffer == 0) {
+    vboVertexBuffer=GL15.glGenBuffers();
+  }
+  VertexBufferObjectUtil.bufferVboData(vboVertexBuffer,vertexBuffer,GL15.GL_STATIC_DRAW);
   vertexBuffer.flip();
 }

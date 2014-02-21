@@ -1,18 +1,23 @@
 {
-  dispose();
   this.data=newData;
-  vboPosNormBuffer=VertexBufferObjectManager.getInstance().getVboId();
+  if (vboPosNormBuffer == 0) {
+    vboPosNormBuffer=GL15.glGenBuffers();
+  }
   IntBuffer indexBuffer=BufferUtils.createIntBuffer(newData.getIndices().size());
   indexBuffer.put(newData.getIndices().toArray());
   indexBuffer.flip();
-  vboIndexBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  VertexBufferObjectManager.getInstance().bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
+  if (vboIndexBuffer == 0) {
+    vboIndexBuffer=GL15.glGenBuffers();
+  }
+  VertexBufferObjectUtil.bufferVboElementData(vboIndexBuffer,indexBuffer,GL15.GL_STATIC_DRAW);
   FloatBuffer uvBuffer=BufferUtils.createFloatBuffer(newData.getUVs().size() * 2);
   for (  Vector2f uv : newData.getUVs()) {
     uvBuffer.put(uv.x);
     uvBuffer.put(uv.y);
   }
   uvBuffer.flip();
-  vboUVBuffer=VertexBufferObjectManager.getInstance().getVboId();
-  VertexBufferObjectManager.getInstance().bufferVboData(vboUVBuffer,uvBuffer,GL15.GL_STATIC_DRAW);
+  if (vboUVBuffer == 0) {
+    vboUVBuffer=GL15.glGenBuffers();
+  }
+  VertexBufferObjectUtil.bufferVboData(vboUVBuffer,uvBuffer,GL15.GL_STATIC_DRAW);
 }
