@@ -5,6 +5,9 @@
   copyStrategyLibrary.clear();
   Set<Class<? extends CopyStrategy>> copyStrategies=moduleManager.getActiveModuleReflections().getSubTypesOf(CopyStrategy.class);
   for (  Class<? extends CopyStrategy> copyStrategy : copyStrategies) {
+    if (copyStrategy.getAnnotation(RegisterCopyStrategy.class) == null) {
+      continue;
+    }
     Class targetType=ReflectionUtil.getTypeParameterForSuper(copyStrategy,CopyStrategy.class,0);
     if (targetType != null) {
       try {
