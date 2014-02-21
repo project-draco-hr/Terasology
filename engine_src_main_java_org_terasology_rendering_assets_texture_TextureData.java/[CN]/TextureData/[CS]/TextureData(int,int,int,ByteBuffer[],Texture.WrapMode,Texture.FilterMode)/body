@@ -1,29 +1,28 @@
 {
-  this.width=width;
-  this.height=height;
+  this(width,height,wrapMode,filterMode);
   this.depth=depth;
-  this.wrapMode=wrapMode;
-  this.filterMode=filterMode;
   this.type=Texture.Type.TEXTURE3D;
   this.data=Arrays.copyOf(mipmaps,mipmaps.length);
-  if (width <= 0 || height <= 0 || depth <= 0) {
-    throw new IllegalArgumentException("Width, height and depth must be positive");
-  }
-  if (mipmaps.length == 0) {
-    throw new IllegalArgumentException("Must supply at least one mipmap");
-  }
-  if (mipmaps[0].limit() != width * height * depth* BYTES_PER_PIXEL) {
-    throw new IllegalArgumentException("Texture data size incorrect, must be a set of RGBA values for each pixel (width * height * depth)");
-  }
-  if (mipmaps.length > 1 && !(IntMath.isPowerOfTwo(width) && IntMath.isPowerOfTwo(height) && IntMath.isPowerOfTwo(depth))) {
-    throw new IllegalArgumentException("Texture width, height and depth must be powers of 2 for mipmapping");
-  }
-  for (int i=1; i < mipmaps.length; ++i) {
-    int mipWidth=width >> i;
-    int mipHeight=height >> i;
-    int mipDepth=depth >> i;
-    if (mipWidth * mipHeight * mipDepth* BYTES_PER_PIXEL != mipmaps[i].limit()) {
-      throw new IllegalArgumentException("Mipmap has wrong dimensions");
+  if (data.length > 0) {
+    if (width <= 0 || height <= 0 || depth <= 0) {
+      throw new IllegalArgumentException("Width, height and depth must be positive");
+    }
+    if (mipmaps.length == 0) {
+      throw new IllegalArgumentException("Must supply at least one mipmap");
+    }
+    if (mipmaps[0].limit() != width * height * depth* BYTES_PER_PIXEL) {
+      throw new IllegalArgumentException("Texture data size incorrect, must be a set of RGBA values for each pixel (width * height * depth)");
+    }
+    if (mipmaps.length > 1 && !(IntMath.isPowerOfTwo(width) && IntMath.isPowerOfTwo(height) && IntMath.isPowerOfTwo(depth))) {
+      throw new IllegalArgumentException("Texture width, height and depth must be powers of 2 for mipmapping");
+    }
+    for (int i=1; i < mipmaps.length; ++i) {
+      int mipWidth=width >> i;
+      int mipHeight=height >> i;
+      int mipDepth=depth >> i;
+      if (mipWidth * mipHeight * mipDepth* BYTES_PER_PIXEL != mipmaps[i].limit()) {
+        throw new IllegalArgumentException("Mipmap has wrong dimensions");
+      }
     }
   }
 }
