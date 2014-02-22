@@ -40,10 +40,7 @@
       usedWidth+=column.width;
     }
     usedWidth+=(columnInfos.size() - 1) * horizontalSpacing;
-    int extraSpacePerColumn=(canvas.size().x - usedWidth) / columnInfos.size();
-    for (    ColumnInfo column : columnInfos) {
-      column.width+=extraSpacePerColumn;
-    }
+    columnOffsetX=(canvas.size().x - usedWidth) / 2;
     for (int columnIndex=0; columnIndex < columns.size(); ++columnIndex) {
       List<UIWidget> column=columns.get(columnIndex);
       ColumnInfo columnInfo=columnInfos.get(columnIndex);
