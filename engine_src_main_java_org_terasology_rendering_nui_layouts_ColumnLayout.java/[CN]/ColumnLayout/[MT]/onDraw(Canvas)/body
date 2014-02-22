@@ -40,10 +40,7 @@
       usedHeight+=row.height;
     }
     usedHeight+=(rowInfos.size() - 1) * verticalSpacing;
-    int extraSpacePerRow=(canvas.size().y - usedHeight) / rowInfos.size();
-    for (    RowInfo row : rowInfos) {
-      row.height+=extraSpacePerRow;
-    }
+    rowOffsetY=(canvas.size().y - usedHeight) / 2;
     for (int rowIndex=0; rowIndex < rows.size(); ++rowIndex) {
       List<UIWidget> row=rows.get(rowIndex);
       RowInfo rowInfo=rowInfos.get(rowIndex);
