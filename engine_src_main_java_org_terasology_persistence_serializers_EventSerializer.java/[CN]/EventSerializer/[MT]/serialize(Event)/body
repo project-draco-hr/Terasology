@@ -10,7 +10,7 @@
   ByteString.Output fieldIds=ByteString.newOutput();
   for (  ReplicatedFieldMetadata field : eventMetadata.getFields()) {
     if (field.isReplicated()) {
-      EntityData.Value serializedValue=eventSerializer.serialize(field,event);
+      EntityData.Value serializedValue=((ProtobufPersistedData)eventSerializer.serialize(field,event,serializationContext)).getValue();
       if (serializedValue != null) {
         eventData.addFieldValue(serializedValue);
         fieldIds.write(field.getId());
