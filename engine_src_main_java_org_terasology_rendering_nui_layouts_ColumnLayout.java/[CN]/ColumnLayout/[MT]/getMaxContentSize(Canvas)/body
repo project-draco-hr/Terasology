@@ -20,8 +20,10 @@
     width+=columnSize;
   }
   if (!autoSizeColumns) {
-    for (int i=0; i < columns; ++i) {
-      width=Math.min(width,TeraMath.floorToInt(columnSizes[i] / columnWidths[i]));
+    if (!minimizeWidth) {
+      for (int i=0; i < columns; ++i) {
+        width=Math.min(width,TeraMath.floorToInt(columnSizes[i] / columnWidths[i]));
+      }
     }
   }
   width+=horizontalSpacing * (columns - 1);
