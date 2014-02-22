@@ -13,10 +13,10 @@
   assertEquals(20,result.y);
   when(canvas.size()).thenReturn(availableSize);
   columnLayout.onDraw(canvas);
-  verify(canvas).drawWidget(itemAt1x1,Rect2i.createFromMinAndSize(0,0,100,100));
-  verify(canvas).drawWidget(itemAt2x1,Rect2i.createFromMinAndSize(100,0,40,100));
-  verify(canvas).drawWidget(itemAt3x1,Rect2i.createFromMinAndSize(100 + 40,0,60,100));
-  verify(canvas).drawWidget(itemAt1x2,Rect2i.createFromMinAndSize(0,100,100,100));
-  verify(canvas).drawWidget(itemAt2x2,Rect2i.createFromMinAndSize(100,100,40,100));
-  verify(canvas).drawWidget(itemAt3x2,Rect2i.createFromMinAndSize(100 + 40,100,60,100));
+  verify(canvas).drawWidget(itemAt1x1,Rect2i.createFromMinAndSize(0,((200 - 20) / 2),100,10));
+  verify(canvas).drawWidget(itemAt2x1,Rect2i.createFromMinAndSize(100,((200 - 20) / 2),40,10));
+  verify(canvas).drawWidget(itemAt3x1,Rect2i.createFromMinAndSize(100 + 40,((200 - 20) / 2),60,10));
+  verify(canvas).drawWidget(itemAt1x2,Rect2i.createFromMinAndSize(0,((200 - 20) / 2) + 10,100,10));
+  verify(canvas).drawWidget(itemAt2x2,Rect2i.createFromMinAndSize(100,((200 - 20) / 2) + 10,40,10));
+  verify(canvas).drawWidget(itemAt3x2,Rect2i.createFromMinAndSize(100 + 40,((200 - 20) / 2) + 10,60,10));
 }
