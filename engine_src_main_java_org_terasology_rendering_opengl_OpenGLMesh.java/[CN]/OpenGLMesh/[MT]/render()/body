@@ -1,5 +1,10 @@
 {
-  preRender();
-  doRender();
-  postRender();
+  if (!isDisposed()) {
+    preRender();
+    doRender();
+    postRender();
+  }
+ else {
+    logger.error("Attempted to render disposed mesh: {}",getURI());
+  }
 }
