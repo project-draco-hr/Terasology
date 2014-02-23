@@ -3,6 +3,14 @@
   usedText.add(key);
   Map<Material,Mesh> fontMesh=cachedText.get(key);
   List<String> lines=TextLineBuilder.getLines(font,text,absoluteRegion.width());
+  if (fontMesh != null) {
+    for (    Mesh mesh : fontMesh.values()) {
+      if (mesh.isDisposed()) {
+        fontMesh=null;
+        break;
+      }
+    }
+  }
   if (fontMesh == null) {
     FontMeshBuilder meshBuilder=new FontMeshBuilder(font);
     fontMesh=meshBuilder.createTextMesh(lines,absoluteRegion.width(),hAlign,color,shadowColor);

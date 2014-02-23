@@ -7,7 +7,7 @@
   TextureCacheKey key=new TextureCacheKey(textureSize,region.size(),border,tile);
   usedTextures.add(key);
   Mesh mesh=cachedTextures.get(key);
-  if (mesh == null) {
+  if (mesh == null || mesh.isDisposed()) {
     MeshBuilder builder=new MeshBuilder();
     float topTex=(float)border.getTop() / textureSize.y;
     float leftTex=(float)border.getLeft() / textureSize.x;

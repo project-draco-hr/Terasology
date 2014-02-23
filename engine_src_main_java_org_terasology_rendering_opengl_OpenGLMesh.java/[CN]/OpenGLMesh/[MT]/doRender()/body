@@ -1,3 +1,8 @@
 {
-  GL11.glDrawElements(GL11.GL_TRIANGLES,indexCount,GL_UNSIGNED_INT,0);
+  if (!isDisposed()) {
+    GL11.glDrawElements(GL11.GL_TRIANGLES,indexCount,GL_UNSIGNED_INT,0);
+  }
+ else {
+    logger.error("Attempted to render disposed mesh: {}",getURI());
+  }
 }

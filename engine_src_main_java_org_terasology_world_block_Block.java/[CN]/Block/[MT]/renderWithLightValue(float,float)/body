@@ -1,4 +1,5 @@
 {
+  logger.info("Rendering block mesh");
   if (isInvisible()) {
     return;
   }
@@ -7,7 +8,7 @@
   mat.enable();
   mat.setFloat("sunlight",sunlight);
   mat.setFloat("blockLight",blockLight);
-  if (mesh == null) {
+  if (mesh == null || mesh.isDisposed()) {
     generateMesh();
   }
  else   if (mesh.isDisposed()) {
