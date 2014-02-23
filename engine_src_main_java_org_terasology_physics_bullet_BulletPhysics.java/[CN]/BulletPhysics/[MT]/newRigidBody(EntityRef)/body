@@ -13,6 +13,8 @@
     RigidBodyConstructionInfo info=new RigidBodyConstructionInfo(rigidBody.mass,new EntityMotionState(entity),shape,fallInertia);
     BulletRigidBody collider=new BulletRigidBody(info);
     collider.rb.setUserPointer(entity);
+    collider.rb.setAngularFactor(rigidBody.angularFactor);
+    collider.rb.setFriction(rigidBody.friction);
     updateKinematicSettings(rigidBody,collider);
     BulletRigidBody oldBody=entityRigidBodies.put(entity,collider);
     addRigidBody(collider,Lists.<CollisionGroup>newArrayList(rigidBody.collisionGroup),rigidBody.collidesWith);
