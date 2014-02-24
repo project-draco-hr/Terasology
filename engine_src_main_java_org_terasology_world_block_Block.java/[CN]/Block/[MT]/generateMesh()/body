@@ -3,9 +3,11 @@
   for (  BlockPart dir : BlockPart.values()) {
     BlockMeshPart part=primaryAppearance.getPart(dir);
     if (part != null) {
-      tessellator.addMeshPart(part);
       if (doubleSided) {
-        tessellator.addMeshPartReversed(part);
+        tessellator.addMeshPartDoubleSided(part);
+      }
+ else {
+        tessellator.addMeshPart(part);
       }
     }
   }

@@ -29,13 +29,13 @@
 );
   assetManager.setAssetFactory(AssetType.MESH,new AssetFactory<MeshData,Mesh>(){
     @Override public Mesh buildAsset(    AssetUri uri,    MeshData data){
-      return new OpenGLMesh(uri,data);
+      return new OpenGLMesh(uri,data,bufferPool);
     }
   }
 );
   assetManager.setAssetFactory(AssetType.SKELETON_MESH,new AssetFactory<SkeletalMeshData,SkeletalMesh>(){
     @Override public SkeletalMesh buildAsset(    AssetUri uri,    SkeletalMeshData data){
-      return new OpenGLSkeletalMesh(uri,data);
+      return new OpenGLSkeletalMesh(uri,data,bufferPool);
     }
   }
 );

@@ -4,11 +4,15 @@
     if (!disposed) {
       for (int i=0; i < vertexBuffers.length; i++) {
         int id=vertexBuffers[i];
-        GL15.glDeleteBuffers(id);
-        vertexBuffers[i]=0;
+        if (id != 0) {
+          bufferPool.dispose(id);
+          vertexBuffers[i]=0;
+        }
         id=idxBuffers[i];
-        GL15.glDeleteBuffers(id);
-        idxBuffers[i]=0;
+        if (id != 0) {
+          bufferPool.dispose(id);
+          idxBuffers[i]=0;
+        }
       }
       disposed=true;
       vertexElements=null;
