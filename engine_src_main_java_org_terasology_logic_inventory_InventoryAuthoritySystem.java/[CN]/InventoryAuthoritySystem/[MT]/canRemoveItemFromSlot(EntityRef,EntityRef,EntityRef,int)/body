@@ -1,0 +1,8 @@
+{
+  if (!item.exists()) {
+    return true;
+  }
+  BeforeItemRemovedFromInventory itemRemoved=new BeforeItemRemovedFromInventory(instigator,item,slot);
+  entity.send(itemRemoved);
+  return !itemRemoved.isConsumed();
+}

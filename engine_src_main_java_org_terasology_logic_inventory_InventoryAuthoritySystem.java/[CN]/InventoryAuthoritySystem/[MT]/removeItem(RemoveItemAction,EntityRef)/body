@@ -1,43 +1,27 @@
 {
-  ItemComponent itemToRemove=event.getItem().getComponent(ItemComponent.class);
-  if (itemToRemove == null) {
-    event.consume();
-    return;
-  }
-  int slotWithItem=InventoryUtils.getSlotWithItem(entity,event.getItem());
-  if (slotWithItem == -1) {
-    return;
-  }
-  Integer count=event.getCount();
-  if (count != null) {
-    if (count > itemToRemove.stackCount) {
+  for (  EntityRef item : event.getItems()) {
+    ItemComponent itemToRemove=item.getComponent(ItemComponent.class);
+    if (itemToRemove == null) {
+      event.consume();
       return;
     }
   }
-  BeforeItemRemovedFromInventory removeFrom=new BeforeItemRemovedFromInventory(event.getInstigator(),event.getItem(),slotWithItem);
-  entity.send(removeFrom);
-  if (removeFrom.isConsumed()) {
-    return;
+  List<Integer> slotsWithItem=new LinkedList<>();
+  for (  EntityRef item : event.getItems()) {
+    int slotWithItem=InventoryUtils.getSlotWithItem(entity,item);
+    if (slotWithItem == -1) {
+      return;
+    }
+    slotsWithItem.add(slotWithItem);
   }
-  if (count == null || count == itemToRemove.stackCount) {
-    InventoryUtils.putItemIntoSlot(entity,EntityRef.NULL,slotWithItem);
-    if (event.isDestroyRemoved()) {
-      event.getItem().destroy();
+  Integer toRemove=event.getCount();
+  if (toRemove == null) {
+    toRemove=0;
+    for (    EntityRef item : event.getItems()) {
+      toRemove+=InventoryUtils.getStackCount(item);
     }
- else {
-      event.setRemovedItem(event.getItem());
-    }
-    event.consume();
   }
- else {
-    if (!event.isDestroyRemoved()) {
-      EntityRef copy=entityManager.copy(event.getItem());
-      ItemComponent copyItem=copy.getComponent(ItemComponent.class);
-      copyItem.stackCount=count.byteValue();
-      copy.saveComponent(copyItem);
-      event.setRemovedItem(copy);
-    }
-    InventoryUtils.adjustStackSize(entity,slotWithItem,itemToRemove.stackCount - count);
+  if (removeItemFromSlots(event,entity,slotsWithItem,toRemove)) {
     event.consume();
   }
 }
