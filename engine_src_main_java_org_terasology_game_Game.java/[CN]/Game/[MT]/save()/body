@@ -3,6 +3,7 @@
   for (  ComponentSystem sys : componentSystemManager.iterateAll()) {
     sys.preSave();
   }
+  terasologyEngine.stopThreads();
   StorageManager storageManager=CoreRegistry.get(StorageManager.class);
   if (storageManager != null) {
     BlockManager blockManager=CoreRegistry.get(BlockManager.class);
@@ -36,6 +37,7 @@
     }
     storageManager.shutdown();
   }
+  terasologyEngine.restartThreads();
   for (  ComponentSystem sys : componentSystemManager.iterateAll()) {
     sys.postSave();
   }

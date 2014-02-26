@@ -7,5 +7,9 @@
     }
     totalPoolSize+=BUFFER_FETCH_SIZE;
   }
-  return pool.removeAt(pool.size() - 1);
+  int result=pool.removeAt(pool.size() - 1);
+  if (traceBufferUsage) {
+    usageTracker.put(result,forUseBy);
+  }
+  return result;
 }
