@@ -1,0 +1,17 @@
+{
+  ItemComponent itemComp=new ItemComponent();
+  EntityRef item=Mockito.mock(EntityRef.class);
+  setupItemRef(item,itemComp,2,10);
+  GiveItemAction action=new GiveItemAction(instigator,item);
+  inventoryAuthoritySystem.giveItem(action,inventory);
+  Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(item,new AtLeast(0)).exists();
+  Mockito.verify(item).saveComponent(itemComp);
+  Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
+  Mockito.verify(inventory).saveComponent(inventoryComp);
+  Mockito.verify(inventory,new Times(2)).send(Matchers.any(BeforeItemPutInInventory.class));
+  Mockito.verify(inventory,new Times(2)).send(Matchers.any(InventorySlotChangedEvent.class));
+  Mockito.verifyNoMoreInteractions(instigator,inventory,entityManager,item);
+  assertEquals(item,inventoryComp.itemSlots.get(0));
+  assertTrue(action.isConsumed());
+}
