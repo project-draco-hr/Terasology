@@ -1,0 +1,24 @@
+{
+  ItemComponent itemComp=new ItemComponent();
+  EntityRef item=Mockito.mock(EntityRef.class);
+  setupItemRef(item,itemComp,2,10);
+  inventoryComp.itemSlots.set(0,item);
+  EntityRef itemCopy=Mockito.mock(EntityRef.class);
+  ItemComponent itemCompCopy=new ItemComponent();
+  setupItemRef(itemCopy,itemCompCopy,2,10);
+  Mockito.when(entityManager.copy(item)).thenReturn(itemCopy);
+  RemoveItemAction action=new RemoveItemAction(instigator,item,false,1);
+  inventoryAuthoritySystem.removeItem(action,inventory);
+  assertEquals(1,itemComp.stackCount);
+  assertEquals(1,itemCompCopy.stackCount);
+  Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(item).saveComponent(itemComp);
+  Mockito.verify(itemCopy,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(itemCopy).saveComponent(itemCompCopy);
+  Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
+  Mockito.verify(inventory).send(Matchers.any(InventorySlotStackSizeChangedEvent.class));
+  Mockito.verify(entityManager).copy(item);
+  Mockito.verifyNoMoreInteractions(instigator,inventory,entityManager,item,itemCopy);
+  assertTrue(action.isConsumed());
+  assertEquals(itemCopy,action.getRemovedItem());
+}

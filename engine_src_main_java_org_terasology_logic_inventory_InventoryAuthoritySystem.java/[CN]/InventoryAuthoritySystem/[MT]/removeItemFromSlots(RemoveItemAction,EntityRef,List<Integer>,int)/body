@@ -1,0 +1,68 @@
+{
+  int shrinkSlotNo=-1;
+  int shrinkCountResult=0;
+  List<Integer> slotsTotallyConsumed=new LinkedList<>();
+  for (  int slot : slotsWithItem) {
+    EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
+    ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
+    if (itemAt.stackCount <= toRemove) {
+      if (canRemoveItemFromSlot(event.getInstigator(),entity,itemAtEntity,slot)) {
+        slotsTotallyConsumed.add(slot);
+        toRemove-=itemAt.stackCount;
+      }
+    }
+ else {
+      shrinkSlotNo=slot;
+      shrinkCountResult=itemAt.stackCount - toRemove;
+      toRemove=0;
+    }
+    if (toRemove == 0) {
+      break;
+    }
+  }
+  if (toRemove > 0) {
+    return false;
+  }
+  EntityRef removed=null;
+  int removedCount=0;
+  for (  int slot : slotsTotallyConsumed) {
+    EntityRef itemAt=InventoryUtils.getItemAt(entity,slot);
+    removedCount+=InventoryUtils.getStackCount(itemAt);
+    if (event.isDestroyRemoved()) {
+      InventoryUtils.putItemIntoSlot(entity,EntityRef.NULL,slot);
+      itemAt.destroy();
+    }
+ else {
+      if (removed == null) {
+        InventoryUtils.putItemIntoSlot(entity,EntityRef.NULL,slot);
+        removed=itemAt;
+      }
+ else {
+        InventoryUtils.putItemIntoSlot(entity,EntityRef.NULL,slot);
+        itemAt.destroy();
+      }
+    }
+  }
+  if (shrinkSlotNo > -1) {
+    EntityRef itemAt=InventoryUtils.getItemAt(entity,shrinkSlotNo);
+    removedCount+=InventoryUtils.getStackCount(itemAt) - shrinkCountResult;
+    if (event.isDestroyRemoved()) {
+      InventoryUtils.adjustStackSize(entity,shrinkSlotNo,shrinkCountResult);
+    }
+ else {
+      if (removed == null) {
+        removed=entityManager.copy(itemAt);
+      }
+      InventoryUtils.adjustStackSize(entity,shrinkSlotNo,shrinkCountResult);
+    }
+  }
+  if (removed != null) {
+    ItemComponent item=removed.getComponent(ItemComponent.class);
+    if (item.stackCount != removedCount) {
+      item.stackCount=(byte)removedCount;
+      removed.saveComponent(item);
+    }
+    event.setRemovedItem(removed);
+  }
+  return true;
+}
