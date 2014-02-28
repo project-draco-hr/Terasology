@@ -1,0 +1,36 @@
+{
+  Vector3i finalDist=new Vector3i(distance);
+  finalDist.add(ChunkConstants.GENERATION_DISTANCE,ChunkConstants.GENERATION_DISTANCE,ChunkConstants.GENERATION_DISTANCE);
+  if (!entity.exists()) {
+    return;
+  }
+  regionLock.readLock().lock();
+  try {
+    ChunkRelevanceRegion region=regions.get(entity);
+    if (region != null) {
+      region.setRelevanceDistance(finalDist);
+      return;
+    }
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+  ChunkRelevanceRegion region=new ChunkRelevanceRegion(entity,finalDist);
+  if (listener != null) {
+    region.setListener(listener);
+  }
+  regionLock.writeLock().lock();
+  try {
+    regions.put(entity,region);
+  }
+  finally {
+    regionLock.writeLock().unlock();
+  }
+  for (  Vector3i pos : region.getRegion()) {
+    ChunkImpl chunk=getChunk(pos);
+    if (chunk != null) {
+      region.chunkReady(chunk);
+    }
+  }
+  pipeline.requestProduction(region.getRegion().expand(2));
+}

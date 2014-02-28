@@ -6,11 +6,7 @@
   }
  else {
     Client clientListener=networkSystem.getOwner(entity);
-    int distance=clientListener.getViewDistance().getChunkDistance();
-    if (!clientListener.isLocal()) {
-      distance+=ChunkConstants.REMOTE_GENERATION_DISTANCE;
-    }
-    worldRenderer.getChunkProvider().updateRelevanceEntity(entity,distance);
+    worldRenderer.getChunkProvider().updateRelevanceEntity(entity,clientListener.getViewDistance().getChunkDistance());
     ClientComponent client=entity.getComponent(ClientComponent.class);
     client.character=character;
     entity.saveComponent(client);

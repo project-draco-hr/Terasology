@@ -8,10 +8,7 @@
     EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z),clientEntity);
     Location.attachChild(playerCharacter,clientEntity,new Vector3f(),new Quat4f(0,0,0,1));
     Client clientListener=networkSystem.getOwner(clientEntity);
-    int distance=clientListener.getViewDistance().getChunkDistance();
-    if (!clientListener.isLocal()) {
-      distance+=ChunkConstants.REMOTE_GENERATION_DISTANCE;
-    }
+    Vector3i distance=clientListener.getViewDistance().getChunkDistance();
     worldRenderer.getChunkProvider().updateRelevanceEntity(clientEntity,distance);
     client.character=playerCharacter;
     clientEntity.saveComponent(client);

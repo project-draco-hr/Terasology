@@ -2,7 +2,7 @@
   LocationComponent loc=entity.getComponent(LocationComponent.class);
   loc.setWorldPosition(connected.getPlayerStore().getRelevanceLocation());
   entity.saveComponent(loc);
-  worldRenderer.getChunkProvider().addRelevanceEntity(entity,4,networkSystem.getOwner(entity));
+  worldRenderer.getChunkProvider().addRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance(),networkSystem.getOwner(entity));
   if (connected.getPlayerStore().hasCharacter()) {
     if (worldRenderer.getWorldProvider().isBlockRelevant(connected.getPlayerStore().getRelevanceLocation())) {
       restoreCharacter(entity,connected.getPlayerStore());

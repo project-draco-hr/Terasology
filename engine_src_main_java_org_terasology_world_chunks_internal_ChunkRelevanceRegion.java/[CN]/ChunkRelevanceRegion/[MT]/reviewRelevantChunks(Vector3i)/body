@@ -1,0 +1,12 @@
+{
+  Vector3i extents=new Vector3i(distance.x / 2 + UNLOAD_LEEWAY,distance.y / 2 + UNLOAD_LEEWAY,distance.z / 2 + UNLOAD_LEEWAY);
+  Region3i retainRegion=Region3i.createFromCenterExtents(center,extents);
+  Iterator<Vector3i> iter=relevantChunks.iterator();
+  while (iter.hasNext()) {
+    Vector3i pos=iter.next();
+    if (!retainRegion.encompasses(pos)) {
+      sendChunkIrrelevant(pos);
+      iter.remove();
+    }
+  }
+}

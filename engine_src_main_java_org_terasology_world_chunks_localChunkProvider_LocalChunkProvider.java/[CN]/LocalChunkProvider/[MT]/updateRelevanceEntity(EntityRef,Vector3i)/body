@@ -1,0 +1,14 @@
+{
+  Vector3i finalDist=new Vector3i(distance);
+  finalDist.add(ChunkConstants.GENERATION_DISTANCE,ChunkConstants.GENERATION_DISTANCE,ChunkConstants.GENERATION_DISTANCE);
+  regionLock.readLock().lock();
+  try {
+    ChunkRelevanceRegion region=regions.get(entity);
+    if (region != null) {
+      region.setRelevanceDistance(finalDist);
+    }
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+}

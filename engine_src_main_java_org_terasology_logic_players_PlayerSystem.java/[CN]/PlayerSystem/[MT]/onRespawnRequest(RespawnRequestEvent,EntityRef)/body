@@ -9,7 +9,7 @@
       LocationComponent loc=entity.getComponent(LocationComponent.class);
       loc.setWorldPosition(new Vector3f(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
       entity.saveComponent(loc);
-      worldRenderer.getChunkProvider().updateRelevanceEntity(entity,4);
+      worldRenderer.getChunkProvider().updateRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance());
       SpawningClientInfo info=new SpawningClientInfo(entity,new Vector3f(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y / 2,ChunkConstants.SIZE_Z / 2));
       clientsPreparingToSpawn.add(info);
     }
