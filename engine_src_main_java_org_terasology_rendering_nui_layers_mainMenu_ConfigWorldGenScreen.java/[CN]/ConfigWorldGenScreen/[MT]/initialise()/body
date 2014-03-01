@@ -5,32 +5,4 @@
     }
   }
 );
-  WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
-  Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
-  try {
-    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
-    WorldGenerator wg=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(info.getUri());
-    if (wg.getConfigurator().isPresent()) {
-      worldConfig=wg.getConfigurator().get();
-    }
- else {
-      logger.info(info.getUri().toString() + " does not support configuration");
-      return;
-    }
-  }
- catch (  UnresolvedWorldGeneratorException e) {
-    logger.error("Unable to load world generator: " + info.getUri().toString());
-  }
- finally {
-    moduleManager.disableAllModules();
-  }
-  properties=find("properties",PropertyLayout.class);
-  if (properties != null) {
-    properties.setOrdering(PropertyOrdering.byLabel());
-    Map<String,?> props=worldConfig.getProperties();
-    for (    String label : props.keySet()) {
-      PropertyProvider<?> provider=new PropertyProvider<>(props.get(label));
-      properties.addPropertyProvider(label,provider);
-    }
-  }
 }
