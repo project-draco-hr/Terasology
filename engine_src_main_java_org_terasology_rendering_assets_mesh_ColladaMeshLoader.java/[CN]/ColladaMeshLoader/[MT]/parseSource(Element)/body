@@ -2,7 +2,7 @@
   MeshDataSource meshDataSource=new MeshDataSource();
   ElementSet accessorSet=sourceElement.find("technique_common","accessor");
   if (1 != accessorSet.size()) {
-    throw new RuntimeException("Found " + accessorSet.size() + " accessor sets for sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
+    throw new ColladaParseException("Found " + accessorSet.size() + " accessor sets for sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
   }
   Element accessor=accessorSet.first();
   String accessorCount=accessor.attr("count");
@@ -21,7 +21,7 @@
   }
   Element floatArray=sourceElement.select(accessorSource);
   if (null == floatArray) {
-    throw new RuntimeException("Unable to find id " + accessorSource + " for float array in sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
+    throw new ColladaParseException("Unable to find id " + accessorSource + " for float array in sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
   }
   String arraySizeString=floatArray.attr("count");
   int arraySize=Integer.parseInt(arraySizeString);
@@ -29,7 +29,7 @@
   String floatArrayDataString=floatArray.text().trim();
   String[] floatStrings=getItemsInString(floatArrayDataString);
   if (floatStrings.length != arraySize) {
-    throw new RuntimeException("Expected float array size " + arraySize + " but was "+ floatStrings.length+ " for sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
+    throw new ColladaParseException("Expected float array size " + arraySize + " but was "+ floatStrings.length+ " for sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
   }
   for (int i=0; i < floatStrings.length; i++) {
     String floatString=floatStrings[i];

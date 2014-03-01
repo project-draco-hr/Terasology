@@ -1,7 +1,14 @@
 {
   BufferedReader reader=new BufferedReader(new InputStreamReader(stream,Charsets.UTF_8));
   String contents=slurpFromBufferedReader(reader);
-  MeshData data=parseMeshData(contents);
+  MeshData data;
+  try {
+    data=parseMeshData(contents);
+  }
+ catch (  ColladaParseException e) {
+    logger.error("Unable to load mesh",e);
+    return null;
+  }
   if (data.getVertices() == null) {
     throw new IOException("No vertices define");
   }
