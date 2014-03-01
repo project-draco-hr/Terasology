@@ -1,0 +1,14 @@
+{
+  List<Input> inputList=new ArrayList<Input>();
+  for (  Element inputElement : inputElementSet) {
+    Input input=new Input();
+    inputList.add(input);
+    input.semantic=inputElement.attr("semantic");
+    input.sourceName=inputElement.attr("source");
+    String offsetString=inputElement.attr("offset");
+    if (null != offsetString) {
+      input.offset=Integer.parseInt(offsetString);
+    }
+  }
+  return inputList;
+}

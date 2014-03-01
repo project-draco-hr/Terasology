@@ -1,0 +1,12 @@
+{
+  BufferedReader reader=new BufferedReader(new InputStreamReader(stream,Charsets.UTF_8));
+  String contents=slurpFromBufferedReader(reader);
+  MeshData data=parseMeshData(contents);
+  if (data.getVertices() == null) {
+    throw new IOException("No vertices define");
+  }
+  if (data.getTexCoord0() == null || data.getTexCoord0().size() / 2 != data.getVertices().size() / 3) {
+    throw new IOException("The number of tex coords does not match the number of vertices.");
+  }
+  return data;
+}

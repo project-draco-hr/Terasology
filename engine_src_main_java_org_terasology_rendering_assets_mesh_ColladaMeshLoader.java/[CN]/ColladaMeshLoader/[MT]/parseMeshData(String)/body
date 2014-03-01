@@ -1,0 +1,139 @@
+{
+  Document document=Xml.xml(contents);
+  Element rootElement=document.getRootElement();
+  MeshData result=new MeshData();
+  TFloatList vertices=result.getVertices();
+  TFloatList texCoord0=result.getTexCoord0();
+  TFloatList normals=result.getNormals();
+  TIntList indices=result.getIndices();
+  int vertCount=0;
+  ElementSet geometrySet=rootElement.find("library_geometries","geometry");
+  for (  Element geometry : geometrySet) {
+    ElementSet meshSet=geometry.find("mesh");
+    if (1 != meshSet.size()) {
+      throw new RuntimeException("Found " + meshSet.size() + " mesh sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
+    }
+    logger.info("Parsing geometry id=" + geometry.id() + " name="+ geometry.name());
+    for (    Element mesh : meshSet) {
+      ElementSet trianglesSet=mesh.find("triangles");
+      if (1 != trianglesSet.size()) {
+        if (0 == trianglesSet.size()) {
+          ElementSet polylistSet=mesh.find("polylist");
+          throw new RuntimeException("Found " + polylistSet.size() + " polyList sets for geometry id="+ geometry.id()+ " name="+ geometry.name()+ ".  polyList currently unsupported.  You must trianglulate the model.");
+        }
+        throw new RuntimeException("Found " + trianglesSet.size() + " triangle sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
+      }
+      Element triangles=trianglesSet.first();
+      String triangleCountString=triangles.attr("count");
+      int triangleCount=Integer.parseInt(triangleCountString);
+      ElementSet triangleInputSet=triangles.find("input");
+      List<Input> triangleInputs=parseInputs(triangleInputSet);
+      for (      Input triangleInput : triangleInputs) {
+        if ("VERTEX".equals(triangleInput.semantic)) {
+          ElementSet verticesSet=mesh.find("vertices");
+          if (1 != verticesSet.size()) {
+            throw new RuntimeException("Found " + verticesSet.size() + " vertices sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
+          }
+          Element verticesElement=verticesSet.first();
+          ElementSet verticesInputSet=verticesElement.find("input");
+          List<Input> verticesInputs=parseInputs(verticesInputSet);
+          for (          Input vertexInput : verticesInputs) {
+            if ("POSITION".equals(vertexInput.semantic)) {
+              Element vertexSourceElement=mesh.select(vertexInput.sourceName);
+              triangleInput.vertexPositionSource=parseSource(vertexSourceElement);
+            }
+ else             if ("NORMAL".equals(vertexInput.semantic)) {
+              Element normalSourceElement=mesh.select(vertexInput.sourceName);
+              triangleInput.vertexNormalSource=parseSource(normalSourceElement);
+            }
+ else {
+              throw new RuntimeException("Found unexpected vertex Input semantic " + vertexInput.semantic + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+            }
+          }
+        }
+ else         if ("NORMAL".equals(triangleInput.semantic)) {
+          Element normalSourceElement=mesh.select(triangleInput.sourceName);
+          triangleInput.normalSource=parseSource(normalSourceElement);
+        }
+ else         if ("TEXCOORD".equals(triangleInput.semantic)) {
+          Element texCoordSourceElement=mesh.select(triangleInput.sourceName);
+          triangleInput.texCoordSource=parseSource(texCoordSourceElement);
+        }
+ else {
+          throw new RuntimeException("Found unexpected triangle Input semantic " + triangleInput.semantic + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+        }
+      }
+      ElementSet triangleDataSet=triangles.find("p");
+      if (1 != triangleDataSet.size()) {
+        throw new RuntimeException("Found " + triangleDataSet.size() + " triangleData sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
+      }
+      Element triangleData=triangleDataSet.first();
+      String triangleDataString=triangleData.text();
+      String[] trianglesStrings=getItemsInString(triangleDataString);
+      if (trianglesStrings.length != (triangleCount * triangleInputs.size() * 3)) {
+        throw new RuntimeException("Expected String 3 vertices *  " + triangleCount + " * input count of "+ triangleInputs.size()+ " but was "+ trianglesStrings.length+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+      }
+      Collections.sort(triangleInputs,new Comparator<Input>(){
+        @Override public int compare(        Input i1,        Input i2){
+          return i1.offset - i2.offset;
+        }
+      }
+);
+      for (int i=0; i < triangleInputs.size(); i++) {
+        Input input=triangleInputs.get(i);
+        if (input.offset != i) {
+          throw new RuntimeException("Triangle input list offset does not match list index for triangle input " + input + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+        }
+      }
+      for (int triangleIndex=0; triangleIndex < triangleCount; triangleIndex++) {
+        for (int triangleVertexIndex=0; triangleVertexIndex < 3; triangleVertexIndex++) {
+          for (int triangleInputOffset=0; triangleInputOffset < triangleInputs.size(); triangleInputOffset++) {
+            Input triangleInput=triangleInputs.get(triangleInputOffset);
+            int triangleDataIndex=(triangleIndex * triangleInputs.size() * 3) + (triangleVertexIndex * triangleInputs.size()) + triangleInputOffset;
+            String indexString=trianglesStrings[triangleDataIndex];
+            int index=Integer.parseInt(indexString);
+            if ("VERTEX".equals(triangleInput.semantic)) {
+              int vertexStride=triangleInput.vertexPositionSource.stride;
+              float vertexX=triangleInput.vertexPositionSource.values[index * vertexStride + 0];
+              float vertexY=triangleInput.vertexPositionSource.values[index * vertexStride + 1];
+              float vertexZ=triangleInput.vertexPositionSource.values[index * vertexStride + 2];
+              vertices.add(vertexX);
+              vertices.add(vertexY);
+              vertices.add(vertexZ);
+              if (null != triangleInput.vertexNormalSource) {
+                int normalStride=triangleInput.vertexNormalSource.stride;
+                float normalX=triangleInput.vertexNormalSource.values[index * normalStride + 0];
+                float normalY=triangleInput.vertexNormalSource.values[index * normalStride + 1];
+                float normalZ=triangleInput.vertexNormalSource.values[index * normalStride + 2];
+                normals.add(normalX);
+                normals.add(normalY);
+                normals.add(normalZ);
+              }
+              indices.add(vertCount++);
+            }
+ else             if ("NORMAL".equals(triangleInput.semantic)) {
+              int normalStride=triangleInput.normalSource.stride;
+              float normalX=triangleInput.normalSource.values[index * normalStride + 0];
+              float normalY=triangleInput.normalSource.values[index * normalStride + 1];
+              float normalZ=triangleInput.normalSource.values[index * normalStride + 2];
+              normals.add(normalX);
+              normals.add(normalY);
+              normals.add(normalZ);
+            }
+ else             if ("TEXCOORD".equals(triangleInput.semantic)) {
+              int texCoordStride=triangleInput.texCoordSource.stride;
+              float texCoordS=triangleInput.texCoordSource.values[index * texCoordStride + 0];
+              float texCoordT=triangleInput.texCoordSource.values[index * texCoordStride + 1];
+              texCoord0.add(texCoordS);
+              texCoord0.add(1 - texCoordT);
+            }
+ else {
+              throw new RuntimeException("Found unexpected triangle Input semantic " + triangleInput.semantic + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+            }
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
