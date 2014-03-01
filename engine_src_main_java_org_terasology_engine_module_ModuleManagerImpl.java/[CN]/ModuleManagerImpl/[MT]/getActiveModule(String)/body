@@ -1,4 +1,8 @@
 {
   String normalisedName=UriUtil.normalise(id);
-  return activeModules.get(normalisedName);
+  Module module=activeModules.get(normalisedName);
+  if (null == module) {
+    logger.error("Reference to missing active module id: {}",id);
+  }
+  return module;
 }
