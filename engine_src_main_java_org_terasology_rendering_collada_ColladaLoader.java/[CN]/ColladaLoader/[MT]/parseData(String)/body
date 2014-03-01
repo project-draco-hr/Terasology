@@ -1,12 +1,13 @@
 {
+  vertices=new TFloatArrayList();
+  texCoord0=new TFloatArrayList();
+  texCoord1=new TFloatArrayList();
+  normals=new TFloatArrayList();
+  colors=new TFloatArrayList();
+  indices=new TIntArrayList();
+  int vertCount=0;
   Document document=Xml.xml(contents);
   Element rootElement=document.getRootElement();
-  MeshData result=new MeshData();
-  TFloatList vertices=result.getVertices();
-  TFloatList texCoord0=result.getTexCoord0();
-  TFloatList normals=result.getNormals();
-  TIntList indices=result.getIndices();
-  int vertCount=0;
   ElementSet geometrySet=rootElement.find("library_geometries","geometry");
   for (  Element geometry : geometrySet) {
     ElementSet meshSet=geometry.find("mesh");
@@ -36,5 +37,4 @@
       }
     }
   }
-  return result;
 }

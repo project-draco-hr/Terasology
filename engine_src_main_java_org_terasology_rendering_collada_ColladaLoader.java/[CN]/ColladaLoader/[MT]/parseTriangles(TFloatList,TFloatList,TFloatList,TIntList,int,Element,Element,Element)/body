@@ -79,9 +79,9 @@
           float vertexX=triangleInput.vertexPositionSource.values[index * vertexStride + 0];
           float vertexY=triangleInput.vertexPositionSource.values[index * vertexStride + 1];
           float vertexZ=triangleInput.vertexPositionSource.values[index * vertexStride + 2];
-          vertices.add(vertexX);
-          vertices.add(vertexY);
-          vertices.add(vertexZ);
+          verticesParam.add(vertexX);
+          verticesParam.add(vertexY);
+          verticesParam.add(vertexZ);
           if (null != triangleInput.vertexNormalSource) {
             int normalStride=triangleInput.vertexNormalSource.stride;
             if (3 != normalStride) {
@@ -90,11 +90,11 @@
             float normalX=triangleInput.vertexNormalSource.values[index * normalStride + 0];
             float normalY=triangleInput.vertexNormalSource.values[index * normalStride + 1];
             float normalZ=triangleInput.vertexNormalSource.values[index * normalStride + 2];
-            normals.add(normalX);
-            normals.add(normalY);
-            normals.add(normalZ);
+            normalsParam.add(normalX);
+            normalsParam.add(normalY);
+            normalsParam.add(normalZ);
           }
-          indices.add(vertCount++);
+          indicesParam.add(vertCount++);
         }
  else         if ("NORMAL".equals(triangleInput.semantic)) {
           int normalStride=triangleInput.normalSource.stride;
@@ -104,9 +104,9 @@
           float normalX=triangleInput.normalSource.values[index * normalStride + 0];
           float normalY=triangleInput.normalSource.values[index * normalStride + 1];
           float normalZ=triangleInput.normalSource.values[index * normalStride + 2];
-          normals.add(normalX);
-          normals.add(normalY);
-          normals.add(normalZ);
+          normalsParam.add(normalX);
+          normalsParam.add(normalY);
+          normalsParam.add(normalZ);
         }
  else         if ("TEXCOORD".equals(triangleInput.semantic)) {
           int texCoordStride=triangleInput.texCoordSource.stride;
@@ -115,8 +115,8 @@
           }
           float texCoordS=triangleInput.texCoordSource.values[index * texCoordStride + 0];
           float texCoordT=triangleInput.texCoordSource.values[index * texCoordStride + 1];
-          texCoord0.add(texCoordS);
-          texCoord0.add(1 - texCoordT);
+          texCoord0Param.add(texCoordS);
+          texCoord0Param.add(1 - texCoordT);
         }
  else {
           throw new ColladaParseException("Found unexpected triangle Input semantic " + triangleInput.semantic + " for geometry id="+ geometry.id()+ " name="+ geometry.name());

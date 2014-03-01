@@ -1,14 +1,22 @@
 {
   BufferedReader reader=new BufferedReader(new InputStreamReader(stream,Charsets.UTF_8));
   String contents=loadDataAsString(reader);
-  MeshData data;
   try {
-    data=parseMeshData(contents);
+    parseData(contents);
   }
  catch (  ColladaParseException e) {
     logger.error("Unable to load mesh",e);
     return null;
   }
+  MeshData data=new MeshData();
+  TFloatList verticesMesh=data.getVertices();
+  TFloatList texCoord0Mesh=data.getTexCoord0();
+  TFloatList normalsMesh=data.getNormals();
+  TIntList indicesMesh=data.getIndices();
+  verticesMesh.addAll(this.vertices);
+  texCoord0Mesh.addAll(this.texCoord0);
+  normalsMesh.addAll(this.normals);
+  indicesMesh.addAll(this.indices);
   if (data.getVertices() == null) {
     throw new IOException("No vertices define");
   }
