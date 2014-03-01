@@ -2,6 +2,33 @@
   statDirtyChunks=0;
   statVisibleChunks=0;
   statIgnoredPhases=0;
+  if (processChunkUpdates) {
+    PerformanceMonitor.startActivity("Building Mesh VBOs");
+    for (    ChunkImpl c : chunkUpdateManager.availableChunksForUpdate()) {
+      if (chunksInProximity.contains(c) && c.getPendingMesh() != null) {
+        for (int i=0; i < c.getPendingMesh().length; i++) {
+          c.getPendingMesh()[i].generateVBOs();
+        }
+        if (c.getMesh() != null) {
+          for (int i=0; i < c.getMesh().length; i++) {
+            c.getMesh()[i].dispose();
+          }
+        }
+        c.setMesh(c.getPendingMesh());
+        c.setPendingMesh(null);
+      }
+ else {
+        ChunkMesh[] pendingMesh=c.getPendingMesh();
+        c.setPendingMesh(null);
+        if (pendingMesh != null) {
+          for (          ChunkMesh mesh : pendingMesh) {
+            mesh.dispose();
+          }
+        }
+      }
+    }
+    PerformanceMonitor.endActivity();
+  }
   int processedChunks=0;
   for (int i=0; i < chunksInProximity.size(); i++) {
     ChunkImpl c=chunksInProximity.get(i);

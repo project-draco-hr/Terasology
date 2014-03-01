@@ -1,0 +1,14 @@
+{
+  if (renderRegion.encompasses(pos)) {
+    Iterator<ChunkImpl> iterator=chunksInProximity.iterator();
+    while (iterator.hasNext()) {
+      ChunkImpl chunk=iterator.next();
+      if (chunk.getPos().equals(pos)) {
+        chunk.disposeMesh();
+        iterator.remove();
+        Collections.sort(chunksInProximity,new ChunkFrontToBackComparator());
+        break;
+      }
+    }
+  }
+}
