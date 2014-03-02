@@ -1,0 +1,13 @@
+{
+  if (initParameters != null) {
+    final String heightStr=initParameters.get(FlatTerrainGenerationPass.INIT_PARAMETER_HEIGHT);
+    if (heightStr != null) {
+      try {
+        setSurfaceHeight(Integer.parseInt(heightStr));
+      }
+ catch (      final NumberFormatException e) {
+        logger.error("Cannot set initParameters to {}! ",initParameters,e);
+      }
+    }
+  }
+}
