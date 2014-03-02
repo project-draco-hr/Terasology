@@ -29,6 +29,8 @@
     if (chunk != null) {
       region.chunkReady(chunk);
     }
+ else {
+      pipeline.doTask(new CreateOrLoadChunkTask(pipeline,pos,this));
+    }
   }
-  pipeline.requestProduction(region.getCurrentRegion().expand(ChunkConstants.GENERATION_EXTENTS));
 }

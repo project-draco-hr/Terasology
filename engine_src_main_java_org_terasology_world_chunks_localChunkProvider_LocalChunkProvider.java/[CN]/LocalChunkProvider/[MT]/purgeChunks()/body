@@ -14,11 +14,13 @@
   nearCache.clear();
   storageManager.purgeChunks();
   worldEntity.send(new PurgeWorldEvent());
-  this.pipeline=new ChunkGenerationPipeline(this,generator,new ChunkTaskRelevanceComparator());
+  this.pipeline=new ChunkGenerationPipeline(new ChunkTaskRelevanceComparator());
   this.unloadRequestTaskMaster=TaskMaster.createFIFOTaskMaster("Chunk-Unloader",8);
   ChunkMonitor.fireChunkProviderInitialized(this);
   for (  ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
-    pipeline.requestProduction(chunkRelevanceRegion.getCurrentRegion().expand(ChunkConstants.GENERATION_EXTENTS));
+    for (    Vector3i pos : chunkRelevanceRegion.getCurrentRegion()) {
+      pipeline.doTask(new CreateOrLoadChunkTask(pipeline,pos,this));
+    }
     chunkRelevanceRegion.setUpToDate();
   }
 }

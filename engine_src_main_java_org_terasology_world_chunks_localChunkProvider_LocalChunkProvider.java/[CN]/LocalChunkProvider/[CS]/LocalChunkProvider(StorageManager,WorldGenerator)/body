@@ -2,11 +2,9 @@
   blockManager=CoreRegistry.get(BlockManager.class);
   this.storageManager=storageManager;
   this.generator=generator;
-  this.pipeline=new ChunkGenerationPipeline(this,generator,new ChunkTaskRelevanceComparator());
+  this.pipeline=new ChunkGenerationPipeline(new ChunkTaskRelevanceComparator());
   this.unloadRequestTaskMaster=TaskMaster.createFIFOTaskMaster("Chunk-Unloader",4);
   ChunkMonitor.fireChunkProviderInitialized(this);
   loadEdgePropagators.add(new BatchPropagator(new LightPropagationRules(),new LightWorldView(this)));
   loadEdgePropagators.add(new BatchPropagator(new SunlightPropagationRules(),new SunlightWorldView(this)));
-  unloadLeeway=new Vector3i(ChunkConstants.GENERATION_EXTENTS);
-  unloadLeeway.add(Vector3i.one());
 }
