@@ -27,7 +27,7 @@
                 readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
               }
  else {
-                pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.SECOND_PASS_EXTENTS));
+                pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.GENERATION_EXTENTS));
               }
             }
   finally {
@@ -49,7 +49,7 @@
               logger.warn("Chunk {} is already in the near cache",getPosition());
             }
             preparingChunks.remove(getPosition());
-            pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.SECOND_PASS_EXTENTS));
+            pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.GENERATION_EXTENTS));
           }
         }
 );
