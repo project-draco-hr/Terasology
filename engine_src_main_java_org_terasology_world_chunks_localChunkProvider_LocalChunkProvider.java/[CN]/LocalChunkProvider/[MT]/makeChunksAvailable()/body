@@ -2,8 +2,10 @@
   readyChunks.drainTo(sortedReadyChunks);
   if (!sortedReadyChunks.isEmpty()) {
     Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
-    ReadyChunkInfo readyChunkInfo=sortedReadyChunks.remove(sortedReadyChunks.size() - 1);
-    makeChunkAvailable(readyChunkInfo);
+    for (int i=0; i < LOAD_PER_FRAME && !sortedReadyChunks.isEmpty(); ++i) {
+      ReadyChunkInfo readyChunkInfo=sortedReadyChunks.remove(sortedReadyChunks.size() - 1);
+      makeChunkAvailable(readyChunkInfo);
+    }
     for (    BatchPropagator propagator : loadEdgePropagators) {
       propagator.process();
     }
