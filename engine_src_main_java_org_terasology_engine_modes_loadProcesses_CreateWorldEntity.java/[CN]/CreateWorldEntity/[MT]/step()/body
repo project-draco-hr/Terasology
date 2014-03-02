@@ -9,6 +9,13 @@
     EntityRef worldEntity=entityManager.create();
     worldEntity.addComponent(new WorldComponent());
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
+    WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
+    Config config=CoreRegistry.get(Config.class);
+    SimpleUri uri=worldGenerator.getUri();
+    Map<String,Component> params=config.getWorldGenerationConfigs(uri);
+    for (    Component comp : params.values()) {
+      worldEntity.addComponent(comp);
+    }
   }
   return true;
 }
