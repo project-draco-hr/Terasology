@@ -18,7 +18,7 @@
   this.unloadRequestTaskMaster=TaskMaster.createFIFOTaskMaster("Chunk-Unloader",8);
   ChunkMonitor.fireChunkProviderInitialized(this);
   for (  ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
-    pipeline.requestProduction(chunkRelevanceRegion.getRegion().expand(2));
+    pipeline.requestProduction(chunkRelevanceRegion.getCurrentRegion().expand(ChunkConstants.GENERATION_EXTENTS));
     chunkRelevanceRegion.setUpToDate();
   }
 }

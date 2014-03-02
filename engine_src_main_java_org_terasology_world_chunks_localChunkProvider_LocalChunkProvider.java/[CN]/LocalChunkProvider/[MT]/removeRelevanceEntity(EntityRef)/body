@@ -1,7 +1,10 @@
 {
   regionLock.writeLock().lock();
   try {
-    regions.remove(entity);
+    ChunkRelevanceRegion region=regions.remove(entity);
+    if (region != null) {
+      pendingRemoveRegions.add(region);
+    }
   }
   finally {
     regionLock.writeLock().unlock();
