@@ -1,16 +1,17 @@
 {
   int depth=(firstBlockHeight - y);
+  int yPos=c.getBlockWorldPosY(y);
 switch (type) {
 case FOREST:
 case PLAINS:
 case MOUNTAINS:
-    if (y >= 28 && y <= 34) {
+    if (yPos >= 28 && yPos <= 34) {
       c.setBlock(x,y,z,sand);
     }
- else     if (depth == 0 && y > 32 && y < 128) {
+ else     if (depth == 0 && yPos > 32 && yPos < 128) {
       c.setBlock(x,y,z,grass);
     }
- else     if (depth == 0 && y >= 128) {
+ else     if (depth == 0 && yPos >= 128) {
       c.setBlock(x,y,z,snow);
     }
  else     if (depth > 32) {
@@ -21,7 +22,7 @@ case MOUNTAINS:
     }
   break;
 case SNOW:
-if (depth == 0.0 && y > 32) {
+if (depth == 0.0 && yPos > 32) {
   c.setBlock(x,y,z,snow);
 }
  else if (depth > 32) {
