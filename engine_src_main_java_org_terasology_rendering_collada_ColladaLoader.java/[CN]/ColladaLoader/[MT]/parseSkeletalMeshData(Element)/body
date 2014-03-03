@@ -1,0 +1,118 @@
+{
+  skeletonBuilder=new SkeletalMeshDataBuilder();
+  ElementSet controllerSet=rootElement.find("library_controllers","controller");
+  for (  Element controller : controllerSet) {
+    ElementSet skinSet=controller.find("skin");
+    if (1 != skinSet.size()) {
+      throw new ColladaParseException("Found " + skinSet.size() + " skin sets for controller id="+ controller.id()+ " name="+ controller.name());
+    }
+    Element skin=skinSet.first();
+    ElementSet jointsSet=skin.find("joints");
+    if (1 != jointsSet.size()) {
+      throw new ColladaParseException("Found " + jointsSet.size() + " joints sets for controller id="+ controller.id()+ " name="+ controller.name());
+    }
+    Element joints=jointsSet.first();
+    ElementSet vertexWeightsSet=skin.find("vertex_weights");
+    if (1 != vertexWeightsSet.size()) {
+      throw new ColladaParseException("Found " + vertexWeightsSet.size() + " vertex weights sets for controller id="+ controller.id()+ " name="+ controller.name());
+    }
+    Element vertexWeights=vertexWeightsSet.first();
+    String vertexWeightsCountString=vertexWeights.attr("count");
+    int vertexWeightsCount=Integer.parseInt(vertexWeightsCountString);
+    String[] jointNameArray=null;
+    float[] inverseBindMatrixArray;
+    Quat4f[] rotationArray;
+    ElementSet jointsInputSet=joints.find("input");
+    List<Input> inputList=parseInputs(jointsInputSet);
+    for (    Input jointsInput : inputList) {
+      if ("JOINT".equals(jointsInput.semantic)) {
+        Element jointNameSourceElement=skin.select(jointsInput.sourceName);
+        Source jointNameSource=parseSource(jointNameSourceElement);
+        jointNameArray=jointNameSource.nameValues;
+      }
+      if ("INV_BIND_MATRIX".equals(jointsInput.semantic)) {
+        Element jointMatrixSourceElement=skin.select(jointsInput.sourceName);
+        Source jointMatrixSource=parseSource(jointMatrixSourceElement);
+        inverseBindMatrixArray=jointMatrixSource.floatValues;
+        rotationArray=new Quat4f[inverseBindMatrixArray.length / 16];
+        for (int i=0; i < inverseBindMatrixArray.length / 16; ++i) {
+          int offset=i * 16;
+          Matrix4f matrix4f=new Matrix4f(Arrays.copyOfRange(inverseBindMatrixArray,offset,offset + 16));
+          Quat4f rotation=new Quat4f();
+          rotation.set(matrix4f);
+          rotationArray[i]=rotation;
+        }
+      }
+    }
+    float[] weightsArray=null;
+    ElementSet vertexWeightsInputSet=vertexWeights.find("input");
+    List<Input> vertexWeightsInputList=parseInputs(vertexWeightsInputSet);
+    Collections.sort(vertexWeightsInputList,new Comparator<Input>(){
+      @Override public int compare(      Input i1,      Input i2){
+        return i1.offset - i2.offset;
+      }
+    }
+);
+    for (int i=0; i < vertexWeightsInputList.size(); i++) {
+      Input input=vertexWeightsInputList.get(i);
+      if (input.offset != i) {
+        throw new ColladaParseException("vertex weights input list offset does not match list index for vertex weights input " + input + " for controller id="+ controller.id()+ " name="+ controller.name());
+      }
+    }
+    for (    Input vertexWeightsInput : vertexWeightsInputList) {
+      if ("WEIGHT".equals(vertexWeightsInput.semantic)) {
+        Element jointMatrixSourceElement=skin.select(vertexWeightsInput.sourceName);
+        Source weightsArraySource=parseSource(jointMatrixSourceElement);
+        weightsArray=weightsArraySource.floatValues;
+      }
+    }
+    ElementSet vertexWeightsVCountDataSet=vertexWeights.find("vcount");
+    if (1 != vertexWeightsVCountDataSet.size()) {
+      throw new ColladaParseException("Found " + vertexWeightsVCountDataSet.size() + " vertex weights vcount sets for controller id="+ controller.id()+ " name="+ controller.name());
+    }
+    Element vertexWeightsVCountData=vertexWeightsVCountDataSet.first();
+    String vertexWeightsVCountString=vertexWeightsVCountData.text();
+    String[] vertexWeightsVCountStrings=getItemsInString(vertexWeightsVCountString);
+    if (vertexWeightsVCountStrings.length != vertexWeightsCount) {
+      throw new ColladaParseException("Expected " + vertexWeightsCount + " but was "+ vertexWeightsVCountStrings.length+ " for controller id="+ controller.id()+ " name="+ controller.name());
+    }
+    ElementSet vertexWeightsVDataSet=vertexWeights.find("v");
+    if (1 != vertexWeightsVDataSet.size()) {
+      throw new ColladaParseException("Found " + vertexWeightsVDataSet.size() + " vertex weights v sets for controller id="+ controller.id()+ " name="+ controller.name());
+    }
+    Element vertexWeightsVData=vertexWeightsVDataSet.first();
+    String vertexWeightsVDataString=vertexWeightsVData.text();
+    String[] vertexWeightsVStrings=getItemsInString(vertexWeightsVDataString);
+    String[] vertexWeightsJointNameArray=new String[vertexWeightsCount];
+    float[] vertexWeightsArray=new float[vertexWeightsCount];
+    int vertexWeightsVDataIndex=-1;
+    for (int vertexWeightsIndex=0; vertexWeightsIndex < vertexWeightsCount; vertexWeightsIndex++) {
+      String vCountString=vertexWeightsVCountStrings[vertexWeightsIndex];
+      int vCount=Integer.parseInt(vCountString);
+      for (int vCountIndex=0; vCountIndex < vCount; vCountIndex++) {
+        for (int vertexWeightsInputOffset=0; vertexWeightsInputOffset < vertexWeightsInputList.size(); vertexWeightsInputOffset++) {
+          Input vertexWeightsInput=vertexWeightsInputList.get(vertexWeightsInputOffset);
+          ++vertexWeightsVDataIndex;
+          String indexString=vertexWeightsVStrings[vertexWeightsVDataIndex];
+          int index=Integer.parseInt(indexString);
+          if (-1 == index) {
+            throw new ColladaParseException("We do not support indexing into the bind shape yet");
+          }
+          if ("JOINT".equals(vertexWeightsInput.semantic)) {
+            vertexWeightsJointNameArray[vertexWeightsIndex]=jointNameArray[index];
+          }
+ else           if ("WEIGHT".equals(vertexWeightsInput.semantic)) {
+            vertexWeightsArray[vertexWeightsIndex]=weightsArray[index];
+          }
+ else {
+            throw new ColladaParseException("Found unexpected vertex weights Input semantic " + vertexWeightsInput.semantic + " for controller id="+ controller.id()+ " name="+ controller.name());
+          }
+        }
+      }
+    }
+  }
+  ElementSet nodeSet=rootElement.find("library_visual_scenes","visual_scene","node","instance_controller","skeleton");
+  ElementSet nodeSet=rootElement.find("library_visual_scenes","visual_scene","node");
+  for (  Element node : node) {
+  }
+}

@@ -76,9 +76,9 @@
           if (3 != vertexStride) {
             throw new ColladaParseException("Found non-3 stride of " + triangleInput.vertexPositionSource.stride + " for vertex Input semantic "+ triangleInput.semantic+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
           }
-          float vertexX=triangleInput.vertexPositionSource.values[index * vertexStride + 0];
-          float vertexY=triangleInput.vertexPositionSource.values[index * vertexStride + 1];
-          float vertexZ=triangleInput.vertexPositionSource.values[index * vertexStride + 2];
+          float vertexX=triangleInput.vertexPositionSource.floatValues[index * vertexStride + 0];
+          float vertexY=triangleInput.vertexPositionSource.floatValues[index * vertexStride + 1];
+          float vertexZ=triangleInput.vertexPositionSource.floatValues[index * vertexStride + 2];
           verticesParam.add(vertexX);
           verticesParam.add(vertexY);
           verticesParam.add(vertexZ);
@@ -87,9 +87,9 @@
             if (3 != normalStride) {
               throw new ColladaParseException("Found non-3 stride of " + triangleInput.vertexNormalSource.stride + " for vertex Input semantic "+ triangleInput.semantic+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
             }
-            float normalX=triangleInput.vertexNormalSource.values[index * normalStride + 0];
-            float normalY=triangleInput.vertexNormalSource.values[index * normalStride + 1];
-            float normalZ=triangleInput.vertexNormalSource.values[index * normalStride + 2];
+            float normalX=triangleInput.vertexNormalSource.floatValues[index * normalStride + 0];
+            float normalY=triangleInput.vertexNormalSource.floatValues[index * normalStride + 1];
+            float normalZ=triangleInput.vertexNormalSource.floatValues[index * normalStride + 2];
             normalsParam.add(normalX);
             normalsParam.add(normalY);
             normalsParam.add(normalZ);
@@ -101,9 +101,9 @@
           if (3 != normalStride) {
             throw new ColladaParseException("Found non-3 stride of " + triangleInput.normalSource.stride + " for vertex Input semantic "+ triangleInput.semantic+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
           }
-          float normalX=triangleInput.normalSource.values[index * normalStride + 0];
-          float normalY=triangleInput.normalSource.values[index * normalStride + 1];
-          float normalZ=triangleInput.normalSource.values[index * normalStride + 2];
+          float normalX=triangleInput.normalSource.floatValues[index * normalStride + 0];
+          float normalY=triangleInput.normalSource.floatValues[index * normalStride + 1];
+          float normalZ=triangleInput.normalSource.floatValues[index * normalStride + 2];
           normalsParam.add(normalX);
           normalsParam.add(normalY);
           normalsParam.add(normalZ);
@@ -113,8 +113,8 @@
           if (2 != texCoordStride) {
             throw new ColladaParseException("Found non-2 stride of " + triangleInput.texCoordSource.stride + " for vertex Input semantic "+ triangleInput.semantic+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
           }
-          float texCoordS=triangleInput.texCoordSource.values[index * texCoordStride + 0];
-          float texCoordT=triangleInput.texCoordSource.values[index * texCoordStride + 1];
+          float texCoordS=triangleInput.texCoordSource.floatValues[index * texCoordStride + 0];
+          float texCoordT=triangleInput.texCoordSource.floatValues[index * texCoordStride + 1];
           texCoord0Param.add(texCoordS);
           texCoord0Param.add(1 - texCoordT);
         }
