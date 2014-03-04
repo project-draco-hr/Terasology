@@ -10,11 +10,16 @@
     worldEntity.addComponent(new WorldComponent());
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
     WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
-    Config config=CoreRegistry.get(Config.class);
-    SimpleUri uri=worldGenerator.getUri();
-    Map<String,Component> params=config.getWorldGenerationConfigs(uri);
-    for (    Component comp : params.values()) {
-      worldEntity.addComponent(comp);
+    Optional<WorldConfigurator> ocf=worldGenerator.getConfigurator();
+    if (ocf.isPresent()) {
+      SimpleUri generatorUri=worldGenerator.getUri();
+      Config config=CoreRegistry.get(Config.class);
+      Map<String,Component> params=ocf.get().getProperties();
+      for (      String key : params.keySet()) {
+        Class<? extends Component> clazz=params.get(key).getClass();
+        Component comp=config.getModuleConfig(generatorUri,key,clazz);
+        worldEntity.addComponent(comp);
+      }
     }
   }
   return true;

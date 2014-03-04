@@ -6,20 +6,21 @@
   SimpleUri generatorUri=config.getWorldGeneration().getDefaultGenerator();
   WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(generatorUri);
   Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
-  Map<String,Component> props=config.getWorldGenerationConfigs(generatorUri);
   try {
-    if (props == null) {
-      moduleManager.enableModuleAndDependencies(worldGeneratorModule);
-      WorldGenerator wg=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(info.getUri());
-      if (wg.getConfigurator().isPresent()) {
-        worldConfig=wg.getConfigurator().get();
-        props=worldConfig.getProperties();
+    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
+    WorldGenerator wg=worldGeneratorManager.createGenerator(info.getUri());
+    if (wg.getConfigurator().isPresent()) {
+      WorldConfigurator worldConfig=wg.getConfigurator().get();
+      params=Maps.newHashMap(worldConfig.getProperties());
+      for (      String key : params.keySet()) {
+        Class<? extends Component> clazz=params.get(key).getClass();
+        Component comp=config.getModuleConfig(generatorUri,key,clazz);
+        if (comp != null) {
+          params.put(key,comp);
+        }
       }
-    }
-    if (props != null) {
-      config.setWorldGenerationConfigs(generatorUri,props);
-      for (      String label : props.keySet()) {
-        PropertyProvider<?> provider=new PropertyProvider<>(props.get(label));
+      for (      String label : params.keySet()) {
+        PropertyProvider<?> provider=new PropertyProvider<>(params.get(label));
         properties.addPropertyProvider(label,provider);
       }
     }

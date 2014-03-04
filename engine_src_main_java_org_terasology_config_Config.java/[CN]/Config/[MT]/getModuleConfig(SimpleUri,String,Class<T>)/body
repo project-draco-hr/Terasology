@@ -1,0 +1,9 @@
+{
+  Map<String,JsonElement> map=moduleConfigs.get(uri);
+  if (map == null) {
+    return null;
+  }
+  JsonElement element=map.get(key);
+  Gson gson=new Gson();
+  return gson.fromJson(element,clazz);
+}
