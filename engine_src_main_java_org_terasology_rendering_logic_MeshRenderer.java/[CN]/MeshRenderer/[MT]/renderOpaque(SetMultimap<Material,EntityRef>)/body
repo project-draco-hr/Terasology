@@ -7,15 +7,16 @@
   Matrix4f matrixCameraSpace=new Matrix4f();
   FloatBuffer tempMatrixBuffer44=BufferUtils.createFloatBuffer(16);
   FloatBuffer tempMatrixBuffer33=BufferUtils.createFloatBuffer(12);
-  for (  Material material : meshByMaterial.keys()) {
+  for (  Map.Entry<Material,Collection<EntityRef>> materialEntries : meshByMaterial.asMap().entrySet()) {
+    Material material=materialEntries.getKey();
     OpenGLMesh lastMesh=null;
     material.enable();
     material.setFloat("sunlight",1.0f);
     material.setFloat("blockLight",1.0f);
     material.setMatrix4("projectionMatrix",worldRenderer.getActiveCamera().getProjectionMatrix());
     material.bindTextures();
-    lastRendered=meshByMaterial.get(material).size();
-    for (    EntityRef entity : meshByMaterial.get(material)) {
+    lastRendered=materialEntries.getValue().size();
+    for (    EntityRef entity : materialEntries.getValue()) {
       MeshComponent meshComp=entity.getComponent(MeshComponent.class);
       LocationComponent location=entity.getComponent(LocationComponent.class);
       if (location == null || meshComp.mesh == null) {
