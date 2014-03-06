@@ -1,0 +1,9 @@
+{
+  Gson gson=createGsonForModules();
+  Map<String,JsonElement> map=Maps.newHashMap();
+  for (  String key : configs.keySet()) {
+    JsonElement json=gson.toJsonTree(configs.get(key));
+    map.put(key,json);
+  }
+  this.moduleConfigs.put(generatorUri,map);
+}

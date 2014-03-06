@@ -9,6 +9,18 @@
     EntityRef worldEntity=entityManager.create();
     worldEntity.addComponent(new WorldComponent());
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
+    WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
+    Optional<WorldConfigurator> ocf=worldGenerator.getConfigurator();
+    if (ocf.isPresent()) {
+      SimpleUri generatorUri=worldGenerator.getUri();
+      Config config=CoreRegistry.get(Config.class);
+      Map<String,Component> params=ocf.get().getProperties();
+      for (      String key : params.keySet()) {
+        Class<? extends Component> clazz=params.get(key).getClass();
+        Component comp=config.getModuleConfig(generatorUri,key,clazz);
+        worldEntity.addComponent(comp);
+      }
+    }
   }
   return true;
 }
