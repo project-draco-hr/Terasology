@@ -3,7 +3,7 @@
   EntityRef item=Mockito.mock(EntityRef.class);
   setupItemRef(item,itemComp,2,10);
   Mockito.when(inventory.send(Matchers.any(BeforeItemPutInInventory.class))).then(new Answer<Object>(){
-    @Override public Object answer(    InvocationOnMock invocation) throws Throwable {
+    @Override public Object answer(    InvocationOnMock invocation) throws Exception {
       BeforeItemPutInInventory event=(BeforeItemPutInInventory)invocation.getArguments()[0];
       event.consume();
       return null;
