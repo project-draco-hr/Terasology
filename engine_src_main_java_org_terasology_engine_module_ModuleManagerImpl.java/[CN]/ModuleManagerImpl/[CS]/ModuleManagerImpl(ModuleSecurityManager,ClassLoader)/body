@@ -2,7 +2,7 @@
   this.engineClassLoaders=Arrays.copyOf(engineClassLoaders,engineClassLoaders.length);
   this.moduleSecurityManager=moduleSecurityManager;
   config=CoreRegistry.get(Config.class);
-  Path filename=PathManager.getInstance().getHomePath().resolve("engine-reflections.xml");
+  String filename="engine-reflections";
   engineReflections=loadReflectionsFromCacheFile(filename);
   if (engineReflections == null) {
     ConfigurationBuilder builder=new ConfigurationBuilder().setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
