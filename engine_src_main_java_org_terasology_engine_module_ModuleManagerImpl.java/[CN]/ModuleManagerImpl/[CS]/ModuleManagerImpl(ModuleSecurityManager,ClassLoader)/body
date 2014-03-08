@@ -1,12 +1,19 @@
 {
   this.engineClassLoaders=Arrays.copyOf(engineClassLoaders,engineClassLoaders.length);
   this.moduleSecurityManager=moduleSecurityManager;
-  ConfigurationBuilder builder=new ConfigurationBuilder().setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
-  for (  ClassLoader loader : engineClassLoaders) {
-    builder.addClassLoader(loader).addUrls(ClasspathHelper.forPackage("org.terasology",loader));
+  config=CoreRegistry.get(Config.class);
+  Path filename=PathManager.getInstance().getHomePath().resolve("engine-reflections.xml");
+  engineReflections=loadReflectionsFromCacheFile(filename);
+  if (engineReflections == null) {
+    ConfigurationBuilder builder=new ConfigurationBuilder().setScanners(new TypeAnnotationsScanner(),new SubTypesScanner());
+    for (    ClassLoader loader : engineClassLoaders) {
+      builder.addClassLoader(loader).addUrls(ClasspathHelper.forPackage("org.terasology",loader));
+    }
+    engineReflections=new Reflections(builder);
+    saveReflectionsToCacheFile(engineReflections,filename);
   }
-  engineReflections=new Reflections(builder);
-  try (InputStreamReader reader=new InputStreamReader(getClass().getResourceAsStream("/" + TerasologyConstants.ASSETS_SUBDIRECTORY + "/"+ "module.txt"),Charsets.UTF_8)){
+  String modulePath="/" + TerasologyConstants.ASSETS_SUBDIRECTORY + "/"+ "module.txt";
+  try (InputStreamReader reader=new InputStreamReader(getClass().getResourceAsStream(modulePath),Charsets.UTF_8)){
     engineModule=new EngineModule(engineReflections,new Gson().fromJson(reader,ModuleInfo.class));
   }
  catch (  Exception e) {

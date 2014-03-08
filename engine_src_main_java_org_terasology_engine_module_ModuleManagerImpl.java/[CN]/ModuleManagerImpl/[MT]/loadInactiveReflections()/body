@@ -1,21 +1,26 @@
 {
   if (allReflections == null) {
-    List<URL> urls=Lists.newArrayList();
-    for (    ExtensionModule module : getExtensionModules()) {
-      if (module.isCodeModule()) {
-        urls.add(module.getModuleClasspathUrl());
+    Path filename=PathManager.getInstance().getHomePath().resolve("all-reflections.xml");
+    allReflections=loadReflectionsFromCacheFile(filename);
+    if (allReflections == null) {
+      List<URL> urls=Lists.newArrayList();
+      for (      ExtensionModule module : getExtensionModules()) {
+        if (module.isCodeModule()) {
+          urls.add(module.getModuleClasspathUrl());
+        }
       }
-    }
-    ConfigurationBuilder builder=new ConfigurationBuilder().addUrls(urls).addClassLoader(allModuleClassLoader);
-    for (    ClassLoader engineLoader : engineClassLoaders) {
-      builder.addClassLoader(engineLoader).addUrls(ClasspathHelper.forPackage("org.terasology",engineLoader));
-    }
-    allReflections=new Reflections(builder);
-    allReflections.merge(getEngineReflections());
-    for (    Module module : getModules()) {
-      if (module.isCodeModule()) {
-        allReflections.merge(module.getReflections());
+      ConfigurationBuilder builder=new ConfigurationBuilder().addUrls(urls).addClassLoader(allModuleClassLoader);
+      for (      ClassLoader engineLoader : engineClassLoaders) {
+        builder.addClassLoader(engineLoader).addUrls(ClasspathHelper.forPackage("org.terasology",engineLoader));
       }
+      allReflections=new Reflections(builder);
+      allReflections.merge(getEngineReflections());
+      for (      Module module : getModules()) {
+        if (module.isCodeModule()) {
+          allReflections.merge(module.getReflections());
+        }
+      }
+      saveReflectionsToCacheFile(allReflections,filename);
     }
   }
   return allReflections;
