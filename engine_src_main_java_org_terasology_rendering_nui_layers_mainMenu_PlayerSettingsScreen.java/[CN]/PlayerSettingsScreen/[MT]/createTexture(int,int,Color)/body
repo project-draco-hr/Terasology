@@ -1,0 +1,14 @@
+{
+  int size=4 * width * height;
+  ByteBuffer buf=ByteBuffer.allocateDirect(size);
+  for (int y=0; y < height; ++y) {
+    for (int x=0; x < width; ++x) {
+      color.addToBuffer(buf);
+    }
+  }
+  buf.flip();
+  ByteBuffer[] data=new ByteBuffer[]{buf};
+  AssetUri uri=new AssetUri(AssetType.TEXTURE,"engine:colorPreview");
+  TextureData texData=new TextureData(width,height,data,Texture.WrapMode.CLAMP,Texture.FilterMode.LINEAR);
+  return Assets.generateAsset(uri,texData,Texture.class);
+}

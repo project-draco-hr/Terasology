@@ -1,0 +1,21 @@
+{
+  UIText nametext=find("playername",UIText.class);
+  if (nametext != null) {
+    nametext.bindText(BindHelper.bindBeanProperty("name",config.getPlayer(),String.class));
+  }
+  Color color=config.getPlayer().getColor();
+  img=find("image",UIImage.class);
+  img.setImage(createTexture(10,10,color));
+  sliderRed=find("red",UISlider.class);
+  sliderGreen=find("green",UISlider.class);
+  sliderBlue=find("blue",UISlider.class);
+  sliderRed.bindValue(new NotifyingBinding(color.rf()));
+  sliderGreen.bindValue(new NotifyingBinding(color.gf()));
+  sliderBlue.bindValue(new NotifyingBinding(color.bf()));
+  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
+      getManager().popScreen();
+    }
+  }
+);
+}
