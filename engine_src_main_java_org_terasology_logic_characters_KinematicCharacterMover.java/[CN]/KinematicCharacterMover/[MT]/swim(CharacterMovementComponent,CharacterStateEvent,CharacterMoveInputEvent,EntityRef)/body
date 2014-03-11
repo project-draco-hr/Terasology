@@ -4,7 +4,7 @@
   if (lengthSquared > 1) {
     desiredVelocity.normalize();
   }
-  float maxSpeed=movementComp.maxWaterSpeed;
+  float maxSpeed=getMaxSpeed(entity,MovementMode.SWIMMING,movementComp.maxWaterSpeed);
   if (input.isRunning()) {
     maxSpeed*=movementComp.runFactor;
   }
@@ -17,8 +17,8 @@
   state.getVelocity().y+=velocityDiff.y;
   state.getVelocity().z+=velocityDiff.z;
   float speed=state.getVelocity().length();
-  if (speed > movementComp.maxWaterSpeed) {
-    state.getVelocity().scale((speed - 4 * (speed - movementComp.maxWaterSpeed) * input.getDelta()) / speed);
+  if (speed > maxSpeed) {
+    state.getVelocity().scale((speed - 4 * (speed - maxSpeed) * input.getDelta()) / speed);
   }
   Vector3f moveDelta=new Vector3f(state.getVelocity());
   moveDelta.scale(input.getDelta());
