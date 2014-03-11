@@ -1,0 +1,17 @@
+{
+  final Set<String> result=new HashSet<>();
+  actionIdsWakeUp.forEachEntry(new TObjectLongProcedure<String>(){
+    @Override public boolean execute(    String actionId,    long time){
+      if (time <= worldTime) {
+        result.add(actionId);
+      }
+      return true;
+    }
+  }
+);
+  for (  String actionId : result) {
+    actionIdsWakeUp.remove(actionId);
+  }
+  lowestWakeUp=findSmallestWakeUp();
+  return result;
+}
