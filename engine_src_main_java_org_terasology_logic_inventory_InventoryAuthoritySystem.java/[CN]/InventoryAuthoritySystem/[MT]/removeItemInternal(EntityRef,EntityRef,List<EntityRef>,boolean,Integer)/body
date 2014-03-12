@@ -1,0 +1,24 @@
+{
+  for (  EntityRef item : items) {
+    ItemComponent itemToRemove=item.getComponent(ItemComponent.class);
+    if (itemToRemove == null) {
+      return EntityRef.NULL;
+    }
+  }
+  List<Integer> slotsWithItem=new LinkedList<>();
+  for (  EntityRef item : items) {
+    int slotWithItem=InventoryUtils.getSlotWithItem(inventory,item);
+    if (slotWithItem == -1) {
+      return null;
+    }
+    slotsWithItem.add(slotWithItem);
+  }
+  Integer toRemove=count;
+  if (toRemove == null) {
+    toRemove=0;
+    for (    EntityRef item : items) {
+      toRemove+=InventoryUtils.getStackCount(item);
+    }
+  }
+  return removeItemFromSlots(instigator,destroyRemoved,inventory,slotsWithItem,toRemove);
+}

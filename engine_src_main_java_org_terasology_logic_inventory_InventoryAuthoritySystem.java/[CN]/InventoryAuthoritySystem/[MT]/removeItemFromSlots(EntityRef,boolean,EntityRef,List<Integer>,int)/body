@@ -7,7 +7,7 @@
     EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
     ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
     if (itemAt.stackCount <= removesRemaining) {
-      if (canRemoveItemFromSlot(event.getInstigator(),entity,itemAtEntity,slot)) {
+      if (canRemoveItemFromSlot(instigator,entity,itemAtEntity,slot)) {
         slotsTotallyConsumed.add(slot);
         removesRemaining-=itemAt.stackCount;
       }
@@ -22,14 +22,14 @@
     }
   }
   if (removesRemaining > 0) {
-    return false;
+    return null;
   }
   EntityRef removed=null;
   int removedCount=0;
   for (  int slot : slotsTotallyConsumed) {
     EntityRef itemAt=InventoryUtils.getItemAt(entity,slot);
     removedCount+=InventoryUtils.getStackCount(itemAt);
-    if (event.isDestroyRemoved()) {
+    if (destroyRemoved) {
       InventoryUtils.putItemIntoSlot(entity,EntityRef.NULL,slot);
       itemAt.destroy();
     }
@@ -47,7 +47,7 @@
   if (shrinkSlotNo > -1) {
     EntityRef itemAt=InventoryUtils.getItemAt(entity,shrinkSlotNo);
     removedCount+=InventoryUtils.getStackCount(itemAt) - shrinkCountResult;
-    if (event.isDestroyRemoved()) {
+    if (destroyRemoved) {
       InventoryUtils.adjustStackSize(entity,shrinkSlotNo,shrinkCountResult);
     }
  else {
@@ -63,7 +63,7 @@
       item.stackCount=(byte)removedCount;
       removed.saveComponent(item);
     }
-    event.setRemovedItem(removed);
+    return removed;
   }
-  return true;
+  return EntityRef.NULL;
 }
