@@ -12,8 +12,10 @@
   assertEquals(1,itemComp.stackCount);
   assertEquals(1,itemCompCopy.stackCount);
   Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(item,new AtLeast(0)).iterateComponents();
   Mockito.verify(item).saveComponent(itemComp);
   Mockito.verify(itemCopy,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(itemCopy,new AtLeast(0)).iterateComponents();
   Mockito.verify(itemCopy).saveComponent(itemCompCopy);
   Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
   Mockito.verify(inventory).send(Matchers.any(InventorySlotStackSizeChangedEvent.class));

@@ -10,6 +10,7 @@
   assertEquals(EntityRef.NULL,inventoryComp.itemSlots.get(0));
   Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
   Mockito.verify(item,new AtLeast(0)).exists();
+  Mockito.verify(item,new AtLeast(0)).iterateComponents();
   Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
   Mockito.verify(inventory).saveComponent(inventoryComp);
   Mockito.verify(inventory,new Times(2)).send(Matchers.any(BeforeItemRemovedFromInventory.class));
