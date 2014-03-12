@@ -1,8 +1,19 @@
 {
-  if (entity.hasComponent(DelayedActionComponent.class)) {
-    throw new IllegalStateException("This component is already queued for delayed action");
-  }
   long scheduleTime=time.getGameTimeInMs() + event.getDelay();
-  DelayedActionComponent delayedComponent=new DelayedActionComponent(scheduleTime,event.getActionId());
-  entity.addComponent(delayedComponent);
+  DelayedActionComponent delayedActionComponent=entity.getComponent(DelayedActionComponent.class);
+  if (delayedActionComponent != null) {
+    final long oldWakeUp=delayedActionComponent.getLowestWakeUp();
+    delayedActionComponent.addActionId(event.getActionId(),scheduleTime);
+    entity.saveComponent(delayedActionComponent);
+    final long newWakeUp=delayedActionComponent.getLowestWakeUp();
+    if (oldWakeUp < newWakeUp) {
+      delayedOperationsSortedByTime.remove(oldWakeUp,entity);
+      delayedOperationsSortedByTime.put(newWakeUp,entity);
+    }
+  }
+ else {
+    delayedActionComponent=new DelayedActionComponent();
+    delayedActionComponent.addActionId(event.getActionId(),scheduleTime);
+    entity.addComponent(delayedActionComponent);
+  }
 }

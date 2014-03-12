@@ -1,6 +1,6 @@
 {
-  long currentWorldTime=time.getGameTimeInMs();
-  List<DelayedOperation> operationsToInvoke=new LinkedList<>();
+  final long currentWorldTime=time.getGameTimeInMs();
+  List<EntityRef> operationsToInvoke=new LinkedList<>();
   Iterator<Long> scheduledOperationsIterator=delayedOperationsSortedByTime.keySet().iterator();
   long processedTime;
   while (scheduledOperationsIterator.hasNext()) {
@@ -11,10 +11,17 @@
     operationsToInvoke.addAll(delayedOperationsSortedByTime.get(processedTime));
     scheduledOperationsIterator.remove();
   }
-  for (  DelayedOperation delayedOperation : operationsToInvoke) {
-    if (delayedOperation.entityRef.exists()) {
-      delayedOperation.entityRef.removeComponent(DelayedActionComponent.class);
-      delayedOperation.entityRef.send(new DelayedActionTriggeredEvent(delayedOperation.operationId));
+  for (  EntityRef delayedEntity : operationsToInvoke) {
+    if (delayedEntity.exists()) {
+      final DelayedActionComponent delayedActions=delayedEntity.getComponent(DelayedActionComponent.class);
+      final Set<String> actionIds=delayedActions.removeActionsUpTo(currentWorldTime);
+      saveOrRemoveComponent(delayedEntity,delayedActions);
+      if (!delayedActions.isEmpty()) {
+        delayedOperationsSortedByTime.put(delayedActions.getLowestWakeUp(),delayedEntity);
+      }
+      for (      String actionId : actionIds) {
+        delayedEntity.send(new DelayedActionTriggeredEvent(actionId));
+      }
     }
   }
 }
