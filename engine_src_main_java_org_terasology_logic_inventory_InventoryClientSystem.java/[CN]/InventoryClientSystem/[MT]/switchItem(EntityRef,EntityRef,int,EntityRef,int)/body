@@ -1,0 +1,9 @@
+{
+  if (!InventoryUtils.moveItem(instigator,fromInventory,slotFrom,toInventory,slotTo)) {
+    return false;
+  }
+  MoveItemRequest request=new MoveItemRequest(instigator,fromInventory,slotFrom,toInventory,slotTo,changeId++);
+  pendingMoves.put(request.getChangeId(),request);
+  localPlayer.getClientEntity().send(request);
+  return true;
+}

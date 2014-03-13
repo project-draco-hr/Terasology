@@ -1,0 +1,17 @@
+{
+  ItemComponent itemToGive=item.getComponent(ItemComponent.class);
+  if (itemToGive == null) {
+    return true;
+  }
+  if (slots == null) {
+    int slotCount=InventoryUtils.getSlotCount(inventory);
+    slots=new LinkedList<>();
+    for (int slot=0; slot < slotCount; slot++) {
+      slots.add(slot);
+    }
+  }
+  if (giveItemToSlots(instigator,inventory,item,slots)) {
+    return true;
+  }
+  return false;
+}
