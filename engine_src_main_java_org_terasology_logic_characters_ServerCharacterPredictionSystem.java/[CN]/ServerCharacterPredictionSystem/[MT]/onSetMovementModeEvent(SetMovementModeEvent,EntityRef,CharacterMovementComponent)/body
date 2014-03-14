@@ -3,11 +3,16 @@
   CharacterStateEvent lastState=stateBuffer.getLast();
   CharacterStateEvent newState=new CharacterStateEvent(lastState);
   newState.setSequenceNumber(lastState.getSequenceNumber());
-  if (lastState.getMode() != MovementMode.GHOSTING) {
-    newState.setMode(MovementMode.GHOSTING);
+  if (event.getMode() == MovementMode.GHOSTING) {
+    if (lastState.getMode() != MovementMode.GHOSTING) {
+      newState.setMode(MovementMode.GHOSTING);
+    }
+ else {
+      newState.setMode(MovementMode.WALKING);
+    }
   }
  else {
-    newState.setMode(MovementMode.WALKING);
+    newState.setMode(event.getMode());
   }
   stateBuffer.add(newState);
   CharacterStateEvent.setToState(character,newState);
