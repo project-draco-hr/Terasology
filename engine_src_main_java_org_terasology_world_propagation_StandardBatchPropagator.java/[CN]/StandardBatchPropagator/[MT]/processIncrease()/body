@@ -1,0 +1,19 @@
+{
+  int depth=0;
+  while (depth < rules.getMaxValue() - 1) {
+    byte value=(byte)(rules.getMaxValue() - depth);
+    Set<Vector3i> toProcess=increaseQueues[depth];
+    if (!toProcess.isEmpty()) {
+      increaseQueues[depth]=Sets.newLinkedHashSetWithExpectedSize(toProcess.size());
+      for (      Vector3i pos : toProcess) {
+        push(pos,value);
+      }
+      if (increaseQueues[depth].isEmpty()) {
+        depth++;
+      }
+    }
+ else {
+      depth++;
+    }
+  }
+}

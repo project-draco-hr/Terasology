@@ -1,0 +1,21 @@
+{
+  int expectedValue=regenWorld.getValueAt(pos);
+  if (expectedValue != 0) {
+    Vector3i position=new Vector3i(pos);
+    for (byte i=0; i <= ChunkConstants.MAX_SUNLIGHT_REGEN; ++i) {
+      if (regenWorld.getValueAt(position) == expectedValue) {
+        regenWorld.setValueAt(position,i);
+        if (expectedValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD > 0) {
+          sunlightPropagator.regenerate(new Vector3i(position),(byte)(expectedValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD));
+        }
+      }
+ else {
+        break;
+      }
+      position.y--;
+      if (expectedValue < ChunkConstants.MAX_SUNLIGHT_REGEN) {
+        expectedValue++;
+      }
+    }
+  }
+}

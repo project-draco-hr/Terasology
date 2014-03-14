@@ -1,0 +1,35 @@
+{
+  if (!side.isVertical()) {
+    return;
+  }
+  Region3i edgeRegion=TeraMath.getEdgeRegion(Region3i.createFromMinAndSize(Vector3i.zero(),ChunkConstants.CHUNK_SIZE),side);
+  Vector3i adjPos=new Vector3i();
+  for (  Vector3i pos : edgeRegion) {
+    adjPos.set(pos);
+    adjPos.add(chunkEdgeDeltas.get(side));
+    Block block=chunk.getBlock(pos);
+    byte value=regenRules.getValue(chunk,pos);
+    Block adjBlock=adjChunk.getBlock(adjPos);
+    byte adjValue=regenRules.getValue(adjChunk,adjPos);
+    if (side == Side.BOTTOM) {
+      byte expectedAdjValue=regenRules.propagateValue(value,side,block);
+      if (regenRules.canSpreadOutOf(block,side) && regenRules.canSpreadInto(adjBlock,side.reverse()) && adjValue < expectedAdjValue) {
+        regenRules.setValue(adjChunk,adjPos,expectedAdjValue);
+        if (expectedAdjValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD > 0) {
+          adjChunk.setSunlight(adjPos,(byte)(expectedAdjValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD));
+        }
+        queueSpreadRegen(adjChunk.getBlockWorldPos(adjPos),expectedAdjValue);
+      }
+    }
+ else {
+      byte expectedValue=regenRules.propagateValue(adjValue,side.reverse(),adjBlock);
+      if (regenRules.canSpreadInto(block,side) && regenRules.canSpreadOutOf(adjBlock,side.reverse()) && value < expectedValue) {
+        regenRules.setValue(chunk,pos,expectedValue);
+        if (expectedValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD > 0) {
+          chunk.setSunlight(pos,(byte)(expectedValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD));
+        }
+        queueSpreadRegen(chunk.getBlockWorldPos(pos),expectedValue);
+      }
+    }
+  }
+}

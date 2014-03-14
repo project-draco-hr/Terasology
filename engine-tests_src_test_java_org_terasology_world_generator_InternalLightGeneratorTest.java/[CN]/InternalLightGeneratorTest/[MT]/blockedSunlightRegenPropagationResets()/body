@@ -1,0 +1,18 @@
+{
+  ChunkImpl chunk=new ChunkImpl(0,0,0);
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,60,0),new Vector3i(ChunkConstants.SIZE_X,1,ChunkConstants.SIZE_Z))) {
+    chunk.setBlock(pos,solidBlock);
+  }
+  InternalLightProcessor.generateInternalLighting(chunk);
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,61,0),new Vector3i(ChunkConstants.SIZE_X,3,ChunkConstants.SIZE_Z))) {
+    byte expectedRegen=(byte)Math.min(ChunkConstants.SIZE_Y - pos.y - 1,ChunkConstants.MAX_SUNLIGHT_REGEN);
+    assertEquals(expectedRegen,chunk.getSunlightRegen(pos));
+  }
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,60,0),new Vector3i(ChunkConstants.SIZE_X,1,ChunkConstants.SIZE_Z))) {
+    assertEquals(0,chunk.getSunlightRegen(pos));
+  }
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,0,0),new Vector3i(ChunkConstants.SIZE_X,59,ChunkConstants.SIZE_Z))) {
+    byte expectedRegen=(byte)Math.min(60 - pos.y - 1,ChunkConstants.MAX_SUNLIGHT_REGEN);
+    assertEquals(expectedRegen,chunk.getSunlightRegen(pos));
+  }
+}

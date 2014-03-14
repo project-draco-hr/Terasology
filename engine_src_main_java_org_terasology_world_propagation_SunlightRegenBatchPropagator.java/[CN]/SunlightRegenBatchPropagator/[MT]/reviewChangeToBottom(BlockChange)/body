@@ -1,0 +1,12 @@
+{
+  PropagationComparison comparison=regenRules.comparePropagation(blockChange.getTo(),blockChange.getFrom(),Side.BOTTOM);
+  if (comparison.isPermitting()) {
+    byte existingValue=regenWorld.getValueAt(blockChange.getPosition());
+    queueSpreadRegen(blockChange.getPosition(),existingValue);
+  }
+ else   if (comparison.isRestricting()) {
+    Vector3i adjPos=Side.BOTTOM.getAdjacentPos(blockChange.getPosition());
+    byte existingValue=regenWorld.getValueAt(adjPos);
+    reduce(adjPos,existingValue);
+  }
+}

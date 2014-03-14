@@ -1,0 +1,20 @@
+{
+  super.setup();
+  regenRules=new SunlightRegenPropagationRules();
+  blockManager=new BlockManagerImpl(new NullWorldAtlas(),Lists.<String>newArrayList(),Maps.<String,Short>newHashMap(),true,new DefaultBlockFamilyFactoryRegistry());
+  CoreRegistry.put(BlockManager.class,blockManager);
+  solid=new Block();
+  solid.setDisplayName("Solid");
+  solid.setUri(new BlockUri("engine:solid"));
+  solid.setId((byte)5);
+  for (  Side side : Side.values()) {
+    solid.setFullSide(side,true);
+  }
+  blockManager.addBlockFamily(new SymmetricFamily(solid.getURI(),solid),true);
+  regenWorldView=new SunlightRegenWorldView(provider);
+  lightWorldView=new SunlightWorldView(provider);
+  lightRules=new SunlightPropagationRules(regenWorldView);
+  sunlightPropagator=new StandardBatchPropagator(lightRules,lightWorldView);
+  propagator=new SunlightRegenBatchPropagator(regenRules,regenWorldView,sunlightPropagator,lightWorldView);
+  air=BlockManager.getAir();
+}

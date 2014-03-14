@@ -1,0 +1,15 @@
+{
+  BatchPropagator lightPropagator=new StandardBatchPropagator(LIGHT_RULES,new SingleChunkView(LIGHT_RULES,chunk));
+  for (int x=0; x < ChunkConstants.SIZE_X; x++) {
+    for (int z=0; z < ChunkConstants.SIZE_Z; z++) {
+      for (int y=0; y < ChunkConstants.SIZE_Y; y++) {
+        Block block=chunk.getBlock(x,y,z);
+        if (block.getLuminance() > 0) {
+          chunk.setLight(x,y,z,block.getLuminance());
+          lightPropagator.propagateFrom(new Vector3i(x,y,z),block.getLuminance());
+        }
+      }
+    }
+  }
+  lightPropagator.process();
+}

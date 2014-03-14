@@ -14,8 +14,6 @@
   final TeraArrays t=TeraArrays.getInstance();
   final TeraArray blockData=t.decode(message.getBlockData());
   Chunks c=Chunks.getInstance();
-  TeraArray sunlightData=c.getSunlightDataEntry().factory.create(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z);
-  TeraArray lightData=c.getLightDataEntry().factory.create(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z);
   TeraArray extraData;
   if (message.hasLiquidData()) {
     extraData=t.decode(message.getLiquidData());
@@ -27,5 +25,5 @@
   if (previouslyComplete) {
     state=State.INTERNAL_LIGHT_GENERATION_PENDING;
   }
-  return new ChunkImpl(pos,state,blockData,sunlightData,lightData,extraData,previouslyComplete);
+  return new ChunkImpl(pos,state,blockData,extraData,previouslyComplete);
 }
