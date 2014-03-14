@@ -1,3 +1,7 @@
 {
-  return rules.getValue(chunks[chunkIndexOf(pos)],TeraMath.calcBlockPos(pos));
+  ChunkImpl chunk=chunks[chunkIndexOf(pos)];
+  if (chunk != null) {
+    return rules.getValue(chunk,TeraMath.calcBlockPos(pos));
+  }
+  return UNAVAILABLE;
 }

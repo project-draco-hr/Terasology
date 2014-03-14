@@ -5,10 +5,4 @@
   this.pipeline=new ChunkGenerationPipeline(new ChunkTaskRelevanceComparator());
   this.unloadRequestTaskMaster=TaskMaster.createFIFOTaskMaster("Chunk-Unloader",4);
   ChunkMonitor.fireChunkProviderInitialized(this);
-  nullChunk=new ChunkImpl(Vector3i.zero());
-  for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
-    nullChunk.setSunlight(pos,(byte)-1);
-    nullChunk.setSunlightRegen(pos,(byte)-1);
-    nullChunk.setLight(pos,(byte)-1);
-  }
 }

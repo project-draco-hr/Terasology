@@ -1,3 +1,8 @@
 {
-  return chunks[chunkIndexOf(pos)].getBlock(TeraMath.calcBlockPos(pos));
+  int index=chunkIndexOf(pos);
+  ChunkImpl chunk=chunks[index];
+  if (chunk != null) {
+    return chunk.getBlock(TeraMath.calcBlockPos(pos));
+  }
+  return null;
 }

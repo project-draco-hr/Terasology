@@ -46,9 +46,9 @@
     for (int z=-1; z < 2; ++z) {
       for (int y=-1; y < 2; ++y) {
         for (int x=-1; x < 2; ++x) {
-          localChunks[index]=getChunk(chunk.getPos().x + x,chunk.getPos().y + y,chunk.getPos().z + z);
-          if (localChunks[index] == null || !localChunks[index].isReady()) {
-            localChunks[index]=nullChunk;
+          ChunkImpl localChunk=getChunk(chunk.getPos().x + x,chunk.getPos().y + y,chunk.getPos().z + z);
+          if (localChunk != null && localChunk.isReady()) {
+            localChunks[index]=localChunk;
           }
           index++;
         }
@@ -69,7 +69,27 @@
         Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
         ChunkImpl adjChunk=getChunk(adjChunkPos);
         if (adjChunk != null && adjChunk.isReady()) {
-          propagator.propagateBetween(chunk,adjChunk,side);
+          propagator.propagateBetween(adjChunk,chunk,side.reverse(),false);
+        }
+      }
+      for (      Side side : Side.values()) {
+        Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
+        ChunkImpl adjChunk=getChunk(adjChunkPos);
+        if (adjChunk != null && adjChunk.isReady()) {
+          propagator.propagateBetween(chunk,adjChunk,side,false);
+        }
+      }
+      for (      Side side : Side.values()) {
+        Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
+        ChunkImpl adjChunk=getChunk(adjChunkPos);
+        if (adjChunk != null && adjChunk.isReady()) {
+          for (          Side tangentSide : side.tangents()) {
+            Vector3i tangentChunkPos=tangentSide.getAdjacentPos(adjChunkPos);
+            ChunkImpl tangentChunk=getChunk(tangentChunkPos);
+            if (tangentChunk != null && tangentChunk.isReady()) {
+              propagator.propagateBetween(adjChunk,tangentChunk,tangentSide,true);
+            }
+          }
         }
       }
     }
