@@ -15,6 +15,7 @@
     collider.rb.setUserPointer(entity);
     collider.rb.setAngularFactor(rigidBody.angularFactor);
     collider.rb.setFriction(rigidBody.friction);
+    collider.collidesWith=combineGroups(rigidBody.collidesWith);
     updateKinematicSettings(rigidBody,collider);
     BulletRigidBody oldBody=entityRigidBodies.put(entity,collider);
     addRigidBody(collider,Lists.<CollisionGroup>newArrayList(rigidBody.collisionGroup),rigidBody.collidesWith);
