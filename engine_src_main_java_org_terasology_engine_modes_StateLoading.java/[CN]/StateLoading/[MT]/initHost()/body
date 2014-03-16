@@ -14,13 +14,14 @@
   loadProcesses.add(new InitialiseWorld(gameManifest));
   loadProcesses.add(new InitialiseSystems());
   loadProcesses.add(new LoadEntities());
+  loadProcesses.add(new PreBeginSystems());
   loadProcesses.add(new InitialiseBlockTypeEntities());
   loadProcesses.add(new CreateWorldEntity());
-  loadProcesses.add(new PostBeginSystems());
   loadProcesses.add(new InitialiseWorldGenerator(gameManifest));
   if (netMode == NetworkMode.SERVER) {
     loadProcesses.add(new StartServer());
   }
+  loadProcesses.add(new PostBeginSystems());
   loadProcesses.add(new SetupLocalPlayer());
   loadProcesses.add(new AwaitCharacterSpawn());
   loadProcesses.add(new PrepareWorld());

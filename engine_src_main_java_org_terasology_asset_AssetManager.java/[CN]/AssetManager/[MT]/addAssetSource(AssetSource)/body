@@ -1,6 +1,14 @@
 {
-  assetSources.put(source.getSourceId().toLowerCase(Locale.ENGLISH),source);
-  for (  AssetUri asset : source.list()) {
+  String idKey=newSource.getSourceId().toLowerCase(Locale.ENGLISH);
+  AssetSource originalSource=assetSources.get(idKey);
+  if (null == originalSource) {
+    assetSources.put(idKey,newSource);
+  }
+ else {
+    AssetSourceCollection combinedSource=new AssetSourceCollection(idKey,originalSource,newSource);
+    assetSources.put(idKey,combinedSource);
+  }
+  for (  AssetUri asset : newSource.list()) {
     uriLookup.get(asset.getAssetType()).put(asset.getNormalisedAssetName(),asset.getNormalisedModuleName(),asset);
   }
 }

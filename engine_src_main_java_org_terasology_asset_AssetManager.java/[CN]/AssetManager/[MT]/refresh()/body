@@ -1,0 +1,23 @@
+{
+  List<Asset> keepAndReload=Lists.newArrayList();
+  List<Asset> dispose=Lists.newArrayList();
+  for (  Asset asset : assetCache.values()) {
+    if (asset.getURI().getNormalisedModuleName().equals(TerasologyConstants.ENGINE_MODULE) && !(asset instanceof Prefab) && !(asset instanceof BehaviorTree)) {
+      keepAndReload.add(asset);
+    }
+ else {
+      dispose.add(asset);
+    }
+  }
+  assetCache.clear();
+  for (  Asset asset : keepAndReload) {
+    assetCache.put(asset.getURI(),asset);
+  }
+  for (  Asset asset : keepAndReload) {
+    reload(asset);
+  }
+  for (  Asset asset : dispose) {
+    logger.debug("Disposing {}",asset.getURI());
+    asset.dispose();
+  }
+}

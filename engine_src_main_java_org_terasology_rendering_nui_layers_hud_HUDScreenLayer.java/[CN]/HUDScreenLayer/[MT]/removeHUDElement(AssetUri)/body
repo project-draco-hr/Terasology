@@ -1,3 +1,8 @@
 {
-  return elementsLookup.remove(uri) != null;
+  HUDElement removed=elementsLookup.remove(uri);
+  if (removed != null) {
+    removed.widget.onClosed();
+    return true;
+  }
+  return false;
 }

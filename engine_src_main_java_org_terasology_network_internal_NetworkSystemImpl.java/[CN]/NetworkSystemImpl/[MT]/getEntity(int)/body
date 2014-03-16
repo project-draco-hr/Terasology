@@ -1,7 +1,17 @@
 {
-  int entityId=netIdToEntityId.get(netId);
-  if (entityId != 0) {
-    return entityManager.getEntity(entityId);
+  if (mode == NetworkMode.CLIENT) {
+    if (entityManager != null) {
+      return new NetEntityRef(netId,this,entityManager);
+    }
+ else {
+      logger.error("Requesting entity before entity manager set up");
+    }
+  }
+ else {
+    int entityId=netIdToEntityId.get(netId);
+    if (entityManager != null && entityId != NULL_NET_ID) {
+      return entityManager.getEntity(entityId);
+    }
   }
   return EntityRef.NULL;
 }

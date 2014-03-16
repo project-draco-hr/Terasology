@@ -2,5 +2,9 @@
   if (UriUtil.normalise(moduleId).equals(TerasologyConstants.ENGINE_MODULE)) {
     return engineModule;
   }
-  return modules.get(moduleId,version);
+  ExtensionModule extensionModule=modules.get(moduleId,version);
+  if (null == extensionModule) {
+    logger.error("Reference to missing module id: {}",moduleId);
+  }
+  return extensionModule;
 }

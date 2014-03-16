@@ -2,29 +2,29 @@
   PerformanceMonitor.startActivity("OptimizeBuffers");
   for (  ChunkMesh.RenderType type : ChunkMesh.RenderType.values()) {
     ChunkMesh.VertexElements elements=mesh.getVertexElements(type);
-    elements.finalVertices=BufferUtils.createByteBuffer(elements.vertices.size() * 4 + elements.tex.size() * 4 + elements.tex.size() * 4 + elements.flags.size() * 4 + elements.color.size() * 4 + elements.normals.size() * 4);
+    elements.finalVertices=BufferUtils.createIntBuffer(elements.vertices.size() + elements.tex.size() + elements.tex.size()+ elements.flags.size()+ elements.color.size()+ elements.normals.size());
     int cTex=0;
     int cColor=0;
     int cFlags=0;
     for (int i=0; i < elements.vertices.size(); i+=3, cTex+=2, cColor+=4, cFlags++) {
       Vector3f vertexPos=new Vector3f(elements.vertices.get(i),elements.vertices.get(i + 1),elements.vertices.get(i + 2));
-      elements.finalVertices.putFloat(vertexPos.x);
-      elements.finalVertices.putFloat(vertexPos.y);
-      elements.finalVertices.putFloat(vertexPos.z);
-      elements.finalVertices.putFloat(elements.tex.get(cTex));
-      elements.finalVertices.putFloat(elements.tex.get(cTex + 1));
-      elements.finalVertices.putFloat(elements.flags.get(cFlags));
+      elements.finalVertices.put(Float.floatToIntBits(vertexPos.x));
+      elements.finalVertices.put(Float.floatToIntBits(vertexPos.y));
+      elements.finalVertices.put(Float.floatToIntBits(vertexPos.z));
+      elements.finalVertices.put(Float.floatToIntBits(elements.tex.get(cTex)));
+      elements.finalVertices.put(Float.floatToIntBits(elements.tex.get(cTex + 1)));
+      elements.finalVertices.put(Float.floatToIntBits(elements.flags.get(cFlags)));
       float[] result=new float[3];
       Vector3f normal=new Vector3f(elements.normals.get(i),elements.normals.get(i + 1),elements.normals.get(i + 2));
       calcLightingValuesForVertexPos(chunkView,vertexPos,result,normal);
-      elements.finalVertices.putFloat(result[0]);
-      elements.finalVertices.putFloat(result[1]);
-      elements.finalVertices.putFloat(result[2]);
+      elements.finalVertices.put(Float.floatToIntBits(result[0]));
+      elements.finalVertices.put(Float.floatToIntBits(result[1]));
+      elements.finalVertices.put(Float.floatToIntBits(result[2]));
       final int packedColor=RenderMath.packColor(elements.color.get(cColor),elements.color.get(cColor + 1),elements.color.get(cColor + 2),elements.color.get(cColor + 3));
-      elements.finalVertices.putInt(packedColor);
-      elements.finalVertices.putFloat(normal.x);
-      elements.finalVertices.putFloat(normal.y);
-      elements.finalVertices.putFloat(normal.z);
+      elements.finalVertices.put(packedColor);
+      elements.finalVertices.put(Float.floatToIntBits(normal.x));
+      elements.finalVertices.put(Float.floatToIntBits(normal.y));
+      elements.finalVertices.put(Float.floatToIntBits(normal.z));
     }
     elements.finalIndices=BufferUtils.createIntBuffer(elements.indices.size());
     TIntIterator indexIterator=elements.indices.iterator();

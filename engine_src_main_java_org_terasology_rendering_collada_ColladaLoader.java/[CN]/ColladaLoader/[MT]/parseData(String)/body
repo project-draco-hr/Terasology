@@ -1,0 +1,40 @@
+{
+  vertices=new TFloatArrayList();
+  texCoord0=new TFloatArrayList();
+  texCoord1=new TFloatArrayList();
+  normals=new TFloatArrayList();
+  colors=new TFloatArrayList();
+  indices=new TIntArrayList();
+  int vertCount=0;
+  Document document=Xml.xml(contents);
+  Element rootElement=document.getRootElement();
+  ElementSet geometrySet=rootElement.find("library_geometries","geometry");
+  for (  Element geometry : geometrySet) {
+    ElementSet meshSet=geometry.find("mesh");
+    if (1 != meshSet.size()) {
+      throw new ColladaParseException("Found " + meshSet.size() + " mesh sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
+    }
+    logger.info("Parsing geometry id=" + geometry.id() + " name="+ geometry.name());
+    for (    Element mesh : meshSet) {
+      ElementSet trianglesSet=mesh.find("triangles");
+      for (      Element triangles : trianglesSet) {
+        vertCount=parseTriangles(vertices,texCoord0,normals,indices,vertCount,geometry,mesh,triangles);
+      }
+      ElementSet polylistSet=mesh.find("polylist");
+      for (      Element polylist : polylistSet) {
+        ElementSet vCountSet=polylist.find("vcount");
+        if (1 != vCountSet.size()) {
+          throw new ColladaParseException("Found " + vCountSet.size() + " vcount sets for polylist in geometry id="+ geometry.id()+ " name="+ geometry.name());
+        }
+        Element vCount=vCountSet.first();
+        String[] vCountStrings=getItemsInString(vCount.text());
+        for (        String string : vCountStrings) {
+          if (!"3".equals(string)) {
+            throw new ColladaParseException("Found vertex count of " + string + " in polylist sets for geometry id="+ geometry.id()+ " name="+ geometry.name()+ ".  polylist vertex counts other than 3 currently unsupported.  You must trianglulate the model.");
+          }
+        }
+        vertCount=parseTriangles(vertices,texCoord0,normals,indices,vertCount,geometry,mesh,polylist);
+      }
+    }
+  }
+}

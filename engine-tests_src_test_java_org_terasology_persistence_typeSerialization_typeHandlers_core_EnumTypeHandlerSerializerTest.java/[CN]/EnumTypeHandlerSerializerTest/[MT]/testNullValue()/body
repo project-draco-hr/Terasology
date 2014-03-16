@@ -1,7 +1,12 @@
 {
-  EnumTypeHandler<TestEnum> handler=new EnumTypeHandler<TestEnum>(TestEnum.class);
-  Value serializedNull=handler.serialize(null);
-  assertNull(serializedNull);
-  TestEnum deserializedValue=handler.deserialize(serializedNull);
+  PersistedData nullData=mock(PersistedData.class);
+  when(nullData.isNull()).thenReturn(true);
+  SerializationContext serializationContext=mock(SerializationContext.class);
+  when(serializationContext.createNull()).thenReturn(nullData);
+  EnumTypeHandler<TestEnum> handler=new EnumTypeHandler<>(TestEnum.class);
+  PersistedData serializedNull=handler.serialize(null,serializationContext);
+  assertEquals(nullData,serializedNull);
+  DeserializationContext deserializationContext=mock(DeserializationContext.class);
+  TestEnum deserializedValue=handler.deserialize(nullData,deserializationContext);
   assertEquals(null,deserializedValue);
 }

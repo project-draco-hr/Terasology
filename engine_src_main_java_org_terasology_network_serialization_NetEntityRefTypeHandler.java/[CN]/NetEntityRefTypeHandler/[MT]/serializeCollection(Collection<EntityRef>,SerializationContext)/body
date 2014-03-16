@@ -1,0 +1,20 @@
+{
+  List<PersistedData> items=Lists.newArrayList();
+  for (  EntityRef ref : value) {
+    BlockComponent blockComponent=ref.getComponent(BlockComponent.class);
+    if (blockComponent != null) {
+      Vector3i blockPos=blockComponent.getPosition();
+      items.add(context.create(blockPos.x,blockPos.y,blockPos.z));
+    }
+ else {
+      NetworkComponent netComponent=ref.getComponent(NetworkComponent.class);
+      if (netComponent != null) {
+        items.add(context.create(netComponent.getNetworkId()));
+      }
+ else {
+        items.add(context.createNull());
+      }
+    }
+  }
+  return context.create(items);
+}

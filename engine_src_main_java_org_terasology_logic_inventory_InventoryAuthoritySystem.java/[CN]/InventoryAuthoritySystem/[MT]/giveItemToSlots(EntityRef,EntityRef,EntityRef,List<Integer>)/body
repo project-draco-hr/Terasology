@@ -1,0 +1,53 @@
+{
+  int toConsume=InventoryUtils.getStackCount(item);
+  Map<Integer,Integer> consumableCount=new LinkedHashMap<>();
+  for (  int slot : slots) {
+    EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
+    ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
+    if (itemAt != null && InventoryUtils.isSameItem(item,itemAtEntity)) {
+      int spaceInSlot=itemAt.maxStackSize - itemAt.stackCount;
+      int toAdd=Math.min(toConsume,spaceInSlot);
+      if (toAdd > 0) {
+        consumableCount.put(slot,toAdd);
+        toConsume-=toAdd;
+        if (toConsume == 0) {
+          break;
+        }
+      }
+    }
+  }
+  int emptySlotNo=-1;
+  int emptySlotCount=toConsume;
+  if (toConsume > 0) {
+    for (    int slot : slots) {
+      EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
+      ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
+      if (itemAt == null && canPutItemIntoSlot(instigator,entity,item,slot)) {
+        emptySlotNo=slot;
+        emptySlotCount=toConsume;
+        toConsume=0;
+        break;
+      }
+    }
+  }
+  if (toConsume > 0) {
+    return false;
+  }
+  for (  Map.Entry<Integer,Integer> slotCount : consumableCount.entrySet()) {
+    int slot=slotCount.getKey();
+    int count=slotCount.getValue();
+    EntityRef itemAtEntity=InventoryUtils.getItemAt(entity,slot);
+    ItemComponent itemAt=itemAtEntity.getComponent(ItemComponent.class);
+    InventoryUtils.adjustStackSize(entity,slot,itemAt.stackCount + count);
+  }
+  if (emptySlotNo > -1) {
+    ItemComponent sourceItem=item.getComponent(ItemComponent.class);
+    sourceItem.stackCount=(byte)emptySlotCount;
+    item.saveComponent(sourceItem);
+    InventoryUtils.putItemIntoSlot(entity,item,emptySlotNo);
+  }
+ else {
+    item.destroy();
+  }
+  return true;
+}

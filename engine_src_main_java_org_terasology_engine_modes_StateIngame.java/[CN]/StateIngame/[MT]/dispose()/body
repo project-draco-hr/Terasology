@@ -6,19 +6,19 @@
   boolean save=networkSystem.getMode().isAuthority();
   networkSystem.shutdown();
   eventSystem.process();
-  componentSystemManager.shutdown();
   GameThread.processWaitingProcesses();
-  guiManager.closeAllWindows();
   nuiManager.clear();
   if (worldRenderer != null) {
     worldRenderer.dispose();
     worldRenderer=null;
   }
+  componentSystemManager.shutdown();
   if (save) {
     CoreRegistry.get(Game.class).save();
   }
   CoreRegistry.get(PhysicsEngine.class).dispose();
   entityManager.clear();
+  CoreRegistry.get(AssetManager.class).refresh();
   CoreRegistry.get(Console.class).dispose();
   CoreRegistry.clear();
   BlockManager.getAir().setEntity(EntityRef.NULL);

@@ -8,10 +8,10 @@
   byte fieldCount=0;
   for (  ReplicatedFieldMetadata field : componentMetadata.getFields()) {
     if (fieldCheck.shouldSerializeField(field,component,componentInitial)) {
-      EntityData.Value fieldValue=serializer.serialize(field,component);
-      if (fieldValue != null) {
+      PersistedData fieldValue=serializer.serialize(field,component,serializationContext);
+      if (!fieldValue.isNull()) {
         entityFieldIds.write(field.getId());
-        entityData.addFieldValue(fieldValue);
+        entityData.addFieldValue(((ProtobufPersistedData)fieldValue).getValue());
         fieldCount++;
       }
     }

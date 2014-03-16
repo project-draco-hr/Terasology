@@ -1,0 +1,21 @@
+{
+  columnLayout.setAutoSizeColumns(true);
+  when(canvas.calculateRestrictedSize(eq(itemAt1x1),any(Vector2i.class))).thenReturn(new Vector2i(50,10));
+  when(canvas.calculateRestrictedSize(eq(itemAt2x1),any(Vector2i.class))).thenReturn(new Vector2i(5,5));
+  when(canvas.calculateRestrictedSize(eq(itemAt3x1),any(Vector2i.class))).thenReturn(new Vector2i(10,10));
+  when(canvas.calculateRestrictedSize(eq(itemAt1x2),any(Vector2i.class))).thenReturn(new Vector2i(20,10));
+  when(canvas.calculateRestrictedSize(eq(itemAt2x2),any(Vector2i.class))).thenReturn(new Vector2i(5,5));
+  when(canvas.calculateRestrictedSize(eq(itemAt3x2),any(Vector2i.class))).thenReturn(new Vector2i(20,10));
+  Vector2i availableSize=new Vector2i(200,200);
+  Vector2i result=columnLayout.getPreferredContentSize(canvas,availableSize);
+  assertEquals(75,result.x);
+  assertEquals(20,result.y);
+  when(canvas.size()).thenReturn(availableSize);
+  columnLayout.onDraw(canvas);
+  verify(canvas).drawWidget(itemAt1x1,Rect2i.createFromMinAndSize(((200 - 75) / 2),((200 - 20) / 2),50,10));
+  verify(canvas).drawWidget(itemAt2x1,Rect2i.createFromMinAndSize(((200 - 75) / 2) + 50,((200 - 20) / 2),5,10));
+  verify(canvas).drawWidget(itemAt3x1,Rect2i.createFromMinAndSize(((200 - 75) / 2) + 50 + 5,((200 - 20) / 2),20,10));
+  verify(canvas).drawWidget(itemAt1x2,Rect2i.createFromMinAndSize(((200 - 75) / 2),((200 - 20) / 2) + 10,50,10));
+  verify(canvas).drawWidget(itemAt2x2,Rect2i.createFromMinAndSize(((200 - 75) / 2) + 50,((200 - 20) / 2) + 10,5,10));
+  verify(canvas).drawWidget(itemAt3x2,Rect2i.createFromMinAndSize(((200 - 75) / 2) + 50 + 5,((200 - 20) / 2) + 10,20,10));
+}

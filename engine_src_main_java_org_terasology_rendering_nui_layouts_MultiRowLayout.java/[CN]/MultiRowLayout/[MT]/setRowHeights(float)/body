@@ -1,0 +1,22 @@
+{
+  if (heights.length > rows) {
+    throw new IllegalArgumentException("More heights than rows");
+  }
+  float total=0;
+  int rowIndex=0;
+  while (rowIndex < heights.length) {
+    total+=heights[rowIndex];
+    rowHeights[rowIndex]=heights[rowIndex];
+    rowIndex++;
+  }
+  if (total > 1.0f) {
+    throw new IllegalArgumentException("Total height exceeds 1.0");
+  }
+  if (rowIndex < rowHeights.length) {
+    float remainingHeight=1.0f - total;
+    float heightPerRow=remainingHeight / (rowHeights.length - rowIndex);
+    while (rowIndex < rowHeights.length) {
+      rowHeights[rowIndex++]=heightPerRow;
+    }
+  }
+}

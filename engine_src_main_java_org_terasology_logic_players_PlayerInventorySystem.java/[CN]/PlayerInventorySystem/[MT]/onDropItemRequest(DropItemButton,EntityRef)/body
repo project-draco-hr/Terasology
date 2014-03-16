@@ -8,12 +8,13 @@
     lastTimeThrowInteraction=time.getGameTimeInMs();
     return;
   }
-  UIImage crossHair=(UIImage)CoreRegistry.get(GUIManager.class).getWindowById("hud").getElementById("crosshair");
-  crossHair.setTextureSize(new Vector2f(22f,22f));
+  HudToolbar toolbar=nuiManager.getHUD().getHUDElement("engine:toolbar",HudToolbar.class);
+  if (toolbar != null) {
+    toolbar.setChargeAmount(getDropPower());
+  }
   float dropPower=getDropPower();
-  crossHair.setTextureOrigin(new Vector2f((46f + 22f * dropPower),23f));
   if (!event.isDown()) {
-    dropPower*=25f;
+    dropPower*=150f;
     Camera playerCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
     Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 1.5f,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 1.5f,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 1.5f);
     Vector3f impulseVector=new Vector3f(playerCamera.getViewingDirection());

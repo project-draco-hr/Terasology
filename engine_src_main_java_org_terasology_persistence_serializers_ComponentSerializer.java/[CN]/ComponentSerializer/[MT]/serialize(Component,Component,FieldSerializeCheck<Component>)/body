@@ -13,13 +13,14 @@
       Object origValue=field.getValue(base);
       Object deltaValue=field.getValue(delta);
       if (!Objects.equal(origValue,deltaValue)) {
-        EntityData.Value value=serializer.serializeValue(field,deltaValue);
-        if (value != null) {
+        PersistedData value=serializer.serializeValue(field,deltaValue,serializationContext);
+        if (!value.isNull()) {
+          EntityData.Value dataValue=((ProtobufPersistedData)value).getValue();
           if (usingFieldIds) {
-            componentMessage.addField(EntityData.NameValue.newBuilder().setNameIndex(field.getId()).setValue(value).build());
+            componentMessage.addField(EntityData.NameValue.newBuilder().setNameIndex(field.getId()).setValue(dataValue).build());
           }
  else {
-            componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(value).build());
+            componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(dataValue).build());
           }
           changed=true;
         }

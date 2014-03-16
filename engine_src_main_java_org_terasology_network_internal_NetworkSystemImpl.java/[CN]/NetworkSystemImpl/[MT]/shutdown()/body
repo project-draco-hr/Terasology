@@ -7,18 +7,20 @@
   for (  Client client : clientList) {
     processRemovedClient(client);
   }
-  mode=NetworkMode.NONE;
   server=null;
   nextNetId=1;
   netIdToEntityId.clear();
-  if (this.entityManager != null) {
-    for (    EntityRef entity : entityManager.getEntitiesWith(NetworkComponent.class)) {
-      NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-      netComp.setNetworkId(0);
-      entity.saveComponent(netComp);
+  if (mode != NetworkMode.CLIENT) {
+    if (this.entityManager != null) {
+      for (      EntityRef entity : entityManager.getEntitiesWith(NetworkComponent.class)) {
+        NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
+        netComp.setNetworkId(0);
+        entity.saveComponent(netComp);
+      }
+      this.entityManager.unsubscribe(this);
     }
-    this.entityManager.unsubscribe(this);
   }
+  mode=NetworkMode.NONE;
   entityManager=null;
   entitySystemLibrary=null;
   eventSerializer=null;

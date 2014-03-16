@@ -34,17 +34,14 @@
           }
         }
       }
-      List<Rect2i> addRects=Rect2i.difference(newView,oldView);
-      for (      Rect2i r : addRects) {
-        for (int x=r.minX(); x <= r.maxX(); ++x) {
-          for (int y=r.minY(); y <= r.maxY(); ++y) {
-            ChunkImpl c=chunkProvider.getChunk(x,0,y);
-            if (c != null && c.getChunkState() == ChunkImpl.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
-              chunksInProximity.add(c);
-            }
+      for (int x=newView.minX(); x <= newView.maxX(); ++x) {
+        for (int y=newView.minY(); y <= newView.maxY(); ++y) {
+          ChunkImpl c=chunkProvider.getChunk(x,0,y);
+          if (c != null && c.getChunkState() == ChunkImpl.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
+            chunksInProximity.add(c);
+          }
  else {
-              chunksCurrentlyPending=true;
-            }
+            chunksCurrentlyPending=true;
           }
         }
       }

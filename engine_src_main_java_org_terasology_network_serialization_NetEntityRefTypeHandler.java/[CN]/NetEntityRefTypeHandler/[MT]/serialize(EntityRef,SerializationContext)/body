@@ -1,0 +1,12 @@
+{
+  BlockComponent blockComponent=value.getComponent(BlockComponent.class);
+  if (blockComponent != null) {
+    Vector3i pos=blockComponent.getPosition();
+    return context.create(pos.x,pos.y,pos.z);
+  }
+  NetworkComponent netComponent=value.getComponent(NetworkComponent.class);
+  if (netComponent != null) {
+    return context.create(netComponent.getNetworkId());
+  }
+  return context.createNull();
+}

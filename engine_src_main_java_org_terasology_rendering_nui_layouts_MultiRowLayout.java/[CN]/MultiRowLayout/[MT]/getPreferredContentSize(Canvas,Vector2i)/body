@@ -1,0 +1,34 @@
+{
+  Vector2i availableSize=new Vector2i(areaHint);
+  int numColumns=TeraMath.ceilToInt((float)widgetList.size() / rows);
+  if (numColumns > 0) {
+    availableSize.x-=horizontalSpacing * (numColumns - 1);
+  }
+  if (rows > 0) {
+    availableSize.y-=verticalSpacing * (rows - 1);
+  }
+  Iterator<List<UIWidget>> columns=getColumnIterator();
+  Vector2i size=new Vector2i();
+  int[] rowSizes=new int[rows];
+  while (columns.hasNext()) {
+    List<UIWidget> column=columns.next();
+    ColumnInfo columnInfo=calculateColumnSize(column,canvas,availableSize);
+    size.x+=columnInfo.width;
+    if (columns.hasNext()) {
+      size.x+=horizontalSpacing;
+    }
+    for (int i=0; i < columnInfo.widgetSizes.size(); ++i) {
+      rowSizes[i]=Math.max(rowSizes[i],columnInfo.widgetSizes.get(i).getY());
+    }
+  }
+  for (  int rowSize : rowSizes) {
+    size.y+=rowSize;
+  }
+  if (!autoSizeRows) {
+    for (int i=0; i < rows; ++i) {
+      size.y=Math.max(size.y,TeraMath.floorToInt(rowSizes[i] / rowHeights[i]));
+    }
+  }
+  size.y+=verticalSpacing * (rows - 1);
+  return size;
+}

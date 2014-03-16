@@ -1,5 +1,22 @@
 {
   Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
-  serializer.deserializeOnto(targetComponent,componentData.getFieldList(),fieldCheck);
+  DeserializationContext context=new ProtobufDeserializationContext(typeSerializationLibrary);
+  Map<FieldMetadata<?,?>,PersistedData> dataMap=Maps.newHashMapWithExpectedSize(componentData.getFieldCount());
+  for (  EntityData.NameValue field : componentData.getFieldList()) {
+    FieldMetadata<?,?> fieldInfo=null;
+    if (field.hasNameIndex()) {
+      fieldInfo=componentMetadata.getField(field.getNameIndex());
+    }
+ else     if (field.hasName()) {
+      fieldInfo=componentMetadata.getField(field.getName());
+    }
+    if (fieldInfo != null) {
+      dataMap.put(fieldInfo,new ProtobufPersistedData(field.getValue()));
+    }
+ else     if (field.hasNameIndex()) {
+      logger.warn("Cannot deserialize unknown field '{}' onto '{}'",field.getName(),componentMetadata.getUri());
+    }
+  }
+  serializer.deserializeOnto(targetComponent,dataMap,context,fieldCheck);
   return targetComponent;
 }

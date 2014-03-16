@@ -9,9 +9,15 @@
   Serializer serializer=typeSerializationLibrary.getSerializerFor(componentMetadata);
   for (  ReplicatedFieldMetadata field : componentMetadata.getFields()) {
     if (check.shouldSerializeField(field,component)) {
-      EntityData.NameValue fieldData=serializer.serializeNameValue(field,component,usingFieldIds);
-      if (fieldData != null) {
-        componentMessage.addField(fieldData);
+      PersistedData result=serializer.serialize(field,component,serializationContext);
+      if (!result.isNull()) {
+        EntityData.Value itemValue=((ProtobufPersistedData)result).getValue();
+        if (usingFieldIds) {
+          componentMessage.addField(EntityData.NameValue.newBuilder().setNameIndex(field.getId()).setValue(itemValue));
+        }
+ else {
+          componentMessage.addField(EntityData.NameValue.newBuilder().setName(field.getName()).setValue(itemValue));
+        }
       }
     }
   }

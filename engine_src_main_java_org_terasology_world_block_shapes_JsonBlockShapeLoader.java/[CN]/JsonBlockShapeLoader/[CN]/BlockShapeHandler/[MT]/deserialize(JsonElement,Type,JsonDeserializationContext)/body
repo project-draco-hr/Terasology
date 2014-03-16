@@ -1,6 +1,9 @@
 {
   BlockShapeData shape=new BlockShapeData();
   JsonObject shapeObj=json.getAsJsonObject();
+  if (shapeObj.has(DISPLAY_NAME)) {
+    shape.setDisplayName(shapeObj.getAsJsonPrimitive(DISPLAY_NAME).getAsString());
+  }
   for (  BlockPart part : BlockPart.values()) {
     if (shapeObj.has(part.toString().toLowerCase(Locale.ENGLISH))) {
       JsonObject meshObj=shapeObj.getAsJsonObject(part.toString().toLowerCase(Locale.ENGLISH));

@@ -1,6 +1,10 @@
 {
-  dispose();
-  bufferId=alGenBuffers();
+  if (bufferId == 0) {
+    bufferId=alGenBuffers();
+  }
+ else {
+    audioManager.purgeSound(this);
+  }
   AL10.alBufferData(bufferId,data.getChannels() == 1 ? AL10.AL_FORMAT_MONO16 : AL10.AL_FORMAT_STEREO16,data.getData(),data.getSampleRate());
   OpenALException.checkState("Allocating sound buffer");
   int bits=data.getBufferBits();

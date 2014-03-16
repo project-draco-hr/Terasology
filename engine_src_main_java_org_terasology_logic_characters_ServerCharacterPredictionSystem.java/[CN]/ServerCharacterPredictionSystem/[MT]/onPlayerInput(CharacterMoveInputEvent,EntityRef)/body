@@ -1,4 +1,9 @@
 {
+  CharacterCollider characterCollider=physics.getCharacterCollider(entity);
+  if (characterCollider.isPending()) {
+    logger.debug("Skipping input, collision not yet established");
+    return;
+  }
   CircularBuffer<CharacterStateEvent> stateBuffer=characterStates.get(entity);
   CharacterStateEvent lastState=stateBuffer.getLast();
   if (input.getDelta() + lastState.getTime() < time.getGameTimeInMs() + MAX_INPUT_OVERFLOW) {

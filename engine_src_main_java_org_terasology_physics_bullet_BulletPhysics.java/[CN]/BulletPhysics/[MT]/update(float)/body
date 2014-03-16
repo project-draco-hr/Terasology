@@ -1,9 +1,13 @@
 {
   processQueuedBodies();
-  applyPendingImpulses();
+  applyPendingImpulsesAndForces();
   try {
     PerformanceMonitor.startActivity("Step Simulation");
-    discreteDynamicsWorld.stepSimulation(delta,8);
+    if (discreteDynamicsWorld.stepSimulation(delta,8) != 0) {
+      for (      BulletCharacterMoverCollider collider : entityColliders.values()) {
+        collider.pending=false;
+      }
+    }
     PerformanceMonitor.endActivity();
   }
  catch (  Exception e) {

@@ -34,7 +34,7 @@
   try (BufferedWriter writer=Files.newBufferedWriter(path,TerasologyConstants.CHARSET)){
     writer.write(shader.toString());
   }
- catch (  Exception e) {
+ catch (  IOException e) {
     logger.error("Failed to dump shader source.");
   }
   GL20.glShaderSource(shaderId,shader.toString());

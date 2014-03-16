@@ -1,15 +1,3 @@
 {
-  EntityRef newEntity=entitySerializer.deserialize(message.getEntity());
-  if (newEntity == null) {
-    logger.error("Received entity is null");
-    return;
-  }
- else   if (newEntity.getComponent(NetworkComponent.class) == null) {
-    logger.error("Received entity with no NetworkComponent: {}",newEntity);
-  }
- else   if (newEntity.getComponent(NetworkComponent.class).getNetworkId() == 0) {
-    logger.error("Received entity with null network id: {}",newEntity);
-  }
-  logger.info("Received new entity: {} with net id {}",newEntity,newEntity.getComponent(NetworkComponent.class).getNetworkId());
-  networkSystem.registerNetworkEntity(newEntity);
+  entitySerializer.deserialize(message.getEntity());
 }

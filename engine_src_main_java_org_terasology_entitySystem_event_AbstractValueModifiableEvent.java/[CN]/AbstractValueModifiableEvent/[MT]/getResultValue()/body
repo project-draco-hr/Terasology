@@ -1,0 +1,16 @@
+{
+  float result=baseValue;
+  TFloatIterator modifierIter=modifiers.iterator();
+  while (modifierIter.hasNext()) {
+    result+=modifierIter.next();
+  }
+  result=Math.max(0,result);
+  if (result == 0) {
+    return 0;
+  }
+  TFloatIterator multiplierIter=multipliers.iterator();
+  while (multiplierIter.hasNext()) {
+    result*=multiplierIter.next();
+  }
+  return result;
+}
