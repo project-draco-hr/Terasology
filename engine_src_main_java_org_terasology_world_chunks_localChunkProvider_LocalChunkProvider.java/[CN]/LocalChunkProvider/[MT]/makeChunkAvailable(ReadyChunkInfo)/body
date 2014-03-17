@@ -1,14 +1,12 @@
 {
-  ChunkImpl chunk=getChunk(readyChunkInfo.getPos());
+  ChunkImpl chunk=nearCache.get(readyChunkInfo.getPos());
   if (chunk == null) {
     return;
   }
   chunk.lock();
   try {
     chunk.markReady();
-    boolean loaded=chunk.isInitialGenerationComplete();
-    if (!loaded) {
-      chunk.setInitialGenerationComplete();
+    if (!readyChunkInfo.isNewChunk()) {
       PerformanceMonitor.startActivity("Generating Block Entities");
       generateBlockEntities(chunk);
       PerformanceMonitor.endActivity();
@@ -16,7 +14,7 @@
     if (readyChunkInfo.getChunkStore() != null) {
       readyChunkInfo.getChunkStore().restoreEntities();
     }
-    if (!loaded) {
+    if (!readyChunkInfo.isNewChunk()) {
       PerformanceMonitor.startActivity("Sending OnAddedBlocks");
       readyChunkInfo.getBlockPositionMapppings().forEachEntry(new TShortObjectProcedure<TIntList>(){
         @Override public boolean execute(        short id,        TIntList positions){
@@ -97,7 +95,7 @@
       propagator.process();
     }
     PerformanceMonitor.endActivity();
-    if (!loaded) {
+    if (!readyChunkInfo.isNewChunk()) {
       worldEntity.send(new OnChunkGenerated(readyChunkInfo.getPos()));
     }
     worldEntity.send(new OnChunkLoaded(readyChunkInfo.getPos()));

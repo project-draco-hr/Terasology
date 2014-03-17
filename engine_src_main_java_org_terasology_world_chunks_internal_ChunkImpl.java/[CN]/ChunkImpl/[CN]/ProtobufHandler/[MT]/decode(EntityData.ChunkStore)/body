@@ -4,10 +4,6 @@
     throw new IllegalArgumentException("Ill-formed protobuf message. Missing chunk position.");
   }
   Vector3i pos=new Vector3i(message.getX(),message.getY(),message.getZ());
-  if (!message.hasState()) {
-    throw new IllegalArgumentException("Ill-formed protobuf message. Missing chunk state.");
-  }
-  State state=State.lookup(message.getState());
   if (!message.hasBlockData()) {
     throw new IllegalArgumentException("Ill-formed protobuf message. Missing block data.");
   }
@@ -21,9 +17,5 @@
  else {
     extraData=c.getExtraDataEntry().factory.create(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z);
   }
-  boolean previouslyComplete=state == State.COMPLETE;
-  if (previouslyComplete) {
-    state=State.INTERNAL_LIGHT_GENERATION_PENDING;
-  }
-  return new ChunkImpl(pos,state,blockData,extraData,previouslyComplete);
+  return new ChunkImpl(pos,blockData,extraData);
 }

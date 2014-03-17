@@ -4,10 +4,10 @@
     if (chunkRelevanceRegion.isDirty()) {
       for (      Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
         ChunkImpl chunk=nearCache.get(pos);
-        if (chunk != null && chunk.getChunkState() == ChunkImpl.State.COMPLETE) {
+        if (chunk != null && chunk.isReady()) {
           chunkRelevanceRegion.chunkReady(chunk);
         }
- else {
+ else         if (chunk == null) {
           pipeline.doTask(new CreateOrLoadChunkTask(pipeline,pos,this));
         }
       }

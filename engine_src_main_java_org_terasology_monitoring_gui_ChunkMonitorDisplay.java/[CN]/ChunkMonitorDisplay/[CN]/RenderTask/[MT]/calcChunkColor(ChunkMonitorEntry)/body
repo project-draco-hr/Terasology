@@ -6,11 +6,10 @@
   if (chunk.getMesh() != null) {
     return COLOR_HIGHLIGHT_TESSELLATION;
   }
-switch (chunk.getChunkState()) {
-case INTERNAL_LIGHT_GENERATION_PENDING:
+  if (chunk.isReady()) {
+    return COLOR_COMPLETE;
+  }
+ else {
     return COLOR_INTERNAL_LIGHT_GENERATION_PENDING;
-case COMPLETE:
-  return COLOR_COMPLETE;
-}
-return COLOR_INVALID;
+  }
 }

@@ -5,7 +5,7 @@
   chunkProvider.update();
   for (  Vector3i pos : Region3i.createFromCenterExtents(newChunkPos,new Vector3i(viewingDistance.x / 2,viewingDistance.y / 2,viewingDistance.z / 2))) {
     ChunkImpl chunk=chunkProvider.getChunk(pos);
-    if (chunk == null || chunk.getChunkState() != ChunkImpl.State.COMPLETE) {
+    if (chunk == null || !chunk.isReady()) {
       complete=false;
     }
  else     if (chunk.isDirty()) {

@@ -2,7 +2,7 @@
   ChunkImpl[] chunks=new ChunkImpl[region.size().x * region.size().y * region.size().z];
   for (  Vector3i chunkPos : region) {
     ChunkImpl chunk=chunkCache.get(chunkPos);
-    if (chunk == null || chunk.getChunkState() != ChunkImpl.State.COMPLETE) {
+    if (chunk == null || chunk.isReady()) {
       return null;
     }
     chunkPos.sub(region.min());

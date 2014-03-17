@@ -8,7 +8,7 @@
       chunksInProximity.clear();
       for (      Vector3i chunkPosition : viewRegion) {
         ChunkImpl c=chunkProvider.getChunk(chunkPosition);
-        if (c != null && c.getChunkState() == ChunkImpl.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
+        if (c != null && c.isReady() && worldProvider.getLocalView(c.getPos()) != null) {
           chunksInProximity.add(c);
         }
  else {
@@ -29,7 +29,7 @@
       }
       for (      Vector3i chunkPosition : viewRegion) {
         ChunkImpl c=chunkProvider.getChunk(chunkPosition);
-        if (c != null && c.getChunkState() == ChunkImpl.State.COMPLETE && worldProvider.getLocalView(c.getPos()) != null) {
+        if (c != null && c.isReady() && worldProvider.getLocalView(c.getPos()) != null) {
           chunksInProximity.add(c);
         }
  else {

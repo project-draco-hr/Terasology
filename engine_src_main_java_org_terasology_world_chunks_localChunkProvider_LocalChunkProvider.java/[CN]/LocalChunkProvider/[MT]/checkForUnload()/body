@@ -19,14 +19,13 @@
       }
       chunk.lock();
       try {
-        if (chunk.getChunkState() == ChunkImpl.State.COMPLETE && !chunk.isReady()) {
+        if (!chunk.isReady()) {
+          nearCache.remove(pos);
           continue;
         }
-        if (chunk.getChunkState() == ChunkImpl.State.COMPLETE) {
-          worldEntity.send(new BeforeChunkUnload(pos));
-          for (          ChunkRelevanceRegion region : regions.values()) {
-            region.chunkUnloaded(pos);
-          }
+        worldEntity.send(new BeforeChunkUnload(pos));
+        for (        ChunkRelevanceRegion region : regions.values()) {
+          region.chunkUnloaded(pos);
         }
         ChunkStore store=storageManager.createChunkStoreForSave(chunk);
         store.storeAllEntities();

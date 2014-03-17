@@ -3,13 +3,13 @@
   pipeline.shutdown();
   unloadRequestTaskMaster.shutdown(new ChunkUnloadRequest(),true);
   for (  ChunkImpl chunk : nearCache.values()) {
-    if (chunk.getChunkState() == ChunkImpl.State.COMPLETE && chunk.isReady()) {
+    if (chunk.isReady()) {
       worldEntity.send(new BeforeChunkUnload(chunk.getPos()));
+      chunk.dispose();
+      ChunkStore store=storageManager.createChunkStoreForSave(chunk);
+      store.storeAllEntities();
+      store.save();
     }
-    chunk.dispose();
-    ChunkStore store=storageManager.createChunkStoreForSave(chunk);
-    store.storeAllEntities();
-    store.save();
   }
   nearCache.clear();
   storageManager.purgeChunks();
