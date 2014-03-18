@@ -1,5 +1,13 @@
 {
+  List<MD5Joint> md5JointList=new ArrayList<MD5Joint>();
+  List<MD5Mesh> md5MeshList=new ArrayList<MD5Mesh>();
   skeletonBuilder=new SkeletalMeshDataBuilder();
+  Map<String,MD5Joint> md5JointBySidMap=new HashMap<String,MD5Joint>();
+  MD5Joint parentMD5Joint=null;
+  ElementSet nodeParentSet=rootElement.find("library_visual_scenes","visual_scene","node");
+  for (  Element element : nodeParentSet) {
+    createMd5JointForElementAndParent(md5JointBySidMap,element,parentMD5Joint);
+  }
   ElementSet controllerSet=rootElement.find("library_controllers","controller");
   for (  Element controller : controllerSet) {
     ElementSet skinSet=controller.find("skin");
@@ -34,16 +42,10 @@
         Element jointMatrixSourceElement=skin.select(jointsInput.sourceName);
         Source jointMatrixSource=parseSource(jointMatrixSourceElement);
         inverseBindMatrixArray=jointMatrixSource.floatValues;
-        rotationArray=new Quat4f[inverseBindMatrixArray.length / 16];
-        for (int i=0; i < inverseBindMatrixArray.length / 16; ++i) {
-          int offset=i * 16;
-          Matrix4f matrix4f=new Matrix4f(Arrays.copyOfRange(inverseBindMatrixArray,offset,offset + 16));
-          Quat4f rotation=new Quat4f();
-          rotation.set(matrix4f);
-          rotationArray[i]=rotation;
-        }
+        rotationArray=quad4fArrayFromFloat16ArrayData(inverseBindMatrixArray);
       }
     }
+    List<MD5Weight> md5WeightList=Lists.newArrayList();
     float[] weightsArray=null;
     ElementSet vertexWeightsInputSet=vertexWeights.find("input");
     List<Input> vertexWeightsInputList=parseInputs(vertexWeightsInputSet);
@@ -87,6 +89,13 @@
     float[] vertexWeightsArray=new float[vertexWeightsCount];
     int vertexWeightsVDataIndex=-1;
     for (int vertexWeightsIndex=0; vertexWeightsIndex < vertexWeightsCount; vertexWeightsIndex++) {
+      MD5Weight md5Weight=new MD5Weight();
+      Vector3f vertexPosition=new Vector3f();
+      vertexPosition.x=vertices.get(3 * vertexWeightsIndex + 0);
+      vertexPosition.y=vertices.get(3 * vertexWeightsIndex + 1);
+      vertexPosition.z=vertices.get(3 * vertexWeightsIndex + 2);
+      md5Weight.position=vertexPosition;
+      md5WeightList.add(md5Weight);
       String vCountString=vertexWeightsVCountStrings[vertexWeightsIndex];
       int vCount=Integer.parseInt(vCountString);
       for (int vCountIndex=0; vCountIndex < vCount; vCountIndex++) {
@@ -99,9 +108,11 @@
             throw new ColladaParseException("We do not support indexing into the bind shape yet");
           }
           if ("JOINT".equals(vertexWeightsInput.semantic)) {
+            md5Weight.jointIndex=index;
             vertexWeightsJointNameArray[vertexWeightsIndex]=jointNameArray[index];
           }
  else           if ("WEIGHT".equals(vertexWeightsInput.semantic)) {
+            md5Weight.bias=weightsArray[index];
             vertexWeightsArray[vertexWeightsIndex]=weightsArray[index];
           }
  else {
@@ -110,6 +121,63 @@
         }
       }
     }
+    MD5Mesh md5Mesh=new MD5Mesh();
+    md5Mesh.weightList=md5WeightList;
+    for (    String jointName : jointNameArray) {
+      MD5Joint md5Joint=md5JointBySidMap.get(jointName);
+      if (null == md5Joint) {
+        throw new ColladaParseException("Cannot find joint node for node sid value for joint " + jointName + " in nodes for library_visual_scenes");
+      }
+      md5JointList.add(md5Joint);
+    }
   }
-  ElementSet nodeSet=rootElement.find("library_visual_scenes","visual_scene","node","instance_controller","skeleton");
+  Deque<MD5Joint> jointsToProcess=new LinkedList<MD5Joint>(md5JointList);
+  while (!jointsToProcess.isEmpty()) {
+    MD5Joint joint=jointsToProcess.pop();
+    MD5Joint parentJoint=joint.parent;
+    if (null != parentJoint) {
+      if (!md5JointList.contains(parentJoint)) {
+        md5JointList.add(parentJoint);
+        jointsToProcess.push(parentJoint);
+      }
+    }
+  }
+  for (  MD5Joint joint : md5JointList) {
+    if (null == joint.position) {
+      throw new ColladaParseException("no joint position for joint with element id " + joint.element.id());
+    }
+    if (null == joint.orientation) {
+      throw new ColladaParseException("no joint orientation for joint with element id " + joint.element.id());
+    }
+    joint.bone=new Bone(-1,joint.name,joint.position,joint.orientation);
+  }
+  for (  MD5Joint joint : md5JointList) {
+    for (    MD5Joint childJoint : joint.childList) {
+      if (null != childJoint.bone) {
+        joint.bone.addChild(childJoint.bone);
+      }
+    }
+  }
+  for (  MD5Joint joint : md5JointList) {
+    skeletonBuilder.addBone(joint.bone);
+  }
+  if (md5MeshList.size() > 0) {
+    MD5Mesh mesh=md5MeshList.get(0);
+    for (    MD5Weight weight : mesh.weightList) {
+      skeletonBuilder.addWeight(new BoneWeight(weight.position,weight.bias,weight.jointIndex));
+    }
+    List<Vector2f> uvs=Lists.newArrayList();
+    TIntList vertexStartWeight=new TIntArrayList(vertices.size() / 3);
+    TIntList vertexWeightCount=new TIntArrayList(vertices.size() / 3);
+    for (int i=0; i < vertices.size() / 3; i++) {
+      vertexStartWeight.add(i);
+      vertexWeightCount.add(1);
+    }
+    skeletonBuilder.setVertexWeights(vertexStartWeight,vertexWeightCount);
+    for (int i=0; i < normals.size() / 2; i++) {
+      uvs.add(new Vector2f(normals.get(i * 2 + 0),normals.get(i * 2 + 1)));
+    }
+    skeletonBuilder.setUvs(uvs);
+    skeletonBuilder.setIndices(indices);
+  }
 }

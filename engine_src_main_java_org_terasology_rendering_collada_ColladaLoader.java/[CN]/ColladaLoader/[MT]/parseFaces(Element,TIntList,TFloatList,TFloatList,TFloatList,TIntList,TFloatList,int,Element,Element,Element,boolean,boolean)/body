@@ -12,39 +12,44 @@
       throw new ColladaParseException("Found " + libraryMaterialsSet.size() + " library Material sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
     }
     Element libraryMaterials=libraryMaterialsSet.first();
-    Element material=libraryMaterials.select("#" + facesMaterial);
-    if (null == material) {
-      throw new ColladaParseException("No material for " + facesMaterial + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
-    }
-    ElementSet instanceEffectSet=material.find("instance_effect");
-    if (1 != instanceEffectSet.size()) {
-      throw new ColladaParseException("Found " + instanceEffectSet.size() + " instance_effect sets for material "+ facesMaterial+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
-    }
-    Element instanceEffect=instanceEffectSet.first();
-    String effectUrl=instanceEffect.attr("url");
-    ElementSet libraryEffectsSet=rootElement.find("library_effects");
-    if (0 != libraryEffectsSet.size()) {
-      if (1 != libraryEffectsSet.size()) {
-        throw new ColladaParseException("Found " + libraryEffectsSet.size() + " library effects sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
+    Element material;
+    try {
+      material=libraryMaterials.select("#" + facesMaterial);
+      if (null == material) {
+        throw new ColladaParseException("No material for " + facesMaterial + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
       }
-      Element libraryEffects=libraryEffectsSet.first();
-      Element effect=libraryEffects.select(effectUrl);
-      if (null == effect) {
-        throw new ColladaParseException("No effect for " + effectUrl + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+      ElementSet instanceEffectSet=material.find("instance_effect");
+      if (1 != instanceEffectSet.size()) {
+        throw new ColladaParseException("Found " + instanceEffectSet.size() + " instance_effect sets for material "+ facesMaterial+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
       }
-      ElementSet colorSet=effect.find("profile_COMMON","technique","lambert","diffuse","color");
-      if (1 == colorSet.size()) {
-        Element color=colorSet.first();
-        String colorListString=color.text();
-        String[] colorString=getItemsInString(colorListString);
-        if (4 != colorString.length) {
-          throw new ColladaParseException("mesh only supports 4-float color arrays but color list was '" + colorListString + "' for geometry id="+ geometry.id()+ " name="+ geometry.name());
+      Element instanceEffect=instanceEffectSet.first();
+      String effectUrl=instanceEffect.attr("url");
+      ElementSet libraryEffectsSet=rootElement.find("library_effects");
+      if (0 != libraryEffectsSet.size()) {
+        if (1 != libraryEffectsSet.size()) {
+          throw new ColladaParseException("Found " + libraryEffectsSet.size() + " library effects sets for geometry id="+ geometry.id()+ " name="+ geometry.name());
         }
-        vertexColors=new float[colorString.length];
-        for (int i=0; i < colorString.length; i++) {
-          vertexColors[i]=Float.parseFloat(colorString[i]);
+        Element libraryEffects=libraryEffectsSet.first();
+        Element effect=libraryEffects.select(effectUrl);
+        if (null == effect) {
+          throw new ColladaParseException("No effect for " + effectUrl + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
+        }
+        ElementSet colorSet=effect.find("profile_COMMON","technique","lambert","diffuse","color");
+        if (1 == colorSet.size()) {
+          Element color=colorSet.first();
+          String colorListString=color.text();
+          String[] colorString=getItemsInString(colorListString);
+          if (4 != colorString.length) {
+            throw new ColladaParseException("mesh only supports 4-float color arrays but color list was '" + colorListString + "' for geometry id="+ geometry.id()+ " name="+ geometry.name());
+          }
+          vertexColors=new float[colorString.length];
+          for (int i=0; i < colorString.length; i++) {
+            vertexColors[i]=Float.parseFloat(colorString[i]);
+          }
         }
       }
+    }
+ catch (    NonMatchingPathException e) {
     }
   }
   for (  Input faceInput : faceInputs) {
@@ -80,6 +85,9 @@
  else     if ("TEXCOORD".equals(faceInput.semantic)) {
       Element texCoordSourceElement=mesh.select(faceInput.sourceName);
       faceInput.texCoordSource=parseSource(texCoordSourceElement);
+      if (2 != faceInput.texCoordSource.stride) {
+        logger.warn("Found non-2 stride of " + faceInput.texCoordSource.stride + " for vertex Input semantic "+ faceInput.semantic+ " for geometry id="+ geometry.id()+ " name="+ geometry.name()+ ". Ignoring all but first two texture coordinate values.");
+      }
     }
  else {
       throw new ColladaParseException("Found unexpected triangle Input semantic " + faceInput.semantic + " for geometry id="+ geometry.id()+ " name="+ geometry.name());
@@ -180,7 +188,7 @@
         }
  else         if ("TEXCOORD".equals(faceInput.semantic)) {
           int texCoordStride=faceInput.texCoordSource.stride;
-          if (2 != texCoordStride) {
+          if (2 > texCoordStride) {
             throw new ColladaParseException("Found non-2 stride of " + faceInput.texCoordSource.stride + " for vertex Input semantic "+ faceInput.semantic+ " for geometry id="+ geometry.id()+ " name="+ geometry.name());
           }
           float texCoordS=faceInput.texCoordSource.floatValues[index * texCoordStride + 0];
