@@ -1,0 +1,14 @@
+{
+  SoundPool pool=pools.get("music");
+  pool.stopAll();
+  if (music == null) {
+    return;
+  }
+  SoundSource source=pool.getSource(music);
+  if (source != null) {
+    source.setGain(1.0f).play();
+    if (endListener != null) {
+      endListeners.put(source,endListener);
+    }
+  }
+}
