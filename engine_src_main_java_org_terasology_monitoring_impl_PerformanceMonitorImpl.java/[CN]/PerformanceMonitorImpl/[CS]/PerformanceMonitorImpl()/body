@@ -2,13 +2,13 @@
   timer=(EngineTime)CoreRegistry.get(Time.class);
   activityStack=Queues.newArrayDeque();
   metricData=Lists.newLinkedList();
+  allocationData=Lists.newLinkedList();
   runningTotals=new TObjectLongHashMap<>();
+  runningAllocationTotals=new TObjectLongHashMap<>();
   timerTicksPerSecond=1000;
   currentData=new TObjectLongHashMap<>();
+  currentMemData=new TObjectLongHashMap<>();
   spikeData=new TObjectDoubleHashMap<>();
-  runningThreads=TCollections.synchronizedMap(new TObjectIntHashMap<String>());
-  stoppedThreads=TCollections.synchronizedMap(new TObjectIntHashMap<String>());
-  lastRunningThreads=new TObjectIntHashMap<>();
   timeFactor=1000.0 / timerTicksPerSecond;
   mainThread=Thread.currentThread();
 }

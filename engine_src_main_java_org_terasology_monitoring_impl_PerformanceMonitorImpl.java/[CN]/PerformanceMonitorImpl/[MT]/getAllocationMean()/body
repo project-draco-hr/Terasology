@@ -1,0 +1,14 @@
+{
+  final TObjectDoubleMap<String> result=new TObjectDoubleHashMap<String>();
+  final double factor=1.0 / allocationData.size();
+  runningAllocationTotals.forEachEntry(new TObjectLongProcedure<String>(){
+    public boolean execute(    String s,    long l){
+      if (l > 0) {
+        result.put(s,l * factor);
+      }
+      return true;
+    }
+  }
+);
+  return result;
+}

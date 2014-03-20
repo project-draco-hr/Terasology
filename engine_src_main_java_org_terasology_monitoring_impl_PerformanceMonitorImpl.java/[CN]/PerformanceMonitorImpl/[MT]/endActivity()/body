@@ -6,8 +6,12 @@
   long time=timer.getRawTimeInMs();
   long total=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + time - oldActivity.resumeTime : time - oldActivity.startTime;
   currentData.adjustOrPutValue(oldActivity.name,total,total);
+  long endMem=Runtime.getRuntime().freeMemory();
+  long totalMem=(oldActivity.startMem - endMem > 0) ? oldActivity.startMem - endMem + oldActivity.ownMem : oldActivity.ownMem;
+  currentMemData.adjustOrPutValue(oldActivity.name,totalMem,totalMem);
   if (!activityStack.isEmpty()) {
     Activity currentActivity=activityStack.peek();
     currentActivity.resumeTime=time;
+    currentActivity.startMem=endMem;
   }
 }
