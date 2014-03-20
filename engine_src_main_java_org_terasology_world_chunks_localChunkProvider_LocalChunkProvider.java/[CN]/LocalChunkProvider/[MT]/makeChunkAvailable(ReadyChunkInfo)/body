@@ -1,7 +1,12 @@
 {
   ChunkImpl chunk=nearCache.get(readyChunkInfo.getPos());
   if (chunk == null) {
-    return;
+    return false;
+  }
+  for (  Vector3i pos : Region3i.createFromCenterExtents(readyChunkInfo.getPos(),1)) {
+    if (nearCache.get(pos) == null) {
+      return false;
+    }
   }
   chunk.lock();
   try {
@@ -45,7 +50,7 @@
       for (int y=-1; y < 2; ++y) {
         for (int x=-1; x < 2; ++x) {
           ChunkImpl localChunk=getChunk(chunk.getPos().x + x,chunk.getPos().y + y,chunk.getPos().z + z);
-          if (localChunk != null && localChunk.isReady()) {
+          if (localChunk != null) {
             localChunks[index]=localChunk;
           }
           index++;
@@ -65,35 +70,23 @@
     for (    BatchPropagator propagator : propagators) {
       for (      Side side : Side.values()) {
         Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
-        ChunkImpl adjChunk=getChunk(adjChunkPos);
-        if (adjChunk != null && adjChunk.isReady()) {
+        ChunkImpl adjChunk=nearCache.get(adjChunkPos);
+        if (adjChunk != null) {
           propagator.propagateBetween(adjChunk,chunk,side.reverse(),false);
         }
       }
       for (      Side side : Side.values()) {
         Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
         ChunkImpl adjChunk=getChunk(adjChunkPos);
-        if (adjChunk != null && adjChunk.isReady()) {
-          propagator.propagateBetween(chunk,adjChunk,side,false);
-        }
-      }
-      for (      Side side : Side.values()) {
-        Vector3i adjChunkPos=side.getAdjacentPos(readyChunkInfo.getPos());
-        ChunkImpl adjChunk=getChunk(adjChunkPos);
-        if (adjChunk != null && adjChunk.isReady()) {
-          for (          Side tangentSide : side.tangents()) {
-            Vector3i tangentChunkPos=tangentSide.getAdjacentPos(adjChunkPos);
-            ChunkImpl tangentChunk=getChunk(tangentChunkPos);
-            if (tangentChunk != null && tangentChunk.isReady()) {
-              propagator.propagateBetween(adjChunk,tangentChunk,tangentSide,true);
-            }
-          }
+        if (adjChunk != null) {
+          propagator.propagateBetween(chunk,adjChunk,side,true);
         }
       }
     }
     for (    BatchPropagator propagator : propagators) {
       propagator.process();
     }
+    chunk.deflateSunlight();
     PerformanceMonitor.endActivity();
     if (!readyChunkInfo.isNewChunk()) {
       worldEntity.send(new OnChunkGenerated(readyChunkInfo.getPos()));
@@ -106,4 +99,5 @@
   finally {
     chunk.unlock();
   }
+  return true;
 }

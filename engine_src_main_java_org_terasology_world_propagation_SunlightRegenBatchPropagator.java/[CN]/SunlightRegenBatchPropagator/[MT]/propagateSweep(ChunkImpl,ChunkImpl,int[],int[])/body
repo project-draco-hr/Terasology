@@ -1,0 +1,32 @@
+{
+  Vector3i pos=new Vector3i();
+  for (int z=0; z < ChunkConstants.SIZE_Z; ++z) {
+    for (int x=0; x < ChunkConstants.SIZE_X; ++x) {
+      int depthIndex=x + ChunkConstants.SIZE_X * z;
+      startingRegen[depthIndex]=regenRules.getValue(fromChunk,new Vector3i(x,0,z));
+      byte expectedValue=(byte)Math.min(startingRegen[depthIndex] + 1,ChunkConstants.MAX_SUNLIGHT_REGEN);
+      Block fromBlock=fromChunk.getBlock(x,0,z);
+      Block toBlock=toChunk.getBlock(x,ChunkConstants.SIZE_Y - 1,z);
+      if (!(regenRules.canSpreadOutOf(fromBlock,Side.BOTTOM) && regenRules.canSpreadInto(toBlock,Side.TOP))) {
+        continue;
+      }
+      byte predictedValue=0;
+      pos.set(x,ChunkConstants.SIZE_Y - 1,z);
+      int currentValue=regenRules.getValue(toChunk,pos);
+      while (currentValue == predictedValue && expectedValue > currentValue) {
+        regenRules.setValue(toChunk,pos,expectedValue);
+        depth[depthIndex]++;
+        byte sunlight=(byte)(expectedValue - ChunkConstants.SUNLIGHT_REGEN_THRESHOLD);
+        if (sunlight > 0 && sunlight > toChunk.getSunlight(pos)) {
+          toChunk.setSunlight(pos,sunlight);
+        }
+        if (expectedValue < ChunkConstants.MAX_SUNLIGHT_REGEN) {
+          expectedValue++;
+        }
+        predictedValue++;
+        pos.y--;
+        currentValue=regenRules.getValue(toChunk,pos);
+      }
+    }
+  }
+}

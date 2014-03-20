@@ -1,33 +1,33 @@
 {
   Vector3i adjPos=new Vector3i();
-  for (  Vector3i pos : edgeRegion) {
-    int depthIndex=indexProvider.getIndexFor(pos);
-    adjPos.set(pos);
-    adjPos.add(chunkEdgeDeltas.get(side));
-    byte expectedValue=(byte)(rules.getValue(chunk,pos) - 1);
-    if (expectedValue < 1) {
-      continue;
-    }
-    int depth=0;
-    Block lastBlock=chunk.getBlock(pos);
-    while (expectedValue > 0 && rules.canSpreadOutOf(lastBlock,side)) {
-      byte adjValue=rules.getValue(adjChunk,adjPos);
-      if (expectedValue > adjValue && adjValue != PropagatorWorldView.UNAVAILABLE) {
-        lastBlock=adjChunk.getBlock(adjPos);
-        if (rules.canSpreadInto(lastBlock,side.reverse())) {
-          rules.setValue(adjChunk,adjPos,expectedValue);
-          adjPos.add(side.getVector3i());
-          depth++;
-          expectedValue--;
+  for (int x=edgeRegion.minX(); x <= edgeRegion.maxX(); ++x) {
+    for (int y=edgeRegion.minY(); y <= edgeRegion.maxY(); ++y) {
+      for (int z=edgeRegion.minZ(); z <= edgeRegion.maxZ(); ++z) {
+        int depthIndex=indexProvider.getIndexFor(x,y,z);
+        adjPos.set(x,y,z);
+        adjPos.add(chunkEdgeDeltas.get(side));
+        byte expectedValue=(byte)(rules.getValue(chunk,x,y,z) - 1);
+        if (expectedValue < 1) {
+          continue;
         }
+        int depth=0;
+        Block lastBlock=chunk.getBlock(x,y,z);
+        byte adjValue=rules.getValue(adjChunk,adjPos);
+        while (expectedValue > adjValue && adjValue != PropagatorWorldView.UNAVAILABLE && rules.canSpreadOutOf(lastBlock,side)) {
+          lastBlock=adjChunk.getBlock(adjPos);
+          if (rules.canSpreadInto(lastBlock,side.reverse())) {
+            rules.setValue(adjChunk,adjPos,expectedValue);
+            adjPos.add(side.getVector3i());
+            depth++;
+            expectedValue--;
+            adjValue=rules.getValue(adjChunk,adjPos);
+          }
  else {
-          break;
+            break;
+          }
         }
-      }
- else {
-        break;
+        depths[depthIndex]=depth;
       }
     }
-    depths[depthIndex]=depth;
   }
 }

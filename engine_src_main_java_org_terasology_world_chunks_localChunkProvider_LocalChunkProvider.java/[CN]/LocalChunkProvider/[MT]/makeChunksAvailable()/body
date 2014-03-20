@@ -1,10 +1,24 @@
 {
-  readyChunks.drainTo(sortedReadyChunks);
-  if (!sortedReadyChunks.isEmpty()) {
+  List<ReadyChunkInfo> newReadyChunks=Lists.newArrayListWithExpectedSize(readyChunks.size());
+  readyChunks.drainTo(newReadyChunks);
+  for (  ReadyChunkInfo readyChunkInfo : newReadyChunks) {
+    nearCache.put(readyChunkInfo.getPos(),readyChunkInfo.getChunk());
+    preparingChunks.remove(readyChunkInfo.getPos());
+  }
+  if (!newReadyChunks.isEmpty()) {
+    sortedReadyChunks.addAll(newReadyChunks);
     Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
-    for (int i=0; i < LOAD_PER_FRAME && !sortedReadyChunks.isEmpty(); ++i) {
-      ReadyChunkInfo readyChunkInfo=sortedReadyChunks.remove(sortedReadyChunks.size() - 1);
-      makeChunkAvailable(readyChunkInfo);
+  }
+  if (!sortedReadyChunks.isEmpty()) {
+    int loaded=0;
+    for (int i=sortedReadyChunks.size() - 1; i >= 0 && loaded < LOAD_PER_FRAME; i--) {
+      ReadyChunkInfo chunkInfo=sortedReadyChunks.get(i);
+      PerformanceMonitor.startActivity("Make Chunk Available");
+      if (makeChunkAvailable(chunkInfo)) {
+        sortedReadyChunks.remove(i);
+        loaded++;
+      }
+      PerformanceMonitor.endActivity();
     }
   }
 }

@@ -20,7 +20,15 @@
       chunk.lock();
       try {
         if (!chunk.isReady()) {
-          nearCache.remove(pos);
+          iterator.remove();
+          Iterator<ReadyChunkInfo> infoIterator=sortedReadyChunks.iterator();
+          while (infoIterator.hasNext()) {
+            ReadyChunkInfo next=infoIterator.next();
+            if (next.getPos().equals(chunk.getPos())) {
+              infoIterator.remove();
+              break;
+            }
+          }
           continue;
         }
         worldEntity.send(new BeforeChunkUnload(pos));

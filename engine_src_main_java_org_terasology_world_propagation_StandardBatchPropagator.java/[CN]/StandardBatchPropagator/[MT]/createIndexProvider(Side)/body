@@ -7,6 +7,9 @@ case BOTTOM:
       @Override public int getIndexFor(      Vector3i pos){
         return pos.x + ChunkConstants.SIZE_X * pos.z;
       }
+      @Override public int getIndexFor(      int x,      int y,      int z){
+        return x + ChunkConstants.SIZE_X * z;
+      }
     }
 ;
   break;
@@ -16,6 +19,9 @@ indexProvider=new IndexProvider(){
   @Override public int getIndexFor(  Vector3i pos){
     return pos.y + ChunkConstants.SIZE_Y * pos.z;
   }
+  @Override public int getIndexFor(  int x,  int y,  int z){
+    return y + ChunkConstants.SIZE_Y * z;
+  }
 }
 ;
 break;
@@ -23,6 +29,9 @@ default :
 indexProvider=new IndexProvider(){
 @Override public int getIndexFor(Vector3i pos){
 return pos.x + ChunkConstants.SIZE_X * pos.y;
+}
+@Override public int getIndexFor(int x,int y,int z){
+return x + ChunkConstants.SIZE_X * y;
 }
 }
 ;

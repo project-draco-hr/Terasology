@@ -1,56 +1,42 @@
 {
   ChunkImpl chunk=nearCache.get(chunkPos);
-  if (chunk == null) {
-    PerformanceMonitor.startActivity("Check chunk in cache");
-    if (preparingChunks.add(chunkPos)) {
-      if (nearCache.get(chunkPos) != null) {
-        preparingChunks.remove(chunkPos);
-      }
- else       if (storageManager.containsChunkStoreFor(chunkPos)) {
-        pipeline.doTask(new AbstractChunkTask(chunkPos,this){
-          @Override public String getName(){
-            return "Load Chunk";
-          }
-          @Override public void run(){
-            ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
-            ChunkImpl chunk=chunkStore.getChunk();
-            try {
-              chunk.lock();
-              if (nearCache.putIfAbsent(getPosition(),chunkStore.getChunk()) != null) {
-                logger.warn("Chunk {} is already in the near cache",getPosition());
-              }
-              preparingChunks.remove(getPosition());
-              InternalLightProcessor.generateInternalLighting(chunk);
-              chunk.deflate();
-              readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
-            }
-  finally {
-              chunk.unlock();
-            }
-          }
+  if (chunk == null && !preparingChunks.contains(chunkPos)) {
+    preparingChunks.add(chunkPos);
+    if (storageManager.containsChunkStoreFor(chunkPos)) {
+      pipeline.doTask(new AbstractChunkTask(chunkPos,this){
+        @Override public String getName(){
+          return "Load Chunk";
         }
-);
-      }
- else {
-        pipeline.doTask(new AbstractChunkTask(chunkPos,this){
-          @Override public String getName(){
-            return "Generate Chunk";
-          }
-          @Override public void run(){
-            ChunkImpl chunk=new ChunkImpl(getPosition());
-            generator.createChunk(chunk);
-            if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
-              logger.warn("Chunk {} is already in the near cache",getPosition());
-            }
+        @Override public void run(){
+          ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
+          ChunkImpl chunk=chunkStore.getChunk();
+          try {
+            chunk.lock();
             InternalLightProcessor.generateInternalLighting(chunk);
             chunk.deflate();
-            readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk)));
-            preparingChunks.remove(getPosition());
+            readyChunks.offer(new ReadyChunkInfo(chunk,createBatchBlockEventMappings(chunk),chunkStore));
+          }
+  finally {
+            chunk.unlock();
           }
         }
-);
       }
+);
     }
-    PerformanceMonitor.endActivity();
+ else {
+      pipeline.doTask(new AbstractChunkTask(chunkPos,this){
+        @Override public String getName(){
+          return "Generate Chunk";
+        }
+        @Override public void run(){
+          ChunkImpl chunk=new ChunkImpl(getPosition());
+          generator.createChunk(chunk);
+          InternalLightProcessor.generateInternalLighting(chunk);
+          chunk.deflate();
+          readyChunks.offer(new ReadyChunkInfo(chunk,createBatchBlockEventMappings(chunk)));
+        }
+      }
+);
+    }
   }
 }

@@ -1,11 +1,10 @@
 {
   if (listener != null) {
-    Vector3i pos=readyChunks.poll();
-    if (pos != null) {
-      ChunkImpl chunk=chunkCache.get(pos);
+    ChunkImpl chunk=readyChunks.poll();
+    if (chunk != null) {
       chunk.markReady();
       for (      Side side : Side.horizontalSides()) {
-        Vector3i adjChunkPos=side.getAdjacentPos(pos);
+        Vector3i adjChunkPos=side.getAdjacentPos(chunk.getPos());
         ChunkImpl adjChunk=getChunk(adjChunkPos);
         if (adjChunk != null) {
           for (          BatchPropagator propagator : loadEdgePropagators) {
@@ -16,7 +15,7 @@
       for (      BatchPropagator propagator : loadEdgePropagators) {
         propagator.process();
       }
-      listener.onChunkReady(pos);
+      listener.onChunkReady(chunk.getPos());
     }
   }
 }
