@@ -41,6 +41,7 @@
       String result=cmd.execute(params,callingClient);
       if (result != null && !result.isEmpty()) {
         if (callingClient.exists()) {
+          result=FontColor.getColored(result,ConsoleColors.NOTIFICATION);
           callingClient.send(new ConsoleMessageEvent(result));
         }
  else {
