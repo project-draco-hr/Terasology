@@ -19,7 +19,7 @@
   ChunkMonitor.fireChunkProviderInitialized(this);
   for (  ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
     for (    Vector3i pos : chunkRelevanceRegion.getCurrentRegion()) {
-      pipeline.doTask(new CreateOrLoadChunkTask(pipeline,pos,this));
+      createOrLoadChunk(pos);
     }
     chunkRelevanceRegion.setUpToDate();
   }

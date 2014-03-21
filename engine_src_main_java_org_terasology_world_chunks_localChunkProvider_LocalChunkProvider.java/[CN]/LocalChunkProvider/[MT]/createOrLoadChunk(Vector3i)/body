@@ -3,7 +3,7 @@
   if (chunk == null && !preparingChunks.contains(chunkPos)) {
     preparingChunks.add(chunkPos);
     if (storageManager.containsChunkStoreFor(chunkPos)) {
-      pipeline.doTask(new AbstractChunkTask(chunkPos,this){
+      pipeline.doTask(new AbstractChunkTask(chunkPos){
         @Override public String getName(){
           return "Load Chunk";
         }
@@ -24,7 +24,7 @@
 );
     }
  else {
-      pipeline.doTask(new AbstractChunkTask(chunkPos,this){
+      pipeline.doTask(new AbstractChunkTask(chunkPos){
         @Override public String getName(){
           return "Generate Chunk";
         }

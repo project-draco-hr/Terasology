@@ -1,12 +1,5 @@
 {
   pipeline=new ChunkGenerationPipeline(new ChunkTaskRelevanceComparator());
-  loadEdgePropagators.add(new StandardBatchPropagator(new LightPropagationRules(),new LightWorldView(this)));
-  PropagatorWorldView regenWorldView=new SunlightRegenWorldView(this);
-  PropagationRules sunlightRules=new SunlightPropagationRules(regenWorldView);
-  PropagatorWorldView sunlightWorldView=new SunlightWorldView(this);
-  BatchPropagator sunlightPropagator=new StandardBatchPropagator(sunlightRules,sunlightWorldView);
-  loadEdgePropagators.add(new SunlightRegenBatchPropagator(new SunlightRegenPropagationRules(),regenWorldView,sunlightPropagator,sunlightWorldView));
-  loadEdgePropagators.add(sunlightPropagator);
   ChunkMonitor.fireChunkProviderInitialized(this);
   remoteWorldGenerator=new RemoteWorldGenerator();
 }

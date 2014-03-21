@@ -1,0 +1,12 @@
+{
+  for (  Vector3i pos : Region3i.createFromCenterExtents(chunk.getPos(),1)) {
+    if (chunkCache.get(pos) == null) {
+      return false;
+    }
+  }
+  chunk.markReady();
+  lightMerger.merge(chunk);
+  listener.onChunkReady(chunk.getPos());
+  worldEntity.send(new OnChunkLoaded(chunk.getPos()));
+  return true;
+}

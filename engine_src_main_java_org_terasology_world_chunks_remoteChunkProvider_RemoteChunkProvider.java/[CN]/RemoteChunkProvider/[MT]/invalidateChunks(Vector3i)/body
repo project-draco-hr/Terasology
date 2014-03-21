@@ -1,3 +1,6 @@
 {
-  chunkCache.remove(pos);
+  ChunkImpl removed=chunkCache.remove(pos);
+  if (removed != null && !removed.isReady()) {
+    sortedReadyChunks.remove(removed);
+  }
 }

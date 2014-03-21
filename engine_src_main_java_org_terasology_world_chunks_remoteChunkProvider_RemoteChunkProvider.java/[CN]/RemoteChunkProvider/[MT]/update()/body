@@ -1,21 +1,28 @@
 {
   if (listener != null) {
-    ChunkImpl chunk=readyChunks.poll();
-    if (chunk != null) {
-      chunk.markReady();
-      for (      Side side : Side.horizontalSides()) {
-        Vector3i adjChunkPos=side.getAdjacentPos(chunk.getPos());
-        ChunkImpl adjChunk=getChunk(adjChunkPos);
-        if (adjChunk != null) {
-          for (          BatchPropagator propagator : loadEdgePropagators) {
-            propagator.propagateBetween(chunk,adjChunk,side,true);
-          }
+    List<ChunkImpl> newReadyChunks=Lists.newArrayList();
+    readyChunks.drainTo(newReadyChunks);
+    if (!newReadyChunks.isEmpty()) {
+      sortedReadyChunks.addAll(newReadyChunks);
+      Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
+      for (      ChunkImpl chunk : newReadyChunks) {
+        ChunkImpl oldChunk=chunkCache.put(chunk.getPos(),chunk);
+        if (oldChunk != null) {
+          oldChunk.dispose();
         }
       }
-      for (      BatchPropagator propagator : loadEdgePropagators) {
-        propagator.process();
+    }
+    if (!sortedReadyChunks.isEmpty()) {
+      int loaded=0;
+      for (int i=sortedReadyChunks.size() - 1; i >= 0 && loaded < LOAD_PER_FRAME; i--) {
+        ChunkImpl chunkInfo=sortedReadyChunks.get(i);
+        PerformanceMonitor.startActivity("Make Chunk Available");
+        if (makeChunkAvailable(chunkInfo)) {
+          sortedReadyChunks.remove(i);
+          loaded++;
+        }
+        PerformanceMonitor.endActivity();
       }
-      listener.onChunkReady(chunk.getPos());
     }
   }
 }

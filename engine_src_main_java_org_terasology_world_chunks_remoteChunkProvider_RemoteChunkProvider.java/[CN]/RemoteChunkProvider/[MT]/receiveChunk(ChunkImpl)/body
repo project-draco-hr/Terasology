@@ -1,4 +1,13 @@
 {
-  chunkCache.put(chunk.getPos(),chunk);
-  pipeline.doTask(new InternalLightingChunkTask(pipeline,chunk.getPos(),this));
+  pipeline.doTask(new AbstractChunkTask(chunk.getPos()){
+    @Override public String getName(){
+      return "Internal Light Generation";
+    }
+    @Override public void run(){
+      InternalLightProcessor.generateInternalLighting(chunk);
+      chunk.deflate();
+      onChunkIsReady(chunk);
+    }
+  }
+);
 }

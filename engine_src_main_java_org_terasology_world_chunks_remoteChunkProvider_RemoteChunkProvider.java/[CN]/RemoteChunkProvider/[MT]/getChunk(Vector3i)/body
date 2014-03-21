@@ -1,6 +1,7 @@
 {
-  if (isChunkReady(chunkPos)) {
-    return chunkCache.get(chunkPos);
+  ChunkImpl chunk=chunkCache.get(chunkPos);
+  if (chunk != null && chunk.isReady()) {
+    return chunk;
   }
   return null;
 }
