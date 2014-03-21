@@ -1,0 +1,13 @@
+{
+  clientEntity=entityManager.create("engine:client");
+  EntityRef clientInfo=entityManager.create("engine:clientInfo");
+  DisplayNameComponent displayInfo=clientInfo.getComponent(DisplayNameComponent.class);
+  displayInfo.name=name;
+  clientInfo.saveComponent(displayInfo);
+  ColorComponent colorComp=new ColorComponent();
+  colorComp.color=color;
+  clientInfo.addComponent(colorComp);
+  ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);
+  clientComponent.clientInfo=clientInfo;
+  clientEntity.saveComponent(clientComponent);
+}

@@ -1,19 +1,5 @@
 {
-  EntityRef item=event.getItem();
-  ItemComponent itemToGive=item.getComponent(ItemComponent.class);
-  if (itemToGive == null) {
-    event.consume();
-    return;
-  }
-  List<Integer> slots=event.getSlots();
-  if (slots == null) {
-    int slotCount=InventoryUtils.getSlotCount(entity);
-    slots=new LinkedList<>();
-    for (int slot=0; slot < slotCount; slot++) {
-      slots.add(slot);
-    }
-  }
-  if (giveItemToSlots(event.getInstigator(),entity,item,slots)) {
+  if (giveItem(entity,event.getInstigator(),event.getItem(),event.getSlots())) {
     event.consume();
   }
 }

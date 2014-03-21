@@ -1,27 +1,9 @@
 {
-  for (  EntityRef item : event.getItems()) {
-    ItemComponent itemToRemove=item.getComponent(ItemComponent.class);
-    if (itemToRemove == null) {
-      event.consume();
-      return;
+  final EntityRef result=removeItemInternal(entity,event.getInstigator(),event.getItems(),event.isDestroyRemoved(),event.getCount());
+  if (result != null) {
+    if (result != EntityRef.NULL) {
+      event.setRemovedItem(result);
     }
-  }
-  List<Integer> slotsWithItem=new LinkedList<>();
-  for (  EntityRef item : event.getItems()) {
-    int slotWithItem=InventoryUtils.getSlotWithItem(entity,item);
-    if (slotWithItem == -1) {
-      return;
-    }
-    slotsWithItem.add(slotWithItem);
-  }
-  Integer toRemove=event.getCount();
-  if (toRemove == null) {
-    toRemove=0;
-    for (    EntityRef item : event.getItems()) {
-      toRemove+=InventoryUtils.getStackCount(item);
-    }
-  }
-  if (removeItemFromSlots(event,entity,slotsWithItem,toRemove)) {
     event.consume();
   }
 }

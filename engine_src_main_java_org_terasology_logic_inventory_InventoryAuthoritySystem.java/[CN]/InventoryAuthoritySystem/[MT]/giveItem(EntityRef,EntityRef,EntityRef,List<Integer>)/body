@@ -1,0 +1,15 @@
+{
+  ItemComponent itemToGive=item.getComponent(ItemComponent.class);
+  if (itemToGive == null) {
+    return true;
+  }
+  List<Integer> fillSlots=slots;
+  if (fillSlots == null) {
+    int slotCount=InventoryUtils.getSlotCount(inventory);
+    fillSlots=Lists.newArrayList();
+    for (int slot=0; slot < slotCount; slot++) {
+      fillSlots.add(slot);
+    }
+  }
+  return giveItemToSlots(instigator,inventory,item,fillSlots);
+}

@@ -1,11 +1,9 @@
 {
-  Vector2f mid=new Vector2f(windowSize);
-  mid.scale(0.5f);
-  mid.add(windowPosition);
-  Vector2f pos=screenToWorld(mousePos);
+  Vector2f mouseBefore=screenToWorld(mousePos);
   windowSize.x*=zoomX;
   windowSize.y*=zoomY;
   calculateSizes();
-  windowPosition.x+=(pos.x - mid.x) * 0.1;
-  windowPosition.y+=(pos.y - mid.y) * 0.1;
+  Vector2f mouseAfter=screenToWorld(mousePos);
+  windowPosition.x-=mouseAfter.x - mouseBefore.x;
+  windowPosition.y-=mouseAfter.y - mouseBefore.y;
 }

@@ -1,5 +1,7 @@
 {
   int y=0;
+  Deque<Color> prevColors=new ArrayDeque<>();
+  Color currentColor=defaultColor;
   for (  String line : lines) {
     int w=font.getWidth(line);
     int x=alignment.getOffset(w,maxWidth);
@@ -19,9 +21,12 @@
       }
  else       if (FontColor.isValid(c)) {
         if (c == FontColor.getReset()) {
-          currentColor=defaultColor;
+          if (!prevColors.isEmpty()) {
+            currentColor=prevColors.removeLast();
+          }
         }
  else {
+          prevColors.addLast(currentColor);
           currentColor=FontColor.toColor(c);
         }
       }
