@@ -7,15 +7,10 @@
   if (!message.hasBlockData()) {
     throw new IllegalArgumentException("Ill-formed protobuf message. Missing block data.");
   }
-  final TeraArrays t=TeraArrays.getInstance();
-  final TeraArray blockData=t.decode(message.getBlockData());
-  Chunks c=Chunks.getInstance();
-  TeraArray extraData;
-  if (message.hasLiquidData()) {
-    extraData=t.decode(message.getLiquidData());
+  if (!message.hasLiquidData()) {
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing liquid data.");
   }
- else {
-    extraData=c.getExtraDataEntry().factory.create(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z);
-  }
-  return new ChunkImpl(pos,blockData,extraData);
+  final TeraArray blockData=runLengthDecode(message.getBlockData());
+  final TeraArray liquidData=runLengthDecode(message.getLiquidData());
+  return new ChunkImpl(pos,blockData,liquidData);
 }

@@ -1,0 +1,8 @@
+{
+  Preconditions.checkNotNull(chunk,"The parameter 'chunk' must not be null");
+  Vector3i pos=chunk.getPos();
+  final EntityData.ChunkStore.Builder b=EntityData.ChunkStore.newBuilder().setX(pos.x).setY(pos.y).setZ(pos.z);
+  b.setBlockData(runLengthEncode16(chunk.blockData));
+  b.setLiquidData(runLengthEncode8(chunk.extraData));
+  return b;
+}

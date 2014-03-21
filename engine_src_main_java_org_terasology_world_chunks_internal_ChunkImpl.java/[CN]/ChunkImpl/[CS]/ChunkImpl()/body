@@ -1,10 +1,9 @@
 {
-  final Chunks c=Chunks.getInstance();
-  blockData=c.getBlockDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  sunlightData=c.getSunlightDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  sunlightRegenData=c.getSunlightRegenDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  lightData=c.getLightDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
-  extraData=c.getExtraDataEntry().factory.create(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  blockData=new TeraDenseArray16Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  sunlightData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  sunlightRegenData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  lightData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  extraData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
   dirty=true;
   blockManager=CoreRegistry.get(BlockManager.class);
 }
