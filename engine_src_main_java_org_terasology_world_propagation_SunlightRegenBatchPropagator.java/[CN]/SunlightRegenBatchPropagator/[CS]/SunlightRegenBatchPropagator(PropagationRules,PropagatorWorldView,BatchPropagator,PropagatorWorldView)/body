@@ -3,28 +3,6 @@
   this.regenWorld=regenWorld;
   this.sunlightPropagator=sunlightPropagator;
   this.sunlightWorld=sunlightWorld;
-  for (  Side side : Side.values()) {
-    Vector3i delta=new Vector3i(side.getVector3i());
-    if (delta.x < 0) {
-      delta.x+=ChunkConstants.SIZE_X;
-    }
- else     if (delta.x > 0) {
-      delta.x-=ChunkConstants.SIZE_X;
-    }
-    if (delta.y < 0) {
-      delta.y+=ChunkConstants.SIZE_Y;
-    }
- else     if (delta.y > 0) {
-      delta.y-=ChunkConstants.SIZE_Y;
-    }
-    if (delta.z < 0) {
-      delta.z+=ChunkConstants.SIZE_Z;
-    }
- else     if (delta.z > 0) {
-      delta.z-=ChunkConstants.SIZE_Z;
-    }
-    chunkEdgeDeltas.put(side,delta);
-  }
   increaseQueues=new Set[regenRules.getMaxValue() + 1];
   reduceQueues=new Set[regenRules.getMaxValue() + 1];
   for (int i=0; i < regenRules.getMaxValue() + 1; ++i) {
