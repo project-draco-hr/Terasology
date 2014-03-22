@@ -1,13 +1,6 @@
 {
   String cmdQuery=text.trim();
-  List<CommandInfo> commands=console.getCommandList();
-  Collection<String> commandNames=Collections2.transform(commands,new Function<CommandInfo,String>(){
-    @Override public String apply(    CommandInfo input){
-      return input.getName();
-    }
-  }
-);
-  List<String> matches=Lists.newArrayList(CamelCaseMatcher.getMatches(cmdQuery,commandNames));
+  List<String> matches=Lists.newArrayList(CamelCaseMatcher.getMatches(cmdQuery,allNames));
   Collections.sort(matches);
   if (matches.size() == 1) {
     return matches.iterator().next();

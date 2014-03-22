@@ -1,9 +1,16 @@
 {
   final ScrollableArea scrollArea=find("scrollArea",ScrollableArea.class);
   scrollArea.moveToBottom();
+  List<CommandInfo> commands=console.getCommandList();
+  Collection<String> commandNames=Collections2.transform(commands,new Function<CommandInfo,String>(){
+    @Override public String apply(    CommandInfo input){
+      return input.getName();
+    }
+  }
+);
   commandLine=find("commandLine",UICommandEntry.class);
   getManager().setFocus(commandLine);
-  commandLine.setTabCompletionEngine(new CyclingTabCompletionEngine(console));
+  commandLine.setTabCompletionEngine(new CyclingTabCompletionEngine(console,commandNames));
   commandLine.bindCommandHistory(new ReadOnlyBinding<List<String>>(){
     @Override public List<String> get(){
       return console.getPreviousCommands();
