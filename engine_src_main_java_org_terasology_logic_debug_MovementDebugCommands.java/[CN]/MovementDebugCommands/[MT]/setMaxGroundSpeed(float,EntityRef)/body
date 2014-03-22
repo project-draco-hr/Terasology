@@ -2,7 +2,10 @@
   ClientComponent clientComp=client.getComponent(ClientComponent.class);
   CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
   if (move != null) {
+    float oldSpeed=move.maxGroundSpeed;
     move.maxGroundSpeed=amount;
     clientComp.character.saveComponent(move);
+    return "Max ground speed set to " + amount + " ( was "+ oldSpeed+ " )";
   }
+  return "";
 }

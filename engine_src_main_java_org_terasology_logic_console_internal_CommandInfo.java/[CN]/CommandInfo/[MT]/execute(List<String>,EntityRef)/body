@@ -2,45 +2,40 @@
   Object[] processedParams=new Object[method.getParameterTypes().length];
   if (isClientEntityRequired()) {
     if (params.size() + 1 != method.getParameterTypes().length) {
-      return "Incorrect number of parameters, expected " + (method.getParameterTypes().length - 1);
+      throw new IllegalArgumentException("Incorrect number of parameters, expected " + (method.getParameterTypes().length - 1));
     }
     processedParams[processedParams.length - 1]=callingClient;
   }
  else   if (params.size() != method.getParameterTypes().length) {
-    return "Incorrect number of parameters, expected " + (method.getParameterTypes().length);
+    throw new IllegalArgumentException("Incorrect number of parameters, expected " + (method.getParameterTypes().length));
   }
   for (int i=0; i < params.size(); ++i) {
-    Class<?> type=method.getParameterTypes()[i];
-    if (type == Float.TYPE) {
-      try {
+    try {
+      Class<?> type=method.getParameterTypes()[i];
+      if (type == Float.TYPE) {
         processedParams[i]=Float.parseFloat(params.get(i));
       }
- catch (      NumberFormatException e) {
-        return "Bad argument '" + params.get(i) + "' - "+ e.getMessage();
-      }
-    }
- else     if (type == Integer.TYPE) {
-      try {
+ else       if (type == Integer.TYPE) {
         processedParams[i]=Integer.parseInt(params.get(i));
       }
- catch (      NumberFormatException e) {
-        return "Bad argument '" + params.get(i) + "' - "+ e.getMessage();
+ else       if (type == String.class) {
+        String value=params.get(i);
+        if (value.startsWith("\"") && value.endsWith("\"")) {
+          value=value.substring(1,value.length() - 1);
+        }
+        processedParams[i]=value;
       }
     }
- else     if (type == String.class) {
-      String value=params.get(i);
-      if (value.startsWith("\"") && value.endsWith("\"")) {
-        value=value.substring(1,value.length() - 1);
-      }
-      processedParams[i]=value;
+ catch (    NumberFormatException e) {
+      throw new NumberFormatException("Bad argument '" + params.get(i) + "'");
     }
   }
   try {
     Object result=method.invoke(provider,processedParams);
     return (result != null) ? result.toString() : "";
   }
- catch (  InvocationTargetException|IllegalAccessException e) {
-    logger.error("Error running command {} with parameters {}",name,params,e);
-    return "Error running command: " + e.getMessage();
+ catch (  InvocationTargetException ite) {
+    Throwable e=ite.getTargetException();
+    throw new IllegalArgumentException(e.getLocalizedMessage(),e);
   }
 }

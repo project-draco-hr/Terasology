@@ -2,7 +2,10 @@
   ClientComponent clientComp=client.getComponent(ClientComponent.class);
   CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
   if (move != null) {
+    float oldFric=move.groundFriction;
     move.groundFriction=amount;
     clientComp.character.saveComponent(move);
+    return "Ground friction set to " + amount + " ( was "+ oldFric+ " )";
   }
+  return "";
 }

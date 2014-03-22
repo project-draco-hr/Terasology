@@ -21,13 +21,13 @@
   CommandInfo cmd=commandLookup.get(commandName,params.size());
   if (cmd == null) {
     if (commandLookup.containsRow(commandName)) {
-      addMessage("Incorrect number of parameters. Try:");
+      addErrorMessage("Incorrect number of parameters. Try:");
       for (      CommandInfo ci : commandLookup.row(commandName).values()) {
         addMessage(ci.getUsageMessage());
       }
     }
  else {
-      addMessage("Unknown command '" + commandName + "'");
+      addErrorMessage("Unknown command '" + commandName + "'");
     }
     return false;
   }
@@ -41,7 +41,6 @@
       String result=cmd.execute(params,callingClient);
       if (result != null && !result.isEmpty()) {
         if (callingClient.exists()) {
-          result=FontColor.getColored(result,ConsoleColors.NOTIFICATION);
           callingClient.send(new ConsoleMessageEvent(result));
         }
  else {
@@ -50,10 +49,13 @@
       }
       return true;
     }
- catch (    Exception e) {
-      addMessage(cmd.getUsageMessage());
-      addMessage("Error executing command '" + commandName + "'.");
-      logger.warn("Failed to execute command",e);
+ catch (    IllegalArgumentException e) {
+      addErrorMessage(e.getLocalizedMessage());
+      return false;
+    }
+catch (    Exception e) {
+      addErrorMessage("Error executing command '" + commandName + "': "+ e.getLocalizedMessage());
+      logger.error("Failed to execute command",e);
       return false;
     }
   }
