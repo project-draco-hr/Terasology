@@ -1,0 +1,56 @@
+{
+  double[][][] densityMap=new double[chunk.getChunkSizeX() + 1][chunk.getChunkSizeY() + 1][chunk.getChunkSizeZ() + 1];
+  for (int x=0; x <= chunk.getChunkSizeX(); x+=SAMPLE_RATE_3D_HOR) {
+    for (int z=0; z <= chunk.getChunkSizeZ(); z+=SAMPLE_RATE_3D_HOR) {
+      for (int y=0; y <= chunk.getChunkSizeY(); y+=SAMPLE_RATE_3D_VERT) {
+        densityMap[x][y][z]=calcDensity(chunk.chunkToWorldPositionX(x),chunk.chunkToWorldPositionY(y),chunk.chunkToWorldPositionZ(z));
+      }
+    }
+  }
+  triLerpDensityMap(densityMap);
+  for (int x=0; x < chunk.getChunkSizeX(); x++) {
+    for (int z=0; z < chunk.getChunkSizeZ(); z++) {
+      WorldBiomeProvider.Biome type=biomeProvider.getBiomeAt(chunk.chunkToWorldPositionX(x),chunk.chunkToWorldPositionZ(z));
+      int firstBlockHeight=-1;
+      int yOffset=chunk.getChunkSizeY() * chunk.getPosition().y;
+      for (int y=chunk.getChunkSizeY() - 1; y >= 0; y--) {
+        int yPos=yOffset + y;
+        if (yPos <= 32) {
+          chunk.setBlock(x,y,z,water);
+          chunk.setLiquid(x,y,z,new LiquidData(LiquidType.WATER,LiquidData.MAX_LIQUID_DEPTH));
+          if (yPos == 32) {
+            if (type == WorldBiomeProvider.Biome.SNOW) {
+              chunk.setBlock(x,y,z,ice);
+            }
+          }
+        }
+        double dens=densityMap[x][y][z];
+        if ((dens >= 0 && dens < 32)) {
+          if (firstBlockHeight == -1) {
+            firstBlockHeight=y;
+          }
+          if (calcCaveDensity(chunk.chunkToWorldPositionX(x),yPos,chunk.chunkToWorldPositionZ(z)) > -0.7) {
+            generateOuterLayer(x,y,z,firstBlockHeight,chunk,type);
+          }
+ else {
+            chunk.setBlock(x,y,z,air);
+          }
+          continue;
+        }
+ else         if (dens >= 32) {
+          if (firstBlockHeight == -1) {
+            firstBlockHeight=y;
+          }
+          if (calcCaveDensity(chunk.chunkToWorldPositionX(x),yPos,chunk.chunkToWorldPositionZ(z)) > -0.6) {
+            generateInnerLayer(x,y,z,chunk,type);
+          }
+ else {
+            chunk.setBlock(x,y,z,air);
+          }
+          continue;
+        }
+        firstBlockHeight=-1;
+      }
+    }
+  }
+}

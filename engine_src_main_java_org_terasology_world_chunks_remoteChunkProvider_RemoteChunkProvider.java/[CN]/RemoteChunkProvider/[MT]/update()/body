@@ -1,12 +1,12 @@
 {
   if (listener != null) {
-    List<ChunkImpl> newReadyChunks=Lists.newArrayList();
+    List<Chunk> newReadyChunks=Lists.newArrayList();
     readyChunks.drainTo(newReadyChunks);
     if (!newReadyChunks.isEmpty()) {
       sortedReadyChunks.addAll(newReadyChunks);
       Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
-      for (      ChunkImpl chunk : newReadyChunks) {
-        ChunkImpl oldChunk=chunkCache.put(chunk.getPos(),chunk);
+      for (      Chunk chunk : newReadyChunks) {
+        Chunk oldChunk=chunkCache.put(chunk.getPosition(),chunk);
         if (oldChunk != null) {
           oldChunk.dispose();
         }
@@ -15,7 +15,7 @@
     if (!sortedReadyChunks.isEmpty()) {
       int loaded=0;
       for (int i=sortedReadyChunks.size() - 1; i >= 0 && loaded < LOAD_PER_FRAME; i--) {
-        ChunkImpl chunkInfo=sortedReadyChunks.get(i);
+        Chunk chunkInfo=sortedReadyChunks.get(i);
         PerformanceMonitor.startActivity("Make Chunk Available");
         if (makeChunkAvailable(chunkInfo)) {
           sortedReadyChunks.remove(i);

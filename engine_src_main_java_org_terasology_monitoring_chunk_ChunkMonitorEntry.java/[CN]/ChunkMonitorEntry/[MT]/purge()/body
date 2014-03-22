@@ -1,0 +1,12 @@
+{
+  if (chunks.size() == 0) {
+    return;
+  }
+  final Iterator<WeakReference<Chunk>> it=chunks.iterator();
+  while (it.hasNext()) {
+    final WeakReference<Chunk> w=it.next();
+    if (w.get() == null) {
+      it.remove();
+    }
+  }
+}

@@ -4,19 +4,19 @@
   Vector3i viewingDistance=config.getRendering().getViewDistance().getChunkDistance();
   chunkProvider.update();
   for (  Vector3i pos : Region3i.createFromCenterExtents(newChunkPos,new Vector3i(viewingDistance.x / 2,viewingDistance.y / 2,viewingDistance.z / 2))) {
-    ChunkImpl chunk=chunkProvider.getChunk(pos);
-    if (chunk == null || !chunk.isReady()) {
+    RenderableChunk chunk=chunkProvider.getChunk(pos);
+    if (chunk == null) {
       complete=false;
     }
  else     if (chunk.isDirty()) {
-      ChunkView view=worldProvider.getLocalView(chunk.getPos());
+      ChunkView view=worldProvider.getLocalView(chunk.getPosition());
       if (view == null) {
         continue;
       }
       chunk.setDirty(false);
       ChunkMesh[] newMeshes=new ChunkMesh[VERTICAL_SEGMENTS];
       for (int seg=0; seg < VERTICAL_SEGMENTS; seg++) {
-        newMeshes[seg]=chunkTessellator.generateMesh(view,chunk.getPos(),ChunkConstants.SIZE_Y / VERTICAL_SEGMENTS,seg * (ChunkConstants.SIZE_Y / VERTICAL_SEGMENTS));
+        newMeshes[seg]=chunkTessellator.generateMesh(view,chunk.getPosition(),ChunkConstants.SIZE_Y / VERTICAL_SEGMENTS,seg * (ChunkConstants.SIZE_Y / VERTICAL_SEGMENTS));
       }
       chunk.setPendingMesh(newMeshes);
       if (chunk.getPendingMesh() != null) {

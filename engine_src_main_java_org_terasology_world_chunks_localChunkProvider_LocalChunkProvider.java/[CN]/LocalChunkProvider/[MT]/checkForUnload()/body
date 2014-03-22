@@ -13,7 +13,7 @@
       }
     }
     if (!keep) {
-      ChunkImpl chunk=nearCache.get(pos);
+      Chunk chunk=nearCache.get(pos);
       if (chunk.isLocked()) {
         continue;
       }
@@ -24,7 +24,7 @@
           Iterator<ReadyChunkInfo> infoIterator=sortedReadyChunks.iterator();
           while (infoIterator.hasNext()) {
             ReadyChunkInfo next=infoIterator.next();
-            if (next.getPos().equals(chunk.getPos())) {
+            if (next.getPos().equals(chunk.getPosition())) {
               infoIterator.remove();
               break;
             }
@@ -43,7 +43,7 @@
           unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));
         }
  catch (        InterruptedException e) {
-          logger.error("Failed to enqueue unload request for {}",chunk.getPos(),e);
+          logger.error("Failed to enqueue unload request for {}",chunk.getPosition(),e);
         }
         iterator.remove();
         if (++unloaded >= UNLOAD_PER_FRAME) {

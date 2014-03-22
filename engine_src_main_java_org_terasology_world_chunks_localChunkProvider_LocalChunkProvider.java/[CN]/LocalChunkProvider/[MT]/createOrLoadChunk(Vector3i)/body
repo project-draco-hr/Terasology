@@ -1,5 +1,5 @@
 {
-  ChunkImpl chunk=nearCache.get(chunkPos);
+  Chunk chunk=nearCache.get(chunkPos);
   if (chunk == null && !preparingChunks.contains(chunkPos)) {
     preparingChunks.add(chunkPos);
     if (storageManager.containsChunkStoreFor(chunkPos)) {
@@ -9,7 +9,7 @@
         }
         @Override public void run(){
           ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
-          ChunkImpl chunk=chunkStore.getChunk();
+          Chunk chunk=chunkStore.getChunk();
           try {
             chunk.lock();
             InternalLightProcessor.generateInternalLighting(chunk);
@@ -29,7 +29,7 @@
           return "Generate Chunk";
         }
         @Override public void run(){
-          ChunkImpl chunk=new ChunkImpl(getPosition());
+          Chunk chunk=new ChunkImpl(getPosition());
           generator.createChunk(chunk);
           InternalLightProcessor.generateInternalLighting(chunk);
           chunk.deflate();

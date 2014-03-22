@@ -7,8 +7,8 @@
     if (chunksInProximity.size() == 0 || force || pendingChunks) {
       chunksInProximity.clear();
       for (      Vector3i chunkPosition : viewRegion) {
-        ChunkImpl c=chunkProvider.getChunk(chunkPosition);
-        if (c != null && c.isReady() && worldProvider.getLocalView(c.getPos()) != null) {
+        RenderableChunk c=chunkProvider.getChunk(chunkPosition);
+        if (c != null && worldProvider.getLocalView(c.getPosition()) != null) {
           chunksInProximity.add(c);
         }
  else {
@@ -21,15 +21,15 @@
       Iterator<Vector3i> chunksForRemove=oldRegion.subtract(viewRegion);
       while (chunksForRemove.hasNext()) {
         Vector3i r=chunksForRemove.next();
-        ChunkImpl c=chunkProvider.getChunk(r);
+        RenderableChunk c=chunkProvider.getChunk(r);
         if (c != null) {
           chunksInProximity.remove(c);
           c.disposeMesh();
         }
       }
       for (      Vector3i chunkPosition : viewRegion) {
-        ChunkImpl c=chunkProvider.getChunk(chunkPosition);
-        if (c != null && c.isReady() && worldProvider.getLocalView(c.getPos()) != null) {
+        RenderableChunk c=chunkProvider.getChunk(chunkPosition);
+        if (c != null && worldProvider.getLocalView(c.getPosition()) != null) {
           chunksInProximity.add(c);
         }
  else {

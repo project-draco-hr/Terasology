@@ -1,9 +1,9 @@
 {
   if (renderRegion.encompasses(pos)) {
-    Iterator<ChunkImpl> iterator=chunksInProximity.iterator();
+    Iterator<RenderableChunk> iterator=chunksInProximity.iterator();
     while (iterator.hasNext()) {
-      ChunkImpl chunk=iterator.next();
-      if (chunk.getPos().equals(pos)) {
+      RenderableChunk chunk=iterator.next();
+      if (chunk.getPosition().equals(pos)) {
         chunk.disposeMesh();
         iterator.remove();
         Collections.sort(chunksInProximity,new ChunkFrontToBackComparator());

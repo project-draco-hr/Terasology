@@ -1,7 +1,7 @@
 {
   chunk.lock();
   try {
-    EntityData.ChunkStore.Builder encoded=new ChunkImpl.ProtobufHandler().encode(chunk);
+    EntityData.ChunkStore.Builder encoded=chunk.encode();
     encoded.setStore(entityStore);
     return encoded.build();
   }

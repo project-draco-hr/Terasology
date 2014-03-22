@@ -1,0 +1,41 @@
+{
+  int hmX=(((chunk.getChunkWorldOffsetX() / chunk.getChunkSizeX()) % 512) + 512) % 512;
+  int hmZ=(((chunk.getChunkWorldOffsetZ() / chunk.getChunkSizeZ()) % 512) + 512) % 512;
+  double scaleFactor=0.05 * MAX_HEIGHT;
+  double p00=heightmap[hmX][hmZ] * scaleFactor;
+  double p10=heightmap[(hmX - 1 + 512) % 512][(hmZ) % 512] * scaleFactor;
+  double p11=heightmap[(hmX - 1 + 512) % 512][(hmZ + 1 + 512) % 512] * scaleFactor;
+  double p01=heightmap[(hmX) % 512][(hmZ + 1 + 512) % 512] * scaleFactor;
+  for (int x=0; x < chunk.getChunkSizeX(); x++) {
+    for (int z=0; z < chunk.getChunkSizeZ(); z++) {
+      double interpolatedHeight=lerp(x / (double)chunk.getChunkSizeX(),lerp(z / (double)chunk.getChunkSizeZ(),p10,p11),lerp(z / (double)chunk.getChunkSizeZ(),p00,p01));
+      double threshold=Math.floor(interpolatedHeight);
+      for (int y=0; y < chunk.getChunkSizeY(); ++y) {
+        int worldHeight=y + chunk.getChunkSizeY() * chunk.getPosition().y;
+        if (worldHeight < threshold) {
+          chunk.setBlock(x,y,z,stone);
+        }
+ else         if (worldHeight == threshold) {
+          if (worldHeight < 13) {
+            chunk.setBlock(x,y,z,sand);
+          }
+ else           if (worldHeight < 152) {
+            chunk.setBlock(x,y,z,grass);
+          }
+ else {
+            chunk.setBlock(x,y,z,snow);
+          }
+        }
+ else {
+          if (worldHeight <= 12) {
+            chunk.setBlock(x,y,z,water);
+            chunk.setLiquid(x,y,z,new LiquidData(LiquidType.WATER,LiquidData.MAX_LIQUID_DEPTH));
+          }
+ else {
+            chunk.setBlock(x,y,z,air);
+          }
+        }
+      }
+    }
+  }
+}

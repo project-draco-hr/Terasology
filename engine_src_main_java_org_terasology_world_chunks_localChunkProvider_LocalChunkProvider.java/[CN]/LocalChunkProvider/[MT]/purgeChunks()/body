@@ -2,9 +2,9 @@
   ChunkMonitor.fireChunkProviderDisposed(this);
   pipeline.shutdown();
   unloadRequestTaskMaster.shutdown(new ChunkUnloadRequest(),true);
-  for (  ChunkImpl chunk : nearCache.values()) {
+  for (  Chunk chunk : nearCache.values()) {
     if (chunk.isReady()) {
-      worldEntity.send(new BeforeChunkUnload(chunk.getPos()));
+      worldEntity.send(new BeforeChunkUnload(chunk.getPosition()));
       chunk.dispose();
       ChunkStore store=storageManager.createChunkStoreForSave(chunk);
       store.storeAllEntities();
