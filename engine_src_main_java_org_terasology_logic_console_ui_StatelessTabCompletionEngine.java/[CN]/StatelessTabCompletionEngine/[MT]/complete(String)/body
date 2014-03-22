@@ -7,7 +7,8 @@
     }
   }
 );
-  Collection<String> matches=CamelCaseMatcher.getMatches(cmdQuery,commandNames);
+  List<String> matches=Lists.newArrayList(CamelCaseMatcher.getMatches(cmdQuery,commandNames));
+  Collections.sort(matches);
   if (matches.size() == 1) {
     return matches.iterator().next();
   }
