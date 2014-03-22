@@ -13,7 +13,12 @@
       newRigidBody(entity);
     }
  else {
-      rigidBody.rb.setAngularFactor(rb.angularFactor);
+      if (!rigidBody.rb.getAngularFactor().equals(rb.angularFactor)) {
+        rigidBody.rb.setAngularFactor(rb.angularFactor);
+      }
+      if (!rigidBody.rb.getLinearFactor().equals(rb.linearFactor)) {
+        rigidBody.rb.setLinearFactor(rb.linearFactor);
+      }
       rigidBody.rb.setFriction(rb.friction);
     }
     updateKinematicSettings(entity.getComponent(RigidBodyComponent.class),rigidBody);
