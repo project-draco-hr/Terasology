@@ -12,13 +12,7 @@
     return matches.iterator().next();
   }
  else   if (matches.size() > 1) {
-    StringBuilder commandMatches=new StringBuilder();
-    for (    String cmd : matches) {
-      if (commandMatches.length() != 0) {
-        commandMatches.append(" ");
-      }
-      commandMatches.append(cmd);
-    }
+    String commandMatches=Joiner.on(' ').join(matches);
     console.addMessage(commandMatches.toString());
   }
   return text;

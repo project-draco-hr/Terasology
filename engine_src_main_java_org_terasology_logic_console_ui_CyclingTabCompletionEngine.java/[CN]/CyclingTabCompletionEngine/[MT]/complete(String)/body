@@ -1,0 +1,40 @@
+{
+  if (!matchList.contains(text)) {
+    String cmdQuery=text.trim();
+    List<CommandInfo> commands=console.getCommandList();
+    Collection<String> commandNames=Collections2.transform(commands,new Function<CommandInfo,String>(){
+      @Override public String apply(      CommandInfo input){
+        return input.getName();
+      }
+    }
+);
+    Collection<String> matches=CamelCaseMatcher.getMatches(cmdQuery,commandNames);
+    if (matches.isEmpty()) {
+      return text;
+    }
+    if (matches.size() == 1) {
+      return matches.iterator().next();
+    }
+    if (matches.size() > MAX_CYCLES) {
+      console.addMessage(new Message("Too many hits, please refine your search"));
+      return text;
+    }
+    matchList.clear();
+    matchList.addAll(matches);
+    index=0;
+  }
+  StringBuilder commandMatches=new StringBuilder();
+  for (int i=0; i < matchList.size(); i++) {
+    if (commandMatches.length() != 0) {
+      commandMatches.append(" ");
+    }
+    String name=matchList.get(i);
+    if (index == i) {
+      name=FontColor.getColored(name,Color.BLACK);
+    }
+    commandMatches.append(name);
+  }
+  console.addMessage(commandMatches.toString());
+  index=(index + 1) % matchList.size();
+  return matchList.get(index);
+}
