@@ -12,14 +12,14 @@
       clientEntityRequired=true;
     }
  else {
-      String paramName=method.getParameterTypes()[i].getSimpleName();
-      for (      Annotation paramAnnot : method.getParameterAnnotations()[i]) {
-        if (paramAnnot instanceof CommandParam) {
-          paramName=((CommandParam)paramAnnot).value();
-          break;
-        }
+      String paramType=parameterType.getSimpleName().toLowerCase();
+      String paramName=getParamName(i);
+      if (paramName == null) {
+        paramName="p" + i;
+        logger.warn("Parameter {} in method {} does not have a CommandParam annotation",i,method);
       }
       parameterNames.add(paramName);
+      parameterTypes.add(paramType);
     }
   }
   this.runOnServer=commandAnnotation.runOnServer();
