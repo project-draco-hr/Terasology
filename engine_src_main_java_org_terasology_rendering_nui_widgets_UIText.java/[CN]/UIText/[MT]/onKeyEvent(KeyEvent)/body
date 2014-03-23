@@ -3,84 +3,97 @@
   if (event.isDown() && lastFont != null) {
     String fullText=text.get();
 switch (event.getKey().getId()) {
-case Keyboard.KeyId.BACKSPACE:
+case KeyId.LEFT:
 {
-        if (hasSelection()) {
-          removeSelection();
+        if (hasSelection() && !isSelectionModifierActive()) {
+          cursorPosition=Math.min(cursorPosition,selectionStart);
+          selectionStart=cursorPosition;
         }
  else         if (cursorPosition > 0) {
-          String before=fullText.substring(0,cursorPosition - 1);
-          String after=fullText.substring(cursorPosition);
-          setText(before + after);
           cursorPosition--;
-          selectionStart=cursorPosition;
+          if (!isSelectionModifierActive()) {
+            selectionStart=cursorPosition;
+          }
         }
         event.consume();
         break;
       }
-case Keyboard.KeyId.DELETE:
+case KeyId.RIGHT:
 {
-      if (hasSelection()) {
-        removeSelection();
+      if (hasSelection() && !isSelectionModifierActive()) {
+        cursorPosition=Math.max(cursorPosition,selectionStart);
+        selectionStart=cursorPosition;
       }
  else       if (cursorPosition < fullText.length()) {
-        String before=fullText.substring(0,cursorPosition);
-        String after=fullText.substring(cursorPosition + 1);
-        setText(before + after);
+        cursorPosition++;
+        if (!isSelectionModifierActive()) {
+          selectionStart=cursorPosition;
+        }
       }
       event.consume();
       break;
     }
-case Keyboard.KeyId.LEFT:
+case KeyId.HOME:
 {
-    if (hasSelection() && !isSelectionModifierActive()) {
-      cursorPosition=Math.min(cursorPosition,selectionStart);
+    cursorPosition=0;
+    offset=0;
+    if (!isSelectionModifierActive()) {
       selectionStart=cursorPosition;
-    }
- else     if (cursorPosition > 0) {
-      cursorPosition--;
-      if (!isSelectionModifierActive()) {
-        selectionStart=cursorPosition;
-      }
     }
     event.consume();
     break;
   }
-case Keyboard.KeyId.RIGHT:
+case KeyId.END:
 {
-  if (hasSelection() && !isSelectionModifierActive()) {
-    cursorPosition=Math.max(cursorPosition,selectionStart);
+  cursorPosition=fullText.length();
+  if (!isSelectionModifierActive()) {
     selectionStart=cursorPosition;
-  }
- else   if (cursorPosition < fullText.length()) {
-    cursorPosition++;
-    if (!isSelectionModifierActive()) {
-      selectionStart=cursorPosition;
-    }
   }
   event.consume();
   break;
 }
-case Keyboard.KeyId.HOME:
+default :
 {
-cursorPosition=0;
-offset=0;
-if (!isSelectionModifierActive()) {
+if (Keyboard.isKeyDown(KeyId.LEFT_CTRL) || Keyboard.isKeyDown(KeyId.RIGHT_CTRL)) {
+  if (event.getKey() == Keyboard.Key.C) {
+    copySelection();
+    event.consume();
+    break;
+  }
+}
+}
+}
+if (!readOnly) {
+switch (event.getKey().getId()) {
+case KeyId.BACKSPACE:
+{
+if (hasSelection()) {
+  removeSelection();
+}
+ else if (cursorPosition > 0) {
+  String before=fullText.substring(0,cursorPosition - 1);
+  String after=fullText.substring(cursorPosition);
+  setText(before + after);
+  cursorPosition--;
   selectionStart=cursorPosition;
 }
 event.consume();
 break;
 }
-case Keyboard.KeyId.END:
+case KeyId.DELETE:
 {
-cursorPosition=fullText.length();
-if (!isSelectionModifierActive()) {
-selectionStart=cursorPosition;
+if (hasSelection()) {
+removeSelection();
+}
+ else if (cursorPosition < fullText.length()) {
+String before=fullText.substring(0,cursorPosition);
+String after=fullText.substring(cursorPosition + 1);
+setText(before + after);
 }
 event.consume();
 break;
 }
-case Keyboard.KeyId.ENTER:
+case KeyId.ENTER:
 {
 for (ActivateEventListener listener : listeners) {
 listener.onActivated(this);
@@ -90,15 +103,10 @@ break;
 }
 default :
 {
-if (org.terasology.input.Keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL) || org.terasology.input.Keyboard.isKeyDown(Keyboard.KeyId.RIGHT_CTRL)) {
+if (Keyboard.isKeyDown(KeyId.LEFT_CTRL) || Keyboard.isKeyDown(KeyId.RIGHT_CTRL)) {
 if (event.getKey() == Keyboard.Key.V) {
 removeSelection();
 paste();
-event.consume();
-break;
-}
- else if (event.getKey() == Keyboard.Key.C) {
-copySelection();
 event.consume();
 break;
 }
@@ -118,6 +126,7 @@ selectionStart=cursorPosition;
 event.consume();
 }
 break;
+}
 }
 }
 }

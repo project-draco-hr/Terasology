@@ -4,11 +4,17 @@
   int end=Math.max(cursorPosition,selectionStart);
   String beforeCursor=text.get().substring(0,start);
   String selectionText=text.get().substring(start,end);
-  List<String> lines=TextLineBuilder.getLines(font,beforeCursor,canvas.size().x);
-  int lastLineWidth=font.getWidth(lines.get(lines.size() - 1));
-  Vector2i selectionTopLeft=new Vector2i(lastLineWidth,(lines.size() - 1) * font.getLineHeight());
-  int selectionWidth=font.getWidth(selectionText);
-  Rect2i region=Rect2i.createFromMinAndSize(selectionTopLeft.x,selectionTopLeft.y,selectionWidth,font.getLineHeight());
-  canvas.drawTexture(cursorTexture,region,canvas.getCurrentStyle().getTextColor());
-  canvas.drawTextRaw(selectionText,font,canvas.getCurrentStyle().getTextColor().inverse(),region);
+  Color textColor=canvas.getCurrentStyle().getTextColor();
+  List<String> linesBefore=TextLineBuilder.getLines(font,beforeCursor,canvas.size().x);
+  List<String> linesSelected=TextLineBuilder.getLines(font,selectionText,canvas.size().x);
+  int lastLineWidth=font.getWidth(linesBefore.get(linesBefore.size() - 1));
+  for (int i=0; i < linesSelected.size(); i++) {
+    int startX=(i == 0) ? lastLineWidth : 0;
+    Vector2i selectionTopLeft=new Vector2i(startX,(i + linesBefore.size() - 1) * font.getLineHeight());
+    String selLine=linesSelected.get(i);
+    int selectionWidth=font.getWidth(selLine);
+    Rect2i region=Rect2i.createFromMinAndSize(selectionTopLeft.x,selectionTopLeft.y,selectionWidth,font.getLineHeight());
+    canvas.drawTexture(cursorTexture,region,textColor);
+    canvas.drawTextRaw(selLine,font,textColor.inverse(),region);
+  }
 }
