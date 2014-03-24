@@ -1,0 +1,8 @@
+{
+  EntityRef clientInfo=sender.getComponent(ClientComponent.class).clientInfo;
+  NetworkComponent network=clientInfo.getComponent(NetworkComponent.class);
+  DisplayNameComponent name=clientInfo.getComponent(DisplayNameComponent.class);
+  logger.info("Restart triggered by {} ({})",name.name,network.getNetworkId());
+  CoreRegistry.get(GameEngine.class).restart();
+  return "Server restart triggered";
+}
