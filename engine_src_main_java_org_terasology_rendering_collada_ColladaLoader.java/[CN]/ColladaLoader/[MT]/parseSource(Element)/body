@@ -1,32 +1,29 @@
 {
-  Source source=new Source();
+  MeshDataSource meshDataSource=new MeshDataSource();
   ElementSet accessorSet=sourceElement.find("technique_common","accessor");
   if (1 != accessorSet.size()) {
     throw new ColladaParseException("Found " + accessorSet.size() + " accessor sets for sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
   }
   Element accessor=accessorSet.first();
   String accessorCount=accessor.attr("count");
-  source.count=Integer.parseInt(accessorCount);
+  meshDataSource.count=Integer.parseInt(accessorCount);
   String accessorStride=accessor.attr("stride");
-  if (null != accessorStride) {
-    source.stride=Integer.parseInt(accessorStride);
-  }
+  meshDataSource.stride=Integer.parseInt(accessorStride);
   String accessorSource=accessor.attr("source");
-  source.accessorSource=accessorSource;
-  ElementSet paramSet=accessor.find("param");
+  ElementSet paramSet=sourceElement.find("param");
   int paramSize=paramSet.size();
-  source.parameterNames=new String[paramSize];
-  source.parameterTypes=new String[paramSize];
+  meshDataSource.parameterNames=new String[paramSize];
+  meshDataSource.parameterTypes=new String[paramSize];
   for (int i=0; i < paramSize; i++) {
     Element param=paramSet.get(i);
-    source.parameterNames[i]=param.attr("name");
-    source.parameterTypes[i]=param.attr("type");
+    meshDataSource.parameterNames[i]=param.attr("name");
+    meshDataSource.parameterTypes[i]=param.attr("type");
   }
-  Element objectArray=sourceElement.select(accessorSource);
-  if (null == objectArray) {
+  Element floatArray=sourceElement.select(accessorSource);
+  if (null == floatArray) {
     throw new ColladaParseException("Unable to find id " + accessorSource + " for float array in sourceElement id="+ sourceElement.id()+ " name="+ sourceElement.name());
   }
-  String arraySizeString=objectArray.attr("count");
+  String arraySizeString=floatArray.attr("count");
   int arraySize=Integer.parseInt(arraySizeString);
   meshDataSource.values=new float[arraySize];
   String floatArrayDataString=floatArray.text().trim();
@@ -38,5 +35,5 @@
     String floatString=floatStrings[i];
     meshDataSource.values[i]=Float.parseFloat(floatString);
   }
-  return source;
+  return meshDataSource;
 }

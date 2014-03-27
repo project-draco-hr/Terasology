@@ -6,18 +6,8 @@
   colors=new TFloatArrayList();
   indices=new TIntArrayList();
   int vertCount=0;
-  ElementSet upAxisSet=rootElement.find("asset","up_axis");
-  if (1 != upAxisSet.size()) {
-    throw new ColladaParseException("Found multiple up_axis asset values");
-  }
-  Element upAxisElement=upAxisSet.first();
-  String upAxis=upAxisElement.text();
-  boolean yUp="Y_UP".equals(upAxis);
-  boolean zUp="Z_UP".equals(upAxis);
-  boolean xUp="X_UP".equals(upAxis);
-  if (xUp) {
-    throw new ColladaParseException("Not supporting X_UP as the upAxis value yet.");
-  }
+  Document document=Xml.xml(contents);
+  Element rootElement=document.getRootElement();
   ElementSet geometrySet=rootElement.find("library_geometries","geometry");
   for (  Element geometry : geometrySet) {
     ElementSet meshSet=geometry.find("mesh");
@@ -28,7 +18,7 @@
     for (    Element mesh : meshSet) {
       ElementSet trianglesSet=mesh.find("triangles");
       for (      Element triangles : trianglesSet) {
-        vertCount=parseTriangles(rootElement,vertices,texCoord0,normals,indices,colors,vertCount,geometry,mesh,triangles,yUp,zUp);
+        vertCount=parseTriangles(vertices,texCoord0,normals,indices,vertCount,geometry,mesh,triangles);
       }
       ElementSet polylistSet=mesh.find("polylist");
       for (      Element polylist : polylistSet) {
@@ -36,15 +26,14 @@
         if (1 != vCountSet.size()) {
           throw new ColladaParseException("Found " + vCountSet.size() + " vcount sets for polylist in geometry id="+ geometry.id()+ " name="+ geometry.name());
         }
-        Element vCountElement=vCountSet.first();
-        TIntList vcountList=new TIntArrayList();
-        String[] vCountStrings=getItemsInString(vCountElement.text());
+        Element vCount=vCountSet.first();
+        String[] vCountStrings=getItemsInString(vCount.text());
         for (        String string : vCountStrings) {
           if (!"3".equals(string)) {
             throw new ColladaParseException("Found vertex count of " + string + " in polylist sets for geometry id="+ geometry.id()+ " name="+ geometry.name()+ ".  polylist vertex counts other than 3 currently unsupported.  You must trianglulate the model.");
           }
         }
-        vertCount=parseFaces(rootElement,vcountList,vertices,texCoord0,normals,indices,colors,vertCount,geometry,mesh,polylist,yUp,zUp);
+        vertCount=parseTriangles(vertices,texCoord0,normals,indices,vertCount,geometry,mesh,polylist);
       }
     }
   }
