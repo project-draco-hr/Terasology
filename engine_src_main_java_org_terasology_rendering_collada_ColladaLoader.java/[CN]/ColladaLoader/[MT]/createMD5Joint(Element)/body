@@ -1,0 +1,28 @@
+{
+  MD5Joint md5Joint=new MD5Joint();
+  ElementSet matrixSet=jointNodeElement.find("matrix");
+  if (1 == matrixSet.size()) {
+    Element matrix=matrixSet.first();
+    String floatStringArray=matrix.text();
+    String[] floatStrings=getItemsInString(floatStringArray);
+    if (floatStrings.length != 16) {
+      throw new ColladaParseException("Found float list of " + floatStrings.length + " instead of 16 for joint matrix sets for element "+ jointNodeElement.id());
+    }
+    float[] matrixDataArray=new float[16];
+    for (int i=0; i < floatStrings.length; i++) {
+      String floatString=floatStrings[i];
+      matrixDataArray[i]=Float.parseFloat(floatString);
+    }
+    Quat4f[] jointMatrix=quad4fArrayFromFloat16ArrayData(matrixDataArray);
+    Vector3f[] positionVectorArray=positionFromFloat16ArrayData(matrixDataArray);
+    md5Joint.position=positionVectorArray[0];
+    md5Joint.orientation=jointMatrix[0];
+  }
+ else   if (1 < matrixSet.size()) {
+    throw new ColladaParseException("Found " + matrixSet.size() + " joint matrix sets for element "+ jointNodeElement.id());
+  }
+  md5Joint.element=jointNodeElement;
+  md5Joint.name=jointNodeElement.id();
+  md5Joint.childList=new ArrayList<MD5Joint>();
+  return md5Joint;
+}
