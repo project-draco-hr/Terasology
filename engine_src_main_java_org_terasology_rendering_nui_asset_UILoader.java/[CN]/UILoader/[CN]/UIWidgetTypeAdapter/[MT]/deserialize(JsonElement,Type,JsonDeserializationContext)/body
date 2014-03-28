@@ -1,4 +1,7 @@
 {
+  if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
+    return new UILabel(json.getAsString());
+  }
   JsonObject jsonObject=json.getAsJsonObject();
   String type=jsonObject.get("type").getAsString();
   ClassMetadata<? extends UIWidget,?> elementMetadata=nuiManager.getWidgetMetadataLibrary().resolve(type,ModuleContext.getContext());
