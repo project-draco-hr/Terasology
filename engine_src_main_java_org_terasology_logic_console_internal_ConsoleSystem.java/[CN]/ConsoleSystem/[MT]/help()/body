@@ -3,11 +3,9 @@
   List<CommandInfo> commands=console.getCommandList();
   for (  CommandInfo cmd : commands) {
     if (!msg.toString().isEmpty()) {
-      msg.append("\n");
+      msg.append(Message.NEW_LINE);
     }
-    msg.append(FontColor.toChar(ConsoleColors.COMMAND));
-    msg.append(cmd.getUsageMessage());
-    msg.append(FontColor.getReset());
+    msg.append(FontColor.getColored(cmd.getUsageMessage(),ConsoleColors.COMMAND));
     msg.append(" - ");
     msg.append(cmd.getShortDescription());
   }

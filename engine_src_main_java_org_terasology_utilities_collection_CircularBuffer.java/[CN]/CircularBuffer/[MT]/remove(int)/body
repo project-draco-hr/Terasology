@@ -1,0 +1,14 @@
+{
+  if (idx < 0 || idx >= occupancy) {
+    throw new IndexOutOfBoundsException();
+  }
+  T old=buffer[calculateIndex(idx)];
+  for (int i=idx; i < occupancy - 1; i++) {
+    int thisIdx=calculateIndex(i);
+    int nextIdx=calculateIndex(i + 1);
+    buffer[thisIdx]=buffer[nextIdx];
+  }
+  buffer[calculateIndex(occupancy - 1)]=null;
+  occupancy--;
+  return old;
+}

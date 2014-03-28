@@ -1,8 +1,16 @@
 {
   final ScrollableArea scrollArea=find("scrollArea",ScrollableArea.class);
   scrollArea.moveToBottom();
+  List<CommandInfo> commands=console.getCommandList();
+  Collection<String> commandNames=Collections2.transform(commands,new Function<CommandInfo,String>(){
+    @Override public String apply(    CommandInfo input){
+      return input.getName();
+    }
+  }
+);
   commandLine=find("commandLine",UICommandEntry.class);
-  commandLine.setTabCompletionEngine(new ConsoleTabCompletionEngine(console));
+  getManager().setFocus(commandLine);
+  commandLine.setTabCompletionEngine(new CyclingTabCompletionEngine(console,commandNames));
   commandLine.bindCommandHistory(new ReadOnlyBinding<List<String>>(){
     @Override public List<String> get(){
       return console.getPreviousCommands();
@@ -17,7 +25,7 @@
     }
   }
 );
-  final UILabel history=find("messageHistory",UILabel.class);
+  final UIText history=find("messageHistory",UIText.class);
   history.bindText(new ReadOnlyBinding<String>(){
     @Override public String get(){
       StringBuilder messageList=new StringBuilder();
@@ -25,10 +33,7 @@
       while (messageIterator.hasNext()) {
         Message message=messageIterator.next();
         messageList.append(FontColor.getColored(message.getMessage(),message.getType().getColor()));
-        messageList.append("\n");
-        if (messageIterator.hasNext()) {
-          messageList.append("\n");
-        }
+        messageList.append(Message.NEW_LINE);
       }
       return messageList.toString();
     }
