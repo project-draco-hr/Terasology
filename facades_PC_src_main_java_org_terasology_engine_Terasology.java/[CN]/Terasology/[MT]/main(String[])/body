@@ -26,19 +26,15 @@
  else {
       subsystemList=Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput());
     }
-    TerasologyEngine engine;
-    do {
-      engine=new TerasologyEngine(subsystemList);
-      engine.init();
-      if (isHeadless) {
-        engine.run(new StateHeadlessSetup());
-      }
- else {
-        engine.run(new StateMainMenu());
-      }
-      engine.dispose();
+    TerasologyEngine engine=new TerasologyEngine(subsystemList);
+    engine.init();
+    if (isHeadless) {
+      engine.run(new StateHeadlessSetup());
     }
- while (engine.wantRestart());
+ else {
+      engine.run(new StateMainMenu());
+    }
+    engine.dispose();
   }
  catch (  Throwable t) {
     String text=getNestedMessageText(t);
