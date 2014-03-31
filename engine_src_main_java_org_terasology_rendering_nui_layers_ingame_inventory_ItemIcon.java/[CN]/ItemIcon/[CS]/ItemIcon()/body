@@ -1,7 +1,8 @@
 {
   tooltip=new UIList<>();
   tooltip.setSelectable(false);
-  tooltip.setSkin(Assets.getSkin("Engine:itemTooltip"));
-  tooltip.setItemRenderer(new TooltipLineRenderer());
+  final UISkin defaultSkin=Assets.getSkin("Engine:itemTooltip");
+  tooltip.setSkin(defaultSkin);
+  tooltip.setItemRenderer(new TooltipLineRenderer(defaultSkin));
   tooltip.bindList(new DefaultBinding<List<TooltipLine>>(new ArrayList<TooltipLine>()));
 }

@@ -1,11 +1,20 @@
 {
-  Font font=value.getFont();
-  if (font == null) {
-    font=canvas.getCurrentStyle().getFont();
+  final UISkin skin=value.getSkin();
+  if (skin != null) {
+    canvas.setSkin(skin);
+    canvas.setFamily(value.getFamily());
+    canvas.drawText(value.getText());
   }
-  Color color=value.getColor();
-  if (color == null) {
-    color=canvas.getCurrentStyle().getTextColor();
+ else {
+    canvas.setSkin(defaultSkin);
+    Font font=value.getFont();
+    if (font == null) {
+      font=canvas.getCurrentStyle().getFont();
+    }
+    Color color=value.getColor();
+    if (color == null) {
+      color=canvas.getCurrentStyle().getTextColor();
+    }
+    canvas.drawTextRaw(value.getText(),font,color,canvas.getRegion());
   }
-  canvas.drawTextRaw(value.getText(),font,color,canvas.getRegion());
 }
