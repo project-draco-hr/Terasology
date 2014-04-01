@@ -13,8 +13,12 @@
   TFloatList texCoord0Mesh=data.getTexCoord0();
   TFloatList normalsMesh=data.getNormals();
   TIntList indicesMesh=data.getIndices();
+  for (int i=0; i < this.vertices.size(); i++) {
+    float originalVertexValue=this.vertices.get(i);
+    float adjustedVertexValue=(float)(originalVertexValue * unitsPerMeter);
+    verticesMesh.add(adjustedVertexValue);
+  }
   colorsMesh.addAll(this.colors);
-  verticesMesh.addAll(this.vertices);
   texCoord0Mesh.addAll(this.texCoord0);
   normalsMesh.addAll(this.normals);
   indicesMesh.addAll(this.indices);
