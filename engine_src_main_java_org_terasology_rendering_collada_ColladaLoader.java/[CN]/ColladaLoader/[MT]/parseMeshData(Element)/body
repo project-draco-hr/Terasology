@@ -12,6 +12,15 @@
   }
   Element upAxisElement=upAxisSet.first();
   String upAxis=upAxisElement.text();
+  ElementSet unitSet=rootElement.find("asset","unit");
+  if (1 != unitSet.size()) {
+    throw new ColladaParseException("Found multiple unit asset values");
+  }
+  Element unitElement=unitSet.first();
+  String unitsPerMeterString=unitElement.attr("meter");
+  if (null != unitsPerMeterString) {
+    unitsPerMeter=Double.parseDouble(unitsPerMeterString);
+  }
   boolean yUp="Y_UP".equals(upAxis);
   boolean zUp="Z_UP".equals(upAxis);
   boolean xUp="X_UP".equals(upAxis);
