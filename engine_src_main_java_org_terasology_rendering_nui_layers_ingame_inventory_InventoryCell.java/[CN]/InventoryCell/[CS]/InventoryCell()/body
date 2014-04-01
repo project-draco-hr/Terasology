@@ -1,11 +1,16 @@
 {
-  icon.bindTooltipString(new ReadOnlyBinding<String>(){
-    @Override public String get(){
+  icon.bindTooltipLines(new ReadOnlyBinding<List<TooltipLine>>(){
+    @Override public List<TooltipLine> get(){
+      GetItemTooltip itemTooltip;
       DisplayNameComponent displayNameComponent=getTargetItem().getComponent(DisplayNameComponent.class);
       if (displayNameComponent != null) {
-        return displayNameComponent.name;
+        itemTooltip=new GetItemTooltip(displayNameComponent.name);
       }
-      return "";
+ else {
+        itemTooltip=new GetItemTooltip();
+      }
+      getTargetItem().send(itemTooltip);
+      return itemTooltip.getTooltipLines();
     }
   }
 );
