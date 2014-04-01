@@ -1,0 +1,26 @@
+{
+  AccessController.doPrivileged(new PrivilegedAction<Object>(){
+    @Override public Object run(){
+      Set<Class<? extends WorldDataProvider>> implemented=Sets.newHashSet(ReflectionUtil.getInheritanceTree(provider.getClass(),WorldDataProvider.class));
+      for (      Field field : ReflectionUtils.getAllFields(provider.getClass(),ReflectionUtils.withAnnotation(Requires.class))) {
+        if (!implemented.contains(field.getType())) {
+          WorldDataProvider source=sourceProviders.get(field.getType());
+          if (source != null) {
+            try {
+              field.setAccessible(true);
+              field.set(provider,source);
+            }
+ catch (            IllegalAccessException e) {
+              logger.error("Failed to inject value {} into field {}",source,field,e);
+            }
+          }
+ else {
+            logger.error("Missing required provider {} for {}",field.getType(),provider.getClass());
+          }
+        }
+      }
+      return null;
+    }
+  }
+);
+}

@@ -1,0 +1,9 @@
+{
+  for (  WorldDataProvider provider : providersList) {
+    injectUnchainedDependencies(provider,providersMap);
+  }
+  for (  WorldRasterizer rasterizer : rasterizers) {
+    InjectionHelper.inject(rasterizer,Requires.class,providersMap);
+  }
+  return new WorldImpl(seed,providersMap,rasterizers);
+}
