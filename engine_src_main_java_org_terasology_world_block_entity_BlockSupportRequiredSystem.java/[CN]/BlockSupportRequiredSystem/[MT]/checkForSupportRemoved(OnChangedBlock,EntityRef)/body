@@ -1,9 +1,30 @@
 {
   if (event.getNewType() == BlockManager.getAir()) {
-    final Vector3i blockPosition=Side.TOP.getAdjacentPos(event.getBlockPosition());
-    final Block block=worldProvider.getBlock(blockPosition);
-    if (block.isSupportRequired()) {
-      blockEntityRegistry.getBlockEntityAt(blockPosition).send(new DestroyEvent(EntityRef.NULL,EntityRef.NULL,EngineDamageTypes.DIRECT.get()));
+    boolean initialEvent=!midDestruction;
+    if (initialEvent) {
+      midDestruction=true;
+      gatheringEntity=entityManager.create();
+      gatheringEntity.addComponent(new InventoryComponent(20));
+    }
+    try {
+      for (      Side side : Side.values()) {
+        validateSupportForBlockOnSide(event.getBlockPosition(),side);
+      }
+      if (initialEvent) {
+        PickupBuilder pickupBuilder=new PickupBuilder(entityManager);
+        for (int i=0; i < 20; i++) {
+          EntityRef item=inventoryManager.getItemInSlot(gatheringEntity,i);
+          if (item.exists()) {
+            pickupBuilder.createPickupFor(item,event.getBlockPosition().toVector3f(),60,true);
+          }
+        }
+      }
+    }
+  finally {
+      if (initialEvent) {
+        midDestruction=false;
+        gatheringEntity.destroy();
+      }
     }
   }
 }
