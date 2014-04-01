@@ -1,10 +1,5 @@
 {
-  UISkin skin=value.getSkin();
-  if (skin == null) {
-    skin=defaultSkin;
-  }
-  final UIStyle style=skin.getStyleFor(value.getFamily(),UIList.class,"item",UIWidget.DEFAULT_MODE);
-  Font font=style.getFont();
+  Font font=getFont(value);
   List<String> lines=TextLineBuilder.getLines(font,value.getText(),canvas.size().x);
   return font.getSize(lines);
 }
