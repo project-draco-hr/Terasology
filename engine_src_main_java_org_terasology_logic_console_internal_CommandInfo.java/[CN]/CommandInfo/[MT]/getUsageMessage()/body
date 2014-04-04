@@ -1,8 +1,10 @@
 {
-  StringBuilder builder=new StringBuilder(name);
-  for (  String param : parameterNames) {
+  StringBuilder builder=new StringBuilder(FontColor.getColored(name,ConsoleColors.COMMAND));
+  for (int i=0; i < parameterNames.size(); i++) {
     builder.append(" <");
-    builder.append(param);
+    builder.append(parameterTypes.get(i));
+    builder.append(" ");
+    builder.append(parameterNames.get(i));
     builder.append(">");
   }
   return builder.toString();

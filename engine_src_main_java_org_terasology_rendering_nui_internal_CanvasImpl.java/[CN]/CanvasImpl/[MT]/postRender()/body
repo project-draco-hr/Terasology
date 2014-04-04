@@ -4,8 +4,11 @@
   }
   drawOnTopOperations.clear();
   if (topMouseOverRegion != null && time.getGameTime() >= tooltipTime && getSkin() != null) {
-    tooltipWidget.setText(topMouseOverRegion.getTooltip());
+    tooltipWidget.setAttachment(topMouseOverRegion.getTooltip());
     drawWidget(tooltipWidget);
+  }
+ else {
+    tooltipWidget.setAttachment(null);
   }
   renderer.postRender();
   if (!focusDrawn) {

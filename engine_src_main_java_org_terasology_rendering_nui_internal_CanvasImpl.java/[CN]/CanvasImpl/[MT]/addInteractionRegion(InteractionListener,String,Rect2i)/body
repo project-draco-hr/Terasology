@@ -1,12 +1,4 @@
 {
-  Rect2i finalRegion=state.cropRegion.intersect(relativeToAbsolute(region));
-  if (!finalRegion.isEmpty()) {
-    listener.setFocusManager(nuiManager);
-    if (state.drawOnTop) {
-      drawOnTopOperations.add(new DrawInteractionRegionOperation(finalRegion,listener,state.element,tooltip));
-    }
- else {
-      interactionRegions.addLast(new InteractionRegion(finalRegion,listener,state.element,tooltip));
-    }
-  }
+  UIWidget tooltipLabelWidget=(tooltip == null || tooltip.isEmpty()) ? null : new UILabel(tooltip);
+  addInteractionRegion(listener,tooltipLabelWidget,region);
 }

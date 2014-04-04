@@ -1,14 +1,43 @@
 {
   Font font=canvas.getCurrentStyle().getFont();
+  String currentText=getText();
   int start=Math.min(cursorPosition,selectionStart);
   int end=Math.max(cursorPosition,selectionStart);
-  String beforeCursor=text.get().substring(0,start);
-  String selectionText=text.get().substring(start,end);
-  List<String> lines=TextLineBuilder.getLines(font,beforeCursor,canvas.size().x);
-  int lastLineWidth=font.getWidth(lines.get(lines.size() - 1));
-  Vector2i selectionTopLeft=new Vector2i(lastLineWidth,(lines.size() - 1) * font.getLineHeight());
-  int selectionWidth=font.getWidth(selectionText);
-  Rect2i region=Rect2i.createFromMinAndSize(selectionTopLeft.x,selectionTopLeft.y,selectionWidth,font.getLineHeight());
-  canvas.drawTexture(cursorTexture,region,canvas.getCurrentStyle().getTextColor());
-  canvas.drawTextRaw(selectionText,font,canvas.getCurrentStyle().getTextColor().inverse(),region);
+  Color textColor=canvas.getCurrentStyle().getTextColor();
+  int canvasWidth=(multiline) ? canvas.size().x : Integer.MAX_VALUE;
+  List<String> rawLinesAfterCursor=TextLineBuilder.getLines(font,currentText,Integer.MAX_VALUE);
+  int currentChar=0;
+  int lineOffset=0;
+  for (int lineIndex=0; lineIndex < rawLinesAfterCursor.size() && currentChar <= end; ++lineIndex) {
+    String line=rawLinesAfterCursor.get(lineIndex);
+    List<String> innerLines=TextLineBuilder.getLines(font,line,canvasWidth);
+    for (int innerLineIndex=0; innerLineIndex < innerLines.size() && currentChar <= end; ++innerLineIndex) {
+      String innerLine=innerLines.get(innerLineIndex);
+      String selectionString;
+      int offsetX=0;
+      if (currentChar + innerLine.length() < start) {
+        selectionString="";
+      }
+ else       if (currentChar < start) {
+        offsetX=font.getWidth(innerLine.substring(0,start - currentChar));
+        selectionString=innerLine.substring(start - currentChar,Math.min(end - currentChar,innerLine.length()));
+      }
+ else       if (currentChar + innerLine.length() >= end) {
+        selectionString=innerLine.substring(0,end - currentChar);
+      }
+ else {
+        selectionString=innerLine;
+      }
+      if (!selectionString.isEmpty()) {
+        int selectionWidth=font.getWidth(selectionString);
+        Vector2i selectionTopLeft=new Vector2i(offsetX,(lineOffset) * font.getLineHeight());
+        Rect2i region=Rect2i.createFromMinAndSize(selectionTopLeft.x,selectionTopLeft.y,selectionWidth,font.getLineHeight());
+        canvas.drawTexture(cursorTexture,region,textColor);
+        canvas.drawTextRaw(FontColor.stripColor(selectionString),font,textColor.inverse(),region);
+      }
+      currentChar+=innerLine.length();
+      lineOffset++;
+    }
+    currentChar++;
+  }
 }

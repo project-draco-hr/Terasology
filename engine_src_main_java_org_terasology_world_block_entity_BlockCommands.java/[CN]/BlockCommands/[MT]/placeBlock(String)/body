@@ -10,7 +10,7 @@
     blockFamily=blockManager.getBlockFamily(matchingUris.get(0));
   }
  else   if (matchingUris.isEmpty()) {
-    return "No block found for '" + blockName + "'";
+    throw new IllegalArgumentException("No block found for '" + blockName + "'");
   }
  else {
     StringBuilder builder=new StringBuilder();
@@ -26,5 +26,5 @@
     builder.append((int)spawnPos.x).append((int)spawnPos.y).append((int)spawnPos.z).append(")");
     return builder.toString();
   }
-  return "Sorry, something went wrong!";
+  throw new IllegalArgumentException("Sorry, something went wrong!");
 }

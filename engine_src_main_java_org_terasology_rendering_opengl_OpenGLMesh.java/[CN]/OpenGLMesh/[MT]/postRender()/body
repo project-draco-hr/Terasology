@@ -1,14 +1,19 @@
 {
-  if (hasNormal) {
-    glDisableClientState(GL_NORMAL_ARRAY);
+  if (!isDisposed()) {
+    if (hasNormal) {
+      glDisableClientState(GL_NORMAL_ARRAY);
+    }
+    if (hasColor) {
+      glDisableClientState(GL_COLOR_ARRAY);
+    }
+    if (hasTexCoord0 || hasTexCoord1) {
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    }
+    glDisableClientState(GL_VERTEX_ARRAY);
+    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
+    GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER,0);
   }
-  if (hasColor) {
-    glDisableClientState(GL_COLOR_ARRAY);
+ else {
+    logger.error("Attempted to render disposed mesh: {}",getURI());
   }
-  if (hasTexCoord0 || hasTexCoord1) {
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-  }
-  glDisableClientState(GL_VERTEX_ARRAY);
-  GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER,0);
-  GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER,0);
 }

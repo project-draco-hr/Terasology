@@ -8,7 +8,7 @@
       continue;
     }
     if (fieldInfo.isReplicated()) {
-      serializer.deserializeOnto(targetEvent,fieldInfo,eventData.getFieldValue(i));
+      serializer.deserializeOnto(targetEvent,fieldInfo,new ProtobufPersistedData(eventData.getFieldValue(i)),deserializationContext);
     }
   }
   return targetEvent;

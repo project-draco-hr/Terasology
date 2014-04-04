@@ -1,0 +1,9 @@
+{
+  LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
+  if (!locationComponent.getParent().equals(EntityRef.NULL)) {
+    Vector3f velocity=new Vector3f(locationComponent.getWorldPosition());
+    velocity.sub(state.getPosition());
+    state.getVelocity().set(velocity);
+    state.getPosition().set(locationComponent.getWorldPosition());
+  }
+}

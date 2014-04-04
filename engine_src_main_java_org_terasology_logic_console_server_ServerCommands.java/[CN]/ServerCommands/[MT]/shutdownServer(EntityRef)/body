@@ -1,0 +1,7 @@
+{
+  EntityRef clientInfo=sender.getComponent(ClientComponent.class).clientInfo;
+  DisplayNameComponent name=clientInfo.getComponent(DisplayNameComponent.class);
+  logger.info("Shutdown triggered by {}",name.name);
+  CoreRegistry.get(GameEngine.class).shutdown();
+  return "Server shutdown triggered";
+}

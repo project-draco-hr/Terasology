@@ -1,3 +1,10 @@
 {
-  throw new UnsupportedOperationException();
+  if (!data.isArray()) {
+    throw new IllegalStateException("Data is not an array");
+  }
+  List<T> result=Lists.newArrayList();
+  for (  PersistedData item : data.getAsArray()) {
+    result.add(deserializeAs(item,type));
+  }
+  return result;
 }

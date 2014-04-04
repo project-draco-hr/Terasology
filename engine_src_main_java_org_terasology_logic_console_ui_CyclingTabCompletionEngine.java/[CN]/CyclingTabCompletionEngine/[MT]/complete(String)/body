@@ -1,0 +1,41 @@
+{
+  if (!matchList.contains(text)) {
+    reset();
+    String cmdQuery=text.trim();
+    Collection<String> matches=CamelCaseMatcher.getMatches(cmdQuery,allNames);
+    if (matches.isEmpty()) {
+      return text;
+    }
+    if (matches.size() == 1) {
+      return matches.iterator().next();
+    }
+    if (matches.size() > MAX_CYCLES) {
+      console.addMessage(new Message("Too many hits, please refine your search"));
+      return text;
+    }
+    matchList.addAll(matches);
+    Collections.sort(matchList);
+  }
+  StringBuilder commandMatches=new StringBuilder();
+  for (int i=0; i < matchList.size(); i++) {
+    if (commandMatches.length() != 0) {
+      commandMatches.append(" ");
+    }
+    String name=matchList.get(i);
+    if (index == i) {
+      name=FontColor.getColored(name,ConsoleColors.COMMAND);
+    }
+    commandMatches.append(name);
+  }
+  Message message=new Message(commandMatches.toString());
+  String cmd=matchList.get(index);
+  if (prevMessage != null) {
+    console.replaceMessage(prevMessage,message);
+  }
+ else {
+    console.addMessage(message);
+  }
+  prevMessage=message;
+  index=(index + 1) % matchList.size();
+  return cmd;
+}

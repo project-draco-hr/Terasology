@@ -11,7 +11,7 @@
           @Override public String getName(){
             return "Load Chunk";
           }
-          @Override public void enact(){
+          @Override public void run(){
             ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
             ChunkImpl chunk=chunkStore.getChunk();
             try {
@@ -42,7 +42,7 @@
           @Override public String getName(){
             return "Generate Chunk";
           }
-          @Override public void enact(){
+          @Override public void run(){
             ChunkImpl chunk=new ChunkImpl(getPosition());
             generator.createChunk(chunk);
             if (nearCache.putIfAbsent(getPosition(),chunk) != null) {

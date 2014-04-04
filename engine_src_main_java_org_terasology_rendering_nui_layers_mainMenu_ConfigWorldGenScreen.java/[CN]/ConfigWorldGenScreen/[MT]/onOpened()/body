@@ -1,0 +1,38 @@
+{
+  super.onOpened();
+  PropertyLayout properties=find("properties",PropertyLayout.class);
+  properties.setOrdering(PropertyOrdering.byLabel());
+  properties.clear();
+  SimpleUri generatorUri=config.getWorldGeneration().getDefaultGenerator();
+  WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(generatorUri);
+  Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
+  try {
+    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
+    WorldGenerator wg=worldGeneratorManager.createGenerator(info.getUri());
+    if (wg.getConfigurator().isPresent()) {
+      WorldConfigurator worldConfig=wg.getConfigurator().get();
+      params=Maps.newHashMap(worldConfig.getProperties());
+      for (      String key : params.keySet()) {
+        Class<? extends Component> clazz=params.get(key).getClass();
+        Component comp=config.getModuleConfig(generatorUri,key,clazz);
+        if (comp != null) {
+          params.put(key,comp);
+        }
+      }
+      for (      String label : params.keySet()) {
+        PropertyProvider<?> provider=new PropertyProvider<>(params.get(label));
+        properties.addPropertyProvider(label,provider);
+      }
+    }
+ else {
+      logger.info(info.getUri().toString() + " does not support configuration");
+      return;
+    }
+  }
+ catch (  UnresolvedWorldGeneratorException e) {
+    logger.error("Unable to load world generator: " + info.getUri().toString());
+  }
+ finally {
+    moduleManager.disableAllModules();
+  }
+}

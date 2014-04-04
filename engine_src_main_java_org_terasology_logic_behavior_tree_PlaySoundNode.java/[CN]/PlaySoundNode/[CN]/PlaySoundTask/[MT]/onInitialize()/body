@@ -1,9 +1,15 @@
 {
   AssetUri uri=getNode().sound;
   if (uri != null) {
-    Sound sound1=assetManager.loadAsset(uri,Sound.class);
-    if (sound1 != null) {
-      audioManager.playSound(sound1,getNode().volume);
+    Sound snd=assetManager.loadAsset(uri,Sound.class);
+    if (snd != null) {
+      if (actor().hasLocation()) {
+        Vector3f worldPosition=actor().location().getWorldPosition();
+        audioManager.playSound(snd,worldPosition,getNode().volume,AudioManager.PRIORITY_NORMAL,this);
+      }
+ else {
+        audioManager.playSound(snd,new Vector3f(),getNode().volume,AudioManager.PRIORITY_NORMAL,this);
+      }
       playing=true;
     }
   }

@@ -1,0 +1,15 @@
+{
+  if (pool.isEmpty()) {
+    IntBuffer buffer=BufferUtils.createIntBuffer(BUFFER_FETCH_SIZE);
+    GL15.glGenBuffers(buffer);
+    for (int i=0; i < BUFFER_FETCH_SIZE; ++i) {
+      pool.add(buffer.get(i));
+    }
+    totalPoolSize+=BUFFER_FETCH_SIZE;
+  }
+  int result=pool.removeAt(pool.size() - 1);
+  if (traceBufferUsage) {
+    usageTracker.put(result,forUseBy);
+  }
+  return result;
+}

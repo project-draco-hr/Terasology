@@ -1,4 +1,14 @@
 {
+  CoreScreenLayer inputScreen=new InputSettingsScreen();
+  inputScreen.setSkin(getSkin());
+  UIData inputScreenData=new UIData(inputScreen);
+  Assets.generateAsset(INPUT_SCREEN_URI,inputScreenData,UIElement.class);
+  WidgetUtil.trySubscribe(this,"player",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
+      getManager().pushScreen("engine:PlayerMenuScreen");
+    }
+  }
+);
   WidgetUtil.trySubscribe(this,"video",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().pushScreen("engine:VideoMenuScreen");
@@ -13,9 +23,7 @@
 );
   WidgetUtil.trySubscribe(this,"input",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
-      CoreScreenLayer inputScreen=new InputSettingsScreen();
-      inputScreen.setSkin(getSkin());
-      getManager().pushScreen(inputScreen);
+      getManager().pushScreen(INPUT_SCREEN_URI);
     }
   }
 );

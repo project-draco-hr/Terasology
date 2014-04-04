@@ -12,7 +12,7 @@ case TILED:
       TextureCacheKey key=new TextureCacheKey(texture.size(),absoluteRegion.size());
       usedTextures.add(key);
       mesh=cachedTextures.get(key);
-      if (mesh == null) {
+      if (mesh == null || mesh.isDisposed()) {
         MeshBuilder builder=new MeshBuilder();
         addTiles(builder,absoluteRegion,FULL_REGION,texture.size(),FULL_REGION);
         mesh=builder.build();

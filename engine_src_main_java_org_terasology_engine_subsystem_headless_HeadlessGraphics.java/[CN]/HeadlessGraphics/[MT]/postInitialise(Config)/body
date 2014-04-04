@@ -2,6 +2,6 @@
   CoreRegistry.putPermanently(RenderingSubsystemFactory.class,new HeadlessRenderingSubsystemFactory());
   HeadlessDisplayDevice headlessDisplay=new HeadlessDisplayDevice();
   CoreRegistry.putPermanently(DisplayDevice.class,headlessDisplay);
-  initHeadless(headlessDisplay);
-  CoreRegistry.putPermanently(NUIManager.class,new NUIManagerInternal(CoreRegistry.get(AssetManager.class),new HeadlessCanvasRenderer()));
+  initHeadless();
+  CoreRegistry.putPermanently(NUIManager.class,new NUIManagerInternal(new HeadlessCanvasRenderer()));
 }

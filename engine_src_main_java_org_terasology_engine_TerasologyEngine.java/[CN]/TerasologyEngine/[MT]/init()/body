@@ -2,6 +2,7 @@
   if (initialised) {
     return;
   }
+  Stopwatch sw=Stopwatch.createStarted();
   try {
     logger.info("Initializing Terasology...");
     logger.info(TerasologyVersion.getInstance().toString());
@@ -40,4 +41,5 @@
     logger.error("Failed to initialise Terasology",t);
     throw new RuntimeException("Failed to initialise Terasology",t);
   }
+  logger.info("Initialization completed in {}sec.",0.01 * (sw.elapsed(TimeUnit.MILLISECONDS) / 10));
 }

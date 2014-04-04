@@ -1,0 +1,30 @@
+{
+  ItemComponent itemComp=new ItemComponent();
+  EntityRef item=Mockito.mock(EntityRef.class);
+  setupItemRef(item,itemComp,2,10);
+  ItemComponent partialItemComp=new ItemComponent();
+  EntityRef partialItem=Mockito.mock(EntityRef.class);
+  setupItemRef(partialItem,partialItemComp,9,10);
+  inventoryComp.itemSlots.set(0,partialItem);
+  GiveItemAction action=new GiveItemAction(instigator,item);
+  inventoryAuthoritySystem.giveItem(action,inventory);
+  Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(item,new AtLeast(0)).exists();
+  Mockito.verify(item,new AtLeast(0)).iterateComponents();
+  Mockito.verify(item).saveComponent(itemComp);
+  Mockito.verify(partialItem,new AtLeast(0)).getComponent(ItemComponent.class);
+  Mockito.verify(partialItem,new AtLeast(0)).exists();
+  Mockito.verify(partialItem,new AtLeast(0)).iterateComponents();
+  Mockito.verify(partialItem).saveComponent(partialItemComp);
+  Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
+  Mockito.verify(inventory).saveComponent(inventoryComp);
+  Mockito.verify(inventory,new Times(3)).send(Matchers.any(InventorySlotStackSizeChangedEvent.class));
+  Mockito.verify(inventory,new Times(3)).send(Matchers.any(InventorySlotChangedEvent.class));
+  Mockito.verify(inventory,new Times(3)).send(Matchers.any(BeforeItemPutInInventory.class));
+  Mockito.verifyNoMoreInteractions(instigator,inventory,entityManager,item,partialItem);
+  assertEquals(partialItem,inventoryComp.itemSlots.get(0));
+  assertEquals(item,inventoryComp.itemSlots.get(1));
+  assertEquals(10,partialItemComp.stackCount);
+  assertEquals(1,itemComp.stackCount);
+  assertTrue(action.isConsumed());
+}

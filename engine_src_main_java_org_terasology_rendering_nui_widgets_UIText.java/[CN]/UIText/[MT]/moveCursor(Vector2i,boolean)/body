@@ -1,22 +1,46 @@
 {
   if (lastFont != null) {
     pos.x+=offset;
-    List<String> lines=TextLineBuilder.getLines(lastFont,getText(),Integer.MAX_VALUE);
-    int lineIndex=TeraMath.clamp(pos.y / lastFont.getLineHeight(),0,lines.size() - 1);
+    String rawText=getText();
+    List<String> lines=TextLineBuilder.getLines(lastFont,rawText,Integer.MAX_VALUE);
+    int targetLineIndex=pos.y / lastFont.getLineHeight();
+    int passedLines=0;
     int newCursorPos=0;
-    int totalWidth=0;
-    for (    char c : lines.get(lineIndex).toCharArray()) {
-      int charWidth=lastFont.getWidth(c);
-      if (totalWidth + charWidth / 2 >= pos.x) {
-        break;
+    for (int lineIndex=0; lineIndex < lines.size() && passedLines <= targetLineIndex; lineIndex++) {
+      List<String> subLines;
+      if (multiline) {
+        subLines=TextLineBuilder.getLines(lastFont,lines.get(lineIndex),lastWidth);
       }
-      newCursorPos++;
-      totalWidth+=charWidth;
+ else {
+        subLines=Arrays.asList(lines.get(lineIndex));
+      }
+      if (subLines.size() + passedLines > targetLineIndex) {
+        for (        String subLine : subLines) {
+          if (passedLines == targetLineIndex) {
+            int totalWidth=0;
+            for (            char c : subLine.toCharArray()) {
+              int charWidth=lastFont.getWidth(c);
+              if (totalWidth + charWidth / 2 >= pos.x) {
+                break;
+              }
+              newCursorPos++;
+              totalWidth+=charWidth;
+            }
+            passedLines++;
+            break;
+          }
+ else {
+            newCursorPos+=subLine.length();
+            passedLines++;
+          }
+        }
+      }
+ else {
+        passedLines+=subLines.size();
+        newCursorPos+=lines.get(lineIndex).length() + 1;
+      }
     }
-    for (int i=0; i < lineIndex; ++i) {
-      newCursorPos+=lines.get(i).length() + 1;
-    }
-    cursorPosition=newCursorPos;
+    cursorPosition=Math.min(newCursorPos,rawText.length());
     if (!isSelectionModifierActive() && !selecting) {
       selectionStart=cursorPosition;
     }
