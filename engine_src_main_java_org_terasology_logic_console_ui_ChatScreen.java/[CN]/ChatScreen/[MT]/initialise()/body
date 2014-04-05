@@ -1,0 +1,26 @@
+{
+  final ScrollableArea scrollArea=find("scrollArea",ScrollableArea.class);
+  scrollArea.moveToBottom();
+  commandLine=find("commandLine",UIText.class);
+  getManager().setFocus(commandLine);
+  commandLine.subscribe(new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget widget){
+      console.execute("say \"" + commandLine.getText() + "\"",localPlayer.getClientEntity());
+      commandLine.setText("");
+      scrollArea.moveToBottom();
+    }
+  }
+);
+  final UILabel history=find("messageHistory",UILabel.class);
+  history.bindText(new ReadOnlyBinding<String>(){
+    @Override public String get(){
+      StringBuilder messageList=new StringBuilder();
+      for (      String msg : chat.getMessages()) {
+        messageList.append(msg);
+        messageList.append(Message.NEW_LINE);
+      }
+      return messageList.toString();
+    }
+  }
+);
+}
