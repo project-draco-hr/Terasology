@@ -5,9 +5,14 @@
   getManager().setFocus(commandLine);
   commandLine.subscribe(new ActivateEventListener(){
     @Override public void onActivated(    UIWidget widget){
-      console.execute("say \"" + commandLine.getText() + "\"",localPlayer.getClientEntity());
-      commandLine.setText("");
-      scrollArea.moveToBottom();
+      String text=commandLine.getText();
+      if (!text.isEmpty()) {
+        String command="say";
+        List<String> params=Collections.singletonList(text);
+        console.execute(command,params,localPlayer.getClientEntity());
+        commandLine.setText("");
+        scrollArea.moveToBottom();
+      }
     }
   }
 );
