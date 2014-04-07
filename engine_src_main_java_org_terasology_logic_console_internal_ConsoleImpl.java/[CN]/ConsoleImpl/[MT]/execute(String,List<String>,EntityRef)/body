@@ -16,8 +16,7 @@
     return false;
   }
   if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
-    String paramsStr=PARAMETER_JOINER.join(params);
-    callingClient.send(new CommandEvent(commandName,paramsStr));
+    callingClient.send(new CommandEvent(commandName,params));
     return true;
   }
  else {
