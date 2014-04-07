@@ -1,0 +1,8 @@
+{
+  final Block block=getBlockWithOverrides(location,blockOverrides);
+  if (block.isSupportRequired()) {
+    final Vector3i bottomLocation=Side.BOTTOM.getAdjacentPos(location);
+    return !worldProvider.isBlockRelevant(bottomLocation) || getBlockWithOverrides(bottomLocation,blockOverrides).isFullSide(Side.TOP);
+  }
+  return true;
+}

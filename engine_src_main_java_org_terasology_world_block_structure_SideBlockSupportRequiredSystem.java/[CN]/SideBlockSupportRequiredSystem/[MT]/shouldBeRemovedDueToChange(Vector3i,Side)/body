@@ -1,0 +1,18 @@
+{
+  final SideBlockSupportRequiredComponent component=getComponent(location,Collections.<Vector3i,Block>emptyMap());
+  if (component != null) {
+    final boolean sufficientlySupported=isSufficientlySupported(location,sideChanged,Collections.<Vector3i,Block>emptyMap(),component);
+    if (!sufficientlySupported) {
+      if (component.dropDelay <= 0) {
+        return true;
+      }
+ else {
+        final EntityRef blockEntity=blockEntityRegistry.getEntityAt(location);
+        if (!delayManager.hasDelayedAction(blockEntity,SUPPORT_CHECK_ACTION_ID)) {
+          delayManager.addDelayedAction(blockEntity,SUPPORT_CHECK_ACTION_ID,component.dropDelay);
+        }
+      }
+    }
+  }
+  return false;
+}

@@ -1,0 +1,14 @@
+{
+  final Block overwrittenBlock=blockOverrides.get(location);
+  if (overwrittenBlock != null) {
+    return overwrittenBlock.getEntity();
+  }
+  EntityRef blockEntity=blockEntityRegistry.getExistingBlockEntityAt(location);
+  if (blockEntity.exists()) {
+    return blockEntity;
+  }
+ else {
+    final Block blockAtPosition=getBlockWithOverrides(location,blockOverrides);
+    return blockAtPosition.getEntity();
+  }
+}
