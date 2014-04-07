@@ -1,5 +1,6 @@
 {
-  if (event.getNewType() == BlockManager.getAir()) {
+  PerformanceMonitor.startActivity("StructuralCheck");
+  try {
     boolean initialEvent=!midDestruction;
     if (initialEvent) {
       midDestruction=true;
@@ -26,5 +27,8 @@
         gatheringEntity.destroy();
       }
     }
+  }
+  finally {
+    PerformanceMonitor.endActivity();
   }
 }
