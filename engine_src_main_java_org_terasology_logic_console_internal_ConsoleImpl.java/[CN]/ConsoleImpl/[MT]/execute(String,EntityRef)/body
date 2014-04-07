@@ -14,6 +14,12 @@
   }
   String parameterPart=cleanedCommand.substring(commandEndIndex).trim();
   List<String> params=splitParameters(parameterPart);
+  for (int i=0; i < params.size(); i++) {
+    String value=params.get(i);
+    if (value.startsWith("\"") && value.endsWith("\"")) {
+      params.set(i,value.substring(1,value.length() - 1));
+    }
+  }
   Client owner=networkSystem.getOwner(callingClient);
   if (networkSystem.getMode() == NetworkMode.NONE || (owner != null && owner.isLocal())) {
     localCommandHistory.add(command);
