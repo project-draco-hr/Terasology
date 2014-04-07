@@ -1,11 +1,11 @@
 {
   StringBuilder stringBuilder=new StringBuilder();
-  for (  EntityRef clientEntity : entityManager.getEntitiesWith(ClientComponent.class)) {
-    EntityRef clientInfo=clientEntity.getComponent(ClientComponent.class).clientInfo;
+  for (  EntityRef clientInfo : entityManager.getEntitiesWith(ClientInfoComponent.class)) {
     DisplayNameComponent dnc=clientInfo.getComponent(DisplayNameComponent.class);
     ColorComponent cc=clientInfo.getComponent(ColorComponent.class);
+    NetworkComponent nc=clientInfo.getComponent(NetworkComponent.class);
     String playerText=FontColor.getColored(dnc.name,cc.color);
-    String line=String.format("%s - %s (%d)",playerText,dnc.description,clientInfo.getId());
+    String line=String.format("%s - %s (%d)",playerText,dnc.description,nc.getNetworkId());
     stringBuilder.append(line);
     stringBuilder.append(Message.NEW_LINE);
   }
