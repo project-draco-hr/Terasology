@@ -3,7 +3,9 @@
   CoreChunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
     Vector3i blockPos=TeraMath.calcBlockPos(worldPos);
+    chunk.lock();
     Block oldBlockType=chunk.setBlock(blockPos,type);
+    chunk.unlock();
     if (oldBlockType != type) {
       BlockChange oldChange=blockChanges.get(worldPos);
       if (oldChange == null) {

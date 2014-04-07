@@ -10,13 +10,13 @@
     Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
   }
   if (!sortedReadyChunks.isEmpty()) {
-    int loaded=0;
-    for (int i=sortedReadyChunks.size() - 1; i >= 0 && loaded < LOAD_PER_FRAME; i--) {
+    boolean loaded=false;
+    for (int i=sortedReadyChunks.size() - 1; i >= 0 && !loaded; i--) {
       ReadyChunkInfo chunkInfo=sortedReadyChunks.get(i);
       PerformanceMonitor.startActivity("Make Chunk Available");
       if (makeChunkAvailable(chunkInfo)) {
         sortedReadyChunks.remove(i);
-        loaded++;
+        loaded=true;
       }
       PerformanceMonitor.endActivity();
     }

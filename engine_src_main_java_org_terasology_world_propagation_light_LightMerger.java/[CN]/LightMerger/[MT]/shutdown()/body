@@ -1,0 +1,9 @@
+{
+  executorService.shutdown();
+  try {
+    executorService.awaitTermination(10,TimeUnit.SECONDS);
+  }
+ catch (  InterruptedException e) {
+    logger.error("Failed to shutdown light merge thread in a timely manner");
+  }
+}

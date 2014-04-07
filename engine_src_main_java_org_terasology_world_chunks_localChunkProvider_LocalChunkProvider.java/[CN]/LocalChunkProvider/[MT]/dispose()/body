@@ -2,6 +2,7 @@
   ChunkMonitor.fireChunkProviderDisposed(this);
   pipeline.shutdown();
   unloadRequestTaskMaster.shutdown(new ChunkUnloadRequest(),true);
+  lightMerger.shutdown();
   for (  Chunk chunk : nearCache.values()) {
     chunk.dispose();
     ChunkStore store=storageManager.createChunkStoreForSave(chunk);

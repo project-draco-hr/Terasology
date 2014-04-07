@@ -4,9 +4,6 @@
       return false;
     }
   }
-  chunk.markReady();
-  lightMerger.merge(chunk);
-  listener.onChunkReady(chunk.getPosition());
-  worldEntity.send(new OnChunkLoaded(chunk.getPosition()));
+  lightMerger.beginMerge(chunk,chunk);
   return true;
 }
