@@ -4,6 +4,9 @@
     Message message=event.getFormattedMessage();
     if (message.getType() == CoreMessageType.CHAT) {
       chat.addMessage(message.getMessage());
+      if (!nuiManager.isOpen(CHAT_UI)) {
+        overlay.setVisible(true);
+      }
     }
   }
 }
