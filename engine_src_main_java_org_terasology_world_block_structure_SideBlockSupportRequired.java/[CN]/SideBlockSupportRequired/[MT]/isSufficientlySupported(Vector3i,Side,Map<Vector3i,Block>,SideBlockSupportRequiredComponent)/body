@@ -1,0 +1,11 @@
+{
+  if (supportComponent != null) {
+    if ((sideChanged == null || sideChanged.isHorizontal()) && supportComponent.sideAllowed && !hasSupport(location,supportComponent,blockOverrides)) {
+      return false;
+    }
+ else     if ((sideChanged == null || !sideChanged.isHorizontal()) && (supportComponent.topAllowed || supportComponent.bottomAllowed) && !hasSupport(location,supportComponent,blockOverrides)) {
+      return false;
+    }
+  }
+  return true;
+}

@@ -1,0 +1,12 @@
+{
+  final Map<Vector3i,Block> blocksMap=placeBlocks.getBlocks();
+  for (  BlockStructuralSupport support : supports) {
+    for (    Map.Entry<Vector3i,Block> blockEntry : blocksMap.entrySet()) {
+      final Vector3i position=blockEntry.getKey();
+      if (!support.isSufficientlySupported(position,Collections.unmodifiableMap(blocksMap))) {
+        placeBlocks.consume();
+        return;
+      }
+    }
+  }
+}
