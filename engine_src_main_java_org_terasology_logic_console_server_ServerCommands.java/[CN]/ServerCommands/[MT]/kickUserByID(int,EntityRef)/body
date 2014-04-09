@@ -1,7 +1,8 @@
 {
   for (  EntityRef clientEntity : entityManager.getEntitiesWith(ClientComponent.class)) {
     EntityRef clientInfo=clientEntity.getComponent(ClientComponent.class).clientInfo;
-    if (userId == clientInfo.getId()) {
+    NetworkComponent nc=clientInfo.getComponent(NetworkComponent.class);
+    if (userId == nc.getNetworkId()) {
       return kick(clientEntity);
     }
   }
