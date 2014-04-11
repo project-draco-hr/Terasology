@@ -5,7 +5,7 @@
   ByteArrayOutputStream os=new ByteArrayOutputStream(10000);
   try {
     loader.save(os,data);
-    BehaviorTreeData copy=loader.load(null,new ByteArrayInputStream(os.toByteArray()),null);
+    BehaviorTreeData copy=loader.load(null,new ByteArrayInputStream(os.toByteArray()),null,Collections.<URL>emptyList());
     Port.OutputPort parent=node.getInputPort().getTargetPort();
     copy.createRenderable();
     RenderableNode copyRenderable=copy.getRenderableNode(copy.getRoot());

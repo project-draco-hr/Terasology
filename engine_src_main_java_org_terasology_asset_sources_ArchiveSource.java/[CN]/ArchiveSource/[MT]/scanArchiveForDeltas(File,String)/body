@@ -1,0 +1,33 @@
+{
+  ZipFile archive;
+  if (file.getName().endsWith(".jar")) {
+    archive=new JarFile(file,false);
+  }
+ else {
+    archive=new ZipFile(file);
+  }
+  try {
+    Enumeration<? extends ZipEntry> lister=archive.entries();
+    while (lister.hasMoreElements()) {
+      ZipEntry entry=lister.nextElement();
+      String entryPath=entry.getName();
+      logger.debug("Found {}",entryPath);
+      if (entryPath.startsWith(deltaPath)) {
+        String key=entryPath.substring(deltaPath.length() + 1);
+        int moduleIndex=key.indexOf('/');
+        String moduleName=key.substring(0,moduleIndex);
+        key=key.substring(moduleIndex + 1);
+        AssetUri uri=getUri(moduleName,key);
+        if (uri == null || !uri.isValid()) {
+          continue;
+        }
+        logger.debug("Discovered delta {} at {}",uri,entryPath);
+        URL url=new URL("jar:file:" + file.getAbsolutePath() + "!/"+ entryPath);
+        setDelta(uri,url);
+      }
+    }
+  }
+  finally {
+    archive.close();
+  }
+}

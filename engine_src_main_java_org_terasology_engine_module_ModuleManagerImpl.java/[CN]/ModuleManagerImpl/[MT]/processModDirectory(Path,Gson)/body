@@ -5,7 +5,8 @@
       ModuleInfo moduleInfo=gson.fromJson(reader,ModuleInfo.class);
       Path assetLocation=modulePath.resolve(TerasologyConstants.ASSETS_SUBDIRECTORY);
       Path overridesLocation=modulePath.resolve(TerasologyConstants.OVERRIDES_SUBDIRECTORY);
-      AssetSource source=new DirectorySource(moduleInfo.getId(),assetLocation,overridesLocation);
+      Path deltasLocation=modulePath.resolve(TerasologyConstants.DELTAS_SUBDIRECTORY);
+      AssetSource source=new DirectorySource(moduleInfo.getId(),assetLocation,overridesLocation,deltasLocation);
       processModuleInfo(moduleInfo,modulePath,source);
     }
  catch (    FileNotFoundException|JsonIOException e) {

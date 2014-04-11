@@ -16,5 +16,12 @@
   Prefab prefab=Assets.getPrefab(prefabName);
   if (prefab != null && prefab.getComponent(LocationComponent.class) != null) {
     entityManager.create(prefab,spawnPos,rotation);
+    return "Done";
+  }
+ else   if (prefab == null) {
+    return "Unknown prefab";
+  }
+ else {
+    return "Prefab cannot be spawned (no location component)";
   }
 }
