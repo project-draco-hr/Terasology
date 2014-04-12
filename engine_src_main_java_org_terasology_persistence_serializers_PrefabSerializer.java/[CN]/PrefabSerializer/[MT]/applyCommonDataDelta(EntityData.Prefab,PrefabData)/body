@@ -1,0 +1,12 @@
+{
+  if (delta.hasPersisted()) {
+    result.setPersisted(delta.getPersisted());
+  }
+  if (delta.hasAlwaysRelevant()) {
+    result.setAlwaysRelevant(delta.getAlwaysRelevant());
+  }
+  if (delta.hasParentName()) {
+    Prefab parent=Assets.get(AssetType.PREFAB,delta.getParentName(),Prefab.class);
+    result.setParent(parent);
+  }
+}

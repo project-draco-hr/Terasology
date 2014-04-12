@@ -3,7 +3,15 @@
   EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
   if (prefabData != null) {
     EngineEntityManager entityManager=CoreRegistry.get(EngineEntityManager.class);
-    return new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary()).deserialize(prefabData);
+    List<EntityData.Prefab> deltaData=Lists.newArrayListWithCapacity(deltas.size());
+    for (    URL deltaUrl : deltas) {
+      try (BufferedReader deltaReader=new BufferedReader(new InputStreamReader(deltaUrl.openStream(),Charsets.UTF_8))){
+        EntityData.Prefab delta=EntityDataJSONFormat.readPrefab(deltaReader);
+        deltaData.add(delta);
+      }
+     }
+    PrefabSerializer serializer=new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
+    return serializer.deserialize(prefabData,deltaData);
   }
   return null;
 }
