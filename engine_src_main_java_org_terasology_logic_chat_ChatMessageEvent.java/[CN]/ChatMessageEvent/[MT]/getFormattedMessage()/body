@@ -1,3 +1,9 @@
 {
-  return new Message(message,CoreMessageType.CHAT);
+  DisplayNameComponent displayInfo=from.getComponent(DisplayNameComponent.class);
+  ColorComponent colorInfo=from.getComponent(ColorComponent.class);
+  String playerName=(displayInfo != null) ? displayInfo.name : "Unknown";
+  if (colorInfo != null) {
+    playerName=FontColor.getColored(playerName,colorInfo.color);
+  }
+  return new Message(String.format("%s: %s",playerName,message),CoreMessageType.CHAT);
 }
