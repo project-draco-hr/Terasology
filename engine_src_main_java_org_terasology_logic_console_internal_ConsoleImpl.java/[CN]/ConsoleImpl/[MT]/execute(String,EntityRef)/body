@@ -1,12 +1,8 @@
 {
-  if (command.length() == 0) {
+  String cleanedCommand=command.trim().replaceAll("\\s\\s+"," ");
+  if (cleanedCommand.isEmpty()) {
     return false;
   }
-  Client owner=networkSystem.getOwner(callingClient);
-  if (networkSystem.getMode() == NetworkMode.NONE || (owner != null && owner.isLocal())) {
-    localCommandHistory.add(command);
-  }
-  String cleanedCommand=command.replaceAll("\\s\\s+"," ");
   int commandEndIndex=cleanedCommand.indexOf(" ");
   String commandName;
   if (commandEndIndex >= 0) {
@@ -18,53 +14,15 @@
   }
   String parameterPart=cleanedCommand.substring(commandEndIndex).trim();
   List<String> params=splitParameters(parameterPart);
-  CommandInfo cmd=commandLookup.get(commandName,params.size());
-  if (cmd == null) {
-    if (commandLookup.containsRow(commandName)) {
-      addErrorMessage("Incorrect number of parameters. Try:");
-      for (      CommandInfo ci : commandLookup.row(commandName).values()) {
-        addMessage(ci.getUsageMessage());
-      }
-    }
- else {
-      addErrorMessage("Unknown command '" + commandName + "'");
-    }
-    return false;
-  }
-  if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
-    String paramsStr=PARAMETER_JOINER.join(params);
-    callingClient.send(new CommandEvent(commandName,paramsStr));
-    return true;
-  }
- else {
-    try {
-      String result=cmd.execute(params,callingClient);
-      if (result != null && !result.isEmpty()) {
-        if (callingClient.exists()) {
-          callingClient.send(new ConsoleMessageEvent(result));
-        }
- else {
-          addMessage(result);
-        }
-      }
-      return true;
-    }
- catch (    IllegalArgumentException e) {
-      String msgText=e.getLocalizedMessage();
-      if (msgText != null && !msgText.isEmpty()) {
-        if (callingClient.exists()) {
-          callingClient.send(new ConsoleMessageEvent(e.getLocalizedMessage()));
-        }
- else {
-          addErrorMessage(e.getLocalizedMessage());
-        }
-      }
-      return false;
-    }
-catch (    Exception e) {
-      addErrorMessage("Error executing command '" + commandName + "': "+ e.getLocalizedMessage());
-      logger.error("Failed to execute command",e);
-      return false;
+  for (int i=0; i < params.size(); i++) {
+    String value=params.get(i);
+    if (value.startsWith("\"") && value.endsWith("\"")) {
+      params.set(i,value.substring(1,value.length() - 1));
     }
   }
+  Client owner=networkSystem.getOwner(callingClient);
+  if (networkSystem.getMode() == NetworkMode.NONE || (owner != null && owner.isLocal())) {
+    localCommandHistory.add(command);
+  }
+  return execute(commandName,params,callingClient);
 }

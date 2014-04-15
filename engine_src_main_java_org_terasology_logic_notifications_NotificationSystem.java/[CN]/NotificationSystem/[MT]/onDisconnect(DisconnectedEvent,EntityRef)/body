@@ -1,0 +1,6 @@
+{
+  EntityRef clientInfo=entity.getComponent(ClientComponent.class).clientInfo;
+  for (  EntityRef client : entityManager.getEntitiesWith(ClientComponent.class)) {
+    client.send(NotificationMessageEvent.newLeaveEvent(clientInfo));
+  }
+}
