@@ -1,0 +1,53 @@
+{
+  if (commandName.isEmpty()) {
+    return false;
+  }
+  CommandInfo cmd=commandLookup.get(commandName,params.size());
+  if (cmd == null) {
+    if (commandLookup.containsRow(commandName)) {
+      addErrorMessage("Incorrect number of parameters. Try:");
+      for (      CommandInfo ci : commandLookup.row(commandName).values()) {
+        addMessage(ci.getUsageMessage());
+      }
+    }
+ else {
+      addErrorMessage("Unknown command '" + commandName + "'");
+    }
+    return false;
+  }
+  if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
+    callingClient.send(new CommandEvent(commandName,params));
+    return true;
+  }
+ else {
+    try {
+      String result=cmd.execute(params,callingClient);
+      if (result != null && !result.isEmpty()) {
+        if (callingClient.exists()) {
+          callingClient.send(new ConsoleMessageEvent(result));
+        }
+ else {
+          addMessage(result);
+        }
+      }
+      return true;
+    }
+ catch (    IllegalArgumentException e) {
+      String msgText=e.getLocalizedMessage();
+      if (msgText != null && !msgText.isEmpty()) {
+        if (callingClient.exists()) {
+          callingClient.send(new ConsoleMessageEvent(e.getLocalizedMessage()));
+        }
+ else {
+          addErrorMessage(e.getLocalizedMessage());
+        }
+      }
+      return false;
+    }
+catch (    Exception e) {
+      addErrorMessage("Error executing command '" + commandName + "': "+ e.getLocalizedMessage());
+      logger.error("Failed to execute command",e);
+      return false;
+    }
+  }
+}

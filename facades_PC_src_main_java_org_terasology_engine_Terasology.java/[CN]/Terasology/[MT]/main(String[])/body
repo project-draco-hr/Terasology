@@ -37,7 +37,9 @@
     engine.dispose();
   }
  catch (  Throwable t) {
-    String text=getNestedMessageText(t);
-    JOptionPane.showMessageDialog(null,text,"Fatal Error",JOptionPane.ERROR_MESSAGE);
+    if (!GraphicsEnvironment.isHeadless()) {
+      String text=getNestedMessageText(t);
+      showModalDialog(text);
+    }
   }
 }

@@ -15,6 +15,9 @@
       if (entryPath.startsWith(overridesPath)) {
         String key=entryPath.substring(overridesPath.length() + 1);
         int moduleIndex=key.indexOf('/');
+        if (moduleIndex == -1) {
+          continue;
+        }
         String moduleName=key.substring(0,moduleIndex);
         key=key.substring(moduleIndex + 1);
         AssetUri uri=getUri(moduleName,key);

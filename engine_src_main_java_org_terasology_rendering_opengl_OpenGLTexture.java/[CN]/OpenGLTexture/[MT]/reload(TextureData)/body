@@ -19,8 +19,13 @@ GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MIN_FILTER,getGlMinFilter(fil
 GL11.glTexParameteri(GL_TEXTURE_2D,GL11.GL_TEXTURE_MAG_FILTER,getGlMagFilter(filterMode));
 GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT,4);
 GL11.glTexParameteri(GL11.GL_TEXTURE_2D,GL12.GL_TEXTURE_MAX_LEVEL,data.getBuffers().length - 1);
+if (data.getBuffers().length > 0) {
 for (int i=0; i < data.getBuffers().length; i++) {
 GL11.glTexImage2D(GL11.GL_TEXTURE_2D,i,GL11.GL_RGBA,width >> i,height >> i,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,data.getBuffers()[i]);
+}
+}
+ else {
+GL11.glTexImage2D(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,width,height,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,(ByteBuffer)null);
 }
 break;
 case TEXTURE3D:
@@ -33,8 +38,13 @@ GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL11.GL_TEXTURE_MIN_FILTER,getGlMinFilte
 GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL11.GL_TEXTURE_MAG_FILTER,getGlMagFilter(filterMode));
 GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT,4);
 GL11.glTexParameteri(GL12.GL_TEXTURE_3D,GL12.GL_TEXTURE_MAX_LEVEL,data.getBuffers().length - 1);
+if (data.getBuffers().length > 0) {
 for (int i=0; i < data.getBuffers().length; i++) {
 GL12.glTexImage3D(GL12.GL_TEXTURE_3D,i,GL11.GL_RGBA,width,height,depth,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,data.getBuffers()[i]);
+}
+}
+ else {
+GL12.glTexImage3D(GL12.GL_TEXTURE_3D,0,GL11.GL_RGBA,width,height,depth,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,(ByteBuffer)null);
 }
 break;
 }

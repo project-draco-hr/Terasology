@@ -1,5 +1,5 @@
 {
-  ModuleManager moduleManager=new ModuleManagerImpl(new ModuleSecurityManager());
+  ModuleManager moduleManager=new ModuleManagerImpl(new ModuleSecurityManager(),false);
   moduleManager.applyActiveModules();
   AssetManager assetManager=new AssetManager(moduleManager);
   CoreRegistry.put(ModuleManager.class,moduleManager);
@@ -7,7 +7,7 @@
   AssetType.registerAssetTypes(assetManager);
   URL url=getClass().getClassLoader().getResource("testResources");
   url=new URL(url.toString().substring(0,url.toString().length() - "testResources".length() - 1));
-  assetManager.addAssetSource(new ClasspathSource("unittest",url,TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY));
+  assetManager.addAssetSource(new ClasspathSource("unittest",url,TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY,TerasologyConstants.DELTAS_SUBDIRECTORY));
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);
