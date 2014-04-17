@@ -22,7 +22,9 @@
     loadProcesses.add(new StartServer());
   }
   loadProcesses.add(new PostBeginSystems());
-  loadProcesses.add(new SetupLocalPlayer());
-  loadProcesses.add(new AwaitCharacterSpawn());
+  if (!headless) {
+    loadProcesses.add(new SetupLocalPlayer());
+    loadProcesses.add(new AwaitCharacterSpawn());
+  }
   loadProcesses.add(new PrepareWorld());
 }
