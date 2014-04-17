@@ -1,0 +1,8 @@
+{
+  result.setPersisted((prefabData.hasPersisted()) ? prefabData.getPersisted() : true);
+  result.setAlwaysRelevant(prefabData.hasAlwaysRelevant() ? prefabData.getAlwaysRelevant() : false);
+  if (prefabData.hasParentName()) {
+    Prefab parent=Assets.get(AssetType.PREFAB,prefabData.getParentName(),Prefab.class);
+    result.setParent(parent);
+  }
+}

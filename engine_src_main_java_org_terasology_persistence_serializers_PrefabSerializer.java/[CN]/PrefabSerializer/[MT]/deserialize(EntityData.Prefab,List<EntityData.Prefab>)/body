@@ -1,0 +1,14 @@
+{
+  Module context=ModuleContext.getContext();
+  PrefabData result=new PrefabData();
+  deserializeCommonData(prefabData,result);
+  for (  EntityData.Prefab delta : deltas) {
+    applyCommonDataDelta(delta,result);
+  }
+  addInheritedComponents(result);
+  applyComponentChanges(context,prefabData,result);
+  for (  EntityData.Prefab delta : deltas) {
+    applyComponentChanges(context,delta,result);
+  }
+  return result;
+}

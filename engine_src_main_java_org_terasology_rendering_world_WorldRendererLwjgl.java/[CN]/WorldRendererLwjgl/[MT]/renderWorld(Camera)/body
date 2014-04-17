@@ -51,7 +51,7 @@
   DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
   PerformanceMonitor.startActivity("Render Light Geometry");
   DefaultRenderingProcess.getInstance().beginRenderLightGeometryStencilPass();
-  Material program=Assets.getMaterial("engine:simple");
+  Material program=Assets.getMaterial("engine:prog.simple");
   program.enable();
   program.setCamera(camera);
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
@@ -63,7 +63,7 @@
   }
   DefaultRenderingProcess.getInstance().endRenderLightGeometryStencilPass();
   DefaultRenderingProcess.getInstance().beginRenderLightGeometry();
-  program=Assets.getMaterial("engine:lightGeometryPass");
+  program=Assets.getMaterial("engine:prog.lightGeometryPass");
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
     LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
     LightComponent lightComponent=entity.getComponent(LightComponent.class);

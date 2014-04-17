@@ -4,7 +4,7 @@
     final Vector3f cameraPosition=camera.getPosition();
     final Vector3f chunkPositionRelToCamera=new Vector3f(chunk.getPos().x * ChunkConstants.SIZE_X - cameraPosition.x,chunk.getPos().y * ChunkConstants.SIZE_Y - cameraPosition.y,chunk.getPos().z * ChunkConstants.SIZE_Z - cameraPosition.z);
     if (mode == ChunkRenderMode.DEFAULT || mode == ChunkRenderMode.REFLECTION) {
-      shader=Assets.getMaterial("engine:chunk");
+      shader=Assets.getMaterial("engine:prog.chunk");
       shader.enable();
       if (phase == ChunkMesh.RenderPhase.REFRACTIVE) {
         shader.activateFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
@@ -22,7 +22,7 @@
       }
     }
  else     if (mode == ChunkRenderMode.SHADOW_MAP) {
-      shader=Assets.getMaterial("engine:shadowMap");
+      shader=Assets.getMaterial("engine:prog.shadowMap");
       shader.enable();
     }
  else     if (mode == ChunkRenderMode.Z_PRE_PASS) {

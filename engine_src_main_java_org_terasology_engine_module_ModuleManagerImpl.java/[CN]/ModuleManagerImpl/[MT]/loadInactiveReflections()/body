@@ -1,7 +1,9 @@
 {
   if (allReflections == null) {
     String filename="all-reflections";
-    allReflections=loadReflectionsFromCacheFile(filename);
+    if (cacheReflections) {
+      allReflections=tryLoadReflectionsFromCacheFile(filename);
+    }
     if (allReflections == null) {
       List<URL> urls=Lists.newArrayList();
       for (      ExtensionModule module : getExtensionModules()) {
@@ -20,7 +22,9 @@
           allReflections.merge(module.getReflections());
         }
       }
-      saveReflectionsToCacheFile(allReflections,filename);
+      if (cacheReflections) {
+        saveReflectionsToCacheFile(allReflections,filename);
+      }
     }
   }
   return allReflections;
