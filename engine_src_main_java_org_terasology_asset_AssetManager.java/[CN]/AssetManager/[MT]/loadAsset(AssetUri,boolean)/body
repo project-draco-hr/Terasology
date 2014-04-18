@@ -2,24 +2,25 @@
   if (!uri.isValid()) {
     return null;
   }
-  Asset asset=assetCache.get(uri);
+  Asset<?> asset=assetCache.get(uri);
   if (asset != null) {
     return asset;
   }
-  AssetFactory factory=factories.get(uri.getAssetType());
+  AssetFactory<D,Asset<D>> factory=(AssetFactory<D,Asset<D>>)factories.get(uri.getAssetType());
   if (factory == null) {
     logger.error("No asset factory set for assets of type {}",uri.getAssetType());
     return null;
   }
-  for (  AssetResolver resolver : resolvers.get(uri.getAssetType())) {
-    Asset result=resolver.resolve(uri,factory);
+  for (  AssetResolver<?,?> resolver : resolvers.get(uri.getAssetType())) {
+    AssetResolver<Asset<D>,D> typedResolver=(AssetResolver<Asset<D>,D>)resolver;
+    Asset<D> result=typedResolver.resolve(uri,factory);
     if (result != null) {
       assetCache.put(uri,result);
       return result;
     }
   }
   try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getActiveModule(uri.getNormalisedModuleName()))){
-    AssetData data=loadAssetData(uri,logErrors);
+    D data=loadAssetData(uri,logErrors);
     if (data != null) {
       asset=factory.buildAsset(uri,data);
       if (asset != null) {

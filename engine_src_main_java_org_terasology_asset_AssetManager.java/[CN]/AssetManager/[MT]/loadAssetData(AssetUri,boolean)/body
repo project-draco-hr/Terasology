@@ -15,11 +15,11 @@
       continue;
     }
     String extension=url.toString().substring(extensionIndex + 1).toLowerCase(Locale.ENGLISH);
-    Map<String,AssetLoader> extensionMap=assetLoaders.get(uri.getAssetType());
+    Map<String,AssetLoader<?>> extensionMap=assetLoaders.get(uri.getAssetType());
     if (extensionMap == null) {
       continue;
     }
-    AssetLoader loader=extensionMap.get(extension);
+    AssetLoader<?> loader=extensionMap.get(extension);
     if (loader == null) {
       continue;
     }
@@ -40,7 +40,7 @@
     try (InputStream stream=AccessController.doPrivileged(new PrivilegedOpenStream(url))){
       urls.remove(url);
       urls.add(0,url);
-      return loader.load(module,stream,urls,deltas);
+      return (D)loader.load(module,stream,urls,deltas);
     }
  catch (    PrivilegedActionException e) {
       logger.error("Error reading asset {}",uri,e.getCause());

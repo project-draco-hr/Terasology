@@ -3,10 +3,10 @@
   for (  AssetUri override : source.listOverrides()) {
     if (overrides.get(override).equals(source)) {
       overrides.remove(override);
-      Asset asset=assetCache.get(override);
+      Asset<D> asset=(Asset<D>)assetCache.get(override);
       if (asset != null) {
         if (TerasologyConstants.ENGINE_MODULE.equals(override.getNormalisedModuleName())) {
-          AssetData data=loadAssetData(override,true);
+          D data=loadAssetData(override,true);
           asset.reload(data);
         }
  else {
@@ -19,7 +19,7 @@
   for (  Table<String,String,AssetUri> table : uriLookup.values()) {
     Map<String,AssetUri> columnMap=table.column(UriUtil.normalise(source.getSourceId()));
     for (    AssetUri value : columnMap.values()) {
-      Asset asset=assetCache.remove(value);
+      Asset<?> asset=assetCache.remove(value);
       if (asset != null) {
         asset.dispose();
       }
