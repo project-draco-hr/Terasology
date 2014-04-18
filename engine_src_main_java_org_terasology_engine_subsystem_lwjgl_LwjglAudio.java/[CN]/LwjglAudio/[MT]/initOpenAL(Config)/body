@@ -6,7 +6,8 @@
     try {
       audioManager=new OpenALManager(config.getAudio());
     }
- catch (    Exception e) {
+ catch (    LWJGLException|OpenALException e) {
+      logger.warn("Could not load OpenAL manager - sound is disabled",e);
       audioManager=new NullAudioManager();
     }
   }
