@@ -1,0 +1,20 @@
+{
+  if (sound == null) {
+    return null;
+  }
+  for (  SOUNDSOURCE source : soundSources.keySet()) {
+    if (!isActive(source)) {
+      soundSources.put(source,priority);
+      return (SOUNDSOURCE)source.setAudio(sound);
+    }
+  }
+  for (  Map.Entry<SOUNDSOURCE,Integer> entry : soundSources.entrySet()) {
+    SOUNDSOURCE source=entry.getKey();
+    Integer soundPriority=entry.getValue();
+    if (soundPriority < priority) {
+      soundSources.put(source,priority);
+      return (SOUNDSOURCE)source.setAudio(sound);
+    }
+  }
+  return null;
+}
