@@ -18,11 +18,11 @@
   loadProcesses.add(new InitialiseBlockTypeEntities());
   loadProcesses.add(new CreateWorldEntity());
   loadProcesses.add(new InitialiseWorldGenerator(gameManifest));
-  if (netMode == NetworkMode.SERVER) {
-    loadProcesses.add(new StartServer());
+  if (netMode.isServer()) {
+    loadProcesses.add(new StartServer(netMode));
   }
   loadProcesses.add(new PostBeginSystems());
-  if (!headless) {
+  if (netMode.hasLocalClient()) {
     loadProcesses.add(new SetupLocalPlayer());
     loadProcesses.add(new AwaitCharacterSpawn());
   }

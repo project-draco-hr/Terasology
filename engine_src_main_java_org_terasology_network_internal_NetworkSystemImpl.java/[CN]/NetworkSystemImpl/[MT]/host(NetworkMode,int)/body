@@ -1,7 +1,8 @@
 {
+  Preconditions.checkArgument(newMode.isServer(),"netMode must be a server mode");
   if (mode == NetworkMode.NONE) {
     try {
-      mode=NetworkMode.SERVER;
+      mode=newMode;
       for (      EntityRef entity : entityManager.getEntitiesWith(NetworkComponent.class)) {
         registerNetworkEntity(entity);
       }

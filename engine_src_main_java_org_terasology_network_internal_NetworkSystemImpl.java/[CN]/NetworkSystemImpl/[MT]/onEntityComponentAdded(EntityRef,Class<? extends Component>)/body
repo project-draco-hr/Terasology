@@ -1,19 +1,15 @@
 {
   ComponentMetadata<? extends Component> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
   NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-  if (netComp != null) {
-    if (netComp.getNetworkId() != NULL_NET_ID) {
-switch (mode) {
-case SERVER:
-        if (metadata.isReplicated()) {
-          for (          NetClient client : netClientList) {
-            logger.info("Component {} added to {}",component,entity);
-            client.setComponentAdded(netComp.getNetworkId(),component);
-          }
+  if (netComp != null && netComp.getNetworkId() != NULL_NET_ID) {
+    if (mode.isServer()) {
+      if (metadata.isReplicated()) {
+        for (        NetClient client : netClientList) {
+          logger.info("Component {} added to {}",component,entity);
+          client.setComponentAdded(netComp.getNetworkId(),component);
         }
-      break;
+      }
+    }
   }
-}
-}
-updatedOwnedEntities(entity,component,metadata);
+  updatedOwnedEntities(entity,component,metadata);
 }
