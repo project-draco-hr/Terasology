@@ -20,9 +20,9 @@
     }
   }
   try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getActiveModule(uri.getNormalisedModuleName()))){
-    D data=loadAssetData(uri,logErrors);
+    AssetData data=loadAssetData(uri,logErrors);
     if (data != null) {
-      asset=factory.buildAsset(uri,data);
+      asset=factory.buildAsset(uri,(D)data);
       if (asset != null) {
         logger.debug("Loaded {}",uri);
         assetCache.put(uri,asset);

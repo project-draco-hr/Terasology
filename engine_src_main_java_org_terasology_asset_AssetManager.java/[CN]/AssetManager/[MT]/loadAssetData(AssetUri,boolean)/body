@@ -40,7 +40,7 @@
     try (InputStream stream=AccessController.doPrivileged(new PrivilegedOpenStream(url))){
       urls.remove(url);
       urls.add(0,url);
-      return (D)loader.load(module,stream,urls,deltas);
+      return loader.load(module,stream,urls,deltas);
     }
  catch (    PrivilegedActionException e) {
       logger.error("Error reading asset {}",uri,e.getCause());
