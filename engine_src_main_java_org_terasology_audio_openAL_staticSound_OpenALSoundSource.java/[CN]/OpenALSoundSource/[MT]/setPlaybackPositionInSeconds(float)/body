@@ -1,12 +1,12 @@
 {
-  boolean playing=isPlaying();
-  if (playing) {
+  boolean isPlaying=isPlaying();
+  if (isPlaying) {
     AL10.alSourceStop(getSourceId());
   }
   AL10.alSourceRewind(getSourceId());
   AL10.alSourcei(getSourceId(),AL11.AL_SAMPLE_OFFSET,(int)(audio.getSamplingRate() * position));
   OpenALException.checkState("Setting sound playback absolute position");
-  if (playing) {
+  if (isPlaying) {
     play();
   }
   return this;
