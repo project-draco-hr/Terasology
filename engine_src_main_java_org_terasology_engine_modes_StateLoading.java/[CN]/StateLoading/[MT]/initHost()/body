@@ -18,11 +18,23 @@
   loadProcesses.add(new InitialiseBlockTypeEntities());
   loadProcesses.add(new CreateWorldEntity());
   loadProcesses.add(new InitialiseWorldGenerator(gameManifest));
-  if (netMode == NetworkMode.SERVER) {
-    loadProcesses.add(new StartServer());
+  if (netMode.isServer()) {
+    boolean dedicated;
+    if (netMode == NetworkMode.DEDICATED_SERVER) {
+      dedicated=true;
+    }
+ else     if (netMode == NetworkMode.LISTEN_SERVER) {
+      dedicated=false;
+    }
+ else {
+      throw new IllegalStateException("Invalid server mode: " + netMode);
+    }
+    loadProcesses.add(new StartServer(dedicated));
   }
   loadProcesses.add(new PostBeginSystems());
-  loadProcesses.add(new SetupLocalPlayer());
-  loadProcesses.add(new AwaitCharacterSpawn());
+  if (netMode.hasLocalClient()) {
+    loadProcesses.add(new SetupLocalPlayer());
+    loadProcesses.add(new AwaitCharacterSpawn());
+  }
   loadProcesses.add(new PrepareWorld());
 }

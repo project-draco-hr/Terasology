@@ -3,7 +3,8 @@
   ComponentMetadata<? extends Component> metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
   if (netComp != null && netComp.getNetworkId() != NULL_NET_ID) {
 switch (mode) {
-case SERVER:
+case LISTEN_SERVER:
+case DEDICATED_SERVER:
       if (metadata.isReplicated()) {
         for (        NetClient client : netClientList) {
           client.setComponentDirty(netComp.getNetworkId(),component);
