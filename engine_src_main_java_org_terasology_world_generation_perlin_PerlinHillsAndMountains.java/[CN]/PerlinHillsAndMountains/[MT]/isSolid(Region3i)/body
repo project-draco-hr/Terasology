@@ -1,0 +1,13 @@
+{
+  boolean[] results=new boolean[region.sizeX() * region.sizeY() * region.sizeZ()];
+  float[] heights=baseHeightProvider.getSurfaceHeights(Rect2i.createFromMinAndSize(region.minX(),region.minZ(),region.sizeX(),region.sizeZ()));
+  for (int z=0; z < region.sizeZ(); ++z) {
+    for (int x=0; x < region.sizeX(); ++x) {
+      float height=heights[x + region.sizeX() * z];
+      for (int y=0; y < region.sizeY(); ++y) {
+        results[x + region.sizeX() * (y + region.sizeY() * z)]=isSolid(x + region.minX(),y + region.minY(),z + region.minZ(),height);
+      }
+    }
+  }
+  return results;
+}

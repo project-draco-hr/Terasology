@@ -1,0 +1,26 @@
+{
+  if (result.containsKey(facet)) {
+    return;
+  }
+  if (!facetCalculationInProgress.add(facet)) {
+    throw new RuntimeException("Circular dependency detected when calculating facet provider ordering for " + facet);
+  }
+  Set<FacetProvider> orderedProviders=Sets.newLinkedHashSet();
+  for (  FacetProvider provider : providersList) {
+    Produces produces=provider.getClass().getAnnotation(Produces.class);
+    if (produces != null && Arrays.asList(produces.value()).contains(facet)) {
+      Requires requirements=provider.getClass().getAnnotation(Requires.class);
+      if (requirements != null) {
+        for (        Class<? extends WorldFacet> requirement : requirements.value()) {
+          if (requirement != facet) {
+            determineProviderChainFor(requirement,result);
+            orderedProviders.addAll(result.get(requirement));
+          }
+        }
+      }
+      orderedProviders.add(provider);
+    }
+  }
+  result.putAll(facet,orderedProviders);
+  facetCalculationInProgress.remove(facet);
+}

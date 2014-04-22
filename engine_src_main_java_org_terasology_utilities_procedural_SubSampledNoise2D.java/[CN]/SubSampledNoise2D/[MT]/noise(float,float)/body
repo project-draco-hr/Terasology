@@ -1,0 +1,13 @@
+{
+  float xMod=TeraMath.modulus(x,sampleRate);
+  float yMod=TeraMath.modulus(y,sampleRate);
+  float x0=x - xMod;
+  float x1=x0 + sampleRate;
+  float y0=y - yMod;
+  float y1=y0 + sampleRate;
+  float q00=source.noise(x0 * zoom.x,y0 * zoom.y);
+  float q10=source.noise(x1 * zoom.x,y0 * zoom.y);
+  float q01=source.noise(x0 * zoom.x,y1 * zoom.y);
+  float q11=source.noise(x1 * zoom.x,y1 * zoom.y);
+  return bilinearInterpolate(q00,q10,q01,q11,xMod / sampleRate,yMod / sampleRate);
+}

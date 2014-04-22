@@ -18,7 +18,7 @@
     return false;
   }
   BlockManager blockManager=CoreRegistry.get(BlockManager.class);
-  World world=new WorldBuilder(0).addProvider(new SimplexTemperatureProvider()).addProvider(new SimplexHumidityProvider()).addProvider(new BaseSurfaceProvider()).addProvider(new RiverProvider()).addProvider(new OceanProvider()).addProvider(new HillsAndMountainsProvider()).addRasterizer(new GroundRasterizer(blockManager)).build();
+  World world=new WorldBuilder(0).addProvider(new BasePerlinSurfaceProvider()).addRasterizer(new GroundRasterizer(blockManager)).build();
   LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,world);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));

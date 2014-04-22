@@ -1,0 +1,11 @@
+{
+  float[] data=new float[area.size().x * area.size().y];
+  int sizeX=area.size().x;
+  int sizeY=area.size().y;
+  for (int y=0; y < sizeY; ++y) {
+    for (int x=0; x < sizeX; ++x) {
+      data[x + sizeX * y]=surfaceHeightProvider.getHeightAt(x + area.minX(),y + area.minY());
+    }
+  }
+  return data;
+}

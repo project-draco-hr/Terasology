@@ -1,0 +1,18 @@
+{
+  Vector3i chunkOffset=chunk.getChunkWorldOffset();
+  boolean[] solids=solidityProvider.isSolid(chunk.getRegion());
+  int solidIndex=0;
+  for (int z=0; z < chunk.getChunkSizeZ(); ++z) {
+    for (int y=0; y < chunk.getChunkSizeY(); ++y) {
+      for (int x=0; x < chunk.getChunkSizeX(); ++x) {
+        boolean solid=solids[solidIndex++];
+        if (solid) {
+          chunk.setBlock(x,y,z,stone);
+        }
+ else         if (y + chunkOffset.getY() < 32) {
+          chunk.setBlock(x,y,z,water);
+        }
+      }
+    }
+  }
+}
