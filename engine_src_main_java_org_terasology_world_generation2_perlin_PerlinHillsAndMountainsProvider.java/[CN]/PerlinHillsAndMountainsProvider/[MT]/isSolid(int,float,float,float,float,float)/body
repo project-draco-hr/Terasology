@@ -1,0 +1,8 @@
+{
+  float tempHumid=temperature * humidity;
+  Vector2f distanceToMountainBiome=new Vector2f(temperature - 0.25f,tempHumid - 0.35f);
+  float mIntens=TeraMath.clamp(1.0f - distanceToMountainBiome.length() * 3.0f);
+  float densityMountains=Math.max(mountain,0) * mIntens;
+  float densityHills=Math.max(hill - 0.1f,0) * (1.0f - mIntens);
+  return -y + height + 1024 * densityMountains + 128 * densityHills > 0;
+}

@@ -1,0 +1,10 @@
+{
+  Region3i processRegion=region.getRegion();
+  float[] noise=surfaceNoise.noise(Rect2i.createFromMinAndSize(processRegion.minX(),processRegion.minZ(),processRegion.sizeX(),processRegion.sizeZ()));
+  for (int i=0; i < noise.length; ++i) {
+    noise[i]=32f + 32f * ((noise[i] + 1f) / 2f);
+  }
+  SurfaceHeightFacet facet=new SurfaceHeightFacet(new Vector2i(region.getRegion().sizeX(),region.getRegion().sizeZ()));
+  facet.set(noise);
+  region.setRegionFacet(SurfaceHeightFacet.class,facet);
+}

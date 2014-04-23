@@ -1,0 +1,18 @@
+{
+  float[] height=region.getRegionFacet(SurfaceHeightFacet.class).getInternal();
+  float[] mountainData=mountainNoise.noise(region.getRegion());
+  float[] hillData=hillNoise.noise(region.getRegion());
+  float[] temperatureData=region.getRegionFacet(SeaLevelTemperatureFacet.class).getInternal();
+  float[] humidityData=region.getRegionFacet(HumidityFacet.class).getInternal();
+  Vector3i offset=region.getRegion().min();
+  SolidityFacet result=new SolidityFacet(region.getRegion().size());
+  Boolean3DIterator iterator=result.get();
+  int i=0;
+  while (iterator.hasNext()) {
+    iterator.next();
+    int index2d=iterator.currentPosition().getX() + region.getRegion().sizeX() * iterator.currentPosition().getZ();
+    iterator.setLast(isSolid(iterator.currentPosition().getY() + offset.getY(),height[index2d],mountainData[i],hillData[i],temperatureData[index2d],humidityData[index2d]));
+    i++;
+  }
+  region.setRegionFacet(SolidityFacet.class,result);
+}

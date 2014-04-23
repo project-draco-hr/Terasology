@@ -1,11 +1,12 @@
 {
   int xDim=fullRegion.size().x / sampleRate + 1;
-  float[] fullData=new float[xDim * (fullRegion.size().y / sampleRate + 1)];
-  for (int y=0; y <= fullRegion.size().y / sampleRate; y++) {
-    for (int x=0; x <= fullRegion.size().x / sampleRate; x++) {
+  int yDim=fullRegion.size().y / sampleRate + 1;
+  float[] fullData=new float[xDim * yDim];
+  for (int y=0; y < yDim; y++) {
+    for (int x=0; x < xDim; x++) {
       int actualX=x * sampleRate + fullRegion.minX();
       int actualY=y * sampleRate + fullRegion.minY();
-      fullData[x + y * xDim]=(float)source.noise(zoom.x * actualX,zoom.y * actualY);
+      fullData[x + y * xDim]=source.noise(zoom.x * actualX,zoom.y * actualY);
     }
   }
   return fullData;

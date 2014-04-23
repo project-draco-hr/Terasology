@@ -1,0 +1,13 @@
+{
+  SolidityFacet solidityFacet=chunkRegion.getFacet(SolidityFacet.class);
+  Boolean3DIterator solidity=solidityFacet.get();
+  while (solidity.hasNext()) {
+    boolean solid=solidity.next();
+    if (solid) {
+      chunk.setBlock(solidity.currentPosition(),stone);
+    }
+ else     if (solidity.currentPosition().getY() + chunk.getChunkWorldOffsetY() < 32) {
+      chunk.setBlock(solidity.currentPosition(),water);
+    }
+  }
+}
