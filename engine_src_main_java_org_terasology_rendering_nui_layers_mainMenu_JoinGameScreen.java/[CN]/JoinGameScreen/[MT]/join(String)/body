@@ -1,9 +1,20 @@
 {
-  JoinStatus joinStatus=networkSystem.join(address,TerasologyConstants.DEFAULT_PORT);
-  if (joinStatus.getStatus() != JoinStatus.Status.FAILED) {
-    engine.changeState(new StateLoading(joinStatus));
+  joinServerTask=new FutureTask<JoinStatus>(new Callable<JoinStatus>(){
+    @Override public JoinStatus call(){
+      JoinStatus joinStatus=networkSystem.join(address,TerasologyConstants.DEFAULT_PORT);
+      return joinStatus;
+    }
   }
- else {
-    getManager().pushScreen(MessagePopup.ASSET_URI,MessagePopup.class).setMessage("Failed to Join","Could not connect to server - " + joinStatus.getErrorMessage());
+);
+  final MessagePopup popup=getManager().pushScreen(MessagePopup.ASSET_URI,MessagePopup.class);
+  popup.setMessage("Join Game","Connecting ... please wait");
+  popup.setCloseButtonText("Cancel");
+  popup.setCloseAction(new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget widget){
+      joinServerTask.cancel(true);
+    }
   }
+);
+  Thread t=new Thread(joinServerTask,"Join Server");
+  t.start();
 }
