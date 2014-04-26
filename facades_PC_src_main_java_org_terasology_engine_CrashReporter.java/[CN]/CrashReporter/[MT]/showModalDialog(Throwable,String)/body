@@ -23,19 +23,37 @@
   JPanel buttonPanel=new JPanel();
   buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
   buttonPanel.setLayout(new GridLayout(1,3,20,0));
-  JButton pastebinUpload=new JButton("Upload log file to PasteBin");
+  final JButton pastebinUpload=new JButton("Upload log file to PasteBin");
+  pastebinUpload.setIcon(loadIcon("icons/pastebin.png"));
   pastebinUpload.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent event){
       String title="Terasology Error Report";
       PastebinPaste paste=Pastebin.newPaste(PASTEBIN_DEVELOPER_KEY,logArea.getText(),title);
       paste.setPasteFormat("apache");
-      paste.setPasteExpireDate(PasteExpireDate.TEN_MINUTES);
+      paste.setPasteExpireDate(PasteExpireDate.ONE_MONTH);
       uploadPaste(paste);
     }
   }
 );
+  logArea.getDocument().addDocumentListener(new DocumentListener(){
+    @Override public void removeUpdate(    DocumentEvent e){
+      update();
+    }
+    @Override public void insertUpdate(    DocumentEvent e){
+      update();
+    }
+    @Override public void changedUpdate(    DocumentEvent e){
+      update();
+    }
+    private void update(){
+      pastebinUpload.setEnabled(!logArea.getText().isEmpty());
+    }
+  }
+);
+  pastebinUpload.setEnabled(!logArea.getText().isEmpty());
   buttonPanel.add(pastebinUpload);
   JButton githubIssueButton=new JButton("File an issue on GitHub");
+  githubIssueButton.setIcon(loadIcon("icons/github.png"));
   githubIssueButton.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent e){
       openInBrowser(REPORT_ISSUE_LINK);
@@ -44,6 +62,7 @@
 );
   buttonPanel.add(githubIssueButton);
   JButton enterIrc=new JButton("Enter IRC channel");
+  enterIrc.setIcon(loadIcon("icons/irc.png"));
   enterIrc.addActionListener(new ActionListener(){
     @Override public void actionPerformed(    ActionEvent e){
       openInBrowser(JOIN_IRC_LINK);
@@ -52,7 +71,7 @@
 );
   buttonPanel.add(enterIrc);
   mainPanel.add(buttonPanel);
-  Object[] opts=new Object[]{"Close"};
+  Object[] opts=new Object[]{new JButton("Close",loadIcon("icons/close.png"))};
   Object opt=opts[0];
   JOptionPane.showOptionDialog(null,mainPanel,"Fatal Error",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,opts,opt);
 }
