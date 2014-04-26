@@ -1,0 +1,16 @@
+{
+  StringBuilder builder=new StringBuilder();
+  List<String> lines;
+  try {
+    String logFile=getLogFilename();
+    lines=Files.readAllLines(Paths.get(logFile),Charset.defaultCharset());
+    for (    String line : lines) {
+      builder.append(line);
+      builder.append(System.lineSeparator());
+    }
+  }
+ catch (  IOException e) {
+    e.printStackTrace(System.err);
+  }
+  return builder.toString();
+}

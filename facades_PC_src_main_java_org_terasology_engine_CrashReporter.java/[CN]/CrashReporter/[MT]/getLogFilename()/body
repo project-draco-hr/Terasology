@@ -1,0 +1,24 @@
+{
+  String logFile=null;
+  org.slf4j.Logger logger=LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+  if (logger instanceof Logger) {
+    Logger logbackLogger=(Logger)logger;
+    Iterator<Appender<ILoggingEvent>> it=logbackLogger.iteratorForAppenders();
+    while (it.hasNext()) {
+      Appender<ILoggingEvent> app=it.next();
+      if (app instanceof FileAppender) {
+        FileAppender<ILoggingEvent> fileApp=(FileAppender<ILoggingEvent>)app;
+        if (logFile == null) {
+          logFile=fileApp.getFile();
+        }
+ else {
+          System.err.println("Multiple log files found!");
+        }
+      }
+    }
+  }
+ else {
+    System.err.println("Logger ist not a Logback logger, but " + logger.getClass().getName());
+  }
+  return logFile;
+}

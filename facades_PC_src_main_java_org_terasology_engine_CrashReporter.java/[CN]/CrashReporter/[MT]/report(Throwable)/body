@@ -1,0 +1,25 @@
+{
+  try {
+    final String logFileContent=getLogFileContent();
+    SwingUtilities.invokeAndWait(new Runnable(){
+      @Override public void run(){
+        LookAndFeel oldLaF=UIManager.getLookAndFeel();
+        try {
+          UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+ catch (        Exception e) {
+        }
+        showModalDialog(t,logFileContent);
+        try {
+          UIManager.setLookAndFeel(oldLaF);
+        }
+ catch (        Exception e) {
+        }
+      }
+    }
+);
+  }
+ catch (  InvocationTargetException|InterruptedException e) {
+    e.printStackTrace(System.err);
+  }
+}

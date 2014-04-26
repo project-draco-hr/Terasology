@@ -1,0 +1,58 @@
+{
+  JPanel mainPanel=new JPanel();
+  mainPanel.setLayout(new BoxLayout(mainPanel,BoxLayout.Y_AXIS));
+  String text=exception.toString().replaceAll("\\r?\\n","<br/>");
+  JLabel message=new JLabel("<html><h3>A fatal error occurred</h3><br/>" + text + "</html>");
+  mainPanel.add(message);
+  message.setAlignmentX(Component.LEFT_ALIGNMENT);
+  mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
+  final JTabbedPane mainSettings=new JTabbedPane();
+  JTextArea stackTraceArea=new JTextArea();
+  stackTraceArea.setText(Joiner.on(System.lineSeparator()).join(exception.getStackTrace()));
+  stackTraceArea.setEditable(false);
+  stackTraceArea.setCaretPosition(0);
+  mainSettings.addTab("StackTrace",new JScrollPane(stackTraceArea));
+  final JTextArea logArea=new JTextArea();
+  logArea.setText(logFileContent);
+  mainSettings.addTab("Logfile",new JScrollPane(logArea));
+  mainSettings.setPreferredSize(new Dimension(550,250));
+  mainSettings.setAlignmentX(Component.LEFT_ALIGNMENT);
+  mainPanel.add(mainSettings);
+  mainPanel.add(new JLabel("NOTE: you can edit the content of the log file before uploading"));
+  mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
+  JPanel buttonPanel=new JPanel();
+  buttonPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+  buttonPanel.setLayout(new GridLayout(1,3,20,0));
+  JButton pastebinUpload=new JButton("Upload log file to PasteBin");
+  pastebinUpload.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent event){
+      String title="Terasology Error Report";
+      PastebinPaste paste=Pastebin.newPaste(PASTEBIN_DEVELOPER_KEY,logArea.getText(),title);
+      paste.setPasteFormat("apache");
+      paste.setPasteExpireDate(PasteExpireDate.TEN_MINUTES);
+      uploadPaste(paste);
+    }
+  }
+);
+  buttonPanel.add(pastebinUpload);
+  JButton githubIssueButton=new JButton("File an issue on GitHub");
+  githubIssueButton.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      openInBrowser(REPORT_ISSUE_LINK);
+    }
+  }
+);
+  buttonPanel.add(githubIssueButton);
+  JButton enterIrc=new JButton("Enter IRC channel");
+  enterIrc.addActionListener(new ActionListener(){
+    @Override public void actionPerformed(    ActionEvent e){
+      openInBrowser(JOIN_IRC_LINK);
+    }
+  }
+);
+  buttonPanel.add(enterIrc);
+  mainPanel.add(buttonPanel);
+  Object[] opts=new Object[]{"Close"};
+  Object opt=opts[0];
+  JOptionPane.showOptionDialog(null,mainPanel,"Fatal Error",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,opts,opt);
+}
