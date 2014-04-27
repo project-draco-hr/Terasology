@@ -6,18 +6,18 @@
   mainPanel.add(message);
   message.setAlignmentX(Component.LEFT_ALIGNMENT);
   mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
-  final JTabbedPane mainSettings=new JTabbedPane();
+  final JTabbedPane tabPane=new JTabbedPane();
+  tabPane.setPreferredSize(new Dimension(600,250));
+  tabPane.setAlignmentX(Component.LEFT_ALIGNMENT);
   JTextArea stackTraceArea=new JTextArea();
   stackTraceArea.setText(Joiner.on(System.lineSeparator()).join(exception.getStackTrace()));
   stackTraceArea.setEditable(false);
   stackTraceArea.setCaretPosition(0);
-  mainSettings.addTab("StackTrace",new JScrollPane(stackTraceArea));
+  tabPane.addTab("StackTrace",new JScrollPane(stackTraceArea));
   final JTextArea logArea=new JTextArea();
   logArea.setText(logFileContent);
-  mainSettings.addTab("Logfile",new JScrollPane(logArea));
-  mainSettings.setPreferredSize(new Dimension(550,250));
-  mainSettings.setAlignmentX(Component.LEFT_ALIGNMENT);
-  mainPanel.add(mainSettings);
+  tabPane.addTab("Logfile",new JScrollPane(logArea));
+  mainPanel.add(tabPane);
   mainPanel.add(new JLabel("NOTE: you can edit the content of the log file before uploading"));
   mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
   JPanel buttonPanel=new JPanel();
@@ -71,7 +71,7 @@
 );
   buttonPanel.add(enterIrc);
   mainPanel.add(buttonPanel);
-  Object[] opts=new Object[]{new JButton("Close",loadIcon("icons/close.png"))};
-  Object opt=opts[0];
-  JOptionPane.showOptionDialog(null,mainPanel,"Fatal Error",JOptionPane.DEFAULT_OPTION,JOptionPane.ERROR_MESSAGE,null,opts,opt);
+  mainPanel.add(Box.createRigidArea(new Dimension(0,10)));
+  JButton closeButton=new JButton("Close",loadIcon("icons/close.png"));
+  showDialog(mainPanel,closeButton,"Fatal Error",JOptionPane.ERROR_MESSAGE);
 }
