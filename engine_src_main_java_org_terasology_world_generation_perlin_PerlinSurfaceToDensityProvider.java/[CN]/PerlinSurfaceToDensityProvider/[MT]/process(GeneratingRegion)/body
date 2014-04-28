@@ -1,0 +1,15 @@
+{
+  SurfaceHeightFacet surfaceHeight=region.getRegionFacet(SurfaceHeightFacet.class);
+  DensityFacet facet=new DensityFacet(region.getRegion().size());
+  float[] result=facet.getInternal();
+  Float2DIterator iterator=surfaceHeight.get();
+  Region3i area=region.getRegion();
+  while (iterator.hasNext()) {
+    float height=iterator.next();
+    for (int y=0; y < region.getRegion().sizeY(); ++y) {
+      int index=iterator.currentPosition().x + area.sizeX() * (y + area.sizeY() * iterator.currentPosition().getY());
+      result[index]=height - area.minY() - y;
+    }
+  }
+  region.setRegionFacet(DensityFacet.class,facet);
+}

@@ -1,0 +1,16 @@
+{
+  Rect2i region2d=Rect2i.createFromMinAndMax(region.getRegion().minX(),region.getRegion().minZ(),region.getRegion().maxX(),region.getRegion().maxZ());
+  float[] mountainData=mountainNoise.noise(region2d);
+  float[] hillData=hillNoise.noise(region2d);
+  float[] temperatureData=region.getRegionFacet(SeaLevelTemperatureFacet.class).getInternal();
+  float[] humidityData=region.getRegionFacet(HumidityFacet.class).getInternal();
+  float[] heightData=region.getRegionFacet(SurfaceHeightFacet.class).getInternal();
+  for (int i=0; i < mountainData.length; ++i) {
+    float tempHumid=temperatureData[i] * humidityData[i];
+    Vector2f distanceToMountainBiome=new Vector2f(temperatureData[i] - 0.25f,tempHumid - 0.35f);
+    float mIntens=TeraMath.clamp(1.0f - distanceToMountainBiome.length() * 3.0f);
+    float densityMountains=Math.max(mountainData[i],0) * mIntens;
+    float densityHills=Math.max(hillData[i] - 0.1f,0) * (1.0f - mIntens);
+    heightData[i]=heightData[i] + 1024 * densityMountains + 128 * densityHills;
+  }
+}

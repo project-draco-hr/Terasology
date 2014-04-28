@@ -1,9 +1,4 @@
 {
-  for (  WorldDataProvider provider : providersList) {
-    injectUnchainedDependencies(provider,providersMap);
-  }
-  for (  WorldRasterizer rasterizer : rasterizers) {
-    InjectionHelper.inject(rasterizer,Requires.class,providersMap);
-  }
-  return new WorldImpl(seed,providersMap,rasterizers);
+  ListMultimap<Class<? extends WorldFacet>,FacetProvider> facetProviderChains=determineProviderChains();
+  return new WorldImpl(seed,determineProviderChains(),rasterizers);
 }
