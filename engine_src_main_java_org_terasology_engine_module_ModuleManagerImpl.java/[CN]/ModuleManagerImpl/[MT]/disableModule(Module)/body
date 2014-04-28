@@ -1,6 +1,6 @@
 {
   Module removedModule=activeModules.remove(module.getId());
   if (removedModule != null && removedModule instanceof ExtensionModule) {
-    ((ExtensionModule)module).disable();
+    CoreRegistry.get(AssetManager.class).removeAssetSource(module.getModuleSource());
   }
 }
