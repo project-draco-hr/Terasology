@@ -1,4 +1,9 @@
 {
+  for (  Module module : activeModules.values()) {
+    if (module instanceof ExtensionModule) {
+      CoreRegistry.get(AssetManager.class).removeAssetSource(module.getModuleSource());
+    }
+  }
   activeModules.clear();
   activeModules.put(engineModule.getId(),engineModule);
 }

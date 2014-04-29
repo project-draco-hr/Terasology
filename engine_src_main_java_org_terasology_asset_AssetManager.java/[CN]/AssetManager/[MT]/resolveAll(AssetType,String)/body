@@ -4,7 +4,7 @@
     return Lists.newArrayList(uri);
   }
   List<AssetUri> results=Lists.newArrayList(uriLookup.get(type).row(UriUtil.normalise(name)).values());
-  for (  AssetResolver resolver : resolvers.get(type)) {
+  for (  AssetResolver<?,?> resolver : resolvers.get(type)) {
     AssetUri additionalUri=resolver.resolve(name);
     if (additionalUri != null) {
       results.add(additionalUri);

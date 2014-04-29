@@ -1,10 +1,10 @@
 {
-  AssetFactory assetFactory=factories.get(uri.getAssetType());
+  AssetFactory<U,Asset<U>> assetFactory=(AssetFactory<U,Asset<U>>)factories.get(uri.getAssetType());
   if (assetFactory == null) {
     logger.warn("Unsupported asset type: {}",uri.getAssetType());
     return null;
   }
-  Asset asset=assetCache.get(uri);
+  Asset<U> asset=(Asset<U>)assetCache.get(uri);
   if (asset != null) {
     logger.debug("Reloading {} with newly generated data",uri);
     asset.reload(data);

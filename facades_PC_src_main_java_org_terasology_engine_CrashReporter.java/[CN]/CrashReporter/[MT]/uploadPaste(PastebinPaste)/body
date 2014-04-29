@@ -1,0 +1,41 @@
+{
+  final JLabel label=new JLabel("Uploading file - please wait ...");
+  label.setPreferredSize(new Dimension(250,50));
+  final JButton closeButton=new JButton("Close",loadIcon("icons/close.png"));
+  closeButton.setEnabled(false);
+  Runnable runnable=new Runnable(){
+    @Override public void run(){
+      try {
+        final PastebinLink link=paste.paste();
+        SwingUtilities.invokeLater(new Runnable(){
+          @Override public void run(){
+            closeButton.setEnabled(true);
+            final String url=link.getLink().toString();
+            label.setText(String.format("<html>Paste uploaded to <a href=\"%s\">%s</a></html>",url,url));
+            label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            label.addMouseListener(new MouseAdapter(){
+              public void mouseClicked(              java.awt.event.MouseEvent e){
+                openInBrowser(url);
+              }
+            }
+);
+          }
+        }
+);
+      }
+ catch (      final PasteException e) {
+        SwingUtilities.invokeLater(new Runnable(){
+          @Override public void run(){
+            closeButton.setEnabled(true);
+            label.setText("<html>Upload failed: <br/> " + e.getLocalizedMessage() + "</html>");
+          }
+        }
+);
+      }
+    }
+  }
+;
+  Thread thread=new Thread(runnable,"Upload paste");
+  thread.start();
+  showDialog(label,closeButton,"Pastebin Upload",JOptionPane.INFORMATION_MESSAGE);
+}

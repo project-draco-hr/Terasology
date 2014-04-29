@@ -1,0 +1,15 @@
+{
+switch (LWJGLUtil.getPlatform()) {
+case LWJGLUtil.PLATFORM_MACOSX:
+    NativeHelper.addLibraryPath(PathManager.getInstance().getNativesPath().resolve("macosx"));
+  break;
+case LWJGLUtil.PLATFORM_LINUX:
+NativeHelper.addLibraryPath(PathManager.getInstance().getNativesPath().resolve("linux"));
+break;
+case LWJGLUtil.PLATFORM_WINDOWS:
+NativeHelper.addLibraryPath(PathManager.getInstance().getNativesPath().resolve("windows"));
+break;
+default :
+throw new UnsupportedOperationException("Unsupported operating system: " + LWJGLUtil.getPlatformName());
+}
+}
