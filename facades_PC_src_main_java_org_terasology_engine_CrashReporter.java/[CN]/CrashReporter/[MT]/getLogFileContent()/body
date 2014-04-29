@@ -1,12 +1,15 @@
 {
   StringBuilder builder=new StringBuilder();
-  List<String> lines;
   try {
-    String logFile=getLogFilename();
-    lines=Files.readAllLines(Paths.get(logFile),Charset.defaultCharset());
-    for (    String line : lines) {
-      builder.append(line);
-      builder.append(System.lineSeparator());
+    Path logDirectory=PathManager.getInstance().getLogPath();
+    if (logDirectory != null) {
+      Path logPath=PathManager.getInstance().getLogPath().resolve("Terasology.log");
+      if (Files.exists(logPath)) {
+        for (        String line : Files.readAllLines(logPath,Charset.defaultCharset())) {
+          builder.append(line);
+          builder.append(System.lineSeparator());
+        }
+      }
     }
   }
  catch (  Exception e) {
