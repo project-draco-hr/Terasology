@@ -38,7 +38,12 @@
   }
  catch (  Throwable t) {
     if (!GraphicsEnvironment.isHeadless()) {
-      CrashReporter.report(t);
+      Path logDirectory=PathManager.getInstance().getLogPath();
+      if (logDirectory == null) {
+        logDirectory=Paths.get(".");
+      }
+      Path logPath=logDirectory.resolve("Terasology.log");
+      CrashReporter.report(t,logPath);
     }
   }
   System.exit(0);
