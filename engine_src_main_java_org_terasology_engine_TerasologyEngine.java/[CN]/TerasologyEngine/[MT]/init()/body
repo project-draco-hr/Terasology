@@ -37,9 +37,9 @@
     }
     initialised=true;
   }
- catch (  Throwable t) {
-    logger.error("Failed to initialise Terasology",t);
-    throw t;
+ catch (  RuntimeException e) {
+    logger.error("Failed to initialise Terasology",e);
+    throw e;
   }
   double secs=0.001 * sw.elapsed(TimeUnit.MILLISECONDS);
   logger.info("Initialization completed in {}sec.",String.format("%.2f",secs));
