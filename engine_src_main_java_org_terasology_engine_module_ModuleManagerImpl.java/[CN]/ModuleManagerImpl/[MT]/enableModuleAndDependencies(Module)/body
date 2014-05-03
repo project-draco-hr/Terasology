@@ -5,13 +5,5 @@
       enableModuleAndDependencies(dependency);
     }
   }
-  Module oldModule=activeModules.put(module.getId(),module);
-  if (!module.equals(oldModule)) {
-    if (oldModule != null && oldModule instanceof ExtensionModule) {
-      CoreRegistry.get(AssetManager.class).removeAssetSource(module.getModuleSource());
-    }
-    if (module instanceof ExtensionModule) {
-      CoreRegistry.get(AssetManager.class).addAssetSource(module.getModuleSource());
-    }
-  }
+  enableModule(module);
 }
