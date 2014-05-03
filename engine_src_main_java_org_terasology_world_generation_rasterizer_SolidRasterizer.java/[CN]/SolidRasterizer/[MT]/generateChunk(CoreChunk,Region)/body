@@ -2,25 +2,26 @@
   DensityFacet solidityFacet=chunkRegion.getFacet(DensityFacet.class);
   SurfaceHeightFacet surfaceFacet=chunkRegion.getFacet(SurfaceHeightFacet.class);
   BiomeFacet biomeFacet=chunkRegion.getFacet(BiomeFacet.class);
-  Float3DIterator iterator=solidityFacet.get();
-  while (iterator.hasNext()) {
-    float density=iterator.next();
+  Vector2i pos2d=new Vector2i();
+  for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
+    pos2d.set(pos.x,pos.z);
+    float density=solidityFacet.get(pos);
     if (density >= 32) {
-      chunk.setBlock(iterator.currentPosition(),stone);
+      chunk.setBlock(pos,stone);
     }
  else     if (density >= 0) {
-      int depth=TeraMath.floorToInt(surfaceFacet.get(iterator.current2DPos())) - iterator.currentPosition().getY() - chunk.getChunkWorldOffsetY();
-      WorldBiomeProvider.Biome biome=biomeFacet.get(iterator.currentPosition().getX(),iterator.currentPosition().getZ());
-      Block block=getSurfaceBlock(depth,iterator.currentPosition().getY() + chunk.getChunkWorldOffsetY(),biome);
-      chunk.setBlock(iterator.currentPosition(),block);
+      int depth=TeraMath.floorToInt(surfaceFacet.get(pos2d)) - pos.y - chunk.getChunkWorldOffsetY();
+      WorldBiomeProvider.Biome biome=biomeFacet.get(pos2d);
+      Block block=getSurfaceBlock(depth,pos.y + chunk.getChunkWorldOffsetY(),biome);
+      chunk.setBlock(pos,block);
     }
  else {
-      int posY=iterator.currentPosition().getY() + chunk.getChunkWorldOffsetY();
-      if (posY == 32 && WorldBiomeProvider.Biome.SNOW == biomeFacet.get(iterator.currentPosition().getX(),iterator.currentPosition().getZ())) {
-        chunk.setBlock(iterator.currentPosition(),ice);
+      int posY=pos.getY() + chunk.getChunkWorldOffsetY();
+      if (posY == 32 && WorldBiomeProvider.Biome.SNOW == biomeFacet.get(pos2d)) {
+        chunk.setBlock(pos,ice);
       }
  else       if (posY <= 32) {
-        chunk.setBlock(iterator.currentPosition(),water);
+        chunk.setBlock(pos,water);
       }
     }
   }

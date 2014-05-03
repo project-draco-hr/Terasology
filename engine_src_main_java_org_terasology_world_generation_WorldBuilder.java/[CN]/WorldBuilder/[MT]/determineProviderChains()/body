@@ -6,8 +6,9 @@
     if (produces != null) {
       facets.addAll(Arrays.asList(produces.value()));
     }
- else {
-      logger.warn("FacetProvider {} does not produce any data",provider.getClass());
+    Updates updates=provider.getClass().getAnnotation(Updates.class);
+    for (    Facet facet : updates.value()) {
+      facets.add(facet.value());
     }
   }
   for (  Class<? extends WorldFacet> facet : facets) {

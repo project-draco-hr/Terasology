@@ -1,10 +1,10 @@
 {
-  Region3i processRegion=region.getRegion();
-  float[] noise=humidityNoise.noise(Rect2i.createFromMinAndSize(processRegion.minX(),processRegion.minZ(),processRegion.sizeX(),processRegion.sizeZ()));
+  Vector3i border=region.getBorderForFacet(HumidityFacet.class);
+  HumidityFacet facet=new HumidityFacet(region.getRegion(),border);
+  float[] noise=humidityNoise.noise(facet.getWorldRegion());
   for (int i=0; i < noise.length; ++i) {
     noise[i]=TeraMath.clamp((noise[i] + 1f) * 0.5f);
   }
-  HumidityFacet facet=new HumidityFacet(new Vector2i(region.getRegion().sizeX(),region.getRegion().sizeZ()));
   facet.set(noise);
   region.setRegionFacet(HumidityFacet.class,facet);
 }

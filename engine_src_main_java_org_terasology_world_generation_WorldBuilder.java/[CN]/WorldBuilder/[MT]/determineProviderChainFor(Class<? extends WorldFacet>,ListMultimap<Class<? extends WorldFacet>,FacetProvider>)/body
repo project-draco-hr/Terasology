@@ -7,20 +7,17 @@
   }
   Set<FacetProvider> orderedProviders=Sets.newLinkedHashSet();
   for (  FacetProvider provider : providersList) {
-    Produces produces=provider.getClass().getAnnotation(Produces.class);
-    if (produces != null && Arrays.asList(produces.value()).contains(facet)) {
+    if (producesFacet(provider,facet)) {
       Requires requirements=provider.getClass().getAnnotation(Requires.class);
       if (requirements != null) {
-        for (        Class<? extends WorldFacet> requirement : requirements.value()) {
-          if (requirement != facet) {
-            determineProviderChainFor(requirement,result);
-            orderedProviders.addAll(result.get(requirement));
-          }
+        for (        Facet requirement : requirements.value()) {
+          determineProviderChainFor(requirement.value(),result);
+          orderedProviders.addAll(result.get(requirement.value()));
         }
       }
       orderedProviders.add(provider);
     }
+    result.putAll(facet,orderedProviders);
+    facetCalculationInProgress.remove(facet);
   }
-  result.putAll(facet,orderedProviders);
-  facetCalculationInProgress.remove(facet);
 }

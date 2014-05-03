@@ -1,7 +1,6 @@
 {
-  Region3i processRegion=region.getRegion();
-  float[] noise=oceanNoise.noise(Rect2i.createFromMinAndSize(processRegion.minX(),processRegion.minZ(),processRegion.sizeX(),processRegion.sizeZ()));
   SurfaceHeightFacet facet=region.getRegionFacet(SurfaceHeightFacet.class);
+  float[] noise=oceanNoise.noise(facet.getWorldRegion());
   float[] surfaceHeights=facet.getInternal();
   for (int i=0; i < noise.length; ++i) {
     surfaceHeights[i]*=TeraMath.clamp(noise[i] * 8.0f + 0.25f);

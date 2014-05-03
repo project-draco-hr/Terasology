@@ -1,0 +1,20 @@
+{
+  return new Iterator<Vector2i>(){
+    private Vector2i pos=new Vector2i(posX - 1,posY);
+    @Override public boolean hasNext(){
+      return pos.getY() < maxY() && pos.getX() < maxX();
+    }
+    @Override public Vector2i next(){
+      pos.x++;
+      if (pos.x > maxX()) {
+        pos.x=posX;
+        pos.y++;
+      }
+      return pos;
+    }
+    @Override public void remove(){
+      throw new UnsupportedOperationException();
+    }
+  }
+;
+}
