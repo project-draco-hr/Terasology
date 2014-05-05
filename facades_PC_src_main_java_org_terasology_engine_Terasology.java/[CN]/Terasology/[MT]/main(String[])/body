@@ -27,18 +27,37 @@
       subsystemList=Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput());
     }
     TerasologyEngine engine=new TerasologyEngine(subsystemList);
-    engine.init();
-    if (isHeadless) {
-      engine.run(new StateHeadlessSetup());
-    }
+    try {
+      engine.init();
+      if (isHeadless) {
+        engine.run(new StateHeadlessSetup());
+      }
  else {
-      engine.run(new StateMainMenu());
+        engine.run(new StateMainMenu());
+      }
     }
-    engine.dispose();
+  finally {
+      try {
+        engine.dispose();
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
- catch (  Throwable t) {
+ catch (  RuntimeException|IOException e) {
     if (!GraphicsEnvironment.isHeadless()) {
-      CrashReporter.report(t);
+      Path logPath=Paths.get(".");
+      try {
+        Path gameLogPath=PathManager.getInstance().getLogPath();
+        if (gameLogPath != null) {
+          logPath=gameLogPath;
+        }
+      }
+ catch (      Exception eat) {
+      }
+      Path logFile=logPath.resolve("Terasology.log");
+      CrashReporter.report(e,logFile);
     }
   }
   System.exit(0);
