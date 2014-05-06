@@ -1,0 +1,15 @@
+{
+  if (hitInfo.isHit()) {
+    Vector3f playerToTargetRay=new Vector3f();
+    playerToTargetRay.sub(hitInfo.getHitPoint(),localPlayer.getPosition());
+    if (focalDistance == Float.MAX_VALUE) {
+      focalDistance=playerToTargetRay.length();
+    }
+ else {
+      focalDistance=TeraMath.lerpf(focalDistance,playerToTargetRay.length(),delta * 20.0f);
+    }
+  }
+ else {
+    focalDistance=Float.MAX_VALUE;
+  }
+}
