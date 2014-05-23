@@ -1,0 +1,22 @@
+{
+  PlantFacet facet=new PlantFacet(region.getRegion(),region.getBorderForFacet(PlantFacet.class));
+  SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
+  DensityFacet density=region.getRegionFacet(DensityFacet.class);
+  BiomeFacet biomeFacet=region.getRegionFacet(BiomeFacet.class);
+  int minY=facet.getWorldRegion().minY();
+  int maxY=facet.getWorldRegion().maxY();
+  for (int z=facet.getRelativeRegion().minZ(); z <= facet.getRelativeRegion().maxZ(); ++z) {
+    for (int x=facet.getRelativeRegion().minX(); x <= facet.getRelativeRegion().maxX(); ++x) {
+      int height=TeraMath.floorToInt(surface.get(x,z));
+      if (height >= minY && height < maxY) {
+        WorldBiomeProvider.Biome biome=biomeFacet.get(x,z);
+        boolean plains=biome == WorldBiomeProvider.Biome.PLAINS;
+        height=height - minY + facet.getRelativeRegion().minY();
+        if ((biome == WorldBiomeProvider.Biome.FOREST || biome == WorldBiomeProvider.Biome.PLAINS) && density.get(x,height,z) > 0 && density.get(x,height + 1,z) <= 0 && noiseTable.noise(x,z) > 180) {
+          facet.set(x,height + 1,z,true);
+        }
+      }
+    }
+  }
+  region.setRegionFacet(PlantFacet.class,facet);
+}
