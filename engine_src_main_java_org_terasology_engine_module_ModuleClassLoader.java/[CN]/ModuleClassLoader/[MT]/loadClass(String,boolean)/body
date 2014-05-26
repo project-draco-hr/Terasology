@@ -1,6 +1,12 @@
 {
-  Class<?> clazz=super.loadClass(name,resolve);
-  if (clazz.getClassLoader() != this) {
+  final Class<?> clazz=super.loadClass(name,resolve);
+  ClassLoader loadingClassLoader=AccessController.doPrivileged(new PrivilegedAction<ClassLoader>(){
+    @Override public ClassLoader run(){
+      return clazz.getClassLoader();
+    }
+  }
+);
+  if (loadingClassLoader != this) {
     if (securityManager.checkAccess(clazz)) {
       return clazz;
     }
