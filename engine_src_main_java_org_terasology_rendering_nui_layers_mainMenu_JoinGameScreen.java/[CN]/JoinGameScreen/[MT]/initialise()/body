@@ -10,17 +10,27 @@
 );
     serverList.subscribe(new ItemActivateEventListener<ServerInfo>(){
       @Override public void onItemActivated(      UIWidget widget,      ServerInfo item){
-        join(item.getAddress());
+        join(item.getAddress(),item.getPort());
       }
     }
 );
+    final ListSelectionBinding<ServerInfo> infoBinding=new ListSelectionBinding<ServerInfo>(serverList);
     UILabel name=find("name",UILabel.class);
-    name.bindText(BindHelper.bindBoundBeanProperty("name",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
+    name.bindText(BindHelper.bindBoundBeanProperty("name",infoBinding,ServerInfo.class,String.class));
     UILabel address=find("address",UILabel.class);
-    address.bindText(BindHelper.bindBoundBeanProperty("address",new ListSelectionBinding<ServerInfo>(serverList),ServerInfo.class,String.class));
+    address.bindText(BindHelper.bindBoundBeanProperty("address",infoBinding,ServerInfo.class,String.class));
+    UILabel port=find("port",UILabel.class);
+    port.bindText(new IntToStringBinding(BindHelper.bindBoundBeanProperty("port",infoBinding,ServerInfo.class,int.class)));
     WidgetUtil.trySubscribe(this,"add",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
-        getManager().pushScreen("engine:addServerPopup");
+        getManager().pushScreen(AddServerPopup.ASSET_URI);
+      }
+    }
+);
+    WidgetUtil.trySubscribe(this,"edit",new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget button){
+        AddServerPopup popup=getManager().pushScreen(AddServerPopup.ASSET_URI,AddServerPopup.class);
+        popup.setServerInfo(infoBinding.get());
       }
     }
 );
@@ -36,20 +46,26 @@
     WidgetUtil.trySubscribe(this,"join",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
         config.save();
-        if (serverList.getSelection() != null) {
-          join(serverList.getSelection().getAddress());
+        ServerInfo item=serverList.getSelection();
+        if (item != null) {
+          join(item.getAddress(),item.getPort());
         }
       }
     }
 );
-  }
-  WidgetUtil.trySubscribe(this,"joinDirect",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      config.save();
-      getManager().pushScreen("engine:joinServerPopup");
+    Binding<Boolean> hasSelection=new ReadOnlyBinding<Boolean>(){
+      @Override public Boolean get(){
+        return infoBinding.get() != null;
+      }
     }
+;
+    UIButton editButton=find("edit",UIButton.class);
+    UIButton removeButton=find("remove",UIButton.class);
+    UIButton joinButton=find("join",UIButton.class);
+    editButton.bindEnabled(hasSelection);
+    removeButton.bindEnabled(hasSelection);
+    joinButton.bindEnabled(hasSelection);
   }
-);
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       config.save();

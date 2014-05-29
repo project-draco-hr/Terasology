@@ -1,0 +1,15 @@
+{
+  List<ModuleInfo> result=Lists.newArrayList();
+  for (  NetData.ModuleInfo moduleInfo : info.getModuleList()) {
+    if (!moduleInfo.hasModuleId() || !moduleInfo.hasModuleVersion() || Version.create(moduleInfo.getModuleVersion()) == null) {
+      logger.error("Received incomplete module info");
+    }
+ else {
+      ModuleInfo mi=new ModuleInfo();
+      mi.setId(moduleInfo.getModuleId());
+      mi.setVersion(moduleInfo.getModuleVersion());
+      result.add(mi);
+    }
+  }
+  return result;
+}
