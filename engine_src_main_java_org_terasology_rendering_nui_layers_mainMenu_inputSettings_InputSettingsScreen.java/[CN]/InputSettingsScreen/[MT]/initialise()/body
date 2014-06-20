@@ -11,13 +11,14 @@
   mainLayout.addWidget(new RowLayout(new UILabel("Invert Mouse:"),new UICheckbox("mouseYAxisInverted")).setColumnRatios(0.4f).setHorizontalSpacing(horizontalSpacing));
   Map<String,InputCategory> inputCategories=Maps.newHashMap();
   Map<SimpleUri,RegisterBindButton> inputsById=Maps.newHashMap();
-  for (  Module module : moduleManager.getModules()) {
+  for (  Name moduleId : moduleManager.getRegistry().getModuleIds()) {
+    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleId);
     if (module.isCodeModule()) {
-      for (      Class<?> holdingType : module.getReflections().getTypesAnnotatedWith(InputCategory.class)) {
+      for (      Class<?> holdingType : module.getReflectionsFragment().getTypesAnnotatedWith(InputCategory.class)) {
         InputCategory inputCategory=holdingType.getAnnotation(InputCategory.class);
         inputCategories.put(module.getId() + ":" + inputCategory.id(),inputCategory);
       }
-      for (      Class<?> bindEvent : module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class)) {
+      for (      Class<?> bindEvent : module.getReflectionsFragment().getTypesAnnotatedWith(RegisterBindButton.class)) {
         if (BindButtonEvent.class.isAssignableFrom(bindEvent)) {
           RegisterBindButton bindRegister=bindEvent.getAnnotation(RegisterBindButton.class);
           inputsById.put(new SimpleUri(module.getId(),bindRegister.id()),bindRegister);

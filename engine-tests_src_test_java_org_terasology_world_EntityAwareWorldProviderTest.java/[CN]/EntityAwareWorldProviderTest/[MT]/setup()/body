@@ -1,6 +1,6 @@
 {
   GameThread.setGameThread();
-  AssetManager assetManager=CoreRegistry.put(AssetManager.class,new AssetManager(new ModuleManagerImpl(new ModuleSecurityManager(),false)));
+  AssetManager assetManager=CoreRegistry.put(AssetManager.class,new AssetManager(moduleManager.getEnvironment()));
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);
@@ -12,7 +12,7 @@
   blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl(mock(WorldAtlas.class),new DefaultBlockFamilyFactoryRegistry()));
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  entityManager=builder.build(moduleManager,networkSystem,new ReflectionReflectFactory());
+  entityManager=builder.build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
   worldStub=new WorldProviderCoreStub(BlockManager.getAir());
   worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);
   plainBlock=new Block();

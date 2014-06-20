@@ -1,27 +1,29 @@
 {
   for (  NetData.ModuleRequest request : moduleRequestList) {
-    Module module=moduleManager.getActiveModule(request.getModuleId());
     NetData.ModuleDataHeader.Builder result=NetData.ModuleDataHeader.newBuilder();
     result.setId(request.getModuleId());
-    if (module == null) {
-      result.setError("Module not available");
-    }
- else     if (!module.isDataAvailable()) {
+    Module module=moduleManager.getEnvironment().get(new Name(request.getModuleId()));
+    if (module.isOnClasspath() || module.getLocations().size() != 1 || !Files.isReadable(module.getLocations().get(0))) {
       result.setError("Module not available for download");
     }
  else {
-      result.setVersion(module.getVersion().toString());
-      result.setSize(module.getSize());
-    }
-    channelHandlerContext.getChannel().write(NetData.NetMessage.newBuilder().setModuleDataHeader(result).build());
-    if (module != null && module.isDataAvailable()) {
+      Path location=module.getLocations().get(0);
       try {
-        InputStream input=module.getData();
-        long remainingData=module.getSize();
+        result.setVersion(module.getVersion().toString());
+        result.setSize(Files.size(location));
+        channelHandlerContext.getChannel().write(NetData.NetMessage.newBuilder().setModuleDataHeader(result).build());
+      }
+ catch (      IOException e) {
+        logger.error("Error sending module data header",e);
+        channelHandlerContext.getChannel().close();
+        break;
+      }
+      try (InputStream stream=new BufferedInputStream(Files.newInputStream(location))){
+        long remainingData=Files.size(location);
         byte[] data=new byte[1024];
         while (remainingData > 0) {
           int nextBlock=(int)Math.min(remainingData,1024);
-          ByteStreams.read(input,data,0,nextBlock);
+          ByteStreams.read(stream,data,0,nextBlock);
           channelHandlerContext.getChannel().write(NetData.NetMessage.newBuilder().setModuleData(NetData.ModuleData.newBuilder().setModule(ByteString.copyFrom(data,0,nextBlock))).build());
           remainingData-=nextBlock;
         }
@@ -29,6 +31,7 @@
  catch (      IOException e) {
         logger.error("Error sending module",e);
         channelHandlerContext.getChannel().close();
+        break;
       }
     }
   }

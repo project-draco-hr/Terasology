@@ -1,70 +1,65 @@
 {
-  selection=new ModuleSelection(moduleManager);
-  for (  String moduleId : config.getDefaultModSelection().listModules()) {
-    ModuleSelection newSelection=selection.add(moduleId);
-    if (newSelection.isValid()) {
-      selection=newSelection;
-    }
-  }
-  List<String> moduleIds=Lists.newArrayList(moduleManager.getModuleIds());
-  moduleIds.remove("engine");
-  List<Module> modules=Lists.newArrayListWithCapacity(moduleIds.size());
-  for (  String id : moduleIds) {
-    modules.add(moduleManager.getLatestModuleVersion(id));
-  }
-  Collections.sort(modules,new Comparator<Module>(){
-    @Override public int compare(    Module o1,    Module o2){
-      return o1.getModuleInfo().getDisplayName().compareTo(o2.getModuleInfo().getDisplayName());
+  resolver=new DependencyResolver(moduleManager.getRegistry());
+  modulesLookup=Maps.newHashMap();
+  sortedModules=Lists.newArrayList();
+  Collections.sort(sortedModules,new Comparator<ModuleSelectionInfo>(){
+    @Override public int compare(    ModuleSelectionInfo o1,    ModuleSelectionInfo o2){
+      return o1.getMetadata().getDisplayName().toString().compareTo(o2.getMetadata().getDisplayName().toString());
     }
   }
 );
-  final UIList<Module> moduleList=find("moduleList",UIList.class);
+  populateModuleInformation();
+  for (  ModuleSelectionInfo info : sortedModules) {
+    info.setExplicitSelection(config.getDefaultModSelection().hasModule(info.getMetadata().getId()));
+  }
+  ResolutionResult currentSelectionResults=resolver.resolve(config.getDefaultModSelection().listModules());
+  if (currentSelectionResults.isSuccess()) {
+    setSelectedVersions(currentSelectionResults);
+  }
+  updateValidToSelect();
+  final UIList<ModuleSelectionInfo> moduleList=find("moduleList",UIList.class);
   if (moduleList != null) {
-    moduleList.setList(modules);
-    moduleList.setItemRenderer(new AbstractItemRenderer<Module>(){
-      public String getString(      Module value){
-        return value.getModuleInfo().getDisplayName();
+    moduleList.setList(sortedModules);
+    moduleList.setItemRenderer(new AbstractItemRenderer<ModuleSelectionInfo>(){
+      public String getString(      ModuleSelectionInfo value){
+        return value.getMetadata().getDisplayName().toString();
       }
-      @Override public void draw(      Module value,      Canvas canvas){
-        if (selection.contains(value.getId())) {
+      @Override public void draw(      ModuleSelectionInfo value,      Canvas canvas){
+        if (value.isSelected() && value.isExplicitSelection()) {
           canvas.setMode("enabled");
         }
- else {
+ else         if (value.isSelected()) {
+          canvas.setMode("dependency");
+        }
+ else         if (value.isValidToSelect()) {
           canvas.setMode("disabled");
+        }
+ else {
+          canvas.setMode("invalid");
         }
         canvas.drawText(getString(value),canvas.getRegion());
       }
-      @Override public Vector2i getPreferredSize(      Module value,      Canvas canvas){
+      @Override public Vector2i getPreferredSize(      ModuleSelectionInfo value,      Canvas canvas){
         String text=getString(value);
         return new Vector2i(canvas.getCurrentStyle().getFont().getWidth(text),canvas.getCurrentStyle().getFont().getLineHeight());
       }
     }
 );
-    moduleList.subscribe(new ItemActivateEventListener<Module>(){
-      @Override public void onItemActivated(      UIWidget widget,      Module item){
-        String id=item.getId();
-        if (id.equals("core")) {
-          return;
+    moduleList.subscribe(new ItemActivateEventListener<ModuleSelectionInfo>(){
+      @Override public void onItemActivated(      UIWidget widget,      ModuleSelectionInfo item){
+        if (item.isSelected() && moduleList.getSelection().isExplicitSelection()) {
+          deselect(item);
         }
-        if (selection.contains(id)) {
-          ModuleSelection newSelection=selection.remove(id);
-          if (newSelection.isValid()) {
-            selection=newSelection;
-          }
-        }
- else {
-          ModuleSelection newSelection=selection.add(id);
-          if (newSelection.isValid()) {
-            selection=newSelection;
-          }
+ else         if (item.isValidToSelect()) {
+          select(item);
         }
       }
     }
 );
-    Binding<ModuleInfo> moduleInfoBinding=new ReadOnlyBinding<ModuleInfo>(){
-      @Override public ModuleInfo get(){
+    final Binding<ModuleMetadata> moduleInfoBinding=new ReadOnlyBinding<ModuleMetadata>(){
+      @Override public ModuleMetadata get(){
         if (moduleList.getSelection() != null) {
-          return moduleList.getSelection().getModuleInfo();
+          return moduleList.getSelection().getMetadata();
         }
         return null;
       }
@@ -72,24 +67,47 @@
 ;
     UILabel name=find("name",UILabel.class);
     if (name != null) {
-      name.bindText(BindHelper.bindBoundBeanProperty("displayName",moduleInfoBinding,ModuleInfo.class,String.class));
+      name.bindText(new ReadOnlyBinding<String>(){
+        @Override public String get(){
+          if (moduleInfoBinding.get() != null) {
+            return moduleInfoBinding.get().getDisplayName().toString();
+          }
+          return "";
+        }
+      }
+);
     }
     UILabel version=find("version",UILabel.class);
     if (version != null) {
-      version.bindText(BindHelper.bindBoundBeanProperty("version",moduleInfoBinding,ModuleInfo.class,String.class));
+      version.bindText(new ReadOnlyBinding<String>(){
+        @Override public String get(){
+          if (moduleInfoBinding.get() != null) {
+            return moduleInfoBinding.get().getVersion().toString();
+          }
+          return "";
+        }
+      }
+);
     }
     UILabel description=find("description",UILabel.class);
     if (description != null) {
-      description.bindText(BindHelper.bindBoundBeanProperty("description",moduleInfoBinding,ModuleInfo.class,String.class));
+      description.bindText(new ReadOnlyBinding<String>(){
+        @Override public String get(){
+          if (moduleInfoBinding.get() != null) {
+            return moduleInfoBinding.get().getDescription().toString();
+          }
+          return "";
+        }
+      }
+);
     }
     UILabel error=find("errorMessage",UILabel.class);
     if (error != null) {
       error.bindText(new ReadOnlyBinding<String>(){
         @Override public String get(){
           if (moduleList.getSelection() != null) {
-            ModuleSelection newModuleSelection=selection.add(moduleList.getSelection().getId());
-            if (!newModuleSelection.isValid()) {
-              return newModuleSelection.getValidationMessages().get(0);
+            if (!moduleList.getSelection().isValidToSelect()) {
+              return "Incompatible with existing selection, or dependencies cannot be resolved";
             }
           }
           return "";
@@ -102,21 +120,11 @@
       toggle.subscribe(new ActivateEventListener(){
         @Override public void onActivated(        UIWidget button){
           if (moduleList.getSelection() != null) {
-            String id=moduleList.getSelection().getId();
-            if (id.equals("core")) {
-              return;
+            if (moduleList.getSelection().isSelected() && moduleList.getSelection().isExplicitSelection()) {
+              deselect(moduleList.getSelection());
             }
-            if (selection.contains(id)) {
-              ModuleSelection newSelection=selection.remove(id);
-              if (newSelection.isValid()) {
-                selection=newSelection;
-              }
-            }
- else {
-              ModuleSelection newSelection=selection.add(id);
-              if (newSelection.isValid()) {
-                selection=newSelection;
-              }
+ else             if (moduleList.getSelection().isValidToSelect()) {
+              select(moduleList.getSelection());
             }
           }
         }
@@ -124,15 +132,14 @@
 );
       toggle.bindVisible(new ReadOnlyBinding<Boolean>(){
         @Override public Boolean get(){
-          return moduleList.getSelection() != null && (selection.contains(moduleList.getSelection().getId()) || selection.add(moduleList.getSelection().getId()).isValid());
+          return moduleList.getSelection() != null && (moduleList.getSelection().isSelected() || moduleList.getSelection().isValidToSelect());
         }
       }
 );
       toggle.bindText(new ReadOnlyBinding<String>(){
         @Override public String get(){
           if (moduleList.getSelection() != null) {
-            String id=moduleList.getSelection().getId();
-            if (selection.contains(id)) {
+            if (moduleList.getSelection().isExplicitSelection()) {
               return "Deactivate";
             }
  else {
@@ -148,10 +155,9 @@
     if (enableAll != null) {
       enableAll.subscribe(new ActivateEventListener(){
         @Override public void onActivated(        UIWidget button){
-          for (          Module m : moduleList.getList()) {
-            ModuleSelection newSelection=selection.add(m);
-            if (newSelection.isValid()) {
-              selection=newSelection;
+          for (          ModuleSelectionInfo info : sortedModules) {
+            if (!info.isExplicitSelection() && info.isValidToSelect()) {
+              select(info);
             }
           }
         }
@@ -162,12 +168,10 @@
     if (disableAll != null) {
       disableAll.subscribe(new ActivateEventListener(){
         @Override public void onActivated(        UIWidget button){
-          for (          Module m : moduleList.getList()) {
-            if (m.getId().equals("core")) {
-              continue;
+          for (          ModuleSelectionInfo info : sortedModules) {
+            if (info.isSelected() && info.isExplicitSelection()) {
+              deselect(info);
             }
-            ModuleSelection newSelection=selection.remove(m.getId());
-            selection=newSelection;
           }
         }
       }

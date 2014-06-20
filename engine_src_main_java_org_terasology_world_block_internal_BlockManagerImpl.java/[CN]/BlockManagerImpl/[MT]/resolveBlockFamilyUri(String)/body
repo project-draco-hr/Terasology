@@ -9,14 +9,14 @@ return matches.get(0);
 default :
 Module context=ModuleContext.getContext();
 if (context != null) {
-Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
+Set<Name> dependencies=environment.getDependencyNamesOf(context.getId());
 Iterator<BlockUri> iterator=matches.iterator();
 while (iterator.hasNext()) {
 BlockUri possibleUri=iterator.next();
-if (context.getId().equals(possibleUri.getNormalisedModuleName())) {
+if (context.getId().equals(possibleUri.getModuleName())) {
   return possibleUri;
 }
-if (!dependencies.contains(possibleUri.getNormalisedModuleName())) {
+if (!dependencies.contains(possibleUri.getModuleName())) {
   iterator.remove();
 }
 }

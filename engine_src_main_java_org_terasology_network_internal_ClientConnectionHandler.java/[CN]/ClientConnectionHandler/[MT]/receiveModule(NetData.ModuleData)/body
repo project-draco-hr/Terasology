@@ -20,9 +20,10 @@
           return;
         }
         Files.copy(tempModuleLocation,finalPath);
+        ModuleLoader loader=new ModuleLoader();
+        moduleManager.getRegistry().add(loader.load(finalPath));
         receivingModule=null;
         if (missingModules.isEmpty()) {
-          moduleManager.refresh();
           sendJoin();
         }
       }

@@ -1,9 +1,7 @@
 {
   WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
-  Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
   try {
-    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
-    WorldGenerator worldGenerator=CoreRegistry.get(WorldGeneratorManager.class).createGenerator(info.getUri());
+    WorldGenerator worldGenerator=worldGeneratorManager.createGenerator(info.getUri());
     seedBinding.setWorldGenerator(worldGenerator);
     if (worldGenerator instanceof WorldGenerator2DPreview) {
       previewGenerator=(WorldGenerator2DPreview)worldGenerator;
@@ -14,9 +12,6 @@
   }
  catch (  UnresolvedWorldGeneratorException e) {
     logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
-  }
- finally {
-    moduleManager.disableAllModules();
   }
   zoomSlider=find("zoomSlider",UISlider.class);
   if (zoomSlider != null) {

@@ -8,7 +8,7 @@
     Map<String,Short> blockMap=Maps.newHashMap();
     for (    Entry<Integer,String> entry : serverInfo.getBlockIds().entrySet()) {
       String name=entry.getValue();
-      Short id=Short.valueOf(entry.getKey().shortValue());
+      short id=entry.getKey().shortValue();
       Short oldId=blockMap.put(name,id);
       if (oldId != null && oldId != id) {
         logger.warn("Overwriting Id {} for {} with Id {}",oldId,name,id);
@@ -18,18 +18,18 @@
     gameManifest.setBlockIdMap(blockMap);
     gameManifest.setTime(networkSystem.getServer().getInfo().getTime());
     ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-    moduleManager.disableAllModules();
-    for (    ModuleInfo moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
-      Module module=moduleManager.getModule(moduleInfo.getId(),Version.create(moduleInfo.getVersion()));
+    Set<Module> moduleSet=Sets.newLinkedHashSet();
+    for (    NameVersion moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
+      Module module=moduleManager.getRegistry().getModule(moduleInfo.getName(),moduleInfo.getVersion());
       if (module == null) {
-        StateMainMenu mainMenu=new StateMainMenu("Missing required module: " + moduleInfo.getId() + ":"+ moduleInfo.getVersion());
+        StateMainMenu mainMenu=new StateMainMenu("Missing required module: " + moduleInfo);
         CoreRegistry.get(GameEngine.class).changeState(mainMenu);
         return false;
       }
  else {
-        logger.debug("Activating module: {}:{}",moduleInfo.getId(),moduleInfo.getVersion());
+        logger.debug("Activating module: {}:{}",moduleInfo.getName(),moduleInfo.getVersion());
         gameManifest.addModule(module.getId(),module.getVersion());
-        moduleManager.enableModule(module);
+        moduleSet.add(module);
       }
     }
     CoreRegistry.get(Game.class).load(gameManifest);

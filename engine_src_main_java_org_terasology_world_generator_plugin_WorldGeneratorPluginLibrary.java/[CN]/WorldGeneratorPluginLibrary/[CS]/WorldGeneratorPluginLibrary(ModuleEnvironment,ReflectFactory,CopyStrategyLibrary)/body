@@ -1,0 +1,6 @@
+{
+  library=new DefaultClassLibrary<>(reflectFactory,copyStrategyLibrary);
+  for (  Class<? extends WorldGeneratorPlugin> entry : moduleEnvironment.getSubtypesOf(WorldGeneratorPlugin.class)) {
+    library.register(new SimpleUri(moduleEnvironment.getModuleProviding(entry),entry.getSimpleName()),entry);
+  }
+}

@@ -11,14 +11,14 @@ case 1:
   return possibilities.get(0);
 default :
 if (context != null) {
-  Set<String> dependencies=moduleManager.getDependencyNamesOf(context);
+  Set<Name> dependencies=moduleManager.getEnvironment().getDependencyNamesOf(context.getId());
   Iterator<ClassMetadata<? extends T,?>> iterator=possibilities.iterator();
   while (iterator.hasNext()) {
     ClassMetadata<? extends T,?> metadata=iterator.next();
-    if (context.getId().equals(metadata.getUri().getNormalisedModuleName())) {
+    if (context.getId().equals(metadata.getUri().getModuleName())) {
       return metadata;
     }
-    if (!dependencies.contains(metadata.getUri().getNormalisedModuleName())) {
+    if (!dependencies.contains(metadata.getUri().getModuleName())) {
       iterator.remove();
     }
   }

@@ -3,7 +3,7 @@
   for (  EntityData.Prefab prefabData : globalStore.getPrefabList()) {
     if (!prefabManager.exists(prefabData.getName())) {
       if (!prefabData.hasParentName()) {
-        Module module=moduleManager.getActiveModule(new SimpleUri(prefabData.getName()).getNormalisedModuleName());
+        Module module=environment.get(new SimpleUri(prefabData.getName()).getModuleName());
         try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(module)){
           createPrefab(prefabData);
         }

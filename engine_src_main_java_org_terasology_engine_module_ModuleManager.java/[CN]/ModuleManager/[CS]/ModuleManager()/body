@@ -1,0 +1,17 @@
+{
+  try (Reader reader=new InputStreamReader(getClass().getResourceAsStream("/assets/module.txt"))){
+    ModuleMetadata metadata=new ModuleMetadataReader().read(reader);
+    engineModule=ClasspathModule.create(metadata,getClass(),Module.class);
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("Failed to read engine metadata",e);
+  }
+catch (  URISyntaxException e) {
+    throw new RuntimeException("Failed to convert engine library location to path",e);
+  }
+  registry=new TableModuleRegistry();
+  registry.add(engineModule);
+  new ModulePathScanner().scan(registry,PathManager.getInstance().getModulePaths());
+  setupSandbox();
+  loadEnvironment(Sets.newHashSet(engineModule),true);
+}

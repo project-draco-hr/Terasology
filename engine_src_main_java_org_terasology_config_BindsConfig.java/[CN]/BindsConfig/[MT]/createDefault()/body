@@ -1,9 +1,10 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   BindsConfig config=new BindsConfig();
-  for (  Module module : moduleManager.getModules()) {
+  for (  Name moduleId : moduleManager.getRegistry().getModuleIds()) {
+    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleId);
     if (module.isCodeModule()) {
-      config.addDefaultsFor(module.getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+      config.addDefaultsFor(module.getId(),module.getReflectionsFragment().getTypesAnnotatedWith(RegisterBindButton.class));
     }
   }
   return config;

@@ -1,0 +1,7 @@
+{
+  for (  Class<? extends Event> type : environment.getSubtypesOf(Event.class)) {
+    if (type.getAnnotation(DoNotAutoRegister.class) == null) {
+      eventSystem.registerEvent(new SimpleUri(environment.getModuleProviding(type),type.getSimpleName()),type);
+    }
+  }
+}

@@ -1,8 +1,9 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  for (  Module module : moduleManager.getModules()) {
+  for (  Name moduleId : moduleManager.getRegistry().getModuleIds()) {
+    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleId);
     if (module.isCodeModule()) {
-      updateInputsFor(module.getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+      updateInputsFor(module.getId(),module.getReflectionsFragment().getTypesAnnotatedWith(RegisterBindButton.class));
     }
   }
 }

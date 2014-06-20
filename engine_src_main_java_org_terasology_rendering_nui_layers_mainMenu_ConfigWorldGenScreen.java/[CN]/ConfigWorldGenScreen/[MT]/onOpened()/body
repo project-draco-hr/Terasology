@@ -5,9 +5,7 @@
   properties.clear();
   SimpleUri generatorUri=config.getWorldGeneration().getDefaultGenerator();
   WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(generatorUri);
-  Module worldGeneratorModule=moduleManager.getLatestModuleVersion(info.getUri().getModuleName());
   try {
-    moduleManager.enableModuleAndDependencies(worldGeneratorModule);
     WorldGenerator wg=worldGeneratorManager.createGenerator(info.getUri());
     if (wg.getConfigurator().isPresent()) {
       WorldConfigurator worldConfig=wg.getConfigurator().get();
@@ -26,13 +24,9 @@
     }
  else {
       logger.info(info.getUri().toString() + " does not support configuration");
-      return;
     }
   }
  catch (  UnresolvedWorldGeneratorException e) {
-    logger.error("Unable to load world generator: " + info.getUri().toString());
-  }
- finally {
-    moduleManager.disableAllModules();
+    logger.error("Requested unavailable world generator",e);
   }
 }

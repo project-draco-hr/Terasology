@@ -1,0 +1,6 @@
+{
+  for (  Class<? extends Node> entry : environment.getSubtypesOf(Node.class)) {
+    logger.debug("Found node class {}",entry);
+    register(new SimpleUri(environment.getModuleProviding(entry),entry.getSimpleName()),entry);
+  }
+}

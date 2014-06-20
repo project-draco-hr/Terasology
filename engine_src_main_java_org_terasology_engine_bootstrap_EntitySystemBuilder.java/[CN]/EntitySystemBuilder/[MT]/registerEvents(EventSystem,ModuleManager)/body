@@ -1,8 +1,0 @@
-{
-  ListMultimap<String,Class<? extends Event>> allSubclassesOf=moduleManager.findAllSubclassesOf(Event.class);
-  for (  Map.Entry<String,Class<? extends Event>> entry : allSubclassesOf.entries()) {
-    if (entry.getValue().getAnnotation(DoNotAutoRegister.class) == null) {
-      eventSystem.registerEvent(new SimpleUri(entry.getKey(),entry.getValue().getSimpleName()),entry.getValue());
-    }
-  }
-}

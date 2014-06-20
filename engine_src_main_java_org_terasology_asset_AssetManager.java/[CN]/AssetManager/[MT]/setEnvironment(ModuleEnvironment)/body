@@ -1,0 +1,20 @@
+{
+  this.environment=environment;
+  assetSources.clear();
+  for (  Module module : environment) {
+    Collection<Path> location=module.getLocations();
+    if (!location.isEmpty()) {
+      List<AssetSource> sources=Lists.newArrayList();
+      for (      Path path : location) {
+        sources.add(createAssetSource(module.getId(),path));
+      }
+      AssetSource source=new AssetSourceCollection(module.getId(),sources);
+      assetSources.put(source.getSourceId(),source);
+      for (      AssetUri asset : source.list()) {
+        uriLookup.get(asset.getAssetType()).put(asset.getAssetName(),asset.getModuleName(),asset);
+      }
+    }
+  }
+  applyOverrides();
+  refresh();
+}

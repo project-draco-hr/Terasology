@@ -23,11 +23,11 @@
     if (loader == null) {
       continue;
     }
-    Module module=moduleManager.getActiveModule(uri.getNormalisedModuleName());
+    Module module=environment.get(uri.getModuleName());
     List<URL> deltas;
     if (uri.getAssetType().isDeltaSupported()) {
       deltas=Lists.newArrayList();
-      for (      Module deltaModule : moduleManager.getActiveModulesOrderedByDependency()) {
+      for (      Module deltaModule : environment.getModulesOrderedByDependencies()) {
         AssetSource source=assetSources.get(deltaModule.getId());
         if (source != null) {
           deltas.addAll(source.getDelta(uri));
