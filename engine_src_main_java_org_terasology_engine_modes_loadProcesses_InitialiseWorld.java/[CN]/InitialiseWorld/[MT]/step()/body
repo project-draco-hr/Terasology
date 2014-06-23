@@ -17,9 +17,7 @@
     CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Failed to resolve world generator."));
     return false;
   }
-  BlockManager blockManager=CoreRegistry.get(BlockManager.class);
-  World world=new WorldBuilder(0).addProvider(new PerlinHumidityProvider()).addProvider(new PerlinTemperatureProvider()).addProvider(new PerlinBaseSurfaceProvider()).addProvider(new PerlinRiverProvider()).addProvider(new PerlinOceanProvider()).addProvider(new PerlinHillsAndMountainsProvider()).addProvider(new PerlinBiomeProvider()).addProvider(new PerlinSurfaceToDensityProvider()).addProvider(new PerlinFloraProvider()).addRasterizer(new SolidRasterizer(blockManager)).addRasterizer(new FloraRasterizer(blockManager)).build();
-  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,world);
+  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,worldGenerator);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);
