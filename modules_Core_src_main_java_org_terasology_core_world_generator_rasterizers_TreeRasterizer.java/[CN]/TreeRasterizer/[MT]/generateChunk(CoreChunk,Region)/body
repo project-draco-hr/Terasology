@@ -1,0 +1,13 @@
+{
+  TreeFacet facet=chunkRegion.getFacet(TreeFacet.class);
+  SeaLevelFacet seaLevel=chunkRegion.getFacet(SeaLevelFacet.class);
+  BiomeFacet biomeFacet=chunkRegion.getFacet(BiomeFacet.class);
+  for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
+    float facetValue=facet.get(pos);
+    WorldBiomeProvider.Biome biome=biomeFacet.get(pos.getX(),pos.getZ());
+    TreeGenerator generator=treeGeneratorLookup.get(biome);
+    if (facetValue > 0 && generator.getGenerationProbability() < (facetValue / 256f)) {
+      generator.generate(chunk,new FastRandom((long)facetValue),pos.getX(),pos.getY(),pos.getZ());
+    }
+  }
+}

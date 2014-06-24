@@ -5,10 +5,10 @@
 switch (c) {
 case 'G':
 case 'F':
-      view.setBlock(posX + (int)position.x + 1,posY + (int)position.y,posZ + (int)position.z,barkType);
-    view.setBlock(posX + (int)position.x - 1,posY + (int)position.y,posZ + (int)position.z,barkType);
-  view.setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z + 1,barkType);
-view.setBlock(posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z - 1,barkType);
+      safetlySetBlock(view,posX + (int)position.x + 1,posY + (int)position.y,posZ + (int)position.z,barkType);
+    safetlySetBlock(view,posX + (int)position.x - 1,posY + (int)position.y,posZ + (int)position.z,barkType);
+  safetlySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z + 1,barkType);
+safetlySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z - 1,barkType);
 if (depth > 1) {
 int size=1;
 for (int x=-size; x <= size; x++) {
@@ -17,10 +17,10 @@ for (int x=-size; x <= size; x++) {
       if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size) {
         continue;
       }
-      view.setBlock(posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z,leafType);
-      view.setBlock(posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z,leafType);
-      view.setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1,leafType);
-      view.setBlock(posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1,leafType);
+      safetlySetBlock(view,posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z,leafType);
+      safetlySetBlock(view,posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z,leafType);
+      safetlySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1,leafType);
+      safetlySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1,leafType);
     }
   }
 }
