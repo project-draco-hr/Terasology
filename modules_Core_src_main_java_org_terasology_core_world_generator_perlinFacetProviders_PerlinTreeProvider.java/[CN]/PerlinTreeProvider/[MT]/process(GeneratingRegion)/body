@@ -1,8 +1,7 @@
 {
-  TreeFacet facet=new TreeFacet(region.getRegion(),region.getBorderForFacet(PlantFacet.class));
+  TreeFacet facet=new TreeFacet(region.getRegion(),region.getBorderForFacet(TreeFacet.class));
   SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
   DensityFacet density=region.getRegionFacet(DensityFacet.class);
-  BiomeFacet biomeFacet=region.getRegionFacet(BiomeFacet.class);
   SeaLevelFacet seaLevel=region.getRegionFacet(SeaLevelFacet.class);
   int minY=facet.getWorldRegion().minY();
   int maxY=facet.getWorldRegion().maxY();
@@ -10,9 +9,8 @@
     for (int x=facet.getRelativeRegion().minX(); x <= facet.getRelativeRegion().maxX(); ++x) {
       int height=TeraMath.floorToInt(surface.get(x,z));
       if (height >= minY && height < maxY && height >= seaLevel.getSeaLevel()) {
-        WorldBiomeProvider.Biome biome=biomeFacet.get(x,z);
         height=height - minY + facet.getRelativeRegion().minY();
-        if (density.get(x,height,z) > 0 && density.get(x,height + 1,z) <= 0 && noiseTable.noise(x,z) > 254) {
+        if (density.get(x,height,z) > 0 && density.get(x,height + 1,z) <= 0 && (x > facet.getRelativeRegion().minX() && TeraMath.floorToInt(surface.get(x - 1,z)) == height) && (x < facet.getRelativeRegion().maxX() && TeraMath.floorToInt(surface.get(x + 1,z)) == height) && (z > facet.getRelativeRegion().minZ() && TeraMath.floorToInt(surface.get(x,z - 1)) == height) && (z < facet.getRelativeRegion().maxZ() && TeraMath.floorToInt(surface.get(x,z + 1)) == height) && noiseTable.noise(x,z) / 256f < amountOfTrees) {
           facet.set(x,height + 1,z,noiseTable.noise(x,z));
         }
       }
