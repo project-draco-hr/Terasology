@@ -45,12 +45,10 @@
   moduleSecurityManager.addAPIClass(InvocationTargetException.class);
   moduleSecurityManager.addAPIClass(LoggerFactory.class);
   moduleSecurityManager.addAPIClass(Logger.class);
-  for (  Class<?> apiClass : engineModule.getReflectionsFragment().getTypesAnnotatedWith(API.class)) {
-    if (apiClass.isSynthetic()) {
-      moduleSecurityManager.addAPIPackage(apiClass.getPackage().getName());
-    }
- else {
-      moduleSecurityManager.addAPIClass(apiClass);
+  APIScanner apiScanner=new APIScanner(moduleSecurityManager);
+  for (  Module module : registry) {
+    if (module.isOnClasspath()) {
+      apiScanner.scan(module);
     }
   }
   moduleSecurityManager.grantFullPermission("ch.qos.logback.classic");

@@ -20,7 +20,8 @@
           return;
         }
         Files.copy(tempModuleLocation,finalPath);
-        ModuleLoader loader=new ModuleLoader();
+        ModuleLoader loader=new ModuleLoader(moduleManager.getModuleMetadataReader());
+        loader.setModuleInfoPath(TerasologyConstants.MODULE_INFO_FILENAME);
         moduleManager.getRegistry().add(loader.load(finalPath));
         receivingModule=null;
         if (missingModules.isEmpty()) {
