@@ -2,13 +2,13 @@
   Iterator<SpawningClientInfo> i=clientsPreparingToSpawn.iterator();
   while (i.hasNext()) {
     SpawningClientInfo spawning=i.next();
-    if (worldRenderer.getWorldProvider().isBlockRelevant(spawning.position)) {
+    if (worldProvider.isBlockRelevant(spawning.position)) {
       if (spawning.playerStore == null) {
-        spawnPlayer(spawning.clientEntity,new Vector3i(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+        spawnPlayer(spawning.clientEntity,getSafeSpawnPosition());
       }
  else       if (!spawning.playerStore.hasCharacter()) {
         spawning.playerStore.restoreEntities();
-        spawnPlayer(spawning.clientEntity,new Vector3i(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+        spawnPlayer(spawning.clientEntity,getSafeSpawnPosition());
       }
  else {
         restoreCharacter(spawning.clientEntity,spawning.playerStore);

@@ -2,11 +2,11 @@
   playerStore.restoreEntities();
   EntityRef character=playerStore.getCharacter();
   if (character == null) {
-    spawnPlayer(entity,new Vector3i(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+    spawnPlayer(entity,getSafeSpawnPosition());
   }
  else {
     Client clientListener=networkSystem.getOwner(entity);
-    worldRenderer.getChunkProvider().updateRelevanceEntity(entity,clientListener.getViewDistance().getChunkDistance());
+    updateRelevanceEntity(entity,clientListener.getViewDistance().getChunkDistance());
     ClientComponent client=entity.getComponent(ClientComponent.class);
     client.character=character;
     entity.saveComponent(client);
@@ -19,7 +19,7 @@
     }
  else {
       character.destroy();
-      spawnPlayer(entity,new Vector3i(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+      spawnPlayer(entity,getSafeSpawnPosition());
     }
   }
 }

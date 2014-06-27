@@ -1,0 +1,19 @@
+{
+  World world=worldGenerator.getWorld();
+  if (world != null) {
+    Region worldRegion=world.getWorldData(Region3i.createFromMinAndSize(new Vector3i(0,0,0),ChunkConstants.CHUNK_SIZE));
+    SurfaceHeightFacet surfaceHeightFacet=worldRegion.getFacet(SurfaceHeightFacet.class);
+    SeaLevelFacet seaLevelFacet=worldRegion.getFacet(SeaLevelFacet.class);
+    int seaLevel=seaLevelFacet.getSeaLevel();
+    for (    Vector3i pos : ChunkConstants.CHUNK_REGION) {
+      int height=TeraMath.floorToInt(surfaceHeightFacet.get(pos.getX(),pos.getZ()));
+      if (height > seaLevel) {
+        pos.setY(height);
+        if (findOpenVerticalPosition(pos)) {
+          return pos;
+        }
+      }
+    }
+  }
+  return spawnPos;
+}

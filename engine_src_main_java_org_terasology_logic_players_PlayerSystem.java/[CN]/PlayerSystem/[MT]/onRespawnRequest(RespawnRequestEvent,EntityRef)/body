@@ -2,15 +2,15 @@
   ClientComponent client=entity.getComponent(ClientComponent.class);
   if (!client.character.exists()) {
     Vector3i pos=Vector3i.zero();
-    if (chunkProvider.getChunk(pos) != null) {
-      spawnPlayer(entity,new Vector3i(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+    if (worldProvider.isBlockRelevant(pos)) {
+      spawnPlayer(entity,getSafeSpawnPosition());
     }
  else {
       LocationComponent loc=entity.getComponent(LocationComponent.class);
-      loc.setWorldPosition(new Vector3f(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+      loc.setWorldPosition(getSafeSpawnPosition().toVector3f());
       entity.saveComponent(loc);
-      worldRenderer.getChunkProvider().updateRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance());
-      SpawningClientInfo info=new SpawningClientInfo(entity,new Vector3f(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y / 2,ChunkConstants.SIZE_Z / 2));
+      updateRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance());
+      SpawningClientInfo info=new SpawningClientInfo(entity,getSafeSpawnPosition().toVector3f());
       clientsPreparingToSpawn.add(info);
     }
   }
