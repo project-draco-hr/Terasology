@@ -1,0 +1,16 @@
+{
+  Set<Module> finalModules=Sets.newLinkedHashSet(modules);
+  for (  Module module : registry) {
+    if (module.isOnClasspath()) {
+      finalModules.add(module);
+    }
+  }
+  ModuleEnvironment newEnvironment=new ModuleEnvironment(finalModules,moduleSecurityManager,Collections.<BytecodeInjector>emptyList());
+  if (asPrimary) {
+    if (environment != null) {
+      environment.close();
+    }
+    environment=newEnvironment;
+  }
+  return newEnvironment;
+}

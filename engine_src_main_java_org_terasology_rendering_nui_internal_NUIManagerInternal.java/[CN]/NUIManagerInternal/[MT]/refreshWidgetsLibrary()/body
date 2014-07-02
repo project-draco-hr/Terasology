@@ -1,6 +1,7 @@
 {
   widgetsLibrary=new WidgetLibrary(CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
-  for (  Map.Entry<String,Class<? extends UIWidget>> entry : CoreRegistry.get(ModuleManager.class).findAllSubclassesOf(UIWidget.class).entries()) {
-    widgetsLibrary.register(new SimpleUri(entry.getKey(),entry.getValue().getSimpleName()),entry.getValue());
+  ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).getEnvironment();
+  for (  Class<? extends UIWidget> type : environment.getSubtypesOf(UIWidget.class)) {
+    widgetsLibrary.register(new SimpleUri(environment.getModuleProviding(type),type.getSimpleName()),type);
   }
 }

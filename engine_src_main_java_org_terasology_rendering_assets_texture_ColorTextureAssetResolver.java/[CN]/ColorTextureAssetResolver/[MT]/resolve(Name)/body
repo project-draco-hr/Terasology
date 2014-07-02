@@ -1,0 +1,10 @@
+{
+  String[] parts=partialUri.toString().split("\\.",2);
+  if (parts.length != 2) {
+    return null;
+  }
+  if (!TextureUtil.GENERATED_COLOR_NAME_PREFIX.equals(parts[0])) {
+    return null;
+  }
+  return new AssetUri(AssetType.TEXTURE,TerasologyConstants.ENGINE_MODULE,partialUri);
+}

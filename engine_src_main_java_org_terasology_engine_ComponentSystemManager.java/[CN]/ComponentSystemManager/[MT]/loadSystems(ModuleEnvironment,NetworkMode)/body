@@ -1,0 +1,31 @@
+{
+  DisplayDevice displayDevice=CoreRegistry.get(DisplayDevice.class);
+  boolean isHeadless=displayDevice.isHeadless();
+  ListMultimap<Name,Class<?>> systemsByModule=ArrayListMultimap.create();
+  for (  Class<?> type : environment.getTypesAnnotatedWith(RegisterSystem.class)) {
+    if (!ComponentSystem.class.isAssignableFrom(type)) {
+      logger.error("Cannot load {}, must be a subclass of ComponentSystem",type.getSimpleName());
+      continue;
+    }
+    Name moduleId=environment.getModuleProviding(type);
+    RegisterSystem registerInfo=type.getAnnotation(RegisterSystem.class);
+    if (registerInfo.value().isValidFor(netMode,isHeadless)) {
+      systemsByModule.put(moduleId,type);
+    }
+  }
+  for (  Module module : environment.getModulesOrderedByDependencies()) {
+    for (    Class<?> system : systemsByModule.get(module.getId())) {
+      String id=module.getId() + ":" + system.getSimpleName();
+      logger.debug("Registering system {}",id);
+      try {
+        ComponentSystem newSystem=(ComponentSystem)system.newInstance();
+        InjectionHelper.share(newSystem);
+        register(newSystem,id);
+        logger.debug("Loaded system {}",id);
+      }
+ catch (      InstantiationException|IllegalAccessException e) {
+        logger.error("Failed to load system {}",id,e);
+      }
+    }
+  }
+}

@@ -4,7 +4,7 @@
     if (prefabData.hasParentName() && pendingPrefabs.containsKey(prefabData.getParentName())) {
       loadPrefab(pendingPrefabs.get(prefabData.getParentName()),pendingPrefabs);
     }
-    Module module=moduleManager.getActiveModule(new SimpleUri(prefabData.getName()).getNormalisedModuleName());
+    Module module=environment.get(new SimpleUri(prefabData.getName()).getModuleName());
     try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(module)){
       result=createPrefab(prefabData);
     }

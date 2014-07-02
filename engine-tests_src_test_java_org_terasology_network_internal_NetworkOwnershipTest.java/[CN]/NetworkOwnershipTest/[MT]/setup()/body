@@ -2,7 +2,7 @@
   super.setup();
   EngineTime mockTime=mock(EngineTime.class);
   networkSystem=new NetworkSystemImpl(mockTime);
-  entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class),networkSystem,new ReflectionReflectFactory());
+  entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
   CoreRegistry.put(ComponentSystemManager.class,new ComponentSystemManager());
   entityManager.clear();
   client=mock(NetClient.class);

@@ -1,0 +1,9 @@
+{
+  ModuleManager moduleManager=new ModuleManager();
+  try (Reader reader=new InputStreamReader(ModuleManagerFactory.class.getResourceAsStream("/module.txt"))){
+    ModuleMetadata metadata=new ModuleMetadataReader().read(reader);
+    moduleManager.getRegistry().add(ClasspathModule.create(metadata,ModuleManagerFactory.class));
+  }
+   moduleManager.loadEnvironment(Sets.newHashSet(moduleManager.getRegistry().getLatestModuleVersion(new Name("engine")),moduleManager.getRegistry().getLatestModuleVersion(new Name("unittest"))),true);
+  return moduleManager;
+}

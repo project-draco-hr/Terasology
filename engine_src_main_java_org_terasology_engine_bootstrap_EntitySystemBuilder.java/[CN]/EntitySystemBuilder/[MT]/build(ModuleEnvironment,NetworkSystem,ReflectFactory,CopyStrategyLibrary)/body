@@ -1,0 +1,23 @@
+{
+  PojoEntityManager entityManager=CoreRegistry.put(EntityManager.class,new PojoEntityManager());
+  CoreRegistry.put(EngineEntityManager.class,entityManager);
+  TypeSerializationLibrary typeSerializationLibrary=buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary);
+  entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
+  EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
+  entityManager.setEntitySystemLibrary(library);
+  CoreRegistry.put(ComponentLibrary.class,library.getComponentLibrary());
+  CoreRegistry.put(EventLibrary.class,library.getEventLibrary());
+  PrefabManager prefabManager=new PojoPrefabManager();
+  entityManager.setPrefabManager(prefabManager);
+  CoreRegistry.put(PrefabManager.class,prefabManager);
+  EventSystem eventSystem=new EventSystemImpl(library.getEventLibrary(),networkSystem);
+  entityManager.setEventSystem(eventSystem);
+  CoreRegistry.put(EventSystem.class,eventSystem);
+  CoreRegistry.put(OneOfProviderFactory.class,new OneOfProviderFactory());
+  NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(reflectFactory,copyStrategyLibrary);
+  CoreRegistry.put(NodesClassLibrary.class,nodesClassLibrary);
+  nodesClassLibrary.scan(environment);
+  registerComponents(library.getComponentLibrary(),environment);
+  registerEvents(entityManager.getEventSystem(),environment);
+  return entityManager;
+}

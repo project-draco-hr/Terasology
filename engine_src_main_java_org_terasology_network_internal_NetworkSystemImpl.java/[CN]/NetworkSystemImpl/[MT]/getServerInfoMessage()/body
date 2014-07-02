@@ -8,9 +8,10 @@
     worldInfoBuilder.setTitle(world.getTitle());
     serverInfoMessageBuilder.addWorldInfo(worldInfoBuilder);
   }
-  for (  Module module : CoreRegistry.get(ModuleManager.class).getActiveModules()) {
-    if (!module.getModuleInfo().isServerSideOnly()) {
-      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(module.getId()).setModuleVersion(module.getVersion().toString()).build());
+  for (  Module module : CoreRegistry.get(ModuleManager.class).getEnvironment()) {
+    Boolean serverSideOnly=module.getMetadata().getExtension(ModuleManager.SERVER_SIDE_ONLY_EXT,Boolean.class);
+    if (serverSideOnly == null || !serverSideOnly) {
+      serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(module.getId().toString()).setModuleVersion(module.getVersion().toString()).build());
     }
   }
   for (  Map.Entry<String,Short> blockMapping : blockManager.getBlockIdMap().entrySet()) {

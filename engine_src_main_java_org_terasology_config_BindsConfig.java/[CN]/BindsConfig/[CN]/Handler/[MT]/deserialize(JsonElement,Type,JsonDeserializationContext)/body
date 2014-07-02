@@ -4,7 +4,7 @@
   for (  Map.Entry<String,JsonElement> entry : inputObj.entrySet()) {
     SetMultimap<String,Input> map=context.deserialize(entry.getValue(),SetMultimap.class);
     for (    String id : map.keySet()) {
-      SimpleUri uri=new SimpleUri(entry.getKey(),id);
+      SimpleUri uri=new SimpleUri(new Name(entry.getKey()),id);
       result.data.putAll(uri,map.get(id));
     }
   }

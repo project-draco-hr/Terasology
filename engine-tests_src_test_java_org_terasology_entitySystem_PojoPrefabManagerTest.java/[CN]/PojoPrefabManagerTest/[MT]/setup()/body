@@ -1,4 +1,5 @@
 {
+  ModuleManager moduleManager=ModuleManagerFactory.create();
   ReflectFactory reflectFactory=new ReflectionReflectFactory();
   CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
   TypeSerializationLibrary lib=new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary);
@@ -7,7 +8,7 @@
   entitySystemLibrary=new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,lib);
   componentLibrary=entitySystemLibrary.getComponentLibrary();
   prefabManager=new PojoPrefabManager();
-  AssetManager assetManager=new AssetManager(new ModuleManagerImpl(new ModuleSecurityManager(),false));
+  AssetManager assetManager=new AssetManager(moduleManager.getEnvironment());
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);

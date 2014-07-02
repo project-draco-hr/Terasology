@@ -4,10 +4,8 @@
     type=AssetType.getTypeForId(typeSplit[0]);
     String[] packageSplit=typeSplit[1].split(MODULE_SEPARATOR,2);
     if (packageSplit.length > 1) {
-      moduleName=packageSplit[0];
-      assetName=packageSplit[1];
-      normalisedModuleName=UriUtil.normalise(packageSplit[0]);
-      normalisedAssetName=UriUtil.normalise(packageSplit[1]);
+      moduleName=new Name(packageSplit[0]);
+      assetName=new Name(packageSplit[1]);
     }
   }
 }

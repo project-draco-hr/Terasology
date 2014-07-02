@@ -1,0 +1,11 @@
+{
+  if (target.isExplicitSelection()) {
+    target.setExplicitSelection(false);
+    List<Name> selectedModules=getExplicitlySelectedModules();
+    for (    ModuleSelectionInfo info : sortedModules) {
+      info.setSelectedVersion(null);
+    }
+    setSelectedVersions(resolver.resolve(selectedModules));
+    updateValidToSelect();
+  }
+}

@@ -1,0 +1,30 @@
+{
+  for (  Class registerBindClass : classes) {
+    RegisterBindAxis info=(RegisterBindAxis)registerBindClass.getAnnotation(RegisterBindAxis.class);
+    Name moduleId=environment.getModuleProviding(registerBindClass);
+    SimpleUri id=new SimpleUri(moduleId,info.id());
+    if (BindAxisEvent.class.isAssignableFrom(registerBindClass)) {
+      BindableButton positiveButton=inputSystem.getBindButton(new SimpleUri(info.positiveButton()));
+      BindableButton negativeButton=inputSystem.getBindButton(new SimpleUri(info.negativeButton()));
+      if (positiveButton == null) {
+        logger.warn("Failed to register axis \"{}\", missing positive button \"{}\"",id,info.positiveButton());
+        continue;
+      }
+      if (negativeButton == null) {
+        logger.warn("Failed to register axis \"{}\", missing negative button \"{}\"",id,info.negativeButton());
+        continue;
+      }
+      try {
+        BindableAxis bindAxis=inputSystem.registerBindAxis(id.toString(),(BindAxisEvent)registerBindClass.newInstance(),positiveButton,negativeButton);
+        bindAxis.setSendEventMode(info.eventMode());
+        logger.debug("Registered axis bind: {}",id);
+      }
+ catch (      InstantiationException|IllegalAccessException e) {
+        logger.error("Failed to register axis bind \"{}\"",id,e);
+      }
+    }
+ else {
+      logger.error("Failed to register axis bind \"{}\", does not extend BindAxisEvent",id);
+    }
+  }
+}

@@ -1,14 +1,10 @@
 {
   componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
-  moduleManager=CoreRegistry.get(ModuleManager.class);
-  for (  Module module : moduleManager.getActiveModules()) {
-    if (!registeredModules.contains(module.getId())) {
-      loadModule(module);
-    }
-  }
+  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   TerasologyEngine terasologyEngine=(TerasologyEngine)CoreRegistry.get(GameEngine.class);
   for (  EngineSubsystem subsystem : terasologyEngine.getSubsystems()) {
     subsystem.registerSystems(componentSystemManager);
   }
+  componentSystemManager.loadSystems(moduleManager.getEnvironment(),netMode);
   return true;
 }

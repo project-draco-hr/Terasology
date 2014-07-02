@@ -1,16 +1,17 @@
 {
   GameThread.setGameThread();
-  ModuleManager moduleManager=initModuleManager();
+  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManager());
   ReflectFactory reflectFactory=CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
   CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.putPermanently(CopyStrategyLibrary.class,new CopyStrategyLibrary(reflectFactory));
   CoreRegistry.putPermanently(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
-  AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager(moduleManager));
+  AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManager(moduleManager.getEnvironment()));
+  assetManager.setEnvironment(moduleManager.getEnvironment());
   CoreRegistry.putPermanently(CollisionGroupManager.class,new CollisionGroupManager());
   CoreRegistry.putPermanently(WorldGeneratorManager.class,new WorldGeneratorManager());
   CoreRegistry.putPermanently(ComponentSystemManager.class,new ComponentSystemManager());
   CoreRegistry.putPermanently(NetworkSystem.class,new NetworkSystemImpl(time));
   CoreRegistry.putPermanently(Game.class,new Game(this,time));
+  assetManager.setEnvironment(moduleManager.getEnvironment());
   AssetType.registerAssetTypes(assetManager);
-  assetManager.addAssetSource(moduleManager.getActiveModule(TerasologyConstants.ENGINE_MODULE).getModuleSource());
   ApplyModulesUtil.applyModules();
 }

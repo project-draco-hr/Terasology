@@ -1,6 +1,6 @@
 {
-  moduleManager=new ModuleManagerImpl(new ModuleSecurityManager(),false);
-  AssetManager assetManager=new AssetManager(moduleManager);
+  moduleManager=ModuleManagerFactory.create();
+  AssetManager assetManager=new AssetManager(moduleManager.getEnvironment());
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);

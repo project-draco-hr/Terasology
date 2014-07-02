@@ -1,6 +1,5 @@
 {
-  ModuleManager moduleManager=new ModuleManagerImpl(new ModuleSecurityManager(),false);
-  moduleManager.applyActiveModules();
+  ModuleManager moduleManager=ModuleManagerFactory.create();
   ReflectionReflectFactory reflectFactory=new ReflectionReflectFactory();
   CoreRegistry.put(ReflectFactory.class,reflectFactory);
   CopyStrategyLibrary copyStrategies=new CopyStrategyLibrary(reflectFactory);
@@ -8,5 +7,5 @@
   CoreRegistry.put(ModuleManager.class,moduleManager);
   NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(reflectFactory,copyStrategies);
   CoreRegistry.put(NodesClassLibrary.class,nodesClassLibrary);
-  nodesClassLibrary.scan(moduleManager);
+  nodesClassLibrary.scan(moduleManager.getEnvironment());
 }

@@ -3,8 +3,8 @@
   GameManifest gameManifest=new GameManifest();
   Config config=CoreRegistry.get(Config.class);
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  for (  String moduleName : config.getDefaultModSelection().listModules()) {
-    Module module=moduleManager.getLatestModuleVersion(moduleName);
+  for (  Name moduleName : config.getDefaultModSelection().listModules()) {
+    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
     if (module != null) {
       gameManifest.addModule(module.getId(),module.getVersion());
     }

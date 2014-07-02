@@ -4,8 +4,8 @@
   CoreRegistry.put(Time.class,mockTime);
   NetworkSystemImpl networkSystem=new NetworkSystemImpl(mockTime);
   CoreRegistry.put(NetworkSystem.class,networkSystem);
-  engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class),networkSystem,new ReflectionReflectFactory());
-  CoreRegistry.put(StorageManager.class,new StorageManagerInternal(moduleManager,engineEntityManager));
+  engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  CoreRegistry.put(StorageManager.class,new StorageManagerInternal(moduleManager.getEnvironment(),engineEntityManager));
   componentSystemManager=new ComponentSystemManager();
   CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
   LoadPrefabs prefabLoadStep=new LoadPrefabs();

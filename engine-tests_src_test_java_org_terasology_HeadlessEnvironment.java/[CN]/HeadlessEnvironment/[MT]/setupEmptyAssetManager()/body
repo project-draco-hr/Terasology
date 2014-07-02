@@ -1,6 +1,5 @@
 {
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  AssetManager assetManager=new AssetManager(moduleManager);
+  AssetManager assetManager=new AssetManager(CoreRegistry.get(ModuleManager.class).getEnvironment());
   for (  AssetType type : AssetType.values()) {
     assetManager.setAssetFactory(type,mock(AssetFactory.class));
   }
