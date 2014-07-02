@@ -1,5 +1,4 @@
 {
-  register(new BasicHMTerrainGenerationPass());
-  register(new FloraGenerationPass());
-  register(new OreGenerator());
+  BlockManager blockManager=CoreRegistry.get(BlockManager.class);
+  world=new WorldBuilder(worldSeed.hashCode()).addProvider(new SeaLevelProvider()).addProvider(new HeightMapSurfaceHeightProvider()).addProvider(new PerlinHumidityProvider()).addProvider(new PerlinTemperatureProvider()).addProvider(new BiomeProvider()).addProvider(new SurfaceToDensityProvider()).addProvider(new FloraProvider()).addProvider(new TreeProvider()).addRasterizer(new FloraRasterizer(blockManager)).addRasterizer(new TreeRasterizer(blockManager)).addRasterizer(new SolidRasterizer(blockManager)).build();
 }
