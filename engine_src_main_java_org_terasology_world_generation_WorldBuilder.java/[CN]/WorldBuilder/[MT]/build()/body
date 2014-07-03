@@ -1,3 +1,4 @@
 {
-  return new WorldImpl(seed,determineProviderChains(),rasterizers);
+  ListMultimap<Class<? extends WorldFacet>,FacetProvider> providerChains=determineProviderChains();
+  return new WorldImpl(seed,providerChains,rasterizers,determineBorders(providerChains));
 }
