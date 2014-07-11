@@ -10,8 +10,8 @@
     mainLoop();
     cleanup();
   }
- catch (  Throwable t) {
-    logger.error("Uncaught exception",t);
-    throw new RuntimeException("Uncaught exception",t);
+ catch (  RuntimeException e) {
+    logger.error("Uncaught exception",e);
+    throw e;
   }
 }

@@ -1,8 +1,14 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  for (  Module module : moduleManager.getModules()) {
-    if (module.isCodeModule()) {
-      updateInputsFor(module.getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
+  DependencyResolver resolver=new DependencyResolver(moduleManager.getRegistry());
+  for (  Name moduleId : moduleManager.getRegistry().getModuleIds()) {
+    if (moduleManager.getRegistry().getLatestModuleVersion(moduleId).isCodeModule()) {
+      ResolutionResult result=resolver.resolve(moduleId);
+      if (result.isSuccess()) {
+        try (ModuleEnvironment environment=moduleManager.loadEnvironment(result.getModules(),false)){
+          updateInputsFor(moduleId,environment.getTypesAnnotatedWith(RegisterBindButton.class,new FromModule(environment,moduleId)));
+        }
+       }
     }
   }
 }

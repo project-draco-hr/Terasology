@@ -1,4 +1,5 @@
 {
+  boolean crashReportEnabled=true;
   try {
     boolean isHeadless=false;
     Path homePath=null;
@@ -11,6 +12,9 @@
       }
  else       if (arg.equals(HEADLESS_ARG)) {
         isHeadless=true;
+      }
+ else       if (arg.equals(NO_CRASH_REPORT_ARG)) {
+        crashReportEnabled=false;
       }
     }
     if (homePath != null) {
@@ -27,18 +31,39 @@
       subsystemList=Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput());
     }
     TerasologyEngine engine=new TerasologyEngine(subsystemList);
-    engine.init();
-    if (isHeadless) {
-      engine.run(new StateHeadlessSetup());
-    }
+    try {
+      engine.init();
+      if (isHeadless) {
+        engine.run(new StateHeadlessSetup());
+      }
  else {
-      engine.run(new StateMainMenu());
+        engine.run(new StateMainMenu());
+      }
     }
-    engine.dispose();
+  finally {
+      try {
+        engine.dispose();
+      }
+ catch (      Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
- catch (  Throwable t) {
+ catch (  RuntimeException|IOException e) {
     if (!GraphicsEnvironment.isHeadless()) {
-      CrashReporter.report(t);
+      Path logPath=Paths.get(".");
+      try {
+        Path gameLogPath=PathManager.getInstance().getLogPath();
+        if (gameLogPath != null) {
+          logPath=gameLogPath;
+        }
+      }
+ catch (      Exception eat) {
+      }
+      if (crashReportEnabled) {
+        Path logFile=logPath.resolve("Terasology.log");
+        CrashReporter.report(e,logFile);
+      }
     }
   }
 }

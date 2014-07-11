@@ -1,13 +1,11 @@
 {
-  ModuleManager moduleManager=new ModuleManagerImpl(new ModuleSecurityManager(),false);
-  moduleManager.applyActiveModules();
-  AssetManager assetManager=new AssetManager(moduleManager);
+  ModuleManager moduleManager=ModuleManagerFactory.create();
+  AssetManager assetManager=new AssetManager(moduleManager.getEnvironment());
   CoreRegistry.put(ModuleManager.class,moduleManager);
   CoreRegistry.put(AssetManager.class,assetManager);
   AssetType.registerAssetTypes(assetManager);
   URL url=getClass().getClassLoader().getResource("testResources");
   url=new URL(url.toString().substring(0,url.toString().length() - "testResources".length() - 1));
-  assetManager.addAssetSource(new ClasspathSource("unittest",url,TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY,TerasologyConstants.DELTAS_SUBDIRECTORY));
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);
@@ -16,6 +14,6 @@
 );
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  EntityManager em=new EntitySystemBuilder().build(moduleManager,networkSystem,new ReflectionReflectFactory());
+  EntityManager em=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
   prefabManager=new PojoPrefabManager();
 }

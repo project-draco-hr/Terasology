@@ -1,9 +1,0 @@
-{
-  JoinStatus joinStatus=networkSystem.join(address,TerasologyConstants.DEFAULT_PORT);
-  if (joinStatus.getStatus() != JoinStatus.Status.FAILED) {
-    engine.changeState(new StateLoading(joinStatus));
-  }
- else {
-    getManager().pushScreen("engine:errorMessagePopup",ErrorMessagePopup.class).setError("Failed to Join","Could not connect to server - " + joinStatus.getErrorMessage());
-  }
-}

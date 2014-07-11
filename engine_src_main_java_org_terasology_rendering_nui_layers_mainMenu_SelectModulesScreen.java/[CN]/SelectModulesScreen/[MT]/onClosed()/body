@@ -1,8 +1,10 @@
 {
   ModuleConfig moduleConfig=config.getDefaultModSelection();
   moduleConfig.clear();
-  for (  Module module : selection.getSelection()) {
-    moduleConfig.addModule(module.getId());
+  for (  ModuleSelectionInfo info : sortedModules) {
+    if (info.isSelected() && info.isExplicitSelection()) {
+      moduleConfig.addModule(info.getMetadata().getId());
+    }
   }
   if (!moduleConfig.hasModule(config.getWorldGeneration().getDefaultGenerator().getModuleName())) {
     config.getWorldGeneration().setDefaultGenerator(new SimpleUri());

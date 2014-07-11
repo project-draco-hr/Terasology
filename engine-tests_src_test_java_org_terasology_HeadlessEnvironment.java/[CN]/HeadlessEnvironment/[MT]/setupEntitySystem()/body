@@ -2,6 +2,6 @@
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   EntitySystemBuilder builder=new EntitySystemBuilder();
-  EngineEntityManager engineEntityManager=builder.build(moduleManager,networkSystem,new ReflectionReflectFactory());
+  EngineEntityManager engineEntityManager=builder.build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
   CoreRegistry.put(EngineEntityManager.class,engineEntityManager);
 }

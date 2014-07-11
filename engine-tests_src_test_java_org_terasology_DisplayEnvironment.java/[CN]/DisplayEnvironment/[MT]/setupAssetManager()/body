@@ -1,10 +1,7 @@
 {
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  AssetManager assetManager=new AssetManager(moduleManager);
+  AssetManager assetManager=new AssetManager(CoreRegistry.get(ModuleManager.class).getEnvironment());
   CoreRegistry.put(AssetManager.class,assetManager);
   AssetType.registerAssetTypes(assetManager);
-  assetManager.addAssetSource(new ClasspathSource(TerasologyConstants.ENGINE_MODULE,TerasologyEngine.class.getProtectionDomain().getCodeSource(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY,TerasologyConstants.DELTAS_SUBDIRECTORY));
-  assetManager.addAssetSource(new ClasspathSource("unittest",DisplayEnvironment.class.getProtectionDomain().getCodeSource(),TerasologyConstants.ASSETS_SUBDIRECTORY,TerasologyConstants.OVERRIDES_SUBDIRECTORY,TerasologyConstants.DELTAS_SUBDIRECTORY));
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);

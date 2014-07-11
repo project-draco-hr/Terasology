@@ -1,8 +1,6 @@
 {
-  if (!target.exists() && targetBlockPos != null && blockRegistry != null) {
-    target=blockRegistry.getEntityAt(targetBlockPos);
-  }
   boolean lostTarget=false;
+  updateTarget();
   if (!target.exists()) {
     targetBlockPos=null;
     lostTarget=true;
@@ -10,7 +8,7 @@
   Camera camera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
   Physics physicsRenderer=CoreRegistry.get(Physics.class);
   HitResult hitInfo=physicsRenderer.rayTrace(new Vector3f(camera.getPosition()),new Vector3f(camera.getViewingDirection()),TARGET_DISTANCE,filter);
-  updateEyeDistance(hitInfo,delta);
+  updateFocalDistance(hitInfo,delta);
   Vector3i newBlockPos=null;
   EntityRef newTarget=EntityRef.NULL;
   if (hitInfo.isHit()) {

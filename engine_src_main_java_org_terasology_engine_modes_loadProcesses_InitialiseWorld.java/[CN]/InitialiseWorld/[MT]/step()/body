@@ -1,6 +1,6 @@
 {
-  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new WorldGeneratorPluginLibrary(CoreRegistry.get(ModuleManager.class),CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
-  StorageManager storageManager=CoreRegistry.put(StorageManager.class,new StorageManagerInternal(CoreRegistry.get(ModuleManager.class),(EngineEntityManager)CoreRegistry.get(EntityManager.class)));
+  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new WorldGeneratorPluginLibrary(CoreRegistry.get(ModuleManager.class).getEnvironment(),CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
+  StorageManager storageManager=CoreRegistry.put(StorageManager.class,new StorageManagerInternal(CoreRegistry.get(ModuleManager.class).getEnvironment(),(EngineEntityManager)CoreRegistry.get(EntityManager.class)));
   WorldInfo worldInfo=gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD);
   if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
     FastRandom random=new FastRandom();
@@ -30,6 +30,8 @@
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
   CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
   CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
+  CoreRegistry.put(PhysicsEngine.class,worldRenderer.getBulletRenderer());
+  CoreRegistry.put(Physics.class,worldRenderer.getBulletRenderer());
   worldProvider.getTime().setMilliseconds(worldInfo.getTime());
   return true;
 }

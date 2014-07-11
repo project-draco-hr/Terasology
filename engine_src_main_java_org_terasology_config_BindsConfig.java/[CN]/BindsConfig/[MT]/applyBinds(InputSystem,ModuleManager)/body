@@ -1,9 +1,5 @@
 {
   inputSystem.clearBinds();
-  for (  Module module : moduleManager.getActiveModules()) {
-    if (module.isCodeModule()) {
-      registerButtonBinds(inputSystem,module.getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindButton.class));
-      registerAxisBinds(inputSystem,module.getId(),module.getReflections().getTypesAnnotatedWith(RegisterBindAxis.class));
-    }
-  }
+  registerButtonBinds(inputSystem,moduleManager.getEnvironment(),moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindButton.class));
+  registerAxisBinds(inputSystem,moduleManager.getEnvironment(),moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindAxis.class));
 }

@@ -1,10 +1,8 @@
 {
   ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  moduleManager.applyActiveModules();
   CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.get(CopyStrategyLibrary.class);
   copyStrategyLibrary.clear();
-  Set<Class<? extends CopyStrategy>> copyStrategies=moduleManager.getActiveModuleReflections().getSubTypesOf(CopyStrategy.class);
-  for (  Class<? extends CopyStrategy> copyStrategy : copyStrategies) {
+  for (  Class<? extends CopyStrategy> copyStrategy : moduleManager.getEnvironment().getSubtypesOf(CopyStrategy.class)) {
     if (copyStrategy.getAnnotation(RegisterCopyStrategy.class) == null) {
       continue;
     }
@@ -22,6 +20,5 @@
     }
   }
   AssetManager assetManager=CoreRegistry.get(AssetManager.class);
-  assetManager.applyOverrides();
-  assetManager.refresh();
+  assetManager.setEnvironment(moduleManager.getEnvironment());
 }

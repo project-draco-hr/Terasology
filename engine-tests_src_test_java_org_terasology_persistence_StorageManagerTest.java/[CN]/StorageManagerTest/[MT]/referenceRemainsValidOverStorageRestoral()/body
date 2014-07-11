@@ -8,8 +8,8 @@
   globalStore.store(someEntity);
   globalStore.save();
   esm.flush();
-  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager,networkSystem,new ReflectionReflectFactory());
-  StorageManager newSM=new StorageManagerInternal(moduleManager,newEntityManager,false);
+  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
   newSM.loadGlobalStore();
   PlayerStore restored=newSM.loadPlayerStore(PLAYER_ID);
   restored.restoreEntities();

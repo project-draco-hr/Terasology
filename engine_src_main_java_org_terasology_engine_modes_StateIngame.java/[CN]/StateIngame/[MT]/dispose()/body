@@ -18,8 +18,8 @@
   }
   CoreRegistry.get(PhysicsEngine.class).dispose();
   entityManager.clear();
-  CoreRegistry.get(ModuleManager.class).disableAllModules();
-  CoreRegistry.get(AssetManager.class).refresh();
+  ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
+  CoreRegistry.get(AssetManager.class).setEnvironment(environment);
   CoreRegistry.get(Console.class).dispose();
   CoreRegistry.clear();
   BlockManager.getAir().setEntity(EntityRef.NULL);

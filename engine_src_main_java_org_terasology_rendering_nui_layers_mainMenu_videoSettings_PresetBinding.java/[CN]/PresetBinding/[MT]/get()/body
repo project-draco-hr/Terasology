@@ -1,0 +1,26 @@
+{
+  if (config.isFlickeringLight() && config.isVignette() && config.isEyeAdaptation()&& config.isFilmGrain()) {
+    if (config.isSsao()) {
+      if (config.isBloom() && config.isMotionBlur() && config.isLightShafts()&& config.isCloudShadows()) {
+        return Preset.UBER;
+      }
+    }
+ else     if (config.isCloudShadows()) {
+      if (config.isBloom() && config.isMotionBlur() && config.isLightShafts()) {
+        return Preset.INSANE;
+      }
+    }
+ else     if (config.isBloom()) {
+      if (!config.isMotionBlur() && !config.isLightShafts()) {
+        return Preset.EPIC;
+      }
+    }
+ else     if (!config.isMotionBlur() && !config.isLightShafts()) {
+      return Preset.NICE;
+    }
+  }
+ else   if (!config.isBloom() && !config.isMotionBlur() && !config.isFlickeringLight()&& !config.isVignette()&& !config.isEyeAdaptation()&& !config.isFilmGrain()) {
+    return Preset.MINIMAL;
+  }
+  return Preset.CUSTOM;
+}

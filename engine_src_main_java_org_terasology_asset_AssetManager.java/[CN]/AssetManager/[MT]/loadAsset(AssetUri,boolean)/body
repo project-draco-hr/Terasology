@@ -19,7 +19,7 @@
       return result;
     }
   }
-  try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(moduleManager.getActiveModule(uri.getNormalisedModuleName()))){
+  try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(environment.get(uri.getModuleName()))){
     AssetData data=loadAssetData(uri,logErrors);
     if (data != null) {
       asset=factory.buildAsset(uri,(D)data);

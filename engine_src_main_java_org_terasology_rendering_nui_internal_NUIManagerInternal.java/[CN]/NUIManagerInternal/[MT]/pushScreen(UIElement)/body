@@ -1,8 +1,10 @@
 {
   if (element != null && element.getRootWidget() instanceof CoreScreenLayer) {
     CoreScreenLayer result=(CoreScreenLayer)element.getRootWidget();
-    result.setId(element.getURI().toNormalisedSimpleString());
-    pushScreen(result,element.getURI());
+    if (!screens.contains(result)) {
+      result.setId(element.getURI().toString());
+      pushScreen(result,element.getURI());
+    }
     return result;
   }
   return null;
