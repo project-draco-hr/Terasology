@@ -1,0 +1,12 @@
+{
+  ModuleManager moduleManager=ModuleManagerFactory.create();
+  ModuleRegistry registry=moduleManager.getRegistry();
+  Set<Module> mods=Sets.newHashSet();
+  for (  Name modName : moduleNames) {
+    Module module=registry.getLatestModuleVersion(modName);
+    mods.add(module);
+  }
+  ModuleEnvironment modEnv=moduleManager.loadEnvironment(mods,true);
+  Log.debug("Loaded modules: " + modEnv.getModuleIdsOrderedByDependencies());
+  CoreRegistry.put(ModuleManager.class,moduleManager);
+}
