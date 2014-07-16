@@ -4,7 +4,7 @@
     Vector3i offset=new Vector3i(subRegion.minX() - fullRegion.minX(),subRegion.minY() - fullRegion.minY(),subRegion.minZ() - fullRegion.minZ());
     for (int z=0; z < subRegion.size().z; ++z) {
       for (int y=0; y < subRegion.size().y; ++y) {
-        System.arraycopy(fullData,offset.getX() + fullRegion.sizeX() * (y + offset.getY() + fullRegion.sizeY() * (z + offset.getZ())),result,subRegion.sizeX() * (y + subRegion.sizeY() * z),subRegion.size().x);
+        System.arraycopy(fullData,offset.x + fullRegion.sizeX() * (y + offset.y + fullRegion.sizeY() * (z + offset.z)),result,subRegion.sizeX() * (y + subRegion.sizeY() * z),subRegion.size().x);
       }
     }
     return result;
