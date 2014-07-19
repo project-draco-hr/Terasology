@@ -1,12 +1,14 @@
 {
   ModuleManager moduleManager=ModuleManagerFactory.create();
   ModuleRegistry registry=moduleManager.getRegistry();
-  Set<Module> mods=Sets.newHashSet();
-  for (  Name modName : moduleNames) {
-    Module module=registry.getLatestModuleVersion(modName);
-    mods.add(module);
+  DependencyResolver resolver=new DependencyResolver(registry);
+  ResolutionResult result=resolver.resolve(moduleNames);
+  if (result.isSuccess()) {
+    ModuleEnvironment modEnv=moduleManager.loadEnvironment(result.getModules(),true);
+    Log.debug("Loaded modules: " + modEnv.getModuleIdsOrderedByDependencies());
   }
-  ModuleEnvironment modEnv=moduleManager.loadEnvironment(mods,true);
-  Log.debug("Loaded modules: " + modEnv.getModuleIdsOrderedByDependencies());
+ else {
+    Log.error("Could not resolve module dependencies for " + moduleNames);
+  }
   CoreRegistry.put(ModuleManager.class,moduleManager);
 }
