@@ -1,9 +1,0 @@
-{
-  SeaLevelTemperatureFacet facet=new SeaLevelTemperatureFacet(region.getRegion(),region.getBorderForFacet(SeaLevelTemperatureFacet.class));
-  float[] noise=this.temperatureNoise.noise(facet.getWorldRegion());
-  for (int i=0; i < noise.length; ++i) {
-    noise[i]=TeraMath.clamp((noise[i] + 1f) * 0.5f);
-  }
-  facet.set(noise);
-  region.setRegionFacet(SeaLevelTemperatureFacet.class,facet);
-}

@@ -11,13 +11,13 @@
     }
  else     if (density >= 0) {
       int depth=TeraMath.floorToInt(surfaceFacet.get(pos2d)) - pos.y - chunk.getChunkWorldOffsetY();
-      WorldBiomeProvider.Biome biome=biomeFacet.get(pos2d);
+      Biome biome=biomeFacet.get(pos2d);
       Block block=getSurfaceBlock(depth,pos.y + chunk.getChunkWorldOffsetY(),biome);
       chunk.setBlock(pos,block);
     }
  else {
       int posY=pos.y + chunk.getChunkWorldOffsetY();
-      if (posY == 32 && WorldBiomeProvider.Biome.SNOW == biomeFacet.get(pos2d)) {
+      if (posY == 32 && Biome.SNOW == biomeFacet.get(pos2d)) {
         chunk.setBlock(pos,ice);
       }
  else       if (posY <= 32) {
