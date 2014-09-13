@@ -2,10 +2,10 @@
   ClientComponent clientComp=client.getComponent(ClientComponent.class);
   CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
   if (move != null) {
-    float oldSpeed=move.maxGhostSpeed;
-    move.maxGhostSpeed=amount;
+    float oldSpeedMultipler=move.speedMultiplier;
+    move.speedMultiplier=amount;
     clientComp.character.saveComponent(move);
-    return "Max ghost speed set to " + amount + " (was "+ oldSpeed+ ")";
+    return "Speed multiplier set to " + amount + " (was "+ oldSpeedMultipler+ ")";
   }
   return "";
 }

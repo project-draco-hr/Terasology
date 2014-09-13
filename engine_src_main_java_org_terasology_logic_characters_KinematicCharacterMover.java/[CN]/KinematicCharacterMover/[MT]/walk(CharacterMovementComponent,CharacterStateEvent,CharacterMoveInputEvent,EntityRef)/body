@@ -4,11 +4,12 @@
   if (lengthSquared > 1) {
     desiredVelocity.normalize();
   }
-  float maxSpeed=getMaxSpeed(entity,MovementMode.WALKING,movementComp.maxGroundSpeed);
+  desiredVelocity.scale(movementComp.speedMultiplier);
+  float maxSpeed=getMaxSpeed(entity,movementComp);
   if (input.isRunning()) {
     maxSpeed*=movementComp.runFactor;
   }
-  if (desiredVelocity.y != 0) {
+  if (movementComp.grounded && desiredVelocity.y != 0) {
     float speed=desiredVelocity.length();
     desiredVelocity.y=0;
     if (desiredVelocity.x != 0 || desiredVelocity.z != 0) {
@@ -19,15 +20,23 @@
   desiredVelocity.scale(maxSpeed);
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(state.getVelocity());
-  velocityDiff.scale(Math.min(movementComp.groundFriction * input.getDelta(),1.0f));
+  velocityDiff.scale(Math.min(movementComp.mode.scaleInertia * input.getDelta(),1.0f));
   Vector3f endVelocity=new Vector3f(state.getVelocity());
   endVelocity.x+=velocityDiff.x;
   endVelocity.z+=velocityDiff.z;
-  endVelocity.y=Math.max(-TERMINAL_VELOCITY,state.getVelocity().y - GRAVITY * input.getDelta());
+  if (movementComp.mode.scaleGravity == 0) {
+    endVelocity.y+=velocityDiff.y;
+  }
+ else   if (movementComp.mode.applyInertiaToVertical) {
+    endVelocity.y+=Math.max(-TERMINAL_VELOCITY,velocityDiff.y - (GRAVITY * movementComp.mode.scaleGravity) * input.getDelta());
+  }
+ else {
+    endVelocity.y=Math.max(-TERMINAL_VELOCITY,state.getVelocity().y - (GRAVITY * movementComp.mode.scaleGravity) * input.getDelta());
+  }
   Vector3f moveDelta=new Vector3f(endVelocity);
   moveDelta.scale(input.getDelta());
-  CharacterCollider collider=physics.getCharacterCollider(entity);
-  MoveResult moveResult=move(state.getPosition(),moveDelta,(state.isGrounded()) ? movementComp.stepHeight : 0,movementComp.slopeFactor,collider);
+  CharacterCollider collider=movementComp.mode.useCollision ? physics.getCharacterCollider(entity) : null;
+  MoveResult moveResult=move(state.getPosition(),moveDelta,(state.isGrounded() && movementComp.mode.canBeGrounded) ? movementComp.stepHeight : 0,movementComp.slopeFactor,collider);
   Vector3f distanceMoved=new Vector3f(moveResult.getFinalPosition());
   distanceMoved.sub(state.getPosition());
   state.getPosition().set(moveResult.getFinalPosition());
@@ -35,7 +44,7 @@
     entity.send(new MovedEvent(distanceMoved,state.getPosition()));
   }
   if (moveResult.isBottomHit()) {
-    if (!state.isGrounded()) {
+    if (!state.isGrounded() && movementComp.mode.canBeGrounded) {
       if (input.isFirstRun()) {
         Vector3f landVelocity=new Vector3f(state.getVelocity());
         landVelocity.y+=(distanceMoved.y / moveDelta.y) * (endVelocity.y - state.getVelocity().y);
@@ -63,13 +72,20 @@
   if (input.isFirstRun() && moveResult.isHorizontalHit()) {
     entity.send(new HorizontalCollisionEvent(state.getPosition(),state.getVelocity()));
   }
-  if (state.isGrounded()) {
+  if (state.isGrounded() || movementComp.mode == MovementMode.SWIMMING) {
     state.setFootstepDelta(state.getFootstepDelta() + distanceMoved.length() / movementComp.distanceBetweenFootsteps);
     if (state.getFootstepDelta() > 1) {
       state.setFootstepDelta(state.getFootstepDelta() - 1);
       if (input.isFirstRun()) {
-        entity.send(new FootstepEvent());
-      }
-    }
-  }
+switch (movementComp.mode) {
+case WALKING:
+          entity.send(new FootstepEvent());
+        break;
+case SWIMMING:
+      entity.send(new SwimStrokeEvent(worldProvider.getBlock(state.getPosition())));
+    break;
+}
+}
+}
+}
 }
