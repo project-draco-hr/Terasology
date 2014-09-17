@@ -22,7 +22,7 @@
           return itemComp.icon;
         }
         BlockItemComponent blockItemComp=getTargetItem().getComponent(BlockItemComponent.class);
-        if (blockItemComp == null) {
+        if (blockItemComp == null || blockItemComp.blockFamily == null) {
           return Assets.getTextureRegion("engine:items.questionMark");
         }
       }
@@ -33,7 +33,7 @@
   icon.bindMesh(new ReadOnlyBinding<Mesh>(){
     @Override public Mesh get(){
       BlockItemComponent blockItemComp=getTargetItem().getComponent(BlockItemComponent.class);
-      if (blockItemComp != null) {
+      if (blockItemComp != null && blockItemComp.blockFamily != null) {
         return blockItemComp.blockFamily.getArchetypeBlock().getMesh();
       }
       return null;
