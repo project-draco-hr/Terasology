@@ -2,8 +2,8 @@
   canvas.setPart(SLIDER);
   canvas.drawBackground();
   canvas.setPart(TICKER);
-  String display=String.format("%." + precision + "f",value.get());
-  int tickerWidth=canvas.getCurrentStyle().getFont().getWidth(formatString);
+  String display=getDisplayText();
+  int tickerWidth=canvas.getCurrentStyle().getFont().getWidth(display);
   tickerWidth+=canvas.getCurrentStyle().getMargin().getTotalWidth();
   sliderWidth=canvas.size().x - tickerWidth;
   int drawLocation=pixelOffsetFor(getValue(),sliderWidth);

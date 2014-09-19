@@ -52,6 +52,44 @@ fovSlider.setMinimum(70);
 fovSlider.setRange(50);
 fovSlider.bindValue(BindHelper.bindBeanProperty("fieldOfView",config.getRendering(),Float.TYPE));
 }
+final UISlider frameLimitSlider=find("frameLimit",UISlider.class);
+if (frameLimitSlider != null) {
+frameLimitSlider.setIncrement(5.0f);
+frameLimitSlider.setPrecision(0);
+frameLimitSlider.setMinimum(30);
+frameLimitSlider.setRange(175);
+frameLimitSlider.setLabelFunction(new Function<Float,String>(){
+@Override public String apply(Float input){
+if (input > 200) {
+  return " Off ";
+}
+ else {
+  return String.valueOf(input.intValue());
+}
+}
+}
+);
+frameLimitSlider.bindValue(new Binding<Float>(){
+@Override public Float get(){
+if (config.getRendering().getFrameLimit() == -1) {
+  return 205f;
+}
+ else {
+  return (float)config.getRendering().getFrameLimit();
+}
+}
+@Override public void set(Float value){
+int frameLimit=value.intValue();
+if (frameLimit > 200) {
+  config.getRendering().setFrameLimit(-1);
+}
+ else {
+  config.getRendering().setFrameLimit(frameLimit);
+}
+}
+}
+);
+}
 UIDropdown<CameraSetting> cameraSetting=find("camera",UIDropdown.class);
 if (cameraSetting != null) {
 cameraSetting.setOptions(Arrays.asList(CameraSetting.values()));
