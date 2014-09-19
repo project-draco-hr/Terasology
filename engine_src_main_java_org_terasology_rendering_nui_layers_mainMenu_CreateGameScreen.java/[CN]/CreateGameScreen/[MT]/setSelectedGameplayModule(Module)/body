@@ -1,0 +1,9 @@
+{
+  ModuleConfig moduleConfig=config.getDefaultModSelection();
+  moduleConfig.clear();
+  moduleConfig.addModule(module.getMetadata().getId());
+  if (!moduleConfig.hasModule(config.getWorldGeneration().getDefaultGenerator().getModuleName())) {
+    config.getWorldGeneration().setDefaultGenerator(new SimpleUri());
+  }
+  config.save();
+}
