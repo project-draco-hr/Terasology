@@ -101,12 +101,13 @@
   }
 );
   UIButton previewSeed=find("previewSeed",UIButton.class);
-  previewSeed.bindVisible(new ReadOnlyBinding<Boolean>(){
+  ReadOnlyBinding<Boolean> worldGeneratorSelected=new ReadOnlyBinding<Boolean>(){
     @Override public Boolean get(){
       return worldGenerator != null && worldGenerator.getSelection() != null;
     }
   }
-);
+;
+  previewSeed.bindEnabled(worldGeneratorSelected);
   WidgetUtil.trySubscribe(this,"previewSeed",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       PreviewWorldScreen screen=getManager().pushScreen("engine:previewWorldScreen",PreviewWorldScreen.class);
@@ -116,12 +117,16 @@
     }
   }
 );
-  WidgetUtil.trySubscribe(this,"config",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      getManager().pushScreen("engine:configWorldGen");
+  UIButton configButton=find("config",UIButton.class);
+  if (configButton != null) {
+    configButton.subscribe(new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget button){
+        getManager().pushScreen("engine:configWorldGen");
+      }
     }
-  }
 );
+    configButton.bindEnabled(worldGeneratorSelected);
+  }
   WidgetUtil.trySubscribe(this,"mods",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().pushScreen("engine:selectModsScreen");
