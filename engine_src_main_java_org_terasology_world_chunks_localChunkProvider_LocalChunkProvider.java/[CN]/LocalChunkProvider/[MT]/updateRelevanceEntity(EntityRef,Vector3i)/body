@@ -1,0 +1,12 @@
+{
+  regionLock.readLock().lock();
+  try {
+    ChunkRelevanceRegion region=regions.get(entity);
+    if (region != null) {
+      region.setRelevanceDistance(distance);
+    }
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+}

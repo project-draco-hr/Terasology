@@ -1,0 +1,40 @@
+{
+switch (type) {
+case FOREST:
+case PLAINS:
+case MOUNTAINS:
+    if (height >= 28 && height <= 34) {
+      return sand;
+    }
+ else     if (depth == 0 && height > 32 && height < 128) {
+      return grass;
+    }
+ else     if (depth == 0 && height >= 128) {
+      return snow;
+    }
+ else     if (depth > 32) {
+      return stone;
+    }
+ else {
+      return dirt;
+    }
+case SNOW:
+  if (depth == 0.0 && height > 32) {
+    return snow;
+  }
+ else   if (depth > 32) {
+    return stone;
+  }
+ else {
+    return dirt;
+  }
+case DESERT:
+if (depth > 8) {
+  return stone;
+}
+ else {
+  return sand;
+}
+}
+return dirt;
+}

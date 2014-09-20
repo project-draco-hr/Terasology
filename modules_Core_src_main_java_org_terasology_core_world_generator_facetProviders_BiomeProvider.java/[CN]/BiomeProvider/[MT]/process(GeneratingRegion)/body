@@ -1,0 +1,26 @@
+{
+  SurfaceTemperatureFacet temperature=region.getRegionFacet(SurfaceTemperatureFacet.class);
+  SurfaceHumidityFacet surfaceHumidityFacet=region.getRegionFacet(SurfaceHumidityFacet.class);
+  Border3D border=region.getBorderForFacet(BiomeFacet.class);
+  BiomeFacet biomeFacet=new BiomeFacet(region.getRegion(),border);
+  for (  Vector2i pos : biomeFacet.getRelativeRegion()) {
+    float temp=temperature.get(pos);
+    float hum=temp * surfaceHumidityFacet.get(pos);
+    if (temp >= 0.5f && hum < 0.3f) {
+      biomeFacet.set(pos,Biome.DESERT);
+    }
+ else     if (hum >= 0.3f && hum <= 0.6f && temp >= 0.5f) {
+      biomeFacet.set(pos,Biome.PLAINS);
+    }
+ else     if (temp <= 0.3f && hum > 0.5f) {
+      biomeFacet.set(pos,Biome.SNOW);
+    }
+ else     if (hum >= 0.2f && hum <= 0.6f && temp < 0.5f) {
+      biomeFacet.set(pos,Biome.MOUNTAINS);
+    }
+ else {
+      biomeFacet.set(pos,Biome.FOREST);
+    }
+  }
+  region.setRegionFacet(BiomeFacet.class,biomeFacet);
+}

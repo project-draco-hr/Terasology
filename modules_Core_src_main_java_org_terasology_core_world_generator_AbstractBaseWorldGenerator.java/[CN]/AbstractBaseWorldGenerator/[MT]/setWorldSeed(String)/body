@@ -1,12 +1,6 @@
 {
   worldSeed=seed;
-  biomeProvider=new WorldBiomeProviderImpl(seed);
-  for (  final BaseChunkGenerator generator : firstPassGenerators) {
-    setBiome(generator);
-    generator.setWorldSeed(seed);
-  }
-  for (  final BaseChunkGenerator generator : secondPassGenerators) {
-    setBiome(generator);
+  for (  final ChunkGenerationPass generator : generationPasses) {
     generator.setWorldSeed(seed);
   }
 }

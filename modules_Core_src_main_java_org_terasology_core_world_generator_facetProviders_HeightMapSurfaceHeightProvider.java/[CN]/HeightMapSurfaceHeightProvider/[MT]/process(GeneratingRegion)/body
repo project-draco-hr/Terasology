@@ -1,0 +1,30 @@
+{
+  Border3D border=region.getBorderForFacet(SurfaceHeightFacet.class);
+  SurfaceHeightFacet facet=new SurfaceHeightFacet(region.getRegion(),border);
+  Set<Vector3i> chunkCoordinates=Sets.newHashSet();
+  for (  Vector3i pos : border.expandTo3D(region.getRegion())) {
+    chunkCoordinates.add(TeraMath.calcChunkPos(pos));
+  }
+  for (  Vector3i chunkCoordinate : chunkCoordinates) {
+    Vector3i minWorldPosForChunk=new Vector3i(ChunkConstants.SIZE_X * chunkCoordinate.x,ChunkConstants.SIZE_Y * chunkCoordinate.y,ChunkConstants.SIZE_Z * chunkCoordinate.z);
+    Region3i chunkWorldRegion=Region3i.createFromMinAndSize(minWorldPosForChunk,ChunkConstants.CHUNK_SIZE);
+    int hmX=(((chunkWorldRegion.minX() / chunkWorldRegion.sizeX()) % 512) + 512) % 512;
+    int hmZ=(((chunkWorldRegion.minZ() / chunkWorldRegion.sizeZ()) % 512) + 512) % 512;
+    double scaleFactor=0.05 * MAX_HEIGHT;
+    double p00=heightmap[hmX][hmZ] * scaleFactor;
+    double p10=heightmap[(hmX - 1 + 512) % 512][(hmZ) % 512] * scaleFactor;
+    double p11=heightmap[(hmX - 1 + 512) % 512][(hmZ + 1 + 512) % 512] * scaleFactor;
+    double p01=heightmap[(hmX) % 512][(hmZ + 1 + 512) % 512] * scaleFactor;
+    Rect2i worldRegion=Rect2i.createFromMinAndSize(chunkWorldRegion.minX(),chunkWorldRegion.minZ(),chunkWorldRegion.sizeX(),chunkWorldRegion.sizeZ());
+    for (    Vector2i pos : worldRegion) {
+      Vector3i localPos=TeraMath.calcBlockPos(new Vector3i(pos.x,0,pos.y));
+      int x=localPos.x;
+      int z=localPos.z;
+      float interpolatedHeight=(float)lerp(x / (double)ChunkConstants.CHUNK_REGION.sizeX(),lerp(z / (double)ChunkConstants.CHUNK_REGION.sizeZ(),p10,p11),lerp(z / (double)ChunkConstants.CHUNK_REGION.sizeZ(),p00,p01));
+      if (facet.getWorldRegion().contains(pos)) {
+        facet.setWorld(pos,interpolatedHeight);
+      }
+    }
+  }
+  region.setRegionFacet(SurfaceHeightFacet.class,facet);
+}

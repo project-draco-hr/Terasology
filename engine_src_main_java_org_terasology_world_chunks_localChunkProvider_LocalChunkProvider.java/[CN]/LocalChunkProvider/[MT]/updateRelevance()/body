@@ -2,18 +2,14 @@
   for (  ChunkRelevanceRegion chunkRelevanceRegion : regions.values()) {
     chunkRelevanceRegion.update();
     if (chunkRelevanceRegion.isDirty()) {
-      boolean produceChunks=false;
       for (      Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
-        ChunkImpl chunk=nearCache.get(pos);
-        if (chunk != null && chunk.getChunkState() == ChunkImpl.State.COMPLETE) {
+        Chunk chunk=nearCache.get(pos);
+        if (chunk != null && chunk.isReady()) {
           chunkRelevanceRegion.chunkReady(chunk);
         }
- else {
-          produceChunks=true;
+ else         if (chunk == null) {
+          createOrLoadChunk(pos);
         }
-      }
-      if (produceChunks) {
-        pipeline.requestProduction(chunkRelevanceRegion.getRegion().expand(new Vector3i(2,0,2)));
       }
       chunkRelevanceRegion.setUpToDate();
     }

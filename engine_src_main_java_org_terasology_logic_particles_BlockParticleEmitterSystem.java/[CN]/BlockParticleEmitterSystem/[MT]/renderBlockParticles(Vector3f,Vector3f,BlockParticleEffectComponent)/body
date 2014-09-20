@@ -1,6 +1,14 @@
 {
-  float temperature=worldProvider.getTemperature(worldPos);
-  float humidity=worldProvider.getHumidity(worldPos);
+  float temperature=0.5f;
+  float humidity=0.5f;
+  Vector3i worldPos3i=new Vector3i(worldPos,0.5f);
+  Region region=worldProvider.getWorldData(Region3i.createFromCenterExtents(worldPos3i,1));
+  if (region != null) {
+    SurfaceTemperatureFacet surfaceTemperatureFacet=region.getFacet(SurfaceTemperatureFacet.class);
+    temperature=surfaceTemperatureFacet.getWorld(worldPos3i.x,worldPos3i.z);
+    SurfaceHumidityFacet surfaceHumidityFacet=region.getFacet(SurfaceHumidityFacet.class);
+    humidity=surfaceHumidityFacet.getWorld(worldPos3i.x,worldPos3i.z);
+  }
   glPushMatrix();
   glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
   for (  Particle particle : particleEffect.particles) {

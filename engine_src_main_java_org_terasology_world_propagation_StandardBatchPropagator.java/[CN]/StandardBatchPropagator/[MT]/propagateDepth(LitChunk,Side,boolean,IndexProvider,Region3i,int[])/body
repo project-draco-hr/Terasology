@@ -1,0 +1,31 @@
+{
+  Vector3i adjPos=new Vector3i();
+  int[] adjDepth=new int[depths.length];
+  int dimA=(side == Side.LEFT || side == Side.RIGHT) ? ChunkConstants.SIZE_Y : ChunkConstants.SIZE_X;
+  int dimB=(side == Side.FRONT || side == Side.BACK) ? ChunkConstants.SIZE_Y : ChunkConstants.SIZE_Z;
+  TeraMath.populateMinAdjacent2D(depths,adjDepth,dimA,dimB,!propagateExternal);
+  if (propagateExternal) {
+    for (int y=0; y < dimB; ++y) {
+      adjDepth[y * dimA]=0;
+      adjDepth[dimA - 1 + y * dimA]=0;
+    }
+    for (int x=0; x < dimA; ++x) {
+      adjDepth[x]=0;
+      adjDepth[x + dimA * (dimB - 1)]=0;
+    }
+  }
+  for (  Vector3i pos : edgeRegion) {
+    int depthIndex=indexProvider.getIndexFor(pos);
+    int adjacentDepth=adjDepth[depthIndex];
+    for (int i=adjacentDepth; i < depths[depthIndex]; ++i) {
+      adjPos.set(side.getVector3i());
+      adjPos.mult(i + 1);
+      adjPos.add(pos);
+      adjPos.add(chunkEdgeDeltas.get(side));
+      byte value=rules.getValue(adjChunk,adjPos);
+      if (value > 1) {
+        queueSpreadValue(adjChunk.chunkToWorldPosition(adjPos),value);
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  if (listener != null) {
+    List<Chunk> newReadyChunks=Lists.newArrayList();
+    readyChunks.drainTo(newReadyChunks);
+    if (!newReadyChunks.isEmpty()) {
+      sortedReadyChunks.addAll(newReadyChunks);
+      Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
+      for (      Chunk chunk : newReadyChunks) {
+        Chunk oldChunk=chunkCache.put(chunk.getPosition(),chunk);
+        if (oldChunk != null) {
+          oldChunk.dispose();
+        }
+      }
+    }
+    if (!sortedReadyChunks.isEmpty()) {
+      int loaded=0;
+      for (int i=sortedReadyChunks.size() - 1; i >= 0 && loaded < LOAD_PER_FRAME; i--) {
+        Chunk chunkInfo=sortedReadyChunks.get(i);
+        PerformanceMonitor.startActivity("Make Chunk Available");
+        if (makeChunkAvailable(chunkInfo)) {
+          sortedReadyChunks.remove(i);
+          loaded++;
+        }
+        PerformanceMonitor.endActivity();
+      }
+    }
+  }
+}

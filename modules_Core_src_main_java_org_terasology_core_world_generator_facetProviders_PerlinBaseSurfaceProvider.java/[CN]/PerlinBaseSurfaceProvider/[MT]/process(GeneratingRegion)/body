@@ -1,0 +1,13 @@
+{
+  Border3D border=region.getBorderForFacet(SurfaceHeightFacet.class);
+  SurfaceHeightFacet facet=new SurfaceHeightFacet(region.getRegion(),border);
+  SeaLevelFacet seaLevelFacet=region.getRegionFacet(SeaLevelFacet.class);
+  float seaLevel=seaLevelFacet.getSeaLevel();
+  Rect2i processRegion=facet.getWorldRegion();
+  float[] noise=surfaceNoise.noise(processRegion);
+  for (int i=0; i < noise.length; ++i) {
+    noise[i]=seaLevel + seaLevel * ((noise[i] + 1f) / 2f);
+  }
+  facet.set(noise);
+  region.setRegionFacet(SurfaceHeightFacet.class,facet);
+}

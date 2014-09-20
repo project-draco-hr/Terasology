@@ -1,18 +1,15 @@
 {
-  final ChunkImpl chunk=entry.getLatestChunk();
+  final Chunk chunk=entry.getLatestChunk();
   if (chunk == null) {
     return COLOR_DEAD;
   }
   if (chunk.getMesh() != null) {
     return COLOR_HIGHLIGHT_TESSELLATION;
   }
-switch (chunk.getChunkState()) {
-case ADJACENCY_GENERATION_PENDING:
-    return COLOR_ADJACENCY_GENERATION_PENDING;
-case INTERNAL_LIGHT_GENERATION_PENDING:
-  return COLOR_INTERNAL_LIGHT_GENERATION_PENDING;
-case COMPLETE:
-return COLOR_COMPLETE;
-}
-return COLOR_INVALID;
+  if (chunk.isReady()) {
+    return COLOR_COMPLETE;
+  }
+ else {
+    return COLOR_INTERNAL_LIGHT_GENERATION_PENDING;
+  }
 }

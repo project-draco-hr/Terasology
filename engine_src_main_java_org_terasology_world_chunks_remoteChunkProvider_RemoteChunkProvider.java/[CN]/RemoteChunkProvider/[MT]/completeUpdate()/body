@@ -1,0 +1,8 @@
+{
+  Chunk chunk=lightMerger.completeMerge();
+  if (chunk != null) {
+    chunk.markReady();
+    listener.onChunkReady(chunk.getPosition());
+    worldEntity.send(new OnChunkLoaded(chunk.getPosition()));
+  }
+}

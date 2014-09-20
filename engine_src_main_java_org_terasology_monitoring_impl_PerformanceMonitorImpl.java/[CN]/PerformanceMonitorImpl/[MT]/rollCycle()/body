@@ -1,5 +1,6 @@
 {
   metricData.add(currentData);
+  allocationData.add(currentMemData);
   spikeData.forEachEntry(new TObjectDoubleProcedure<String>(){
     public boolean execute(    String s,    double v){
       spikeData.put(s,v * DECAY_RATE);
@@ -19,6 +20,13 @@
     }
   }
 );
+  currentMemData.forEachEntry(new TObjectLongProcedure<String>(){
+    public boolean execute(    String s,    long v){
+      runningAllocationTotals.adjustOrPutValue(s,v,v);
+      return true;
+    }
+  }
+);
   while (metricData.size() > RETAINED_CYCLES) {
     metricData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
       public boolean execute(      String s,      long v){
@@ -29,22 +37,16 @@
 );
     metricData.remove(0);
   }
-  currentData=new TObjectLongHashMap<String>();
-  runningThreads.forEachEntry(new TObjectIntProcedure<String>(){
-    public boolean execute(    String s,    int i){
-      lastRunningThreads.adjustOrPutValue(s,i,i);
-      return true;
+  while (allocationData.size() > RETAINED_CYCLES) {
+    allocationData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
+      public boolean execute(      String s,      long v){
+        runningAllocationTotals.adjustValue(s,-v);
+        return true;
+      }
     }
-  }
 );
-  TObjectIntMap<String> temp=runningThreads;
-  temp.clear();
-  runningThreads=stoppedThreads;
-  stoppedThreads=temp;
-  lastRunningThreads.retainEntries(new TObjectIntProcedure<String>(){
-    public boolean execute(    String s,    int i){
-      return i > 0;
-    }
+    allocationData.remove(0);
   }
-);
+  currentData=new TObjectLongHashMap<>();
+  currentMemData=new TObjectLongHashMap<>();
 }

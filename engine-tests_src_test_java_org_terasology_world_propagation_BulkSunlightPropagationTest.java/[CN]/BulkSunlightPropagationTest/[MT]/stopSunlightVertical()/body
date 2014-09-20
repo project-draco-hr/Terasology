@@ -1,0 +1,22 @@
+{
+  for (  Vector3i pos : Region3i.createBounded(new Vector3i(0,16,0),new Vector3i(ChunkConstants.SIZE_X - 1,ChunkConstants.SIZE_Y - 1,ChunkConstants.SIZE_Z - 1))) {
+    regenWorldView.setValueAt(pos,ChunkConstants.MAX_SUNLIGHT_REGEN);
+    lightWorldView.setValueAt(pos,ChunkConstants.MAX_SUNLIGHT);
+  }
+  for (  Vector3i pos : Region3i.createBounded(new Vector3i(0,15,0),new Vector3i(ChunkConstants.SIZE_X - 1,15,ChunkConstants.SIZE_Z - 1))) {
+    regenWorldView.setBlockAt(pos,solid);
+  }
+  for (  Vector3i pos : Region3i.createBounded(new Vector3i(0,0,0),new Vector3i(ChunkConstants.SIZE_X - 1,14,ChunkConstants.SIZE_Z - 1))) {
+    regenWorldView.setValueAt(pos,(byte)(14 - pos.y));
+  }
+  regenWorldView.setBlockAt(new Vector3i(16,15,16),air);
+  propagator.process(new BlockChange(new Vector3i(16,15,16),solid,air));
+  sunlightPropagator.process(new BlockChange(new Vector3i(16,15,16),solid,air));
+  regenWorldView.setBlockAt(new Vector3i(16,15,16),solid);
+  propagator.process(new BlockChange(new Vector3i(16,15,16),air,solid));
+  sunlightPropagator.process(new BlockChange(new Vector3i(16,15,16),air,solid));
+  for (  Vector3i pos : Region3i.createBounded(new Vector3i(0,0,0),new Vector3i(ChunkConstants.SIZE_X - 1,15,ChunkConstants.SIZE_Z - 1))) {
+    assertEquals("Incorrect value at " + pos,Math.max(0,14 - pos.y),regenWorldView.getValueAt(pos));
+    assertEquals("Incorrect value at " + pos,0,lightWorldView.getValueAt(pos));
+  }
+}

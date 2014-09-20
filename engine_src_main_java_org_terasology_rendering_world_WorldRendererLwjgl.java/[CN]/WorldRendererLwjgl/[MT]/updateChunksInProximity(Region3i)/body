@@ -1,0 +1,29 @@
+{
+  if (!newRegion.equals(renderRegion)) {
+    Iterator<Vector3i> removeChunks=renderRegion.subtract(newRegion);
+    while (removeChunks.hasNext()) {
+      Vector3i pos=removeChunks.next();
+      Iterator<RenderableChunk> iterator=chunksInProximity.iterator();
+      while (iterator.hasNext()) {
+        RenderableChunk chunk=iterator.next();
+        if (chunk.getPosition().equals(pos)) {
+          chunk.disposeMesh();
+          iterator.remove();
+          break;
+        }
+      }
+    }
+    Iterator<Vector3i> addChunks=newRegion.subtract(renderRegion);
+    while (addChunks.hasNext()) {
+      Vector3i pos=addChunks.next();
+      RenderableChunk c=chunkProvider.getChunk(pos);
+      if (c != null) {
+        chunksInProximity.add(c);
+      }
+    }
+    renderRegion=newRegion;
+    Collections.sort(chunksInProximity,new ChunkFrontToBackComparator());
+    return true;
+  }
+  return false;
+}

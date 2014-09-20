@@ -1,0 +1,13 @@
+{
+  Preconditions.checkState(data.getValuesCount() == data.getRunLengthsCount(),"Expected same number of values as runs");
+  short[] decodedData=new short[ChunkConstants.SIZE_X * ChunkConstants.SIZE_Y * ChunkConstants.SIZE_Z];
+  int index=0;
+  for (int pos=0; pos < data.getValuesCount(); ++pos) {
+    int length=data.getRunLengths(pos);
+    short value=(short)data.getValues(pos);
+    for (int i=0; i < length; ++i) {
+      decodedData[index++]=value;
+    }
+  }
+  return new TeraDenseArray16Bit(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z,decodedData);
+}

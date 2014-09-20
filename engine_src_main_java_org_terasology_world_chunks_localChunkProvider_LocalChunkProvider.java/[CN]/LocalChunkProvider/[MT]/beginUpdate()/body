@@ -1,0 +1,12 @@
+{
+  regionLock.readLock().lock();
+  try {
+    updateRelevance();
+    deactivateBlocks();
+    checkForUnload();
+    makeChunksAvailable();
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+}

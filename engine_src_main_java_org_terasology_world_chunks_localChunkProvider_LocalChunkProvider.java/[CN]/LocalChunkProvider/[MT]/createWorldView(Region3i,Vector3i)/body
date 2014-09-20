@@ -1,11 +1,12 @@
 {
-  ChunkImpl[] chunks=new ChunkImpl[region.size().x * region.size().y * region.size().z];
+  Chunk[] chunks=new Chunk[region.sizeX() * region.sizeY() * region.sizeZ()];
   for (  Vector3i chunkPos : region) {
-    ChunkImpl chunk=nearCache.get(chunkPos);
-    if (chunk == null || chunk.getChunkState() != ChunkImpl.State.COMPLETE) {
+    Chunk chunk=nearCache.get(chunkPos);
+    if (chunk == null || !chunk.isReady()) {
       return null;
     }
-    int index=(chunkPos.x - region.min().x) + region.size().x * (chunkPos.z - region.min().z);
+    chunkPos.sub(region.minX(),region.minY(),region.minZ());
+    int index=TeraMath.calculate3DArrayIndex(chunkPos,region.size());
     chunks[index]=chunk;
   }
   return new ChunkViewCoreImpl(chunks,region,offset);

@@ -1,0 +1,19 @@
+{
+  SurfaceHeightFacet facet=region.getRegionFacet(SurfaceHeightFacet.class);
+  float[] mountainData=mountainNoise.noise(facet.getWorldRegion());
+  float[] hillData=hillNoise.noise(facet.getWorldRegion());
+  SurfaceTemperatureFacet temperatureData=region.getRegionFacet(SurfaceTemperatureFacet.class);
+  SurfaceHumidityFacet humidityData=region.getRegionFacet(SurfaceHumidityFacet.class);
+  float[] heightData=facet.getInternal();
+  Iterator<Vector2i> positionIterator=facet.getRelativeRegion().iterator();
+  for (int i=0; i < heightData.length; ++i) {
+    Vector2i pos=positionIterator.next();
+    float temp=temperatureData.get(pos);
+    float tempHumid=temp * humidityData.get(pos);
+    Vector2f distanceToMountainBiome=new Vector2f(temp - 0.25f,tempHumid - 0.35f);
+    float mIntens=TeraMath.clamp(1.0f - distanceToMountainBiome.length() * 3.0f);
+    float densityMountains=Math.max(mountainData[i],0) * mIntens;
+    float densityHills=Math.max(hillData[i] - 0.1f,0) * (1.0f - mIntens);
+    heightData[i]=heightData[i] + 1024 * densityMountains + 128 * densityHills;
+  }
+}

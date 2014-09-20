@@ -1,9 +1,11 @@
 {
   Vector3i chunkPos=TeraMath.calcChunkPos(worldPos);
-  ChunkImpl chunk=chunkProvider.getChunk(chunkPos);
+  CoreChunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
     Vector3i blockPos=TeraMath.calcBlockPos(worldPos);
+    chunk.lock();
     Block oldBlockType=chunk.setBlock(blockPos,type);
+    chunk.unlock();
     if (oldBlockType != type) {
       BlockChange oldChange=blockChanges.get(worldPos);
       if (oldChange == null) {
@@ -13,7 +15,7 @@
         oldChange.setTo(type);
       }
       for (      Vector3i pos : TeraMath.getChunkRegionAroundWorldPos(worldPos,1)) {
-        ChunkImpl dirtiedChunk=chunkProvider.getChunk(pos);
+        RenderableChunk dirtiedChunk=chunkProvider.getChunk(pos);
         if (dirtiedChunk != null) {
           dirtiedChunk.setDirty(true);
         }

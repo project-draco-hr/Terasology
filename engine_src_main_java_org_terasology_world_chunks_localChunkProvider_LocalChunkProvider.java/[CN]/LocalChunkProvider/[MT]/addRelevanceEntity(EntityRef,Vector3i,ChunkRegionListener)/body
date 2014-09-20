@@ -1,0 +1,36 @@
+{
+  if (!entity.exists()) {
+    return;
+  }
+  regionLock.readLock().lock();
+  try {
+    ChunkRelevanceRegion region=regions.get(entity);
+    if (region != null) {
+      region.setRelevanceDistance(distance);
+      return;
+    }
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+  ChunkRelevanceRegion region=new ChunkRelevanceRegion(entity,distance);
+  if (listener != null) {
+    region.setListener(listener);
+  }
+  regionLock.writeLock().lock();
+  try {
+    regions.put(entity,region);
+  }
+  finally {
+    regionLock.writeLock().unlock();
+  }
+  for (  Vector3i pos : region.getCurrentRegion()) {
+    Chunk chunk=getChunk(pos);
+    if (chunk != null) {
+      region.chunkReady(chunk);
+    }
+ else {
+      createOrLoadChunk(pos);
+    }
+  }
+}

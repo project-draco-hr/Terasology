@@ -1,0 +1,14 @@
+{
+  Preconditions.checkState(data.getValues().size() == data.getRunLengthsCount(),"Expected same number of values as runs");
+  byte[] decodedData=new byte[ChunkConstants.SIZE_X * ChunkConstants.SIZE_Y * ChunkConstants.SIZE_Z];
+  int index=0;
+  ByteString.ByteIterator valueSource=data.getValues().iterator();
+  for (int pos=0; pos < data.getRunLengthsCount(); ++pos) {
+    int length=data.getRunLengths(pos);
+    byte value=valueSource.nextByte();
+    for (int i=0; i < length; ++i) {
+      decodedData[index++]=value;
+    }
+  }
+  return new TeraDenseArray8Bit(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z,decodedData);
+}

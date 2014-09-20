@@ -1,0 +1,13 @@
+{
+  pipeline.doTask(new AbstractChunkTask(chunk.getPosition()){
+    @Override public String getName(){
+      return "Internal Light Generation";
+    }
+    @Override public void run(){
+      InternalLightProcessor.generateInternalLighting(chunk);
+      chunk.deflate();
+      onChunkIsReady(chunk);
+    }
+  }
+);
+}
