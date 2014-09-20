@@ -1,60 +1,26 @@
 {
-  ChunkImpl chunk=nearCache.get(chunkPos);
-  if (chunk == null) {
-    PerformanceMonitor.startActivity("Check chunk in cache");
-    if (preparingChunks.add(chunkPos)) {
-      if (nearCache.get(chunkPos) != null) {
-        preparingChunks.remove(chunkPos);
+  Chunk chunk=nearCache.get(chunkPos);
+  if (chunk == null && !preparingChunks.contains(chunkPos)) {
+    preparingChunks.add(chunkPos);
+    pipeline.doTask(new AbstractChunkTask(chunkPos){
+      @Override public String getName(){
+        return "Create or Load Chunk";
       }
- else       if (storageManager.containsChunkStoreFor(chunkPos)) {
-        pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
-          @Override public String getName(){
-            return "Load Chunk";
-          }
-          @Override public void run(){
-            ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
-            ChunkImpl chunk=chunkStore.getChunk();
-            try {
-              chunk.lock();
-              if (nearCache.putIfAbsent(getPosition(),chunkStore.getChunk()) != null) {
-                logger.warn("Chunk {} is already in the near cache",getPosition());
-              }
-              preparingChunks.remove(getPosition());
-              if (chunk.getChunkState() == ChunkImpl.State.INTERNAL_LIGHT_GENERATION_PENDING) {
-                InternalLightProcessor.generateInternalLighting(chunk);
-                chunk.deflate();
-                chunk.setChunkState(ChunkImpl.State.COMPLETE);
-                readyChunks.offer(new ReadyChunkInfo(chunk.getPos(),createBatchBlockEventMappings(chunk),chunkStore));
-              }
- else {
-                pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
-              }
-            }
-  finally {
-              chunk.unlock();
-            }
-          }
+      @Override public void run(){
+        ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
+        Chunk chunk;
+        if (chunkStore == null) {
+          chunk=new ChunkImpl(getPosition());
+          generator.createChunk(chunk);
         }
-);
-      }
  else {
-        pipeline.doTask(new AbstractChunkTask(pipeline,chunkPos,this){
-          @Override public String getName(){
-            return "Generate Chunk";
-          }
-          @Override public void run(){
-            ChunkImpl chunk=new ChunkImpl(getPosition());
-            generator.createChunk(chunk);
-            if (nearCache.putIfAbsent(getPosition(),chunk) != null) {
-              logger.warn("Chunk {} is already in the near cache",getPosition());
-            }
-            preparingChunks.remove(getPosition());
-            pipeline.requestReview(Region3i.createFromCenterExtents(getPosition(),ChunkConstants.LOCAL_REGION_EXTENTS));
-          }
+          chunk=chunkStore.getChunk();
         }
-);
+        InternalLightProcessor.generateInternalLighting(chunk);
+        chunk.deflate();
+        readyChunks.offer(new ReadyChunkInfo(chunk,createBatchBlockEventMappings(chunk),chunkStore));
       }
     }
-    PerformanceMonitor.endActivity();
+);
   }
 }

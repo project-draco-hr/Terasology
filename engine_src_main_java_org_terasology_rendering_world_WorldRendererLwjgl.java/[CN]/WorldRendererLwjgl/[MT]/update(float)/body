@@ -2,12 +2,17 @@
   PerformanceMonitor.startActivity("Update Tick");
   updateTick(delta);
   PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Complete chunk update");
+  chunkProvider.completeUpdate();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Update Lighting");
   worldProvider.processPropagation();
-  PerformanceMonitor.startActivity("Update Chunk Cache");
-  chunkProvider.update();
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.startActivity("Begin chunk update");
+  chunkProvider.beginUpdate();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Update Close Chunks");
-  updateChunksInProximity(false);
+  updateChunksInProximity(calculateViewRegion(config.getRendering().getViewDistance()));
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Skysphere");
   skysphere.update();
@@ -22,5 +27,5 @@
   PerformanceMonitor.startActivity("Fire Events");
   worldTimeEventManager.fireWorldTimeEvents();
   PerformanceMonitor.endActivity();
-  smoothedPlayerSunlightValue=TeraMath.lerpf(smoothedPlayerSunlightValue,getSunlightValue(),delta);
+  smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),delta);
 }

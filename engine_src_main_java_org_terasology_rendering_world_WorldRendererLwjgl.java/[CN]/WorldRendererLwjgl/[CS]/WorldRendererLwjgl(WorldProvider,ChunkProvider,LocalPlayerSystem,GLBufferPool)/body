@@ -4,9 +4,10 @@
   bulletPhysics=new BulletPhysics(worldProvider);
   chunkTessellator=new ChunkTessellator(worldProvider,bufferPool);
   skysphere=new Skysphere(this);
-  chunkUpdateManager=new ChunkUpdateManager(chunkTessellator,worldProvider);
+  chunkMeshUpdateManager=new ChunkMeshUpdateManager(chunkTessellator,worldProvider);
   worldTimeEventManager=new WorldTimeEventManager(worldProvider);
   systemManager=CoreRegistry.get(ComponentSystemManager.class);
+  Camera localPlayerCamera;
   if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
     localPlayerCamera=new OculusStereoCamera();
   }

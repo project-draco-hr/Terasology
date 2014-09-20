@@ -1,0 +1,9 @@
+{
+  for (  Vector3i pos : Region3i.createFromCenterExtents(chunk.getPosition(),1)) {
+    if (chunkCache.get(pos) == null) {
+      return false;
+    }
+  }
+  lightMerger.beginMerge(chunk,chunk);
+  return true;
+}

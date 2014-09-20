@@ -1,0 +1,82 @@
+{
+  Matrix4f tempRotation=new Matrix4f();
+  while (axiomIterator.hasNext()) {
+    char c=axiomIterator.nextChar();
+switch (c) {
+case 'G':
+case 'F':
+      safelySetBlock(view,posX + (int)position.x + 1,posY + (int)position.y,posZ + (int)position.z,barkType);
+    safelySetBlock(view,posX + (int)position.x - 1,posY + (int)position.y,posZ + (int)position.z,barkType);
+  safelySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z + 1,barkType);
+safelySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z - 1,barkType);
+if (depth > 1) {
+int size=1;
+for (int x=-size; x <= size; x++) {
+  for (int y=-size; y <= size; y++) {
+    for (int z=-size; z <= size; z++) {
+      if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size) {
+        continue;
+      }
+      safelySetBlock(view,posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z,leafType);
+      safelySetBlock(view,posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z,leafType);
+      safelySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1,leafType);
+      safelySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1,leafType);
+    }
+  }
+}
+}
+Vector3f dir=new Vector3f(1f,0f,0f);
+rotation.transform(dir);
+position.add(dir);
+break;
+case '[':
+recurse(view,rand,posX,posY,posZ,angleOffset,axiomIterator,new Vector3f(position),new Matrix4f(rotation),depth);
+break;
+case ']':
+return;
+case '+':
+tempRotation.setIdentity();
+tempRotation.setRotation(new AxisAngle4f(0f,0f,1f,angle + angleOffset));
+rotation.mul(tempRotation);
+break;
+case '-':
+tempRotation.setIdentity();
+tempRotation.setRotation(new AxisAngle4f(0f,0f,-1f,angle + angleOffset));
+rotation.mul(tempRotation);
+break;
+case '&':
+tempRotation.setIdentity();
+tempRotation.setRotation(new AxisAngle4f(0f,1f,0f,angle + angleOffset));
+rotation.mul(tempRotation);
+break;
+case '^':
+tempRotation.setIdentity();
+tempRotation.setRotation(new AxisAngle4f(0f,-1f,0f,angle + angleOffset));
+rotation.mul(tempRotation);
+break;
+case '*':
+tempRotation.setIdentity();
+tempRotation.setRotation(new AxisAngle4f(1f,0f,0f,angle));
+rotation.mul(tempRotation);
+break;
+case '/':
+tempRotation.setIdentity();
+tempRotation.setRotation(new AxisAngle4f(-1f,0f,0f,angle));
+rotation.mul(tempRotation);
+break;
+default :
+if (depth == maxDepth - 1) {
+break;
+}
+LSystemRule rule=ruleSet.get(c);
+if (rule == null) {
+break;
+}
+float weightedFailureProbability=TeraMath.pow(1f - rule.getProbability(),maxDepth - depth);
+if (rand.nextFloat() < weightedFailureProbability) {
+break;
+}
+recurse(view,rand,posX,posY,posZ,angleOffset,new CharSequenceIterator(rule.getAxiom()),position,rotation,depth + 1);
+}
+}
+}

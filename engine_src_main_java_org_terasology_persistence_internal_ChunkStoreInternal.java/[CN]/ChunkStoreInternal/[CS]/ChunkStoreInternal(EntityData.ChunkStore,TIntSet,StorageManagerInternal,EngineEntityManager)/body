@@ -2,7 +2,7 @@
   this.chunkPosition=new Vector3i(chunkData.getX(),chunkData.getY(),chunkData.getZ());
   this.storageManager=storageManager;
   this.entityManager=entityManager;
-  this.chunk=new ChunkImpl.ProtobufHandler().decode(chunkData);
+  this.chunk=ChunkSerializer.decode(chunkData);
   this.entityStore=chunkData.getStore();
   this.externalRefs=externalRefs;
 }

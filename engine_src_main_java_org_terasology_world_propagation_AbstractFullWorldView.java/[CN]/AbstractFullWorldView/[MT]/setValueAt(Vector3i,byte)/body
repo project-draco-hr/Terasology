@@ -1,7 +1,7 @@
 {
   setValueAt(getChunk(pos),TeraMath.calcBlockPos(pos.x,pos.y,pos.z),value);
   for (  Vector3i affectedChunkPos : TeraMath.getChunkRegionAroundWorldPos(pos,1)) {
-    ChunkImpl dirtiedChunk=chunkProvider.getChunk(affectedChunkPos);
+    Chunk dirtiedChunk=chunkProvider.getChunk(affectedChunkPos);
     if (dirtiedChunk != null) {
       dirtiedChunk.setDirty(true);
     }

@@ -1,7 +1,7 @@
 {
-  StubPropagatorWorldView worldView=new StubPropagatorWorldView();
+  StubPropagatorWorldView worldView=new StubPropagatorWorldView(testingRegion);
   worldView.setBlockAt(Vector3i.zero(),fullLight);
-  BatchPropagator propagator=new BatchPropagator(lightRules,worldView);
+  BatchPropagator propagator=new StandardBatchPropagator(lightRules,worldView);
   propagator.process(new BlockChange(Vector3i.zero(),air,fullLight));
   worldView.setBlockAt(Vector3i.zero(),weakLight);
   propagator.process(new BlockChange(Vector3i.zero(),fullLight,weakLight));

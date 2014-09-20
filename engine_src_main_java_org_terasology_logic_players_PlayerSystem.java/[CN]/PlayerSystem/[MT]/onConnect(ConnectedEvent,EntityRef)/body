@@ -2,9 +2,9 @@
   LocationComponent loc=entity.getComponent(LocationComponent.class);
   loc.setWorldPosition(connected.getPlayerStore().getRelevanceLocation());
   entity.saveComponent(loc);
-  worldRenderer.getChunkProvider().addRelevanceEntity(entity,4,networkSystem.getOwner(entity));
+  addRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance(),networkSystem.getOwner(entity));
   if (connected.getPlayerStore().hasCharacter()) {
-    if (worldRenderer.getWorldProvider().isBlockRelevant(connected.getPlayerStore().getRelevanceLocation())) {
+    if (worldProvider.isBlockRelevant(connected.getPlayerStore().getRelevanceLocation())) {
       restoreCharacter(entity,connected.getPlayerStore());
     }
  else {
@@ -14,11 +14,11 @@
   }
  else {
     Vector3i pos=Vector3i.zero();
-    if (chunkProvider.getChunk(pos) != null) {
-      spawnPlayer(entity,new Vector3i(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z / 2));
+    if (worldProvider.isBlockRelevant(pos)) {
+      spawnPlayer(entity,getSafeSpawnPosition());
     }
  else {
-      SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,new Vector3f(ChunkConstants.SIZE_X / 2,ChunkConstants.SIZE_Y / 2,ChunkConstants.SIZE_Z / 2));
+      SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,getSafeSpawnPosition().toVector3f());
       clientsPreparingToSpawn.add(spawningClientInfo);
     }
   }

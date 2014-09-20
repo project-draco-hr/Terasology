@@ -1,0 +1,13 @@
+{
+  if (subRegion.size().x != fullRegion.size().x || subRegion.size().y != fullRegion.size().y) {
+    float[] result=new float[subRegion.size().x * subRegion.size().y];
+    Vector2i offset=new Vector2i(subRegion.minX() - fullRegion.minX(),subRegion.minY() - fullRegion.minY());
+    for (int y=0; y < subRegion.size().y; ++y) {
+      System.arraycopy(fullData,offset.getX() + fullRegion.size().x * (y + offset.getY()),result,subRegion.size().x * y,subRegion.size().x);
+    }
+    return result;
+  }
+ else {
+    return fullData;
+  }
+}

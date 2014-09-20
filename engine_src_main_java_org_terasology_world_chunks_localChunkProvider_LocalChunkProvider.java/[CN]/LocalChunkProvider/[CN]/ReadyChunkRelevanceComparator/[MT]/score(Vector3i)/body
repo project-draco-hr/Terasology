@@ -1,0 +1,16 @@
+{
+  int score=Integer.MAX_VALUE;
+  regionLock.readLock().lock();
+  try {
+    for (    ChunkRelevanceRegion region : regions.values()) {
+      int dist=distFromRegion(chunk,region.getCenter());
+      if (dist < score) {
+        score=dist;
+      }
+    }
+    return score;
+  }
+  finally {
+    regionLock.readLock().unlock();
+  }
+}

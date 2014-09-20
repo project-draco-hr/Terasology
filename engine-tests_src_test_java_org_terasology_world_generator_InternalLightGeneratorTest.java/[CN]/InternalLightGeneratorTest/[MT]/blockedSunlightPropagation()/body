@@ -1,9 +1,10 @@
 {
-  ChunkImpl chunk=new ChunkImpl(0,0,0);
-  chunk.setBlock(0,15,0,solidBlock);
+  Chunk chunk=new ChunkImpl(0,0,0);
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,4,0),new Vector3i(ChunkConstants.SIZE_X,1,ChunkConstants.SIZE_Z))) {
+    chunk.setBlock(pos,solidBlock);
+  }
   InternalLightProcessor.generateInternalLighting(chunk);
-  assertEquals(0,chunk.getSunlight(0,15,0));
-  for (int y=0; y < 15; ++y) {
-    assertEquals(ChunkConstants.MAX_LIGHT - 1,chunk.getSunlight(0,y,0));
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,0,0),new Vector3i(ChunkConstants.SIZE_X,5,ChunkConstants.SIZE_Z))) {
+    assertEquals("Incorrect lighting at " + pos,0,chunk.getSunlight(pos));
   }
 }

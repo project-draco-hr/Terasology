@@ -1,9 +1,24 @@
 {
-  ReadyChunkInfo readyChunkInfo=readyChunks.poll();
-  if (readyChunkInfo != null) {
-    makeChunkAvailable(readyChunkInfo);
-    for (    BatchPropagator propagator : loadEdgePropagators) {
-      propagator.process();
+  List<ReadyChunkInfo> newReadyChunks=Lists.newArrayListWithExpectedSize(readyChunks.size());
+  readyChunks.drainTo(newReadyChunks);
+  for (  ReadyChunkInfo readyChunkInfo : newReadyChunks) {
+    nearCache.put(readyChunkInfo.getPos(),readyChunkInfo.getChunk());
+    preparingChunks.remove(readyChunkInfo.getPos());
+  }
+  if (!newReadyChunks.isEmpty()) {
+    sortedReadyChunks.addAll(newReadyChunks);
+    Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());
+  }
+  if (!sortedReadyChunks.isEmpty()) {
+    boolean loaded=false;
+    for (int i=sortedReadyChunks.size() - 1; i >= 0 && !loaded; i--) {
+      ReadyChunkInfo chunkInfo=sortedReadyChunks.get(i);
+      PerformanceMonitor.startActivity("Make Chunk Available");
+      if (makeChunkAvailable(chunkInfo)) {
+        sortedReadyChunks.remove(i);
+        loaded=true;
+      }
+      PerformanceMonitor.endActivity();
     }
   }
 }

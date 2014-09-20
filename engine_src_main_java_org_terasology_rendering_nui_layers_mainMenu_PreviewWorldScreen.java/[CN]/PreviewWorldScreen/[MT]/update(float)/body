@@ -1,10 +1,12 @@
 {
   super.update(delta);
-  PreviewSettings newSettings=new PreviewSettings(layerDropdown.getSelection(),TeraMath.floorToInt(zoomSlider.getValue()),seedBinding.get());
-  if (currentSettings == null || !currentSettings.equals(newSettings)) {
-    Texture tex=createTexture(imageSize,imageSize,newSettings.zoom,newSettings.layer);
-    UIImage image=find("preview",UIImage.class);
-    image.setImage(tex);
-    currentSettings=newSettings;
+  if (previewGenerator != null) {
+    PreviewSettings newSettings=new PreviewSettings(layerDropdown.getSelection(),TeraMath.floorToInt(zoomSlider.getValue()),seedBinding.get());
+    if (currentSettings == null || !currentSettings.equals(newSettings)) {
+      Texture tex=createTexture(imageSize,imageSize,newSettings.zoom,newSettings.layer);
+      UIImage image=find("preview",UIImage.class);
+      image.setImage(tex);
+      currentSettings=newSettings;
+    }
   }
 }

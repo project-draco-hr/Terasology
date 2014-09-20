@@ -1,0 +1,18 @@
+{
+  int xInt=(int)TeraMath.fastFloor(posX) & 255;
+  int yInt=(int)TeraMath.fastFloor(posY) & 255;
+  int zInt=(int)TeraMath.fastFloor(posZ) & 255;
+  float x=posX - TeraMath.fastFloor(posX);
+  float y=posY - TeraMath.fastFloor(posY);
+  float z=posZ - TeraMath.fastFloor(posZ);
+  float u=TeraMath.fadePerlin(x);
+  float v=TeraMath.fadePerlin(y);
+  float w=TeraMath.fadePerlin(z);
+  int a=noisePermutations[xInt] + yInt;
+  int aa=noisePermutations[a] + zInt;
+  int ab=noisePermutations[(a + 1)] + zInt;
+  int b=noisePermutations[(xInt + 1)] + yInt;
+  int ba=noisePermutations[b] + zInt;
+  int bb=noisePermutations[(b + 1)] + zInt;
+  return TeraMath.lerp(TeraMath.lerp(TeraMath.lerp(grad(noisePermutations[aa],x,y,z),grad(noisePermutations[ba],x - 1,y,z),u),TeraMath.lerp(grad(noisePermutations[ab],x,y - 1,z),grad(noisePermutations[bb],x - 1,y - 1,z),u),v),TeraMath.lerp(TeraMath.lerp(grad(noisePermutations[(aa + 1)],x,y,z - 1),grad(noisePermutations[(ba + 1)],x - 1,y,z - 1),u),TeraMath.lerp(grad(noisePermutations[(ab + 1)],x,y - 1,z - 1),grad(noisePermutations[(bb + 1)],x - 1,y - 1,z - 1),u),v),w);
+}

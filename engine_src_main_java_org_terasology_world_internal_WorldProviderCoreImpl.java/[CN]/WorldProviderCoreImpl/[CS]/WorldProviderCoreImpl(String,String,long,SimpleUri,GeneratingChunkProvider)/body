@@ -3,10 +3,14 @@
   this.seed=seed;
   this.worldGenerator=worldGenerator;
   this.chunkProvider=chunkProvider;
-  this.fogNoise=new BrownianNoise3D(new PerlinNoise(seed.hashCode() + 42 * 42),8);
   CoreRegistry.put(ChunkProvider.class,chunkProvider);
   this.worldTime=new WorldTimeImpl();
   worldTime.setMilliseconds(time);
-  propagators.add(new BatchPropagator(new LightPropagationRules(),new LightWorldView(chunkProvider)));
-  propagators.add(new BatchPropagator(new SunlightPropagationRules(),new SunlightWorldView(chunkProvider)));
+  propagators.add(new StandardBatchPropagator(new LightPropagationRules(),new LightWorldView(chunkProvider)));
+  PropagatorWorldView regenWorldView=new SunlightRegenWorldView(chunkProvider);
+  PropagationRules sunlightRules=new SunlightPropagationRules(regenWorldView);
+  PropagatorWorldView sunlightWorldView=new SunlightWorldView(chunkProvider);
+  BatchPropagator sunlightPropagator=new StandardBatchPropagator(sunlightRules,sunlightWorldView);
+  propagators.add(new SunlightRegenBatchPropagator(new SunlightRegenPropagationRules(),regenWorldView,sunlightPropagator,sunlightWorldView));
+  propagators.add(sunlightPropagator);
 }

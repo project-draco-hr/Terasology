@@ -1,0 +1,13 @@
+{
+  if (resultFuture != null) {
+    try {
+      T result=resultFuture.get();
+      resultFuture=null;
+      return result;
+    }
+ catch (    InterruptedException|ExecutionException e) {
+      throw new RuntimeException("Error completing lighting merge");
+    }
+  }
+  return null;
+}

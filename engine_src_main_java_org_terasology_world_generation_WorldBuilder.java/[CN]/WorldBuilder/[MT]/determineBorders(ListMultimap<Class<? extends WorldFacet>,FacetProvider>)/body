@@ -1,0 +1,16 @@
+{
+  Map<Class<? extends WorldFacet>,Border3D> borders=Maps.newHashMap();
+  Border3D largestBorder=new Border3D(0,0,0);
+  for (  FacetProvider provider : providersList) {
+    Requires requirements=provider.getClass().getAnnotation(Requires.class);
+    if (requirements != null) {
+      for (      Facet requirement : requirements.value()) {
+        largestBorder=new Border3D(Math.max(requirement.border().top(),largestBorder.getTop()),Math.max(requirement.border().bottom(),largestBorder.getBottom()),Math.max(requirement.border().sides(),largestBorder.getSides()));
+      }
+    }
+  }
+  for (  Class<? extends WorldFacet> type : providerChains.keySet()) {
+    borders.put(type,largestBorder);
+  }
+  return borders;
+}

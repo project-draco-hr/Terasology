@@ -1,0 +1,28 @@
+{
+  float[] fullData=new float[fullRegion.size().x * fullRegion.size().y * fullRegion.size().z];
+  int samplesX=fullRegion.size().x / sampleRate + 1;
+  int samplesY=fullRegion.size().y / sampleRate + 1;
+  int samplesZ=fullRegion.size().z / sampleRate + 1;
+  for (int z=0; z < samplesZ - 1; z++) {
+    for (int y=0; y < samplesY - 1; y++) {
+      for (int x=0; x < samplesX - 1; x++) {
+        float q000=keyData[x + samplesX * (y + samplesY * z)];
+        float q100=keyData[x + 1 + samplesX * (y + samplesY * z)];
+        float q010=keyData[x + samplesX * (y + 1 + samplesY * z)];
+        float q110=keyData[(x + 1) + samplesX * (y + 1 + samplesY * z)];
+        float q001=keyData[x + samplesX * (y + samplesY * (z + 1))];
+        float q101=keyData[x + 1 + samplesX * (y + samplesY * (z + 1))];
+        float q011=keyData[x + samplesX * (y + 1 + samplesY * (z + 1))];
+        float q111=keyData[(x + 1) + samplesX * (y + 1 + samplesY * (z + 1))];
+        for (int innerZ=0; innerZ < sampleRate; ++innerZ) {
+          for (int innerY=0; innerY < sampleRate; ++innerY) {
+            for (int innerX=0; innerX < sampleRate; ++innerX) {
+              fullData[x * sampleRate + innerX + fullRegion.sizeX() * (y * sampleRate + innerY + fullRegion.sizeY() * (z * sampleRate + innerZ))]=TeraMath.triLerp(q000,q100,q010,q110,q001,q101,q011,q111,(float)innerX / sampleRate,(float)innerY / sampleRate,(float)innerZ / sampleRate);
+            }
+          }
+        }
+      }
+    }
+  }
+  return fullData;
+}

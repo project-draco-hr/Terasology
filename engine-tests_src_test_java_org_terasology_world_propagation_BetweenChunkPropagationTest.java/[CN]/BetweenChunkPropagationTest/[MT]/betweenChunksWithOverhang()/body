@@ -1,0 +1,23 @@
+{
+  Chunk topChunk=new ChunkImpl(new Vector3i(0,1,0));
+  Chunk bottomChunk=new ChunkImpl(new Vector3i(0,0,0));
+  provider.addChunk(topChunk);
+  provider.addChunk(bottomChunk);
+  for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,0,0),new Vector3i(ChunkConstants.SIZE_X,1,ChunkConstants.SIZE_Z))) {
+    topChunk.setSunlight(pos,ChunkConstants.MAX_SUNLIGHT);
+    topChunk.setSunlightRegen(pos,ChunkConstants.MAX_SUNLIGHT_REGEN);
+  }
+  for (  Vector3i pos : Region3i.createFromMinMax(new Vector3i(16,48,0),new Vector3i(31,48,31))) {
+    bottomChunk.setBlock(pos,solid);
+  }
+  InternalLightProcessor.generateInternalLighting(bottomChunk);
+  propagator.propagateBetween(topChunk,bottomChunk,Side.BOTTOM,false);
+  propagator.process();
+  sunlightPropagator.process();
+  for (int z=0; z < ChunkConstants.SIZE_Z; ++z) {
+    assertEquals(14,bottomChunk.getSunlight(16,47,z));
+  }
+  for (int z=0; z < ChunkConstants.SIZE_Z; ++z) {
+    assertEquals(13,bottomChunk.getSunlight(17,47,z));
+  }
+}

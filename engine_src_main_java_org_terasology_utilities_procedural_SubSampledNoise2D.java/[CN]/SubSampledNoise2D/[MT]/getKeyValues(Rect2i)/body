@@ -1,0 +1,13 @@
+{
+  int xDim=fullRegion.size().x / sampleRate + 1;
+  int yDim=fullRegion.size().y / sampleRate + 1;
+  float[] fullData=new float[xDim * yDim];
+  for (int y=0; y < yDim; y++) {
+    for (int x=0; x < xDim; x++) {
+      int actualX=x * sampleRate + fullRegion.minX();
+      int actualY=y * sampleRate + fullRegion.minY();
+      fullData[x + y * xDim]=source.noise(zoom.x * actualX,zoom.y * actualY);
+    }
+  }
+  return fullData;
+}

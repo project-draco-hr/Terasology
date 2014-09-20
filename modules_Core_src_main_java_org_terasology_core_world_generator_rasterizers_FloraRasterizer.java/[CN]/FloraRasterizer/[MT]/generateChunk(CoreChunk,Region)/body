@@ -1,0 +1,9 @@
+{
+  PlantFacet facet=chunkRegion.getFacet(PlantFacet.class);
+  SeaLevelFacet seaLevel=chunkRegion.getFacet(SeaLevelFacet.class);
+  for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
+    if (pos.y + chunk.getChunkWorldOffsetY() > seaLevel.getSeaLevel() && facet.get(pos)) {
+      chunk.setBlock(pos,tallGrass);
+    }
+  }
+}

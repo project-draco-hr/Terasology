@@ -1,0 +1,16 @@
+{
+  Chunk[] localChunks=new Chunk[27];
+  int index=0;
+  for (int z=-1; z < 2; ++z) {
+    for (int y=-1; y < 2; ++y) {
+      for (int x=-1; x < 2; ++x) {
+        Chunk localChunk=chunkProvider.getChunk(chunk.getPosition().x + x,chunk.getPosition().y + y,chunk.getPosition().z + z);
+        if (localChunk != null) {
+          localChunks[index]=localChunk;
+        }
+        index++;
+      }
+    }
+  }
+  return localChunks;
+}

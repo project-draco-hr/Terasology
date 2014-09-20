@@ -1,0 +1,20 @@
+{
+  ListMultimap<Class<? extends WorldFacet>,FacetProvider> result=ArrayListMultimap.create();
+  Set<Class<? extends WorldFacet>> facets=Sets.newHashSet();
+  for (  FacetProvider provider : providersList) {
+    Produces produces=provider.getClass().getAnnotation(Produces.class);
+    if (produces != null) {
+      facets.addAll(Arrays.asList(produces.value()));
+    }
+    Updates updates=provider.getClass().getAnnotation(Updates.class);
+    if (updates != null) {
+      for (      Facet facet : updates.value()) {
+        facets.add(facet.value());
+      }
+    }
+  }
+  for (  Class<? extends WorldFacet> facet : facets) {
+    determineProviderChainFor(facet,result);
+  }
+  return result;
+}

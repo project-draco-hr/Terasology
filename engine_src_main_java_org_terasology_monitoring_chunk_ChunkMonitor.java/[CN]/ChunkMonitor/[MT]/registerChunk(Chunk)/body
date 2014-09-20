@@ -1,0 +1,11 @@
+{
+  Preconditions.checkNotNull(chunk,"The parameter 'chunk' must not be null");
+  final Vector3i pos=chunk.getPosition();
+  ChunkMonitorEntry entry=CHUNKS.get(pos);
+  if (entry == null) {
+    entry=new ChunkMonitorEntry(pos);
+    CHUNKS.put(pos,entry);
+  }
+  entry.addChunk(chunk);
+  return entry;
+}
