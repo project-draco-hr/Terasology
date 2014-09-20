@@ -1,0 +1,11 @@
+{
+  Set<Name> enabledModules=Sets.newHashSet();
+  for (  Name moduleName : config.getDefaultModSelection().listModules()) {
+    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
+    enabledModules.add(moduleName);
+    for (    DependencyInfo dependencyInfo : module.getMetadata().getDependencies()) {
+      enabledModules.add(dependencyInfo.getId());
+    }
+  }
+  return enabledModules;
+}

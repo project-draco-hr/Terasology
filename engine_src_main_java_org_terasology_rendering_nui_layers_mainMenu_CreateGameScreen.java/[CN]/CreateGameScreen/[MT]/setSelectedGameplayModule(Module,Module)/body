@@ -1,7 +1,10 @@
 {
   ModuleConfig moduleConfig=config.getDefaultModSelection();
-  moduleConfig.clear();
-  moduleConfig.addModule(module.getMetadata().getId());
+  moduleConfig.setDefaultGameplayModuleName(module.getId().toString());
+  if (previousModule != null) {
+    moduleConfig.removeModule(previousModule.getId());
+  }
+  moduleConfig.addModule(module.getId());
   if (!moduleConfig.hasModule(config.getWorldGeneration().getDefaultGenerator().getModuleName())) {
     config.getWorldGeneration().setDefaultGenerator(new SimpleUri());
   }

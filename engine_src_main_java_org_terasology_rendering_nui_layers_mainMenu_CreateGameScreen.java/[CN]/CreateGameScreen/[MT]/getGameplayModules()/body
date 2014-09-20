@@ -3,8 +3,7 @@
   for (  Name moduleId : moduleManager.getRegistry().getModuleIds()) {
     Module latestVersion=moduleManager.getRegistry().getLatestModuleVersion(moduleId);
     if (!latestVersion.isOnClasspath()) {
-      Boolean isGameplay=latestVersion.getMetadata().getExtension(ModuleManager.IS_GAMEPLAY_EXT,Boolean.class);
-      if (isGameplay != null && isGameplay) {
+      if (isGameplayModule(latestVersion)) {
         gameplayModules.add(latestVersion);
       }
     }
