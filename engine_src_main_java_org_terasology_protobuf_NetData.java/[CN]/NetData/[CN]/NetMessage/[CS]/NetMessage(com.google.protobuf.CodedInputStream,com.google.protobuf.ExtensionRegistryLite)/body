@@ -86,6 +86,15 @@ bitField0_|=0x00000001;
 time_=input.readInt64();
 break;
 }
+case 82:
+{
+if (!((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+biomeChange_=new java.util.ArrayList<org.terasology.protobuf.NetData.BiomeChangeMessage>();
+mutable_bitField0_|=0x00000100;
+}
+biomeChange_.add(input.readMessage(org.terasology.protobuf.NetData.BiomeChangeMessage.PARSER,extensionRegistry));
+break;
+}
 case 122:
 {
 org.terasology.protobuf.NetData.ServerInfoRequest.Builder subBuilder=null;
@@ -116,9 +125,9 @@ break;
 }
 case 138:
 {
-if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+if (!((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
 blockFamilyRegistered_=new java.util.ArrayList<org.terasology.protobuf.NetData.BlockFamilyRegisteredMessage>();
-mutable_bitField0_|=0x00000400;
+mutable_bitField0_|=0x00000800;
 }
 blockFamilyRegistered_.add(input.readMessage(org.terasology.protobuf.NetData.BlockFamilyRegisteredMessage.PARSER,extensionRegistry));
 break;
@@ -139,9 +148,9 @@ break;
 }
 case 154:
 {
-if (!((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
+if (!((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
 moduleRequest_=new java.util.ArrayList<org.terasology.protobuf.NetData.ModuleRequest>();
-mutable_bitField0_|=0x00001000;
+mutable_bitField0_|=0x00002000;
 }
 moduleRequest_.add(input.readMessage(org.terasology.protobuf.NetData.ModuleRequest.PARSER,extensionRegistry));
 break;
@@ -275,10 +284,13 @@ updateEntity_=java.util.Collections.unmodifiableList(updateEntity_);
 if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
 event_=java.util.Collections.unmodifiableList(event_);
 }
-if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
+biomeChange_=java.util.Collections.unmodifiableList(biomeChange_);
+}
+if (((mutable_bitField0_ & 0x00000800) == 0x00000800)) {
 blockFamilyRegistered_=java.util.Collections.unmodifiableList(blockFamilyRegistered_);
 }
-if (((mutable_bitField0_ & 0x00001000) == 0x00001000)) {
+if (((mutable_bitField0_ & 0x00002000) == 0x00002000)) {
 moduleRequest_=java.util.Collections.unmodifiableList(moduleRequest_);
 }
 this.unknownFields=unknownFields.build();

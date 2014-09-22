@@ -1,0 +1,6 @@
+{
+  Vector3i chunkPos=TeraMath.calcChunkPos(pos);
+  if (relevantChunks.contains(chunkPos)) {
+    queuedOutgoingBiomeChanges.add(NetData.BiomeChangeMessage.newBuilder().setPos(NetMessageUtil.convert(pos)).setNewBiome(biomeManager.getBiomeShortId(newBiome)).build());
+  }
+}

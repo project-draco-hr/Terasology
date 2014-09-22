@@ -13,7 +13,7 @@
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
   entityManager=builder.build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  worldStub=new WorldProviderCoreStub(BlockManager.getAir());
+  worldStub=new WorldProviderCoreStub();
   worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);
   plainBlock=new Block();
   blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:plainBlock"),plainBlock),true);

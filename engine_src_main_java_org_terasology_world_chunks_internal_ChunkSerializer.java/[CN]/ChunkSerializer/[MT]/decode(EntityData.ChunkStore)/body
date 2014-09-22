@@ -12,5 +12,6 @@
   }
   final TeraArray blockData=runLengthDecode(message.getBlockData());
   final TeraArray liquidData=runLengthDecode(message.getLiquidData());
-  return new ChunkImpl(pos,blockData,liquidData);
+  final TeraArray biomeData=runLengthDecode(message.getBiomeData());
+  return new ChunkImpl(pos,blockData,liquidData,biomeData);
 }

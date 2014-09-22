@@ -1,0 +1,14 @@
+{
+  for (  Class<?> biomeRegistrator : moduleEnvironment.getSubtypesOf(BiomeRegistrator.class)) {
+    BiomeRegistrator registrator;
+    try {
+      registrator=(BiomeRegistrator)biomeRegistrator.newInstance();
+    }
+ catch (    InstantiationException|IllegalAccessException e) {
+      logger.error("Cannot call biome registrator {} because it cannot be instantiated.",biomeRegistrator,e);
+      continue;
+    }
+    registrator.registerBiomes(this);
+  }
+  registerBiome(UnknownBiome.INSTANCE);
+}

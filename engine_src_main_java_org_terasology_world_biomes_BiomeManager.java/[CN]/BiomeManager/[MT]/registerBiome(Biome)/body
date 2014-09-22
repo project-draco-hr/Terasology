@@ -1,0 +1,13 @@
+{
+  String fullId=biome.getId();
+  if (biomeShortIdMap.containsValue(biome)) {
+    throw new IllegalArgumentException("The biome " + fullId + " is already registered.");
+  }
+  if (biomeIdMap.containsKey(fullId)) {
+    throw new IllegalArgumentException("A biome with id " + fullId + " is already registered!");
+  }
+  short biomeShortId=getFreeBiomeId();
+  logger.info("Registering biome {} with short id {}.",biome,biomeShortId);
+  biomeShortIdMap.put(biomeShortId,biome);
+  biomeIdMap.put(fullId,biome);
+}

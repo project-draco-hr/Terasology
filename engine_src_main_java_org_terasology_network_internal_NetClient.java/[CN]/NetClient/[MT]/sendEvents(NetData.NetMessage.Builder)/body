@@ -2,6 +2,9 @@
   List<NetData.BlockChangeMessage> blockChanges=Lists.newArrayListWithExpectedSize(queuedOutgoingBlockChanges.size());
   queuedOutgoingBlockChanges.drainTo(blockChanges);
   message.addAllBlockChange(blockChanges);
+  List<NetData.BiomeChangeMessage> biomeChanges=Lists.newArrayListWithExpectedSize(queuedOutgoingBiomeChanges.size());
+  queuedOutgoingBiomeChanges.drainTo(biomeChanges);
+  message.addAllBiomeChange(biomeChanges);
   message.addAllEvent(queuedOutgoingEvents);
   queuedOutgoingEvents.clear();
 }

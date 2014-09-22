@@ -1,0 +1,10 @@
+{
+  Vector3i chunkPos=TeraMath.calcChunkPos(pos);
+  CoreChunk chunk=chunkProvider.getChunk(chunkPos);
+  if (chunk != null) {
+    Vector3i blockPos=TeraMath.calcBlockPos(pos);
+    return chunk.getBiome(blockPos.x,blockPos.y,blockPos.z);
+  }
+  logger.warn("Attempted to access unavailable chunk via block at {}, {}, {}",pos.x,pos.y,pos.z);
+  return BiomeManager.getUnknownBiome();
+}

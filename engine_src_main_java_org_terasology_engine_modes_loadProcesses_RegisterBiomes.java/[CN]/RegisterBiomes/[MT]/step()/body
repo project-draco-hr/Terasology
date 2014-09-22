@@ -1,0 +1,14 @@
+{
+  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
+  ModuleEnvironment moduleEnvironment=CoreRegistry.get(ModuleManager.class).getEnvironment();
+  BiomeManager biomeManager;
+  if (networkSystem.getMode().isAuthority()) {
+    biomeManager=new BiomeManager(moduleEnvironment,gameManifest.getBiomeIdMap());
+  }
+ else {
+    biomeManager=new BiomeManager(moduleEnvironment,gameManifest.getBiomeIdMap());
+  }
+  CoreRegistry.put(BiomeManager.class,biomeManager);
+  CoreRegistry.put(BiomeRegistry.class,biomeManager);
+  return true;
+}

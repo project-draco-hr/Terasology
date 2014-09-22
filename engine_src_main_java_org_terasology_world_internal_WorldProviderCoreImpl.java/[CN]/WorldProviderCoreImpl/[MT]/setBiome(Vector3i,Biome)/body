@@ -1,0 +1,28 @@
+{
+  Vector3i chunkPos=TeraMath.calcChunkPos(worldPos);
+  CoreChunk chunk=chunkProvider.getChunk(chunkPos);
+  if (chunk != null) {
+    Vector3i blockPos=TeraMath.calcBlockPos(worldPos);
+    chunk.lock();
+    Biome oldBiomeType=chunk.setBiome(blockPos.x,blockPos.y,blockPos.z,biome);
+    chunk.unlock();
+    if (oldBiomeType != biome) {
+      BiomeChange oldChange=biomeChanges.get(worldPos);
+      if (oldChange == null) {
+        biomeChanges.put(worldPos,new BiomeChange(worldPos,oldBiomeType,biome));
+      }
+ else {
+        oldChange.setTo(biome);
+      }
+      for (      Vector3i pos : TeraMath.getChunkRegionAroundWorldPos(worldPos,1)) {
+        RenderableChunk dirtiedChunk=chunkProvider.getChunk(pos);
+        if (dirtiedChunk != null) {
+          dirtiedChunk.setDirty(true);
+        }
+      }
+      notifyBiomeChanged(worldPos,biome,oldBiomeType);
+    }
+    return oldBiomeType;
+  }
+  return null;
+}

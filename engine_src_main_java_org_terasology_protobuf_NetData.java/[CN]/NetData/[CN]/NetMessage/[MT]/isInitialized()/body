@@ -43,6 +43,12 @@
       return false;
     }
   }
+  for (int i=0; i < getBiomeChangeCount(); i++) {
+    if (!getBiomeChange(i).isInitialized()) {
+      memoizedIsInitialized=0;
+      return false;
+    }
+  }
   if (hasServerInfoRequest()) {
     if (!getServerInfoRequest().isInitialized()) {
       memoizedIsInitialized=0;

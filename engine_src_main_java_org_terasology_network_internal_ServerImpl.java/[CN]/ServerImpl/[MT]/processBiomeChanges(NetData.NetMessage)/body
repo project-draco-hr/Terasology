@@ -1,0 +1,14 @@
+{
+  for (  NetData.BiomeChangeMessage biomeChange : message.getBiomeChangeList()) {
+    logger.debug("Received block change to {}",blockManager.getBlock((short)biomeChange.getNewBiome()));
+    WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
+    Vector3i pos=NetMessageUtil.convert(biomeChange.getPos());
+    if (worldProvider.isBlockRelevant(pos)) {
+      Biome newBiome=biomeManager.getBiomeByShortId((short)biomeChange.getNewBiome());
+      worldProvider.setBiome(pos,newBiome);
+    }
+ else {
+      awaitingChunkReadyBiomeUpdates.put(TeraMath.calcChunkPos(pos),biomeChange);
+    }
+  }
+}

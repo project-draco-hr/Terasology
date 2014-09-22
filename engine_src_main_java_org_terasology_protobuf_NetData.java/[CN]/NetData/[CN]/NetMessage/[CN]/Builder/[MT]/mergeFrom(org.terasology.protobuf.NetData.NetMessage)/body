@@ -192,6 +192,33 @@
   if (other.hasTime()) {
     setTime(other.getTime());
   }
+  if (biomeChangeBuilder_ == null) {
+    if (!other.biomeChange_.isEmpty()) {
+      if (biomeChange_.isEmpty()) {
+        biomeChange_=other.biomeChange_;
+        bitField0_=(bitField0_ & ~0x00000100);
+      }
+ else {
+        ensureBiomeChangeIsMutable();
+        biomeChange_.addAll(other.biomeChange_);
+      }
+      onChanged();
+    }
+  }
+ else {
+    if (!other.biomeChange_.isEmpty()) {
+      if (biomeChangeBuilder_.isEmpty()) {
+        biomeChangeBuilder_.dispose();
+        biomeChangeBuilder_=null;
+        biomeChange_=other.biomeChange_;
+        bitField0_=(bitField0_ & ~0x00000100);
+        biomeChangeBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getBiomeChangeFieldBuilder() : null;
+      }
+ else {
+        biomeChangeBuilder_.addAllMessages(other.biomeChange_);
+      }
+    }
+  }
   if (other.hasServerInfoRequest()) {
     mergeServerInfoRequest(other.getServerInfoRequest());
   }
@@ -202,7 +229,7 @@
     if (!other.blockFamilyRegistered_.isEmpty()) {
       if (blockFamilyRegistered_.isEmpty()) {
         blockFamilyRegistered_=other.blockFamilyRegistered_;
-        bitField0_=(bitField0_ & ~0x00000400);
+        bitField0_=(bitField0_ & ~0x00000800);
       }
  else {
         ensureBlockFamilyRegisteredIsMutable();
@@ -217,7 +244,7 @@
         blockFamilyRegisteredBuilder_.dispose();
         blockFamilyRegisteredBuilder_=null;
         blockFamilyRegistered_=other.blockFamilyRegistered_;
-        bitField0_=(bitField0_ & ~0x00000400);
+        bitField0_=(bitField0_ & ~0x00000800);
         blockFamilyRegisteredBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getBlockFamilyRegisteredFieldBuilder() : null;
       }
  else {
@@ -232,7 +259,7 @@
     if (!other.moduleRequest_.isEmpty()) {
       if (moduleRequest_.isEmpty()) {
         moduleRequest_=other.moduleRequest_;
-        bitField0_=(bitField0_ & ~0x00001000);
+        bitField0_=(bitField0_ & ~0x00002000);
       }
  else {
         ensureModuleRequestIsMutable();
@@ -247,7 +274,7 @@
         moduleRequestBuilder_.dispose();
         moduleRequestBuilder_=null;
         moduleRequest_=other.moduleRequest_;
-        bitField0_=(bitField0_ & ~0x00001000);
+        bitField0_=(bitField0_ & ~0x00002000);
         moduleRequestBuilder_=com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ? getModuleRequestFieldBuilder() : null;
       }
  else {
