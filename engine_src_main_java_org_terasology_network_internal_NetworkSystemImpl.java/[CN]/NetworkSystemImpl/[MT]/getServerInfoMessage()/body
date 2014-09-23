@@ -18,6 +18,11 @@
     serverInfoMessageBuilder.addBlockId(blockMapping.getValue());
     serverInfoMessageBuilder.addBlockName(blockMapping.getKey());
   }
+  for (  Biome biome : biomeManager.getBiomes()) {
+    serverInfoMessageBuilder.addBiomeId(biome.getId());
+    short shortId=biomeManager.getBiomeShortId(biome);
+    serverInfoMessageBuilder.addBiomeShortId(shortId);
+  }
   for (  BlockFamily registeredBlockFamily : blockManager.listRegisteredBlockFamilies()) {
     serverInfoMessageBuilder.addRegisterBlockFamily(registeredBlockFamily.getURI().toString());
   }

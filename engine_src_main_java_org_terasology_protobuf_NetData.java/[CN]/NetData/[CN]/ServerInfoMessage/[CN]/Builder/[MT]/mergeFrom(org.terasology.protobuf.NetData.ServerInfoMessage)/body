@@ -163,13 +163,35 @@
       }
     }
   }
+  if (!other.biomeShortId_.isEmpty()) {
+    if (biomeShortId_.isEmpty()) {
+      biomeShortId_=other.biomeShortId_;
+      bitField0_=(bitField0_ & ~0x00000200);
+    }
+ else {
+      ensureBiomeShortIdIsMutable();
+      biomeShortId_.addAll(other.biomeShortId_);
+    }
+    onChanged();
+  }
+  if (!other.biomeId_.isEmpty()) {
+    if (biomeId_.isEmpty()) {
+      biomeId_=other.biomeId_;
+      bitField0_=(bitField0_ & ~0x00000400);
+    }
+ else {
+      ensureBiomeIdIsMutable();
+      biomeId_.addAll(other.biomeId_);
+    }
+    onChanged();
+  }
   if (other.hasVersion()) {
-    bitField0_|=0x00000200;
+    bitField0_|=0x00000800;
     version_=other.version_;
     onChanged();
   }
   if (other.hasGameName()) {
-    bitField0_|=0x00000400;
+    bitField0_|=0x00001000;
     gameName_=other.gameName_;
     onChanged();
   }

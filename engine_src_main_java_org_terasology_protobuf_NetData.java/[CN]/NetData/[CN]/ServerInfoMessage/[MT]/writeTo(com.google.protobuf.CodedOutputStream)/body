@@ -36,6 +36,16 @@
   for (int i=0; i < worldInfo_.size(); i++) {
     output.writeMessage(9,worldInfo_.get(i));
   }
+  if (getBiomeShortIdList().size() > 0) {
+    output.writeRawVarint32(82);
+    output.writeRawVarint32(biomeShortIdMemoizedSerializedSize);
+  }
+  for (int i=0; i < biomeShortId_.size(); i++) {
+    output.writeSInt32NoTag(biomeShortId_.get(i));
+  }
+  for (int i=0; i < biomeId_.size(); i++) {
+    output.writeBytes(11,biomeId_.getByteString(i));
+  }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
     output.writeBytes(15,getVersionBytes());
   }

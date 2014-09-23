@@ -126,6 +126,38 @@ mutable_bitField0_|=0x00000100;
 worldInfo_.add(input.readMessage(org.terasology.protobuf.NetData.WorldInfo.PARSER,extensionRegistry));
 break;
 }
+case 80:
+{
+if (!((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+biomeShortId_=new java.util.ArrayList<java.lang.Integer>();
+mutable_bitField0_|=0x00000200;
+}
+biomeShortId_.add(input.readSInt32());
+break;
+}
+case 82:
+{
+int length=input.readRawVarint32();
+int limit=input.pushLimit(length);
+if (!((mutable_bitField0_ & 0x00000200) == 0x00000200) && input.getBytesUntilLimit() > 0) {
+biomeShortId_=new java.util.ArrayList<java.lang.Integer>();
+mutable_bitField0_|=0x00000200;
+}
+while (input.getBytesUntilLimit() > 0) {
+biomeShortId_.add(input.readSInt32());
+}
+input.popLimit(limit);
+break;
+}
+case 90:
+{
+if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+biomeId_=new com.google.protobuf.LazyStringArrayList();
+mutable_bitField0_|=0x00000400;
+}
+biomeId_.add(input.readBytes());
+break;
+}
 case 122:
 {
 bitField0_|=0x00000001;
@@ -180,6 +212,12 @@ registerBlockFamily_=new com.google.protobuf.UnmodifiableLazyStringList(register
 }
 if (((mutable_bitField0_ & 0x00000100) == 0x00000100)) {
 worldInfo_=java.util.Collections.unmodifiableList(worldInfo_);
+}
+if (((mutable_bitField0_ & 0x00000200) == 0x00000200)) {
+biomeShortId_=java.util.Collections.unmodifiableList(biomeShortId_);
+}
+if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+biomeId_=new com.google.protobuf.UnmodifiableLazyStringList(biomeId_);
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();
