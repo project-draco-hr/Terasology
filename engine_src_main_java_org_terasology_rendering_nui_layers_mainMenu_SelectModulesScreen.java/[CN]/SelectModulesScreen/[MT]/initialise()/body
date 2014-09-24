@@ -17,7 +17,10 @@
         return value.getMetadata().getDisplayName().toString();
       }
       @Override public void draw(      ModuleSelectionInfo value,      Canvas canvas){
-        if (value.isSelected() && value.isExplicitSelection()) {
+        if (isSelectedGameplayModule(value)) {
+          canvas.setMode("gameplay");
+        }
+ else         if (value.isSelected() && value.isExplicitSelection()) {
           canvas.setMode("enabled");
         }
  else         if (value.isSelected()) {
