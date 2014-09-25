@@ -1,10 +1,10 @@
 {
   List<StaticSound> footstepSounds=characterSounds.footstepSounds;
-  Block block=worldProvider.getBlock(locationComponent.getLocalPosition());
-  if (block != null) {
-    if (!block.getSounds().getStepSounds().isEmpty()) {
-      footstepSounds=block.getSounds().getStepSounds();
-    }
+  Vector3i blockPos=new Vector3i(locationComponent.getLocalPosition());
+  blockPos.y--;
+  Block block=worldProvider.getBlock(blockPos);
+  if (block != null && !block.getSounds().getStepSounds().isEmpty()) {
+    footstepSounds=block.getSounds().getStepSounds();
   }
   if (footstepSounds.size() > 0 && characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs()) {
     StaticSound sound=random.nextItem(footstepSounds);
