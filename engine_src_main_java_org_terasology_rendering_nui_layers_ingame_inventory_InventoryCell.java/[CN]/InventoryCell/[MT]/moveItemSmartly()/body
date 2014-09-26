@@ -1,0 +1,32 @@
+{
+  EntityRef fromEntity=getTargetInventory();
+  int fromSlot=getTargetSlot();
+  EntityRef playerEntity=localPlayer.getCharacterEntity();
+  InventoryComponent playerInventory=playerEntity.getComponent(InventoryComponent.class);
+  int totalSlotCount=playerInventory.itemSlots.size();
+  if (playerInventory == null) {
+    return;
+  }
+  List<Integer> toSlots=new ArrayList<>(totalSlotCount);
+  if (fromEntity.equals(playerEntity)) {
+    int hudSlotCount=10;
+    boolean fromHud=(fromSlot < hudSlotCount);
+    boolean toHud=!fromHud;
+    if (toHud) {
+      for (int slot=0; slot < hudSlotCount; slot++) {
+        toSlots.add(slot);
+      }
+    }
+ else {
+      for (int slot=hudSlotCount; slot < totalSlotCount; slot++) {
+        toSlots.add(slot);
+      }
+    }
+  }
+ else {
+    for (int slot=0; slot < totalSlotCount; slot++) {
+      toSlots.add(slot);
+    }
+  }
+  inventoryManager.moveItemToSlots(getTransferEntity(),fromEntity,fromSlot,playerEntity,toSlots);
+}

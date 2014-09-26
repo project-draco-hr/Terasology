@@ -1,11 +1,16 @@
 {
-  for (  MoveItemRequest request : pendingMoves.values()) {
-    if (request instanceof MoveItemAmountRequest) {
-      int amount=((MoveItemAmountRequest)request).getAmount();
-      InventoryUtils.moveItemAmount(request.getInstigator(),request.getFromInventory(),request.getFromSlot(),request.getToInventory(),request.getToSlot(),amount);
+  for (  AbstractMoveItemRequest request : pendingMoves.values()) {
+    if (request instanceof MoveItemRequest) {
+      MoveItemRequest r=(MoveItemRequest)request;
+      InventoryUtils.moveItem(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlot());
     }
- else {
-      InventoryUtils.moveItem(request.getInstigator(),request.getFromInventory(),request.getFromSlot(),request.getToInventory(),request.getToSlot());
+ else     if (request instanceof MoveItemAmountRequest) {
+      MoveItemAmountRequest r=(MoveItemAmountRequest)request;
+      InventoryUtils.moveItemAmount(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlot(),r.getAmount());
+    }
+ else     if (request instanceof MoveItemToSlotsRequest) {
+      MoveItemToSlotsRequest r=(MoveItemToSlotsRequest)request;
+      InventoryUtils.moveItemToSlots(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlots());
     }
   }
 }
