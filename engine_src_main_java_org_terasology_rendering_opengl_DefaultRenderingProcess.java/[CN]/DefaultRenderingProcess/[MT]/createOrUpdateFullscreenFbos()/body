@@ -7,7 +7,10 @@
   if (overwriteRtHeight == 0) {
     rtFullHeight=org.lwjgl.opengl.Display.getHeight();
   }
-  if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
+  RenderingConfig renderingConfig=CoreRegistry.get(Config.class).getRendering();
+  rtFullWidth*=renderingConfig.getFboScale() / 100f;
+  rtFullHeight*=renderingConfig.getFboScale() / 100f;
+  if (renderingConfig.isOculusVrSupport()) {
     if (overwriteRtWidth == 0) {
       rtFullWidth*=OculusVrHelper.getScaleFactor();
     }
