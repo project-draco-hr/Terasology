@@ -3,12 +3,7 @@
     boolean previouslySelected=target.isSelected();
     target.setExplicitSelection(true);
     if (!previouslySelected) {
-      List<Name> selectedModules=getExplicitlySelectedModules();
-      for (      ModuleSelectionInfo info : sortedModules) {
-        info.setSelectedVersion(null);
-      }
-      setSelectedVersions(resolver.resolve(selectedModules));
-      updateValidToSelect();
+      refreshSelection();
     }
   }
 }

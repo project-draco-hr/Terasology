@@ -9,14 +9,6 @@
     }
   }
 );
-  for (  ModuleSelectionInfo info : sortedModules) {
-    info.setExplicitSelection(config.getDefaultModSelection().hasModule(info.getMetadata().getId()));
-  }
-  ResolutionResult currentSelectionResults=resolver.resolve(config.getDefaultModSelection().listModules());
-  if (currentSelectionResults.isSuccess()) {
-    setSelectedVersions(currentSelectionResults);
-  }
-  updateValidToSelect();
   final UIList<ModuleSelectionInfo> moduleList=find("moduleList",UIList.class);
   if (moduleList != null) {
     moduleList.setList(sortedModules);
@@ -25,7 +17,10 @@
         return value.getMetadata().getDisplayName().toString();
       }
       @Override public void draw(      ModuleSelectionInfo value,      Canvas canvas){
-        if (value.isSelected() && value.isExplicitSelection()) {
+        if (isSelectedGameplayModule(value)) {
+          canvas.setMode("gameplay");
+        }
+ else         if (value.isSelected() && value.isExplicitSelection()) {
           canvas.setMode("enabled");
         }
  else         if (value.isSelected()) {
