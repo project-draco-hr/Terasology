@@ -1,0 +1,24 @@
+{
+  int stackSize=10;
+  EntityRef toInventory=inventory;
+  InventoryComponent toInventoryComp=toInventory.getComponent(InventoryComponent.class);
+  EntityRef itemA1=createItem("A",8,stackSize);
+  EntityRef itemB1=createItem("B",8,stackSize);
+  EntityRef itemA2=createItem("A",7,stackSize);
+  toInventoryComp.itemSlots.set(0,itemA1);
+  toInventoryComp.itemSlots.set(2,itemB1);
+  toInventoryComp.itemSlots.set(3,itemA2);
+  EntityRef fromInventory=Mockito.mock(EntityRef.class);
+  InventoryComponent fromInventoryComp=new InventoryComponent(5);
+  Mockito.when(fromInventory.getComponent(InventoryComponent.class)).thenReturn(fromInventoryComp);
+  EntityRef itemA3=createItem("A",4,stackSize);
+  int fromSlot=1;
+  fromInventoryComp.itemSlots.set(fromSlot,itemA3);
+  List<Integer> toSlots=Arrays.asList(0,2);
+  boolean result=inventoryAuthoritySystem.moveItemToSlots(instigator,fromInventory,fromSlot,toInventory,toSlots);
+  assertTrue(result);
+  assertEquals(10,itemA1.getComponent(ItemComponent.class).stackCount);
+  assertEquals(7,itemA2.getComponent(ItemComponent.class).stackCount);
+  assertEquals(2,itemA3.getComponent(ItemComponent.class).stackCount);
+  assertEquals(itemA3,fromInventoryComp.itemSlots.get(fromSlot));
+}

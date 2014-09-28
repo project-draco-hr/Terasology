@@ -1,0 +1,11 @@
+{
+  EntityRef fromItem=InventoryUtils.getItemAt(from,fromSlot);
+  BeforeItemRemovedFromInventory removeFrom=new BeforeItemRemovedFromInventory(instigator,fromItem,fromSlot);
+  from.send(removeFrom);
+  if (removeFrom.isConsumed()) {
+    return false;
+  }
+  boolean movedToStack=moveToExistingStacksInSlots(from,fromSlot,to,toSlots);
+  boolean movedToFreeSlot=moveToFreeSlots(instigator,from,fromSlot,to,toSlots);
+  return movedToStack || movedToFreeSlot;
+}

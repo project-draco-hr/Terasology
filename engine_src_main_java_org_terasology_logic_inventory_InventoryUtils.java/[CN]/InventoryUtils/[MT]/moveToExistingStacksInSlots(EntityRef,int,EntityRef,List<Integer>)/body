@@ -1,0 +1,37 @@
+{
+  EntityRef fromItem=getItemAt(from,fromSlot);
+  ItemComponent fromItemComp=fromItem.getComponent(ItemComponent.class);
+  if (fromItemComp == null) {
+    return false;
+  }
+  int newFromStackCount=fromItemComp.stackCount;
+  int slotCount=getSlotCount(to);
+  for (  int toSlot : toSlots) {
+    EntityRef toItem=getItemAt(to,toSlot);
+    if (isSameItem(toItem,fromItem)) {
+      ItemComponent toItemComp=toItem.getComponent(ItemComponent.class);
+      if (toItemComp == null) {
+        continue;
+      }
+      int spaceLeft=toItemComp.maxStackSize - toItemComp.stackCount;
+      if (spaceLeft > 0) {
+        int amountToTransfer=Math.min(spaceLeft,newFromStackCount);
+        adjustStackSize(to,toSlot,toItemComp.stackCount + amountToTransfer);
+        newFromStackCount-=amountToTransfer;
+      }
+    }
+  }
+  if (newFromStackCount == 0) {
+    putItemIntoSlot(from,EntityRef.NULL,fromSlot);
+    return true;
+  }
+ else {
+    if (newFromStackCount != fromItemComp.stackCount) {
+      adjustStackSize(from,fromSlot,newFromStackCount);
+      return true;
+    }
+ else {
+      return false;
+    }
+  }
+}
