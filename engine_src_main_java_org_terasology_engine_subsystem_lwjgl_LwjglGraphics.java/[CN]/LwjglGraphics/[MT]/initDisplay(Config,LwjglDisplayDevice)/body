@@ -16,7 +16,20 @@
  catch (    IOException|IllegalArgumentException e) {
       logger.warn("Could not set icon",e);
     }
-    Display.create(rc.getPixelFormat());
+    if (config.getRendering().getDebug().isEnabled()) {
+      try {
+        ContextAttribs ctxAttribs=new ContextAttribs().withDebug(true);
+        Display.create(config.getRendering().getPixelFormat(),ctxAttribs);
+        GL43.glDebugMessageCallback(new KHRDebugCallback(new DebugCallback()));
+      }
+ catch (      LWJGLException e) {
+        logger.warn("Unable to create an OpenGL debug context. Maybe your graphics card does not support it.",e);
+        Display.create(rc.getPixelFormat());
+      }
+    }
+ else {
+      Display.create(rc.getPixelFormat());
+    }
     Display.setVSyncEnabled(rc.isVSync());
   }
  catch (  LWJGLException e) {

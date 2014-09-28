@@ -1,0 +1,19 @@
+{
+  String logFormat="[{}] [{}] {}";
+  Object[] args=new Object[]{getSourceString(source),getTypeString(type),message};
+switch (severity) {
+case GL_DEBUG_SEVERITY_HIGH:
+    logger.error(logFormat,args);
+  break;
+case GL_DEBUG_SEVERITY_MEDIUM:
+logger.warn(logFormat,args);
+break;
+case GL_DEBUG_SEVERITY_LOW:
+logger.debug(logFormat,args);
+break;
+default :
+case GL_DEBUG_SEVERITY_NOTIFICATION:
+logger.info(logFormat,args);
+break;
+}
+}
