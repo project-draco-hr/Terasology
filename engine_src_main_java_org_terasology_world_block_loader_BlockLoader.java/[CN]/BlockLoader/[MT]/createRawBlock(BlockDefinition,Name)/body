@@ -25,6 +25,19 @@
  else {
     block.setDisplayName(properCase(defaultName.toString()));
   }
+  if (!Strings.isNullOrEmpty(def.sounds)) {
+    BlockSounds sounds=soundsRegistry.getBlockSounds(def.sounds);
+    if (sounds == null) {
+      logger.warn("Block definition {} references block sounds {}, which don't exist.",defaultName,def.sounds);
+      block.setSounds(soundsRegistry.getDefaultBlockSounds());
+    }
+ else {
+      block.setSounds(sounds);
+    }
+  }
+ else {
+    block.setSounds(soundsRegistry.getDefaultBlockSounds());
+  }
   block.setMass(def.mass);
   block.setDebrisOnDestroy(def.debrisOnDestroy);
   if (def.entity != null) {

@@ -1,0 +1,22 @@
+{
+  logger.info("Loading Block Sounds...");
+  List<BlockSounds> sounds=new ArrayList<>();
+  for (  AssetUri blockDefUri : Assets.list(AssetType.BLOCK_SOUNDS_DEFINITION)) {
+    try (ModuleContext.ContextSpan ignored=ModuleContext.setContext(blockDefUri.getModuleName())){
+      JsonElement rawJson=readJson(blockDefUri);
+      if (rawJson != null) {
+        JsonObject blockDefJson=rawJson.getAsJsonObject();
+        if (blockDefJson.has("template") && blockDefJson.get("template").getAsBoolean()) {
+          continue;
+        }
+        logger.debug("Loading {}",blockDefUri);
+        BlockSoundsDefinition definition=createBlockSoundsDefinition(inheritData(blockDefUri,blockDefJson));
+        sounds.add(soundsFactory.create(blockDefUri,definition));
+      }
+    }
+ catch (    Exception e) {
+      logger.error("Error loading block sounds {}",blockDefUri,e);
+    }
+  }
+  return sounds;
+}

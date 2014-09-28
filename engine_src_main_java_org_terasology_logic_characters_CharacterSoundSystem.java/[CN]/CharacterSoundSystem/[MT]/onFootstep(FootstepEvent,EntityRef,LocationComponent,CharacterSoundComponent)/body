@@ -1,0 +1,15 @@
+{
+  List<StaticSound> footstepSounds=characterSounds.footstepSounds;
+  Vector3i blockPos=new Vector3i(locationComponent.getLocalPosition());
+  blockPos.y--;
+  Block block=worldProvider.getBlock(blockPos);
+  if (block != null && !block.getSounds().getStepSounds().isEmpty()) {
+    footstepSounds=block.getSounds().getStepSounds();
+  }
+  if (footstepSounds.size() > 0 && characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs()) {
+    StaticSound sound=random.nextItem(footstepSounds);
+    entity.send(new PlaySoundEvent(entity,sound,characterSounds.footstepVolume));
+    characterSounds.lastSoundTime=time.getGameTimeInMs();
+    entity.saveComponent(characterSounds);
+  }
+}

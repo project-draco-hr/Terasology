@@ -1,0 +1,11 @@
+{
+  entity.send(new CreateBlockDropsEvent(event.getInstigator(),event.getDirectCause(),event.getDamageType()));
+  BlockDamageModifierComponent blockDamageModifierComponent=event.getDamageType().getComponent(BlockDamageModifierComponent.class);
+  if (blockDamageModifierComponent == null || !blockDamageModifierComponent.skipPerBlockEffects) {
+    BlockSounds sounds=block.getSounds();
+    if (!sounds.getDestroySounds().isEmpty()) {
+      StaticSound sound=random.nextItem(sounds.getDestroySounds());
+      entity.send(new PlaySoundEvent(sound,0.6f));
+    }
+  }
+}

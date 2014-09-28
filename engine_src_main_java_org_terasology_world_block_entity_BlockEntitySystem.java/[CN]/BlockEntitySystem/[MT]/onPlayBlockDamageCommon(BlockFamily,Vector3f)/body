@@ -8,5 +8,9 @@
     dustBuilder.getComponent(LocationComponent.class).setWorldPosition(location);
     dustBuilder.build();
   }
-  audioManager.playSound(Assets.getSound("engine:Dig"),location);
+  BlockSounds sounds=family.getArchetypeBlock().getSounds();
+  if (!sounds.getDigSounds().isEmpty()) {
+    StaticSound sound=random.nextItem(sounds.getDigSounds());
+    audioManager.playSound(sound,location);
+  }
 }

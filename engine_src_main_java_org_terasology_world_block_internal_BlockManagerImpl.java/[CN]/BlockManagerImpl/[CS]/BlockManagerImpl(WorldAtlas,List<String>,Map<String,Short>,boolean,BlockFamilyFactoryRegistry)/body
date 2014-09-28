@@ -1,7 +1,16 @@
 {
   this.generateNewIds=generateNewIds;
   this.environment=CoreRegistry.get(ModuleManager.class).getEnvironment();
-  blockLoader=new BlockLoader(CoreRegistry.get(AssetManager.class),blockFamilyFactoryRegistry,atlas);
+  BlockSoundsLoader blockSoundsLoader=new BlockSoundsLoader(new BlockSoundsFactory());
+  for (  BlockSounds sounds : blockSoundsLoader.loadBlockSoundsDefinitions()) {
+    if (blockSounds.put(sounds.getUri(),sounds) != null) {
+      logger.warn("Duplicate block sounds definition with URI {}",sounds.getUri());
+    }
+ else {
+      logger.info("Registered Block Sounds {}",sounds.getUri());
+    }
+  }
+  blockLoader=new BlockLoader(this,CoreRegistry.get(AssetManager.class),blockFamilyFactoryRegistry,atlas);
   BlockLoader.LoadBlockDefinitionResults blockDefinitions=blockLoader.loadBlockDefinitions();
   addBlockFamily(getAirFamily(),true);
   for (  BlockFamily family : blockDefinitions.families) {
