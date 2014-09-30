@@ -14,7 +14,7 @@
   if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_MODULE)) {
     config.getDefaultModSelection().addModule(TerasologyConstants.CORE_MODULE);
   }
-  if (config.getSecurity().getServerPrivateCertificate() == null) {
+  if (!validateServerIdentity()) {
     CertificateGenerator generator=new CertificateGenerator();
     CertificatePair serverIdentity=generator.generateSelfSigned();
     config.getSecurity().setServerCredentials(serverIdentity.getPublicCert(),serverIdentity.getPrivateCert());
