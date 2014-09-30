@@ -1,13 +1,11 @@
 {
   try {
-    if (!running) {
-      disposed=true;
-      initialised=false;
-      Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
-      while (iter.hasNext()) {
-        EngineSubsystem subsystem=iter.next();
-        subsystem.dispose();
-      }
+    disposed=true;
+    initialised=false;
+    Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
+    while (iter.hasNext()) {
+      EngineSubsystem subsystem=iter.next();
+      subsystem.dispose();
     }
   }
  catch (  RuntimeException e) {
