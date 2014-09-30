@@ -12,8 +12,8 @@
     float tempHumid=temp * humidityData.get(pos);
     Vector2f distanceToMountainBiome=new Vector2f(temp - 0.25f,tempHumid - 0.35f);
     float mIntens=TeraMath.clamp(1.0f - distanceToMountainBiome.length() * 3.0f);
-    float densityMountains=Math.max(mountainData[i],0) * mIntens;
-    float densityHills=Math.max(hillData[i] - 0.1f,0) * (1.0f - mIntens);
+    float densityMountains=Math.max(mountainData[i],0) * mIntens * configuration.mountainAmplitude;
+    float densityHills=Math.max(hillData[i] - 0.1f,0) * (1.0f - mIntens) * configuration.hillAmplitude;
     heightData[i]=heightData[i] + 1024 * densityMountains + 128 * densityHills;
   }
 }

@@ -1,13 +1,22 @@
 {
   super.onOpened();
+  Set<Module> selectedModules=Sets.newHashSet();
+  for (  Name moduleName : config.getDefaultModSelection().listModules()) {
+    selectedModules.add(moduleManager.getRegistry().getLatestModuleVersion(moduleName));
+  }
+  ModuleEnvironment environment=moduleManager.loadEnvironment(selectedModules,false);
+  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new WorldGeneratorPluginLibrary(environment,CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
   PropertyLayout properties=find("properties",PropertyLayout.class);
   properties.setOrdering(PropertyOrdering.byLabel());
   properties.clear();
   SimpleUri generatorUri=config.getWorldGeneration().getDefaultGenerator();
   WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(generatorUri);
-  if (info == null)   return;
+  if (info == null) {
+    return;
+  }
   try {
     WorldGenerator wg=worldGeneratorManager.createGenerator(info.getUri());
+    wg.setWorldSeed("");
     if (wg.getConfigurator().isPresent()) {
       WorldConfigurator worldConfig=wg.getConfigurator().get();
       params=Maps.newHashMap(worldConfig.getProperties());

@@ -20,11 +20,13 @@
         Component comp=config.getModuleConfig(generatorUri,entry.getKey(),clazz);
         if (comp != null) {
           worldEntity.addComponent(comp);
+          entry.setValue(comp);
         }
  else {
           worldEntity.addComponent(entry.getValue());
         }
       }
+      worldGenerator.setConfigurator(ocf.get());
     }
   }
   return true;
