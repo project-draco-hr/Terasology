@@ -1,0 +1,9 @@
+{
+  float maxInteractionRangeSquared=maxInteractionRange * maxInteractionRange;
+  Vector3f positionDelta=new Vector3f();
+  positionDelta.add(characterLocation.getWorldPosition());
+  positionDelta.sub(targetLocation.getWorldPosition());
+  float interactionRangeSquared=positionDelta.lengthSquared();
+  float epsilon=0.00001f;
+  return interactionRangeSquared > maxInteractionRangeSquared + epsilon;
+}
