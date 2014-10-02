@@ -1,8 +1,11 @@
 {
   InventoryComponent inv=entity.getComponent(InventoryComponent.class);
+  EntityRef instigator=event.getInstigator();
   if (inv != null) {
-    inv.accessors.add(event.getInstigator());
+    inv.accessors.add(instigator);
     entity.saveComponent(inv);
-    event.getInstigator().send(new OpenInventoryEvent(entity));
+  }
+  if (instigator.getComponent(CharacterComponent.class) != null && instigator.getComponent(InventoryComponent.class) != null) {
+    CharacterUtil.setInteractionTarget(instigator,entity);
   }
 }

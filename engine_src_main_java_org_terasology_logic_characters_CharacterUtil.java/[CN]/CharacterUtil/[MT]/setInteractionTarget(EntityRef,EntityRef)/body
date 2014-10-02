@@ -1,0 +1,14 @@
+{
+  CharacterComponent characterComponent=instigator.getComponent(CharacterComponent.class);
+  if (characterComponent == null) {
+    logger.error("Interaction instigator has no character component");
+    return;
+  }
+  EntityRef oldTarget=characterComponent.interactionTarget;
+  if (oldTarget.exists()) {
+    instigator.send(new InteractionEndRequest(oldTarget));
+  }
+  if (target.exists()) {
+    instigator.send(new InteractionStartRequest(target));
+  }
+}
