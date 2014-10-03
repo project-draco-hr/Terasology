@@ -11,7 +11,7 @@
       if (height >= minY && height < maxY) {
         Biome biome=biomeFacet.get(x,z);
         height=height - minY + facet.getRelativeRegion().minY();
-        if ((biome == Biome.FOREST || biome == Biome.PLAINS) && density.get(x,height,z) > 0 && density.get(x,height + 1,z) <= 0 && noiseTable.noise(x,z) > configuration.density) {
+        if ((biome == Biome.FOREST || biome == Biome.PLAINS) && density.get(x,height,z) > 0 && density.get(x,height + 1,z) <= 0 && noiseTable.noise(x,z) < configuration.density) {
           facet.set(x,height + 1,z,true);
         }
       }

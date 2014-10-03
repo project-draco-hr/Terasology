@@ -3,7 +3,21 @@
   WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
   Iterator<EntityRef> worldEntityIterator=entityManager.getEntitiesWith(WorldComponent.class).iterator();
   if (worldEntityIterator.hasNext()) {
-    worldRenderer.getChunkProvider().setWorldEntity(worldEntityIterator.next());
+    EntityRef worldEntity=worldEntityIterator.next();
+    worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
+    WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
+    Optional<WorldConfigurator> ocf=worldGenerator.getConfigurator();
+    if (ocf.isPresent()) {
+      Map<String,Component> params=ocf.get().getProperties();
+      for (      Map.Entry<String,Component> entry : params.entrySet()) {
+        Class<? extends Component> clazz=entry.getValue().getClass();
+        Component comp=worldEntity.getComponent(clazz);
+        if (comp != null) {
+          entry.setValue(comp);
+        }
+      }
+      worldGenerator.setConfigurator(ocf.get());
+    }
   }
  else {
     EntityRef worldEntity=entityManager.create();
