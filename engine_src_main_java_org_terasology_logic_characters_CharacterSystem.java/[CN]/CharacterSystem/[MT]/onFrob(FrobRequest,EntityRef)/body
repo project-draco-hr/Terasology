@@ -4,6 +4,11 @@
   Vector3f direction=characterComponent.getLookDirection();
   Vector3f originPos=location.getWorldPosition();
   originPos.y+=characterComponent.eyeOffset;
+  AssetUri activeInteractionScreenUri=CharacterUtil.getActiveInteractionScreenUri(character);
+  if (activeInteractionScreenUri != null) {
+    nuiManager.closeScreen(activeInteractionScreenUri);
+    return;
+  }
   HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
   if (result.isHit()) {
     result.getEntity().send(new ActivateEvent(character,character,originPos,direction,result.getHitPoint(),result.getHitNormal()));

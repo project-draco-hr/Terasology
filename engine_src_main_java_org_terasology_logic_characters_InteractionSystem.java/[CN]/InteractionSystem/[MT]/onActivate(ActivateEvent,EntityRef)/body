@@ -1,6 +1,11 @@
 {
   EntityRef instigator=event.getInstigator();
-  if (instigator.getComponent(CharacterComponent.class) != null) {
+  CharacterComponent characterComponent=instigator.getComponent(CharacterComponent.class);
+  if (characterComponent == null) {
+    return;
+  }
+  if (characterComponent.interactionTarget.exists()) {
     CharacterUtil.setInteractionTarget(instigator,entity);
   }
+  CharacterUtil.setInteractionTarget(instigator,entity);
 }
