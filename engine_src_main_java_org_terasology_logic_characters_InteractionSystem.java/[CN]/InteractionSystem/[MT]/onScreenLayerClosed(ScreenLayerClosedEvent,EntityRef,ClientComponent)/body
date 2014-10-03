@@ -1,0 +1,19 @@
+{
+  EntityRef character=clientComponent.character;
+  CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+  if (characterComponent == null) {
+    return;
+  }
+  EntityRef interactionTarget=characterComponent.interactionTarget;
+  if (!interactionTarget.exists()) {
+    return;
+  }
+  InteractionScreenComponent screenComponent=interactionTarget.getComponent(InteractionScreenComponent.class);
+  if (screenComponent == null) {
+    return;
+  }
+  AssetUri screenUriOfInteractionTarget=new AssetUri(AssetType.UI_ELEMENT,screenComponent.screen);
+  if (screenUriOfInteractionTarget.equals(event.getClosedScreenUri())) {
+    CharacterUtil.setInteractionTarget(character,EntityRef.NULL);
+  }
+}
