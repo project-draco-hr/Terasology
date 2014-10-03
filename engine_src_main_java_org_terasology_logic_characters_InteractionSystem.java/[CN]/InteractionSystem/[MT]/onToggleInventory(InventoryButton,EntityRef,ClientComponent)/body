@@ -1,0 +1,10 @@
+{
+  if (event.getState() != ButtonState.DOWN) {
+    return;
+  }
+  EntityRef character=clientComponent.character;
+  AssetUri activeInteractionScreenUri=getActiveInteractionScreenUri(character);
+  if (activeInteractionScreenUri != null) {
+    nuiManager.closeScreen(activeInteractionScreenUri);
+  }
+}
