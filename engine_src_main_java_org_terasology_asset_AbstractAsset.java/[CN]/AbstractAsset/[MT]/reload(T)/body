@@ -1,6 +1,9 @@
 {
   if (!disposed) {
     onReload(data);
+    if (disposed) {
+      logger.error("Asset {} got illegally disposed in its onReload method",getURI());
+    }
   }
  else {
     logger.error("Disposed asset with uri {} can't be reloaded",getURI());
