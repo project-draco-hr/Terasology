@@ -1,5 +1,7 @@
 {
-  onDispose();
-  disposed=true;
-  CoreRegistry.get(AssetManager.class).dispose(this);
+  if (!disposed) {
+    onDispose();
+    disposed=true;
+    CoreRegistry.get(AssetManager.class).dispose(this);
+  }
 }
