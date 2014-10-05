@@ -31,7 +31,7 @@
     renderType=ChunkMesh.RenderType.BILLBOARD;
   }
   if (blockAppearance.getPart(BlockPart.CENTER) != null) {
-    Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.CENTER,temp,hum);
+    Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.CENTER,biome);
     blockAppearance.getPart(BlockPart.CENTER).appendTo(mesh,x,y,z,colorOffset,renderType,vertexFlag);
   }
   boolean[] drawDir=new boolean[6];
@@ -52,7 +52,7 @@
     if (bottomBlock.isLiquid() || bottomBlock.isInvisible()) {
       for (      Side dir : Side.values()) {
         if (drawDir[dir.ordinal()]) {
-          Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),temp,hum);
+          Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),biome);
           block.getLoweredLiquidMesh(dir).appendTo(mesh,x,y,z,colorOffset,renderType,vertexFlag);
         }
       }
@@ -61,7 +61,7 @@
   }
   for (  Side dir : Side.values()) {
     if (drawDir[dir.ordinal()]) {
-      Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),temp,hum);
+      Vector4f colorOffset=block.calcColorOffsetFor(BlockPart.fromSide(dir),biome);
       if (block.isGrass() && dir != Side.TOP && dir != Side.BOTTOM) {
         blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(mesh,x,y,z,colorOffset,renderType,ChunkVertexFlag.COLOR_MASK);
       }

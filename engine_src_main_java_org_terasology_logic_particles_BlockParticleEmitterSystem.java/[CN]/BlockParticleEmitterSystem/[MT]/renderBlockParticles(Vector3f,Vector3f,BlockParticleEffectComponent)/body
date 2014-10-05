@@ -1,8 +1,6 @@
 {
   Vector3i worldPos3i=new Vector3i(worldPos,0.5f);
   Biome biome=worldProvider.getBiome(worldPos3i);
-  float temperature=biome.getTemperature();
-  float humidity=biome.getHumidity();
   glPushMatrix();
   glTranslated(worldPos.x - cameraPosition.x,worldPos.y - cameraPosition.y,worldPos.z - cameraPosition.z);
   for (  Particle particle : particleEffect.particles) {
@@ -11,7 +9,7 @@
     applyOrientation();
     glScalef(particle.size,particle.size,particle.size);
     float light=worldRenderer.getRenderingLightValueAt(new Vector3f(worldPos.x + particle.position.x,worldPos.y + particle.position.y,worldPos.z + particle.position.z));
-    renderParticle(particle,particleEffect.blockType.getArchetypeBlock(),temperature,humidity,light);
+    renderParticle(particle,particleEffect.blockType.getArchetypeBlock(),biome,light);
     glPopMatrix();
   }
   glPopMatrix();

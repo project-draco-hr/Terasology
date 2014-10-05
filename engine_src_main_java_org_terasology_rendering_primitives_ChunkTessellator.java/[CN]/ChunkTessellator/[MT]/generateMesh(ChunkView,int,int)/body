@@ -6,11 +6,9 @@
     for (int z=0; z < ChunkConstants.SIZE_Z; z++) {
       for (int y=verticalOffset; y < verticalOffset + meshHeight; y++) {
         Biome biome=chunkView.getBiome(x,y,z);
-        float biomeTemp=biome.getTemperature();
-        float biomeHumidity=biome.getHumidity();
         Block block=chunkView.getBlock(x,y,z);
         if (block != null && !block.isInvisible()) {
-          generateBlockVertices(chunkView,mesh,x,y,z,biomeTemp,biomeHumidity);
+          generateBlockVertices(chunkView,mesh,x,y,z,biome);
         }
       }
     }
