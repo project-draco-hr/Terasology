@@ -1,5 +1,6 @@
 {
   boolean crashReportEnabled=true;
+  boolean loadLastGame=false;
   try {
     boolean isHeadless=false;
     Path homePath=null;
@@ -16,6 +17,9 @@
  else       if (arg.equals(NO_CRASH_REPORT_ARG)) {
         crashReportEnabled=false;
       }
+ else       if (arg.equals(LOAD_LAST_GAME_ARG)) {
+        loadLastGame=true;
+      }
     }
     if (homePath != null) {
       PathManager.getInstance().useOverrideHomePath(homePath);
@@ -30,13 +34,24 @@
  else {
       subsystemList=Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput());
     }
-    TerasologyEngine engine=new TerasologyEngine(subsystemList);
+    final TerasologyEngine engine=new TerasologyEngine(subsystemList);
     try {
       engine.init();
       if (isHeadless) {
         engine.run(new StateHeadlessSetup());
       }
  else {
+        if (loadLastGame) {
+          engine.submitTask("loadGame",new Runnable(){
+            @Override public void run(){
+              GameManifest gameManifest=getLatestGameManifest();
+              if (gameManifest != null) {
+                engine.changeState(new StateLoading(gameManifest,NetworkMode.NONE));
+              }
+            }
+          }
+);
+        }
         engine.run(new StateMainMenu());
       }
     }
