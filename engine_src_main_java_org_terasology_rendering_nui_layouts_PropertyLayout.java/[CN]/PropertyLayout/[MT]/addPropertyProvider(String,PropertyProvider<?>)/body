@@ -1,7 +1,7 @@
 {
   if (propertyProvider.getProperties().size() > 0) {
-    final UIButton expand=new UIButton("","+");
-    expand.setTooltip("Click to expand");
+    final UIButton expand=new UIButton("","-");
+    expand.setTooltip("Click to collapse");
     final UILabel headline=new UILabel(groupLabel);
     final MigLayout layout=new MigLayout();
     layout.setColConstraints("[min][fill]");
@@ -16,18 +16,9 @@
           button.setTooltip("Click to expand");
         }
  else {
-          List<Property<?,?>> props=Lists.newArrayList(propertyProvider.getProperties());
-          Collections.sort(props,propertyComparator);
-          for (          Property<?,?> property : props) {
-            UILabel label=property.getLabel();
-            UIWidget editor=property.getEditor();
-            editor.setTooltip(property.getDescription());
-            layout.addWidget(label,new CCHint("newline"));
-            layout.addWidget(editor,new CCHint());
-          }
-          invalidate();
+          expand(propertyProvider,layout);
           button.setText("-");
-          button.setTooltip("Click to contract");
+          button.setTooltip("Click to collapse");
         }
       }
     }
@@ -35,5 +26,6 @@
     addWidget(expand,new CCHint("newline, w 45!, h 22!"));
     addWidget(headline,new CCHint());
     addWidget(layout,new CCHint("newline, spanx 2"));
+    expand(propertyProvider,layout);
   }
 }
