@@ -22,7 +22,6 @@
     location.getWorldPosition(worldPos);
     Vector3f worldPositionCameraSpace=new Vector3f();
     worldPositionCameraSpace.sub(worldPos,cameraPosition);
-    worldPos.y-=skeletalMesh.heightOffset;
     float worldScale=location.getWorldScale();
     matrixCameraSpace.set(worldRot,worldPositionCameraSpace,worldScale);
     Matrix4f modelViewMatrix=MatrixUtils.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
@@ -55,6 +54,7 @@
         boneRotations.add(new Quat4f());
       }
     }
+    ((OpenGLSkeletalMesh)skeletalMesh.mesh).setScaleTranslate(skeletalMesh.scale,skeletalMesh.translate);
     ((OpenGLSkeletalMesh)skeletalMesh.mesh).render(bonePositions,boneRotations);
   }
 }
