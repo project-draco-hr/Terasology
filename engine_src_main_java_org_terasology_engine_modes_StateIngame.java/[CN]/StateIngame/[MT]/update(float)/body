@@ -8,5 +8,28 @@
   if (worldRenderer != null && shouldUpdateWorld()) {
     worldRenderer.update(delta);
   }
+  if (isSavingNecessaryAndPossible()) {
+    logger.info("Auto saving...");
+    PerformanceMonitor.startActivity("Auto Saving");
+    CoreRegistry.get(Game.class).save(false);
+    CoreRegistry.get(ChunkProvider.class).saveChunks();
+    for (    Client client : networkSystem.getPlayers()) {
+      PlayerStore playerStore=storageManager.createPlayerStoreForSave(client.getId());
+      EntityRef character=client.getEntity().getComponent(ClientComponent.class).character;
+      if (character.exists()) {
+        playerStore.setCharacter(character);
+      }
+      playerStore.save(false);
+    }
+    try {
+      storageManager.flush();
+      logger.info("Auto complete");
+    }
+ catch (    IOException e) {
+      logger.info("Auto save failed");
+    }
+    scheduleNextAutoSave();
+    PerformanceMonitor.endActivity();
+  }
   updateUserInterface(delta);
 }
