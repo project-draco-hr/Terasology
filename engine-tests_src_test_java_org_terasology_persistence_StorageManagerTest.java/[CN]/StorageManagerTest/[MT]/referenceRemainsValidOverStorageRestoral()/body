@@ -4,9 +4,7 @@
   PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
   store.setCharacter(character);
   store.save();
-  GlobalStore globalStore=esm.createGlobalStoreForSave();
-  globalStore.store(someEntity);
-  globalStore.save();
+  esm.createGlobalStoreForSave();
   esm.flush();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
   StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
