@@ -2,7 +2,11 @@
   super.onOpened();
   Set<Module> selectedModules=Sets.newHashSet();
   for (  Name moduleName : config.getDefaultModSelection().listModules()) {
-    selectedModules.add(moduleManager.getRegistry().getLatestModuleVersion(moduleName));
+    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
+    selectedModules.add(module);
+    for (    DependencyInfo dependencyInfo : module.getMetadata().getDependencies()) {
+      selectedModules.add(moduleManager.getRegistry().getLatestModuleVersion(dependencyInfo.getId()));
+    }
   }
   ModuleEnvironment environment=moduleManager.loadEnvironment(selectedModules,false);
   CoreRegistry.put(WorldGeneratorPluginLibrary.class,new WorldGeneratorPluginLibrary(environment,CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
