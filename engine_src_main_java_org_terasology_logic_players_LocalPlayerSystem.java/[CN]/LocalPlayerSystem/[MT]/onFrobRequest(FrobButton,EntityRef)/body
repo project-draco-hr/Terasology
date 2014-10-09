@@ -2,6 +2,20 @@
   if (event.getState() != ButtonState.DOWN) {
     return;
   }
-  entity.send(new FrobRequest());
-  event.consume();
+  AssetUri activeInteractionScreenUri=InteractionUtil.getActiveInteractionScreenUri(character);
+  if (activeInteractionScreenUri != null) {
+    nuiManager.closeScreen(activeInteractionScreenUri);
+    return;
+  }
+  LocationComponent location=character.getComponent(LocationComponent.class);
+  CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+  Vector3f direction=characterComponent.getLookDirection();
+  Vector3f originPos=location.getWorldPosition();
+  originPos.y+=characterComponent.eyeOffset;
+  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+  if (result.isHit()) {
+    result.getEntity().send(new ActivationPredicted(result.getEntity(),character,originPos,direction,result.getHitPoint(),result.getHitNormal()));
+    character.send(new ActivationRequest(result.getEntity(),character,originPos,direction,result.getHitPoint(),result.getHitNormal()));
+    event.consume();
+  }
 }

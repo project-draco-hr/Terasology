@@ -1,0 +1,28 @@
+{
+  LocationComponent location=character.getComponent(LocationComponent.class);
+  CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+  Vector3f direction=characterComponent.getLookDirection();
+  if (!(vectorsAreAboutEqual(event.getDirection(),direction))) {
+    logger.error("Direction at client {} was different than direction at server {}",event.getDirection(),direction);
+  }
+  direction=event.getDirection();
+  Vector3f originPos=location.getWorldPosition();
+  originPos.y+=characterComponent.eyeOffset;
+  if (!(vectorsAreAboutEqual(event.getOrigin(),originPos))) {
+    logger.info("Player {} seems to have cheated: It stated that it performed an action from {} but the predicted position is {}",character.getComponent(CharacterComponent.class).controller,event.getOrigin(),originPos);
+    return false;
+  }
+  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+  boolean predictionCorrect=true;
+  if (!result.isHit()) {
+    return false;
+  }
+  EntityRef hitEntity=result.getEntity();
+  if (!hitEntity.equals(event.getTarget())) {
+    return false;
+  }
+  if (!(vectorsAreAboutEqual(event.getHitPosition(),result.getHitPoint()))) {
+    return false;
+  }
+  return true;
+}
