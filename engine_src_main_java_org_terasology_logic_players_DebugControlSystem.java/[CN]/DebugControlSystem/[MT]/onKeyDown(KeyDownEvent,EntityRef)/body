@@ -28,7 +28,10 @@ break;
 }
 switch (event.getKey().getId()) {
 case Keyboard.KeyId.F1:
-engine.setFocus(!engine.hasFocus());
+mouseGrabbed=!mouseGrabbed;
+DebugProperties debugProperties=(DebugProperties)nuiManager.getHUD().getHUDElement("engine:DebugProperties");
+debugProperties.setVisible(!mouseGrabbed);
+Mouse.setGrabbed(mouseGrabbed);
 event.consume();
 break;
 case Keyboard.KeyId.F3:

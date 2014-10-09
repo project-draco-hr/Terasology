@@ -1,0 +1,21 @@
+{
+  TFloatList meshVertices=data.getVertices();
+  TIntList meshIndices=data.getIndices();
+  TFloatList texCoord0=data.getTexCoord0();
+  int weightsStart=weights.size();
+  addBone(bone);
+  for (int i=0; i < meshVertices.size() / 3; i++) {
+    float x=meshVertices.get(i * 3);
+    float y=meshVertices.get(i * 3 + 1);
+    float z=meshVertices.get(i * 3 + 2);
+    BoneWeight weight=new BoneWeight(new Vector3f(x,y,z),1,bone.getIndex());
+    addWeight(weight);
+    vertexStartWeights.add(weightsStart + i);
+    vertexWeightCounts.add(1);
+    uvs.add(new Vector2f(texCoord0.get(i * 2),texCoord0.get(i * 2 + 1)));
+  }
+  for (int i=0; i < meshIndices.size(); i++) {
+    indices.add(meshIndices.get(i) + weightsStart);
+  }
+  return this;
+}

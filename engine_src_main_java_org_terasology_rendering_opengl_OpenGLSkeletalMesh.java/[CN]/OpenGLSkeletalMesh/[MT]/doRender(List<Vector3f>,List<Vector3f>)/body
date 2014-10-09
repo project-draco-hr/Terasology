@@ -2,9 +2,9 @@
   FloatBuffer vertBuffer=BufferUtils.createFloatBuffer(verts.size() * 6);
   for (int i=0; i < verts.size(); ++i) {
     Vector3f vert=verts.get(i);
-    vertBuffer.put(vert.x);
-    vertBuffer.put(vert.y);
-    vertBuffer.put(vert.z);
+    vertBuffer.put(vert.x * scale.x + translate.x);
+    vertBuffer.put(vert.y * scale.y + translate.y);
+    vertBuffer.put(vert.z * scale.z + translate.z);
     Vector3f norm=normals.get(i);
     vertBuffer.put(norm.x);
     vertBuffer.put(norm.y);
