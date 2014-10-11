@@ -7,8 +7,9 @@
   }
   if (characterComponent.authorizedInteractionTarget.exists()) {
     logger.error("Interaction wasn't finished at start of next interaction");
-    target.send(new InteractionEndEvent(instigator));
+    instigator.send(new InteractionEndEvent(characterComponent.authorizedInteractionId));
   }
   characterComponent.authorizedInteractionTarget=target;
+  characterComponent.authorizedInteractionId=event.getActivationId();
   instigator.saveComponent(characterComponent);
 }
