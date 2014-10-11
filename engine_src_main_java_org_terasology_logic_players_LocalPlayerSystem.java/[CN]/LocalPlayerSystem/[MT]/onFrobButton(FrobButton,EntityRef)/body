@@ -1,0 +1,14 @@
+{
+  if (event.getState() != ButtonState.DOWN) {
+    return;
+  }
+  AssetUri activeInteractionScreenUri=InteractionUtil.getActiveInteractionScreenUri(character);
+  if (activeInteractionScreenUri != null) {
+    nuiManager.closeScreen(activeInteractionScreenUri);
+    return;
+  }
+  boolean activeRequestSent=activateTargetOrItem(character,EntityRef.NULL);
+  if (activeRequestSent) {
+    event.consume();
+  }
+}

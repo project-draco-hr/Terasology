@@ -12,17 +12,45 @@
     logger.info("Player {} seems to have cheated: It stated that it performed an action from {} but the predicted position is {}",character.getComponent(CharacterComponent.class).controller,event.getOrigin(),originPos);
     return false;
   }
-  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
-  boolean predictionCorrect=true;
-  if (!result.isHit()) {
-    return false;
+  if (event.isItemUsage()) {
+    if (!event.getUsedItem().exists()) {
+      return false;
+    }
+    if (!networkSystem.getOwnerEntity(event.getUsedItem()).equals(networkSystem.getOwnerEntity(character))) {
+      return false;
+    }
   }
-  EntityRef hitEntity=result.getEntity();
-  if (!hitEntity.equals(event.getTarget())) {
-    return false;
+ else {
+    if (event.getUsedItem().exists()) {
+      return false;
+    }
   }
-  if (!(vectorsAreAboutEqual(event.getHitPosition(),result.getHitPoint()))) {
-    return false;
+  if (event.isEventWithTarget()) {
+    if (!event.getTarget().exists()) {
+      return false;
+    }
+    HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+    if (!result.isHit()) {
+      return false;
+    }
+    EntityRef hitEntity=result.getEntity();
+    if (!hitEntity.equals(event.getTarget())) {
+      return false;
+    }
+    if (!(vectorsAreAboutEqual(event.getHitPosition(),result.getHitPoint()))) {
+      return false;
+    }
+  }
+ else {
+    if (event.getTarget().exists()) {
+      return false;
+    }
+    if (!(vectorsAreAboutEqual(event.getHitPosition(),originPos))) {
+      return false;
+    }
+    if (!event.getHitPosition().equals(new Vector3f())) {
+      return false;
+    }
   }
   return true;
 }

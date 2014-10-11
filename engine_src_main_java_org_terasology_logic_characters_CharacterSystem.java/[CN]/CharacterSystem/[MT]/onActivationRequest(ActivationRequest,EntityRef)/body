@@ -1,6 +1,11 @@
 {
   if (isPredictionOfEventCorrect(character,event)) {
-    event.getTarget().send(new ActivateEvent(event));
+    if (event.getUsedItem().exists()) {
+      event.getUsedItem().send(new ActivateEvent(event));
+    }
+ else {
+      event.getTarget().send(new ActivateEvent(event));
+    }
   }
  else {
   }

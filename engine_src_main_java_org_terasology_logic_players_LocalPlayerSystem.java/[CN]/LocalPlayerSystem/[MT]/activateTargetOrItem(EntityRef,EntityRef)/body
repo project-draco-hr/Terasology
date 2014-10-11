@@ -1,0 +1,22 @@
+{
+  LocationComponent location=character.getComponent(LocationComponent.class);
+  CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+  Vector3f direction=characterComponent.getLookDirection();
+  Vector3f originPos=location.getWorldPosition();
+  originPos.y+=characterComponent.eyeOffset;
+  boolean itemUsage=usedItem.exists();
+  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+  boolean eventWithTarget=result.isHit();
+  if (eventWithTarget) {
+    EntityRef activatedObject=usedItem.exists() ? usedItem : result.getEntity();
+    activatedObject.send(new ActivationPredicted(character,result.getEntity(),originPos,direction,result.getHitPoint(),result.getHitNormal()));
+    character.send(new ActivationRequest(character,itemUsage,usedItem,eventWithTarget,result.getEntity(),originPos,direction,result.getHitPoint(),result.getHitNormal()));
+    return true;
+  }
+ else   if (itemUsage) {
+    usedItem.send(new ActivationPredicted(character,EntityRef.NULL,originPos,direction,originPos,new Vector3f()));
+    character.send(new ActivationRequest(character,itemUsage,usedItem,eventWithTarget,EntityRef.NULL,originPos,direction,originPos,new Vector3f()));
+    return true;
+  }
+  return false;
+}
