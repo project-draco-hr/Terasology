@@ -9,46 +9,52 @@
   Vector3f originPos=location.getWorldPosition();
   originPos.y+=characterComponent.eyeOffset;
   if (!(vectorsAreAboutEqual(event.getOrigin(),originPos))) {
-    logger.info("Player {} seems to have cheated: It stated that it performed an action from {} but the predicted position is {}",character.getComponent(CharacterComponent.class).controller,event.getOrigin(),originPos);
+    logger.info("Player {} seems to have cheated: It stated that it performed an action from {} but the predicted position is {}",getPlayerNameFromCharacter(character),event.getOrigin(),originPos);
     return false;
   }
   if (event.isItemUsage()) {
     if (!event.getUsedItem().exists()) {
+      logger.info("Denied activation attempt by {} since the used item does not exist on the authority",getPlayerNameFromCharacter(character));
       return false;
     }
     if (!networkSystem.getOwnerEntity(event.getUsedItem()).equals(networkSystem.getOwnerEntity(character))) {
+      logger.info("Denied activation attempt by {} since it does not own the item at the authority",getPlayerNameFromCharacter(character));
       return false;
     }
   }
  else {
     if (event.getUsedItem().exists()) {
+      logger.info("Denied activation attempt by {} since it is not properly marked as item usage",getPlayerNameFromCharacter(character));
       return false;
     }
   }
   if (event.isEventWithTarget()) {
     if (!event.getTarget().exists()) {
+      logger.info("Denied activation attempt by {} since the target does not exist on the authority",getPlayerNameFromCharacter(character));
       return false;
     }
     HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
     if (!result.isHit()) {
+      logger.info("Denied activation attempt by {} since at the authority there was nothing to activate at that place",getPlayerNameFromCharacter(character));
       return false;
     }
     EntityRef hitEntity=result.getEntity();
     if (!hitEntity.equals(event.getTarget())) {
+      logger.info("Denied activation attempt by {} since at the authority another entity would have been activated",getPlayerNameFromCharacter(character));
       return false;
     }
     if (!(vectorsAreAboutEqual(event.getHitPosition(),result.getHitPoint()))) {
+      logger.info("Denied activation attempt by {} since at the authority the object got hit at a differnt position",getPlayerNameFromCharacter(character));
       return false;
     }
   }
  else {
     if (event.getTarget().exists()) {
+      logger.info("Denied activation attempt by {} since the event was not properly labeled as having a target",getPlayerNameFromCharacter(character));
       return false;
     }
     if (!(vectorsAreAboutEqual(event.getHitPosition(),originPos))) {
-      return false;
-    }
-    if (!event.getHitPosition().equals(new Vector3f())) {
+      logger.info("Denied activation attempt by {} since the event was not properly labeled as having a hit postion",getPlayerNameFromCharacter(character));
       return false;
     }
   }
