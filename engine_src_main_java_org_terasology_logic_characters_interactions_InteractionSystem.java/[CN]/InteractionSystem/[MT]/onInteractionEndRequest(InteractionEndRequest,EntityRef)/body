@@ -1,11 +1,3 @@
 {
-  EntityRef target=request.getTarget();
-  CharacterComponent characterComponent=instigator.getComponent(CharacterComponent.class);
-  if (characterComponent == null) {
-    logger.error("Interaction end request instigator has no character component");
-    return;
-  }
-  characterComponent.interactionTarget=EntityRef.NULL;
-  instigator.saveComponent(characterComponent);
-  target.send(new InteractionEndEvent(instigator));
+  InteractionUtil.cancelInteractionAsServer(instigator);
 }
