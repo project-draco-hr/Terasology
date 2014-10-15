@@ -14,7 +14,9 @@
   biomeShortIdMap.clear();
   registerBiome(UnknownBiome.INSTANCE);
   for (  Map.Entry<String,Short> entry : knownBiomeIdMap.entrySet()) {
-    if (entry.getKey().equals(getUnknownBiome().getId()))     continue;
+    if (entry.getKey().equals(getUnknownBiome().getId())) {
+      continue;
+    }
     Biome biome=biomeIdMap.get(entry.getKey());
     if (biome == null) {
       throw new IllegalStateException("Save game references biome " + entry.getKey() + " which is no "+ "longer available.");
