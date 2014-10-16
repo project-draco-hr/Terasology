@@ -12,19 +12,19 @@
     logger.info("Player {} seems to have cheated: It stated that it performed an action from {} but the predicted position is {}",getPlayerNameFromCharacter(character),event.getOrigin(),originPos);
     return false;
   }
-  if (event.isItemUsage()) {
-    if (!event.getUsedItem().exists()) {
-      logger.info("Denied activation attempt by {} since the used item does not exist on the authority",getPlayerNameFromCharacter(character));
+  if (event.isOwnedEntityUsage()) {
+    if (!event.getUsedOwnedEntity().exists()) {
+      logger.info("Denied activation attempt by {} since the used entity does not exist on the authority",getPlayerNameFromCharacter(character));
       return false;
     }
-    if (!networkSystem.getOwnerEntity(event.getUsedItem()).equals(networkSystem.getOwnerEntity(character))) {
-      logger.info("Denied activation attempt by {} since it does not own the item at the authority",getPlayerNameFromCharacter(character));
+    if (!networkSystem.getOwnerEntity(event.getUsedOwnedEntity()).equals(networkSystem.getOwnerEntity(character))) {
+      logger.info("Denied activation attempt by {} since it does not own the entity at the authority",getPlayerNameFromCharacter(character));
       return false;
     }
   }
  else {
-    if (event.getUsedItem().exists()) {
-      logger.info("Denied activation attempt by {} since it is not properly marked as item usage",getPlayerNameFromCharacter(character));
+    if (event.getUsedOwnedEntity().exists()) {
+      logger.info("Denied activation attempt by {} since it is not properly marked as owned entity usage",getPlayerNameFromCharacter(character));
       return false;
     }
   }
