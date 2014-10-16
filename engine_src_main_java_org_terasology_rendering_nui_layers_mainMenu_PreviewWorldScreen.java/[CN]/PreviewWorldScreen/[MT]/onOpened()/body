@@ -1,0 +1,20 @@
+{
+  super.onOpened();
+  WorldGeneratorPluginLibrary.setupTempEnvironmentForPlugins();
+  WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
+  try {
+    WorldGenerator worldGenerator=worldGeneratorManager.createGenerator(info.getUri());
+    seedBinding.setWorldGenerator(worldGenerator);
+    if (worldGenerator instanceof WorldGenerator2DPreview) {
+      previewGenerator=(WorldGenerator2DPreview)worldGenerator;
+    }
+ else {
+      logger.info(info.getUri().toString() + " does not support a 2d preview");
+    }
+  }
+ catch (  Exception e) {
+    seedBinding=new SeedBinding();
+    previewGenerator=null;
+    logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
+  }
+}

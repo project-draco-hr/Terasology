@@ -1,18 +1,4 @@
 {
-  WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
-  try {
-    WorldGenerator worldGenerator=worldGeneratorManager.createGenerator(info.getUri());
-    seedBinding.setWorldGenerator(worldGenerator);
-    if (worldGenerator instanceof WorldGenerator2DPreview) {
-      previewGenerator=(WorldGenerator2DPreview)worldGenerator;
-    }
- else {
-      logger.info(info.getUri().toString() + " does not support a 2d preview");
-    }
-  }
- catch (  UnresolvedWorldGeneratorException e) {
-    logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
-  }
   zoomSlider=find("zoomSlider",UISlider.class);
   if (zoomSlider != null) {
     zoomSlider.setMinimum(1.0f);
@@ -25,13 +11,31 @@
   if (seed != null) {
     seed.bindText(seedBinding);
   }
-  if (previewGenerator != null) {
-    layerDropdown=find("display",UIDropdown.class);
-    layerDropdown.setOptions(Lists.newArrayList(previewGenerator.getLayers()));
-    if (!layerDropdown.getOptions().isEmpty()) {
-      layerDropdown.setSelection(layerDropdown.getOptions().get(0));
+  layerDropdown=find("display",UIDropdown.class);
+  layerDropdown.bindOptions(new ReadOnlyBinding<List<String>>(){
+    @Override public List<String> get(){
+      if (previewGenerator != null) {
+        return Lists.newArrayList(previewGenerator.getLayers());
+      }
+ else {
+        return Lists.newArrayList();
+      }
     }
   }
+);
+  layerDropdown.bindSelection(new Binding<String>(){
+    String selection;
+    @Override public String get(){
+      if (selection == null && layerDropdown.getOptions().size() > 0) {
+        selection=layerDropdown.getOptions().get(0);
+      }
+      return selection;
+    }
+    @Override public void set(    String value){
+      selection=value;
+    }
+  }
+);
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().popScreen();
