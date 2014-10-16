@@ -1,5 +1,4 @@
 {
-  ChunkMonitor.fireChunkProviderDisposed(this);
   pipeline.shutdown();
   unloadRequestTaskMaster.shutdown(new ChunkUnloadRequest(),true);
   lightMerger.shutdown();
@@ -10,4 +9,5 @@
     store.save();
   }
   nearCache.clear();
+  ChunkMonitor.fireChunkProviderDisposed(this);
 }
