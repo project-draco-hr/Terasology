@@ -1,0 +1,13 @@
+{
+  if (isPredictionOfEventCorrect(character,event)) {
+    if (event.getUsedItem().exists()) {
+      event.getUsedItem().send(new ActivateEvent(event));
+    }
+ else {
+      event.getTarget().send(new ActivateEvent(event));
+    }
+  }
+ else {
+    character.send(new ActivationRequestDenied(event.getActivationId()));
+  }
+}

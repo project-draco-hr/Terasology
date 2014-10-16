@@ -1,0 +1,15 @@
+{
+  CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
+  if (characterComponent == null) {
+    return null;
+  }
+  EntityRef interactionTarget=characterComponent.predictedInteractionTarget;
+  if (!interactionTarget.exists()) {
+    return null;
+  }
+  InteractionScreenComponent screenComponent=interactionTarget.getComponent(InteractionScreenComponent.class);
+  if (screenComponent == null) {
+    return null;
+  }
+  return new AssetUri(AssetType.UI_ELEMENT,screenComponent.screen);
+}

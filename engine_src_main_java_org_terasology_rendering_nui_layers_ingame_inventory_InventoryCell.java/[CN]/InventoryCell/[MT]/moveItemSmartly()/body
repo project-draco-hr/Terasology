@@ -3,30 +3,40 @@
   int fromSlot=getTargetSlot();
   EntityRef playerEntity=localPlayer.getCharacterEntity();
   InventoryComponent playerInventory=playerEntity.getComponent(InventoryComponent.class);
-  int totalSlotCount=playerInventory.itemSlots.size();
   if (playerInventory == null) {
     return;
   }
+  CharacterComponent characterComponent=playerEntity.getComponent(CharacterComponent.class);
+  if (characterComponent == null) {
+    logger.error("Character entity of player had no character component");
+    return;
+  }
+  int totalSlotCount=playerInventory.itemSlots.size();
+  EntityRef interactionTarget=characterComponent.predictedInteractionTarget;
+  InventoryComponent interactionTargetInventory=interactionTarget.getComponent(InventoryComponent.class);
+  EntityRef targetEntity;
   List<Integer> toSlots=new ArrayList<>(totalSlotCount);
   if (fromEntity.equals(playerEntity)) {
-    int hudSlotCount=10;
-    boolean fromHud=(fromSlot < hudSlotCount);
-    boolean toHud=!fromHud;
-    if (toHud) {
-      for (int slot=0; slot < hudSlotCount; slot++) {
-        toSlots.add(slot);
-      }
+    if (interactionTarget.exists() && interactionTargetInventory != null) {
+      targetEntity=interactionTarget;
+      toSlots=numbersBetween(0,interactionTargetInventory.itemSlots.size());
     }
  else {
-      for (int slot=hudSlotCount; slot < totalSlotCount; slot++) {
-        toSlots.add(slot);
+      targetEntity=playerEntity;
+      int hudSlotCount=10;
+      boolean fromHud=(fromSlot < hudSlotCount);
+      boolean toHud=!fromHud;
+      if (toHud) {
+        toSlots=numbersBetween(0,hudSlotCount);
+      }
+ else {
+        toSlots=numbersBetween(hudSlotCount,totalSlotCount);
       }
     }
   }
  else {
-    for (int slot=0; slot < totalSlotCount; slot++) {
-      toSlots.add(slot);
-    }
+    targetEntity=playerEntity;
+    toSlots=numbersBetween(0,totalSlotCount);
   }
-  inventoryManager.moveItemToSlots(getTransferEntity(),fromEntity,fromSlot,playerEntity,toSlots);
+  inventoryManager.moveItemToSlots(getTransferEntity(),fromEntity,fromSlot,targetEntity,toSlots);
 }

@@ -1,5 +1,10 @@
 {
   InventoryGrid inventory=find("inventory",InventoryGrid.class);
-  inventory.setTargetEntity(localPlayer.getCharacterEntity());
+  inventory.bindTargetEntity(new ReadOnlyBinding<EntityRef>(){
+    @Override public EntityRef get(){
+      return localPlayer.getCharacterEntity();
+    }
+  }
+);
   inventory.setCellOffset(10);
 }

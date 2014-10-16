@@ -1,6 +1,19 @@
 {
   InventoryGrid inventory=find("inventory",InventoryGrid.class);
-  inventory.setTargetEntity(localPlayer.getCharacterEntity());
+  inventory.bindTargetEntity(new ReadOnlyBinding<EntityRef>(){
+    @Override public EntityRef get(){
+      return localPlayer.getCharacterEntity();
+    }
+  }
+);
   inventory.setCellOffset(10);
   containerInventory=find("container",InventoryGrid.class);
+  containerInventory.bindTargetEntity(new ReadOnlyBinding<EntityRef>(){
+    @Override public EntityRef get(){
+      EntityRef characterEntity=localPlayer.getCharacterEntity();
+      CharacterComponent characterComponent=characterEntity.getComponent(CharacterComponent.class);
+      return characterComponent.predictedInteractionTarget;
+    }
+  }
+);
 }
