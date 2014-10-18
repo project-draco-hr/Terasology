@@ -19,7 +19,7 @@
     for (    EntityRef entity : entities) {
       MeshComponent meshComp=entity.getComponent(MeshComponent.class);
       LocationComponent location=entity.getComponent(LocationComponent.class);
-      if (location == null || meshComp.mesh == null) {
+      if (location == null || meshComp.mesh == null || !worldProvider.isBlockRelevant(location.getWorldPosition())) {
         continue;
       }
       if (meshComp.mesh.isDisposed()) {
