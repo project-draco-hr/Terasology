@@ -1,15 +1,14 @@
 {
-  try {
-    disposed=true;
-    initialised=false;
-    Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
-    while (iter.hasNext()) {
-      EngineSubsystem subsystem=iter.next();
+  disposed=true;
+  initialised=false;
+  Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
+  while (iter.hasNext()) {
+    EngineSubsystem subsystem=iter.next();
+    try {
       subsystem.dispose();
     }
-  }
- catch (  RuntimeException e) {
-    logger.error("Uncaught exception",e);
-    throw e;
+ catch (    Throwable t) {
+      logger.error("Unable to dispose subsystem {}",subsystem,t);
+    }
   }
 }
