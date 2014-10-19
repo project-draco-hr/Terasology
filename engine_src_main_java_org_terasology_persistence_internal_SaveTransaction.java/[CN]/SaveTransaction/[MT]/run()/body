@@ -1,0 +1,14 @@
+{
+  try {
+    writePlayerStores();
+    writeGlobalStore();
+    writeChunkStores();
+    saveGameManifest();
+    result=SaveTransactionResult.createSuccessResult();
+    logger.info("Save game finished");
+  }
+ catch (  Throwable t) {
+    logger.error("Save game creation failed",t);
+    result=SaveTransactionResult.createFailureResult(t);
+  }
+}

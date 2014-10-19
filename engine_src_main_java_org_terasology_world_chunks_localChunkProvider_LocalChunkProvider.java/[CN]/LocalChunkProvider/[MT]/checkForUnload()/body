@@ -1,4 +1,7 @@
 {
+  if (true) {
+    return;
+  }
   PerformanceMonitor.startActivity("Unloading irrelevant chunks");
   int unloaded=0;
   logger.debug("Compacting cache");
@@ -35,9 +38,6 @@
         for (        ChunkRelevanceRegion region : regions.values()) {
           region.chunkUnloaded(pos);
         }
-        ChunkStore store=storageManager.createChunkStoreForSave(chunk);
-        store.storeAllEntities();
-        store.save();
         chunk.dispose();
         try {
           unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));

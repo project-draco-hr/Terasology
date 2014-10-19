@@ -9,27 +9,12 @@
     worldRenderer.update(delta);
   }
   if (isSavingNecessaryAndPossible()) {
-    logger.info("Auto saving...");
+    logger.info("Auto save - Creating game snapshot");
     PerformanceMonitor.startActivity("Auto Saving");
-    CoreRegistry.get(Game.class).save(false);
-    CoreRegistry.get(ChunkProvider.class).saveChunks();
-    for (    Client client : networkSystem.getPlayers()) {
-      PlayerStore playerStore=storageManager.createPlayerStoreForSave(client.getId());
-      EntityRef character=client.getEntity().getComponent(ClientComponent.class).character;
-      if (character.exists()) {
-        playerStore.setCharacter(character);
-      }
-      playerStore.save(false);
-    }
-    try {
-      storageManager.flush();
-      logger.info("Auto complete");
-    }
- catch (    IOException e) {
-      logger.info("Auto save failed");
-    }
+    storageManager.startSaving();
     scheduleNextAutoSave();
     PerformanceMonitor.endActivity();
+    logger.info("Auto save - Snapshot created: Writing phase starts");
   }
   updateUserInterface(delta);
 }

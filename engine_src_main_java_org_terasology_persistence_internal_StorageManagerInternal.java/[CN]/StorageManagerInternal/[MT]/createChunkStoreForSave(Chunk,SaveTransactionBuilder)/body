@@ -1,0 +1,25 @@
+{
+  List<EntityRef> entitiesToStore=getEntitiesOfChunk(chunk);
+  EntityStorer storer=new EntityStorer(entityManager);
+  for (  EntityRef entityRef : entitiesToStore) {
+    storer.store(entityRef,false);
+  }
+  EntityData.EntityStore entityStore=storer.finaliseStore();
+  TIntSet externalRefs=storer.getExternalReferences();
+  Vector3i chunkPosition=chunk.getPosition();
+  EntityData.ChunkStore chunkStore;
+  chunk.lock();
+  try {
+    EntityData.ChunkStore.Builder encoded=chunk.encode();
+    encoded.setStore(entityStore);
+    chunkStore=encoded.build();
+  }
+  finally {
+    chunk.unlock();
+  }
+  if (externalRefs.size() > 0) {
+    StoreMetadata metadata=new StoreMetadata(new ChunkStoreId(chunkPosition),externalRefs);
+    indexStoreMetadata(metadata);
+  }
+  saveTransactionBuilder.addChunkStore(chunkPosition,chunkStore);
+}

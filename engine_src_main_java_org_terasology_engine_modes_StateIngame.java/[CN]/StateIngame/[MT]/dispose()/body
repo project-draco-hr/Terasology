@@ -4,6 +4,9 @@
     TeraOVR.clear();
   }
   boolean save=networkSystem.getMode().isAuthority();
+  if (save) {
+    storageManager.startSaving();
+  }
   networkSystem.shutdown();
   eventSystem.process();
   GameThread.processWaitingProcesses();
@@ -13,11 +16,9 @@
     worldRenderer=null;
   }
   componentSystemManager.shutdown();
-  if (save) {
-    CoreRegistry.get(Game.class).save();
-  }
   CoreRegistry.get(PhysicsEngine.class).dispose();
   entityManager.clear();
+  storageManager.finishSavingAndShutdown();
   ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
   CoreRegistry.get(AssetManager.class).setEnvironment(environment);
   CoreRegistry.get(Console.class).dispose();

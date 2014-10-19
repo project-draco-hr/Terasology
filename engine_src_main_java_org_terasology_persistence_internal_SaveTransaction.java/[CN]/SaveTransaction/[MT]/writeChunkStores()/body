@@ -1,0 +1,67 @@
+{
+  FileSystemProvider zipProvider=null;
+  for (  FileSystemProvider provider : FileSystemProvider.installedProviders()) {
+    if ("jar".equalsIgnoreCase(provider.getScheme())) {
+      zipProvider=provider;
+    }
+  }
+  if (zipProvider == null) {
+    logger.error("Zip archive support missing! Unable to save chunks.");
+    return;
+  }
+  Path chunksPath=storagePathProvider.getWorldPath();
+  Files.createDirectories(chunksPath);
+  if (storeChunksInZips) {
+    Map<Vector3i,FileSystem> newChunkZips=Maps.newHashMap();
+    for (    Map.Entry<Vector3i,EntityData.ChunkStore> chunkStoreEntry : chunkStores.entrySet()) {
+      Vector3i chunkPos=chunkStoreEntry.getKey();
+      Vector3i chunkZipPos=storagePathProvider.getChunkZipPosition(chunkPos);
+      FileSystem zip=newChunkZips.get(chunkZipPos);
+      if (zip == null) {
+        Path targetPath=storagePathProvider.getChunkZipTempFilePath(chunkZipPos);
+        Files.deleteIfExists(targetPath);
+        zip=zipProvider.newFileSystem(targetPath,CREATE_ZIP_OPTIONS);
+        newChunkZips.put(chunkZipPos,zip);
+      }
+      Path chunkPath=zip.getPath(storagePathProvider.getChunkFilename(chunkPos));
+      byte[] compressedChunk=compressChunkStore(chunkStoreEntry.getValue());
+      try (BufferedOutputStream bos=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
+        bos.write(compressedChunk);
+      }
+     }
+    for (    Map.Entry<Vector3i,FileSystem> chunkZipEntry : newChunkZips.entrySet()) {
+      Vector3i chunkZipPos=chunkZipEntry.getKey();
+      Path oldChunkZipPath=storagePathProvider.getChunkZipPath(chunkZipPos);
+      final FileSystem zip=chunkZipEntry.getValue();
+      if (Files.isRegularFile(oldChunkZipPath)) {
+        try (FileSystem oldZip=FileSystems.newFileSystem(oldChunkZipPath,null)){
+          for (          Path root : oldZip.getRootDirectories()) {
+            Files.walkFileTree(root,new SimpleFileVisitor<Path>(){
+              @Override public FileVisitResult visitFile(              Path file,              BasicFileAttributes attrs) throws IOException {
+                if (!Files.isRegularFile(zip.getPath(file.toString()))) {
+                  Files.copy(file,zip.getPath(file.toString()));
+                }
+                return FileVisitResult.CONTINUE;
+              }
+            }
+);
+          }
+        }
+       }
+      zip.close();
+      Path sourcePath=storagePathProvider.getChunkZipTempFilePath(chunkZipPos);
+      Path targetPath=oldChunkZipPath;
+      Files.move(sourcePath,targetPath,StandardCopyOption.REPLACE_EXISTING);
+    }
+  }
+ else {
+    for (    Map.Entry<Vector3i,EntityData.ChunkStore> chunkStoreEntry : chunkStores.entrySet()) {
+      byte[] compressedChunk=compressChunkStore(chunkStoreEntry.getValue());
+      Vector3i chunkPos=chunkStoreEntry.getKey();
+      Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
+      try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
+        out.write(compressedChunk);
+      }
+     }
+  }
+}

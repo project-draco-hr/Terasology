@@ -1,9 +1,0 @@
-{
-  if (globalStore == null) {
-    createGlobalStoreForSave();
-  }
-  try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getCurrentSavePath().resolve(GLOBAL_ENTITY_STORE)))){
-    globalStore.writeTo(out);
-  }
-   globalStore=null;
-}

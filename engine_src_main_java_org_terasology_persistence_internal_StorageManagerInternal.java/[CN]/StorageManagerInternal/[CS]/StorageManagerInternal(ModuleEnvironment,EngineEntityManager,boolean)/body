@@ -4,6 +4,6 @@
   this.storeChunksInZips=storeChunksInZips;
   this.prefabSerializer=new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
   entityManager.subscribe(this);
-  playersPath=PathManager.getInstance().getCurrentSavePath().resolve(PLAYERS_PATH);
-  storageTaskMaster=TaskMaster.createFIFOTaskMaster("Storage",BACKGROUND_THREADS);
+  this.storagePathProvider=new StoragePathProvider(PathManager.getInstance().getCurrentSavePath());
+  this.saveThreadManger=TaskMaster.createFIFOTaskMaster("Saving",1);
 }
