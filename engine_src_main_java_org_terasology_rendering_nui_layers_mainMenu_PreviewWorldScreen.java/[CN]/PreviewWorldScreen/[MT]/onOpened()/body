@@ -1,6 +1,6 @@
 {
   super.onOpened();
-  WorldGeneratorPluginLibrary.setupTempEnvironmentForPlugins();
+  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary());
   WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
   try {
     WorldGenerator worldGenerator=worldGeneratorManager.createGenerator(info.getUri());
