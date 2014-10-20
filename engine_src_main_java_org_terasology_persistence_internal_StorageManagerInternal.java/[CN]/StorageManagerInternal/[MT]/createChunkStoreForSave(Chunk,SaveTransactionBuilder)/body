@@ -7,19 +7,12 @@
   EntityData.EntityStore entityStore=storer.finaliseStore();
   TIntSet externalRefs=storer.getExternalReferences();
   Vector3i chunkPosition=chunk.getPosition();
-  EntityData.ChunkStore chunkStore;
-  chunk.lock();
-  try {
-    EntityData.ChunkStore.Builder encoded=chunk.encode();
-    encoded.setStore(entityStore);
-    chunkStore=encoded.build();
-  }
-  finally {
-    chunk.unlock();
-  }
+  ChunkImpl chunkImpl=(ChunkImpl)chunk;
+  chunkImpl.createSnapshot();
+  CompressedChunkBuilder compressedChunkBuilder=new CompressedChunkBuilder(entityStore,chunkImpl);
+  saveTransactionBuilder.addCompressedChunkBuilder(chunkPosition,compressedChunkBuilder);
   if (externalRefs.size() > 0) {
     StoreMetadata metadata=new StoreMetadata(new ChunkStoreId(chunkPosition),externalRefs);
     indexStoreMetadata(metadata);
   }
-  saveTransactionBuilder.addChunkStore(chunkPosition,chunkStore);
 }

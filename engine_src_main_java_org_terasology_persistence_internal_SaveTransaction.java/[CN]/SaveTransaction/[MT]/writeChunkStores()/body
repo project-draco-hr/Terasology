@@ -13,8 +13,8 @@
   Files.createDirectories(chunksPath);
   if (storeChunksInZips) {
     Map<Vector3i,FileSystem> newChunkZips=Maps.newHashMap();
-    for (    Map.Entry<Vector3i,EntityData.ChunkStore> chunkStoreEntry : chunkStores.entrySet()) {
-      Vector3i chunkPos=chunkStoreEntry.getKey();
+    for (    Map.Entry<Vector3i,CompressedChunkBuilder> entry : compressedChunkBuilders.entrySet()) {
+      Vector3i chunkPos=entry.getKey();
       Vector3i chunkZipPos=storagePathProvider.getChunkZipPosition(chunkPos);
       FileSystem zip=newChunkZips.get(chunkZipPos);
       if (zip == null) {
@@ -24,7 +24,8 @@
         newChunkZips.put(chunkZipPos,zip);
       }
       Path chunkPath=zip.getPath(storagePathProvider.getChunkFilename(chunkPos));
-      byte[] compressedChunk=compressChunkStore(chunkStoreEntry.getValue());
+      CompressedChunkBuilder compressedChunkBuilder=entry.getValue();
+      byte[] compressedChunk=compressedChunkBuilder.buildEncodedChunk();
       try (BufferedOutputStream bos=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
         bos.write(compressedChunk);
       }
@@ -55,9 +56,10 @@
     }
   }
  else {
-    for (    Map.Entry<Vector3i,EntityData.ChunkStore> chunkStoreEntry : chunkStores.entrySet()) {
-      byte[] compressedChunk=compressChunkStore(chunkStoreEntry.getValue());
-      Vector3i chunkPos=chunkStoreEntry.getKey();
+    for (    Map.Entry<Vector3i,CompressedChunkBuilder> entry : compressedChunkBuilders.entrySet()) {
+      Vector3i chunkPos=entry.getKey();
+      CompressedChunkBuilder compressedChunkBuilder=entry.getValue();
+      byte[] compressedChunk=compressedChunkBuilder.buildEncodedChunk();
       Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
       try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
         out.write(compressedChunk);
