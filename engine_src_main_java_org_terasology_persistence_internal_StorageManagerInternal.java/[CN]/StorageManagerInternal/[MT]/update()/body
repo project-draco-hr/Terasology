@@ -1,0 +1,12 @@
+{
+  if (!isRunModeAllowSaving()) {
+    return;
+  }
+  if (isSaving()) {
+    return;
+  }
+  checkSaveTransactionAndClearVariableIfDone();
+  if (saveRequested || isAutoSavingWantedAndPossible()) {
+    startSaving();
+  }
+}

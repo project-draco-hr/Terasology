@@ -2,10 +2,8 @@
   if (!config.getSystem().isAutoSaveEnabled()) {
     return false;
   }
-  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
-  boolean isAuthority=networkSystem.getMode().isAuthority();
-  if (!isAuthority) {
-    return false;
+  if (saveRequested) {
+    return true;
   }
   long currentTime=System.currentTimeMillis();
   if (nextAutoSave == null) {

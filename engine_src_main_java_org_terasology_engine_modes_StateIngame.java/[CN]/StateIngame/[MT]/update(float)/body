@@ -8,13 +8,6 @@
   if (worldRenderer != null && shouldUpdateWorld()) {
     worldRenderer.update(delta);
   }
-  if (isSavingNecessaryAndPossible()) {
-    logger.info("Auto save - Creating game snapshot");
-    PerformanceMonitor.startActivity("Auto Saving");
-    storageManager.startSaving();
-    scheduleNextAutoSave();
-    PerformanceMonitor.endActivity();
-    logger.info("Auto save - Snapshot created: Writing phase starts");
-  }
+  storageManager.update();
   updateUserInterface(delta);
 }
