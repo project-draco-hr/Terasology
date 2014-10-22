@@ -18,7 +18,10 @@
       spawnPlayer(entity,getSafeSpawnPosition());
     }
  else {
-      SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,getSafeSpawnPosition().toVector3f());
+      Vector3f spawnPosition=getSafeSpawnPosition().toVector3f();
+      loc.setWorldPosition(spawnPosition);
+      entity.saveComponent(loc);
+      SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,spawnPosition);
       clientsPreparingToSpawn.add(spawningClientInfo);
     }
   }
