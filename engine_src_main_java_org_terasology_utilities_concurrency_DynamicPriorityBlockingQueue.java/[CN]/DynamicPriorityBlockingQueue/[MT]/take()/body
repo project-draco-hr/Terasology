@@ -1,0 +1,11 @@
+{
+  lock.lockInterruptibly();
+  T result;
+  try {
+    while ((result=extract()) == null)     notEmpty.await();
+  }
+  finally {
+    lock.unlock();
+  }
+  return result;
+}

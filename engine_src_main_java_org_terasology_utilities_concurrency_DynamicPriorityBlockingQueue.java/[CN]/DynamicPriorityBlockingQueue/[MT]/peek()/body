@@ -1,0 +1,12 @@
+{
+  final ReentrantLock lock=this.lock;
+  lock.lock();
+  T result;
+  try {
+    result=elements.size() > 0 ? elements.get(0) : null;
+  }
+  finally {
+    lock.unlock();
+  }
+  return result;
+}

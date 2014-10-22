@@ -1,0 +1,12 @@
+{
+  T smallest=elements.get(0);
+  ListIterator<T> iterator=elements.listIterator();
+  while (iterator.hasNext()) {
+    T next=iterator.next();
+    if (comparator.compare(smallest,next) > 0) {
+      iterator.set(smallest);
+      smallest=next;
+    }
+  }
+  return smallest;
+}
