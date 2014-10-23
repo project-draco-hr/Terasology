@@ -1,0 +1,11 @@
+{
+  lock.lock();
+  try {
+    elements.add(t);
+    notEmpty.signal();
+    return true;
+  }
+  finally {
+    lock.unlock();
+  }
+}
