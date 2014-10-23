@@ -1,0 +1,9 @@
+{
+  EntityRef characterEntity=localPlayer.getCharacterEntity();
+  CharacterComponent characterComponent=characterEntity.getComponent(CharacterComponent.class);
+  if (previousInteractionTarget != characterComponent.predictedInteractionTarget && characterComponent.predictedInteractionTarget != null) {
+    previousInteractionTarget=characterComponent.predictedInteractionTarget;
+    initializeWithInteractionTarget(previousInteractionTarget);
+  }
+  return previousInteractionTarget;
+}
