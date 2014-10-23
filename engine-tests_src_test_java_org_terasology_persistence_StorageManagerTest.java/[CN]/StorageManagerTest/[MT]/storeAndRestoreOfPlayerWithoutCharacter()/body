@@ -1,6 +1,7 @@
 {
-  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
-  store.save();
+  character.destroy();
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
   PlayerStore restoredStore=esm.loadPlayerStore(PLAYER_ID);
   assertNotNull(restoredStore);
   assertFalse(restoredStore.hasCharacter());
