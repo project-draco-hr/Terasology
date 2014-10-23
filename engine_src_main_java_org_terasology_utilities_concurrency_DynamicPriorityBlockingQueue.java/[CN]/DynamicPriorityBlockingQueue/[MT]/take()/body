@@ -1,8 +1,9 @@
 {
+  final ReentrantLock lock=this.lock;
   lock.lockInterruptibly();
   T result;
   try {
-    while ((result=extract()) == null)     notEmpty.await();
+    while ((result=dequeue()) == null)     notEmpty.await();
   }
   finally {
     lock.unlock();
