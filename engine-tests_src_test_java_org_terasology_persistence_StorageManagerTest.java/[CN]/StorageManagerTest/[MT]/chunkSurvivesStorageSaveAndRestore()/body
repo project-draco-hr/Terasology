@@ -1,10 +1,12 @@
 {
+  registerMocksForSaving();
   Chunk chunk=new ChunkImpl(CHUNK_POS);
   chunk.setBlock(0,0,0,testBlock);
-  ChunkStore chunkStore=esm.createChunkStoreForSave(chunk);
-  chunkStore.save();
-  esm.createGlobalStoreForSave();
-  esm.flush();
+  ChunkProvider chunkProvider=mock(ChunkProvider.class);
+  when(chunkProvider.getAllChunks()).thenReturn(Arrays.asList(chunk));
+  CoreRegistry.put(ChunkProvider.class,chunkProvider);
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
   StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
   newSM.loadGlobalStore();
