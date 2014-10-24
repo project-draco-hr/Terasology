@@ -1,19 +1,5 @@
 {
-  byte[] chunkData=null;
-  if (storeChunksInZips) {
-    chunkData=loadChunkZip(chunkPos);
-  }
- else {
-    Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
-    if (Files.isRegularFile(chunkPath)) {
-      try {
-        chunkData=Files.readAllBytes(chunkPath);
-      }
- catch (      IOException e) {
-        logger.error("Failed to load chunk {}",chunkPos,e);
-      }
-    }
-  }
+  byte[] chunkData=loadCompressedChunk(chunkPos);
   ChunkStore store=null;
   if (chunkData != null) {
     TIntSet validRefs=null;

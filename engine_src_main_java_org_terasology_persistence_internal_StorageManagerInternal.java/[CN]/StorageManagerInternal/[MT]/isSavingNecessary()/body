@@ -1,8 +1,5 @@
 {
-  if (!config.getSystem().isAutoSaveEnabled()) {
-    return false;
-  }
-  if (saveRequested) {
+  if (unloadedAndUnsavedChunkMap.size() >= config.getSystem().getMaxUnloadedChunksTillSave()) {
     return true;
   }
   long currentTime=System.currentTimeMillis();

@@ -1,7 +1,4 @@
 {
-  if (true) {
-    return;
-  }
   PerformanceMonitor.startActivity("Unloading irrelevant chunks");
   int unloaded=0;
   logger.debug("Compacting cache");
@@ -37,6 +34,12 @@
         worldEntity.send(new BeforeChunkUnload(pos));
         for (        ChunkRelevanceRegion region : regions.values()) {
           region.chunkUnloaded(pos);
+        }
+        storageManager.onChunkUnload(chunk);
+        for (        EntityRef entityRef : entityManager.getEntitiesOfChunk(chunk)) {
+          if (!entityRef.isAlwaysRelevant()) {
+            entityRef.destroy();
+          }
         }
         chunk.dispose();
         try {

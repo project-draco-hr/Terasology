@@ -1,6 +1,15 @@
 {
-  EntityData.ChunkStore.Builder encoded=chunkWithSnapshot.encodeAndReleaseSnapshot();
-  encoded.setStore(entityStore);
-  EntityData.ChunkStore store=encoded.build();
-  return compressChunkStore(store);
+  if (result == null) {
+    EntityData.ChunkStore.Builder encoded;
+    if (viaSnapshot) {
+      encoded=chunk.encodeAndReleaseSnapshot();
+    }
+ else {
+      encoded=chunk.encode();
+    }
+    encoded.setStore(entityStore);
+    EntityData.ChunkStore store=encoded.build();
+    result=compressChunkStore(store);
+  }
+  return result;
 }
