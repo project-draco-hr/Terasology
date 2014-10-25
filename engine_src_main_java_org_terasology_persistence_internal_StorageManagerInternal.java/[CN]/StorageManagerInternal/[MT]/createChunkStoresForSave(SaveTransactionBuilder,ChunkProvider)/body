@@ -7,8 +7,10 @@
     unsavedEntryIterator.remove();
   }
   for (  Chunk chunk : chunkProvider.getAllChunks()) {
-    unloadedAndSavingChunkMap.remove(chunk.getPosition());
-    saveTransactionBuilder.addCompressedChunkBuilder(chunk.getPosition(),createCompressedChunkBuilder(chunk,true));
+    if (chunk.isReady()) {
+      unloadedAndSavingChunkMap.remove(chunk.getPosition());
+      saveTransactionBuilder.addCompressedChunkBuilder(chunk.getPosition(),createCompressedChunkBuilder(chunk,true));
+    }
   }
   for (  Map.Entry<Vector3i,CompressedChunkBuilder> entry : unloadedAndSavingChunkMap.entrySet()) {
     saveTransactionBuilder.addCompressedChunkBuilder(entry.getKey(),entry.getValue());
