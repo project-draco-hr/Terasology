@@ -9,7 +9,7 @@
     logger.error("Zip archive support missing! Unable to save chunks.");
     return;
   }
-  Path chunksPath=storagePathProvider.getWorldPath();
+  Path chunksPath=storagePathProvider.getWorldTempPath();
   Files.createDirectories(chunksPath);
   if (storeChunksInZips) {
     Map<Vector3i,FileSystem> newChunkZips=Maps.newHashMap();
@@ -18,7 +18,7 @@
       Vector3i chunkZipPos=storagePathProvider.getChunkZipPosition(chunkPos);
       FileSystem zip=newChunkZips.get(chunkZipPos);
       if (zip == null) {
-        Path targetPath=storagePathProvider.getChunkZipTempFilePath(chunkZipPos);
+        Path targetPath=storagePathProvider.getChunkZipTempPath(chunkZipPos);
         Files.deleteIfExists(targetPath);
         zip=zipProvider.newFileSystem(targetPath,CREATE_ZIP_OPTIONS);
         newChunkZips.put(chunkZipPos,zip);
@@ -50,9 +50,6 @@
         }
        }
       zip.close();
-      Path sourcePath=storagePathProvider.getChunkZipTempFilePath(chunkZipPos);
-      Path targetPath=oldChunkZipPath;
-      Files.move(sourcePath,targetPath,StandardCopyOption.REPLACE_EXISTING);
     }
   }
  else {
@@ -60,7 +57,7 @@
       Vector3i chunkPos=entry.getKey();
       CompressedChunkBuilder compressedChunkBuilder=entry.getValue();
       byte[] compressedChunk=compressedChunkBuilder.buildEncodedChunk();
-      Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
+      Path chunkPath=storagePathProvider.getChunkTempPath(chunkPos);
       try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(chunkPath))){
         out.write(compressedChunk);
       }

@@ -1,7 +1,7 @@
 {
-  Files.createDirectories(storagePathProvider.getPlayersPath());
+  Files.createDirectories(storagePathProvider.getPlayersTempPath());
   for (  Map.Entry<String,EntityData.PlayerStore> playerStoreEntry : playerStores.entrySet()) {
-    Path playerFile=storagePathProvider.getPlayerFilePath(playerStoreEntry.getKey());
+    Path playerFile=storagePathProvider.getPlayerFileTempPath(playerStoreEntry.getKey());
     try (OutputStream out=new BufferedOutputStream(Files.newOutputStream(playerFile))){
       playerStoreEntry.getValue().writeTo(out);
     }

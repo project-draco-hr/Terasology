@@ -1,9 +1,16 @@
 {
   try {
+    if (Files.exists(storagePathProvider.getUnmergedChangesPath())) {
+      throw new IOException("Save rand while there were unmerged changes");
+    }
+    saveTransactionHelper.cleanupSaveTransactionDirectory();
+    createSaveTransactionDirectory();
     writePlayerStores();
     writeGlobalStore();
     writeChunkStores();
     saveGameManifest();
+    perpareChangesForMerge();
+    saveTransactionHelper.mergeChanges();
     result=SaveTransactionResult.createSuccessResult();
     logger.info("Save game finished");
   }
