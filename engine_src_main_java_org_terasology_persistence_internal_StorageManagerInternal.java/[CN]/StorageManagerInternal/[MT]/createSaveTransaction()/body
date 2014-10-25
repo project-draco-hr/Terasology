@@ -2,11 +2,9 @@
   SaveTransactionBuilder saveTransactionBuilder=new SaveTransactionBuilder(storeChunksInZips,storagePathProvider);
   ChunkProvider chunkProvider=CoreRegistry.get(ChunkProvider.class);
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
-  chunkProvider.shutdown();
   createChunkStoresForSave(saveTransactionBuilder,chunkProvider);
   createPlayerStoresForSave(saveTransactionBuilder,networkSystem);
   createGlobalStoreForSave(saveTransactionBuilder);
   createGameManifest(saveTransactionBuilder);
-  chunkProvider.restart();
   return saveTransactionBuilder.build();
 }
