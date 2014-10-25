@@ -1,0 +1,15 @@
+{
+  if (applyButton != null) {
+    applyButton.setEnabled(false);
+  }
+  UIImage image=find("preview",UIImage.class);
+  try {
+    Texture tex=createTexture(imageSize,imageSize,currentSettings.zoom,currentSettings.layer);
+    image.setImage(tex);
+    image.setVisible(true);
+  }
+ catch (  Exception ex) {
+    image.setVisible(false);
+    logger.info("Error generating a 2d preview for " + layerDropdown.getSelection());
+  }
+}

@@ -3,17 +3,14 @@
   if (previewGenerator != null) {
     PreviewSettings newSettings=new PreviewSettings(layerDropdown.getSelection(),TeraMath.floorToInt(zoomSlider.getValue()),seedBinding.get());
     if (currentSettings == null || !currentSettings.equals(newSettings)) {
-      UIImage image=find("preview",UIImage.class);
-      try {
-        Texture tex=createTexture(imageSize,imageSize,newSettings.zoom,newSettings.layer);
-        image.setImage(tex);
-        image.setVisible(true);
-      }
- catch (      Exception ex) {
-        image.setVisible(false);
-        logger.info("Error generating a 2d preview for " + layerDropdown.getSelection());
-      }
+      boolean firstTime=currentSettings == null;
       currentSettings=newSettings;
+      if (applyButton != null && !firstTime) {
+        applyButton.setEnabled(true);
+      }
+ else {
+        updatePreview();
+      }
     }
   }
 }
