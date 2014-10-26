@@ -14,6 +14,9 @@
     if (Thread.currentThread().isInterrupted()) {
       throw new InterruptedException();
     }
+    if (progressListener != null) {
+      progressListener.onProgress((float)y / height);
+    }
   }
   buf.flip();
   return buf;
