@@ -1,15 +1,39 @@
 {
-  if (applyButton != null) {
-    applyButton.setEnabled(false);
+  final UIImage image=find("preview",UIImage.class);
+  image.setVisible(false);
+  Callable<ByteBufferResult> operation=new Callable<ByteBufferResult>(){
+    @Override public ByteBufferResult call() throws InterruptedException {
+      try {
+        ByteBuffer buf=createByteBuffer(imageSize,imageSize,currentSettings.zoom,currentSettings.layer);
+        return new ByteBufferResult(true,buf,null);
+      }
+ catch (      InterruptedException e) {
+        throw e;
+      }
+catch (      Exception ex) {
+        return new ByteBufferResult(false,null,ex);
+      }
+    }
   }
-  UIImage image=find("preview",UIImage.class);
-  try {
-    Texture tex=createTexture(imageSize,imageSize,currentSettings.zoom,currentSettings.layer);
-    image.setImage(tex);
-    image.setVisible(true);
+;
+  final NUIManager manager=CoreRegistry.get(NUIManager.class);
+  final WaitPopup<ByteBufferResult> popup=manager.pushScreen(WaitPopup.ASSET_URI,WaitPopup.class);
+  popup.setMessage("Updating Preview","Please wait ...");
+  popup.onSuccess(new Function<ByteBufferResult,Void>(){
+    @Override public Void apply(    ByteBufferResult byteBufferResult){
+      if (byteBufferResult.success) {
+        image.setImage(createTexture(imageSize,imageSize,byteBufferResult.buf));
+        image.setVisible(true);
+        if (applyButton != null) {
+          applyButton.setEnabled(false);
+        }
+      }
+ else {
+        logger.info("Error generating a 2d preview for " + layerDropdown.getSelection());
+      }
+      return null;
+    }
   }
- catch (  Exception ex) {
-    image.setVisible(false);
-    logger.info("Error generating a 2d preview for " + layerDropdown.getSelection());
-  }
+);
+  popup.startOperation(operation,true);
 }

@@ -11,10 +11,10 @@
       Color c=previewGenerator.get(layerName,area);
       c.addToBuffer(buf);
     }
+    if (Thread.currentThread().isInterrupted()) {
+      throw new InterruptedException();
+    }
   }
   buf.flip();
-  ByteBuffer[] data=new ByteBuffer[]{buf};
-  AssetUri uri=new AssetUri(AssetType.TEXTURE,"engine:terrainPreview");
-  TextureData texData=new TextureData(width,height,data,Texture.WrapMode.CLAMP,Texture.FilterMode.LINEAR);
-  return Assets.generateAsset(uri,texData,Texture.class);
+  return buf;
 }
