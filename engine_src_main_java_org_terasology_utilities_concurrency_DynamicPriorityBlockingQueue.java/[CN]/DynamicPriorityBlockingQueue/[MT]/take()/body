@@ -1,12 +1,14 @@
 {
-  final ReentrantLock lock=this.lock;
   lock.lockInterruptibly();
-  T result;
   try {
-    while ((result=dequeue()) == null)     notEmpty.await();
+    T result=dequeue();
+    while (result == null) {
+      notEmpty.await();
+      result=dequeue();
+    }
+    return result;
   }
   finally {
     lock.unlock();
   }
-  return result;
 }
