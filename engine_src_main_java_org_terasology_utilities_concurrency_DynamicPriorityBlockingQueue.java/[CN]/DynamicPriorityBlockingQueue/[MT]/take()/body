@@ -1,13 +1,14 @@
 {
   lock.lockInterruptibly();
-  T result;
   try {
-    while ((result=dequeue()) == null) {
+    T result=dequeue();
+    while (result == null) {
       notEmpty.await();
+      result=dequeue();
     }
+    return result;
   }
   finally {
     lock.unlock();
   }
-  return result;
 }

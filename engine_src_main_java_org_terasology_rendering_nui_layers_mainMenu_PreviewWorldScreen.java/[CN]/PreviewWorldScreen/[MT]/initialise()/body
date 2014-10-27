@@ -7,6 +7,21 @@
     zoomSlider.setValue(10f);
     zoomSlider.setPrecision(0);
   }
+  applyButton=find("apply",UIButton.class);
+  if (applyButton != null) {
+    applyButton.setEnabled(false);
+    applyButton.subscribe(new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget widget){
+        updatePreview();
+      }
+    }
+);
+  }
+  errorLabel=find("error",UILabel.class);
+  if (errorLabel != null) {
+    errorLabel.setVisible(false);
+  }
+  previewImage=find("preview",UIImage.class);
   UIText seed=find("seed",UIText.class);
   if (seed != null) {
     seed.bindText(seedBinding);

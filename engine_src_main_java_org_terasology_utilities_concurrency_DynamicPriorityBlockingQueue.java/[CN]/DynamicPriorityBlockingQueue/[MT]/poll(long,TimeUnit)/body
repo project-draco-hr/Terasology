@@ -1,14 +1,15 @@
 {
   long nanos=unit.toNanos(timeout);
   lock.lockInterruptibly();
-  T result;
   try {
-    while ((result=dequeue()) == null && nanos > 0) {
+    T result=dequeue();
+    while (result == null && nanos > 0) {
       nanos=notEmpty.awaitNanos(nanos);
+      result=dequeue();
     }
+    return result;
   }
   finally {
     lock.unlock();
   }
-  return result;
 }

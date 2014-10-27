@@ -13,16 +13,22 @@
       logger.error("Failed to enqueue shutdown request",e);
     }
   }
-  executorService.shutdown();
-  try {
-    if (!executorService.awaitTermination(20,TimeUnit.SECONDS)) {
-      logger.warn("Timed out awaiting thread termination");
-      executorService.shutdownNow();
+  AccessController.doPrivileged(new PrivilegedAction<Object>(){
+    @Override public Object run(){
+      executorService.shutdown();
+      try {
+        if (!executorService.awaitTermination(20,TimeUnit.SECONDS)) {
+          logger.warn("Timed out awaiting thread termination");
+          executorService.shutdownNow();
+        }
+      }
+ catch (      InterruptedException e) {
+        logger.warn("Interrupted awaiting chunk thread termination");
+        executorService.shutdownNow();
+      }
+      return null;
     }
   }
- catch (  InterruptedException e) {
-    logger.warn("Interrupted awaiting chunk thread termination");
-    executorService.shutdownNow();
-  }
+);
   running=false;
 }

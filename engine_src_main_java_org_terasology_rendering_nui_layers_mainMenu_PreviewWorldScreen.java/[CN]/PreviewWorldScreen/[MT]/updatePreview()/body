@@ -1,0 +1,47 @@
+{
+  previewImage.setVisible(false);
+  errorLabel.setVisible(false);
+  final NUIManager manager=CoreRegistry.get(NUIManager.class);
+  final WaitPopup<ByteBufferResult> popup=manager.pushScreen(WaitPopup.ASSET_URI,WaitPopup.class);
+  popup.setMessage("Updating Preview","Please wait ...");
+  final ByteBufferProgressListener progressListener=new ByteBufferProgressListener(){
+    @Override public void onProgress(    float progress){
+      popup.setMessage("Updating Preview",String.format("Please wait ... %d%%",(int)(progress * 100f)));
+    }
+  }
+;
+  Callable<ByteBufferResult> operation=new Callable<ByteBufferResult>(){
+    @Override public ByteBufferResult call() throws InterruptedException {
+      try {
+        ByteBuffer buf=createByteBuffer(imageSize,imageSize,currentSettings.zoom,currentSettings.layer,progressListener);
+        return new ByteBufferResult(true,buf,null);
+      }
+ catch (      InterruptedException e) {
+        throw e;
+      }
+catch (      Exception ex) {
+        return new ByteBufferResult(false,null,ex);
+      }
+    }
+  }
+;
+  popup.onSuccess(new Function<ByteBufferResult,Void>(){
+    @Override public Void apply(    ByteBufferResult byteBufferResult){
+      if (byteBufferResult.success) {
+        previewImage.setImage(createTexture(imageSize,imageSize,byteBufferResult.buf));
+        previewImage.setVisible(true);
+        if (applyButton != null) {
+          applyButton.setEnabled(false);
+        }
+      }
+ else {
+        errorLabel.setText("Sorry: could not generate 2d preview :-(");
+        errorLabel.setVisible(true);
+        logger.error("Error generating a 2d preview for " + layerDropdown.getSelection(),byteBufferResult.exception);
+      }
+      return null;
+    }
+  }
+);
+  popup.startOperation(operation,true);
+}
