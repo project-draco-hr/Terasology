@@ -4,11 +4,29 @@
     deltaMs=(long)(deltaMs * WORLD_TIME_MULTIPLIER);
     long startTime=worldTime.getAndAdd(deltaMs);
     long endTime=startTime + deltaMs;
+    long timeInDay=LongMath.mod(startTime,DAY_LENGTH);
+    long day=LongMath.divide(startTime,DAY_LENGTH,RoundingMode.FLOOR);
     long startTick=startTime / TICK_RATE;
     long endTick=(endTime) / TICK_RATE;
     if (startTick != endTick) {
       long tick=endTime - endTime % TICK_RATE;
       getWorldEntity().send(new WorldTimeEvent(tick));
+    }
+    if (timeInDay < MIDDAY_TIME && timeInDay + deltaMs >= MIDDAY_TIME) {
+      long tick=day * DAY_LENGTH + MIDDAY_TIME;
+      getWorldEntity().send(new OnMiddayEvent(tick));
+    }
+    if (timeInDay < DUSK_TIME && timeInDay + deltaMs >= DUSK_TIME) {
+      long tick=day * DAY_LENGTH + DUSK_TIME;
+      getWorldEntity().send(new OnDuskEvent(tick));
+    }
+    if (timeInDay < MIDNIGHT_TIME && timeInDay + deltaMs >= MIDNIGHT_TIME) {
+      long tick=day * DAY_LENGTH + MIDNIGHT_TIME;
+      getWorldEntity().send(new OnMidnightEvent(tick));
+    }
+    if (timeInDay < DAWN_TIME && timeInDay + deltaMs >= DAWN_TIME) {
+      long tick=day * DAY_LENGTH + DAWN_TIME;
+      getWorldEntity().send(new OnDawnEvent(tick));
     }
   }
 }
