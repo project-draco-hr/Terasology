@@ -3,7 +3,7 @@
   for (  StoreMetadata table : storeMetadata.values()) {
     globalStoreSaver.addStoreMetadata(table);
   }
-  for (  EntityRef entity : entityManager.getAllEntities()) {
+  for (  EntityRef entity : unsavedEntities) {
     globalStoreSaver.store(entity);
   }
   EntityData.GlobalStore globalStore=globalStoreSaver.save();

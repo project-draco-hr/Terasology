@@ -6,10 +6,17 @@
     unloadedAndSavingChunkMap.put(entry.getKey(),entry.getValue());
     unsavedEntryIterator.remove();
   }
+  Map<Vector3i,Collection<EntityRef>> chunkPosToEntitiesMap=createChunkPosToUnsavedEntitiesMap();
   for (  Chunk chunk : chunkProvider.getAllChunks()) {
     if (chunk.isReady()) {
       unloadedAndSavingChunkMap.remove(chunk.getPosition());
-      saveTransactionBuilder.addCompressedChunkBuilder(chunk.getPosition(),createCompressedChunkBuilder(chunk,true));
+      Collection<EntityRef> entitiesToStore=chunkPosToEntitiesMap.get(chunk.getPosition());
+      if (entitiesToStore == null) {
+        entitiesToStore=Collections.EMPTY_SET;
+      }
+      unsavedEntities.removeAll(entitiesToStore);
+      CompressedChunkBuilder compressedChunkBuilder=createCompressedChunkBuilder(chunk,entitiesToStore,true);
+      saveTransactionBuilder.addCompressedChunkBuilder(chunk.getPosition(),compressedChunkBuilder);
     }
   }
   for (  Map.Entry<Vector3i,CompressedChunkBuilder> entry : unloadedAndSavingChunkMap.entrySet()) {

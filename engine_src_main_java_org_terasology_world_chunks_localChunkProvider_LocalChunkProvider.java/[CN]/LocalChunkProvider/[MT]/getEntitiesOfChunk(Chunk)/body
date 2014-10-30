@@ -1,7 +1,7 @@
 {
   List<EntityRef> entitiesToStore=Lists.newArrayList();
   AABB aabb=chunk.getAABB();
-  for (  EntityRef entity : getEntitiesWith(LocationComponent.class)) {
+  for (  EntityRef entity : entityManager.getEntitiesWith(LocationComponent.class)) {
     if (!entity.getOwner().exists() && !entity.isAlwaysRelevant() && !entity.hasComponent(ClientComponent.class)) {
       LocationComponent loc=entity.getComponent(LocationComponent.class);
       if (loc != null) {

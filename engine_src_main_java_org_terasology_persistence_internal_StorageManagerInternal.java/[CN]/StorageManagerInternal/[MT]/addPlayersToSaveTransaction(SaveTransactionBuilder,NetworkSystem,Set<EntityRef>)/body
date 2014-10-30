@@ -8,7 +8,9 @@
   }
   for (  Client client : networkSystem.getPlayers()) {
     unloadedAndSavingPlayerMap.remove(client.getId());
-    saveTransactionBuilder.addPlayerStore(client.getId(),createPlayerStore(client));
+    EntityRef character=client.getEntity().getComponent(ClientComponent.class).character;
+    unsavedEntities.remove(character);
+    saveTransactionBuilder.addPlayerStore(client.getId(),createPlayerStore(client,character));
   }
   for (  Map.Entry<String,EntityData.PlayerStore> entry : unloadedAndSavingPlayerMap.entrySet()) {
     saveTransactionBuilder.addPlayerStore(entry.getKey(),entry.getValue());
