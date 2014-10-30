@@ -1,0 +1,8 @@
+{
+  List<Class<? extends UIWidget>> classes=cachedInheritanceTree.get(element);
+  if (classes == null) {
+    classes=ReflectionUtil.getInheritanceTree(element,UIWidget.class);
+    cachedInheritanceTree.put(element,classes);
+  }
+  return classes;
+}
