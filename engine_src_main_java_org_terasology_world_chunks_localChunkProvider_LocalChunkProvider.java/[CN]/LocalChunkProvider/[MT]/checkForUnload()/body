@@ -35,11 +35,7 @@
         for (        ChunkRelevanceRegion region : regions.values()) {
           region.chunkUnloaded(pos);
         }
-        Collection<EntityRef> entitiesOfChunk=getEntitiesOfChunk(chunk);
-        storageManager.onChunkUnload(chunk,entitiesOfChunk);
-        for (        EntityRef entityRef : entitiesOfChunk) {
-          entityRef.destroy();
-        }
+        storageManager.deactivateChunk(chunk);
         chunk.dispose();
         try {
           unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));

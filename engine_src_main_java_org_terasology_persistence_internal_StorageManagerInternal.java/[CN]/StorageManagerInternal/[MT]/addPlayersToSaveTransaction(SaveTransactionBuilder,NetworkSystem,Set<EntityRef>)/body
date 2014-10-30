@@ -10,7 +10,7 @@
     unloadedAndSavingPlayerMap.remove(client.getId());
     EntityRef character=client.getEntity().getComponent(ClientComponent.class).character;
     unsavedEntities.remove(character);
-    saveTransactionBuilder.addPlayerStore(client.getId(),createPlayerStore(client,character));
+    saveTransactionBuilder.addPlayerStore(client.getId(),createPlayerStore(client,character,false));
   }
   for (  Map.Entry<String,EntityData.PlayerStore> entry : unloadedAndSavingPlayerMap.entrySet()) {
     saveTransactionBuilder.addPlayerStore(entry.getKey(),entry.getValue());
