@@ -2,9 +2,9 @@
   Vector3f lightPosition=new Vector3f(activeCamera.getPosition().x,0.0f,activeCamera.getPosition().z);
   float texelSize=1.0f / config.getRendering().getShadowMapResolution();
   texelSize*=2.0f;
-  lightCamera.getViewProjectionMatrix().transform(lightPosition);
+  lightCamera.getViewProjectionMatrix().transformVector(lightPosition);
   lightPosition.set(TeraMath.fastFloor(lightPosition.x / texelSize) * texelSize,0.0f,TeraMath.fastFloor(lightPosition.z / texelSize) * texelSize);
-  lightCamera.getInverseViewProjectionMatrix().transform(lightPosition);
+  lightCamera.getInverseViewProjectionMatrix().transformVector(lightPosition);
   float stepSize=50f;
   Vector3f sunDirection=skysphere.getQuantizedSunDirection(stepSize);
   Vector3f sunPosition=new Vector3f(sunDirection);
