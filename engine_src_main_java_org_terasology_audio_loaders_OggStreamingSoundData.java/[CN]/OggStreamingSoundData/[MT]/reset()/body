@@ -3,9 +3,10 @@
     dispose();
   }
   try {
-    reader=new OggReader(url.openStream());
+    PrivilegedOpenStream action=new PrivilegedOpenStream(url);
+    reader=new OggReader(AccessController.doPrivileged(action));
   }
- catch (  IOException e) {
+ catch (  PrivilegedActionException e) {
     throw new RuntimeException("Failed to reset ogg stream from " + url,e);
   }
 }

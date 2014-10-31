@@ -1,4 +1,10 @@
 {
   this.url=url;
-  reader=new OggReader(url.openStream());
+  try {
+    PrivilegedOpenStream action=new PrivilegedOpenStream(url);
+    reader=new OggReader(AccessController.doPrivileged(action));
+  }
+ catch (  PrivilegedActionException e) {
+    throw new IOException("Could not open stream at " + url,e);
+  }
 }
