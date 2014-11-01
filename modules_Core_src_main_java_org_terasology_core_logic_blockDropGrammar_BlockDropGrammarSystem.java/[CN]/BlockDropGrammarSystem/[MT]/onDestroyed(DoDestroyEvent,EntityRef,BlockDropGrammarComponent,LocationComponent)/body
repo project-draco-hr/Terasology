@@ -5,8 +5,20 @@
     chanceOfBlockDrop=1 - blockDamageModifierComponent.blockAnnihilationChance;
   }
   if (random.nextFloat() < chanceOfBlockDrop) {
-    if (blockDrop.blockDrops != null) {
-      for (      String drop : blockDrop.blockDrops) {
+    List<String> blockDrops=blockDrop.blockDrops;
+    List<String> itemDrops=blockDrop.itemDrops;
+    if (blockDamageModifierComponent != null && blockDrop.droppedWithTool != null) {
+      for (      String toolType : blockDamageModifierComponent.materialDamageMultiplier.keySet()) {
+        if (blockDrop.droppedWithTool.containsKey(toolType)) {
+          BlockDropGrammarComponent.DropDefinition dropDefinition=blockDrop.droppedWithTool.get(toolType);
+          blockDrops=dropDefinition.blockDrops;
+          itemDrops=dropDefinition.itemDrops;
+          break;
+        }
+      }
+    }
+    if (blockDrops != null) {
+      for (      String drop : blockDrops) {
         String dropResult=drop;
         boolean dropping=true;
         int pipeIndex=dropResult.indexOf('|');
@@ -26,8 +38,8 @@
         }
       }
     }
-    if (blockDrop.itemDrops != null) {
-      for (      String drop : blockDrop.itemDrops) {
+    if (itemDrops != null) {
+      for (      String drop : itemDrops) {
         String dropResult=drop;
         boolean dropping=true;
         int pipeIndex=dropResult.indexOf('|');
