@@ -4,29 +4,29 @@
     deltaMs=(long)(deltaMs * WORLD_TIME_MULTIPLIER);
     long startTime=worldTime.getAndAdd(deltaMs);
     long endTime=startTime + deltaMs;
-    long timeInDay=startTime % DAY_LENGTH;
-    if (timeInDay < 0) {
-      timeInDay=DAY_LENGTH + timeInDay;
+    long timeInDay=LongMath.mod(startTime,DAY_LENGTH);
+    long day=LongMath.divide(startTime,DAY_LENGTH,RoundingMode.FLOOR);
+    long startTick=startTime / TICK_EVENT_RATE;
+    long endTick=(endTime) / TICK_EVENT_RATE;
+    if (startTick != endTick) {
+      long tick=endTime - endTime % TICK_EVENT_RATE;
+      getWorldEntity().send(new WorldTimeEvent(tick));
     }
-    if (timeInDay < MIDDAY_TIME) {
-      if (timeInDay + deltaMs >= MIDDAY_TIME) {
-        getWorldEntity().send(new OnMiddayEvent(MS_TO_DAYS * endTime,endTime));
-      }
+    if (timeInDay < MIDDAY_TIME && timeInDay + deltaMs >= MIDDAY_TIME) {
+      long tick=day * DAY_LENGTH + MIDDAY_TIME;
+      getWorldEntity().send(new OnMiddayEvent(tick));
     }
- else     if (timeInDay < DUSK_TIME) {
-      if (timeInDay + deltaMs >= DUSK_TIME) {
-        getWorldEntity().send(new OnDuskEvent(MS_TO_DAYS * endTime,endTime));
-      }
+    if (timeInDay < DUSK_TIME && timeInDay + deltaMs >= DUSK_TIME) {
+      long tick=day * DAY_LENGTH + DUSK_TIME;
+      getWorldEntity().send(new OnDuskEvent(tick));
     }
- else     if (timeInDay < MIDNIGHT_TIME) {
-      if (timeInDay + deltaMs >= MIDNIGHT_TIME) {
-        getWorldEntity().send(new OnMidnightEvent(MS_TO_DAYS * endTime,endTime));
-      }
+    if (timeInDay < MIDNIGHT_TIME && timeInDay + deltaMs >= MIDNIGHT_TIME) {
+      long tick=day * DAY_LENGTH + MIDNIGHT_TIME;
+      getWorldEntity().send(new OnMidnightEvent(tick));
     }
- else     if (timeInDay < DAWN_TIME) {
-      if (timeInDay + deltaMs >= DAWN_TIME) {
-        getWorldEntity().send(new OnDawnEvent(MS_TO_DAYS * endTime,endTime));
-      }
+    if (timeInDay < DAWN_TIME && timeInDay + deltaMs >= DAWN_TIME) {
+      long tick=day * DAY_LENGTH + DAWN_TIME;
+      getWorldEntity().send(new OnDawnEvent(tick));
     }
   }
 }
