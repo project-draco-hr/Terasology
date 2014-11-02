@@ -4,10 +4,10 @@
   if (delta > 0) {
     long timeInDay=LongMath.mod(startTime,DAY_LENGTH);
     long day=LongMath.divide(startTime,DAY_LENGTH,RoundingMode.FLOOR);
-    long dawn=getDawn(day);
-    long midday=getMidday(day);
-    long dusk=getDusk(day);
-    long midnight=getMidnight(day);
+    long dawn=model.getDawn(day);
+    long midday=model.getMidday(day);
+    long dusk=model.getDusk(day);
+    long midnight=model.getMidnight(day);
     if (timeInDay - delta < midday && timeInDay >= midday) {
       long tick=day * DAY_LENGTH + midday;
       getWorldEntity().send(new OnMiddayEvent(tick));
