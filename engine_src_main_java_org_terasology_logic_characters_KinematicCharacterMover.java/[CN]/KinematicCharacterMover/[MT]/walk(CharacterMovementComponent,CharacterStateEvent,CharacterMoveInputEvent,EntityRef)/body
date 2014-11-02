@@ -18,6 +18,9 @@
     }
   }
   desiredVelocity.scale(maxSpeed);
+  if (movementComp.mode == MovementMode.CLIMBING) {
+    climb(state,input,desiredVelocity);
+  }
   Vector3f velocityDiff=new Vector3f(desiredVelocity);
   velocityDiff.sub(state.getVelocity());
   velocityDiff.scale(Math.min(movementComp.mode.scaleInertia * input.getDelta(),1.0f));
@@ -36,7 +39,7 @@
   Vector3f moveDelta=new Vector3f(endVelocity);
   moveDelta.scale(input.getDelta());
   CharacterCollider collider=movementComp.mode.useCollision ? physics.getCharacterCollider(entity) : null;
-  MoveResult moveResult=move(state.getPosition(),moveDelta,(state.isGrounded() && movementComp.mode.canBeGrounded) ? movementComp.stepHeight : 0,movementComp.slopeFactor,collider);
+  MoveResult moveResult=move(state.getPosition(),moveDelta,(state.getMode() != MovementMode.CLIMBING && state.isGrounded() && movementComp.mode.canBeGrounded) ? movementComp.stepHeight : 0,movementComp.slopeFactor,collider);
   Vector3f distanceMoved=new Vector3f(moveResult.getFinalPosition());
   distanceMoved.sub(state.getPosition());
   state.getPosition().set(moveResult.getFinalPosition());
