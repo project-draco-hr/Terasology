@@ -1,9 +1,5 @@
 {
-  List<Class<? extends UIWidget>> classes=cachedInheritanceTree.get(element);
-  if (classes == null) {
-    classes=ReflectionUtil.getInheritanceTree(element,UIWidget.class);
-    cachedInheritanceTree.put(element,classes);
-  }
+  List<Class<? extends UIWidget>> classes=getInheritanceTree(element);
   UIStyle style=null;
   for (int i=classes.size() - 1; i >= 0 && style == null; i--) {
     Table<String,String,UIStyle> elementStyles=elementStyleLookup.get(classes.get(i));
