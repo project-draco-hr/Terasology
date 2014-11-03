@@ -1,0 +1,29 @@
+{
+  long startTime=worldTime.getMilliseconds();
+  long delta=startTime - lastUpdate;
+  if (delta > 0) {
+    long timeInDay=LongMath.mod(startTime,DAY_LENGTH);
+    long day=LongMath.divide(startTime,DAY_LENGTH,RoundingMode.FLOOR);
+    long dawn=model.getDawn(day);
+    long midday=model.getMidday(day);
+    long dusk=model.getDusk(day);
+    long midnight=model.getMidnight(day);
+    if (timeInDay - delta < midday && timeInDay >= midday) {
+      long tick=day * DAY_LENGTH + midday;
+      getWorldEntity().send(new OnMiddayEvent(tick));
+    }
+    if (timeInDay - delta < dusk && timeInDay >= dusk) {
+      long tick=day * DAY_LENGTH + dusk;
+      getWorldEntity().send(new OnDuskEvent(tick));
+    }
+    if (timeInDay - delta < midnight && timeInDay >= midnight) {
+      long tick=day * DAY_LENGTH + midnight;
+      getWorldEntity().send(new OnMidnightEvent(tick));
+    }
+    if (timeInDay - delta < dawn && timeInDay >= dawn) {
+      long tick=day * DAY_LENGTH + dawn;
+      getWorldEntity().send(new OnDawnEvent(tick));
+    }
+  }
+  lastUpdate=startTime;
+}
