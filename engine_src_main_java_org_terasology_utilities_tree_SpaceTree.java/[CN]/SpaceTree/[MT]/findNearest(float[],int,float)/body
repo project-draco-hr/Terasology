@@ -1,0 +1,17 @@
+{
+  validatePosition(position);
+  if (count < 1) {
+    throw new IllegalArgumentException("Count cannot be smaller than 1");
+  }
+  if (within < 0) {
+    throw new IllegalArgumentException("Within cannot be smaller than 0");
+  }
+  if (rootNode == null) {
+    return Collections.emptyList();
+  }
+ else {
+    TreeSearch<T> treeSearch=new TreeSearch<>(within,count);
+    executeSearchInNode(position,rootNode,treeSearch);
+    return Collections.unmodifiableCollection(treeSearch.results.values());
+  }
+}
