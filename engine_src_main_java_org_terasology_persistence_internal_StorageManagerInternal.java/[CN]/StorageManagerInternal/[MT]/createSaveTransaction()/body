@@ -1,13 +1,13 @@
 {
   SaveTransactionBuilder saveTransactionBuilder=new SaveTransactionBuilder(storeChunksInZips,storagePathProvider);
-  ChunkProvider chunkProvider=CoreRegistry.get(ChunkProvider.class);
-  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   Set<EntityRef> unsavedEntities=new HashSet<>();
   for (  EntityRef entity : entityManager.getAllEntities()) {
     if (entity.isPersistent() && !entity.getOwner().exists()) {
       unsavedEntities.add(entity);
     }
   }
+  ChunkProvider chunkProvider=CoreRegistry.get(ChunkProvider.class);
+  NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   addChunksToSaveTransaction(saveTransactionBuilder,chunkProvider,unsavedEntities);
   addPlayersToSaveTransaction(saveTransactionBuilder,networkSystem,unsavedEntities);
   addGlobalStoreToSaveTransaction(saveTransactionBuilder,unsavedEntities);

@@ -1,5 +1,10 @@
 {
-  if (unloadedAndUnsavedChunkMap.size() >= config.getSystem().getMaxUnloadedChunksTillSave()) {
+  ChunkProvider chunkProvider=CoreRegistry.get(ChunkProvider.class);
+  int unloadedChunkCount=unloadedAndUnsavedChunkMap.size();
+  int loadedChunkCount=chunkProvider.getAllChunks().size();
+  double totalChunkCount=unloadedChunkCount + loadedChunkCount;
+  double percentageUnloaded=100.0 * (unloadedChunkCount / (double)totalChunkCount);
+  if (percentageUnloaded >= config.getSystem().getMaxUnloadedChunksPercentageTillSave()) {
     return true;
   }
   long currentTime=System.currentTimeMillis();
