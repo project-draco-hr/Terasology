@@ -1,14 +1,5 @@
 {
-  FileSystemProvider zipProvider=null;
-  for (  FileSystemProvider provider : FileSystemProvider.installedProviders()) {
-    if ("jar".equalsIgnoreCase(provider.getScheme())) {
-      zipProvider=provider;
-    }
-  }
-  if (zipProvider == null) {
-    logger.error("Zip archive support missing! Unable to save chunks.");
-    return;
-  }
+  FileSystemProvider zipProvider=getZipFileSystemProvider();
   Path chunksPath=storagePathProvider.getWorldTempPath();
   Files.createDirectories(chunksPath);
   if (storeChunksInZips) {
