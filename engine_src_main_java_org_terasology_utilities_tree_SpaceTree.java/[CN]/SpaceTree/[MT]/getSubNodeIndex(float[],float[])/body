@@ -1,0 +1,16 @@
+{
+  int index=0;
+  int increment=1;
+  for (int i=0; i < dimensions; i++) {
+    if (position[i] > center[i]) {
+      index+=increment;
+    }
+    increment*=2;
+  }
+  if (index == 0) {
+    if (distanceFunction.getDistance(position,center) == 0) {
+      return -1;
+    }
+  }
+  return index;
+}
