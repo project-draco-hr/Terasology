@@ -27,6 +27,9 @@
   chunkProvider.setBlockEntityRegistry(entityWorldProvider);
   CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
   CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
+  DefaultCelestialSystem celestialSystem=new DefaultCelestialSystem(new BasicCelestialModel());
+  CoreRegistry.put(CelestialSystem.class,celestialSystem);
+  CoreRegistry.get(ComponentSystemManager.class).register(celestialSystem);
   RenderingSubsystemFactory engineSubsystemFactory=CoreRegistry.get(RenderingSubsystemFactory.class);
   WorldRenderer worldRenderer=engineSubsystemFactory.createWorldRenderer(worldProvider,chunkProvider,CoreRegistry.get(LocalPlayerSystem.class));
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
@@ -34,6 +37,5 @@
   CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
   CoreRegistry.put(PhysicsEngine.class,worldRenderer.getBulletRenderer());
   CoreRegistry.put(Physics.class,worldRenderer.getBulletRenderer());
-  worldProvider.getTime().setMilliseconds(worldInfo.getTime());
   return true;
 }
