@@ -1,0 +1,15 @@
+{
+  WorldBuilder worldBuilder=new WorldBuilder(12L);
+  worldBuilder.addProvider(new Facet1Provider());
+  worldBuilder.addProvider(new Facet2Provider());
+  worldBuilder.addProvider(new Facet3Provider());
+  World world=worldBuilder.build();
+  Region3i regionToGenerate=Region3i.createFromCenterExtents(new Vector3i(),1);
+  Region regionData=world.getWorldData(regionToGenerate);
+  Facet3 facet3=regionData.getFacet(Facet3.class);
+  assertEquals(regionToGenerate,facet3.getWorldRegion());
+  Facet1 facet1=regionData.getFacet(Facet1.class);
+  assertEquals(Region3i.createFromMinAndSize(new Vector3i(-2,-1,-2),new Vector3i(5,3,5)),facet1.getWorldRegion());
+  Facet2 facet2=regionData.getFacet(Facet2.class);
+  assertEquals(Region3i.createFromMinAndSize(new Vector3i(-4,-1,-4),new Vector3i(9,3,9)),facet2.getWorldRegion());
+}

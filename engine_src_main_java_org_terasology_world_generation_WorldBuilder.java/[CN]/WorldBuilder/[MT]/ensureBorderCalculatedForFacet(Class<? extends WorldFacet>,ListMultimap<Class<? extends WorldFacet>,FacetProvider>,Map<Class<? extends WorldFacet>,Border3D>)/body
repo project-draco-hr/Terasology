@@ -1,0 +1,34 @@
+{
+  if (!borders.containsKey(facet)) {
+    Border3D border=new Border3D(0,0,0);
+    for (    FacetProvider facetProvider : providerChains.values()) {
+      Requires requires=facetProvider.getClass().getAnnotation(Requires.class);
+      if (requires != null) {
+        for (        Facet requiredFacet : requires.value()) {
+          if (requiredFacet.value() == facet) {
+            Produces produces=facetProvider.getClass().getAnnotation(Produces.class);
+            Updates updates=facetProvider.getClass().getAnnotation(Updates.class);
+            FacetBorder requiredBorder=requiredFacet.border();
+            if (produces != null) {
+              for (              Class<? extends WorldFacet> producedFacet : produces.value()) {
+                ensureBorderCalculatedForFacet(producedFacet,providerChains,borders);
+                Border3D borderForProducedFacet=borders.get(producedFacet);
+                border=border.maxWith(borderForProducedFacet.getTop() + requiredBorder.top(),borderForProducedFacet.getBottom() + requiredBorder.bottom(),borderForProducedFacet.getSides() + requiredBorder.sides());
+              }
+            }
+            if (updates != null) {
+              for (              Facet producedFacetAnnotation : updates.value()) {
+                Class<? extends WorldFacet> producedFacet=producedFacetAnnotation.value();
+                FacetBorder borderForFacetAnnotation=producedFacetAnnotation.border();
+                ensureBorderCalculatedForFacet(producedFacet,providerChains,borders);
+                Border3D borderForProducedFacet=borders.get(producedFacet);
+                border=border.maxWith(borderForProducedFacet.getTop() + requiredBorder.top() + borderForFacetAnnotation.top(),borderForProducedFacet.getBottom() + requiredBorder.bottom() + borderForFacetAnnotation.bottom(),borderForProducedFacet.getSides() + requiredBorder.sides() + borderForFacetAnnotation.sides());
+              }
+            }
+          }
+        }
+      }
+    }
+    borders.put(facet,border);
+  }
+}
