@@ -1,9 +1,4 @@
 {
   DelayedActionComponent delayedComponent=entity.getComponent(DelayedActionComponent.class);
-  if (delayedComponent != null) {
-    return delayedComponent.getActionIdsWakeUp().containsKey(actionId);
-  }
- else {
-    return false;
-  }
+  return delayedComponent != null && delayedComponent.containsActionId(actionId);
 }
