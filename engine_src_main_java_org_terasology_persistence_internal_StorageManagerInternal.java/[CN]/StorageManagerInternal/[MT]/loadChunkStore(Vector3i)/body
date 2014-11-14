@@ -1,37 +1,19 @@
 {
-  ChunkStore store=pendingProcessingChunkStore.get(chunkPos);
-  if (store == null) {
-    byte[] chunkData=compressedChunkStore.get(chunkPos);
-    if (chunkData == null) {
-      if (storeChunksInZips) {
-        chunkData=loadChunkZip(chunkPos);
-      }
- else {
-        Path chunkPath=PathManager.getInstance().getCurrentSavePath().resolve(WORLDS_PATH).resolve(TerasologyConstants.MAIN_WORLD).resolve(getChunkFilename(chunkPos));
-        if (Files.isRegularFile(chunkPath)) {
-          try {
-            chunkData=Files.readAllBytes(chunkPath);
-          }
- catch (          IOException e) {
-            logger.error("Failed to load chunk {}",chunkPos,e);
-          }
-        }
-      }
+  byte[] chunkData=loadCompressedChunk(chunkPos);
+  ChunkStore store=null;
+  if (chunkData != null) {
+    TIntSet validRefs=null;
+    StoreMetadata table=storeMetadata.get(new ChunkStoreId(chunkPos));
+    if (table != null) {
+      validRefs=table.getExternalReferences();
     }
-    if (chunkData != null) {
-      TIntSet validRefs=null;
-      StoreMetadata table=storeMetadata.get(new ChunkStoreId(chunkPos));
-      if (table != null) {
-        validRefs=table.getExternalReferences();
-      }
-      ByteArrayInputStream bais=new ByteArrayInputStream(chunkData);
-      try (GZIPInputStream gzipIn=new GZIPInputStream(bais)){
-        EntityData.ChunkStore storeData=EntityData.ChunkStore.parseFrom(gzipIn);
-        store=new ChunkStoreInternal(storeData,validRefs,this,entityManager);
-      }
- catch (      IOException e) {
-        logger.error("Failed to read existing saved chunk {}",chunkPos);
-      }
+    ByteArrayInputStream bais=new ByteArrayInputStream(chunkData);
+    try (GZIPInputStream gzipIn=new GZIPInputStream(bais)){
+      EntityData.ChunkStore storeData=EntityData.ChunkStore.parseFrom(gzipIn);
+      store=new ChunkStoreInternal(storeData,validRefs,this,entityManager);
+    }
+ catch (    IOException e) {
+      logger.error("Failed to read existing saved chunk {}",chunkPos);
     }
   }
   return store;

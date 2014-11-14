@@ -1,9 +1,8 @@
 {
   EntityRef someEntity=entityManager.create();
-  EntityRef character=entityManager.create(new EntityRefComponent(someEntity));
-  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
-  store.setCharacter(character);
-  store.save();
+  character.addComponent(new EntityRefComponent(someEntity));
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
   someEntity.destroy();
   entityManager.create();
   PlayerStore restored=esm.loadPlayerStore(PLAYER_ID);

@@ -1,0 +1,18 @@
+{
+  unloadedAndSavingPlayerMap.clear();
+  Iterator<Map.Entry<String,EntityData.PlayerStore>> unsavedEntryIterator=unloadedAndUnsavedPlayerMap.entrySet().iterator();
+  while (unsavedEntryIterator.hasNext()) {
+    Map.Entry<String,EntityData.PlayerStore> entry=unsavedEntryIterator.next();
+    unloadedAndSavingPlayerMap.put(entry.getKey(),entry.getValue());
+    unsavedEntryIterator.remove();
+  }
+  for (  Client client : networkSystem.getPlayers()) {
+    unloadedAndSavingPlayerMap.remove(client.getId());
+    EntityRef character=client.getEntity().getComponent(ClientComponent.class).character;
+    unsavedEntities.remove(character);
+    saveTransactionBuilder.addPlayerStore(client.getId(),createPlayerStore(client,character,false));
+  }
+  for (  Map.Entry<String,EntityData.PlayerStore> entry : unloadedAndSavingPlayerMap.entrySet()) {
+    saveTransactionBuilder.addPlayerStore(entry.getKey(),entry.getValue());
+  }
+}

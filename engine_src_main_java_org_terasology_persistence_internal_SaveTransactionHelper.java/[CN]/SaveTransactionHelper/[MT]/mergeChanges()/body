@@ -1,0 +1,34 @@
+{
+  final Path sourceDirectory=storagePathProvider.getUnmergedChangesPath();
+  final Path targetDirectory=storagePathProvider.getStoragePathDirectory();
+  Files.walkFileTree(sourceDirectory,new SimpleFileVisitor<Path>(){
+    boolean atomicNotPossibleLogged=false;
+    @Override public FileVisitResult preVisitDirectory(    Path sourceSubDir,    BasicFileAttributes attrs) throws IOException {
+      Path targetSubDir=targetDirectory.resolve(sourceDirectory.relativize(sourceSubDir));
+      if (!Files.isDirectory(targetSubDir)) {
+        Files.createDirectory(targetSubDir);
+      }
+      return FileVisitResult.CONTINUE;
+    }
+    @Override public FileVisitResult visitFile(    Path sourcePath,    BasicFileAttributes attrs) throws IOException {
+      Path targetPath=targetDirectory.resolve(sourceDirectory.relativize(sourcePath));
+      try {
+        Files.deleteIfExists(targetPath);
+        Files.move(sourcePath,targetPath,StandardCopyOption.ATOMIC_MOVE);
+      }
+ catch (      AtomicMoveNotSupportedException e) {
+        if (!atomicNotPossibleLogged) {
+          logger.warn("Atomic move was not possible, doing it non atomically...");
+          atomicNotPossibleLogged=true;
+        }
+        Files.move(sourcePath,targetPath);
+      }
+      return FileVisitResult.CONTINUE;
+    }
+    @Override public FileVisitResult postVisitDirectory(    Path dir,    IOException exc) throws IOException {
+      Files.delete(dir);
+      return FileVisitResult.CONTINUE;
+    }
+  }
+);
+}

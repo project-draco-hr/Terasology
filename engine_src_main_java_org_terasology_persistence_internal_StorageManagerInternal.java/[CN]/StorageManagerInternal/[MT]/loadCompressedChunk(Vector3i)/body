@@ -1,0 +1,25 @@
+{
+  CompressedChunkBuilder disposedUnsavedChunk=unloadedAndUnsavedChunkMap.get(chunkPos);
+  if (disposedUnsavedChunk != null) {
+    return disposedUnsavedChunk.buildEncodedChunk();
+  }
+  CompressedChunkBuilder disposedSavingChunk=unloadedAndSavingChunkMap.get(chunkPos);
+  if (disposedSavingChunk != null) {
+    return disposedSavingChunk.buildEncodedChunk();
+  }
+  if (storeChunksInZips) {
+    return loadChunkZip(chunkPos);
+  }
+ else {
+    Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
+    if (Files.isRegularFile(chunkPath)) {
+      try {
+        return Files.readAllBytes(chunkPath);
+      }
+ catch (      IOException e) {
+        logger.error("Failed to load chunk {}",chunkPos,e);
+      }
+    }
+  }
+  return null;
+}
