@@ -32,7 +32,7 @@
       }
       return true;
     }
- catch (    IllegalArgumentException e) {
+ catch (    InvalidCommandCallException e) {
       String msgText=e.getLocalizedMessage();
       if (msgText != null && !msgText.isEmpty()) {
         if (callingClient.exists()) {
@@ -42,11 +42,6 @@
           addErrorMessage(e.getLocalizedMessage());
         }
       }
-      return false;
-    }
-catch (    Exception e) {
-      addErrorMessage("Error executing command '" + commandName + "': "+ e.getLocalizedMessage());
-      logger.error("Failed to execute command",e);
       return false;
     }
   }

@@ -2,12 +2,12 @@
   Object[] processedParams=new Object[method.getParameterTypes().length];
   if (isClientEntityRequired()) {
     if (params.size() + 1 != method.getParameterTypes().length) {
-      throw new IllegalArgumentException("Incorrect number of parameters, expected " + (method.getParameterTypes().length - 1));
+      throw new InvalidCommandCallException("Incorrect number of parameters, expected " + (method.getParameterTypes().length - 1));
     }
     processedParams[processedParams.length - 1]=callingClient;
   }
  else   if (params.size() != method.getParameterTypes().length) {
-    throw new IllegalArgumentException("Incorrect number of parameters, expected " + (method.getParameterTypes().length));
+    throw new InvalidCommandCallException("Incorrect number of parameters, expected " + (method.getParameterTypes().length));
   }
   for (int i=0; i < params.size(); ++i) {
     try {
@@ -23,15 +23,23 @@
       }
     }
  catch (    NumberFormatException e) {
-      throw new NumberFormatException("Bad argument '" + params.get(i) + "'");
+      throw new InvalidCommandCallException("Bad argument '" + params.get(i) + "'",e);
     }
   }
-  try {
-    Object result=method.invoke(provider,processedParams);
-    return (result != null) ? result.toString() : "";
+  if (clientHasPermissionToCallCommand(callingClient)) {
+    try {
+      Object result=method.invoke(provider,processedParams);
+      return (result != null) ? result.toString() : "";
+    }
+ catch (    InvocationTargetException ite) {
+      Throwable e=ite.getTargetException();
+      throw new InvalidCommandCallException(e.getLocalizedMessage(),e);
+    }
+catch (    IllegalArgumentException|IllegalAccessException e) {
+      throw new InvalidCommandCallException(e.getMessage(),e);
+    }
   }
- catch (  InvocationTargetException ite) {
-    Throwable e=ite.getTargetException();
-    throw new IllegalArgumentException(e.getLocalizedMessage(),e);
+ else {
+    throw new InvalidCommandCallException("You do not have enough permissions to execute this command");
   }
 }
