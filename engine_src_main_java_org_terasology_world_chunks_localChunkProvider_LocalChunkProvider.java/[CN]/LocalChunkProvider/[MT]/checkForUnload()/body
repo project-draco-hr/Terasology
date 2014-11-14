@@ -35,9 +35,7 @@
         for (        ChunkRelevanceRegion region : regions.values()) {
           region.chunkUnloaded(pos);
         }
-        ChunkStore store=storageManager.createChunkStoreForSave(chunk);
-        store.storeAllEntities();
-        store.save();
+        storageManager.deactivateChunk(chunk);
         chunk.dispose();
         try {
           unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));

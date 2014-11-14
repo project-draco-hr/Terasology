@@ -1,16 +1,5 @@
 {
-  EntityData.PlayerStore store=playerStores.get(playerId);
-  if (store == null) {
-    Path storePath=playersPath.resolve(playerId + PLAYER_STORE_EXTENSION);
-    if (Files.isRegularFile(storePath)) {
-      try (InputStream inputStream=new BufferedInputStream(Files.newInputStream(storePath))){
-        store=EntityData.PlayerStore.parseFrom(inputStream);
-      }
- catch (      IOException e) {
-        logger.error("Failed to load player data for {}",playerId,e);
-      }
-    }
-  }
+  EntityData.PlayerStore store=loadPlayerStoreData(playerId);
   if (store != null) {
     TIntSet validRefs=null;
     StoreMetadata table=storeMetadata.get(new PlayerStoreId(playerId));

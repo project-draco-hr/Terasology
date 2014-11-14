@@ -1,0 +1,13 @@
+{
+  if (saveTransaction != null) {
+    SaveTransactionResult result=saveTransaction.getResult();
+    if (result != null) {
+      Throwable t=saveTransaction.getResult().getCatchedThrowable();
+      if (t != null) {
+        throw new RuntimeException("Saving failed",t);
+      }
+      saveTransaction=null;
+    }
+    unloadedAndSavingChunkMap.clear();
+  }
+}

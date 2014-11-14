@@ -1,0 +1,22 @@
+{
+  EntityStorer storer=new EntityStorer(entityManager);
+  for (  EntityRef entityRef : entitiesToSave) {
+    if (entityRef.isPersistent()) {
+      storer.store(entityRef,false);
+    }
+  }
+  EntityData.EntityStore entityStore=storer.finaliseStore();
+  TIntSet externalRefs=storer.getExternalReferences();
+  Vector3i chunkPosition=chunk.getPosition();
+  ChunkImpl chunkImpl=(ChunkImpl)chunk;
+  boolean viaSnapshot=!deactivate;
+  if (viaSnapshot) {
+    chunkImpl.createSnapshot();
+  }
+  CompressedChunkBuilder compressedChunkBuilder=new CompressedChunkBuilder(entityStore,chunkImpl,viaSnapshot);
+  if (externalRefs.size() > 0) {
+    StoreMetadata metadata=new StoreMetadata(new ChunkStoreId(chunkPosition),externalRefs);
+    indexStoreMetadata(metadata);
+  }
+  return compressedChunkBuilder;
+}

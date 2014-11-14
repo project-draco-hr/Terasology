@@ -1,16 +1,22 @@
 {
   Chunk chunk=new ChunkImpl(CHUNK_POS);
   chunk.setBlock(0,0,0,testBlock);
-  ChunkStore chunkStore=esm.createChunkStoreForSave(chunk);
-  chunkStore.save();
-  esm.createGlobalStoreForSave().save();
-  esm.flush();
+  chunk.setBlock(0,4,2,testBlock2);
+  ChunkProvider chunkProvider=mock(ChunkProvider.class);
+  when(chunkProvider.getAllChunks()).thenReturn(Arrays.asList(chunk));
+  when(chunkProvider.getChunk(Mockito.any(Vector3i.class))).thenReturn(chunk);
+  CoreRegistry.put(ChunkProvider.class,chunkProvider);
+  boolean storeChunkInZips=true;
+  esm.setStoreChunksInZips(storeChunkInZips);
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
+  StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,storeChunkInZips);
   newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);
   assertNotNull(restored);
   assertEquals(CHUNK_POS,restored.getChunkPosition());
   assertNotNull(restored.getChunk());
   assertEquals(testBlock,restored.getChunk().getBlock(0,0,0));
+  assertEquals(testBlock2,restored.getChunk().getBlock(0,4,2));
 }

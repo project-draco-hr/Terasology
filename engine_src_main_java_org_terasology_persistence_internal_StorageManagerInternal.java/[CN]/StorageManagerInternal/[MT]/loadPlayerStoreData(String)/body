@@ -1,0 +1,20 @@
+{
+  EntityData.PlayerStore disposedUnsavedPlayer=unloadedAndUnsavedPlayerMap.get(playerId);
+  if (disposedUnsavedPlayer != null) {
+    return disposedUnsavedPlayer;
+  }
+  EntityData.PlayerStore disposedSavingPlayer=unloadedAndSavingPlayerMap.get(playerId);
+  if (disposedSavingPlayer != null) {
+    return disposedSavingPlayer;
+  }
+  Path storePath=storagePathProvider.getPlayerFilePath(playerId);
+  if (Files.isRegularFile(storePath)) {
+    try (InputStream inputStream=new BufferedInputStream(Files.newInputStream(storePath))){
+      return EntityData.PlayerStore.parseFrom(inputStream);
+    }
+ catch (    IOException e) {
+      logger.error("Failed to load player data for {}",playerId,e);
+    }
+  }
+  return null;
+}
