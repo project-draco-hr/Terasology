@@ -1,0 +1,9 @@
+{
+  Map<Vector3i,Boolean> result=Maps.newLinkedHashMap();
+  for (  Entry<Vector3i,Boolean> entry : relData.entrySet()) {
+    Vector3i relPos=entry.getKey();
+    Vector3i worldPos=relativeToWorld(relPos.x,relPos.y,relPos.z);
+    result.put(worldPos,entry.getValue());
+  }
+  return result;
+}

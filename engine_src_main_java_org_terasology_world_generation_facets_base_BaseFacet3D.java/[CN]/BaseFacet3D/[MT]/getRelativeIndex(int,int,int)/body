@@ -1,6 +1,6 @@
 {
   if (!relativeRegion.encompasses(x,y,z)) {
-    throw new ArrayIndexOutOfBoundsException(String.format("Out of bounds: (%d, %d, %d) for region %s",x,y,z,relativeRegion.toString()));
+    throw new IllegalArgumentException(String.format("Out of bounds: (%d, %d, %d) for region %s",x,y,z,relativeRegion.toString()));
   }
   return x - relativeRegion.minX() + relativeRegion.sizeX() * (y - relativeRegion.minY() + relativeRegion.sizeY() * (z - relativeRegion.minZ()));
 }
