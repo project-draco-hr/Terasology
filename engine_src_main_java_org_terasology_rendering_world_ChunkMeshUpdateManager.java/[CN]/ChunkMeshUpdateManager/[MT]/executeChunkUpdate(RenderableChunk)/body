@@ -1,4 +1,10 @@
 {
   chunksProcessing.add(c);
-  CoreRegistry.get(GameEngine.class).submitTask("Chunk Update",new ChunkUpdater(c,tessellator,worldProvider,this));
+  ChunkUpdateTask task=new ChunkUpdateTask(c,tessellator,worldProvider,this);
+  try {
+    chunkUpdater.put(task);
+  }
+ catch (  InterruptedException e) {
+    logger.error("Failed to enqueue task {}",task,e);
+  }
 }

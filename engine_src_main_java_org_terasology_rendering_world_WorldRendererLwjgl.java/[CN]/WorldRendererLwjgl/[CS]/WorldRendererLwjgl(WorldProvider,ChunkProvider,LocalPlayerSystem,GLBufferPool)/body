@@ -4,7 +4,6 @@
   bulletPhysics=new BulletPhysics(worldProvider);
   chunkTessellator=new ChunkTessellator(bufferPool);
   skysphere=new Skysphere();
-  chunkMeshUpdateManager=new ChunkMeshUpdateManager(chunkTessellator,worldProvider);
   systemManager=CoreRegistry.get(ComponentSystemManager.class);
   Camera localPlayerCamera;
   if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
@@ -14,6 +13,7 @@
     localPlayerCamera=new PerspectiveCamera(CoreRegistry.get(Config.class).getRendering().getCameraSettings());
   }
   activeCamera=localPlayerCamera;
+  chunkMeshUpdateManager=new ChunkMeshUpdateManager(chunkTessellator,worldProvider,activeCamera.getPosition());
   mainDirectionalLight.lightType=LightComponent.LightType.DIRECTIONAL;
   mainDirectionalLight.lightColorAmbient=new Vector3f(1.0f,1.0f,1.0f);
   mainDirectionalLight.lightColorDiffuse=new Vector3f(1.0f,1.0f,1.0f);
