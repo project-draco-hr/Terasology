@@ -21,7 +21,7 @@
   EntityStorer storer=new EntityStorer(entityManager);
   storer.store(character,PlayerStoreInternal.CHARACTER,deactivate);
   playerEntityStore.setStore(storer.finaliseStore());
-  TIntSet externalReference=storer.getExternalReferences();
+  TLongSet externalReference=storer.getExternalReferences();
   if (externalReference.size() > 0) {
     StoreMetadata metadata=new StoreMetadata(new PlayerStoreId(playerId),externalReference);
     indexStoreMetadata(metadata);

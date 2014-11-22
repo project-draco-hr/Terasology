@@ -1,15 +1,7 @@
 {
   PersistedDataArray array=data.getAsArray();
   List<EntityRef> result=Lists.newArrayListWithCapacity(array.size());
-  TIntIterator iterator=array.getAsIntegerArray().iterator();
-  while (iterator.hasNext()) {
-    int item=iterator.next();
-    if (refInterceptor.get() == null || refInterceptor.get().loadingRef(item)) {
-      result.add(entityManager.createEntityRefWithId(item));
-    }
- else {
-      result.add(EntityRef.NULL);
-    }
-  }
+  addEntitiesForIntArray(result,array);
+  addEntitiesFromLongArray(result,array);
   return result;
 }

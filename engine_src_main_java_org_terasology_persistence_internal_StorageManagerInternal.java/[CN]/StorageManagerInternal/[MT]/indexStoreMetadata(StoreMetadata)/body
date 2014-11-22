@@ -1,8 +1,8 @@
 {
   storeMetadata.put(metadata.getId(),metadata);
-  TIntIterator iterator=metadata.getExternalReferences().iterator();
+  TLongIterator iterator=metadata.getExternalReferences().iterator();
   while (iterator.hasNext()) {
-    int refId=iterator.next();
+    long refId=iterator.next();
     List<StoreMetadata> tables=externalRefHolderLookup.get(refId);
     if (tables == null) {
       tables=Lists.newArrayList();

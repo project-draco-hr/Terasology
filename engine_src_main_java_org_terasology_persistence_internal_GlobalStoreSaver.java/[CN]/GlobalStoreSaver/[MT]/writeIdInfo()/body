@@ -1,14 +1,14 @@
 {
   store.setNextEntityId(entityManager.getNextId());
-  entityManager.getFreedIds().forEach(new TIntProcedure(){
-    public boolean execute(    int i){
+  entityManager.getFreedIds().forEach(new TLongProcedure(){
+    public boolean execute(    long i){
       store.addFreedEntityId(i);
       return true;
     }
   }
 );
-  nonPersistentIds.forEach(new TIntProcedure(){
-    public boolean execute(    int i){
+  nonPersistentIds.forEach(new TLongProcedure(){
+    public boolean execute(    long i){
       store.addFreedEntityId(i);
       return true;
     }

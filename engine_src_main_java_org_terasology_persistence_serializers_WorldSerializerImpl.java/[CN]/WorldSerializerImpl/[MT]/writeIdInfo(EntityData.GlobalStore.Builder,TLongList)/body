@@ -1,0 +1,17 @@
+{
+  world.setNextEntityId(entityManager.getNextId());
+  entityManager.getFreedIds().forEach(new TLongProcedure(){
+    public boolean execute(    long i){
+      world.addFreedEntityId(i);
+      return true;
+    }
+  }
+);
+  nonPersistedIds.forEach(new TLongProcedure(){
+    public boolean execute(    long i){
+      world.addFreedEntityId(i);
+      return true;
+    }
+  }
+);
+}
