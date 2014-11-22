@@ -2,6 +2,8 @@
   Chunk chunk=lightMerger.completeMerge();
   if (chunk != null) {
     chunk.markReady();
+    updateAdjacentChunksReadyFieldOf(chunk);
+    updateAdjacentChunksReadyFieldOfAdjChunks(chunk);
     listener.onChunkReady(chunk.getPosition());
     worldEntity.send(new OnChunkLoaded(chunk.getPosition()));
   }

@@ -9,6 +9,7 @@
         Chunk oldChunk=chunkCache.put(chunk.getPosition(),chunk);
         if (oldChunk != null) {
           oldChunk.dispose();
+          updateAdjacentChunksReadyFieldOfAdjChunks(chunk);
         }
       }
     }

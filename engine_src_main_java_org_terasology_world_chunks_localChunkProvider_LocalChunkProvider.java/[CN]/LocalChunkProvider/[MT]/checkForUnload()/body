@@ -37,6 +37,7 @@
         }
         storageManager.deactivateChunk(chunk);
         chunk.dispose();
+        updateAdjacentChunksReadyFieldOfAdjChunks(chunk);
         try {
           unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));
         }

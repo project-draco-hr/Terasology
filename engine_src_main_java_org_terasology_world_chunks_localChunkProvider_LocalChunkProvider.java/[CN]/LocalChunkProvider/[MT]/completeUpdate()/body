@@ -5,6 +5,8 @@
     chunk.lock();
     try {
       chunk.markReady();
+      updateAdjacentChunksReadyFieldOf(chunk);
+      updateAdjacentChunksReadyFieldOfAdjChunks(chunk);
       if (!readyChunkInfo.isNewChunk()) {
         PerformanceMonitor.startActivity("Generating Block Entities");
         generateBlockEntities(chunk);
