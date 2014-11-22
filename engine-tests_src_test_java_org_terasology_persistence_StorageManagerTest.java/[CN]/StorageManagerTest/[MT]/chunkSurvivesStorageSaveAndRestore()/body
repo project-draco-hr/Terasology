@@ -2,6 +2,7 @@
   Chunk chunk=new ChunkImpl(CHUNK_POS);
   chunk.setBlock(0,0,0,testBlock);
   chunk.setBlock(0,4,2,testBlock2);
+  chunk.markReady();
   ChunkProvider chunkProvider=mock(ChunkProvider.class);
   when(chunkProvider.getAllChunks()).thenReturn(Arrays.asList(chunk));
   when(chunkProvider.getChunk(Mockito.any(Vector3i.class))).thenReturn(chunk);
