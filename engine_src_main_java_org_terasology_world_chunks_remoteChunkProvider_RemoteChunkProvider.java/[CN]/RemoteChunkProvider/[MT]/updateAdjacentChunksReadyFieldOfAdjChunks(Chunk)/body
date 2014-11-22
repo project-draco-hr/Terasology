@@ -1,0 +1,10 @@
+{
+  Vector3i centerChunkPos=chunkInCenter.getPosition();
+  for (  Side side : Side.values()) {
+    Vector3i adjChunkPos=side.getAdjacentPos(centerChunkPos);
+    Chunk adjChunk=chunkCache.get(adjChunkPos);
+    if (adjChunk != null) {
+      updateAdjacentChunksReadyFieldOf(adjChunk);
+    }
+  }
+}
