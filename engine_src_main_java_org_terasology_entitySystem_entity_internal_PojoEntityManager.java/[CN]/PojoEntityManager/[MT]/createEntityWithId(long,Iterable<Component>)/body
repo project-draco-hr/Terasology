@@ -1,14 +1,15 @@
 {
-  if (!freedIds.contains(id)) {
-    for (    Component c : components) {
-      store.put(id,c);
-    }
-    loadedIds.add(id);
-    EntityRef entity=createEntityRef(id);
-    if (eventSystem != null) {
-      eventSystem.send(entity,OnActivatedComponent.newInstance());
-    }
-    return entity;
+  if (id >= nextEntityId) {
+    logger.error("Prevented attempt to create entity with an invalid id.");
+    return EntityRef.NULL;
   }
-  return EntityRef.NULL;
+  for (  Component c : components) {
+    store.put(id,c);
+  }
+  loadedIds.add(id);
+  EntityRef entity=createEntityRef(id);
+  if (eventSystem != null) {
+    eventSystem.send(entity,OnActivatedComponent.newInstance());
+  }
+  return entity;
 }
