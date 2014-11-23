@@ -6,19 +6,4 @@
   for (  EntityData.Entity entityData : globalStore.getEntityList()) {
     entitySerializer.deserialize(entityData);
   }
-  refTables=Lists.newArrayListWithCapacity(globalStore.getStoreReferenceSetCount());
-  for (  EntityData.EntityStoreMetadata metadataData : globalStore.getStoreReferenceSetList()) {
-    TLongSet refs=new TLongHashSet(metadataData.getReferenceList());
-    StoreId id;
-switch (metadataData.getType()) {
-case ChunkStoreType:
-      id=new ChunkStoreId(new Vector3i(metadataData.getStoreIntegerId(0),metadataData.getStoreIntegerId(1),metadataData.getStoreIntegerId(2)));
-    break;
-default :
-  id=new PlayerStoreId(metadataData.getStoreStringId());
-break;
-}
-StoreMetadata metadata=new StoreMetadata(id,refs);
-refTables.add(metadata);
-}
 }

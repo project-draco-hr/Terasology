@@ -2,11 +2,6 @@
   TIntIterator iterator=array.getAsIntegerArray().iterator();
   while (iterator.hasNext()) {
     int item=iterator.next();
-    if (refInterceptor.get() == null || refInterceptor.get().loadingRef(item)) {
-      result.add(entityManager.createEntityRefWithId(item));
-    }
- else {
-      result.add(EntityRef.NULL);
-    }
+    result.add(entityManager.createEntityRefWithId(item));
   }
 }

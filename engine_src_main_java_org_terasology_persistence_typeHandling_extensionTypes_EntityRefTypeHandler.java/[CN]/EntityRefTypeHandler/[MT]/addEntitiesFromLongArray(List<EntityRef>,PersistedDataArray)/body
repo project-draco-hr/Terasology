@@ -2,11 +2,6 @@
   TLongIterator iterator=array.getAsLongArray().iterator();
   while (iterator.hasNext()) {
     long item=iterator.next();
-    if (refInterceptor.get() == null || refInterceptor.get().loadingRef(item)) {
-      result.add(entityManager.createEntityRefWithId(item));
-    }
- else {
-      result.add(EntityRef.NULL);
-    }
+    result.add(entityManager.createEntityRefWithId(item));
   }
 }

@@ -1,12 +1,7 @@
 {
   EntityData.PlayerStore store=loadPlayerStoreData(playerId);
   if (store != null) {
-    TLongSet validRefs=null;
-    StoreMetadata table=storeMetadata.get(new PlayerStoreId(playerId));
-    if (table != null) {
-      validRefs=table.getExternalReferences();
-    }
-    return new PlayerStoreInternal(playerId,store,validRefs,this,entityManager);
+    return new PlayerStoreInternal(playerId,store,this,entityManager);
   }
   return new PlayerStoreInternal(playerId,this,entityManager);
 }
