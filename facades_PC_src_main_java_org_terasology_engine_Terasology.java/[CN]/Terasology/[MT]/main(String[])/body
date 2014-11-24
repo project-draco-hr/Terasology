@@ -1,24 +1,25 @@
 {
+  handlePrintUsageRequest(args);
   boolean crashReportEnabled=true;
   boolean loadLastGame=false;
   try {
     boolean isHeadless=false;
     Path homePath=null;
     for (    String arg : args) {
-      if (arg.startsWith(HOME_ARG)) {
-        homePath=Paths.get(arg.substring(HOME_ARG.length()));
+      if (arg.startsWith(USE_SPECIFIED_DIR_AS_HOME)) {
+        homePath=Paths.get(arg.substring(USE_SPECIFIED_DIR_AS_HOME.length()));
       }
- else       if (arg.equals(LOCAL_ARG)) {
+ else       if (arg.equals(USE_CURRENT_DIR_AS_HOME)) {
         homePath=Paths.get("");
       }
- else       if (arg.equals(HEADLESS_ARG)) {
+ else       if (arg.equals(START_HEADLESS)) {
         isHeadless=true;
         crashReportEnabled=false;
       }
- else       if (arg.equals(NO_CRASH_REPORT_ARG)) {
+ else       if (arg.equals(NO_CRASH_REPORT)) {
         crashReportEnabled=false;
       }
- else       if (arg.equals(LOAD_LAST_GAME_ARG)) {
+ else       if (arg.equals(LOAD_LAST_GAME)) {
         loadLastGame=true;
       }
     }
