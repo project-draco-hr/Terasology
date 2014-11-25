@@ -1,0 +1,9 @@
+{
+  screen.onClosed();
+  if (sendEvents) {
+    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+    if (localPlayer != null) {
+      localPlayer.getClientEntity().send(new ScreenLayerClosedEvent(screenUri));
+    }
+  }
+}
