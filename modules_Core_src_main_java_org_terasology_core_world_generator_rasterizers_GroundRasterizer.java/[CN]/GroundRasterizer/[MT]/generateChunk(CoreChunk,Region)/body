@@ -1,4 +1,5 @@
 {
+  LiquidData waterLiquid=new LiquidData(LiquidType.WATER,LiquidData.MAX_LIQUID_DEPTH);
   SurfaceHeightFacet surfaceHeightData=chunkRegion.getFacet(SurfaceHeightFacet.class);
   Vector3i chunkOffset=chunk.getChunkWorldOffset();
   for (int x=0; x < chunk.getChunkSizeX(); ++x) {
@@ -10,6 +11,7 @@
       }
       for (; y < chunk.getChunkSizeY() && y + chunkOffset.y <= 32; ++y) {
         chunk.setBlock(x,y,z,water);
+        chunk.setLiquid(x,y,z,waterLiquid);
       }
     }
   }

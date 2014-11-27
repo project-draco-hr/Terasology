@@ -1,4 +1,5 @@
 {
+  LiquidData waterLiquid=new LiquidData(LiquidType.WATER,LiquidData.MAX_LIQUID_DEPTH);
   DensityFacet solidityFacet=chunkRegion.getFacet(DensityFacet.class);
   SurfaceHeightFacet surfaceFacet=chunkRegion.getFacet(SurfaceHeightFacet.class);
   BiomeFacet biomeFacet=chunkRegion.getFacet(BiomeFacet.class);
@@ -23,6 +24,7 @@
       }
  else       if (posY <= 32) {
         chunk.setBlock(pos,water);
+        chunk.setLiquid(pos,waterLiquid);
       }
     }
   }
