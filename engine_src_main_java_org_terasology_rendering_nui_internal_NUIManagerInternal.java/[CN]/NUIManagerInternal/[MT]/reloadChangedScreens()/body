@@ -1,0 +1,35 @@
+{
+  while (true) {
+    WatchKey key=autoReloadWatchService.poll();
+    if (key == null) {
+      return;
+    }
+    Path directory=watchKeyToPathMap.get(key);
+    for (    WatchEvent<?> event : key.pollEvents()) {
+      WatchEvent.Kind<?> kind=event.kind();
+      Path relativePath=(Path)event.context();
+      if (kind == StandardWatchEventKinds.OVERFLOW) {
+        logger.warn("Can't keep up with screen changes");
+        continue;
+      }
+ else       if (kind == StandardWatchEventKinds.ENTRY_MODIFY || kind == StandardWatchEventKinds.ENTRY_CREATE) {
+        Path fullPath=directory.resolve(relativePath);
+        logger.info("File in folder with screens changed: {}",fullPath);
+        AssetUri uri=filePathToAssetUriMap.get(fullPath);
+        if (uri != null) {
+          UIData uiData=CoreRegistry.get(AssetManager.class).loadAssetData(uri,UIData.class);
+          if (uiData != null) {
+            CoreRegistry.get(AssetManager.class).generateAsset(uri,uiData);
+            closeScreenWithoutEvent(uri);
+            pushScreen(uri);
+            logger.info("Reloaded screen {}",uri);
+          }
+ else {
+            logger.error("Failed to reload screen {}",uri);
+          }
+        }
+      }
+    }
+    key.reset();
+  }
+}
