@@ -1,3 +1,28 @@
 {
+  Stopwatch totalInitTime=Stopwatch.createStarted();
   this.subsystems=Queues.newArrayDeque(subsystems);
+  try {
+    logger.info("Initializing Terasology...");
+    logEnvironmentInfo();
+    initConfig();
+    preInitSubsystems();
+    verifyRequiredSystemIsRegistered(Time.class);
+    time=(EngineTime)CoreRegistry.get(Time.class);
+    GameThread.setToCurrentThread();
+    initManagers();
+    postInitSubsystems();
+    verifyRequiredSystemIsRegistered(DisplayDevice.class);
+    verifyRequiredSystemIsRegistered(RenderingSubsystemFactory.class);
+    verifyRequiredSystemIsRegistered(InputSystem.class);
+    initAssets();
+    initAdvancedMonitor();
+    engineState=EngineState.INITIALIZED;
+  }
+ catch (  RuntimeException e) {
+    logger.error("Failed to initialise Terasology",e);
+    cleanup();
+    throw e;
+  }
+  double seconds=0.001 * totalInitTime.elapsed(TimeUnit.MILLISECONDS);
+  logger.info("Initialization completed in {}sec.",String.format("%.2f",seconds));
 }

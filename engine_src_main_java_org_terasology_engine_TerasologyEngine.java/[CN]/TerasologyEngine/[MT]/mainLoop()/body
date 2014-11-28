@@ -2,7 +2,7 @@
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   DisplayDevice display=CoreRegistry.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
-  while (running && !display.isCloseRequested()) {
+  while (engineState == EngineState.RUNNING && !display.isCloseRequested()) {
     if (!display.isActive() && isHibernationAllowed()) {
       time.setPaused(true);
       Iterator<Float> updateCycles=time.tick();
@@ -52,5 +52,5 @@
     PerformanceMonitor.startActivity("Other");
   }
   PerformanceMonitor.endActivity();
-  running=false;
+  engineState=EngineState.INITIALIZED;
 }
