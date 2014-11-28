@@ -5,7 +5,7 @@
   chunk.markReady();
   ChunkProvider chunkProvider=mock(ChunkProvider.class);
   when(chunkProvider.getAllChunks()).thenReturn(Arrays.asList(chunk));
-  when(chunkProvider.getChunk(Mockito.any(Vector3i.class))).thenReturn(chunk);
+  when(chunkProvider.getChunk(Matchers.any(Vector3i.class))).thenReturn(chunk);
   CoreRegistry.put(ChunkProvider.class,chunkProvider);
   boolean storeChunkInZips=true;
   esm.setStoreChunksInZips(storeChunkInZips);
