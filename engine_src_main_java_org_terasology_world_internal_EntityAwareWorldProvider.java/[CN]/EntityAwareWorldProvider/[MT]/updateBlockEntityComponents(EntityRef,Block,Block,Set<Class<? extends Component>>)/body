@@ -25,7 +25,7 @@
   blockEntity.saveComponent(blockComponent);
   HealthComponent health=blockEntity.getComponent(HealthComponent.class);
   if (health == null && type.isDestructible()) {
-    blockEntity.addComponent(new HealthComponent(type.getHardness(),2.0f,1.0f));
+    blockEntity.addComponent(new HealthComponent(type.getHardness(),type.getHardness() / BLOCK_REGEN_SECONDS,1.0f));
   }
  else   if (health != null && !type.isDestructible()) {
     blockEntity.removeComponent(HealthComponent.class);

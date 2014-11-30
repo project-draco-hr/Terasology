@@ -14,9 +14,6 @@
   PerformanceMonitor.startActivity("Update Close Chunks");
   updateChunksInProximity(calculateViewRegion(config.getRendering().getViewDistance()));
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Skysphere");
-  skysphere.update();
-  PerformanceMonitor.endActivity();
   if (activeCamera != null) {
     activeCamera.update(delta);
   }
@@ -24,8 +21,5 @@
     positionLightCamera();
     lightCamera.update(delta);
   }
-  PerformanceMonitor.startActivity("Fire Events");
-  worldTimeEventManager.fireWorldTimeEvents();
-  PerformanceMonitor.endActivity();
   smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),delta);
 }

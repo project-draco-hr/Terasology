@@ -1,0 +1,16 @@
+{
+  boolean permissionGiven=false;
+  for (  EntityRef client : entityManager.getEntitiesWith(ClientComponent.class)) {
+    ClientComponent clientComponent=client.getComponent(ClientComponent.class);
+    if (clientHasName(clientComponent,player)) {
+      permissionManager.addPermission(clientComponent.character,permission);
+      permissionGiven=true;
+    }
+  }
+  if (permissionGiven) {
+    return "Permission " + permission + " added to player "+ player;
+  }
+ else {
+    return "Unable to find player " + player;
+  }
+}

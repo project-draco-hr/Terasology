@@ -1,9 +1,8 @@
 {
   Vector3f loc=new Vector3f(1,2,3);
-  PlayerStore store=esm.createPlayerStoreForSave(PLAYER_ID);
-  store.setRelevanceLocation(loc);
-  assertEquals(loc,store.getRelevanceLocation());
-  store.save();
+  character.addComponent(new LocationComponent(loc));
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
   PlayerStore restored=esm.loadPlayerStore(PLAYER_ID);
   assertEquals(loc,restored.getRelevanceLocation());
 }

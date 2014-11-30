@@ -18,8 +18,9 @@
     CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Failed to resolve world generator."));
     return true;
   }
-  StorageManager storageManager=CoreRegistry.put(StorageManager.class,new StorageManagerInternal(CoreRegistry.get(ModuleManager.class).getEnvironment(),(EngineEntityManager)CoreRegistry.get(EntityManager.class)));
-  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,worldGenerator);
+  EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
+  StorageManager storageManager=CoreRegistry.put(StorageManager.class,new StorageManagerInternal(CoreRegistry.get(ModuleManager.class).getEnvironment(),entityManager));
+  LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,entityManager,worldGenerator);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);
@@ -27,6 +28,9 @@
   chunkProvider.setBlockEntityRegistry(entityWorldProvider);
   CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
   CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
+  DefaultCelestialSystem celestialSystem=new DefaultCelestialSystem(new BasicCelestialModel());
+  CoreRegistry.put(CelestialSystem.class,celestialSystem);
+  CoreRegistry.get(ComponentSystemManager.class).register(celestialSystem);
   RenderingSubsystemFactory engineSubsystemFactory=CoreRegistry.get(RenderingSubsystemFactory.class);
   WorldRenderer worldRenderer=engineSubsystemFactory.createWorldRenderer(worldProvider,chunkProvider,CoreRegistry.get(LocalPlayerSystem.class));
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
@@ -34,6 +38,5 @@
   CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
   CoreRegistry.put(PhysicsEngine.class,worldRenderer.getBulletRenderer());
   CoreRegistry.put(Physics.class,worldRenderer.getBulletRenderer());
-  worldProvider.getTime().setMilliseconds(worldInfo.getTime());
   return true;
 }

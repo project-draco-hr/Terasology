@@ -8,7 +8,8 @@
     @Override public void onActivated(    UIWidget button){
       String name=nameText.getText();
       String address=addressText.getText();
-      Integer port=Ints.tryParse(portText.getText());
+      Integer portBoxed=Ints.tryParse(portText.getText());
+      int port=(portBoxed != null) ? portBoxed.intValue() : TerasologyConstants.DEFAULT_PORT;
       if (serverInfo == null) {
         serverInfo=new ServerInfo(name,address,port);
         config.getNetwork().add(serverInfo);

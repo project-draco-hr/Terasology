@@ -1,0 +1,16 @@
+{
+  Path logPath=Paths.get(".");
+  try {
+    Path gameLogPath=PathManager.getInstance().getLogPath();
+    if (gameLogPath != null) {
+      logPath=gameLogPath;
+    }
+  }
+ catch (  Exception pathManagerConstructorFailure) {
+    e.addSuppressed(pathManagerConstructorFailure);
+  }
+  if (crashReportEnabled) {
+    Path logFile=logPath.resolve("Terasology.log");
+    CrashReporter.report(e,logFile);
+  }
+}

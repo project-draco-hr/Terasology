@@ -1,29 +1,12 @@
 {
   super.init(gameEngine);
-  GameManifest gameManifest=new GameManifest();
-  Config config=CoreRegistry.get(Config.class);
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  for (  Name moduleName : config.getDefaultModSelection().listModules()) {
-    Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
-    if (module != null) {
-      gameManifest.addModule(module.getId(),module.getVersion());
-    }
+  GameManifest gameManifest=null;
+  List<GameInfo> savedGames=GameProvider.getSavedGames();
+  if (savedGames.size() > 0) {
+    gameManifest=savedGames.get(0).getManifest();
   }
-  WorldGenerationConfig worldGenConfig=config.getWorldGeneration();
-  if (!worldGenConfig.getDefaultGenerator().isValid()) {
-    for (    Name moduleName : config.getDefaultModSelection().listModules()) {
-      Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
-      if (moduleManager.isGameplayModule(module)) {
-        String defaultWorldGenerator=module.getMetadata().getExtension(ModuleManager.DEFAULT_WORLD_GENERATOR_EXT,String.class);
-        worldGenConfig.setDefaultGenerator(new SimpleUri(defaultWorldGenerator));
-        break;
-      }
-    }
+ else {
+    gameManifest=createGameManifest();
   }
-  SimpleUri worldGeneratorUri=worldGenConfig.getDefaultGenerator();
-  gameManifest.setTitle(worldGenConfig.getWorldTitle());
-  gameManifest.setSeed(worldGenConfig.getDefaultSeed());
-  WorldInfo worldInfo=new WorldInfo(TerasologyConstants.MAIN_WORLD,gameManifest.getSeed(),(long)(WorldTime.DAY_LENGTH * 0.025f),worldGeneratorUri);
-  gameManifest.addWorld(worldInfo);
   gameEngine.changeState(new StateLoading(gameManifest,NetworkMode.LISTEN_SERVER));
 }

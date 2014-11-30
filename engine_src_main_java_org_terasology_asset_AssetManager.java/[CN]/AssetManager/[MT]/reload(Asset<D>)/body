@@ -1,6 +1,11 @@
 {
   AssetData data=loadAssetData(asset.getURI(),false);
   if (data != null) {
-    asset.reload((D)data);
+    try {
+      asset.reload((D)data);
+    }
+ catch (    Exception e) {
+      logger.error("Could not reload asset " + asset.getURI(),e);
+    }
   }
 }

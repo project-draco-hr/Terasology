@@ -1,0 +1,11 @@
+{
+  GlobalStoreSaver globalStoreSaver=new GlobalStoreSaver(entityManager,prefabSerializer);
+  for (  StoreMetadata table : storeMetadata.values()) {
+    globalStoreSaver.addStoreMetadata(table);
+  }
+  for (  EntityRef entity : unsavedEntities) {
+    globalStoreSaver.store(entity);
+  }
+  EntityData.GlobalStore globalStore=globalStoreSaver.save();
+  transactionBuilder.setGlobalStore(globalStore);
+}

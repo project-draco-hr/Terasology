@@ -1,9 +1,10 @@
 {
   byte[] chunkData=null;
-  Path chunkPath=getWorldPath().resolve(getChunkZipFilename(getChunkZipPosition(chunkPos)));
+  Vector3i chunkZipPos=storagePathProvider.getChunkZipPosition(chunkPos);
+  Path chunkPath=storagePathProvider.getChunkZipPath(chunkZipPos);
   if (Files.isRegularFile(chunkPath)) {
     try (FileSystem chunkZip=FileSystems.newFileSystem(chunkPath,null)){
-      Path targetChunk=chunkZip.getPath(getChunkFilename(chunkPos));
+      Path targetChunk=chunkZip.getPath(storagePathProvider.getChunkFilename(chunkPos));
       if (Files.isRegularFile(targetChunk)) {
         chunkData=Files.readAllBytes(targetChunk);
       }

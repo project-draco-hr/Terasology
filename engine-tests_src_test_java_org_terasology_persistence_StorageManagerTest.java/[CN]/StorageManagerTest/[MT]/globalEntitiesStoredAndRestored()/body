@@ -1,10 +1,8 @@
 {
   EntityRef entity=entityManager.create(new StringComponent("Test"));
   int entityId=entity.getId();
-  GlobalStore globalStore=esm.createGlobalStoreForSave();
-  globalStore.store(entity);
-  globalStore.save();
-  esm.flush();
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
   StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
   newSM.loadGlobalStore();

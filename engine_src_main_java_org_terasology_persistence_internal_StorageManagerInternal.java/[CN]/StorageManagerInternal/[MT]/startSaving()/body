@@ -1,0 +1,17 @@
+{
+  logger.info("Saving - Creating game snapshot");
+  PerformanceMonitor.startActivity("Auto Saving");
+  ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
+  for (  ComponentSystem sys : componentSystemManager.iterateAll()) {
+    sys.preSave();
+  }
+  saveRequested=false;
+  saveTransaction=createSaveTransaction();
+  saveThreadManager.offer(saveTransaction);
+  for (  ComponentSystem sys : componentSystemManager.iterateAll()) {
+    sys.postSave();
+  }
+  scheduleNextAutoSave();
+  PerformanceMonitor.endActivity();
+  logger.info("Saving - Snapshot created: Writing phase starts");
+}

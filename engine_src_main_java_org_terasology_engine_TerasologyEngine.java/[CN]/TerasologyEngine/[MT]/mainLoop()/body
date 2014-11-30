@@ -2,7 +2,10 @@
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
   DisplayDevice display=CoreRegistry.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
-  while (running && !display.isCloseRequested()) {
+  while (engineState == EngineState.RUNNING && !display.isCloseRequested()) {
+    long totalDelta;
+    float updateDelta;
+    float subsystemsDelta;
     if (!display.isActive() && isHibernationAllowed()) {
       time.setPaused(true);
       Iterator<Float> updateCycles=time.tick();
@@ -19,7 +22,7 @@
       time.setPaused(false);
       continue;
     }
-    processStateChanges();
+    processPendingState();
     if (currentState == null) {
       shutdown();
       break;
@@ -28,29 +31,29 @@
     PerformanceMonitor.startActivity("Network Update");
     networkSystem.update();
     PerformanceMonitor.endActivity();
-    long totalDelta=0;
+    totalDelta=0;
     while (updateCycles.hasNext()) {
-      float delta=updateCycles.next();
+      updateDelta=updateCycles.next();
       totalDelta+=time.getDeltaInMs();
       PerformanceMonitor.startActivity("Main Update");
-      currentState.update(delta);
+      currentState.update(updateDelta);
       PerformanceMonitor.endActivity();
     }
-    float delta=totalDelta / 1000f;
+    subsystemsDelta=totalDelta / 1000f;
     for (    EngineSubsystem subsystem : getSubsystems()) {
       PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName());
-      subsystem.preUpdate(currentState,delta);
+      subsystem.preUpdate(currentState,subsystemsDelta);
       PerformanceMonitor.endActivity();
     }
     GameThread.processWaitingProcesses();
     for (    EngineSubsystem subsystem : getSubsystems()) {
       PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName());
-      subsystem.postUpdate(currentState,delta);
+      subsystem.postUpdate(currentState,subsystemsDelta);
       PerformanceMonitor.endActivity();
     }
     PerformanceMonitor.rollCycle();
     PerformanceMonitor.startActivity("Other");
   }
   PerformanceMonitor.endActivity();
-  running=false;
+  engineState=EngineState.INITIALIZED;
 }

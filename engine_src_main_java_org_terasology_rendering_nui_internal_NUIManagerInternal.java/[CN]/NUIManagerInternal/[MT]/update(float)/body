@@ -6,4 +6,26 @@
   for (  ControlWidget widget : overlays.values()) {
     widget.update(delta);
   }
+  if (autoReloadEnabled) {
+    try {
+      if (autoReloadWatchService == null) {
+        autoReloadWatchService=FileSystems.getDefault().newWatchService();
+        autoReloadingScreensUris=Sets.newHashSet();
+        watchedDirectories=Sets.newHashSet();
+        watchKeyToPathMap=Maps.newHashMap();
+        filePathToAssetUriMap=Maps.newHashMap();
+      }
+      registerCurrentScreensForAutoReloading();
+      reloadChangedScreens();
+    }
+ catch (    IOException e) {
+      throw new RuntimeException(e);
+    }
+catch (    URISyntaxException e) {
+      throw new RuntimeException();
+    }
+catch (    InterruptedException e) {
+      Thread.currentThread().interrupt();
+    }
+  }
 }
