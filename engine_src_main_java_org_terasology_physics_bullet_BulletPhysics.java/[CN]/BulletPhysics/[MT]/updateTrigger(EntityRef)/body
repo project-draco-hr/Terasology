@@ -12,7 +12,9 @@
       newTrigger(entity);
     }
  else {
-      triggerObj.setWorldTransform(new Transform(new Matrix4f(location.getWorldRotation(),location.getWorldPosition(),1.0f)));
+      Quat4f worldRotation=VecMath.to(location.getWorldRotation());
+      Vector3f worldPosition=VecMath.to(location.getWorldPosition());
+      triggerObj.setWorldTransform(new Transform(new Matrix4f(worldRotation,worldPosition,1.0f)));
     }
     return true;
   }

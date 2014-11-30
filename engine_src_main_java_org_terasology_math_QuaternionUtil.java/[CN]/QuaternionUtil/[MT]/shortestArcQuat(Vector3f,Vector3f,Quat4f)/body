@@ -1,0 +1,13 @@
+{
+  Vector3f c=new Vector3f();
+  c.cross(v0,v1);
+  float d=v0.dot(v1);
+  if (d < -1.0 + BulletGlobals.FLT_EPSILON) {
+    out.set(0.0f,1.0f,0.0f,0.0f);
+    return out;
+  }
+  float s=(float)Math.sqrt((1.0f + d) * 2.0f);
+  float rs=1.0f / s;
+  out.set(c.x * rs,c.y * rs,c.z * rs,s * 0.5f);
+  return out;
+}
