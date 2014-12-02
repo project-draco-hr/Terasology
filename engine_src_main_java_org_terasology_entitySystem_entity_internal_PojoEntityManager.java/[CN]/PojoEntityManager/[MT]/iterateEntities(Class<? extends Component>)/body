@@ -1,12 +1,12 @@
 {
-  TIntList idList=new TIntArrayList();
-  TIntObjectIterator<? extends Component> primeIterator=store.componentIterator(componentClass);
+  TLongList idList=new TLongArrayList();
+  TLongObjectIterator<? extends Component> primeIterator=store.componentIterator(componentClass);
   if (primeIterator == null) {
     return Collections.emptyList();
   }
   while (primeIterator.hasNext()) {
     primeIterator.advance();
-    int id=primeIterator.key();
+    long id=primeIterator.key();
     idList.add(primeIterator.key());
   }
   return new EntityIterable(idList);

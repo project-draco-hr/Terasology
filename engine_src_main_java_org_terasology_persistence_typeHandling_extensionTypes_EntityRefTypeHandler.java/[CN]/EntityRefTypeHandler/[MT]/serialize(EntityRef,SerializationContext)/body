@@ -1,8 +1,6 @@
 {
-  if (value.exists()) {
-    if (refInterceptor.get() == null || refInterceptor.get().savingRef(value)) {
-      return context.create(value.getId());
-    }
+  if (value.exists() && value.isPersistent()) {
+    return context.create(value.getId());
   }
   return context.createNull();
 }
