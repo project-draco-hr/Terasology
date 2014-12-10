@@ -1,45 +1,38 @@
 {
-  Object[] processedParams=new Object[method.getParameterTypes().length];
-  if (isClientEntityRequired()) {
-    if (params.size() + 1 != method.getParameterTypes().length) {
-      throw new InvalidCommandCallException("Incorrect number of parameters, expected " + (method.getParameterTypes().length - 1));
-    }
-    processedParams[processedParams.length - 1]=callingClient;
+  CommandParameterInfo[] params=getParameters();
+  int requiredParameterCount=getRequiredParameterCount();
+  Object[] processedParams;
+  if (isClientParameterRequired()) {
+    processedParams=new Object[params.length + 1];
+    processedParams[processedParams.length - 1]=sender;
   }
- else   if (params.size() != method.getParameterTypes().length) {
-    throw new InvalidCommandCallException("Incorrect number of parameters, expected " + (method.getParameterTypes().length));
+ else   processedParams=new Object[params.length];
+  for (int i=0; i < requiredParameterCount; i++) {
+    String rawParam=rawParams.get(i);
+    CommandParameterInfo param=params[i];
+    processedParams[i]=param.getValue(rawParam);
   }
-  for (int i=0; i < params.size(); ++i) {
-    try {
-      Class<?> type=method.getParameterTypes()[i];
-      if (type == Float.TYPE) {
-        processedParams[i]=Float.parseFloat(params.get(i));
-      }
- else       if (type == Integer.TYPE) {
-        processedParams[i]=Integer.parseInt(params.get(i));
-      }
- else       if (type == String.class) {
-        processedParams[i]=params.get(i);
-      }
+  if (endsWithVarargs()) {
+    CommandParameterInfo param=params[params.length - 1];
+    Object varargsResult;
+    if (rawParams.size() <= requiredParameterCount) {
+      Class<?> type=param.getType();
+      varargsResult=Array.newInstance(type,0);
     }
- catch (    NumberFormatException e) {
-      throw new InvalidCommandCallException("Bad argument '" + params.get(i) + "'",e);
-    }
-  }
-  if (clientHasPermissionToCallCommand(callingClient)) {
-    try {
-      Object result=method.invoke(provider,processedParams);
-      return (result != null) ? result.toString() : "";
-    }
- catch (    InvocationTargetException ite) {
-      Throwable e=ite.getTargetException();
-      throw new InvalidCommandCallException(e.getLocalizedMessage(),e);
-    }
-catch (    IllegalArgumentException|IllegalAccessException e) {
-      throw new InvalidCommandCallException(e.getMessage(),e);
-    }
-  }
  else {
-    throw new InvalidCommandCallException("You do not have enough permissions to execute this command");
+      String rawParam=rawParams.get(requiredParameterCount);
+      for (int i=requiredParameterCount + 1; i < rawParams.size(); i++)       rawParam+=" " + rawParams.get(i);
+      varargsResult=param.getValue(rawParam);
+    }
+    processedParams[requiredParameterCount]=varargsResult;
+  }
+  try {
+    Object result=method.invoke(provider,processedParams);
+    return result == null ? null : result.toString();
+  }
+ catch (  Exception e) {
+    InvalidCommandCallException newE=new InvalidCommandCallException("An error occurred while executing the command.",e);
+    e.printStackTrace();
+    throw newE;
   }
 }

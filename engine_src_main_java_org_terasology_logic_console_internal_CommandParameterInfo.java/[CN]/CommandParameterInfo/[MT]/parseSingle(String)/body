@@ -1,0 +1,16 @@
+{
+  try {
+    Class<?> type=getType();
+    if (type == Long.TYPE)     return Long.parseLong(string);
+ else     if (type == Integer.TYPE)     return Integer.parseInt(string);
+ else     if (type == Short.TYPE)     return Short.parseShort(string);
+ else     if (type == Byte.TYPE)     return Byte.parseByte(string);
+ else     if (type == Double.TYPE)     return Double.parseDouble(string);
+ else     if (type == Float.TYPE)     return Float.parseFloat(string);
+ else     if (type == Character.TYPE)     return Character.valueOf((char)Integer.parseInt(string));
+ else     if (type == String.class)     return string;
+  }
+ catch (  Exception e) {
+  }
+  throw new CommandParameterParseException("Cannot parse a " + getType().getCanonicalName(),string);
+}

@@ -1,0 +1,8 @@
+{
+  Class<?>[] types=method.getParameterTypes();
+  if (types.length <= 0)   return false;
+  if (types[types.length - 1] != EntityRef.class)   return false;
+  Annotation[] annotations=method.getParameterAnnotations()[types.length - 1];
+  for (  Annotation annotation : annotations)   if (annotation.getClass() == CommandParam.class)   return false;
+  return true;
+}

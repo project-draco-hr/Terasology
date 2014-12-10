@@ -2,12 +2,12 @@
   if (commandName.isEmpty()) {
     return false;
   }
-  CommandInfo cmd=commandLookup.get(commandName,params.size());
+  CommandInfo cmd=findBestCommand(commandName,params.size());
   if (cmd == null) {
-    if (commandLookup.containsRow(commandName)) {
+    if (commandRegistry.containsKey(commandName)) {
       addErrorMessage("Incorrect number of parameters. Try:");
-      for (      CommandInfo ci : commandLookup.row(commandName).values()) {
-        addMessage(ci.getUsageMessage());
+      for (      CommandInfo ci : commandRegistry.get(commandName)) {
+        addMessage(ci.getUsage());
       }
     }
  else {

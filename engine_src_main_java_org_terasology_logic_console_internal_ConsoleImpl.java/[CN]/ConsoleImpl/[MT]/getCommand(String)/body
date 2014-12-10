@@ -1,3 +1,5 @@
 {
-  return commandLookup.row(name).values();
+  TreeMultiset<CommandInfo> commands=commandRegistry.get(name);
+  if (commands == null)   return new CommandInfo[0];
+  return commands.toArray(new CommandInfo[commands.size()]);
 }

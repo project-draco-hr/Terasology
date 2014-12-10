@@ -1,0 +1,11 @@
+{
+  Class<?>[] types=method.getParameterTypes();
+  int paramAmount=types.length + (isClientParameterRequired() ? -1 : 0);
+  lazyParameters=CommandParameterInfo.valueOf(method,0,paramAmount);
+  for (int i=0; i < lazyParameters.length; i++) {
+    CommandParameterInfo param=lazyParameters[i];
+    if (!param.hasName())     logger.warn("Parameter {} in method {} does not have a CommandParam annotation",i,method);
+    if (param.getArrayDelimiter() == Command.ARRAY_DELIMITER_VARARGS && i < lazyParameters.length - 1)     logger.warn("Parameter {} in method {} uses the varargs delimiter, but is not at the end",i,method);
+  }
+  return lazyParameters;
+}

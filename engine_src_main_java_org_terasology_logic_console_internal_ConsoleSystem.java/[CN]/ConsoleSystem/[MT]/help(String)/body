@@ -1,6 +1,6 @@
 {
-  Collection<CommandInfo> cmdCollection=console.getCommand(command);
-  if (cmdCollection.isEmpty()) {
+  CommandInfo[] cmdCollection=console.getCommand(command);
+  if (cmdCollection.length <= 0) {
     return "No help available for command '" + command + "'. Unknown command.";
   }
  else {
@@ -8,7 +8,7 @@
     for (    CommandInfo cmd : cmdCollection) {
       msg.append("=====================================================================================================================");
       msg.append(Message.NEW_LINE);
-      msg.append(cmd.getUsageMessage());
+      msg.append(cmd.getUsage());
       msg.append(Message.NEW_LINE);
       msg.append("=====================================================================================================================");
       msg.append(Message.NEW_LINE);
@@ -18,8 +18,8 @@
         msg.append("=====================================================================================================================");
         msg.append(Message.NEW_LINE);
       }
- else       if (!cmd.getShortDescription().isEmpty()) {
-        msg.append(cmd.getShortDescription());
+ else       if (!cmd.getDescription().isEmpty()) {
+        msg.append(cmd.getDescription());
         msg.append(Message.NEW_LINE);
         msg.append("=====================================================================================================================");
         msg.append(Message.NEW_LINE);
