@@ -1,0 +1,27 @@
+{
+  int singleParameterCount=parameters.length + (endsWithVarargs() ? -1 : 0);
+  Object[] processedParameters=new Object[parameters.length + 1];
+  processedParameters[0]=sender;
+  for (int i=0; i < singleParameterCount && i < rawParameters.size(); i++) {
+    String rawParam=rawParameters.get(i);
+    CommandParameter param=parameters[i];
+    processedParameters[i + 1]=param.getValue(rawParam);
+  }
+  if (endsWithVarargs()) {
+    int varargsIndex=parameters.length - 1;
+    CommandParameter varargsParameter=parameters[varargsIndex];
+    Object varargsResult;
+    if (rawParameters.size() <= varargsIndex) {
+      varargsResult=null;
+    }
+ else {
+      StringBuilder rawParam=new StringBuilder(rawParameters.get(varargsIndex));
+      for (int i=varargsIndex + 1; i < rawParameters.size(); i++) {
+        rawParam.append(ARRAY_DELIMITER_VARARGS).append(rawParameters.get(i));
+      }
+      varargsResult=varargsParameter.getValue(rawParam.toString());
+    }
+    processedParameters[requiredParameterCount + 1]=varargsResult;
+  }
+  return processedParameters;
+}

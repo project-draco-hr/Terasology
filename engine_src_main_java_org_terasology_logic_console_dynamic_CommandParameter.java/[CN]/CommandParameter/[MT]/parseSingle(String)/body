@@ -1,0 +1,32 @@
+{
+  try {
+    Class<?> childType=getType();
+    if (childType == Long.TYPE) {
+      return Long.parseLong(string);
+    }
+ else     if (childType == Integer.TYPE) {
+      return Integer.parseInt(string);
+    }
+ else     if (childType == Short.TYPE) {
+      return Short.parseShort(string);
+    }
+ else     if (childType == Byte.TYPE) {
+      return Byte.parseByte(string);
+    }
+ else     if (childType == Double.TYPE) {
+      return Double.parseDouble(string);
+    }
+ else     if (childType == Float.TYPE) {
+      return Float.parseFloat(string);
+    }
+ else     if (childType == Character.TYPE) {
+      return (char)Integer.parseInt(string);
+    }
+ else     if (childType == String.class) {
+      return string;
+    }
+  }
+ catch (  Exception e) {
+  }
+  throw new CommandParameterParseException("Cannot parse a " + getType().getCanonicalName(),string);
+}

@@ -1,0 +1,12 @@
+{
+  List<Method> methods=findMethods(METHOD_NAME_EXECUTE);
+  if (methods.size() < 0) {
+    throw new CommandInitializationException("No " + METHOD_NAME_EXECUTE + " method found");
+  }
+ else   if (methods.size() > 1) {
+    throw new CommandInitializationException("More than 1 " + METHOD_NAME_EXECUTE + " methods found");
+  }
+  Method method=methods.get(0);
+  checkArgumentCompatibility(method);
+  executionMethod=method;
+}

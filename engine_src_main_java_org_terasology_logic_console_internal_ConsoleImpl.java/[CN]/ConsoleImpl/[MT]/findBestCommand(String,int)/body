@@ -1,6 +1,12 @@
 {
-  TreeMultiset<CommandInfo> commands=commandRegistry.get(name);
-  if (commands == null)   return null;
-  for (  CommandInfo command : commands)   if ((command.getRequiredParameterCount() == args && !command.endsWithVarargs()) || (command.getRequiredParameterCount() <= args && command.endsWithVarargs()))   return command;
+  TreeMultiset<ICommand> correspondingCommands=commandRegistry.get(name);
+  if (correspondingCommands == null) {
+    return null;
+  }
+  for (  ICommand command : correspondingCommands) {
+    if ((command.getRequiredParameterCount() == args && !command.endsWithVarargs()) || (command.getRequiredParameterCount() <= args && command.endsWithVarargs())) {
+      return command;
+    }
+  }
   return null;
 }

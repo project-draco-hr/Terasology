@@ -1,0 +1,19 @@
+{
+  String commandName=command.getName();
+  logger.debug("Registering {}...",command.getName());
+  if (isCommandRegistered(command)) {
+    logger.warn("Command already registered the same name ({}), parameter count ({}) and varargs policy ({})," + " skipping",commandName,command.getRequiredParameterCount(),command.endsWithVarargs());
+  }
+ else {
+    commands.add(command);
+    TreeMultiset<ICommand> cmdList=commandRegistry.get(commandName);
+    if (cmdList == null) {
+      cmdList=TreeMultiset.create();
+      commandRegistry.put(commandName,cmdList);
+    }
+ else {
+      logger.warn("Command {} already registered, conflicting {} and {}.",commandName,cmdList.iterator().next().getClass().getCanonicalName(),command.getClass().getCanonicalName());
+    }
+    cmdList.add(command);
+  }
+}

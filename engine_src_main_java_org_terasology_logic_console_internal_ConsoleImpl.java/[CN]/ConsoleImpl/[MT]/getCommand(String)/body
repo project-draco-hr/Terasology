@@ -1,5 +1,7 @@
 {
-  TreeMultiset<CommandInfo> commands=commandRegistry.get(name);
-  if (commands == null)   return new CommandInfo[0];
-  return commands.toArray(new CommandInfo[commands.size()]);
+  TreeMultiset<ICommand> correspondingCommands=commandRegistry.get(name);
+  if (correspondingCommands == null) {
+    return new Command[0];
+  }
+  return correspondingCommands.toArray(new ICommand[correspondingCommands.size()]);
 }

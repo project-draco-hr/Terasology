@@ -1,9 +1,9 @@
 {
   final ScrollableArea scrollArea=find("scrollArea",ScrollableArea.class);
   scrollArea.moveToBottom();
-  List<CommandInfo> commands=console.getCommandList();
-  Collection<String> commandNames=Collections2.transform(commands,new Function<CommandInfo,String>(){
-    @Override public String apply(    CommandInfo input){
+  Collection<ICommand> commands=console.getCommands();
+  Collection<String> commandNames=Collections2.transform(commands,new Function<ICommand,String>(){
+    @Override public String apply(    ICommand input){
       return input.getName();
     }
   }

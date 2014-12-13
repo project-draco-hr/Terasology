@@ -1,0 +1,14 @@
+{
+  String typeString=getType().getSimpleName();
+  if (isArray()) {
+    typeString+=getArrayDelimiter() + typeString;
+  }
+  String cmd=typeString + (hasName() ? " " + getName() : "");
+  if (required) {
+    cmd="<" + cmd + ">";
+  }
+ else {
+    cmd="(" + cmd + ")";
+  }
+  return cmd;
+}

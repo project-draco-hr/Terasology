@@ -1,0 +1,14 @@
+{
+  List<Method> methods=findMethods(METHOD_NAME_SUGGEST);
+  if (methods.size() <= 0 && parameters.length > 0) {
+    LOGGER.warn("No {} method found for command class {}.",METHOD_NAME_SUGGEST,getClass().getCanonicalName());
+    suggestionMethod=null;
+    return;
+  }
+ else   if (methods.size() > 1) {
+    throw new CommandInitializationException("More than 1 " + METHOD_NAME_SUGGEST + " methods found");
+  }
+  Method method=methods.get(0);
+  checkArgumentCompatibility(method);
+  suggestionMethod=method;
+}

@@ -2,11 +2,11 @@
   if (commandName.isEmpty()) {
     return false;
   }
-  CommandInfo cmd=findBestCommand(commandName,params.size());
+  ICommand cmd=findBestCommand(commandName,params.size());
   if (cmd == null) {
     if (commandRegistry.containsKey(commandName)) {
       addErrorMessage("Incorrect number of parameters. Try:");
-      for (      CommandInfo ci : commandRegistry.get(commandName)) {
+      for (      ICommand ci : commandRegistry.get(commandName)) {
         addMessage(ci.getUsage());
       }
     }
@@ -21,7 +21,7 @@
   }
  else {
     try {
-      String result=cmd.execute(params,callingClient);
+      String result=cmd.executeRaw(params,callingClient);
       if (result != null && !result.isEmpty()) {
         if (callingClient.exists()) {
           callingClient.send(new ConsoleMessageEvent(result));
@@ -32,7 +32,7 @@
       }
       return true;
     }
- catch (    InvalidCommandCallException e) {
+ catch (    CommandExecutionException e) {
       String msgText=e.getLocalizedMessage();
       if (msgText != null && !msgText.isEmpty()) {
         if (callingClient.exists()) {

@@ -1,0 +1,13 @@
+{
+  Class<?> clazz=getClass();
+  Method[] methods=clazz.getDeclaredMethods();
+  LoggerFactory.getLogger("LIMETHDEBUG").debug("Methods {}",Arrays.toString(methods));
+  List<Method> result=Lists.newArrayList();
+  for (  Method method : methods) {
+    String currentMethodName=method.getName();
+    if (currentMethodName.equals(methodName)) {
+      result.add(method);
+    }
+  }
+  return result;
+}

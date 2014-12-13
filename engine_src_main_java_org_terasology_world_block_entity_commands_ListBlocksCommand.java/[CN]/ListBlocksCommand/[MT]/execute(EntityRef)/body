@@ -1,0 +1,25 @@
+{
+  StringBuilder stringBuilder=new StringBuilder();
+  stringBuilder.append("Used Blocks");
+  stringBuilder.append(Message.NEW_LINE);
+  stringBuilder.append("-----------");
+  stringBuilder.append(Message.NEW_LINE);
+  List<BlockUri> registeredBlocks=Lists.newArrayList(blockManager.listRegisteredBlockUris());
+  Collections.sort(registeredBlocks);
+  for (  BlockUri blockUri : registeredBlocks) {
+    stringBuilder.append(blockUri.toString());
+    stringBuilder.append(Message.NEW_LINE);
+  }
+  stringBuilder.append(Message.NEW_LINE);
+  stringBuilder.append("Available Blocks");
+  stringBuilder.append(Message.NEW_LINE);
+  stringBuilder.append("----------------");
+  stringBuilder.append(Message.NEW_LINE);
+  List<BlockUri> availableBlocks=Lists.newArrayList(blockManager.listAvailableBlockUris());
+  Collections.sort(availableBlocks);
+  for (  BlockUri blockUri : availableBlocks) {
+    stringBuilder.append(blockUri.toString());
+    stringBuilder.append(Message.NEW_LINE);
+  }
+  return stringBuilder.toString();
+}
