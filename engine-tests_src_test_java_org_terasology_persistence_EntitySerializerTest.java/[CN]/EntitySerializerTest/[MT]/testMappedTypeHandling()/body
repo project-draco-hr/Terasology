@@ -3,7 +3,9 @@
   EntityRef entity=entityManager.create();
   entity.addComponent(new MappedTypeComponent());
   EntityData.Entity entityData=entitySerializer.serialize(entity);
+  long nextId=entityManager.getNextId();
   entityManager.clear();
+  entityManager.setNextId(nextId);
   EntityRef loadedEntity=entitySerializer.deserialize(entityData);
   assertTrue(loadedEntity.exists());
   assertTrue(loadedEntity.hasComponent(MappedTypeComponent.class));

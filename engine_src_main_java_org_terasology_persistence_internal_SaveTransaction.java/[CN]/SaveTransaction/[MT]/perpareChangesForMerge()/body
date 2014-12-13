@@ -1,11 +1,15 @@
 {
-  Path directoryForUnfinishedFiles=storagePathProvider.getUnfinishedSaveTransactionPath();
-  Path directoryForFinishedFiles=storagePathProvider.getUnmergedChangesPath();
   try {
-    Files.move(directoryForUnfinishedFiles,directoryForFinishedFiles,StandardCopyOption.ATOMIC_MOVE);
+    renameMergeFolder();
   }
- catch (  AtomicMoveNotSupportedException e) {
-    logger.warn("Atomic rename of merge folder was not possible, doing it non atomically...");
-    Files.move(directoryForUnfinishedFiles,directoryForFinishedFiles);
+ catch (  AccessDeniedException e) {
+    logger.warn("Rename of merge folder failed, retrying in one second");
+    try {
+      Thread.sleep(1000);
+    }
+ catch (    InterruptedException e1) {
+      Thread.currentThread().interrupt();
+    }
+    renameMergeFolder();
   }
 }

@@ -7,19 +7,25 @@
   if (disposedSavingChunk != null) {
     return disposedSavingChunk.buildEncodedChunk();
   }
-  if (storeChunksInZips) {
-    return loadChunkZip(chunkPos);
-  }
+  worldDirectoryReadLock.lock();
+  try {
+    if (storeChunksInZips) {
+      return loadChunkZip(chunkPos);
+    }
  else {
-    Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
-    if (Files.isRegularFile(chunkPath)) {
-      try {
-        return Files.readAllBytes(chunkPath);
-      }
- catch (      IOException e) {
-        logger.error("Failed to load chunk {}",chunkPos,e);
+      Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
+      if (Files.isRegularFile(chunkPath)) {
+        try {
+          return Files.readAllBytes(chunkPath);
+        }
+ catch (        IOException e) {
+          logger.error("Failed to load chunk {}",chunkPos,e);
+        }
       }
     }
+  }
+  finally {
+    worldDirectoryReadLock.unlock();
   }
   return null;
 }

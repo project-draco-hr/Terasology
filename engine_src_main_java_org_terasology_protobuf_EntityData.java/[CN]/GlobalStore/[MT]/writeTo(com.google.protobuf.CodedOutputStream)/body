@@ -11,20 +11,17 @@
     output.writeBytes(3,componentClass_.getByteString(i));
   }
   if (((bitField0_ & 0x00000001) == 0x00000001)) {
-    output.writeInt32(16,nextEntityId_);
+    output.writeInt64(16,nextEntityId_);
   }
-  if (getFreedEntityIdList().size() > 0) {
+  if (getDeprecatedData17List().size() > 0) {
     output.writeRawVarint32(138);
-    output.writeRawVarint32(freedEntityIdMemoizedSerializedSize);
+    output.writeRawVarint32(deprecatedData17MemoizedSerializedSize);
   }
-  for (int i=0; i < freedEntityId_.size(); i++) {
-    output.writeInt32NoTag(freedEntityId_.get(i));
+  for (int i=0; i < deprecatedData17_.size(); i++) {
+    output.writeInt64NoTag(deprecatedData17_.get(i));
   }
   for (int i=0; i < prefabName_.size(); i++) {
     output.writeBytes(18,prefabName_.getByteString(i));
-  }
-  for (int i=0; i < storeReferenceSet_.size(); i++) {
-    output.writeMessage(19,storeReferenceSet_.get(i));
   }
   extensionWriter.writeUntil(536870912,output);
   getUnknownFields().writeTo(output);

@@ -1,6 +1,7 @@
 {
   byte isInitialized=memoizedIsInitialized;
-  if (isInitialized != -1)   return isInitialized == 1;
+  if (isInitialized == 1)   return true;
+  if (isInitialized == 0)   return false;
   for (int i=0; i < getEntityCount(); i++) {
     if (!getEntity(i).isInitialized()) {
       memoizedIsInitialized=0;
@@ -9,12 +10,6 @@
   }
   for (int i=0; i < getPrefabCount(); i++) {
     if (!getPrefab(i).isInitialized()) {
-      memoizedIsInitialized=0;
-      return false;
-    }
-  }
-  for (int i=0; i < getStoreReferenceSetCount(); i++) {
-    if (!getStoreReferenceSet(i).isInitialized()) {
       memoizedIsInitialized=0;
       return false;
     }

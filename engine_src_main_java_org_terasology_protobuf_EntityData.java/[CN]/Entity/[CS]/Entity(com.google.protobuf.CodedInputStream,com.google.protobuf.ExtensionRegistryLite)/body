@@ -20,7 +20,7 @@ default :
 case 8:
 {
     bitField0_|=0x00000001;
-    id_=input.readInt32();
+    id_=input.readInt64();
     break;
   }
 case 18:
@@ -57,8 +57,9 @@ break;
 }
 case 34:
 {
+com.google.protobuf.ByteString bs=input.readBytes();
 bitField0_|=0x00000002;
-parentPrefab_=input.readBytes();
+parentPrefab_=bs;
 break;
 }
 case 40:
@@ -70,16 +71,17 @@ break;
 case 48:
 {
 bitField0_|=0x00000008;
-owner_=input.readInt32();
+owner_=input.readInt64();
 break;
 }
 case 122:
 {
+com.google.protobuf.ByteString bs=input.readBytes();
 if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
 removedComponent_=new com.google.protobuf.LazyStringArrayList();
 mutable_bitField0_|=0x00000040;
 }
-removedComponent_.add(input.readBytes());
+removedComponent_.add(bs);
 break;
 }
 }
@@ -99,7 +101,7 @@ if (((mutable_bitField0_ & 0x00000004) == 0x00000004)) {
 removedComponentIndex_=java.util.Collections.unmodifiableList(removedComponentIndex_);
 }
 if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
-removedComponent_=new com.google.protobuf.UnmodifiableLazyStringList(removedComponent_);
+removedComponent_=removedComponent_.getUnmodifiableView();
 }
 this.unknownFields=unknownFields.build();
 makeExtensionsImmutable();

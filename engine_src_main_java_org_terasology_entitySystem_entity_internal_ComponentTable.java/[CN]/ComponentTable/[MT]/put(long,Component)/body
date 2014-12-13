@@ -1,0 +1,8 @@
+{
+  TLongObjectMap<Component> entityMap=store.get(component.getClass());
+  if (entityMap == null) {
+    entityMap=new TLongObjectHashMap<Component>();
+    store.put(component.getClass(),entityMap);
+  }
+  return entityMap.put(entityId,component);
+}

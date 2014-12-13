@@ -8,13 +8,19 @@
     return disposedSavingPlayer;
   }
   Path storePath=storagePathProvider.getPlayerFilePath(playerId);
-  if (Files.isRegularFile(storePath)) {
-    try (InputStream inputStream=new BufferedInputStream(Files.newInputStream(storePath))){
-      return EntityData.PlayerStore.parseFrom(inputStream);
+  worldDirectoryReadLock.lock();
+  try {
+    if (Files.isRegularFile(storePath)) {
+      try (InputStream inputStream=new BufferedInputStream(Files.newInputStream(storePath))){
+        return EntityData.PlayerStore.parseFrom(inputStream);
+      }
+ catch (      IOException e) {
+        logger.error("Failed to load player data for {}",playerId,e);
+      }
     }
- catch (    IOException e) {
-      logger.error("Failed to load player data for {}",playerId,e);
-    }
+  }
+  finally {
+    worldDirectoryReadLock.unlock();
   }
   return null;
 }

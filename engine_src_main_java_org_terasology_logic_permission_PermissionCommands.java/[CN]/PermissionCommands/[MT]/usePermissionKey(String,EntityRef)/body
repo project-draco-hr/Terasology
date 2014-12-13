@@ -1,0 +1,13 @@
+{
+  PermissionConfig permissionConfig=CoreRegistry.get(Config.class).getPermission();
+  String expectedKey=permissionConfig.getOneTimeAuthorizationKey();
+  if (expectedKey != null && !expectedKey.equals("") && key.equals(expectedKey)) {
+    permissionConfig.setOneTimeAuthorizationKey("");
+    ClientComponent clientComponent=client.getComponent(ClientComponent.class);
+    permissionManager.addPermission(clientComponent.character,PermissionManager.OPERATOR_PERMISSION);
+    return "Permission key used: You have now \"op\" rights";
+  }
+ else {
+    return "Key invalid or used";
+  }
+}

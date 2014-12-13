@@ -4,7 +4,9 @@
   comp.value="Delta";
   entity.saveComponent(comp);
   EntityData.Entity entityData=entitySerializer.serialize(entity);
+  long nextId=entityManager.getNextId();
   entityManager.clear();
+  entityManager.setNextId(nextId);
   EntityRef loadedEntity=entitySerializer.deserialize(entityData);
   assertTrue(loadedEntity.exists());
   assertTrue(loadedEntity.hasComponent(StringComponent.class));
