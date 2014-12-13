@@ -12,7 +12,7 @@
       throw new CommandInitializationException("Too many (" + (parameters.length - passableParameterCount) + ") parameters in method "+ method.getName()+ ", follow the parameter definitions from the"+ " 'constructParameters' method.");
     }
     Class<?> expectedType=parameters[i].getTypeRaw();
-    Class<?> providedType=methodParameters[i - 1];
+    Class<?> providedType=methodParameters[i + 1];
     if (!expectedType.isAssignableFrom(providedType)) {
       throw new CommandInitializationException("Cannot assign command argument from " + providedType.getSimpleName() + " to "+ expectedType.getSimpleName()+ "; "+ "command method parameter index: "+ i);
     }

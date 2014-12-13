@@ -2,13 +2,12 @@
   if (commandName.isEmpty()) {
     return false;
   }
-  ICommand cmd=findBestCommand(commandName,params.size());
+  ICommand cmd=getCommand(commandName);
   if (cmd == null) {
     if (commandRegistry.containsKey(commandName)) {
+      ICommand command=commandRegistry.get(commandName);
       addErrorMessage("Incorrect number of parameters. Try:");
-      for (      ICommand ci : commandRegistry.get(commandName)) {
-        addMessage(ci.getUsage());
-      }
+      addMessage(command.getUsage());
     }
  else {
       addErrorMessage("Unknown command '" + commandName + "'");
