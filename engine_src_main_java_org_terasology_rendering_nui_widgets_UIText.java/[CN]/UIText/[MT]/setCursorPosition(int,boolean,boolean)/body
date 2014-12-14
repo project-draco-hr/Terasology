@@ -1,0 +1,13 @@
+{
+  int previousPosition=cursorPosition;
+  cursorPosition=position;
+  if (moveSelectionStart) {
+    selectionStart=position;
+  }
+  correctCursor();
+  if (callEvent) {
+    for (    CursorUpdateEventListener listener : cursorUpdateListeners) {
+      listener.onCursorUpdated(previousPosition,cursorPosition);
+    }
+  }
+}

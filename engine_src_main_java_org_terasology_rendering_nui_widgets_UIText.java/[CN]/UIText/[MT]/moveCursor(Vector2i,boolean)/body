@@ -40,10 +40,7 @@
         newCursorPos+=lines.get(lineIndex).length() + 1;
       }
     }
-    cursorPosition=Math.min(newCursorPos,rawText.length());
-    if (!isSelectionModifierActive() && !selecting) {
-      selectionStart=cursorPosition;
-    }
+    setCursorPosition(Math.min(newCursorPos,rawText.length()),!isSelectionModifierActive() && !selecting);
     updateOffset();
   }
 }

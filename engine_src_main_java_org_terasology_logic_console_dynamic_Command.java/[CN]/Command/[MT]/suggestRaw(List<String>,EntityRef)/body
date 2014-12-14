@@ -1,4 +1,7 @@
 {
+  if (suggestionMethod == null) {
+    return null;
+  }
   Object[] processedParameters;
   try {
     processedParameters=processParameters(rawParameters,sender);
@@ -15,7 +18,7 @@
     String[] result=(String[])suggestionMethod.invoke(this,processedParameters);
     return result != null ? result : new String[0];
   }
- catch (  Exception e) {
-    throw new CommandSuggestionException(e);
+ catch (  Throwable t) {
+    throw new CommandSuggestionException(t.getCause());
   }
 }

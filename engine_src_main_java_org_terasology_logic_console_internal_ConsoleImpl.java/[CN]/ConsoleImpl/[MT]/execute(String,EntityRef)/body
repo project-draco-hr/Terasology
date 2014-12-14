@@ -1,28 +1,9 @@
 {
-  String cleanedCommand=command.trim().replaceAll("\\s\\s+"," ");
-  if (cleanedCommand.isEmpty()) {
-    return false;
-  }
-  int commandEndIndex=cleanedCommand.indexOf(" ");
-  String commandName;
-  if (commandEndIndex >= 0) {
-    commandName=cleanedCommand.substring(0,commandEndIndex);
-  }
- else {
-    commandName=cleanedCommand;
-    commandEndIndex=commandName.length();
-  }
-  String parameterPart=cleanedCommand.substring(commandEndIndex).trim();
-  List<String> params=splitParameters(parameterPart);
-  for (int i=0; i < params.size(); i++) {
-    String value=params.get(i);
-    if (value.startsWith("\"") && value.endsWith("\"")) {
-      params.set(i,value.substring(1,value.length() - 1));
-    }
-  }
+  String commandName=processCommandName(rawCommand);
+  List<String> processedParameters=processParameters(rawCommand);
   ClientComponent cc=callingClient.getComponent(ClientComponent.class);
   if (cc.local) {
-    localCommandHistory.add(command);
+    localCommandHistory.add(rawCommand);
   }
-  return execute(commandName,params,callingClient);
+  return execute(commandName,processedParameters,callingClient);
 }

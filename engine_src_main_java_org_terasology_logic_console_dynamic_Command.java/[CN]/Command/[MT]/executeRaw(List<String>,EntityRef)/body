@@ -15,7 +15,7 @@
     Object result=executionMethod.invoke(this,processedParameters);
     return result != null ? String.valueOf(result) : null;
   }
- catch (  Exception e) {
-    throw new CommandExecutionException(e);
+ catch (  Throwable t) {
+    throw new CommandExecutionException(t.getCause());
   }
 }

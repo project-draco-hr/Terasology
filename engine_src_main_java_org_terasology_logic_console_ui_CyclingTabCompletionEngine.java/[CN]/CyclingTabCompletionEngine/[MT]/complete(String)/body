@@ -1,41 +1,52 @@
 {
-  if (!matchList.contains(text)) {
+  if (rawCommand.length() <= 0) {
     reset();
-    String cmdQuery=text.trim();
-    Collection<String> matches=CamelCaseMatcher.getMatches(cmdQuery,allNames);
-    if (matches.isEmpty()) {
-      return text;
+    previousMessage=new Message("Type 'help' to list all commands.");
+    console.addMessage(previousMessage);
+    return null;
+  }
+ else   if (query == null) {
+    query=rawCommand;
+  }
+  String commandName=console.processCommandName(query);
+  List<String> commandParameters=console.processParameters(query);
+  ICommand command=console.getCommand(commandName);
+  int suggestedIndex=commandParameters.size() + (query.charAt(query.length() - 1) == ' ' ? 1 : 0);
+  String[] matches=findMatches(commandName,commandParameters,command,suggestedIndex);
+  if (matches == null || matches.length <= 0) {
+    return query;
+  }
+  if (!Arrays.equals(matches,previousMatches)) {
+    reset(false);
+    if (matches.length == 1) {
+      return generateResult(matches[0],commandName,commandParameters,suggestedIndex);
     }
-    if (matches.size() == 1) {
-      return matches.iterator().next();
-    }
-    if (matches.size() > MAX_CYCLES) {
+    if (matches.length > MAX_CYCLES) {
       console.addMessage(new Message("Too many hits, please refine your search"));
-      return text;
+      return query;
     }
-    matchList.addAll(matches);
-    Collections.sort(matchList);
+    previousMatches=matches;
   }
   StringBuilder commandMatches=new StringBuilder();
-  for (int i=0; i < matchList.size(); i++) {
-    if (commandMatches.length() != 0) {
-      commandMatches.append(" ");
+  for (int i=0; i < previousMatches.length; i++) {
+    if (i > 0) {
+      commandMatches.append(' ');
     }
-    String name=matchList.get(i);
-    if (index == i) {
+    String name=previousMatches[i];
+    if (selectionIndex == i) {
       name=FontColor.getColored(name,ConsoleColors.COMMAND);
     }
     commandMatches.append(name);
   }
   Message message=new Message(commandMatches.toString());
-  String cmd=matchList.get(index);
-  if (prevMessage != null) {
-    console.replaceMessage(prevMessage,message);
+  String suggestion=previousMatches[selectionIndex];
+  if (previousMessage != null) {
+    console.replaceMessage(previousMessage,message);
   }
  else {
     console.addMessage(message);
   }
-  prevMessage=message;
-  index=(index + 1) % matchList.size();
-  return cmd;
+  previousMessage=message;
+  selectionIndex=(selectionIndex + 1) % previousMatches.length;
+  return generateResult(suggestion,commandName,commandParameters,suggestedIndex);
 }

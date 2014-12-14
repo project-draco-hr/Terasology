@@ -4,14 +4,12 @@
   }
   ICommand cmd=getCommand(commandName);
   if (cmd == null) {
-    if (commandRegistry.containsKey(commandName)) {
-      ICommand command=commandRegistry.get(commandName);
-      addErrorMessage("Incorrect number of parameters. Try:");
-      addMessage(command.getUsage());
-    }
- else {
-      addErrorMessage("Unknown command '" + commandName + "'");
-    }
+    addErrorMessage("Unknown command '" + commandName + "'");
+    return false;
+  }
+  if (params.size() < cmd.getRequiredParameterCount()) {
+    addErrorMessage("Please, provide required arguments marked by <>.");
+    addMessage(cmd.getUsage());
     return false;
   }
   if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
@@ -32,14 +30,24 @@
       return true;
     }
  catch (    CommandExecutionException e) {
-      String msgText=e.getLocalizedMessage();
-      if (msgText != null && !msgText.isEmpty()) {
-        if (callingClient.exists()) {
-          callingClient.send(new ConsoleMessageEvent(e.getLocalizedMessage()));
+      Throwable cause=e.getCause();
+      String causeMessage=cause.getLocalizedMessage();
+      e.printStackTrace();
+      if (causeMessage == null || causeMessage.isEmpty()) {
+        causeMessage=cause.getMessage();
+        if (causeMessage == null || causeMessage.isEmpty()) {
+          causeMessage=cause.toString();
+          if (causeMessage == null || causeMessage.isEmpty()) {
+            return false;
+          }
         }
+      }
+      String errorReport=FontColor.getColored("An error occurred while executing command '" + commandName + "': "+ causeMessage,ConsoleColors.ERROR);
+      if (callingClient.exists()) {
+        callingClient.send(new ConsoleMessageEvent(errorReport));
+      }
  else {
-          addErrorMessage(e.getLocalizedMessage());
-        }
+        addErrorMessage(errorReport);
       }
       return false;
     }

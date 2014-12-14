@@ -1,7 +1,9 @@
 {
   List<Method> methods=findMethods(METHOD_NAME_SUGGEST);
-  if (methods.size() <= 0 && parameters.length > 0) {
-    LOGGER.warn("No {} method found for command class {}.",METHOD_NAME_SUGGEST,getClass().getCanonicalName());
+  if (methods.size() <= 0) {
+    if (parameters.length > 0) {
+      LOGGER.warn("No {} method found for command class {}.",METHOD_NAME_SUGGEST,getClass().getCanonicalName());
+    }
     suggestionMethod=null;
     return;
   }

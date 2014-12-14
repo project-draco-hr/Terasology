@@ -1,0 +1,13 @@
+{
+  Collection<ICommand> commands=console.getCommands();
+  if (commandNames != null && commandNames.size() == commands.size()) {
+    return false;
+  }
+  commandNames=Collections2.transform(commands,new Function<ICommand,String>(){
+    @Override public String apply(    ICommand input){
+      return input.getName();
+    }
+  }
+);
+  return true;
+}
