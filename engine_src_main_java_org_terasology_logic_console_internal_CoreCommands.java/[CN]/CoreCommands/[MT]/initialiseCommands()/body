@@ -1,0 +1,14 @@
+{
+  Class<? extends Command>[] commandClasses=COMMAND_CLASSES;
+  ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
+  for (  Class<? extends Command> commandClass : commandClasses) {
+    try {
+      Command commandObject=commandClass.newInstance();
+      componentSystemManager.register(commandObject);
+    }
+ catch (    Throwable t) {
+      LOGGER.warn("Cannot register core command " + commandClass);
+      t.printStackTrace();
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  Class<?> componentClass=array.getClass().getComponentType();
+  int filteredSize=0;
+  for (  T element : array) {
+    if (predicate.apply(element)) {
+      filteredSize++;
+    }
+  }
+  @SuppressWarnings("unchecked") T[] filteredArray=(T[])Array.newInstance(componentClass,filteredSize);
+  int insertionIndex=0;
+  for (  T element : array) {
+    if (predicate.apply(element)) {
+      filteredArray[insertionIndex++]=element;
+    }
+  }
+  return filteredArray;
+}

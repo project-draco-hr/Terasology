@@ -9,9 +9,10 @@
   for (int i=0; i < suggestedIndex - 1; i++) {
     finishedParameters.add(commandParameters.get(i));
   }
+  String currentValue=commandParameters.size() >= suggestedIndex ? commandParameters.get(suggestedIndex - 1) : null;
   EntityRef sender=CoreRegistry.get(LocalPlayer.class).getClientEntity();
   try {
-    return command.suggestRaw(finishedParameters,sender);
+    return command.suggestRaw(currentValue,finishedParameters,sender);
   }
  catch (  CommandSuggestionException e) {
     Throwable cause=e.getCause();

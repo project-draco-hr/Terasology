@@ -16,7 +16,16 @@
   }
   try {
     String[] result=(String[])suggestionMethod.invoke(this,processedParameters);
-    return result != null ? result : new String[0];
+    if (result == null || result.length <= 0) {
+      return result;
+    }
+    String[] filteredResult=filterArray(result,new Predicate<String>(){
+      @Override public boolean apply(      String input){
+        return input != null && (currentValue == null || input.startsWith(currentValue));
+      }
+    }
+);
+    return filteredResult;
   }
  catch (  Throwable t) {
     throw new CommandSuggestionException(t.getCause());
