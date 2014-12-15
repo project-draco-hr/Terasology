@@ -1,14 +1,16 @@
 {
-  Class<? extends Command>[] commandClasses=COMMAND_CLASSES;
+  Set<Class<?>> commandClasses=REFLECTIONS.getTypesAnnotatedWith(CoreCommand.class);
   ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
-  for (  Class<? extends Command> commandClass : commandClasses) {
-    try {
-      Command commandObject=commandClass.newInstance();
-      componentSystemManager.register(commandObject);
-    }
- catch (    Throwable t) {
-      LOGGER.warn("Cannot register core command " + commandClass);
-      t.printStackTrace();
+  for (  Class<?> commandClass : commandClasses) {
+    if (Command.class.isAssignableFrom(commandClass)) {
+      try {
+        Command commandObject=(Command)commandClass.newInstance();
+        componentSystemManager.register(commandObject);
+      }
+ catch (      Throwable t) {
+        LOGGER.warn("Cannot register core command " + commandClass);
+        t.printStackTrace();
+      }
     }
   }
 }
