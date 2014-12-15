@@ -14,20 +14,44 @@
     }
     throw new CommandSuggestionException(warning);
   }
+  CommandParameter suggestedParameter=null;
+  for (int i=1; i < processedParameters.length; i++) {
+    if (processedParameters[i] == null) {
+      suggestedParameter=parameters[i - 1];
+      break;
+    }
+  }
+  if (suggestedParameter == null) {
+    return null;
+  }
+  Object rawResult=null;
   try {
-    String[] result=(String[])suggestionMethod.invoke(this,processedParameters);
-    if (result == null || result.length <= 0) {
-      return result;
-    }
-    String[] filteredResult=filterArray(result,new Predicate<String>(){
-      @Override public boolean apply(      String input){
-        return input != null && (currentValue == null || input.startsWith(currentValue));
-      }
-    }
-);
-    return filteredResult;
+    rawResult=suggestionMethod.invoke(this,processedParameters);
   }
  catch (  Throwable t) {
     throw new CommandSuggestionException(t.getCause());
   }
+  if (rawResult == null) {
+    return null;
+  }
+  Object[] result;
+  try {
+    result=(Object[])rawResult;
+    if (result.getClass().getComponentType() != suggestedParameter.getType()) {
+      throw new ClassCastException();
+    }
+  }
+ catch (  ClassCastException e) {
+    Class<?> requiredComponentClass=suggestedParameter.getType();
+    Class<?> requiredClass=Array.newInstance(requiredComponentClass,0).getClass();
+    Class<?> providedClass=rawResult.getClass();
+    throw new CommandSuggestionException("The 'suggest' method of command class " + getClass().getCanonicalName() + " returns a suggestion of an invalid type. Required: "+ requiredClass.getCanonicalName()+ "; provided: "+ providedClass.getCanonicalName(),e);
+  }
+  String[] composedResult=composeAll(result,suggestedParameter);
+  return filterArray(composedResult,new Predicate<String>(){
+    @Override public boolean apply(    String input){
+      return input != null && (currentValue == null || input.startsWith(currentValue));
+    }
+  }
+);
 }

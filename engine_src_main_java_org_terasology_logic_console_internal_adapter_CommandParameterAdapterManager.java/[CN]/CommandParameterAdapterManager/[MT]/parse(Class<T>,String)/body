@@ -1,0 +1,6 @@
+{
+  Preconditions.checkNotNull(composed,"The String to parse must not be null");
+  CommandParameterAdapter adapter=getAdapter(clazz);
+  Preconditions.checkNotNull(adapter,"No adapter found for " + clazz.getCanonicalName());
+  return (T)adapter.parse(composed);
+}
