@@ -1,0 +1,21 @@
+{
+  String name=null;
+  Character arrayDelimiter=null;
+  boolean required=true;
+  for (  Annotation annotation : annotations) {
+    if (annotation instanceof org.terasology.logic.console.internal.referenced.CommandParameter) {
+      org.terasology.logic.console.internal.referenced.CommandParameter parameterAnnotation=(org.terasology.logic.console.internal.referenced.CommandParameter)annotation;
+      name=parameterAnnotation.value();
+      arrayDelimiter=parameterAnnotation.arrayDelimiter();
+      required=parameterAnnotation.required();
+      break;
+    }
+  }
+  if (type.isArray()) {
+    Class<?> childType=type.getComponentType();
+    return CommandParameter.array(name,childType,arrayDelimiter,required);
+  }
+ else {
+    return CommandParameter.single(name,type,required);
+  }
+}

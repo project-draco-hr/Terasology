@@ -1,9 +1,12 @@
 {
   InjectionHelper.inject(system);
+  if (console != null) {
+    ReferencedCommand.registerAvailable(system);
+  }
   try {
     system.initialise();
   }
- catch (  Throwable e) {
-    logger.error("Failed to initialise system {}",system,e);
+ catch (  Throwable t) {
+    logger.error("Failed to initialise system {}",system,t);
   }
 }

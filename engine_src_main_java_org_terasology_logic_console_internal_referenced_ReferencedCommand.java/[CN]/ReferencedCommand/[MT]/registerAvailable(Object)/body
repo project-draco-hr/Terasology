@@ -1,0 +1,17 @@
+{
+  Predicate<? super Method> predicate=Predicates.<Method>and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withAnnotation(Command.class));
+  Set<Method> commandMethods=ReflectionUtils.getAllMethods(provider.getClass(),predicate);
+  Console console=CoreRegistry.get(Console.class);
+  for (  Method method : commandMethods) {
+    LOGGER.debug("Registering referenced command method {} in class {}",method.getName(),method.getDeclaringClass().getCanonicalName());
+    try {
+      SpecificAccessibleObject<Method> specificMethod=new SpecificAccessibleObject<>(method,provider);
+      ReferencedCommand command=referringTo(specificMethod);
+      console.registerCommand(command);
+      LOGGER.debug("Registered referenced command method {} in class {}",method.getName(),method.getDeclaringClass().getCanonicalName());
+    }
+ catch (    Throwable t) {
+      LOGGER.error("Failed to load referenced command method {} in class {}",method.getName(),method.getDeclaringClass().getCanonicalName(),t);
+    }
+  }
+}

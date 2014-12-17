@@ -1,0 +1,10 @@
+{
+  Method method=specificMethod.getAccessibleObject();
+  Command commandAnnotation=method.getAnnotation(Command.class);
+  Preconditions.checkNotNull(commandAnnotation);
+  String name=commandAnnotation.name();
+  if (name.length() <= 0) {
+    name=method.getName();
+  }
+  return new ReferencedCommand(name,commandAnnotation.requiredPermission(),commandAnnotation.runOnServer(),commandAnnotation.shortDescription(),commandAnnotation.helpText(),specificMethod);
+}
