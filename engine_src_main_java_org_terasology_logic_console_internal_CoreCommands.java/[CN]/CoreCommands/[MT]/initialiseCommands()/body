@@ -2,14 +2,16 @@
   ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
   Set<Class<?>> commandClasses=REFLECTIONS.getTypesAnnotatedWith(CoreCommand.class);
   for (  Class<?> commandClass : commandClasses) {
-    if (Command.class.isAssignableFrom(commandClass)) {
-      try {
-        Command commandObject=(Command)commandClass.newInstance();
-        componentSystemManager.register(commandObject);
-      }
- catch (      Throwable t) {
-        LOGGER.warn("Cannot register core command " + commandClass);
-        t.printStackTrace();
+    if (commandClass.isAnnotationPresent(RegisterSystem.class)) {
+      if (Command.class.isAssignableFrom(commandClass)) {
+        try {
+          Command commandObject=(Command)commandClass.newInstance();
+          componentSystemManager.register(commandObject);
+        }
+ catch (        Throwable t) {
+          LOGGER.warn("Cannot register core command " + commandClass);
+          t.printStackTrace();
+        }
       }
     }
   }
