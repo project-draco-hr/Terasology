@@ -1,0 +1,15 @@
+{
+  PermissionManager permissionManager=CoreRegistry.get(PermissionManager.class);
+  boolean hasPermission=true;
+  if (permissionManager != null && requiredPermission != null && !requiredPermission.isEmpty()) {
+    hasPermission=false;
+    ClientComponent clientComponent=callingClient.getComponent(ClientComponent.class);
+    if (clientComponent != null) {
+      EntityRef character=clientComponent.character;
+      if (permissionManager.hasPermission(character,requiredPermission)) {
+        hasPermission=true;
+      }
+    }
+  }
+  return hasPermission;
+}

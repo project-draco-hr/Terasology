@@ -7,6 +7,11 @@
     addErrorMessage("Unknown command '" + commandName + "'");
     return false;
   }
+  String requiredPermission=cmd.getRequiredPermission();
+  if (!clientHasPermission(callingClient,requiredPermission)) {
+    addErrorMessage("You do not have enough permissions to execute this command (" + requiredPermission + ").");
+    return false;
+  }
   if (params.size() < cmd.getRequiredParameterCount()) {
     addErrorMessage("Please, provide required arguments marked by <>.");
     addMessage(cmd.getUsage());
