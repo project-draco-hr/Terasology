@@ -1,10 +1,7 @@
 {
-  if (suggestionMethod == null) {
-    return null;
-  }
-  Object[] processedParameters;
+  Object[] processedParametersWithoutSender;
   try {
-    processedParameters=processParameters(rawParameters,sender);
+    processedParametersWithoutSender=processParameters(rawParameters,sender,false);
   }
  catch (  CommandParameterParseException e) {
     String warning="Invalid parameter '" + e.getParameter() + "'";
@@ -15,37 +12,30 @@
     throw new CommandSuggestionException(warning);
   }
   CommandParameter suggestedParameter=null;
-  for (int i=1; i < processedParameters.length; i++) {
-    if (processedParameters[i] == null) {
-      suggestedParameter=parameters[i - 1];
+  for (int i=0; i < processedParametersWithoutSender.length; i++) {
+    if (processedParametersWithoutSender[i] == null) {
+      suggestedParameter=parameters[i];
       break;
     }
   }
   if (suggestedParameter == null) {
     return null;
   }
-  Object rawResult=null;
+  Object[] result=null;
   try {
-    rawResult=suggestionMethod.getAccessibleObject().invoke(suggestionMethod.getTarget(),processedParameters);
+    result=suggestedParameter.suggest(sender,processedParametersWithoutSender);
   }
  catch (  Throwable t) {
     throw new CommandSuggestionException(t.getCause());
   }
-  if (rawResult == null) {
+  if (result == null) {
     return null;
   }
-  Object[] result;
-  try {
-    result=(Object[])rawResult;
-    if (result.getClass().getComponentType() != suggestedParameter.getType()) {
-      throw new ClassCastException();
-    }
-  }
- catch (  ClassCastException e) {
+  if (result.getClass().getComponentType() != suggestedParameter.getType()) {
     Class<?> requiredComponentClass=suggestedParameter.getType();
     Class<?> requiredClass=Array.newInstance(requiredComponentClass,0).getClass();
-    Class<?> providedClass=rawResult.getClass();
-    throw new CommandSuggestionException("The 'suggest' method of command class " + getClass().getCanonicalName() + " returns a suggestion of an invalid type. Required: "+ requiredClass.getCanonicalName()+ "; provided: "+ providedClass.getCanonicalName(),e);
+    Class<?> providedClass=result.getClass();
+    throw new CommandSuggestionException("The 'suggest' method of command class " + getClass().getCanonicalName() + " returns a suggestion of an invalid type. Required: "+ requiredClass.getCanonicalName()+ "; provided: "+ providedClass.getCanonicalName());
   }
   String[] composedResult=composeAll(result,suggestedParameter);
   return filterArray(composedResult,new Predicate<String>(){

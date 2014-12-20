@@ -1,8 +1,3 @@
 {
-  if (childType.isArray()) {
-    throw new IllegalArgumentException("The child type of an array CommandParameterDefinition must not be an array!");
-  }
-  Class<?> type=getArrayClass(childType);
-  char arrayDelimiterNotNull=arrayDelimiter != null ? arrayDelimiter : Command.ARRAY_DELIMITER_DEFAULT;
-  return new CommandParameter(name,type,arrayDelimiterNotNull,required);
+  return array(name,childType,arrayDelimiter,required,(CommandParameterSuggester)null);
 }
