@@ -1,0 +1,9 @@
+{
+  ClientComponent clientComp=client.getComponent(ClientComponent.class);
+  HealthComponent health=clientComp.character.getComponent(HealthComponent.class);
+  if (health != null) {
+    health.regenRate=rate;
+    clientComp.character.saveComponent(health);
+  }
+  return "Set regeneration rate to " + rate;
+}

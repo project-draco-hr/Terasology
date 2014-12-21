@@ -1,0 +1,16 @@
+{
+  ClientComponent clientComp=client.getComponent(ClientComponent.class);
+  CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
+  if (move != null) {
+    float oldFactor=move.slopeFactor;
+    if (move.slopeFactor > 0.7f) {
+      move.slopeFactor=0.6f;
+    }
+ else {
+      move.slopeFactor=0.9f;
+    }
+    clientComp.character.saveComponent(move);
+    return "Slope factor is now " + move.slopeFactor + " (was "+ oldFactor+ ")";
+  }
+  return "";
+}

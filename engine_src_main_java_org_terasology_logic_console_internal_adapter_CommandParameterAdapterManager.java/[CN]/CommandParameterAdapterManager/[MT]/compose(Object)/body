@@ -1,7 +1,4 @@
 {
-  Preconditions.checkNotNull(parsed,"The Object to compose must not be null");
   Class<?> clazz=parsed.getClass();
-  CommandParameterAdapter adapter=getAdapter(clazz);
-  Preconditions.checkNotNull(adapter,"No adapter found for " + clazz.getCanonicalName());
-  return adapter.compose(parsed);
+  return compose(parsed,(Class<? super Object>)clazz);
 }

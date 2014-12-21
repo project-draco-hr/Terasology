@@ -13,6 +13,9 @@
     }
     Class<?> expectedType=parameters[i].getTypeRaw();
     Class<?> providedType=methodParameters[i + 1];
+    if (providedType.isPrimitive()) {
+      providedType=CommandParameter.PRIMITIVES_TO_WRAPPERS.get(providedType);
+    }
     if (!expectedType.isAssignableFrom(providedType)) {
       throw new CommandInitializationException("Cannot assign command argument from " + providedType.getSimpleName() + " to "+ expectedType.getSimpleName()+ "; "+ "command method parameter index: "+ i);
     }
