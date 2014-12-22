@@ -1,6 +1,10 @@
 {
-  for (  Module module : currentSelectionResults.getModules()) {
-    SelectModulesScreen.ModuleSelectionInfo info=modulesLookup.get(module.getId());
-    info.setSelectedVersion(module);
+  if (currentSelectionResults.isSuccess()) {
+    for (    Module module : currentSelectionResults.getModules()) {
+      SelectModulesScreen.ModuleSelectionInfo info=modulesLookup.get(module.getId());
+      if (info != null) {
+        info.setSelectedVersion(module);
+      }
+    }
   }
 }
