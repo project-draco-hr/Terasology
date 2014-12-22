@@ -1,7 +1,8 @@
 {
+  boolean found=false;
   String name=null;
   Character arrayDelimiter=null;
-  Class<? extends CommandParameterSuggester> suggesterClass=org.terasology.logic.console.commands.referenced.CommandParameter.NullCommandParameterSuggester.class;
+  Class<? extends CommandParameterSuggester> suggesterClass=null;
   boolean required=true;
   for (  Annotation annotation : annotations) {
     if (annotation instanceof org.terasology.logic.console.commands.referenced.CommandParameter) {
@@ -10,20 +11,19 @@
       arrayDelimiter=parameterAnnotation.arrayDelimiter();
       suggesterClass=parameterAnnotation.suggester();
       required=parameterAnnotation.required();
+      found=true;
       break;
     }
   }
-  CommandParameterSuggester suggester;
-  if (suggesterClass != org.terasology.logic.console.commands.referenced.CommandParameter.NullCommandParameterSuggester.class) {
-    try {
-      suggester=suggesterClass.newInstance();
-    }
- catch (    InstantiationException|IllegalAccessException e) {
-      throw new RuntimeException(e);
-    }
+  if (!found) {
+    throw new NullPointerException("CommandParameter annotation not found.");
   }
- else {
-    suggester=null;
+  CommandParameterSuggester suggester;
+  try {
+    suggester=suggesterClass.newInstance();
+  }
+ catch (  InstantiationException|IllegalAccessException e) {
+    throw new RuntimeException(e);
   }
   if (type.isArray()) {
     Class<?> childType=type.getComponentType();

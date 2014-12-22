@@ -10,32 +10,33 @@
   }
   String commandName=console.processCommandName(query);
   List<String> commandParameters=console.processParameters(query);
-  ICommand command=console.getCommand(commandName);
+  Command command=console.getCommand(commandName);
   int suggestedIndex=commandParameters.size() + (query.charAt(query.length() - 1) == ' ' ? 1 : 0);
-  String[] matches=findMatches(commandName,commandParameters,command,suggestedIndex);
-  if (matches == null || matches.length <= 0) {
+  Collection<String> matches=findMatches(commandName,commandParameters,command,suggestedIndex);
+  if (matches == null || matches.size() <= 0) {
     return query;
   }
-  if (!Arrays.equals(matches,previousMatches)) {
+  if (!matches.equals(previousMatches)) {
     reset(false);
-    if (matches.length == 1) {
-      return generateResult(matches[0],commandName,commandParameters,suggestedIndex);
+    if (matches.size() == 1) {
+      return generateResult(matches.iterator().next(),commandName,commandParameters,suggestedIndex);
     }
-    previousMatches=matches;
+    previousMatches=Lists.newArrayList(matches);
+    Collections.sort(previousMatches);
   }
   StringBuilder matchMessageString=new StringBuilder();
-  for (int i=0; i < previousMatches.length; i++) {
+  for (int i=0; i < previousMatches.size(); i++) {
     if (i > 0) {
       matchMessageString.append(' ');
     }
-    String name=previousMatches[i];
+    String match=previousMatches.get(i);
     if (selectionIndex == i) {
-      name=FontColor.getColored(name,ConsoleColors.COMMAND);
+      match=FontColor.getColored(match,ConsoleColors.COMMAND);
     }
-    matchMessageString.append(name);
+    matchMessageString.append(match);
   }
   Message matchMessage=new Message(matchMessageString.toString());
-  String suggestion=previousMatches[selectionIndex];
+  String suggestion=previousMatches.get(selectionIndex);
   if (previousMessage != null) {
     console.replaceMessage(previousMessage,matchMessage);
   }
@@ -43,6 +44,6 @@
     console.addMessage(matchMessage);
   }
   previousMessage=matchMessage;
-  selectionIndex=(selectionIndex + 1) % previousMatches.length;
+  selectionIndex=(selectionIndex + 1) % previousMatches.size();
   return generateResult(suggestion,commandName,commandParameters,suggestedIndex);
 }

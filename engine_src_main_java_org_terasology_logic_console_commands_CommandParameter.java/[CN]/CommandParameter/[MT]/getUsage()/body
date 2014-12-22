@@ -1,14 +1,23 @@
 {
-  String typeString=getType().getSimpleName();
-  if (isArray()) {
-    typeString+=getArrayDelimiter() + typeString;
-  }
-  String cmd=typeString + (hasName() ? " " + getName() : "");
+  String simpleTypeName=getType().getSimpleName();
+  StringBuilder usage=new StringBuilder(simpleTypeName);
   if (required) {
-    cmd="<" + cmd + ">";
+    usage.append('<');
   }
  else {
-    cmd="(" + cmd + ")";
+    usage.append('(');
   }
-  return cmd;
+  if (isArray()) {
+    usage.append(getArrayDelimiter()).append(simpleTypeName);
+  }
+  if (hasName()) {
+    usage.append(' ').append(getName());
+  }
+  if (required) {
+    usage.append('>');
+  }
+ else {
+    usage.append(')');
+  }
+  return usage.toString();
 }

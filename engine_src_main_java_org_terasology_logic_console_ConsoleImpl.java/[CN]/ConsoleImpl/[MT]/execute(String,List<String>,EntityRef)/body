@@ -2,7 +2,7 @@
   if (commandName.isEmpty()) {
     return false;
   }
-  ICommand cmd=getCommand(commandName);
+  Command cmd=getCommand(commandName);
   if (cmd == null) {
     addErrorMessage("Unknown command '" + commandName + "'");
     return false;
@@ -24,7 +24,7 @@
  else {
     try {
       String result=cmd.executeRaw(params,callingClient);
-      if (result != null && !result.isEmpty()) {
+      if (!Strings.isNullOrEmpty(result)) {
         if (callingClient.exists()) {
           callingClient.send(new ConsoleMessageEvent(result));
         }

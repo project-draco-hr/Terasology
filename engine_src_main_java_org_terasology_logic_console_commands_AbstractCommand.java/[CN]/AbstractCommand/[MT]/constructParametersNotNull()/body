@@ -1,0 +1,12 @@
+{
+  List<CommandParameter> constructedParameters=constructParameters();
+  if (constructedParameters == null) {
+    return ImmutableList.of();
+  }
+  for (int i=0; i < constructedParameters.size(); i++) {
+    if (constructedParameters.get(i) == null) {
+      throw new CommandInitializationException("Invalid parameter definition #" + i + "; must not be null");
+    }
+  }
+  return ImmutableList.copyOf(constructedParameters);
+}

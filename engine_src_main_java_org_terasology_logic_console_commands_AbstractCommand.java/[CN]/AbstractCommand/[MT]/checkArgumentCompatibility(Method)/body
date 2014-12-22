@@ -1,0 +1,23 @@
+{
+  Class<?>[] methodParameters=method.getParameterTypes();
+  if (methodParameters[0] != EntityRef.class) {
+    throw new CommandInitializationException("The first parameter of method " + method.getName() + " in"+ " a command class must be an EntityRef (sender)");
+  }
+  int passableParameterCount=methodParameters.length - 1;
+  for (int i=0; i < passableParameterCount || i < parameters.size(); i++) {
+    if (i >= passableParameterCount) {
+      throw new CommandInitializationException("Missing " + (parameters.size() - passableParameterCount) + " parameters in method "+ method.getName()+ ", follow the parameter definitions from the"+ " 'constructParameters' method.");
+    }
+ else     if (i >= parameters.size()) {
+      throw new CommandInitializationException("Too many (" + (parameters.size() - passableParameterCount) + ") parameters in method "+ method.getName()+ ", follow the parameter definitions from the"+ " 'constructParameters' method.");
+    }
+    Class<?> expectedType=parameters.get(i).getTypeRaw();
+    Class<?> providedType=methodParameters[i + 1];
+    if (providedType.isPrimitive()) {
+      providedType=CommandParameter.PRIMITIVES_TO_WRAPPERS.get(providedType);
+    }
+    if (!expectedType.isAssignableFrom(providedType)) {
+      throw new CommandInitializationException("Cannot assign command argument from " + providedType.getSimpleName() + " to "+ expectedType.getSimpleName()+ "; "+ "command method parameter index: "+ i);
+    }
+  }
+}

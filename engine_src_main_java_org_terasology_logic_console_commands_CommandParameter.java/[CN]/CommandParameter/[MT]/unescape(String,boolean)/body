@@ -4,13 +4,13 @@
   int i=0;
   while (i < string.length()) {
     char c=string.charAt(i);
-    if (c == Command.ARRAY_DELIMITER_ESCAPE_CHARACTER) {
+    if (c == org.terasology.logic.console.commands.referenced.CommandParameter.ARRAY_DELIMITER_ESCAPE_CHARACTER) {
       if (i >= string.length() - 1) {
         throw new CommandParameterParseException("The command parameter must not end with an escape character.",rawParameter);
       }
       string=string.substring(0,i) + string.substring(i + 1);
       char following=string.charAt(i);
-      if (following != Command.ARRAY_DELIMITER_ESCAPE_CHARACTER && (!split || following != arrayDelimiter)) {
+      if (following != org.terasology.logic.console.commands.referenced.CommandParameter.ARRAY_DELIMITER_ESCAPE_CHARACTER && (!split || following != arrayDelimiter)) {
         throw new CommandParameterParseException("Character '" + following + "' cannot be escaped.",rawParameter);
       }
       i++;

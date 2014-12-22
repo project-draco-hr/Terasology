@@ -3,9 +3,9 @@
   Method executionMethod=specificExecutionMethod.getAccessibleObject();
   Class<?>[] methodParameters=executionMethod.getParameterTypes();
   Annotation[][] methodParameterAnnotations=executionMethod.getParameterAnnotations();
-  CommandParameter[] parameters=new CommandParameter[methodParameters.length - 1];
+  List<CommandParameter> parameters=Lists.newArrayListWithCapacity(methodParameters.length - 1);
   for (int i=1; i < methodParameters.length; i++) {
-    parameters[i - 1]=getParameterFor(methodParameters[i],methodParameterAnnotations[i]);
+    parameters.set(i - 1,getParameterFor(methodParameters[i],methodParameterAnnotations[i]));
   }
   return parameters;
 }
