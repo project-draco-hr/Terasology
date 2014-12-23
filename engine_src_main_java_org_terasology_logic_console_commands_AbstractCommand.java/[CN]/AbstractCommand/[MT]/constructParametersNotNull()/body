@@ -1,12 +1,20 @@
 {
-  List<CommandParameter> constructedParameters=constructParameters();
-  if (constructedParameters == null) {
-    return ImmutableList.of();
+  List<CommandParameterType> constructedParameters=constructParameters();
+  if (constructedParameters == null || constructedParameters.size() <= 0) {
+    commandParameters=ImmutableList.of();
+    executionMethodParameters=ImmutableList.of();
+    return;
   }
+  ImmutableList.Builder<CommandParameter> commandParameterBuilder=ImmutableList.builder();
   for (int i=0; i < constructedParameters.size(); i++) {
-    if (constructedParameters.get(i) == null) {
+    CommandParameterType type=constructedParameters.get(i);
+    if (type == null) {
       throw new CommandInitializationException("Invalid parameter definition #" + i + "; must not be null");
     }
+ else     if (type instanceof CommandParameter) {
+      commandParameterBuilder.add((CommandParameter)type);
+    }
   }
-  return ImmutableList.copyOf(constructedParameters);
+  commandParameters=commandParameterBuilder.build();
+  executionMethodParameters=ImmutableList.copyOf(constructedParameters);
 }
