@@ -1,5 +1,5 @@
 {
-  Predicate<? super Method> predicate=Predicates.<Method>and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withAnnotation(org.terasology.logic.console.commands.referenced.Command.class));
+  Predicate<? super Method> predicate=Predicates.<Method>and(ReflectionUtils.withModifier(Modifier.PUBLIC),ReflectionUtils.withAnnotation(CommandDefinition.class));
   Set<Method> commandMethods=ReflectionUtils.getAllMethods(provider.getClass(),predicate);
   Console console=CoreRegistry.get(Console.class);
   for (  Method method : commandMethods) {
