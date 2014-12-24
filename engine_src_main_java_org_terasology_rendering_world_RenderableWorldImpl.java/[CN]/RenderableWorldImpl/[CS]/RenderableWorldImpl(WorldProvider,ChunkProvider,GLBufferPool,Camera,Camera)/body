@@ -1,0 +1,10 @@
+{
+  this.worldProvider=worldProvider;
+  this.chunkProvider=chunkProvider;
+  chunkTessellator=new ChunkTessellator(bufferPool);
+  chunkMeshUpdateManager=new ChunkMeshUpdateManager(chunkTessellator,worldProvider);
+  this.activeCamera=activeCamera;
+  this.lightCamera=lightCamera;
+  config=CoreRegistry.get(Config.class);
+  renderQueues=new RenderQueuesHelper(new PriorityQueue<>(MAX_CHUNKS,new ChunkFrontToBackComparator()),new PriorityQueue<>(MAX_CHUNKS,new ChunkFrontToBackComparator()),new PriorityQueue<>(MAX_CHUNKS,new ChunkFrontToBackComparator()),new PriorityQueue<>(MAX_CHUNKS,new ChunkFrontToBackComparator()),new PriorityQueue<>(MAX_CHUNKS,new ChunkBackToFrontComparator()));
+}

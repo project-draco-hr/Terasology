@@ -4,7 +4,6 @@
   bulletPhysics=new BulletPhysics(worldProvider);
   chunkTessellator=new ChunkTessellator(bufferPool);
   skysphere=new Skysphere();
-  chunkMeshUpdateManager=new ChunkMeshUpdateManager(chunkTessellator,worldProvider);
   systemManager=CoreRegistry.get(ComponentSystemManager.class);
   Camera localPlayerCamera;
   if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
@@ -22,4 +21,6 @@
   mainDirectionalLight.lightSpecularIntensity=0.0f;
   localPlayerSystem.setPlayerCamera(localPlayerCamera);
   config=CoreRegistry.get(Config.class);
+  renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,activeCamera,lightCamera);
+  this.renderQueues=renderableWorld.getRenderQueues();
 }

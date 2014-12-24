@@ -36,7 +36,7 @@
     if (i < TeraMath.clamp(config.getRendering().getMaxChunksUsedForShadowMapping(),64,1024) && config.getRendering().isDynamicShadows() && fillShadowRenderQueue) {
       if (isChunkVisibleLight(c) && isChunkValidForRender(c)) {
         if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
-          renderQueueChunksOpaqueShadow.add(c);
+          renderQueues.chunksOpaqueShadow.add(c);
         }
  else {
           statIgnoredPhases++;
@@ -46,19 +46,19 @@
     if (isChunkValidForRender(c)) {
       if (isChunkVisible(c)) {
         if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
-          renderQueueChunksOpaque.add(c);
+          renderQueues.chunksOpaque.add(c);
         }
  else {
           statIgnoredPhases++;
         }
         if (triangleCount(mesh,ChunkMesh.RenderPhase.REFRACTIVE) > 0) {
-          renderQueueChunksAlphaBlend.add(c);
+          renderQueues.chunksAlphaBlend.add(c);
         }
  else {
           statIgnoredPhases++;
         }
         if (triangleCount(mesh,ChunkMesh.RenderPhase.ALPHA_REJECT) > 0 && i < MAX_BILLBOARD_CHUNKS) {
-          renderQueueChunksAlphaReject.add(c);
+          renderQueues.chunksAlphaReject.add(c);
         }
  else {
           statIgnoredPhases++;
@@ -72,7 +72,7 @@
         }
       }
       if (isChunkVisibleReflection(c)) {
-        renderQueueChunksOpaqueReflection.add(c);
+        renderQueues.chunksOpaqueReflection.add(c);
       }
       if (processChunkUpdates && processChunkUpdate(c)) {
         processedChunks++;
