@@ -1,8 +1,6 @@
 {
-  this.chunkProvider=chunkProvider;
   this.worldProvider=worldProvider;
   bulletPhysics=new BulletPhysics(worldProvider);
-  chunkTessellator=new ChunkTessellator(bufferPool);
   skysphere=new Skysphere();
   systemManager=CoreRegistry.get(ComponentSystemManager.class);
   Camera localPlayerCamera;
@@ -22,5 +20,5 @@
   localPlayerSystem.setPlayerCamera(localPlayerCamera);
   config=CoreRegistry.get(Config.class);
   renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,activeCamera,lightCamera);
-  this.renderQueues=renderableWorld.getRenderQueues();
+  renderQueues=renderableWorld.getRenderQueues();
 }
