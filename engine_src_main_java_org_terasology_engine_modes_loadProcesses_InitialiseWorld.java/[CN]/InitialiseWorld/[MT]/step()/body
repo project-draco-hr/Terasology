@@ -1,5 +1,6 @@
 {
-  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new DefaultWorldGeneratorPluginLibrary(CoreRegistry.get(ModuleManager.class).getEnvironment(),CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
+  ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).getEnvironment();
+  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new DefaultWorldGeneratorPluginLibrary(environment,CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
   WorldInfo worldInfo=gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD);
   if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
     FastRandom random=new FastRandom();
@@ -19,7 +20,9 @@
     return true;
   }
   EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
-  StorageManager storageManager=CoreRegistry.put(StorageManager.class,new StorageManagerInternal(CoreRegistry.get(ModuleManager.class).getEnvironment(),entityManager));
+  boolean useSaveGames=CoreRegistry.get(Config.class).getTransients().useSaveGames();
+  StorageManager storageManager=useSaveGames ? new StorageManagerInternal(environment,entityManager) : new StorageManagerStub(environment,entityManager);
+  CoreRegistry.put(StorageManager.class,storageManager);
   LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,entityManager,worldGenerator);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));

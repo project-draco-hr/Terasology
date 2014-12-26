@@ -7,20 +7,11 @@
   if (disposedSavingPlayer != null) {
     return disposedSavingPlayer;
   }
-  Path storePath=storagePathProvider.getPlayerFilePath(playerId);
   worldDirectoryReadLock.lock();
   try {
-    if (Files.isRegularFile(storePath)) {
-      try (InputStream inputStream=new BufferedInputStream(Files.newInputStream(storePath))){
-        return EntityData.PlayerStore.parseFrom(inputStream);
-      }
- catch (      IOException e) {
-        logger.error("Failed to load player data for {}",playerId,e);
-      }
-    }
+    return super.loadPlayerStoreData(playerId);
   }
   finally {
     worldDirectoryReadLock.unlock();
   }
-  return null;
 }

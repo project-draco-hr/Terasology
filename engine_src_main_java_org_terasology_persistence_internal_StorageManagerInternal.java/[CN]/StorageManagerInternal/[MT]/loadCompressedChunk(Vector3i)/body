@@ -9,23 +9,9 @@
   }
   worldDirectoryReadLock.lock();
   try {
-    if (storeChunksInZips) {
-      return loadChunkZip(chunkPos);
-    }
- else {
-      Path chunkPath=storagePathProvider.getChunkPath(chunkPos);
-      if (Files.isRegularFile(chunkPath)) {
-        try {
-          return Files.readAllBytes(chunkPath);
-        }
- catch (        IOException e) {
-          logger.error("Failed to load chunk {}",chunkPos,e);
-        }
-      }
-    }
+    return super.loadCompressedChunk(chunkPos);
   }
   finally {
     worldDirectoryReadLock.unlock();
   }
-  return null;
 }
