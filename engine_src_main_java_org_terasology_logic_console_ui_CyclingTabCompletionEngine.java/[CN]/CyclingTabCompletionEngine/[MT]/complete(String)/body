@@ -12,11 +12,11 @@
   List<String> commandParameters=console.processParameters(query);
   Command command=console.getCommand(commandName);
   int suggestedIndex=commandParameters.size() + (query.charAt(query.length() - 1) == ' ' ? 1 : 0);
-  Collection<String> matches=findMatches(commandName,commandParameters,command,suggestedIndex);
+  Set<String> matches=findMatches(commandName,commandParameters,command,suggestedIndex);
   if (matches == null || matches.size() <= 0) {
     return query;
   }
-  if (!matches.equals(previousMatches)) {
+  if (previousMatches == null || !matches.equals(Sets.newHashSet(previousMatches))) {
     reset(false);
     if (matches.size() == 1) {
       return generateResult(matches.iterator().next(),commandName,commandParameters,suggestedIndex);
