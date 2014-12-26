@@ -2,18 +2,6 @@
   PerformanceMonitor.startActivity("Update Tick");
   updateTick(delta);
   PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Complete chunk update");
-  chunkProvider.completeUpdate();
-  PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Update Lighting");
-  worldProvider.processPropagation();
-  PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Begin chunk update");
-  chunkProvider.beginUpdate();
-  PerformanceMonitor.endActivity();
-  PerformanceMonitor.startActivity("Update Close Chunks");
-  updateChunksInProximity(calculateViewRegion(config.getRendering().getViewDistance()));
-  PerformanceMonitor.endActivity();
   if (activeCamera != null) {
     activeCamera.update(delta);
   }
@@ -21,5 +9,6 @@
     positionLightCamera();
     lightCamera.update(delta);
   }
+  renderableWorld.update();
   smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),delta);
 }

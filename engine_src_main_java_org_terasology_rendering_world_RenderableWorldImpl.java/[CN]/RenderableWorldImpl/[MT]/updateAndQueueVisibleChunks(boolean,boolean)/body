@@ -1,0 +1,84 @@
+{
+  statDirtyChunks=0;
+  statVisibleChunks=0;
+  statIgnoredPhases=0;
+  if (processChunkUpdates) {
+    PerformanceMonitor.startActivity("Building Mesh VBOs");
+    chunkMeshUpdateManager.setCameraPosition(activeCamera.getPosition());
+    for (    RenderableChunk c : chunkMeshUpdateManager.availableChunksForUpdate()) {
+      if (chunksInProximity.contains(c) && c.getPendingMesh() != null) {
+        for (int i=0; i < c.getPendingMesh().length; i++) {
+          c.getPendingMesh()[i].generateVBOs();
+        }
+        if (c.getMesh() != null) {
+          for (int i=0; i < c.getMesh().length; i++) {
+            c.getMesh()[i].dispose();
+          }
+        }
+        c.setMesh(c.getPendingMesh());
+        c.setPendingMesh(null);
+      }
+ else {
+        ChunkMesh[] pendingMesh=c.getPendingMesh();
+        c.setPendingMesh(null);
+        if (pendingMesh != null) {
+          for (          ChunkMesh mesh : pendingMesh) {
+            mesh.dispose();
+          }
+        }
+      }
+    }
+    PerformanceMonitor.endActivity();
+  }
+  int processedChunks=0;
+  for (int i=0; i < chunksInProximity.size(); i++) {
+    RenderableChunk c=chunksInProximity.get(i);
+    ChunkMesh[] mesh=c.getMesh();
+    if (i < TeraMath.clamp(config.getRendering().getMaxChunksUsedForShadowMapping(),64,1024) && config.getRendering().isDynamicShadows() && fillShadowRenderQueue) {
+      if (isChunkVisibleLight(c) && isChunkValidForRender(c)) {
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
+          renderQueues.chunksOpaqueShadow.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+      }
+    }
+    if (isChunkValidForRender(c)) {
+      if (isChunkVisible(c)) {
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
+          renderQueues.chunksOpaque.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.REFRACTIVE) > 0) {
+          renderQueues.chunksAlphaBlend.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.ALPHA_REJECT) > 0 && i < MAX_BILLBOARD_CHUNKS) {
+          renderQueues.chunksAlphaReject.add(c);
+        }
+ else {
+          statIgnoredPhases++;
+        }
+        statVisibleChunks++;
+        if (statVisibleChunks < MAX_ANIMATED_CHUNKS) {
+          c.setAnimated(true);
+        }
+ else {
+          c.setAnimated(false);
+        }
+      }
+      if (isChunkVisibleReflection(c)) {
+        renderQueues.chunksOpaqueReflection.add(c);
+      }
+      if (processChunkUpdates && processChunkUpdate(c)) {
+        processedChunks++;
+      }
+    }
+  }
+  return processedChunks;
+}

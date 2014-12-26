@@ -18,13 +18,13 @@
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Chunks (Opaque)");
-  while (renderQueueChunksOpaque.size() > 0) {
-    renderChunk(renderQueueChunksOpaque.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.DEFAULT);
+  while (renderQueues.chunksOpaque.size() > 0) {
+    renderChunk(renderQueues.chunksOpaque.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Chunks (Alpha Reject)");
-  while (renderQueueChunksAlphaReject.size() > 0) {
-    renderChunk(renderQueueChunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,camera,ChunkRenderMode.DEFAULT);
+  while (renderQueues.chunksAlphaReject.size() > 0) {
+    renderChunk(renderQueues.chunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,camera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Overlays");
@@ -86,8 +86,8 @@
   if (isHeadUnderWater) {
     glDisable(GL11.GL_CULL_FACE);
   }
-  while (renderQueueChunksAlphaBlend.size() > 0) {
-    renderChunk(renderQueueChunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,camera,ChunkRenderMode.DEFAULT);
+  while (renderQueues.chunksAlphaBlend.size() > 0) {
+    renderChunk(renderQueues.chunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,camera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
   if (isHeadUnderWater) {
