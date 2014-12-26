@@ -1,23 +1,24 @@
 {
-  boolean complete=true;
-  Vector3i newChunkPos=calcCamChunkOffset();
-  Vector3i viewingDistance=config.getRendering().getViewDistance().getChunkDistance();
+  boolean pregenerationIsComplete=true;
+  Vector3i cameraCoordinates=calcCameraCoordinatesInChunkUnits();
+  Vector3i renderableRegionSize=renderingConfig.getViewDistance().getChunkDistance();
+  Vector3i renderableRegionExtents=new Vector3i(renderableRegionSize.x / 2,renderableRegionSize.y / 2,renderableRegionSize.z / 2);
   chunkProvider.completeUpdate();
   chunkProvider.beginUpdate();
-  for (  Vector3i pos : Region3i.createFromCenterExtents(newChunkPos,new Vector3i(viewingDistance.x / 2,viewingDistance.y / 2,viewingDistance.z / 2))) {
-    RenderableChunk chunk=chunkProvider.getChunk(pos);
+  for (  Vector3i chunkCoordinates : Region3i.createFromCenterExtents(cameraCoordinates,renderableRegionExtents)) {
+    RenderableChunk chunk=chunkProvider.getChunk(chunkCoordinates);
     if (chunk == null) {
-      complete=false;
+      pregenerationIsComplete=false;
     }
  else     if (chunk.isDirty()) {
-      ChunkView view=worldProvider.getLocalView(chunk.getPosition());
-      if (view == null) {
+      ChunkView localView=worldProvider.getLocalView(chunk.getPosition());
+      if (localView == null) {
         continue;
       }
       chunk.setDirty(false);
       ChunkMesh[] newMeshes=new ChunkMesh[VERTICAL_SEGMENTS];
-      for (int seg=0; seg < VERTICAL_SEGMENTS; seg++) {
-        newMeshes[seg]=chunkTessellator.generateMesh(view,ChunkConstants.SIZE_Y / VERTICAL_SEGMENTS,seg * (ChunkConstants.SIZE_Y / VERTICAL_SEGMENTS));
+      for (int segment=0; segment < VERTICAL_SEGMENTS; segment++) {
+        newMeshes[segment]=chunkTessellator.generateMesh(localView,CHUNK_YSIZE_TO_SEGMENTS_RATIO,segment * CHUNK_YSIZE_TO_SEGMENTS_RATIO);
       }
       chunk.setPendingMesh(newMeshes);
       if (chunk.getPendingMesh() != null) {
@@ -32,8 +33,9 @@
         chunk.setMesh(chunk.getPendingMesh());
         chunk.setPendingMesh(null);
       }
-      return false;
+      pregenerationIsComplete=false;
+      return pregenerationIsComplete;
     }
   }
-  return complete;
+  return pregenerationIsComplete;
 }

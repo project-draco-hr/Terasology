@@ -1,12 +1,12 @@
 {
-  if (renderRegion.encompasses(pos)) {
-    Iterator<RenderableChunk> iterator=chunksInProximity.iterator();
+  if (renderableRegion.encompasses(chunkCoordinates)) {
+    Iterator<RenderableChunk> iterator=chunksInProximityOfCamera.iterator();
     while (iterator.hasNext()) {
       RenderableChunk chunk=iterator.next();
-      if (chunk.getPosition().equals(pos)) {
+      if (chunk.getPosition().equals(chunkCoordinates)) {
         chunk.disposeMesh();
         iterator.remove();
-        Collections.sort(chunksInProximity,new ChunkFrontToBackComparator());
+        Collections.sort(chunksInProximityOfCamera,new ChunkFrontToBackComparator());
         break;
       }
     }
