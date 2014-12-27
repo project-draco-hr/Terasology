@@ -6,36 +6,40 @@
     PerformanceMonitor.startActivity("Building Mesh VBOs");
     chunkMeshUpdateManager.setCameraPosition(activeCamera.getPosition());
     for (    RenderableChunk chunk : chunkMeshUpdateManager.availableChunksForUpdate()) {
-      if (chunksInProximityOfCamera.contains(chunk) && chunk.getPendingMesh() != null) {
-        for (int i=0; i < chunk.getPendingMesh().length; i++) {
-          chunk.getPendingMesh()[i].generateVBOs();
+      if (chunksInProximityOfCamera.contains(chunk) && chunk.hasPendingMesh()) {
+        for (        ChunkMesh pendingMesh : chunk.getPendingMesh()) {
+          pendingMesh.generateVBOs();
         }
-        if (chunk.getMesh() != null) {
-          for (int i=0; i < chunk.getMesh().length; i++) {
-            chunk.getMesh()[i].dispose();
+        if (chunk.hasMesh()) {
+          for (          ChunkMesh mesh : chunk.getMesh()) {
+            mesh.dispose();
           }
         }
         chunk.setMesh(chunk.getPendingMesh());
         chunk.setPendingMesh(null);
       }
  else {
-        ChunkMesh[] pendingMesh=chunk.getPendingMesh();
-        chunk.setPendingMesh(null);
-        if (pendingMesh != null) {
-          for (          ChunkMesh mesh : pendingMesh) {
-            mesh.dispose();
+        if (chunk.hasPendingMesh()) {
+          for (          ChunkMesh pendingMesh : chunk.getPendingMesh()) {
+            pendingMesh.dispose();
           }
+          chunk.setPendingMesh(null);
         }
       }
     }
     PerformanceMonitor.endActivity();
   }
   int processedChunks=0;
-  for (int i=0; i < chunksInProximityOfCamera.size(); i++) {
-    RenderableChunk chunk=chunksInProximityOfCamera.get(i);
-    ChunkMesh[] mesh=chunk.getMesh();
-    if (i < TeraMath.clamp(renderingConfig.getMaxChunksUsedForShadowMapping(),64,1024) && renderingConfig.isDynamicShadows() && fillShadowRenderQueue) {
-      if (isChunkVisibleLight(chunk) && isChunkValidForRender(chunk)) {
+  int chunkCounter=0;
+  ChunkMesh[] mesh;
+  RenderableChunk chunk;
+  boolean isDynamicShadows=renderingConfig.isDynamicShadows();
+  Iterator<RenderableChunk> nearbyChunks=chunksInProximityOfCamera.iterator();
+  while (nearbyChunks.hasNext()) {
+    chunk=nearbyChunks.next();
+    if (isChunkValidForRender(chunk)) {
+      mesh=chunk.getMesh();
+      if (isDynamicShadows && fillShadowRenderQueue && chunkCounter < MAX_CHUNKS_FOR_SHADOWS && isChunkVisibleLight(chunk)) {
         if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
           renderQueues.chunksOpaqueShadow.add(chunk);
         }
@@ -43,8 +47,6 @@
           statIgnoredPhases++;
         }
       }
-    }
-    if (isChunkValidForRender(chunk)) {
       if (isChunkVisible(chunk)) {
         if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
           renderQueues.chunksOpaque.add(chunk);
@@ -58,7 +60,7 @@
  else {
           statIgnoredPhases++;
         }
-        if (triangleCount(mesh,ChunkMesh.RenderPhase.ALPHA_REJECT) > 0 && i < MAX_BILLBOARD_CHUNKS) {
+        if (triangleCount(mesh,ChunkMesh.RenderPhase.ALPHA_REJECT) > 0 && chunkCounter < MAX_BILLBOARD_CHUNKS) {
           renderQueues.chunksAlphaReject.add(chunk);
         }
  else {
@@ -79,6 +81,7 @@
         processedChunks++;
       }
     }
+    chunkCounter++;
   }
   return processedChunks;
 }

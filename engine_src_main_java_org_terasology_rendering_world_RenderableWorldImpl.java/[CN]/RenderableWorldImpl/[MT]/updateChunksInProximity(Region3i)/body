@@ -1,11 +1,13 @@
 {
   if (!newRenderableRegion.equals(renderableRegion)) {
+    Vector3i chunkPosition;
+    RenderableChunk chunk;
     Iterator<Vector3i> chunksToRemove=renderableRegion.subtract(newRenderableRegion);
     while (chunksToRemove.hasNext()) {
-      Vector3i chunkPosition=chunksToRemove.next();
+      chunkPosition=chunksToRemove.next();
       Iterator<RenderableChunk> nearbyChunks=chunksInProximityOfCamera.iterator();
       while (nearbyChunks.hasNext()) {
-        RenderableChunk chunk=nearbyChunks.next();
+        chunk=nearbyChunks.next();
         if (chunk.getPosition().equals(chunkPosition)) {
           chunk.disposeMesh();
           nearbyChunks.remove();
@@ -13,16 +15,20 @@
         }
       }
     }
+    boolean chunksHaveBeenAdded=false;
     Iterator<Vector3i> chunksToAdd=newRenderableRegion.subtract(renderableRegion);
     while (chunksToAdd.hasNext()) {
-      Vector3i chunkCoordinates=chunksToAdd.next();
-      RenderableChunk chunk=chunkProvider.getChunk(chunkCoordinates);
+      chunkPosition=chunksToAdd.next();
+      chunk=chunkProvider.getChunk(chunkPosition);
       if (chunk != null) {
         chunksInProximityOfCamera.add(chunk);
+        chunksHaveBeenAdded=true;
       }
     }
+    if (chunksHaveBeenAdded) {
+      Collections.sort(chunksInProximityOfCamera,new ChunkFrontToBackComparator());
+    }
     renderableRegion=newRenderableRegion;
-    Collections.sort(chunksInProximityOfCamera,new ChunkFrontToBackComparator());
     return true;
   }
   return false;

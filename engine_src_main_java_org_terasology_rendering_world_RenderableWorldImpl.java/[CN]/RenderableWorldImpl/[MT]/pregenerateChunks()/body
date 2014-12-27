@@ -1,38 +1,32 @@
 {
   boolean pregenerationIsComplete=true;
-  Vector3i cameraCoordinates=calcCameraCoordinatesInChunkUnits();
-  Vector3i renderableRegionSize=renderingConfig.getViewDistance().getChunkDistance();
-  Vector3i renderableRegionExtents=new Vector3i(renderableRegionSize.x / 2,renderableRegionSize.y / 2,renderableRegionSize.z / 2);
   chunkProvider.completeUpdate();
   chunkProvider.beginUpdate();
-  for (  Vector3i chunkCoordinates : Region3i.createFromCenterExtents(cameraCoordinates,renderableRegionExtents)) {
-    RenderableChunk chunk=chunkProvider.getChunk(chunkCoordinates);
+  RenderableChunk chunk;
+  ChunkMesh[] newMesh;
+  ChunkView localView;
+  for (  Vector3i chunkCoordinates : calculateRenderableRegion(renderingConfig.getViewDistance())) {
+    chunk=chunkProvider.getChunk(chunkCoordinates);
     if (chunk == null) {
       pregenerationIsComplete=false;
     }
  else     if (chunk.isDirty()) {
-      ChunkView localView=worldProvider.getLocalView(chunk.getPosition());
+      localView=worldProvider.getLocalView(chunkCoordinates);
       if (localView == null) {
         continue;
       }
       chunk.setDirty(false);
-      ChunkMesh[] newMeshes=new ChunkMesh[VERTICAL_SEGMENTS];
+      newMesh=new ChunkMesh[VERTICAL_SEGMENTS];
       for (int segment=0; segment < VERTICAL_SEGMENTS; segment++) {
-        newMeshes[segment]=chunkTessellator.generateMesh(localView,CHUNK_YSIZE_TO_SEGMENTS_RATIO,segment * CHUNK_YSIZE_TO_SEGMENTS_RATIO);
+        newMesh[segment]=chunkTessellator.generateMesh(localView,CHUNK_YSIZE_TO_SEGMENTS_RATIO,segment * CHUNK_YSIZE_TO_SEGMENTS_RATIO);
+        newMesh[segment].generateVBOs();
       }
-      chunk.setPendingMesh(newMeshes);
-      if (chunk.getPendingMesh() != null) {
-        for (int j=0; j < chunk.getPendingMesh().length; j++) {
-          chunk.getPendingMesh()[j].generateVBOs();
+      if (chunk.hasMesh()) {
+        for (        ChunkMesh mesh : chunk.getMesh()) {
+          mesh.dispose();
         }
-        if (chunk.getMesh() != null) {
-          for (int j=0; j < chunk.getMesh().length; j++) {
-            chunk.getMesh()[j].dispose();
-          }
-        }
-        chunk.setMesh(chunk.getPendingMesh());
-        chunk.setPendingMesh(null);
       }
+      chunk.setMesh(newMesh);
       pregenerationIsComplete=false;
       return pregenerationIsComplete;
     }
