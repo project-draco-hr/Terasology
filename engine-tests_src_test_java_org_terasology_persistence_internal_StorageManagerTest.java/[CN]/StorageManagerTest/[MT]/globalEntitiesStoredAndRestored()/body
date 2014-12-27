@@ -4,7 +4,7 @@
   esm.waitForCompletionOfPreviousSaveAndStartSaving();
   esm.finishSavingAndShutdown();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
+  StorageManager newSM=new ReadWriteStorageManager(moduleManager.getEnvironment(),newEntityManager,false);
   newSM.loadGlobalStore();
   List<EntityRef> entities=Lists.newArrayList(newEntityManager.getEntitiesWith(StringComponent.class));
   assertEquals(1,entities.size());

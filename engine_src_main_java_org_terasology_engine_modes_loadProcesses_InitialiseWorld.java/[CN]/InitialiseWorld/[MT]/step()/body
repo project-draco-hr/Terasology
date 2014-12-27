@@ -20,8 +20,8 @@
     return true;
   }
   EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
-  boolean useSaveGames=CoreRegistry.get(Config.class).getTransients().useSaveGames();
-  StorageManager storageManager=useSaveGames ? new StorageManagerInternal(environment,entityManager) : new StorageManagerStub(environment,entityManager);
+  boolean useSaveGames=CoreRegistry.get(Config.class).getTransients().storeSaveGames();
+  StorageManager storageManager=useSaveGames ? new ReadWriteStorageManager(environment,entityManager) : new ReadOnlyStorageManager(environment,entityManager);
   CoreRegistry.put(StorageManager.class,storageManager);
   LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,entityManager,worldGenerator);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");

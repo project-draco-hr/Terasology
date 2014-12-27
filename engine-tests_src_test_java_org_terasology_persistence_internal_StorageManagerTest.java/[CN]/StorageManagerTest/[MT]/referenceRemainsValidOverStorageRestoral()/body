@@ -4,7 +4,7 @@
   esm.waitForCompletionOfPreviousSaveAndStartSaving();
   esm.finishSavingAndShutdown();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  StorageManager newSM=new StorageManagerInternal(moduleManager.getEnvironment(),newEntityManager,false);
+  StorageManager newSM=new ReadWriteStorageManager(moduleManager.getEnvironment(),newEntityManager,false);
   newSM.loadGlobalStore();
   PlayerStore restored=newSM.loadPlayerStore(PLAYER_ID);
   restored.restoreEntities();
