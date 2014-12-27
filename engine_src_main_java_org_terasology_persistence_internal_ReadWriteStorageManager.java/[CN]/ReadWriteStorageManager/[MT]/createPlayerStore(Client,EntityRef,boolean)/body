@@ -1,6 +1,6 @@
 {
   String playerId=client.getId();
-  PlayerStore playerStore=new PlayerStoreInternal(playerId,this,entityManager);
+  PlayerStore playerStore=new PlayerStoreInternal(playerId,this,getEntityManager());
   if (character.exists()) {
     playerStore.setCharacter(character);
   }
@@ -18,7 +18,7 @@
   playerEntityStore.setCharacterPosY(relevanceLocation.y);
   playerEntityStore.setCharacterPosZ(relevanceLocation.z);
   playerEntityStore.setHasCharacter(hasCharacter);
-  EntityStorer storer=new EntityStorer(entityManager);
+  EntityStorer storer=new EntityStorer(getEntityManager());
   storer.store(character,PlayerStoreInternal.CHARACTER,deactivate);
   playerEntityStore.setStore(storer.finaliseStore());
   return playerEntityStore.build();

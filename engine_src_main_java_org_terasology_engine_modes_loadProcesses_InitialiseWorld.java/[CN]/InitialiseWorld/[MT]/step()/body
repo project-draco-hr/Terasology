@@ -21,7 +21,16 @@
   }
   EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
   boolean useSaveGames=CoreRegistry.get(Config.class).getTransients().storeSaveGames();
-  StorageManager storageManager=useSaveGames ? new ReadWriteStorageManager(environment,entityManager) : new ReadOnlyStorageManager(environment,entityManager);
+  Path savePath=PathManager.getInstance().getSavePath(gameManifest.getTitle());
+  StorageManager storageManager;
+  try {
+    storageManager=useSaveGames ? new ReadWriteStorageManager(savePath,environment,entityManager) : new ReadOnlyStorageManager(savePath,environment,entityManager);
+  }
+ catch (  IOException e) {
+    logger.error("Unable to create storage manager!",e);
+    CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Unable to create storage manager!"));
+    return true;
+  }
   CoreRegistry.put(StorageManager.class,storageManager);
   LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,entityManager,worldGenerator);
   CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");

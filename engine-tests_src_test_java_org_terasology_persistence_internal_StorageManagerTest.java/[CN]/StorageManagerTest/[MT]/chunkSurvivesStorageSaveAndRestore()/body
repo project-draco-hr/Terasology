@@ -12,7 +12,7 @@
   esm.waitForCompletionOfPreviousSaveAndStartSaving();
   esm.finishSavingAndShutdown();
   EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  StorageManager newSM=new ReadWriteStorageManager(moduleManager.getEnvironment(),newEntityManager,storeChunkInZips);
+  StorageManager newSM=new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),newEntityManager,storeChunkInZips);
   newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);
   assertNotNull(restored);

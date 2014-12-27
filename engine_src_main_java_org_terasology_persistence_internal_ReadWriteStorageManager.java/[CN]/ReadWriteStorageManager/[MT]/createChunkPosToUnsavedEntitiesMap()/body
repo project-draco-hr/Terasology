@@ -1,6 +1,6 @@
 {
   Map<Vector3i,Collection<EntityRef>> chunkPosToEntitiesMap=Maps.newHashMap();
-  for (  EntityRef entity : entityManager.getEntitiesWith(LocationComponent.class)) {
+  for (  EntityRef entity : getEntityManager().getEntitiesWith(LocationComponent.class)) {
     if (entity.isPersistent() && !entity.getOwner().exists() && !entity.hasComponent(ClientComponent.class)&& !entity.isAlwaysRelevant()) {
       LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
       if (locationComponent != null) {

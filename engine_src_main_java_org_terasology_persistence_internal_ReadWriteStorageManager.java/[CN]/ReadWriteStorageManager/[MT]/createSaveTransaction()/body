@@ -1,7 +1,7 @@
 {
-  SaveTransactionBuilder saveTransactionBuilder=new SaveTransactionBuilder(isStoreChunksInZips(),storagePathProvider,worldDirectoryWriteLock);
+  SaveTransactionBuilder saveTransactionBuilder=new SaveTransactionBuilder(isStoreChunksInZips(),getStoragePathProvider(),worldDirectoryWriteLock);
   Set<EntityRef> unsavedEntities=new HashSet<>();
-  for (  EntityRef entity : entityManager.getAllEntities()) {
+  for (  EntityRef entity : getEntityManager().getAllEntities()) {
     if (entity.isPersistent() && !entity.getOwner().exists()) {
       unsavedEntities.add(entity);
     }
