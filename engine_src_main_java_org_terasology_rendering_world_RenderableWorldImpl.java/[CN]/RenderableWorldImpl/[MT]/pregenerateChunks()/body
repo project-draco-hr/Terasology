@@ -3,7 +3,7 @@
   chunkProvider.completeUpdate();
   chunkProvider.beginUpdate();
   RenderableChunk chunk;
-  ChunkMesh[] newMesh;
+  ChunkMesh[] newMesh=new ChunkMesh[verticalChunkMeshSegements];
   ChunkView localView;
   for (  Vector3i chunkCoordinates : calculateRenderableRegion(renderingConfig.getViewDistance())) {
     chunk=chunkProvider.getChunk(chunkCoordinates);
@@ -16,9 +16,8 @@
         continue;
       }
       chunk.setDirty(false);
-      newMesh=new ChunkMesh[VERTICAL_SEGMENTS];
-      for (int segment=0; segment < VERTICAL_SEGMENTS; segment++) {
-        newMesh[segment]=chunkTessellator.generateMesh(localView,CHUNK_YSIZE_TO_SEGMENTS_RATIO,segment * CHUNK_YSIZE_TO_SEGMENTS_RATIO);
+      for (int segment=0; segment < verticalChunkMeshSegements; segment++) {
+        newMesh[segment]=chunkTessellator.generateMesh(localView,chunkYsizeToSegmentsRatio,segment * chunkYsizeToSegmentsRatio);
         newMesh[segment].generateVBOs();
       }
       if (chunk.hasMesh()) {
@@ -28,7 +27,7 @@
       }
       chunk.setMesh(newMesh);
       pregenerationIsComplete=false;
-      return pregenerationIsComplete;
+      break;
     }
   }
   return pregenerationIsComplete;

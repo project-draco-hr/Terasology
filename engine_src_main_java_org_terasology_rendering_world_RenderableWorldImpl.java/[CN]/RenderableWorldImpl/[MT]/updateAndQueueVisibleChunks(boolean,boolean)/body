@@ -39,7 +39,7 @@
     chunk=nearbyChunks.next();
     if (isChunkValidForRender(chunk)) {
       mesh=chunk.getMesh();
-      if (isDynamicShadows && fillShadowRenderQueue && chunkCounter < MAX_CHUNKS_FOR_SHADOWS && isChunkVisibleLight(chunk)) {
+      if (isDynamicShadows && fillShadowRenderQueue && chunkCounter < maxChunksForShadows && isChunkVisibleLight(chunk)) {
         if (triangleCount(mesh,ChunkMesh.RenderPhase.OPAQUE) > 0) {
           renderQueues.chunksOpaqueShadow.add(chunk);
         }
