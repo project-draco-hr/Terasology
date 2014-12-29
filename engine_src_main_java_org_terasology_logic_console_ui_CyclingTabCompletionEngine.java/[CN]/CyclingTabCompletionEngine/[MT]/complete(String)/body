@@ -8,7 +8,8 @@
  else   if (query == null) {
     query=rawCommand;
   }
-  String commandName=console.processCommandName(query);
+  String commandNameRaw=console.processCommandName(query);
+  Name commandName=new Name(commandNameRaw);
   List<String> commandParameters=console.processParameters(query);
   Command command=console.getCommand(commandName);
   int suggestedIndex=commandParameters.size() + (query.charAt(query.length() - 1) == ' ' ? 1 : 0);

@@ -1,10 +1,11 @@
 {
-  if (commandName.isEmpty()) {
+  if (commandNameRaw.isEmpty()) {
     return false;
   }
+  Name commandName=new Name(commandNameRaw);
   Command cmd=getCommand(commandName);
   if (cmd == null) {
-    addErrorMessage("Unknown command '" + commandName + "'");
+    addErrorMessage("Unknown command '" + commandNameRaw + "'");
     return false;
   }
   String requiredPermission=cmd.getRequiredPermission();
@@ -18,7 +19,7 @@
     return false;
   }
   if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
-    callingClient.send(new CommandEvent(commandName,params));
+    callingClient.send(new CommandEvent(commandNameRaw,params));
     return true;
   }
  else {
@@ -47,7 +48,7 @@
           }
         }
       }
-      String errorReport=FontColor.getColored("An error occurred while executing command '" + commandName + "': "+ causeMessage,ConsoleColors.ERROR);
+      String errorReport=FontColor.getColored("An error occurred while executing command '" + cmd.getName() + "': "+ causeMessage,ConsoleColors.ERROR);
       if (callingClient.exists()) {
         callingClient.send(new ConsoleMessageEvent(errorReport));
       }

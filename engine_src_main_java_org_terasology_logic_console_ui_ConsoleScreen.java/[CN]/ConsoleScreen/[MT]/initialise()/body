@@ -2,12 +2,6 @@
   final ScrollableArea scrollArea=find("scrollArea",ScrollableArea.class);
   scrollArea.moveToBottom();
   Collection<Command> commands=console.getCommands();
-  Collection<String> commandNames=Collections2.transform(commands,new Function<Command,String>(){
-    @Override public String apply(    Command input){
-      return input.getName();
-    }
-  }
-);
   commandLine=find("commandLine",UICommandEntry.class);
   getManager().setFocus(commandLine);
   commandLine.setTabCompletionEngine(new CyclingTabCompletionEngine(console));
