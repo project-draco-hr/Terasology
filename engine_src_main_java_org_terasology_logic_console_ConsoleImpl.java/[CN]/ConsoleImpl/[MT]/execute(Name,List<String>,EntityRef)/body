@@ -1,11 +1,10 @@
 {
-  if (commandNameRaw.isEmpty()) {
+  if (commandName.isEmpty()) {
     return false;
   }
-  Name commandName=new Name(commandNameRaw);
   Command cmd=getCommand(commandName);
   if (cmd == null) {
-    addErrorMessage("Unknown command '" + commandNameRaw + "'");
+    addErrorMessage("Unknown command '" + commandName + "'");
     return false;
   }
   String requiredPermission=cmd.getRequiredPermission();
@@ -19,7 +18,7 @@
     return false;
   }
   if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
-    callingClient.send(new CommandEvent(commandNameRaw,params));
+    callingClient.send(new CommandEvent(commandName,params));
     return true;
   }
  else {
