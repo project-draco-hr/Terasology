@@ -1,8 +1,8 @@
 {
   if (commandName == null) {
     StringBuilder msg=new StringBuilder();
-    Collection<Command> commands=console.getCommands();
-    for (    Command cmd : commands) {
+    Collection<ConsoleCommand> commands=console.getCommands();
+    for (    ConsoleCommand cmd : commands) {
       if (!msg.toString().isEmpty()) {
         msg.append(Message.NEW_LINE);
       }
@@ -13,7 +13,7 @@
     return msg.toString();
   }
  else {
-    Command cmd=console.getCommand(commandName);
+    ConsoleCommand cmd=console.getCommand(commandName);
     if (cmd == null) {
       return "No help available for command '" + commandName + "'. Unknown command.";
     }
@@ -25,13 +25,13 @@
       msg.append(Message.NEW_LINE);
       msg.append("=====================================================================================================================");
       msg.append(Message.NEW_LINE);
-      if (cmd.hasHelpText()) {
+      if (!cmd.getHelpText().isEmpty()) {
         msg.append(cmd.getHelpText());
         msg.append(Message.NEW_LINE);
         msg.append("=====================================================================================================================");
         msg.append(Message.NEW_LINE);
       }
- else       if (cmd.hasDescription()) {
+ else       if (!cmd.getDescription().isEmpty()) {
         msg.append(cmd.getDescription());
         msg.append(Message.NEW_LINE);
         msg.append("=====================================================================================================================");

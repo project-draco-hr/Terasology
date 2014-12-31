@@ -1,7 +1,7 @@
 {
   for (  Annotation annotation : annotations) {
-    if (annotation instanceof org.terasology.logic.console.commandSystem.annotations.CommandParameter) {
-      org.terasology.logic.console.commandSystem.annotations.CommandParameter parameterAnnotation=(org.terasology.logic.console.commandSystem.annotations.CommandParameter)annotation;
+    if (annotation instanceof CommandParam) {
+      CommandParam parameterAnnotation=(CommandParam)annotation;
       String name=parameterAnnotation.value();
       char arrayDelimiter=parameterAnnotation.arrayDelimiter();
       Class<? extends CommandParameterSuggester> suggesterClass=parameterAnnotation.suggester();
@@ -22,8 +22,8 @@
       }
     }
  else     if (annotation instanceof Sender) {
-      return new CommandParameterType.SenderParameterType();
+      return MarkerParameters.SENDER;
     }
   }
-  return new CommandParameterType.InvalidParameterType();
+  return MarkerParameters.INVALID;
 }

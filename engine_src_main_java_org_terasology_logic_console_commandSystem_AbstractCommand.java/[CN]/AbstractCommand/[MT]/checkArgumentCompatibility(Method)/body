@@ -9,7 +9,7 @@
  else     if (i >= executionMethodParametersSize) {
       throw new CommandInitializationException("Too many (" + (methodParameterCount - executionMethodParametersSize) + ") parameters in method "+ method.getName()+ ", follow the parameter definitions from the"+ " 'constructParameters' method.");
     }
-    CommandParameterType expectedParameterType=executionMethodParameters.get(i);
+    Parameter expectedParameterType=executionMethodParameters.get(i);
     Optional<? extends Class<?>> expectedType=expectedParameterType.getProvidedType();
     Class<?> providedType=methodParameters[i];
     if (providedType.isPrimitive()) {
