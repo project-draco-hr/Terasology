@@ -1,0 +1,21 @@
+{
+  Object[] processedParameters;
+  try {
+    processedParameters=processParametersMethod(rawParameters,sender);
+  }
+ catch (  CommandParameterParseException e) {
+    String warning="Invalid parameter '" + e.getParameter() + "'";
+    String message=e.getMessage();
+    if (message != null) {
+      warning+=": " + message;
+    }
+    return warning;
+  }
+  try {
+    Object result=executionMethod.getAccessibleObject().invoke(executionMethod.getTarget(),processedParameters);
+    return result != null ? String.valueOf(result) : null;
+  }
+ catch (  Throwable t) {
+    throw new CommandExecutionException(t.getCause());
+  }
+}

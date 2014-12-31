@@ -1,0 +1,12 @@
+{
+  String lookupName=methodName != null ? methodName : METHOD_NAME_EXECUTE;
+  List<Method> methods=findMethods(lookupName);
+  if (methods.size() < 0) {
+    throw new CommandInitializationException("No " + lookupName + " method found");
+  }
+ else   if (methods.size() > 1) {
+    throw new CommandInitializationException("More than 1 " + lookupName + " methods found");
+  }
+  Method method=methods.get(0);
+  return new SpecificAccessibleObject<>(method,this);
+}

@@ -1,0 +1,60 @@
+{
+  if (commandName.isEmpty()) {
+    return false;
+  }
+  Command cmd=getCommand(commandName);
+  if (cmd == null) {
+    addErrorMessage("Unknown command '" + commandName + "'");
+    return false;
+  }
+  String requiredPermission=cmd.getRequiredPermission();
+  if (!clientHasPermission(callingClient,requiredPermission)) {
+    addErrorMessage("You do not have enough permissions to execute this command (" + requiredPermission + ").");
+    return false;
+  }
+  if (params.size() < cmd.getRequiredParameterCount()) {
+    addErrorMessage("Please, provide required arguments marked by <>.");
+    addMessage(cmd.getUsage());
+    return false;
+  }
+  if (cmd.isRunOnServer() && !networkSystem.getMode().isAuthority()) {
+    callingClient.send(new CommandEvent(commandName,params));
+    return true;
+  }
+ else {
+    try {
+      String result=cmd.executeRaw(params,callingClient);
+      if (!Strings.isNullOrEmpty(result)) {
+        if (callingClient.exists()) {
+          callingClient.send(new ConsoleMessageEvent(result));
+        }
+ else {
+          addMessage(result);
+        }
+      }
+      return true;
+    }
+ catch (    CommandExecutionException e) {
+      Throwable cause=e.getCause();
+      String causeMessage=cause.getLocalizedMessage();
+      logger.trace("An error occurred while executing a command: ",e);
+      if (Strings.isNullOrEmpty(causeMessage)) {
+        causeMessage=cause.getMessage();
+        if (Strings.isNullOrEmpty(causeMessage)) {
+          causeMessage=cause.toString();
+          if (Strings.isNullOrEmpty(causeMessage)) {
+            return false;
+          }
+        }
+      }
+      String errorReport=FontColor.getColored("An error occurred while executing command '" + cmd.getName() + "': "+ causeMessage,ConsoleColors.ERROR);
+      if (callingClient.exists()) {
+        callingClient.send(new ConsoleMessageEvent(errorReport));
+      }
+ else {
+        addErrorMessage(errorReport);
+      }
+      return false;
+    }
+  }
+}

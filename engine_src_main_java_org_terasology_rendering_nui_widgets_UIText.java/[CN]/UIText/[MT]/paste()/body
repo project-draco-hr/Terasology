@@ -1,9 +1,8 @@
 {
   String fullText=getText();
-  String before=fullText.substring(0,cursorPosition);
-  String after=fullText.substring(cursorPosition);
+  String before=fullText.substring(0,getCursorPosition());
+  String after=fullText.substring(getCursorPosition());
   String pasted=getClipboardContents();
   setText(before + pasted + after);
-  cursorPosition+=pasted.length();
-  selectionStart=cursorPosition;
+  increaseCursorPosition(pasted.length());
 }

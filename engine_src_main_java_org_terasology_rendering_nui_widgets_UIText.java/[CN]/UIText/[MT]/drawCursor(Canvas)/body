@@ -2,8 +2,8 @@
   if (blinkCounter < BLINK_RATE) {
     Font font=canvas.getCurrentStyle().getFont();
     String beforeCursor=text.get();
-    if (cursorPosition < text.get().length()) {
-      beforeCursor=beforeCursor.substring(0,cursorPosition);
+    if (getCursorPosition() < text.get().length()) {
+      beforeCursor=beforeCursor.substring(0,getCursorPosition());
     }
     List<String> lines=TextLineBuilder.getLines(font,beforeCursor,canvas.size().x);
     int lastLineWidth=font.getWidth(lines.get(lines.size() - 1));

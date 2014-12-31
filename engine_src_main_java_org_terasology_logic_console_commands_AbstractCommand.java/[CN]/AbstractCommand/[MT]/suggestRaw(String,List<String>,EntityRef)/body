@@ -1,0 +1,47 @@
+{
+  Object[] processedParametersWithoutSender;
+  try {
+    processedParametersWithoutSender=processParametersCommand(rawParameters,sender);
+  }
+ catch (  CommandParameterParseException e) {
+    String warning="Invalid parameter '" + e.getParameter() + "'";
+    String message=e.getMessage();
+    if (message != null) {
+      warning+=": " + message;
+    }
+    throw new CommandSuggestionException(warning);
+  }
+  CommandParameter suggestedParameter=null;
+  for (int i=0; i < processedParametersWithoutSender.length; i++) {
+    if (processedParametersWithoutSender[i] == null) {
+      suggestedParameter=commandParameters.get(i);
+      break;
+    }
+  }
+  if (suggestedParameter == null) {
+    return Sets.newHashSet();
+  }
+  Set<Object> result=null;
+  try {
+    result=suggestedParameter.suggest(sender,processedParametersWithoutSender);
+  }
+ catch (  Throwable t) {
+    throw new CommandSuggestionException(t.getCause());
+  }
+  if (result == null) {
+    return Sets.newHashSet();
+  }
+  Class<?> requiredClass=suggestedParameter.getType();
+  for (  Object resultComponent : result) {
+    if (resultComponent == null && requiredClass.isPrimitive() || resultComponent != null && !requiredClass.isAssignableFrom(resultComponent.getClass())) {
+      throw new CommandSuggestionException("The 'suggest' method of command class " + getClass().getCanonicalName() + " returns a collection containing an invalid type. Required: "+ requiredClass.getCanonicalName()+ "; provided: "+ resultComponent.getClass().getCanonicalName());
+    }
+  }
+  Set<String> composedResult=composeAll(result,suggestedParameter);
+  return Sets.filter(composedResult,new Predicate<String>(){
+    @Override public boolean apply(    String input){
+      return input != null && (currentValue == null || input.startsWith(currentValue));
+    }
+  }
+);
+}

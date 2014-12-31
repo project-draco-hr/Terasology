@@ -1,0 +1,18 @@
+{
+  List<String> result=Lists.newArrayList();
+  int singleParameterCount=commandParameters.size() + (endsWithVarargs() ? -1 : 0);
+  for (int i=0; i < singleParameterCount && i < rawParameters.size(); i++) {
+    result.add(rawParameters.get(i));
+  }
+  if (endsWithVarargs()) {
+    int varargsIndex=commandParameters.size() - 1;
+    if (rawParameters.size() > varargsIndex) {
+      StringBuilder rawParam=new StringBuilder(rawParameters.get(varargsIndex));
+      for (int i=varargsIndex + 1; i < rawParameters.size(); i++) {
+        rawParam.append(org.terasology.logic.console.commands.referenced.CommandParameter.ARRAY_DELIMITER_VARARGS).append(rawParameters.get(i));
+      }
+      result.add(rawParam.toString());
+    }
+  }
+  return result;
+}
