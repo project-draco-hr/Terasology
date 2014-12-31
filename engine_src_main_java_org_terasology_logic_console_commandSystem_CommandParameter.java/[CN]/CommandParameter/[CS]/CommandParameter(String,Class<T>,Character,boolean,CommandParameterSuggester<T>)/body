@@ -1,0 +1,30 @@
+{
+  Preconditions.checkNotNull(name,"The parameter name must not be null!");
+  if (name.length() <= 0) {
+    throw new IllegalArgumentException("The parameter name must not be empty!");
+  }
+  Preconditions.checkNotNull(typeParam,"The parameter type must not be null!");
+  Class<T> resultType;
+  if (typeParam.isPrimitive()) {
+    if (required) {
+      resultType=(Class<T>)PRIMITIVES_TO_WRAPPERS.get(typeParam);
+    }
+ else {
+      throw new IllegalArgumentException("An optional parameter must not be primitive!" + " Use " + PRIMITIVES_TO_WRAPPERS.get(typeParam).getSimpleName() + " instead of "+ typeParam.getSimpleName()+ ".");
+    }
+  }
+ else {
+    resultType=typeParam;
+  }
+  if (arrayDelimiter != null) {
+    if (arrayDelimiter == org.terasology.logic.console.commandSystem.annotations.CommandParameter.ARRAY_DELIMITER_ESCAPE_CHARACTER) {
+      throw new IllegalArgumentException("The array delimiter must not be the same as the escape character (" + org.terasology.logic.console.commandSystem.annotations.CommandParameter.ARRAY_DELIMITER_ESCAPE_CHARACTER + ")!");
+    }
+  }
+  Preconditions.checkNotNull(suggester,"The suggester must not be null!");
+  this.name=name;
+  this.type=resultType;
+  this.arrayDelimiter=arrayDelimiter;
+  this.suggester=suggester;
+  this.required=required;
+}
