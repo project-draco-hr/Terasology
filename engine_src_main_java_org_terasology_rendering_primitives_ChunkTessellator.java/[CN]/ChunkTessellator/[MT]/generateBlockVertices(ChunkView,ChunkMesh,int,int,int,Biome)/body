@@ -2,7 +2,12 @@
   Block block=view.getBlock(x,y,z);
   ChunkVertexFlag vertexFlag=ChunkVertexFlag.NORMAL;
   if (block.isWater()) {
-    vertexFlag=ChunkVertexFlag.WATER;
+    if (view.getBlock(x,y + 1,z).isWater()) {
+      vertexFlag=ChunkVertexFlag.WATER;
+    }
+ else {
+      vertexFlag=ChunkVertexFlag.WATER_SURFACE;
+    }
   }
  else   if (block.isLava()) {
     vertexFlag=ChunkVertexFlag.LAVA;
