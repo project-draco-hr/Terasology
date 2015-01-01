@@ -1,0 +1,12 @@
+{
+  EntityRef entity=entityManager.create(new StringComponent("Test"));
+  long entityId=entity.getId();
+  esm.waitForCompletionOfPreviousSaveAndStartSaving();
+  esm.finishSavingAndShutdown();
+  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  StorageManager newSM=new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),newEntityManager,false);
+  newSM.loadGlobalStore();
+  List<EntityRef> entities=Lists.newArrayList(newEntityManager.getEntitiesWith(StringComponent.class));
+  assertEquals(1,entities.size());
+  assertEquals(entityId,entities.get(0).getId());
+}

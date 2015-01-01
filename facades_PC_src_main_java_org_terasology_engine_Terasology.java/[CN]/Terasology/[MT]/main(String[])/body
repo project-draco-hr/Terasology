@@ -2,6 +2,9 @@
   handlePrintUsageRequest(args);
   handleLaunchArguments(args);
   try (final TerasologyEngine engine=new TerasologyEngine(createSubsystemList())){
+    if (!writeSaveGamesEnabled) {
+      CoreRegistry.get(Config.class).getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);
+    }
     if (isHeadless) {
       engine.subscribeToStateChange(new HeadlessStateChangeListener());
       engine.run(new StateHeadlessSetup());
