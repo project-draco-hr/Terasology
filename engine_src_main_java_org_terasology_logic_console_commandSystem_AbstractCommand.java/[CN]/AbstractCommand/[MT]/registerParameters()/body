@@ -6,7 +6,7 @@
     if (parameter == null) {
       throw new CommandInitializationException("A command parameter must not be null! Index: " + i);
     }
-    if (parameter.isVarargs() && i < commandParameters.size() - 1) {
+    if (parameter.isArray() && i < commandParameters.size() - 1) {
       throw new CommandInitializationException("A varargs parameter must be at the end. Invalid: " + i + "; "+ parameter.getName());
     }
     if (parameter.isRequired()) {

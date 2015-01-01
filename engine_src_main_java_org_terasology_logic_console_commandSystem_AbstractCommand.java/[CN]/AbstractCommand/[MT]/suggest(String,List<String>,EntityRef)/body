@@ -1,7 +1,7 @@
 {
   Object[] processedParametersWithoutSender;
   try {
-    processedParametersWithoutSender=processParametersCommand(rawParameters,sender);
+    processedParametersWithoutSender=processParametersMethod(rawParameters,sender);
   }
  catch (  CommandParameterParseException e) {
     String warning="Invalid parameter '" + e.getParameter() + "'";
@@ -40,8 +40,8 @@
       throw new CommandSuggestionException("The 'suggest' method of command class " + getClass().getCanonicalName() + " returns a collection containing an invalid type. Required: "+ requiredClass.getCanonicalName()+ "; provided: "+ resultComponent.getClass().getCanonicalName());
     }
   }
-  Set<String> composedResult=composeAll(result,suggestedParameter);
-  return Sets.filter(composedResult,new Predicate<String>(){
+  Set<String> stringSuggestions=convertToString(result,suggestedParameter);
+  return Sets.filter(stringSuggestions,new Predicate<String>(){
     @Override public boolean apply(    String input){
       return input != null && (currentValue == null || input.startsWith(currentValue));
     }

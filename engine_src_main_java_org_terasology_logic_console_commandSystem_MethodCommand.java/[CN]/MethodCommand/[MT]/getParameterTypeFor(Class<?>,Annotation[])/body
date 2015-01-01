@@ -3,7 +3,6 @@
     if (annotation instanceof CommandParam) {
       CommandParam parameterAnnotation=(CommandParam)annotation;
       String name=parameterAnnotation.value();
-      char arrayDelimiter=parameterAnnotation.arrayDelimiter();
       Class<? extends CommandParameterSuggester> suggesterClass=parameterAnnotation.suggester();
       boolean required=parameterAnnotation.required();
       CommandParameterSuggester suggester;
@@ -15,7 +14,7 @@
       }
       if (type.isArray()) {
         Class<?> childType=type.getComponentType();
-        return CommandParameter.array(name,childType,arrayDelimiter,required,suggester);
+        return CommandParameter.array(name,childType,required,suggester);
       }
  else {
         return CommandParameter.single(name,type,required,suggester);

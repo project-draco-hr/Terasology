@@ -1,13 +1,25 @@
 {
-  List<String> joinedParameters=joinVarargs(rawParameters);
   Object[] processedParameters=new Object[executionMethodParameters.size()];
-  int joinedParameterIndex=0;
+  Queue<String> parameterStrings=Queues.newArrayDeque(rawParameters);
   for (int i=0; i < executionMethodParameters.size(); i++) {
     Parameter parameterType=executionMethodParameters.get(i);
-    if (parameterType instanceof CommandParameter && joinedParameterIndex < joinedParameters.size()) {
+    if (parameterType instanceof CommandParameter) {
       CommandParameter parameter=(CommandParameter)parameterType;
-      String joinedParameter=joinedParameters.get(joinedParameterIndex++);
-      processedParameters[i]=parameter.getValue(joinedParameter);
+      if (parameterStrings.isEmpty()) {
+        if (parameter.isArray()) {
+          processedParameters[i]=parameter.getArrayValue(Collections.<String>emptyList());
+        }
+ else {
+          processedParameters[i]=null;
+        }
+      }
+ else       if (parameter.isArray()) {
+        processedParameters[i]=parameter.getArrayValue(Lists.newArrayList(parameterStrings));
+        parameterStrings.clear();
+      }
+ else {
+        processedParameters[i]=parameter.getValue(parameterStrings.poll());
+      }
     }
  else     if (parameterType == MarkerParameters.SENDER) {
       processedParameters[i]=sender;

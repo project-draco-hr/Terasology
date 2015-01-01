@@ -1,9 +1,6 @@
 {
   String simpleTypeName=getType().getSimpleName();
   StringBuilder usage=new StringBuilder(simpleTypeName);
-  if (isArray()) {
-    usage.append(getArrayDelimiter()).append(simpleTypeName);
-  }
   if (hasName()) {
     usage.append(' ').append(getName());
   }
@@ -14,6 +11,9 @@
  else {
     usage.insert(0,'(');
     usage.append(')');
+  }
+  if (isArray()) {
+    usage.append(" (").append(simpleTypeName).append(' ').append(getName()).append(")...");
   }
   return usage.toString();
 }
