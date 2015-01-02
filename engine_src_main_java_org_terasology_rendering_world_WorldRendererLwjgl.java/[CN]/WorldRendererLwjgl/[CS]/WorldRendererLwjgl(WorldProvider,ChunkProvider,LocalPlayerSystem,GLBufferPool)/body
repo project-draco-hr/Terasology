@@ -1,24 +1,19 @@
 {
   this.worldProvider=worldProvider;
-  bulletPhysics=new BulletPhysics(worldProvider);
   skysphere=new Skysphere();
-  systemManager=CoreRegistry.get(ComponentSystemManager.class);
-  Camera localPlayerCamera;
-  if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
-    localPlayerCamera=new OculusStereoCamera();
+  if (renderingConfig.isOculusVrSupport()) {
+    activeCamera=new OculusStereoCamera();
   }
  else {
-    localPlayerCamera=new PerspectiveCamera(CoreRegistry.get(Config.class).getRendering().getCameraSettings());
+    activeCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
   }
-  activeCamera=localPlayerCamera;
+  localPlayerSystem.setPlayerCamera(activeCamera);
+  renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,activeCamera,shadowMapCamera);
+  renderQueues=renderableWorld.getRenderQueues();
   mainDirectionalLight.lightType=LightComponent.LightType.DIRECTIONAL;
   mainDirectionalLight.lightColorAmbient=new Vector3f(1.0f,1.0f,1.0f);
   mainDirectionalLight.lightColorDiffuse=new Vector3f(1.0f,1.0f,1.0f);
   mainDirectionalLight.lightAmbientIntensity=1.0f;
   mainDirectionalLight.lightDiffuseIntensity=2.0f;
   mainDirectionalLight.lightSpecularIntensity=0.0f;
-  localPlayerSystem.setPlayerCamera(localPlayerCamera);
-  config=CoreRegistry.get(Config.class);
-  renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,activeCamera,lightCamera);
-  renderQueues=renderableWorld.getRenderQueues();
 }

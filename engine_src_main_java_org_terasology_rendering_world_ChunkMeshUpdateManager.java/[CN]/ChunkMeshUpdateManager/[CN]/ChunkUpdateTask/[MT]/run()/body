@@ -1,11 +1,11 @@
 {
-  ChunkMesh[] newMeshes=new ChunkMesh[WorldRendererLwjgl.VERTICAL_SEGMENTS];
+  ChunkMesh[] newMeshes=new ChunkMesh[numberOfMeshSegments];
   ChunkView chunkView=worldProvider.getLocalView(c.getPosition());
   if (chunkView != null) {
     c.setDirty(false);
-    int meshHeight=ChunkConstants.SIZE_Y / WorldRendererLwjgl.VERTICAL_SEGMENTS;
-    for (int seg=0; seg < WorldRendererLwjgl.VERTICAL_SEGMENTS; seg++) {
-      newMeshes[seg]=tessellator.generateMesh(chunkView,meshHeight,seg * (ChunkConstants.SIZE_Y / WorldRendererLwjgl.VERTICAL_SEGMENTS));
+    int meshHeight=ChunkConstants.SIZE_Y / numberOfMeshSegments;
+    for (int seg=0; seg < numberOfMeshSegments; seg++) {
+      newMeshes[seg]=tessellator.generateMesh(chunkView,meshHeight,seg * (ChunkConstants.SIZE_Y / numberOfMeshSegments));
     }
     c.setPendingMesh(newMeshes);
     ChunkMonitor.fireChunkTessellated(c.getPosition(),newMeshes);

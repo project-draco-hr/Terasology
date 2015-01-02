@@ -1,5 +1,5 @@
 {
-  if (chunk.getMesh() != null) {
+  if (chunk.hasMesh()) {
     Material shader=null;
     final Vector3f cameraPosition=camera.getPosition();
     final Vector3f chunkPositionRelToCamera=new Vector3f(chunk.getPosition().x * ChunkConstants.SIZE_X - cameraPosition.x,chunk.getPosition().y * ChunkConstants.SIZE_Y - cameraPosition.y,chunk.getPosition().z * ChunkConstants.SIZE_Z - cameraPosition.z);
@@ -30,9 +30,9 @@
     }
     GL11.glPushMatrix();
     GL11.glTranslatef(chunkPositionRelToCamera.x,chunkPositionRelToCamera.y,chunkPositionRelToCamera.z);
-    for (int i=0; i < VERTICAL_SEGMENTS; i++) {
+    for (int i=0; i < verticalMeshSegments; i++) {
       if (!chunk.getMesh()[i].isEmpty()) {
-        if (config.getRendering().getDebug().isRenderChunkBoundingBoxes()) {
+        if (renderingDebugConfig.isRenderChunkBoundingBoxes()) {
           AABBRenderer aabbRenderer=new AABBRenderer(chunk.getSubMeshAABB(i));
           aabbRenderer.renderLocally(1f);
           statRenderedTriangles+=12;

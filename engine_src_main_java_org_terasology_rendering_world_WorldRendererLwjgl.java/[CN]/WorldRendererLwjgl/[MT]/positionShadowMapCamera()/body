@@ -1,17 +1,17 @@
 {
   Vector3f lightPosition=new Vector3f(activeCamera.getPosition().x,0.0f,activeCamera.getPosition().z);
-  float texelSize=1.0f / config.getRendering().getShadowMapResolution();
+  float texelSize=1.0f / renderingConfig.getShadowMapResolution();
   texelSize*=2.0f;
-  lightCamera.getViewProjectionMatrix().transform(lightPosition);
+  shadowMapCamera.getViewProjectionMatrix().transform(lightPosition);
   lightPosition.set(TeraMath.fastFloor(lightPosition.x / texelSize) * texelSize,0.0f,TeraMath.fastFloor(lightPosition.z / texelSize) * texelSize);
-  lightCamera.getInverseViewProjectionMatrix().transform(lightPosition);
+  shadowMapCamera.getInverseViewProjectionMatrix().transform(lightPosition);
   float stepSize=50f;
   Vector3f sunDirection=skysphere.getQuantizedSunDirection(stepSize);
   Vector3f sunPosition=new Vector3f(sunDirection);
   sunPosition.scale(256.0f + 64.0f);
   lightPosition.add(sunPosition);
-  lightCamera.getPosition().set(lightPosition);
+  shadowMapCamera.getPosition().set(lightPosition);
   Vector3f negSunDirection=new Vector3f(sunDirection);
   negSunDirection.scale(-1.0f);
-  lightCamera.getViewingDirection().set(negSunDirection);
+  shadowMapCamera.getViewingDirection().set(negSunDirection);
 }

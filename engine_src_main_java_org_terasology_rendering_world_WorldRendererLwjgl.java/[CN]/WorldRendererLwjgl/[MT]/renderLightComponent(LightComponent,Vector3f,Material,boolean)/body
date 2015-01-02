@@ -15,11 +15,11 @@
     }
   }
   program.enable();
-  program.setCamera(camera);
+  program.setCamera(activeCamera);
   Vector3f worldPosition=new Vector3f();
   worldPosition.sub(lightWorldPosition,activeCamera.getPosition());
   Vector3f lightViewPosition=new Vector3f();
-  camera.getViewMatrix().transform(worldPosition,lightViewPosition);
+  activeCamera.getViewMatrix().transform(worldPosition,lightViewPosition);
   program.setFloat3("lightViewPos",lightViewPosition.x,lightViewPosition.y,lightViewPosition.z,true);
   Matrix4f modelMatrix=new Matrix4f();
   modelMatrix.setIdentity();

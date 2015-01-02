@@ -1,4 +1,5 @@
 {
+  resetStats();
 switch (stereoRenderState) {
 case MONO:
     currentRenderingStage=WorldRenderingStage.DEFAULT;
@@ -12,27 +13,26 @@ currentRenderingStage=WorldRenderingStage.OCULUS_RIGHT_EYE;
 activeCamera.updateFrustum();
 break;
 }
-resetStats();
 if (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE) {
 renderableWorld.updateAndQueueVisibleChunks();
 }
  else {
 renderableWorld.updateAndQueueVisibleChunks(false,false);
 }
-if (config.getRendering().isDynamicShadows() && (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE)) {
+if (renderingConfig.isDynamicShadows() && (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE)) {
 DefaultRenderingProcess.getInstance().beginRenderSceneShadowMap();
-renderShadowMap(lightCamera);
+renderShadowMap();
 DefaultRenderingProcess.getInstance().endRenderSceneShadowMap();
 }
 DefaultRenderingProcess.getInstance().beginRenderReflectedScene();
 glCullFace(GL11.GL_FRONT);
-getActiveCamera().setReflected(true);
-renderWorldReflection(activeCamera);
-getActiveCamera().setReflected(false);
+activeCamera.setReflected(true);
+renderWorldReflection();
+activeCamera.setReflected(false);
 glCullFace(GL11.GL_BACK);
 DefaultRenderingProcess.getInstance().endRenderReflectedScene();
-renderWorld(getActiveCamera());
-PerformanceMonitor.startActivity("Render Comined Scene");
+renderWorld();
+PerformanceMonitor.startActivity("Render Combined Scene");
 DefaultRenderingProcess.getInstance().renderPreCombinedScene();
 PerformanceMonitor.endActivity();
 PerformanceMonitor.startActivity("Render Objects (Transparent)");
@@ -50,7 +50,5 @@ PerformanceMonitor.endActivity();
 PerformanceMonitor.startActivity("Render Post-Processing");
 DefaultRenderingProcess.getInstance().renderPost(stereoRenderState);
 PerformanceMonitor.endActivity();
-if (activeCamera != null) {
 activeCamera.updatePrevViewProjectionMatrix();
-}
 }

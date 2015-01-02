@@ -1,14 +1,10 @@
 {
   PerformanceMonitor.startActivity("Update Tick");
-  updateTick(delta);
+  updateTick(deltaInMs);
   PerformanceMonitor.endActivity();
-  if (activeCamera != null) {
-    activeCamera.update(delta);
-  }
-  if (lightCamera != null) {
-    positionLightCamera();
-    lightCamera.update(delta);
-  }
+  activeCamera.update(deltaInMs);
+  positionShadowMapCamera();
+  shadowMapCamera.update(deltaInMs);
   renderableWorld.update();
-  smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),delta);
+  smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),deltaInMs);
 }
