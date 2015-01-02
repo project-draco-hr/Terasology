@@ -1,12 +1,16 @@
 {
   NetData.ServerInfoMessage.Builder serverInfoMessageBuilder=NetData.ServerInfoMessage.newBuilder();
   serverInfoMessageBuilder.setTime(time.getGameTimeInMs());
-  WorldProvider world=CoreRegistry.get(WorldProvider.class);
-  if (world != null) {
+  WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
+  if (worldProvider != null) {
     NetData.WorldInfo.Builder worldInfoBuilder=NetData.WorldInfo.newBuilder();
-    worldInfoBuilder.setTime(world.getTime().getMilliseconds());
-    worldInfoBuilder.setTitle(world.getTitle());
+    worldInfoBuilder.setTime(worldProvider.getTime().getMilliseconds());
+    worldInfoBuilder.setTitle(worldProvider.getTitle());
     serverInfoMessageBuilder.addWorldInfo(worldInfoBuilder);
+  }
+  WorldGenerator worldGen=CoreRegistry.get(WorldGenerator.class);
+  if (worldGen != null) {
+    serverInfoMessageBuilder.setReflectionHeight(worldGen.getWorld().getSeaLevel());
   }
   for (  Module module : CoreRegistry.get(ModuleManager.class).getEnvironment()) {
     Boolean serverSideOnly=module.getMetadata().getExtension(ModuleManager.SERVER_SIDE_ONLY_EXT,Boolean.class);
