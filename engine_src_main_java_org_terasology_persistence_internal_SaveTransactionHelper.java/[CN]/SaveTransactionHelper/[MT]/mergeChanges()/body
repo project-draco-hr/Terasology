@@ -2,7 +2,7 @@
   final Path sourceDirectory=storagePathProvider.getUnmergedChangesPath();
   final Path targetDirectory=storagePathProvider.getStoragePathDirectory();
   Files.walkFileTree(sourceDirectory,new SimpleFileVisitor<Path>(){
-    boolean atomicNotPossibleLogged=false;
+    boolean atomicNotPossibleLogged;
     @Override public FileVisitResult preVisitDirectory(    Path sourceSubDir,    BasicFileAttributes attrs) throws IOException {
       Path targetSubDir=targetDirectory.resolve(sourceDirectory.relativize(sourceSubDir));
       if (!Files.isDirectory(targetSubDir)) {
