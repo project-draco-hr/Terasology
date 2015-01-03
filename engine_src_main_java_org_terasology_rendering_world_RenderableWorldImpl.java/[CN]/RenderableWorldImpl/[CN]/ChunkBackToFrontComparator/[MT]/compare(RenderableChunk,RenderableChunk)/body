@@ -1,15 +1,16 @@
 {
+  Preconditions.checkNotNull(chunk1);
+  Preconditions.checkNotNull(chunk2);
   Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
   double distance1=squaredDistanceToCamera(chunk1,cameraPosition);
   double distance2=squaredDistanceToCamera(chunk2,cameraPosition);
-  if (chunk1 == null) {
-    return 1;
-  }
- else   if (chunk2 == null) {
-    return -1;
-  }
   if (distance1 == distance2) {
     return 0;
   }
-  return distance2 > distance1 ? 1 : -1;
+ else   if (distance2 > distance1) {
+    return 1;
+  }
+ else {
+    return -1;
+  }
 }
