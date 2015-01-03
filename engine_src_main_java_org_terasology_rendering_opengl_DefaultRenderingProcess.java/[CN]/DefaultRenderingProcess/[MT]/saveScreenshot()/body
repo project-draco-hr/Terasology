@@ -12,10 +12,9 @@
   fboSceneFinal.unbindTexture();
   Runnable r=new Runnable(){
     @Override public void run(){
-      Calendar cal=Calendar.getInstance();
       SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
       final String format=config.getRendering().getScreenshotFormat();
-      final String fileName="Terasology-" + sdf.format(cal.getTime()) + "-"+ fboSceneFinal.width+ "x"+ fboSceneFinal.height+ "."+ format;
+      final String fileName="Terasology-" + sdf.format(new Date()).toString() + "-"+ fboSceneFinal.width+ "x"+ fboSceneFinal.height+ "."+ format;
       Path path=PathManager.getInstance().getScreenshotPath().resolve(fileName);
       BufferedImage image=new BufferedImage(fboSceneFinal.width,fboSceneFinal.height,BufferedImage.TYPE_INT_RGB);
       for (int x=0; x < fboSceneFinal.width; x++) {
