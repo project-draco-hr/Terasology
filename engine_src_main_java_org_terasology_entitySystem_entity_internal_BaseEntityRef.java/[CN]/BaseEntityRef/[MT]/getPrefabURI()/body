@@ -1,8 +1,8 @@
 {
   if (exists()) {
     EntityInfoComponent info=getComponent(EntityInfoComponent.class);
-    if (info != null && !info.parentPrefab.isEmpty()) {
-      return new AssetUri(AssetType.PREFAB,info.parentPrefab);
+    if (info != null && !info.parentPrefab.exists()) {
+      return new AssetUri(AssetType.PREFAB,info.parentPrefab.getName());
     }
   }
   return null;
