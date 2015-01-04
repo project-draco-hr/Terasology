@@ -1,5 +1,6 @@
 {
-  if (event.getVelocity().y > 0f) {
+  Vector3f velocity=event.getVelocity();
+  if (velocity.y > 0f) {
     return;
   }
   if (characterSounds.lastSoundTime + MIN_TIME < time.getGameTimeInMs()) {
@@ -11,7 +12,7 @@
       sound=random.nextItem(characterSounds.footstepSounds);
     }
     if (sound != null) {
-      entity.send(new PlaySoundEvent(entity,sound,characterSounds.landingVolume));
+      entity.send(new PlaySoundEvent(entity,sound,characterSounds.landingVolume * velocity.y * -1* VOLUME_MODIFIER_LANDING));
       characterSounds.lastSoundTime=time.getGameTimeInMs();
       entity.saveComponent(characterSounds);
     }
