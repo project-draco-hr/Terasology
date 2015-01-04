@@ -4,14 +4,14 @@
   }
   DefaultRenderingProcess.getInstance().clear();
   DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
-  activeCamera.lookThroughNormalized();
+  playerCamera.lookThroughNormalized();
   PerformanceMonitor.startActivity("Render Sky");
   DefaultRenderingProcess.getInstance().beginRenderSceneSky();
-  skysphere.render(activeCamera);
+  skysphere.render(playerCamera);
   DefaultRenderingProcess.getInstance().endRenderSceneSky();
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render World");
-  activeCamera.lookThrough();
+  playerCamera.lookThrough();
   PerformanceMonitor.startActivity("Render Objects (Opaque)");
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderOpaque();
@@ -19,12 +19,12 @@
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Chunks (Opaque)");
   while (renderQueues.chunksOpaque.size() > 0) {
-    renderChunk(renderQueues.chunksOpaque.poll(),ChunkMesh.RenderPhase.OPAQUE,activeCamera,ChunkRenderMode.DEFAULT);
+    renderChunk(renderQueues.chunksOpaque.poll(),ChunkMesh.RenderPhase.OPAQUE,playerCamera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Chunks (Alpha Reject)");
   while (renderQueues.chunksAlphaReject.size() > 0) {
-    renderChunk(renderQueues.chunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,activeCamera,ChunkRenderMode.DEFAULT);
+    renderChunk(renderQueues.chunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,playerCamera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Render Overlays");
@@ -36,15 +36,15 @@
     PerformanceMonitor.startActivity("Render First Person");
     glPushMatrix();
     glLoadIdentity();
-    activeCamera.updateMatrices(90f);
-    activeCamera.loadProjectionMatrix();
+    playerCamera.updateMatrices(90f);
+    playerCamera.loadProjectionMatrix();
     glDepthFunc(GL11.GL_ALWAYS);
     for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
       renderer.renderFirstPerson();
     }
     glDepthFunc(GL_LEQUAL);
-    activeCamera.updateMatrices();
-    activeCamera.loadProjectionMatrix();
+    playerCamera.updateMatrices();
+    playerCamera.loadProjectionMatrix();
     glPopMatrix();
     PerformanceMonitor.endActivity();
   }
@@ -53,7 +53,7 @@
   DefaultRenderingProcess.getInstance().beginRenderLightGeometryStencilPass();
   Material program=Assets.getMaterial("engine:prog.simple");
   program.enable();
-  program.setCamera(activeCamera);
+  program.setCamera(playerCamera);
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
     LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
@@ -74,7 +74,7 @@
   DefaultRenderingProcess.getInstance().beginRenderDirectionalLights();
   Vector3f sunlightWorldPosition=new Vector3f(skysphere.getSunDirection(true));
   sunlightWorldPosition.scale(50000f);
-  sunlightWorldPosition.add(activeCamera.getPosition());
+  sunlightWorldPosition.add(playerCamera.getPosition());
   renderLightComponent(mainDirectionalLight,sunlightWorldPosition,program,false);
   DefaultRenderingProcess.getInstance().endRenderDirectionalLights();
   PerformanceMonitor.endActivity();
@@ -85,7 +85,7 @@
     glDisable(GL11.GL_CULL_FACE);
   }
   while (renderQueues.chunksAlphaBlend.size() > 0) {
-    renderChunk(renderQueues.chunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,activeCamera,ChunkRenderMode.DEFAULT);
+    renderChunk(renderQueues.chunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,playerCamera,ChunkRenderMode.DEFAULT);
   }
   PerformanceMonitor.endActivity();
   if (isHeadUnderWater) {

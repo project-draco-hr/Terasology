@@ -6,11 +6,11 @@ case MONO:
   break;
 case OCULUS_LEFT_EYE:
 currentRenderingStage=WorldRenderingStage.OCULUS_LEFT_EYE;
-activeCamera.updateFrustum();
+playerCamera.updateFrustum();
 break;
 case OCULUS_RIGHT_EYE:
 currentRenderingStage=WorldRenderingStage.OCULUS_RIGHT_EYE;
-activeCamera.updateFrustum();
+playerCamera.updateFrustum();
 break;
 }
 if (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE) {
@@ -26,9 +26,9 @@ DefaultRenderingProcess.getInstance().endRenderSceneShadowMap();
 }
 DefaultRenderingProcess.getInstance().beginRenderReflectedScene();
 glCullFace(GL11.GL_FRONT);
-activeCamera.setReflected(true);
+playerCamera.setReflected(true);
 renderWorldReflection();
-activeCamera.setReflected(false);
+playerCamera.setReflected(false);
 glCullFace(GL11.GL_BACK);
 DefaultRenderingProcess.getInstance().endRenderReflectedScene();
 renderWorld();
@@ -50,5 +50,5 @@ PerformanceMonitor.endActivity();
 PerformanceMonitor.startActivity("Render Post-Processing");
 DefaultRenderingProcess.getInstance().renderPost(stereoRenderState);
 PerformanceMonitor.endActivity();
-activeCamera.updatePrevViewProjectionMatrix();
+playerCamera.updatePrevViewProjectionMatrix();
 }

@@ -1,10 +1,8 @@
 {
-  PerformanceMonitor.startActivity("Update Tick");
-  updateTick(deltaInMs);
-  PerformanceMonitor.endActivity();
-  activeCamera.update(deltaInMs);
+  updateTick(deltaInSeconds);
+  playerCamera.update(deltaInSeconds);
   positionShadowMapCamera();
-  shadowMapCamera.update(deltaInMs);
+  shadowMapCamera.update(deltaInSeconds);
   renderableWorld.update();
-  smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),deltaInMs);
+  smoothedPlayerSunlightValue=TeraMath.lerp(smoothedPlayerSunlightValue,getSunlightValue(),deltaInSeconds);
 }

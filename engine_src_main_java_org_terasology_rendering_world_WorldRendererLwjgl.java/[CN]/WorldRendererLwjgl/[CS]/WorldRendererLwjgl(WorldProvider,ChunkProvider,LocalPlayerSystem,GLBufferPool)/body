@@ -2,13 +2,13 @@
   this.worldProvider=worldProvider;
   skysphere=new Skysphere();
   if (renderingConfig.isOculusVrSupport()) {
-    activeCamera=new OculusStereoCamera();
+    playerCamera=new OculusStereoCamera();
   }
  else {
-    activeCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
+    playerCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
   }
-  localPlayerSystem.setPlayerCamera(activeCamera);
-  renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,activeCamera,shadowMapCamera);
+  localPlayerSystem.setPlayerCamera(playerCamera);
+  renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,playerCamera,shadowMapCamera);
   renderQueues=renderableWorld.getRenderQueues();
   mainDirectionalLight.lightType=LightComponent.LightType.DIRECTIONAL;
   mainDirectionalLight.lightColorAmbient=new Vector3f(1.0f,1.0f,1.0f);
