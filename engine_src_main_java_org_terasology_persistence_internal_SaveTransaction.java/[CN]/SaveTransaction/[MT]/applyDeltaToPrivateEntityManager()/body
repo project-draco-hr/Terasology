@@ -30,14 +30,25 @@
     }
   }
 );
-  deltaToSave.bindAllDelayedEntityRefsTo(privateEntityManager);
+  final List<EntityRef> entitiesToDestroy=Lists.newArrayList();
   deltaToSave.getDestroyedEntities().forEach(new TLongProcedure(){
     @Override public boolean execute(    long entityId){
-      privateEntityManager.getEntity(entityId).destroy();
+      EntityRef entityToDestroy;
+      if (privateEntityManager.isActiveEntity(entityId)) {
+        entityToDestroy=privateEntityManager.getEntity(entityId);
+      }
+ else {
+        entityToDestroy=privateEntityManager.createEntityWithId(entityId,Collections.<Component>emptyList());
+      }
+      entitiesToDestroy.add(entityToDestroy);
       return true;
     }
   }
 );
+  deltaToSave.bindAllDelayedEntityRefsTo(privateEntityManager);
+  for (  EntityRef entityRef : entitiesToDestroy) {
+    entityRef.destroy();
+  }
   deltaToSave.getDeactivatedEntities().forEach(new TLongProcedure(){
     @Override public boolean execute(    long entityId){
       EntityRef entityRef=privateEntityManager.getEntity(entityId);
