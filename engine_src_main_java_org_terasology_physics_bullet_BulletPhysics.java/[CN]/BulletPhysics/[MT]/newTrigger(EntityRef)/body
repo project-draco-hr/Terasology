@@ -6,7 +6,7 @@
     float scale=location.getWorldScale();
     shape.setLocalScaling(new Vector3f(scale,scale,scale));
     List<CollisionGroup> detectGroups=Lists.newArrayList(trigger.detectGroups);
-    PairCachingGhostObject triggerObj=createCollider(location.getWorldPosition(),shape,StandardCollisionGroup.SENSOR.getFlag(),combineGroups(detectGroups),CollisionFlags.NO_CONTACT_RESPONSE);
+    PairCachingGhostObject triggerObj=createCollider(VecMath.to(location.getWorldPosition()),shape,StandardCollisionGroup.SENSOR.getFlag(),combineGroups(detectGroups),CollisionFlags.NO_CONTACT_RESPONSE);
     triggerObj.setUserPointer(entity);
     PairCachingGhostObject oldTrigger=entityTriggers.put(entity,triggerObj);
     if (oldTrigger != null) {

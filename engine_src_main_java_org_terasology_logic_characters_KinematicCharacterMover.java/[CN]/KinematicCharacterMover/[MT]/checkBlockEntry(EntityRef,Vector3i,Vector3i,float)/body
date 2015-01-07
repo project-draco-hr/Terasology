@@ -1,13 +1,13 @@
 {
   if (!oldPosition.equals(newPosition)) {
     Block[] oldBlocks=new Block[(int)Math.ceil(characterHeight)];
-    Vector3i currentPosition=oldPosition.clone();
+    Vector3i currentPosition=new Vector3i(oldPosition);
     for (int currentHeight=0; currentHeight < oldBlocks.length; currentHeight++) {
       oldBlocks[currentHeight]=worldProvider.getBlock(currentPosition);
       currentPosition.add(0,1,0);
     }
     Block[] newBlocks=new Block[(int)Math.ceil(characterHeight)];
-    currentPosition=newPosition.clone();
+    currentPosition=new Vector3i(newPosition);
     for (int currentHeight=0; currentHeight < characterHeight; currentHeight++) {
       newBlocks[currentHeight]=worldProvider.getBlock(currentPosition);
       currentPosition.add(0,1,0);

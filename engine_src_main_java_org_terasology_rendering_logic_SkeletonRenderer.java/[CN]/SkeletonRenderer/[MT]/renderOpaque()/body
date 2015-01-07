@@ -3,7 +3,6 @@
   Quat4f worldRot=new Quat4f();
   Vector3f worldPos=new Vector3f();
   Quat4f inverseWorldRot=new Quat4f();
-  Matrix4f matrixCameraSpace=new Matrix4f();
   FloatBuffer tempMatrixBuffer44=BufferUtils.createFloatBuffer(16);
   FloatBuffer tempMatrixBuffer33=BufferUtils.createFloatBuffer(12);
   for (  EntityRef entity : entityManager.getEntitiesWith(SkeletalMeshComponent.class,LocationComponent.class)) {
@@ -24,7 +23,7 @@
     worldPositionCameraSpace.sub(worldPos,cameraPosition);
     worldPos.y-=skeletalMesh.heightOffset;
     float worldScale=location.getWorldScale();
-    matrixCameraSpace.set(worldRot,worldPositionCameraSpace,worldScale);
+    Matrix4f matrixCameraSpace=new Matrix4f(worldRot,worldPositionCameraSpace,worldScale);
     Matrix4f modelViewMatrix=MatrixUtils.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
     MatrixUtils.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
     skeletalMesh.material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
@@ -45,8 +44,8 @@
         pos.sub(worldPos);
         QuaternionUtil.quatRotate(inverseWorldRot,pos,pos);
         bonePositions.add(pos);
-        Quat4f rot=new Quat4f();
-        rot.mul(inverseWorldRot,boneLocation.getWorldRotation());
+        Quat4f rot=new Quat4f(inverseWorldRot);
+        rot.mul(boneLocation.getWorldRotation());
         boneRotations.add(rot);
       }
  else {

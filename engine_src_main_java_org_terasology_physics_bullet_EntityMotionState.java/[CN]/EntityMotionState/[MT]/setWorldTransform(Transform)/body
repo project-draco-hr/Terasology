@@ -1,11 +1,11 @@
 {
   LocationComponent loc=entity.getComponent(LocationComponent.class);
   if (loc != null) {
-    Quat4f rot=new Quat4f();
+    javax.vecmath.Quat4f rot=new javax.vecmath.Quat4f();
     transform.getRotation(rot);
-    if (!transform.origin.equals(loc.getWorldPosition()) || !rot.equals(loc.getWorldRotation())) {
-      loc.setWorldPosition(transform.origin);
-      loc.setWorldRotation(transform.getRotation(new Quat4f()));
+    if (!transform.origin.equals(VecMath.to(loc.getWorldPosition())) || !rot.equals(VecMath.to(loc.getWorldRotation()))) {
+      loc.setWorldPosition(VecMath.from(transform.origin));
+      loc.setWorldRotation(VecMath.from(transform.getRotation(new javax.vecmath.Quat4f())));
       entity.saveComponent(loc);
     }
   }
