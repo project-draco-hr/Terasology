@@ -1,8 +1,8 @@
 {
   if (shape instanceof BoxShape) {
     BoxShape box=(BoxShape)shape;
-    Vector3f extents=box.getHalfExtentsWithMargin(new Vector3f());
-    QuaternionUtil.quatRotate(rot,extents,extents);
+    javax.vecmath.Vector3f extents=box.getHalfExtentsWithMargin(new javax.vecmath.Vector3f());
+    com.bulletphysics.linearmath.QuaternionUtil.quatRotate(VecMath.to(rot),extents,extents);
     extents.absolute();
     return new BoxShape(extents);
   }
@@ -11,16 +11,16 @@
     CompoundShape newShape=new CompoundShape();
     for (    CompoundShapeChild child : compound.getChildList()) {
       CollisionShape rotatedChild=rotate(child.childShape,rot);
-      Vector3f offset=QuaternionUtil.quatRotate(rot,child.transform.origin,new Vector3f());
-      newShape.addChildShape(new Transform(new Matrix4f(Rotation.none().getQuat4f(),offset,1.0f)),rotatedChild);
+      javax.vecmath.Vector3f offset=com.bulletphysics.linearmath.QuaternionUtil.quatRotate(VecMath.to(rot),child.transform.origin,new javax.vecmath.Vector3f());
+      newShape.addChildShape(new Transform(new javax.vecmath.Matrix4f(VecMath.to(Rotation.none().getQuat4f()),offset,1.0f)),rotatedChild);
     }
     return newShape;
   }
  else   if (shape instanceof ConvexHullShape) {
     ConvexHullShape convexHull=(ConvexHullShape)shape;
-    ObjectArrayList<Vector3f> transformedVerts=new ObjectArrayList<>();
-    for (    Vector3f vert : convexHull.getPoints()) {
-      transformedVerts.add(QuaternionUtil.quatRotate(rot,vert,new Vector3f()));
+    ObjectArrayList<javax.vecmath.Vector3f> transformedVerts=new ObjectArrayList<>();
+    for (    javax.vecmath.Vector3f vert : convexHull.getPoints()) {
+      transformedVerts.add(com.bulletphysics.linearmath.QuaternionUtil.quatRotate(VecMath.to(rot),vert,new javax.vecmath.Vector3f()));
     }
     return new ConvexHullShape(transformedVerts);
   }

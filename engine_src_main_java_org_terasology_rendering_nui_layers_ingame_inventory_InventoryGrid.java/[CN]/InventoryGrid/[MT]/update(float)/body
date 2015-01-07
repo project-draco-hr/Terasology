@@ -1,10 +1,12 @@
 {
   super.update(delta);
-  int numSlots=InventoryUtils.getSlotCount(getTargetEntity()) - getCellOffset();
+  int numSlots=getNumSlots();
   if (numSlots < cells.size()) {
-    cells.clear();
+    for (int i=cells.size(); i > numSlots && i > 0; --i) {
+      cells.remove(i - 1);
+    }
   }
-  if (numSlots > cells.size() && cells.size() < getMaxCellCount()) {
+ else   if (numSlots > cells.size()) {
     for (int i=cells.size(); i < numSlots && i < getMaxCellCount(); ++i) {
       InventoryCell cell=new InventoryCell();
       cell.bindTargetInventory(new ReadOnlyBinding<EntityRef>(){

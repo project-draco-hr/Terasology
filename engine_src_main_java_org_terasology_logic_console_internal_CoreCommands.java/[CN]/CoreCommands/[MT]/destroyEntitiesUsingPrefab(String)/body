@@ -1,0 +1,10 @@
+{
+  Prefab prefab=entityManager.getPrefabManager().getPrefab(prefabName);
+  if (prefab != null) {
+    for (    EntityRef entity : entityManager.getAllEntities()) {
+      if (prefab.getURI().equals(entity.getPrefabURI())) {
+        entity.destroy();
+      }
+    }
+  }
+}

@@ -1,9 +1,7 @@
 {
   float t=(float)(time - a.getTime()) / (b.getTime() - a.getTime());
-  Vector3f newPos=new Vector3f();
-  newPos.interpolate(a.getPosition(),b.getPosition(),t);
-  Quat4f newRot=new Quat4f();
-  newRot.interpolate(a.getRotation(),b.getRotation(),t);
+  Vector3f newPos=BaseVector3f.lerp(a.getPosition(),b.getPosition(),t);
+  Quat4f newRot=BaseQuat4f.interpolate(a.getRotation(),b.getRotation(),t);
   LocationComponent location=entity.getComponent(LocationComponent.class);
   location.setWorldPosition(newPos);
   location.setWorldRotation(newRot);

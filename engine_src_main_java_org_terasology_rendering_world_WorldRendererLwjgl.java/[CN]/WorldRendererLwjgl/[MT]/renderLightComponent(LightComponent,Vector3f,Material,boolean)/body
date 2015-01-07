@@ -18,13 +18,12 @@
   program.setCamera(playerCamera);
   Vector3f worldPosition=new Vector3f();
   worldPosition.sub(lightWorldPosition,playerCamera.getPosition());
-  Vector3f lightViewPosition=new Vector3f();
-  playerCamera.getViewMatrix().transform(worldPosition,lightViewPosition);
+  Vector3f lightViewPosition=new Vector3f(worldPosition);
+  playerCamera.getViewMatrix().transformPoint(lightViewPosition);
   program.setFloat3("lightViewPos",lightViewPosition.x,lightViewPosition.y,lightViewPosition.z,true);
   Matrix4f modelMatrix=new Matrix4f();
-  modelMatrix.setIdentity();
+  modelMatrix.set(lightComponent.lightAttenuationRange);
   modelMatrix.setTranslation(worldPosition);
-  modelMatrix.setScale(lightComponent.lightAttenuationRange);
   program.setMatrix4("modelMatrix",modelMatrix,true);
   if (!geometryOnly) {
     program.setFloat3("lightColorDiffuse",lightComponent.lightColorDiffuse.x,lightComponent.lightColorDiffuse.y,lightComponent.lightColorDiffuse.z,true);

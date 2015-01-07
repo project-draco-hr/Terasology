@@ -2,10 +2,14 @@
   String[] rawParams=paramStr.split(PARAM_SPLIT_REGEX);
   List<String> params=Lists.newArrayList();
   for (  String s : rawParams) {
-    if (s.trim().isEmpty()) {
+    String param=s;
+    if (param.trim().isEmpty()) {
       continue;
     }
-    params.add(s);
+    if (param.length() > 1 && param.startsWith("\"") && param.endsWith("\"")) {
+      param=param.substring(1,param.length() - 1);
+    }
+    params.add(param);
   }
   return params;
 }
