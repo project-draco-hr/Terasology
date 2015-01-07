@@ -1,0 +1,20 @@
+{
+  EntityStorer storer=new EntityStorer(getEntityManager());
+  for (  EntityRef entityRef : entitiesToSave) {
+    if (entityRef.isPersistent()) {
+      storer.store(entityRef,deactivate);
+    }
+ else {
+      if (deactivate) {
+        entityRef.destroy();
+      }
+    }
+  }
+  EntityData.EntityStore entityStore=storer.finaliseStore();
+  ChunkImpl chunkImpl=(ChunkImpl)chunk;
+  boolean viaSnapshot=!deactivate;
+  if (viaSnapshot) {
+    chunkImpl.createSnapshot();
+  }
+  return new CompressedChunkBuilder(entityStore,chunkImpl,viaSnapshot);
+}

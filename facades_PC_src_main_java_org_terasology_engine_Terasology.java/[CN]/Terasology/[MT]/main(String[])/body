@@ -1,7 +1,11 @@
 {
+  SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
   handlePrintUsageRequest(args);
   handleLaunchArguments(args);
   try (final TerasologyEngine engine=new TerasologyEngine(createSubsystemList())){
+    if (!writeSaveGamesEnabled) {
+      CoreRegistry.get(Config.class).getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);
+    }
     if (isHeadless) {
       engine.subscribeToStateChange(new HeadlessStateChangeListener());
       engine.run(new StateHeadlessSetup());
@@ -18,6 +22,7 @@
         }
 );
       }
+      SplashScreen.getInstance().close();
       engine.run(new StateMainMenu());
     }
   }
@@ -25,5 +30,8 @@
     if (!GraphicsEnvironment.isHeadless()) {
       logException(e);
     }
+  }
+ finally {
+    SplashScreen.getInstance().close();
   }
 }

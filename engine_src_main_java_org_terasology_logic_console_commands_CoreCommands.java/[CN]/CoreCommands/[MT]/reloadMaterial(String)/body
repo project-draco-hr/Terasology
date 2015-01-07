@@ -1,0 +1,11 @@
+{
+  AssetUri uri=new AssetUri(AssetType.MATERIAL,material);
+  MaterialData materialData=CoreRegistry.get(AssetManager.class).loadAssetData(uri,MaterialData.class);
+  if (materialData != null) {
+    CoreRegistry.get(AssetManager.class).generateAsset(uri,materialData);
+    return "Success";
+  }
+ else {
+    return "Unable to resolve material '" + material + "'";
+  }
+}

@@ -1,41 +1,50 @@
 {
-  if (!matchList.contains(text)) {
+  if (rawCommand.length() <= 0) {
     reset();
-    String cmdQuery=text.trim();
-    Collection<String> matches=CamelCaseMatcher.getMatches(cmdQuery,allNames);
-    if (matches.isEmpty()) {
-      return text;
-    }
+    previousMessage=new Message("Type 'help' to list all commands.");
+    console.addMessage(previousMessage);
+    return null;
+  }
+ else   if (query == null) {
+    query=rawCommand;
+  }
+  String commandNameRaw=console.processCommandName(query);
+  Name commandName=new Name(commandNameRaw);
+  List<String> commandParameters=console.processParameters(query);
+  ConsoleCommand command=console.getCommand(commandName);
+  int suggestedIndex=commandParameters.size() + (query.charAt(query.length() - 1) == ' ' ? 1 : 0);
+  Set<String> matches=findMatches(commandName,commandParameters,command,suggestedIndex);
+  if (matches == null || matches.size() <= 0) {
+    return query;
+  }
+  if (previousMatches == null || !matches.equals(Sets.newHashSet(previousMatches))) {
+    reset(false);
     if (matches.size() == 1) {
-      return matches.iterator().next();
+      return generateResult(matches.iterator().next(),commandName,commandParameters,suggestedIndex);
     }
-    if (matches.size() > MAX_CYCLES) {
-      console.addMessage(new Message("Too many hits, please refine your search"));
-      return text;
-    }
-    matchList.addAll(matches);
-    Collections.sort(matchList);
+    previousMatches=Lists.newArrayList(matches);
+    Collections.sort(previousMatches);
   }
-  StringBuilder commandMatches=new StringBuilder();
-  for (int i=0; i < matchList.size(); i++) {
-    if (commandMatches.length() != 0) {
-      commandMatches.append(" ");
+  StringBuilder matchMessageString=new StringBuilder();
+  for (int i=0; i < previousMatches.size(); i++) {
+    if (i > 0) {
+      matchMessageString.append(' ');
     }
-    String name=matchList.get(i);
-    if (index == i) {
-      name=FontColor.getColored(name,ConsoleColors.COMMAND);
+    String match=previousMatches.get(i);
+    if (selectionIndex == i) {
+      match=FontColor.getColored(match,ConsoleColors.COMMAND);
     }
-    commandMatches.append(name);
+    matchMessageString.append(match);
   }
-  Message message=new Message(commandMatches.toString());
-  String cmd=matchList.get(index);
-  if (prevMessage != null) {
-    console.replaceMessage(prevMessage,message);
+  Message matchMessage=new Message(matchMessageString.toString());
+  String suggestion=previousMatches.get(selectionIndex);
+  if (previousMessage != null) {
+    console.replaceMessage(previousMessage,matchMessage);
   }
  else {
-    console.addMessage(message);
+    console.addMessage(matchMessage);
   }
-  prevMessage=message;
-  index=(index + 1) % matchList.size();
-  return cmd;
+  previousMessage=matchMessage;
+  selectionIndex=(selectionIndex + 1) % previousMatches.size();
+  return generateResult(suggestion,commandName,commandParameters,suggestedIndex);
 }

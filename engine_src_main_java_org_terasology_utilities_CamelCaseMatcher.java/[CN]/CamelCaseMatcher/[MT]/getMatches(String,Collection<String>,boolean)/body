@@ -1,0 +1,17 @@
+{
+  Set<String> matches=Sets.newHashSet();
+  String query=queryStr.replaceAll("\\*",".*?");
+  query=query.replaceFirst("\\b([a-z]+)","$1[a-z]*");
+  String re="\\b(" + query.replaceAll("([A-Z][^A-Z]*)","$1[^A-Z]*") + ".*?)\\b";
+  Pattern regex=Pattern.compile(re);
+  for (  String cmd : commands) {
+    if (includeCaseInsensitiveStartingWith && cmd.toLowerCase().startsWith(queryStr.toLowerCase())) {
+      matches.add(cmd);
+    }
+    Matcher m=regex.matcher(cmd);
+    if (m.find()) {
+      matches.add(m.group());
+    }
+  }
+  return matches;
+}

@@ -1,0 +1,7 @@
+{
+  List<String> params=event.getParameters();
+  ConsoleCommand cmd=console.getCommand(event.getCommandName());
+  if (cmd.getRequiredParameterCount() == params.size() && cmd.isRunOnServer()) {
+    console.execute(event.getCommandName(),event.getParameters(),entity);
+  }
+}

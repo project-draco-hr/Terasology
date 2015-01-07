@@ -6,14 +6,10 @@ switch (event.getKey().getId()) {
 case KeyId.LEFT:
 {
         if (hasSelection() && !isSelectionModifierActive()) {
-          cursorPosition=Math.min(cursorPosition,selectionStart);
-          selectionStart=cursorPosition;
+          setCursorPosition(Math.min(getCursorPosition(),selectionStart));
         }
- else         if (cursorPosition > 0) {
-          cursorPosition--;
-          if (!isSelectionModifierActive()) {
-            selectionStart=cursorPosition;
-          }
+ else         if (getCursorPosition() > 0) {
+          decreaseCursorPosition(1,!isSelectionModifierActive());
         }
         event.consume();
         break;
@@ -21,34 +17,24 @@ case KeyId.LEFT:
 case KeyId.RIGHT:
 {
       if (hasSelection() && !isSelectionModifierActive()) {
-        cursorPosition=Math.max(cursorPosition,selectionStart);
-        selectionStart=cursorPosition;
+        setCursorPosition(Math.max(getCursorPosition(),selectionStart));
       }
- else       if (cursorPosition < fullText.length()) {
-        cursorPosition++;
-        if (!isSelectionModifierActive()) {
-          selectionStart=cursorPosition;
-        }
+ else       if (getCursorPosition() < fullText.length()) {
+        increaseCursorPosition(1,!isSelectionModifierActive());
       }
       event.consume();
       break;
     }
 case KeyId.HOME:
 {
-    cursorPosition=0;
+    setCursorPosition(0,!isSelectionModifierActive());
     offset=0;
-    if (!isSelectionModifierActive()) {
-      selectionStart=cursorPosition;
-    }
     event.consume();
     break;
   }
 case KeyId.END:
 {
-  cursorPosition=fullText.length();
-  if (!isSelectionModifierActive()) {
-    selectionStart=cursorPosition;
-  }
+  setCursorPosition(fullText.length(),!isSelectionModifierActive());
   event.consume();
   break;
 }
@@ -70,12 +56,13 @@ case KeyId.BACKSPACE:
 if (hasSelection()) {
   removeSelection();
 }
- else if (cursorPosition > 0) {
-  String before=fullText.substring(0,cursorPosition - 1);
-  String after=fullText.substring(cursorPosition);
+ else if (getCursorPosition() > 0) {
+  String before=fullText.substring(0,getCursorPosition() - 1);
+  String after=fullText.substring(getCursorPosition());
+  if (getCursorPosition() < fullText.length()) {
+    decreaseCursorPosition(1);
+  }
   setText(before + after);
-  cursorPosition--;
-  selectionStart=cursorPosition;
 }
 event.consume();
 break;
@@ -85,9 +72,9 @@ case KeyId.DELETE:
 if (hasSelection()) {
 removeSelection();
 }
- else if (cursorPosition < fullText.length()) {
-String before=fullText.substring(0,cursorPosition);
-String after=fullText.substring(cursorPosition + 1);
+ else if (getCursorPosition() < fullText.length()) {
+String before=fullText.substring(0,getCursorPosition());
+String after=fullText.substring(getCursorPosition() + 1);
 setText(before + after);
 }
 event.consume();
@@ -95,7 +82,7 @@ break;
 }
 case KeyId.ENTER:
 {
-for (ActivateEventListener listener : listeners) {
+for (ActivateEventListener listener : activationListeners) {
 listener.onActivated(this);
 }
 event.consume();
@@ -118,11 +105,10 @@ break;
 }
 }
 if (event.getKeyCharacter() != 0 && lastFont.hasCharacter(event.getKeyCharacter())) {
-String before=fullText.substring(0,Math.min(cursorPosition,selectionStart));
-String after=fullText.substring(Math.max(cursorPosition,selectionStart));
+String before=fullText.substring(0,Math.min(getCursorPosition(),selectionStart));
+String after=fullText.substring(Math.max(getCursorPosition(),selectionStart));
 setText(before + event.getKeyCharacter() + after);
-cursorPosition=Math.min(cursorPosition,selectionStart) + 1;
-selectionStart=cursorPosition;
+setCursorPosition(Math.min(getCursorPosition(),selectionStart) + 1);
 event.consume();
 }
 break;
@@ -130,6 +116,5 @@ break;
 }
 }
 }
-correctCursor();
 updateOffset();
 }

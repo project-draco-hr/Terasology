@@ -1,12 +1,12 @@
 {
   InjectionHelper.inject(system);
   if (console != null) {
-    console.registerCommandProvider(system);
+    MethodCommand.registerAvailable(system);
   }
   try {
     system.initialise();
   }
- catch (  Throwable e) {
+ catch (  RuntimeException e) {
     logger.error("Failed to initialise system {}",system,e);
   }
 }

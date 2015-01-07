@@ -1,0 +1,8 @@
+{
+  super(savePath,environment,entityManager,storeChunksInZips);
+  entityManager.subscribe(this);
+  Files.createDirectories(getStoragePathProvider().getStoragePathDirectory());
+  this.saveTransactionHelper=new SaveTransactionHelper(getStoragePathProvider());
+  this.saveThreadManager=TaskMaster.createFIFOTaskMaster("Saving",1);
+  this.config=CoreRegistry.get(Config.class);
+}
