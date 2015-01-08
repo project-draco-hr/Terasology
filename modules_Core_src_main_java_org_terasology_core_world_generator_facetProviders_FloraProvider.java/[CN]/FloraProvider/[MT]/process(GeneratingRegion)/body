@@ -7,12 +7,17 @@
   int maxY=facet.getWorldRegion().maxY();
   for (int z=facet.getRelativeRegion().minZ(); z <= facet.getRelativeRegion().maxZ(); ++z) {
     for (int x=facet.getRelativeRegion().minX(); x <= facet.getRelativeRegion().maxX(); ++x) {
-      int height=TeraMath.floorToInt(surface.get(x,z));
-      if (height >= minY && height < maxY) {
+      int height=TeraMath.ceilToInt(surface.get(x,z));
+      if (height >= minY && height <= maxY) {
         CoreBiome biome=biomeFacet.get(x,z);
         height=height - minY + facet.getRelativeRegion().minY();
-        if ((biome == CoreBiome.FOREST || biome == CoreBiome.PLAINS) && density.get(x,height,z) > 0 && density.get(x,height + 1,z) <= 0 && noiseTable.noise(x,z) < configuration.density) {
-          facet.set(x,height + 1,z,true);
+        float below=density.get(x,height - 1,z);
+        float curr=density.get(x,height,z);
+        if (below >= 0 && curr < 0) {
+          float plantProb=getPlantProb(biome);
+          if (noiseTable.noise(x,z) / 255.0f < plantProb) {
+            facet.set(x,height,z,true);
+          }
         }
       }
     }
