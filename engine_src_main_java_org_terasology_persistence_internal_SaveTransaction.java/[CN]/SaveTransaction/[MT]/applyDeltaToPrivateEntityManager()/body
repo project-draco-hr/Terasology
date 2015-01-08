@@ -30,6 +30,7 @@
     }
   }
 );
+  deltaToSave.bindAllDelayedEntityRefsTo(privateEntityManager);
   deltaToSave.getDestroyedEntities().forEach(new TLongProcedure(){
     @Override public boolean execute(    long entityId){
       privateEntityManager.getEntity(entityId).destroy();
