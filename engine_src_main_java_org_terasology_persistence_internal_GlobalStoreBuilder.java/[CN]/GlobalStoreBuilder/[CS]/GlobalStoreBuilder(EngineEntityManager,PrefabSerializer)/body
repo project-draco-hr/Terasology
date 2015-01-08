@@ -1,13 +1,4 @@
 {
   this.nextEntityId=entityManager.getNextId();
-  this.store=EntityData.GlobalStore.newBuilder();
-  this.componentIdTable=Maps.newHashMap();
-  for (  ComponentMetadata<?> componentMetadata : entityManager.getComponentLibrary().iterateComponentMetadata()) {
-    store.addComponentClass(componentMetadata.getUri().toString());
-    componentIdTable.put(componentMetadata.getType(),componentIdTable.size());
-  }
-  prefabSerializer.setComponentIdMapping(componentIdTable);
-  for (  Prefab prefab : entityManager.getPrefabManager().listPrefabs()) {
-    store.addPrefab(prefabSerializer.serialize(prefab));
-  }
+  this.prefabSerializer=prefabSerializer;
 }
