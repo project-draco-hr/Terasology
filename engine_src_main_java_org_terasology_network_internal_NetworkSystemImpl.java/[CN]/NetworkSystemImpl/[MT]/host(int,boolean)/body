@@ -13,15 +13,28 @@
       bootstrap.setOption("child.keepAlive",true);
       Channel listenChannel=bootstrap.bind(new InetSocketAddress(port));
       allChannels.add(listenChannel);
-      logger.info("Started server");
+      logger.info("Started server on port {}",port);
+      Enumeration<NetworkInterface> interfaces=NetworkInterface.getNetworkInterfaces();
+      while (interfaces.hasMoreElements()) {
+        NetworkInterface ifc=interfaces.nextElement();
+        if (!ifc.isLoopback()) {
+          for (          InterfaceAddress ifadr : ifc.getInterfaceAddresses()) {
+            InetAddress adr=ifadr.getAddress();
+            logger.info("Listening on network interface \"{}\", hostname \"{}\" ({})",ifc.getDisplayName(),adr.getCanonicalHostName(),adr.getHostAddress());
+          }
+        }
+      }
       nextNetworkTick=time.getRawTimeInMs();
     }
- catch (    ChannelException e) {
+ catch (    SocketException e) {
+      throw new HostingFailedException("Could not identify network interfaces",e);
+    }
+catch (    ChannelException e) {
       if (e.getCause() instanceof BindException) {
-        throw new HostingFailedException("Port already in use (are you already hosting a game?)");
+        throw new HostingFailedException("Port already in use (are you already hosting a game?)",e.getCause());
       }
  else {
-        throw new HostingFailedException("Failed to host game");
+        throw new HostingFailedException("Failed to host game",e.getCause());
       }
     }
   }
