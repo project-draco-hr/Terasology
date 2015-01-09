@@ -3,52 +3,41 @@
 switch (stereoRenderState) {
 case MONO:
     currentRenderingStage=WorldRenderingStage.DEFAULT;
-  break;
+  isFirstRenderingStageForCurrentFrame=true;
+break;
 case OCULUS_LEFT_EYE:
 currentRenderingStage=WorldRenderingStage.OCULUS_LEFT_EYE;
 playerCamera.updateFrustum();
+isFirstRenderingStageForCurrentFrame=true;
 break;
 case OCULUS_RIGHT_EYE:
 currentRenderingStage=WorldRenderingStage.OCULUS_RIGHT_EYE;
 playerCamera.updateFrustum();
+isFirstRenderingStageForCurrentFrame=false;
 break;
 }
-if (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE) {
-renderableWorld.updateAndQueueVisibleChunks();
-}
- else {
-renderableWorld.updateAndQueueVisibleChunks(false,false);
-}
-if (renderingConfig.isDynamicShadows() && (stereoRenderState == DefaultRenderingProcess.StereoRenderState.MONO || stereoRenderState == DefaultRenderingProcess.StereoRenderState.OCULUS_LEFT_EYE)) {
-DefaultRenderingProcess.getInstance().beginRenderSceneShadowMap();
+renderableWorld.updateAndQueueVisibleChunks(isFirstRenderingStageForCurrentFrame);
 renderShadowMap();
-DefaultRenderingProcess.getInstance().endRenderSceneShadowMap();
-}
-DefaultRenderingProcess.getInstance().beginRenderReflectedScene();
-glCullFace(GL11.GL_FRONT);
-playerCamera.setReflected(true);
 renderWorldReflection();
-playerCamera.setReflected(false);
-glCullFace(GL11.GL_BACK);
-DefaultRenderingProcess.getInstance().endRenderReflectedScene();
-renderWorld();
-PerformanceMonitor.startActivity("Render Combined Scene");
-DefaultRenderingProcess.getInstance().renderPreCombinedScene();
-PerformanceMonitor.endActivity();
-PerformanceMonitor.startActivity("Render Objects (Transparent)");
+toggleWireFrameON();
+DefaultRenderingProcess.getInstance().clear();
 DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
-glEnable(GL_BLEND);
-glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-glDepthMask(false);
-for (RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
-renderer.renderAlphaBlend();
-}
-glDisable(GL_BLEND);
-glDepthMask(true);
+renderSky();
+try (Activity ignored=PerformanceMonitor.startActivity("Render World")){
+renderObjectsOpaque();
+renderChunksOpaque();
+renderChunksAlphaReject();
+renderOverlays();
+renderFirstPersonView();
 DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
+PerformanceMonitor.startActivity("Render Light Geometry");
+renderLightGeometryStencil();
 PerformanceMonitor.endActivity();
-PerformanceMonitor.startActivity("Render Post-Processing");
-DefaultRenderingProcess.getInstance().renderPost(stereoRenderState);
-PerformanceMonitor.endActivity();
+renderChunksRefractiveReflective();
+}
+ toggleWireFrameOFF();
+combineRefractiveReflectiveAndOpaquePasses();
+renderSimpleBlendMaterialsIntoCombinedPass();
+renderFinalPostProcessedScene(stereoRenderState);
 playerCamera.updatePrevViewProjectionMatrix();
 }

@@ -1,5 +1,8 @@
 {
   PerformanceMonitor.startActivity("Render World (Reflection)");
+  DefaultRenderingProcess.getInstance().beginRenderReflectedScene();
+  glCullFace(GL11.GL_FRONT);
+  playerCamera.setReflected(true);
   playerCamera.lookThroughNormalized();
   skysphere.render(playerCamera);
   Material chunkShader=Assets.getMaterial("engine:prog.chunk");
@@ -12,5 +15,8 @@
     }
   }
   chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
+  playerCamera.setReflected(false);
+  glCullFace(GL11.GL_BACK);
+  DefaultRenderingProcess.getInstance().endRenderReflectedScene();
   PerformanceMonitor.endActivity();
 }
