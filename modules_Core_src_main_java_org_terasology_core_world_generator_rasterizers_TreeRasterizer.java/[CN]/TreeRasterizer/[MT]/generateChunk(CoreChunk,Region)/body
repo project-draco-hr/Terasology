@@ -6,8 +6,8 @@
     if (facetValue > 0) {
       Vector3i pos=entry.getKey();
       CoreBiome biome=biomeFacet.get(pos.x,pos.z);
-      for (      TreeGenerator generator : treeGeneratorLookup.get(biome)) {
-        if (generator.getGenerationProbability() > (facetValue / 256f)) {
+      for (      TreeGenerator generator : treeGeneratorLookup.row(biome).keySet()) {
+        if (treeGeneratorLookup.get(biome,generator) > (facetValue / 256f)) {
           generator.generate(chunk,new FastRandom((long)facetValue),pos.x,pos.y,pos.z);
           break;
         }
