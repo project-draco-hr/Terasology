@@ -1,6 +1,7 @@
 {
   Collection<EntityRef> entitiesOfChunk=getEntitiesOfChunk(chunk);
-  unloadedAndUnsavedChunkMap.put(chunk.getPosition(),createCompressedChunkBuilder(chunk,entitiesOfChunk,true));
+  ChunkImpl chunkImpl=(ChunkImpl)chunk;
+  unloadedAndUnsavedChunkMap.put(chunk.getPosition(),new CompressedChunkBuilder(getEntityManager(),chunkImpl,entitiesOfChunk,true));
   for (  EntityRef entity : entitiesOfChunk) {
     deactivateOrDestroyEntityRecursive(entity);
   }

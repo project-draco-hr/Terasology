@@ -4,7 +4,7 @@
   TypeSerializationLibrary typeSerializationLibrary=buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary);
   entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
   EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
-  entityManager.setEntitySystemLibrary(library);
+  entityManager.setComponentLibrary(library.getComponentLibrary());
   CoreRegistry.put(ComponentLibrary.class,library.getComponentLibrary());
   CoreRegistry.put(EventLibrary.class,library.getEventLibrary());
   PrefabManager prefabManager=new PojoPrefabManager();

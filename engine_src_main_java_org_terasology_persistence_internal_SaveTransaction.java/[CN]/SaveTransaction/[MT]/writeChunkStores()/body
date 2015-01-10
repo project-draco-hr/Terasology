@@ -4,7 +4,7 @@
   Files.createDirectories(chunksPath);
   if (storeChunksInZips) {
     Map<Vector3i,FileSystem> newChunkZips=Maps.newHashMap();
-    for (    Map.Entry<Vector3i,CompressedChunkBuilder> entry : compressedChunkBuilders.entrySet()) {
+    for (    Map.Entry<Vector3i,CompressedChunkBuilder> entry : allChunks.entrySet()) {
       Vector3i chunkPos=entry.getKey();
       Vector3i chunkZipPos=storagePathProvider.getChunkZipPosition(chunkPos);
       FileSystem zip=newChunkZips.get(chunkZipPos);
@@ -44,7 +44,7 @@
     }
   }
  else {
-    for (    Map.Entry<Vector3i,CompressedChunkBuilder> entry : compressedChunkBuilders.entrySet()) {
+    for (    Map.Entry<Vector3i,CompressedChunkBuilder> entry : allChunks.entrySet()) {
       Vector3i chunkPos=entry.getKey();
       CompressedChunkBuilder compressedChunkBuilder=entry.getValue();
       byte[] compressedChunk=compressedChunkBuilder.buildEncodedChunk();

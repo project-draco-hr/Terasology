@@ -1,0 +1,11 @@
+{
+  Set<EntityRef> unsavedEntities=new HashSet<>();
+  for (  EntityRef entity : privateEntityManager.getAllEntities()) {
+    if (entity.isPersistent() && !entity.getOwner().exists()) {
+      unsavedEntities.add(entity);
+    }
+  }
+  preparePlayerStores(unsavedEntities);
+  prepareCompressedChunkBuilders(unsavedEntities);
+  this.globalStore=globalStoreBuilder.build(privateEntityManager,unsavedEntities);
+}

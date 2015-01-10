@@ -4,7 +4,12 @@
     if (eventSystem != null) {
       eventSystem.send(entity,BeforeDeactivateComponent.newInstance());
     }
+    List<Component> components=store.getComponentsInNewList(entityId);
+    components=Collections.unmodifiableList(components);
+    notifyBeforeDeactivation(entity,components);
+    for (    Component component : components) {
+      store.remove(entityId,component.getClass());
+    }
     loadedIds.remove(entityId);
-    store.remove(entityId);
   }
 }

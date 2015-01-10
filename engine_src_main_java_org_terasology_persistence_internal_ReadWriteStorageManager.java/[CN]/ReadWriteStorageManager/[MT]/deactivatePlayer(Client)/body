@@ -1,5 +1,7 @@
 {
   EntityRef character=client.getEntity().getComponent(ClientComponent.class).character;
-  EntityData.PlayerStore playerStore=createPlayerStore(client,character,true);
+  PlayerStoreBuilder playerStoreBuilder=createPlayerStore(client,character);
+  EntityData.PlayerStore playerStore=playerStoreBuilder.build(getEntityManager());
+  deactivateOrDestroyEntityRecursive(character);
   unloadedAndUnsavedPlayerMap.put(client.getId(),playerStore);
 }

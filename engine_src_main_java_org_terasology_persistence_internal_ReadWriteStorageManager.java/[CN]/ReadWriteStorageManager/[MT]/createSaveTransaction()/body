@@ -1,16 +1,10 @@
 {
   SaveTransactionBuilder saveTransactionBuilder=new SaveTransactionBuilder(privateEntityManager,entitySetDeltaRecorder,isStoreChunksInZips(),getStoragePathProvider(),worldDirectoryWriteLock);
-  Set<EntityRef> unsavedEntities=new HashSet<>();
-  for (  EntityRef entity : getEntityManager().getAllEntities()) {
-    if (entity.isPersistent() && !entity.getOwner().exists()) {
-      unsavedEntities.add(entity);
-    }
-  }
   ChunkProvider chunkProvider=CoreRegistry.get(ChunkProvider.class);
   NetworkSystem networkSystem=CoreRegistry.get(NetworkSystem.class);
-  addChunksToSaveTransaction(saveTransactionBuilder,chunkProvider,unsavedEntities);
-  addPlayersToSaveTransaction(saveTransactionBuilder,networkSystem,unsavedEntities);
-  addGlobalStoreToSaveTransaction(saveTransactionBuilder,unsavedEntities);
+  addChunksToSaveTransaction(saveTransactionBuilder,chunkProvider);
+  addPlayersToSaveTransaction(saveTransactionBuilder,networkSystem);
+  addGlobalStoreBuilderToSaveTransaction(saveTransactionBuilder);
   addGameManifestToSaveTransaction(saveTransactionBuilder);
   return saveTransactionBuilder.build();
 }

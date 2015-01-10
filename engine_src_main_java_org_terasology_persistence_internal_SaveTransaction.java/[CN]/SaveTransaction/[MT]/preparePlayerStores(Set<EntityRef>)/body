@@ -1,0 +1,14 @@
+{
+  allPlayers=Maps.newHashMap();
+  allPlayers.putAll(unloadedPlayers);
+  for (  Map.Entry<String,PlayerStoreBuilder> playerEntry : loadedPlayers.entrySet()) {
+    PlayerStoreBuilder playerStoreBuilder=playerEntry.getValue();
+    EntityData.PlayerStore playerStore=playerStoreBuilder.build(privateEntityManager);
+    Long characterEntityId=playerStoreBuilder.getCharacterEntityId();
+    if (characterEntityId != null) {
+      EntityRef character=privateEntityManager.getEntity(characterEntityId);
+      unsavedEntities.remove(character);
+    }
+    allPlayers.put(playerEntry.getKey(),playerStore);
+  }
+}

@@ -1,0 +1,11 @@
+{
+  EntitySerializer entitySerializer=new EntitySerializer(entityManager);
+  entitySerializer.setComponentIdMapping(componentIdTable);
+  for (  EntityRef entity : entities) {
+    if (entity.isPersistent()) {
+      store.addEntity(entitySerializer.serialize(entity));
+    }
+  }
+  store.setNextEntityId(nextEntityId);
+  return store.build();
+}
