@@ -1,5 +1,5 @@
 {
-  Map<Vector3i,Collection<EntityRef>> chunkPosToEntitiesMap=createChunkPosToUnsavedEntitiesMap();
+  Map<Vector3i,Collection<EntityRef>> chunkPosToEntitiesMap=createChunkPosToUnsavedOwnerLessEntitiesMap();
   allChunks=Maps.newHashMap();
   allChunks.putAll(unloadedChunks);
   for (  Map.Entry<Vector3i,ChunkImpl> chunkEntry : loadedChunks.entrySet()) {
@@ -10,6 +10,7 @@
     ChunkImpl chunk=chunkEntry.getValue();
     unsavedEntities.removeAll(entitiesToStore);
     CompressedChunkBuilder compressedChunkBuilder=new CompressedChunkBuilder(privateEntityManager,chunk,entitiesToStore,false);
+    unsavedEntities.removeAll(compressedChunkBuilder.getStoredEntities());
     allChunks.put(chunkEntry.getKey(),compressedChunkBuilder);
   }
 }

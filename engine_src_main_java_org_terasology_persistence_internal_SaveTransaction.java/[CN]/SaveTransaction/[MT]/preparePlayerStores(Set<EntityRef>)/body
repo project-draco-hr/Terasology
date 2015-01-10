@@ -4,6 +4,7 @@
   for (  Map.Entry<String,PlayerStoreBuilder> playerEntry : loadedPlayers.entrySet()) {
     PlayerStoreBuilder playerStoreBuilder=playerEntry.getValue();
     EntityData.PlayerStore playerStore=playerStoreBuilder.build(privateEntityManager);
+    unsavedEntities.removeAll(playerStoreBuilder.getStoredEntities());
     Long characterEntityId=playerStoreBuilder.getCharacterEntityId();
     if (characterEntityId != null) {
       EntityRef character=privateEntityManager.getEntity(characterEntityId);

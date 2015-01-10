@@ -8,7 +8,11 @@
     EntityRef character=entityManager.getEntity(characterEntityId);
     EntityStorer storer=new EntityStorer(entityManager);
     storer.store(character,PlayerStoreInternal.CHARACTER);
+    storedEntities=storer.getStoredEntities();
     playerEntityStore.setStore(storer.finaliseStore());
+  }
+ else {
+    storedEntities=Sets.newHashSet();
   }
   return playerEntityStore.build();
 }
