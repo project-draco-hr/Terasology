@@ -2,13 +2,8 @@
   if (entity.isActive()) {
     for (    EntityRef ownedEntity : helper.listOwnedEntities(entity)) {
       if (!ownedEntity.isAlwaysRelevant()) {
-        if (!ownedEntity.isPersistent()) {
-          if (deactivate) {
-            ownedEntity.destroy();
-          }
-        }
- else {
-          store(ownedEntity,deactivate);
+        if (ownedEntity.isPersistent()) {
+          store(ownedEntity);
         }
       }
     }
@@ -20,8 +15,5 @@
     }
     storedEntityIds.add(entityData.getId());
     externalReferences.remove(entityData.getId());
-    if (deactivate) {
-      entityManager.deactivateForStorage(entity);
-    }
   }
 }

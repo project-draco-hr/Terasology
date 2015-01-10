@@ -1,5 +1,6 @@
 {
   super(savePath,environment,entityManager,storeChunksInZips);
+  this.helper=new OwnershipHelper(entityManager.getComponentLibrary());
   entityManager.subscribeDestroyListener(this);
   entityManager.subscribeChangeListener(this);
   Files.createDirectories(getStoragePathProvider().getStoragePathDirectory());

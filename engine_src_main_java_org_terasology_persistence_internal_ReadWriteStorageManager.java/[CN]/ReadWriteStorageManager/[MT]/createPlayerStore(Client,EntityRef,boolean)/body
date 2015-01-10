@@ -19,7 +19,8 @@
   playerEntityStore.setCharacterPosZ(relevanceLocation.z);
   playerEntityStore.setHasCharacter(hasCharacter);
   EntityStorer storer=new EntityStorer(getEntityManager());
-  storer.store(character,PlayerStoreInternal.CHARACTER,deactivate);
+  storer.store(character,PlayerStoreInternal.CHARACTER);
+  deactivateOrDestroyEntityRecursive(character);
   playerEntityStore.setStore(storer.finaliseStore());
   return playerEntityStore.build();
 }
