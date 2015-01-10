@@ -1,4 +1,5 @@
 {
+  PerformanceMonitor.startActivity("Render Light Geometry");
   DefaultRenderingProcess.getInstance().beginRenderLightGeometry();
   Material program=Assets.getMaterial("engine:prog.lightGeometryPass");
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
@@ -15,4 +16,5 @@
   sunlightWorldPosition.add(playerCamera.getPosition());
   renderLightComponent(mainDirectionalLight,sunlightWorldPosition,program,false);
   DefaultRenderingProcess.getInstance().endRenderDirectionalLights();
+  PerformanceMonitor.endActivity();
 }

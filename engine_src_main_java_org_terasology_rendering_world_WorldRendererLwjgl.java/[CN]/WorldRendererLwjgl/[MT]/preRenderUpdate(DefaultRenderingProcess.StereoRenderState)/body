@@ -1,0 +1,19 @@
+{
+switch (stereoRenderState) {
+case MONO:
+    currentRenderingStage=WorldRenderingStage.DEFAULT;
+  isFirstRenderingStageForCurrentFrame=true;
+break;
+case OCULUS_LEFT_EYE:
+currentRenderingStage=WorldRenderingStage.OCULUS_LEFT_EYE;
+playerCamera.updateFrustum();
+isFirstRenderingStageForCurrentFrame=true;
+break;
+case OCULUS_RIGHT_EYE:
+currentRenderingStage=WorldRenderingStage.OCULUS_RIGHT_EYE;
+playerCamera.updateFrustum();
+isFirstRenderingStageForCurrentFrame=false;
+break;
+}
+renderableWorld.updateAndQueueVisibleChunks(isFirstRenderingStageForCurrentFrame);
+}

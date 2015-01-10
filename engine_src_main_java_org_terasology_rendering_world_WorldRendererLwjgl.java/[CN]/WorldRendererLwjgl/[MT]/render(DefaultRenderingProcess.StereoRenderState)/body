@@ -1,43 +1,24 @@
 {
   resetStats();
-switch (stereoRenderState) {
-case MONO:
-    currentRenderingStage=WorldRenderingStage.DEFAULT;
-  isFirstRenderingStageForCurrentFrame=true;
-break;
-case OCULUS_LEFT_EYE:
-currentRenderingStage=WorldRenderingStage.OCULUS_LEFT_EYE;
-playerCamera.updateFrustum();
-isFirstRenderingStageForCurrentFrame=true;
-break;
-case OCULUS_RIGHT_EYE:
-currentRenderingStage=WorldRenderingStage.OCULUS_RIGHT_EYE;
-playerCamera.updateFrustum();
-isFirstRenderingStageForCurrentFrame=false;
-break;
-}
-renderableWorld.updateAndQueueVisibleChunks(isFirstRenderingStageForCurrentFrame);
-renderShadowMap();
-renderWorldReflection();
-toggleWireFrameON();
-DefaultRenderingProcess.getInstance().clear();
-DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
-renderSky();
-try (Activity ignored=PerformanceMonitor.startActivity("Render World")){
-renderObjectsOpaque();
-renderChunksOpaque();
-renderChunksAlphaReject();
-renderOverlays();
-renderFirstPersonView();
-DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
-PerformanceMonitor.startActivity("Render Light Geometry");
-renderLightGeometry();
-PerformanceMonitor.endActivity();
-renderChunksRefractiveReflective();
-}
- toggleWireFrameOFF();
-combineRefractiveReflectiveAndOpaquePasses();
-renderSimpleBlendMaterialsIntoCombinedPass();
-renderFinalPostProcessedScene(stereoRenderState);
-playerCamera.updatePrevViewProjectionMatrix();
+  preRenderUpdate(stereoRenderState);
+  renderShadowMap();
+  renderWorldReflection();
+  preRenderSetup();
+  DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
+  renderSky();
+  try (Activity ignored=PerformanceMonitor.startActivity("Render World")){
+    renderObjectsOpaque();
+    renderChunksOpaque();
+    renderChunksAlphaReject();
+    renderOverlays();
+    renderFirstPersonView();
+    DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
+    renderLightGeometry();
+    renderChunksRefractiveReflective();
+  }
+   postRenderCleanup();
+  combineRefractiveReflectiveAndOpaquePasses();
+  renderSimpleBlendMaterialsIntoCombinedPass();
+  renderFinalPostProcessedScene(stereoRenderState);
+  playerCamera.updatePrevViewProjectionMatrix();
 }

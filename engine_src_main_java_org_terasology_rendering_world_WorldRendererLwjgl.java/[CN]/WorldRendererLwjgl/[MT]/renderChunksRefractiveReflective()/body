@@ -8,10 +8,9 @@
   while (renderQueues.chunksAlphaBlend.size() > 0) {
     renderChunk(renderQueues.chunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,playerCamera,ChunkRenderMode.DEFAULT);
   }
-  PerformanceMonitor.endActivity();
   if (isHeadUnderWater) {
     glEnable(GL11.GL_CULL_FACE);
   }
-  PerformanceMonitor.endActivity();
   DefaultRenderingProcess.getInstance().endRenderSceneReflectiveRefractive();
+  PerformanceMonitor.endActivity();
 }
