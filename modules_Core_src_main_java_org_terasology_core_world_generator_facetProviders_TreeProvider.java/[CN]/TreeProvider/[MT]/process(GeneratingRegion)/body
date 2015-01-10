@@ -1,6 +1,7 @@
 {
   SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
   DensityFacet density=region.getRegionFacet(DensityFacet.class);
+  BiomeFacet biome=region.getRegionFacet(BiomeFacet.class);
   SeaLevelFacet seaLevel=region.getRegionFacet(SeaLevelFacet.class);
   List<Predicate<Vector3i>> filters=Lists.newArrayList();
   filters.add(new Predicate<Vector3i>(){
@@ -32,6 +33,6 @@
     }
   }
 );
-  TreeFacet facet=createFacet(region,filters);
+  TreeFacet facet=createFacet(region,filters,biome);
   region.setRegionFacet(TreeFacet.class,facet);
 }

@@ -10,7 +10,14 @@
       if (height >= minY && height <= maxY) {
         Vector3i pos=new Vector3i(x,height,z);
         if (Predicates.and(filters).apply(pos)) {
-          facet.setWorld(x,height,z,Integer.valueOf(treeSeedNoise.noise(x,z)));
+          CoreBiome biome=biomeFacet.getWorld(pos.x,pos.z);
+          float facetValue=treeSeedNoise.noise(x,z) / 255f;
+          for (          TreeGenerator generator : treeGeneratorLookup.row(biome).keySet()) {
+            if (treeGeneratorLookup.get(biome,generator) > facetValue) {
+              facet.setWorld(x,height,z,generator);
+              break;
+            }
+          }
         }
       }
     }
