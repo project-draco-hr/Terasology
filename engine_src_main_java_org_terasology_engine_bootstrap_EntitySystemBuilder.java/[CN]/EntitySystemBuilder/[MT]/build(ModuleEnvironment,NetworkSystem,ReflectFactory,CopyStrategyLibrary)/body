@@ -1,7 +1,7 @@
 {
   PojoEntityManager entityManager=CoreRegistry.put(EntityManager.class,new PojoEntityManager());
   CoreRegistry.put(EngineEntityManager.class,entityManager);
-  TypeSerializationLibrary typeSerializationLibrary=buildTypeLibrary(entityManager,reflectFactory,copyStrategyLibrary);
+  TypeSerializationLibrary typeSerializationLibrary=TypeSerializationLibrary.createDefaultLibrary(entityManager,reflectFactory,copyStrategyLibrary);
   entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
   EntitySystemLibrary library=CoreRegistry.put(EntitySystemLibrary.class,new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary));
   entityManager.setComponentLibrary(library.getComponentLibrary());
