@@ -1,0 +1,13 @@
+{
+  float random=treeSeedNoise.noise(pos.x,pos.z) / 255f;
+  for (  TreeGenerator generator : gens.keySet()) {
+    float threshold=gens.get(generator).floatValue();
+    if (random < threshold) {
+      facet.setWorld(pos,generator);
+      break;
+    }
+ else {
+      random-=threshold;
+    }
+  }
+}

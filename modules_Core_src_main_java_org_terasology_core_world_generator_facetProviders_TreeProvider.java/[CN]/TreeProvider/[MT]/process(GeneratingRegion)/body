@@ -1,38 +1,14 @@
 {
   SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
-  DensityFacet density=region.getRegionFacet(DensityFacet.class);
   BiomeFacet biome=region.getRegionFacet(BiomeFacet.class);
   SeaLevelFacet seaLevel=region.getRegionFacet(SeaLevelFacet.class);
+  Border3D borderForTreeFacet=region.getBorderForFacet(TreeFacet.class);
+  TreeFacet facet=new TreeFacet(region.getRegion(),borderForTreeFacet.extendBy(0,25,10));
   List<Predicate<Vector3i>> filters=Lists.newArrayList();
-  filters.add(new Predicate<Vector3i>(){
-    @Override public boolean apply(    Vector3i input){
-      return input.getY() > seaLevel.getSeaLevel();
-    }
-  }
-);
-  filters.add(new Predicate<Vector3i>(){
-    @Override public boolean apply(    Vector3i input){
-      float densBelow=density.getWorld(input.getX(),input.getY() - 1,input.getZ());
-      float densThis=density.getWorld(input);
-      return (densBelow >= 0 && densThis < 0);
-    }
-  }
-);
-  filters.add(new Predicate<Vector3i>(){
-    @Override public boolean apply(    Vector3i input){
-      int x=input.getX();
-      int z=input.getZ();
-      int height=input.getY();
-      return (TeraMath.ceilToInt(surface.getWorld(x - 1,z)) == height) && (TeraMath.ceilToInt(surface.getWorld(x + 1,z)) == height) && (TeraMath.ceilToInt(surface.getWorld(x,z - 1)) == height)&& (TeraMath.ceilToInt(surface.getWorld(x,z + 1)) == height);
-    }
-  }
-);
-  filters.add(new Predicate<Vector3i>(){
-    @Override public boolean apply(    Vector3i input){
-      return treeNoise.noise(input.getX(),input.getZ()) / 255f < configuration.density;
-    }
-  }
-);
-  TreeFacet facet=createFacet(region,filters,biome);
+  filters.add(new SeaLevelFilter(seaLevel.getSeaLevel()));
+  filters.add(new ProbabilityFilter(treeNoise,configuration.density * 0.1f));
+  filters.add(new FlatnessFilter(surface));
+  filters.add(new MinDistanceFilter(facet,4.0f));
+  fillFacet(facet,region,filters,biome);
   region.setRegionFacet(TreeFacet.class,facet);
 }

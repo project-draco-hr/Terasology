@@ -1,0 +1,13 @@
+{
+  Map<Vector3i,TreeGenerator> relativeEntries=facet.getRelativeEntries();
+  if (relativeEntries.isEmpty()) {
+    return true;
+  }
+  Vector3i rel=new Vector3i(input.getX() - facet.getWorldRegion().minX() + facet.getRelativeRegion().minX(),input.getY() - facet.getWorldRegion().minY() + facet.getRelativeRegion().minY(),input.getZ() - facet.getWorldRegion().minZ() + facet.getRelativeRegion().minZ());
+  for (  Vector3i other : relativeEntries.keySet()) {
+    if (rel.distance(other) < minDist) {
+      return false;
+    }
+  }
+  return true;
+}

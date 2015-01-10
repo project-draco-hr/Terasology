@@ -3,6 +3,7 @@
   for (  Map.Entry<Vector3i,TreeGenerator> entry : facet.getRelativeEntries().entrySet()) {
     Vector3i pos=entry.getKey();
     TreeGenerator treeGen=entry.getValue();
-    treeGen.generate(chunk,new FastRandom(pos.hashCode()),pos.x,pos.y,pos.z);
+    Random random=new FastRandom(pos.hashCode());
+    treeGen.generate(chunk,random,pos.x,pos.y,pos.z);
   }
 }
