@@ -1,4 +1,6 @@
 {
+  Border3D borderForTreeFacet=region.getBorderForFacet(TreeFacet.class);
+  TreeFacet facet=new TreeFacet(region.getRegion(),borderForTreeFacet.extendBy(0,maxHeight,maxRad));
   SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
   int minY=facet.getWorldRegion().minY();
   int maxY=facet.getWorldRegion().maxY();
@@ -15,4 +17,5 @@
       }
     }
   }
+  return facet;
 }
