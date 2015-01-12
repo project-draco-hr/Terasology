@@ -11,4 +11,7 @@
     networkEventType=NetworkEventType.BROADCAST;
     skipInstigator=simpleClass.getAnnotation(BroadcastEvent.class).skipInstigator();
   }
+  if (networkEventType != NetworkEventType.NONE && !isConstructable() && !Modifier.isAbstract(simpleClass.getModifiers())) {
+    logger.error("Event '{}' is a network event but lacks a default constructor - will not be replicated",this);
+  }
 }

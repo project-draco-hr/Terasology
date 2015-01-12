@@ -1,16 +1,21 @@
 {
-  BlockComponent blockComp=target.getComponent(BlockComponent.class);
-  if (blockComp != null) {
-    if (relevantChunks.contains(TeraMath.calcChunkPos(blockComp.getPosition()))) {
-      queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetBlockPos(NetMessageUtil.convert(blockComp.getPosition())).setEvent(eventSerializer.serialize(event)).build());
-    }
-  }
- else {
-    NetworkComponent networkComponent=target.getComponent(NetworkComponent.class);
-    if (networkComponent != null) {
-      if (netRelevant.contains(networkComponent.getNetworkId()) || netInitial.contains(networkComponent.getNetworkId())) {
-        queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetId(networkComponent.getNetworkId()).setEvent(eventSerializer.serialize(event)).build());
+  try {
+    BlockComponent blockComp=target.getComponent(BlockComponent.class);
+    if (blockComp != null) {
+      if (relevantChunks.contains(TeraMath.calcChunkPos(blockComp.getPosition()))) {
+        queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetBlockPos(NetMessageUtil.convert(blockComp.getPosition())).setEvent(eventSerializer.serialize(event)).build());
       }
     }
+ else {
+      NetworkComponent networkComponent=target.getComponent(NetworkComponent.class);
+      if (networkComponent != null) {
+        if (netRelevant.contains(networkComponent.getNetworkId()) || netInitial.contains(networkComponent.getNetworkId())) {
+          queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setTargetId(networkComponent.getNetworkId()).setEvent(eventSerializer.serialize(event)).build());
+        }
+      }
+    }
+  }
+ catch (  SerializationException e) {
+    logger.error("Failed to serialize event",e);
   }
 }
