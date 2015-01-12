@@ -8,12 +8,7 @@
     playerCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
   }
   localPlayerSystem.setPlayerCamera(playerCamera);
+  initMainDirectionalLight();
   renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,playerCamera,shadowMapCamera);
   renderQueues=renderableWorld.getRenderQueues();
-  mainDirectionalLight.lightType=LightComponent.LightType.DIRECTIONAL;
-  mainDirectionalLight.lightColorAmbient=new Vector3f(1.0f,1.0f,1.0f);
-  mainDirectionalLight.lightColorDiffuse=new Vector3f(1.0f,1.0f,1.0f);
-  mainDirectionalLight.lightAmbientIntensity=1.0f;
-  mainDirectionalLight.lightDiffuseIntensity=2.0f;
-  mainDirectionalLight.lightSpecularIntensity=0.0f;
 }

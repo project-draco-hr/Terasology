@@ -1,13 +1,17 @@
 {
-  PerformanceMonitor.startActivity("Render World (Shadow Map)");
-  glDisable(GL_CULL_FACE);
-  shadowMapCamera.lookThrough();
-  while (renderQueues.chunksOpaqueShadow.size() > 0) {
-    renderChunk(renderQueues.chunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,ChunkRenderMode.SHADOW_MAP);
+  if (renderingConfig.isDynamicShadows() && isFirstRenderingStageForCurrentFrame) {
+    PerformanceMonitor.startActivity("Render World (Shadow Map)");
+    DefaultRenderingProcess.getInstance().beginRenderSceneShadowMap();
+    glDisable(GL_CULL_FACE);
+    shadowMapCamera.lookThrough();
+    while (renderQueues.chunksOpaqueShadow.size() > 0) {
+      renderChunk(renderQueues.chunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,ChunkRenderMode.SHADOW_MAP);
+    }
+    for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
+      renderer.renderShadows();
+    }
+    glEnable(GL_CULL_FACE);
+    DefaultRenderingProcess.getInstance().endRenderSceneShadowMap();
+    PerformanceMonitor.endActivity();
   }
-  for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
-    renderer.renderShadows();
-  }
-  glEnable(GL_CULL_FACE);
-  PerformanceMonitor.endActivity();
 }

@@ -1,0 +1,20 @@
+{
+  PerformanceMonitor.startActivity("Render Light Geometry");
+  DefaultRenderingProcess.getInstance().beginRenderLightGeometry();
+  Material program=Assets.getMaterial("engine:prog.lightGeometryPass");
+  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+  for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
+    LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
+    LightComponent lightComponent=entity.getComponent(LightComponent.class);
+    final Vector3f worldPosition=locationComponent.getWorldPosition();
+    renderLightComponent(lightComponent,worldPosition,program,false);
+  }
+  DefaultRenderingProcess.getInstance().endRenderLightGeometry();
+  DefaultRenderingProcess.getInstance().beginRenderDirectionalLights();
+  Vector3f sunlightWorldPosition=new Vector3f(skysphere.getSunDirection(true));
+  sunlightWorldPosition.scale(50000f);
+  sunlightWorldPosition.add(playerCamera.getPosition());
+  renderLightComponent(mainDirectionalLight,sunlightWorldPosition,program,false);
+  DefaultRenderingProcess.getInstance().endRenderDirectionalLights();
+  PerformanceMonitor.endActivity();
+}
