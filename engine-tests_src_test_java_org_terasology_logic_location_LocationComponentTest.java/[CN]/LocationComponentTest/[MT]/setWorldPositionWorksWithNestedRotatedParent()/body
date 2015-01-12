@@ -1,16 +1,10 @@
 {
   LocationComponent first=new LocationComponent();
-  EntityRef firstEntity=mock(EntityRef.class);
-  when(firstEntity.getComponent(LocationComponent.class)).thenReturn(first);
-  when(firstEntity.exists()).thenReturn(true);
+  EntityRef firstEntity=createFakeEntityWith(first);
   LocationComponent second=new LocationComponent();
-  EntityRef secondEntity=mock(EntityRef.class);
-  when(secondEntity.getComponent(LocationComponent.class)).thenReturn(second);
-  when(secondEntity.exists()).thenReturn(true);
+  EntityRef secondEntity=createFakeEntityWith(second);
   LocationComponent third=new LocationComponent();
-  EntityRef thirdEntity=mock(EntityRef.class);
-  when(thirdEntity.getComponent(LocationComponent.class)).thenReturn(third);
-  when(thirdEntity.exists()).thenReturn(true);
+  EntityRef thirdEntity=createFakeEntityWith(third);
   Location.attachChild(firstEntity,secondEntity);
   second.setLocalPosition(new Vector3f(1,0,0));
   first.setLocalRotation(yawRotation);
