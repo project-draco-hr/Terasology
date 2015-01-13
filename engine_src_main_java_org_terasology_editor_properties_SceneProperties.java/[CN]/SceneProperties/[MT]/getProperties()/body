@@ -1,8 +1,8 @@
 {
   List<Property<?>> result=Lists.newArrayList();
-  Skysphere skysphere=CoreRegistry.get(WorldRenderer.class).getSkysphere();
-  if (skysphere != null) {
-    result.addAll(new ReflectionProvider(skysphere).getProperties());
+  BackdropProvider backdropProvider=CoreRegistry.get(BackdropProvider.class);
+  if (backdropProvider != null) {
+    result.addAll(new ReflectionProvider(backdropProvider).getProperties());
   }
   DefaultRenderingProcess postRenderer=DefaultRenderingProcess.getInstance();
   if (postRenderer != null) {

@@ -10,8 +10,13 @@
   DefaultCelestialSystem celestialSystem=new DefaultCelestialSystem(new BasicCelestialModel());
   CoreRegistry.put(CelestialSystem.class,celestialSystem);
   CoreRegistry.get(ComponentSystemManager.class).register(celestialSystem);
+  Skysphere skysphere=new Skysphere();
+  BackdropProvider backdropProvider=skysphere;
+  BackdropRenderer backdropRenderer=skysphere;
+  CoreRegistry.put(BackdropProvider.class,backdropProvider);
+  CoreRegistry.put(BackdropRenderer.class,backdropRenderer);
   RenderingSubsystemFactory engineSubsystemFactory=CoreRegistry.get(RenderingSubsystemFactory.class);
-  WorldRenderer worldRenderer=engineSubsystemFactory.createWorldRenderer(worldProvider,chunkProvider,CoreRegistry.get(LocalPlayerSystem.class));
+  WorldRenderer worldRenderer=engineSubsystemFactory.createWorldRenderer(backdropProvider,backdropRenderer,worldProvider,chunkProvider,CoreRegistry.get(LocalPlayerSystem.class));
   float reflectionHeight=CoreRegistry.get(NetworkSystem.class).getServer().getInfo().getReflectionHeight();
   worldRenderer.getActiveCamera().setReflectionHeight(reflectionHeight);
   CoreRegistry.put(WorldRenderer.class,worldRenderer);
