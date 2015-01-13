@@ -1,6 +1,11 @@
 {
   NetworkComponent netComp=target.getComponent(NetworkComponent.class);
   if (netComp != null) {
-    queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event)).setTargetId(netComp.getNetworkId()).build());
+    try {
+      queuedOutgoingEvents.add(NetData.EventMessage.newBuilder().setEvent(eventSerializer.serialize(event)).setTargetId(netComp.getNetworkId()).build());
+    }
+ catch (    SerializationException e) {
+      logger.error("Failed to serialize event",e);
+    }
   }
 }

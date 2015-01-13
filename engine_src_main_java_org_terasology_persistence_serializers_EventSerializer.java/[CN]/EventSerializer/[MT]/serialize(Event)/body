@@ -1,8 +1,10 @@
 {
   EventMetadata<?> eventMetadata=eventLibrary.getMetadata(event.getClass());
   if (eventMetadata == null) {
-    logger.error("Unregistered event type: {}",event.getClass());
-    return null;
+    throw new SerializationException("Unregistered event type: " + event.getClass());
+  }
+ else   if (!eventMetadata.isConstructable()) {
+    throw new SerializationException("Cannot serialize event '" + eventMetadata + "' - lacks default constructor so cannot be deserialized");
   }
   EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
   serializeEventType(event,eventData);

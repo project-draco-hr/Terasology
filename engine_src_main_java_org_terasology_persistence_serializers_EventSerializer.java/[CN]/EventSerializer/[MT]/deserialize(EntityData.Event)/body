@@ -2,11 +2,15 @@
   Class<? extends Event> eventClass=getEventClass(eventData);
   if (eventClass != null) {
     EventMetadata<?> eventMetadata=eventLibrary.getMetadata(eventClass);
-    Event event=eventMetadata.newInstance();
-    return deserializeOnto(event,eventData,eventMetadata);
+    if (!eventMetadata.isConstructable()) {
+      throw new DeserializationException("Cannot deserialize " + eventMetadata + " - lacks default constructor");
+    }
+ else {
+      Event event=eventMetadata.newInstance();
+      return deserializeOnto(event,eventData,eventMetadata);
+    }
   }
  else {
-    logger.warn("Unable to deserialize unknown event type: {}",eventData.getType());
+    throw new DeserializationException("Unable to deserialize unknown event type: " + eventData.getType());
   }
-  return null;
 }
