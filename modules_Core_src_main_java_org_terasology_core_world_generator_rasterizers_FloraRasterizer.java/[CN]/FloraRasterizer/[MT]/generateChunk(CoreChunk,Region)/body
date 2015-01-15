@@ -1,8 +1,13 @@
 {
-  PlantFacet facet=chunkRegion.getFacet(PlantFacet.class);
-  for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
-    if (facet.get(pos)) {
-      chunk.setBlock(pos,tallGrass);
+  FloraFacet facet=chunkRegion.getFacet(FloraFacet.class);
+  Block air=BlockManager.getAir();
+  Random rng=new FastRandom(chunk.getPosition().hashCode());
+  Map<Vector3i,FloraType> entries=facet.getRelativeEntries();
+  for (  Vector3i pos : entries.keySet()) {
+    if (chunk.getBlock(pos).equals(air)) {
+      FloraType type=entries.get(pos);
+      Block block=getBlock(rng,type);
+      chunk.setBlock(pos,block);
     }
   }
 }

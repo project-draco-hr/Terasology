@@ -1,0 +1,13 @@
+{
+  float random=noiseTypeTable.noise(x,z) / 255.0f;
+  for (  FloraType generator : probs.keySet()) {
+    float threshold=probs.get(generator).floatValue();
+    if (random <= threshold) {
+      return generator;
+    }
+ else {
+      random-=threshold;
+    }
+  }
+  return FloraType.values()[0];
+}

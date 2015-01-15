@@ -1,5 +1,5 @@
 {
-  PlantFacet facet=new PlantFacet(region.getRegion(),region.getBorderForFacet(PlantFacet.class));
+  FloraFacet facet=new FloraFacet(region.getRegion(),region.getBorderForFacet(FloraFacet.class));
   SeaLevelFacet seaLevel=region.getRegionFacet(SeaLevelFacet.class);
   SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
   DensityFacet density=region.getRegionFacet(DensityFacet.class);
@@ -17,11 +17,12 @@
         if (below >= 0 && curr < 0) {
           float plantProb=getPlantProb(biome);
           if (noiseTable.noise(x,z) / 255.0f < plantProb) {
-            facet.set(x,height,z,true);
+            FloraType type=getType(x,z);
+            facet.set(x,height,z,type);
           }
         }
       }
     }
   }
-  region.setRegionFacet(PlantFacet.class,facet);
+  region.setRegionFacet(FloraFacet.class,facet);
 }
