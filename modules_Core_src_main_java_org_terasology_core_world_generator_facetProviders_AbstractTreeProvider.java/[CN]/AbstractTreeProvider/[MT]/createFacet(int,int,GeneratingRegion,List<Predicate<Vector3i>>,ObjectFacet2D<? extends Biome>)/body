@@ -6,7 +6,8 @@
   int maxY=facet.getWorldRegion().maxY();
   for (int z=facet.getWorldRegion().minZ(); z <= facet.getWorldRegion().maxZ(); z++) {
     for (int x=facet.getWorldRegion().minX(); x <= facet.getWorldRegion().maxX(); x++) {
-      int height=TeraMath.ceilToInt(surface.getWorld(x,z));
+      float fh=surface.getWorld(x,z);
+      int height=TeraMath.floorToInt(fh) + 1;
       if (height >= minY && height <= maxY) {
         Vector3i pos=new Vector3i(x,height,z);
         if (Predicates.and(filters).apply(pos)) {
