@@ -1,37 +1,20 @@
 {
   int seed="asdf".hashCode();
-  int warmUp=10000;
   int count=1000000;
-  FastRandom pfr=new FastRandom(seed);
-  FastRandom sfr=new FastRandom(seed);
+  int warmUp=10000;
   PerlinNoise pn=new PerlinNoise(seed);
   SimplexNoise sn=new SimplexNoise(seed);
-  for (int i=0; i < warmUp; i++) {
-    float posX=pfr.nextFloat() * 1000f;
-    float posY=pfr.nextFloat() * 1000f;
-    float posZ=pfr.nextFloat() * 1000f;
-    pn.noise(posX,posY,posZ);
-  }
-  for (int i=0; i < warmUp; i++) {
-    float posX=sfr.nextFloat() * 1000f;
-    float posY=sfr.nextFloat() * 1000f;
-    float posZ=sfr.nextFloat() * 1000f;
-    sn.noise(posX,posY,posZ);
-  }
+  FastNoise fn=new FastNoise(seed);
+  run(pn,warmUp);
+  run(sn,warmUp);
+  run(fn,warmUp);
   long start=System.nanoTime();
-  for (int i=0; i < count; i++) {
-    float posX=pfr.nextFloat() * 1000f;
-    float posY=pfr.nextFloat() * 1000f;
-    float posZ=pfr.nextFloat() * 1000f;
-    pn.noise(posX,posY,posZ);
-  }
+  run(pn,count);
   logger.info("Perlin Noise : " + (System.nanoTime() - start) / 1000000 + "ms.");
   start=System.nanoTime();
-  for (int i=0; i < count; i++) {
-    float posX=sfr.nextFloat() * 1000f;
-    float posY=sfr.nextFloat() * 1000f;
-    float posZ=sfr.nextFloat() * 1000f;
-    sn.noise(posX,posY,posZ);
-  }
+  run(sn,count);
   logger.info("Simplex Noise : " + (System.nanoTime() - start) / 1000000 + "ms.");
+  start=System.nanoTime();
+  run(fn,count);
+  logger.info("Fast Noise : " + (System.nanoTime() - start) / 1000000 + "ms.");
 }
