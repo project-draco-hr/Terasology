@@ -1,0 +1,14 @@
+{
+  super.setSeed(seed);
+  noiseTable=new NoiseTable(seed);
+  for (  CoreBiome biome : CoreBiome.values()) {
+    float biomeProb=biomeProbs.get(biome);
+    for (    FloraType type : typeProbs.keySet()) {
+      float typeProb=typeProbs.get(type);
+      float prob=biomeProb * typeProb;
+      register(biome,type,prob);
+    }
+  }
+  register(CoreBiome.DESERT,FloraType.MUSHROOM,0);
+  register(CoreBiome.SNOW,FloraType.MUSHROOM,0);
+}

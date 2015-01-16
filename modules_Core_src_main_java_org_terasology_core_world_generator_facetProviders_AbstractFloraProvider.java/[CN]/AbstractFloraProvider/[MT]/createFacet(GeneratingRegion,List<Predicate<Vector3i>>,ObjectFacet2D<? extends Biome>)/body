@@ -1,6 +1,5 @@
 {
-  Border3D borderForTreeFacet=region.getBorderForFacet(TreeFacet.class);
-  TreeFacet facet=new TreeFacet(region.getRegion(),borderForTreeFacet.extendBy(0,maxHeight,maxRad));
+  FloraFacet facet=new FloraFacet(region.getRegion(),region.getBorderForFacet(FloraFacet.class));
   SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
   int minY=facet.getWorldRegion().minY();
   int maxY=facet.getWorldRegion().maxY();
@@ -10,11 +9,11 @@
       if (height >= minY && height <= maxY) {
         Vector3i pos=new Vector3i(x,height,z);
         if (Predicates.and(filters).apply(pos)) {
-          Biome biome=biomeFacet.getWorld(pos.x,pos.z);
-          Map<TreeGenerator,Float> gens=treeGeneratorLookup.row(biome);
-          TreeGenerator tree=getType(pos,gens);
-          if (tree != null) {
-            facet.setWorld(pos,tree);
+          Biome biome=biomeFacet.getWorld(x,z);
+          Map<FloraType,Float> plantProb=probsTable.row(biome);
+          FloraType type=getType(x,z,plantProb);
+          if (type != null) {
+            facet.setWorld(x,height,z,type);
           }
         }
       }
