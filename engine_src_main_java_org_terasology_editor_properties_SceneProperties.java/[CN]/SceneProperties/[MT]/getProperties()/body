@@ -4,6 +4,10 @@
   if (backdropProvider != null) {
     result.addAll(new ReflectionProvider(backdropProvider).getProperties());
   }
+  BackdropRenderer backdropRenderer=CoreRegistry.get(BackdropRenderer.class);
+  if (backdropRenderer != null) {
+    result.addAll(new ReflectionProvider(backdropRenderer).getProperties());
+  }
   DefaultRenderingProcess postRenderer=DefaultRenderingProcess.getInstance();
   if (postRenderer != null) {
     result.addAll(new ReflectionProvider(postRenderer).getProperties());
