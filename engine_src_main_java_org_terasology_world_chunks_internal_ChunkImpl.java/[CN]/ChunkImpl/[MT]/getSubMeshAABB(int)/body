@@ -1,10 +1,9 @@
 {
   if (subMeshAABB == null) {
-    subMeshAABB=new AABB[ChunkConstants.VERTICAL_SEGMENTS];
-    int heightHalf=ChunkConstants.SIZE_Y / ChunkConstants.VERTICAL_SEGMENTS / 2;
+    subMeshAABB=new AABB[verticalChunkMeshSegments];
     for (int i=0; i < subMeshAABB.length; i++) {
-      Vector3f dimensions=new Vector3f(8,heightHalf,8);
-      Vector3f position=new Vector3f(getChunkWorldOffsetX() - 0.5f,(i * heightHalf * 2) - 0.5f,getChunkWorldOffsetZ() - 0.5f);
+      Vector3f dimensions=new Vector3f(8,chunkHalfHeight,8);
+      Vector3f position=new Vector3f(getChunkWorldOffsetX() - 0.5f,(i * chunkHalfHeight * 2) - 0.5f,getChunkWorldOffsetZ() - 0.5f);
       position.add(dimensions);
       subMeshAABB[i]=AABB.createCenterExtent(position,dimensions);
     }
