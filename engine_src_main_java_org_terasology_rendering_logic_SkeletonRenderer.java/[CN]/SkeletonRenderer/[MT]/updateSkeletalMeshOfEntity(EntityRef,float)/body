@@ -22,9 +22,9 @@
     if (newAnimation == null) {
       MeshAnimation finishedAnimation=skeletalMeshComp.animation;
       skeletalMeshComp.animationTime=animationDuration;
-      skeletalMeshComp.animation=null;
       MeshAnimationFrame frame=skeletalMeshComp.animation.getFrame(skeletalMeshComp.animation.getFrameCount() - 1);
       updateSkeleton(skeletalMeshComp,frame,frame,1.0f);
+      skeletalMeshComp.animation=null;
       entity.saveComponent(skeletalMeshComp);
       entity.send(new AnimEndEvent(finishedAnimation));
       return;
