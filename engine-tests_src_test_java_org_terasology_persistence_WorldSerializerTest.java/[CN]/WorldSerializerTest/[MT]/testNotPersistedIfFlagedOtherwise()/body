@@ -1,6 +1,7 @@
 {
-  EntityRef entity=entityManager.create();
-  entity.setPersistent(false);
+  EntityBuilder entityBuilder=entityManager.newBuilder();
+  entityBuilder.setPersistent(false);
+  @SuppressWarnings("unused") EntityRef entity=entityBuilder.build();
   EntityData.GlobalStore worldData=worldSerializer.serializeWorld(false);
   assertEquals(0,worldData.getEntityCount());
 }
