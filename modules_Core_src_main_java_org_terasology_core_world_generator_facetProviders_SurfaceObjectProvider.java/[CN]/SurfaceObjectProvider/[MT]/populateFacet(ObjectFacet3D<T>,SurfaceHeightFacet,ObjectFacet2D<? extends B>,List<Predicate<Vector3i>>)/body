@@ -7,7 +7,7 @@
       int height=TeraMath.floorToInt(surfaceFacet.getWorld(x,z)) + 1;
       if (height >= minY && height <= maxY) {
         Vector3i pos=new Vector3i(x,height,z);
-        if (Predicates.and(filters).apply(pos)) {
+        if (applyAll(filters,pos)) {
           B biome=typeFacet.getWorld(x,z);
           Map<T,Float> plantProb=probsTable.row(biome);
           T type=getType(x,z,plantProb);

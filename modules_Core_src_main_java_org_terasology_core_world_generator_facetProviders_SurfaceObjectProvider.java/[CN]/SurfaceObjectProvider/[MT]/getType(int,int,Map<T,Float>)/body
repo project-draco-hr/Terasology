@@ -1,12 +1,14 @@
 {
   float random=typeNoiseGen.noise(x,z);
-  for (  T generator : gens.keySet()) {
-    float threshold=gens.get(generator).floatValue();
-    if (random < threshold) {
-      return generator;
-    }
+  for (  T generator : objs.keySet()) {
+    Float threshold=objs.get(generator);
+    if (threshold != null) {
+      if (random < threshold) {
+        return generator;
+      }
  else {
-      random-=threshold;
+        random-=threshold;
+      }
     }
   }
   return null;
