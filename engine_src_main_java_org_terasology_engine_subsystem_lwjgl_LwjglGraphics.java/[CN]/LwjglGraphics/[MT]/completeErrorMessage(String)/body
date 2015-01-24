@@ -1,10 +1,7 @@
 {
   String completeErrorMessage="\n" + "\nThe following OpenGL versions/extensions are required but are not supported by your GPU driver:\n" + "\n" + errorMessage + "\n"+ "GPU Information:\n"+ "\n";
   if (GLContext.getCapabilities().OpenGL11) {
-    String openglVendor=GL11.glGetString(GL11.GL_VENDOR);
-    String openglRenderer=GL11.glGetString(GL11.GL_RENDERER);
-    String openglVersion=GL11.glGetString(GL11.GL_VERSION);
-    completeErrorMessage=completeErrorMessage + "    Vendor:  " + openglVendor+ "\n"+ "    Model:   "+ openglRenderer+ "\n"+ "    Drivers: "+ openglVersion+ "\n";
+    completeErrorMessage=completeErrorMessage + "    Vendor:  " + GL11.glGetString(GL11.GL_VENDOR)+ "\n"+ "    Model:   "+ GL11.glGetString(GL11.GL_RENDERER)+ "\n"+ "    Drivers: "+ GL11.glGetString(GL11.GL_VERSION)+ "\n";
   }
  else {
     String adapterName=Display.getAdapter();
