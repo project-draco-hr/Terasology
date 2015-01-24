@@ -1,6 +1,11 @@
 {
-  SplashScreen splashScreen=SplashScreen.getSplashScreen();
-  if (splashScreen != null && splashScreen.isVisible()) {
-    splashScreen.close();
+  SwingUtilities.invokeLater(new Runnable(){
+    @Override public void run(){
+      SplashScreen splashScreen=SplashScreen.getSplashScreen();
+      if (splashScreen != null) {
+        splashScreen.close();
+      }
+    }
   }
+);
 }
