@@ -1,11 +1,3 @@
 {
-  return new Predicate<Vector3i>(){
-    @Override public boolean apply(    Vector3i input){
-      int x=input.getX();
-      int z=input.getZ();
-      int level=input.getY() - 1;
-      return (TeraMath.floorToInt(surface.getWorld(x - 1,z)) == level) && (TeraMath.floorToInt(surface.getWorld(x + 1,z)) == level) && (TeraMath.floorToInt(surface.getWorld(x,z - 1)) == level)&& (TeraMath.floorToInt(surface.getWorld(x,z + 1)) == level);
-    }
-  }
-;
+  return flatness(surfaceFacet,0,0);
 }
