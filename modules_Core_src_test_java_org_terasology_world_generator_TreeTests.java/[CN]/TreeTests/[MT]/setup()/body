@@ -1,0 +1,8 @@
+{
+  CoreRegistry.putPermanently(Config.class,new Config());
+  BlockManager blockManager=Mockito.mock(BlockManager.class);
+  Block air=BlockManager.getAir();
+  BlockUri any=Mockito.any();
+  Mockito.when(blockManager.getBlock(any)).thenReturn(air);
+  CoreRegistry.putPermanently(BlockManager.class,blockManager);
+}

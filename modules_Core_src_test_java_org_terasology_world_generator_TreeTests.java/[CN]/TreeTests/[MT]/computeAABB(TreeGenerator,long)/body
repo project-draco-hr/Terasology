@@ -1,0 +1,23 @@
+{
+  Vector3i pos=new Vector3i(ChunkConstants.SIZE_X / 2,0,ChunkConstants.SIZE_Z / 2);
+  Vector3i min=new Vector3i(pos);
+  Vector3i max=new Vector3i(pos);
+  Rect2i chunks=Rect2i.createFromMinAndMax(-1,-1,1,1);
+  for (  Vector2i chunkPos : chunks) {
+    Chunk chunk=new ChunkImpl(chunkPos.getX(),0,chunkPos.getY()){
+      @Override public Block setBlock(      int x,      int y,      int z,      Block block){
+        Vector3i world=chunkToWorldPosition(x,y,z);
+        minimize(min,world);
+        maximize(max,world);
+        return null;
+      }
+    }
+;
+    Random random=new MersenneRandom(seed);
+    BlockManager blockManager=CoreRegistry.get(BlockManager.class);
+    Vector3i relPos=chunk.chunkToWorldPosition(0,0,0).sub(pos).invert();
+    treeGen.generate(blockManager,chunk,random,relPos.x,relPos.y,relPos.z);
+  }
+  Vector3i ext=new Vector3i(max).sub(min);
+  return ext;
+}
