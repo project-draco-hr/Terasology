@@ -1,7 +1,7 @@
 {
-  Object[] processedParametersWithoutSender;
+  Object[] processedParameters;
   try {
-    processedParametersWithoutSender=processParametersMethod(rawParameters,sender);
+    processedParameters=processParametersMethod(rawParameters,sender);
   }
  catch (  CommandParameterParseException e) {
     String warning="Invalid parameter '" + e.getParameter() + "'";
@@ -12,18 +12,23 @@
     throw new CommandSuggestionException(warning);
   }
   CommandParameter suggestedParameter=null;
-  for (int i=0; i < processedParametersWithoutSender.length; i++) {
-    if (processedParametersWithoutSender[i] == null) {
-      suggestedParameter=commandParameters.get(i);
+  Iterator<CommandParameter> paramIter=commandParameters.iterator();
+  for (  Object processedParameter : processedParameters) {
+    if (sender.equals(processedParameter)) {
+      continue;
+    }
+    if (processedParameter == null) {
+      suggestedParameter=paramIter.next();
       break;
     }
+    paramIter.next();
   }
   if (suggestedParameter == null) {
     return Sets.newHashSet();
   }
   Set<Object> result=null;
   try {
-    result=suggestedParameter.suggest(sender,processedParametersWithoutSender);
+    result=suggestedParameter.suggest(sender,processedParameters);
   }
  catch (  Throwable t) {
     throw new CommandSuggestionException(t.getCause());
