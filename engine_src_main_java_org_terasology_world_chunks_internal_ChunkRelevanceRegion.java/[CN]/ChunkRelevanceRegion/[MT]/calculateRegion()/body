@@ -2,7 +2,7 @@
   LocationComponent loc=entity.getComponent(LocationComponent.class);
   if (loc != null) {
     Vector3i extents=new Vector3i(relevanceDistance.x / 2,relevanceDistance.y / 2,relevanceDistance.z / 2);
-    return Region3i.createFromCenterExtents(TeraMath.calcChunkPos(loc.getWorldPosition()),extents);
+    return Region3i.createFromCenterExtents(ChunkMath.calcChunkPos(loc.getWorldPosition()),extents);
   }
   return Region3i.EMPTY;
 }

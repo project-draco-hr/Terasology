@@ -5,7 +5,7 @@
       LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
       if (locationComponent != null) {
         Vector3f loc=locationComponent.getWorldPosition();
-        Vector3i chunkPos=TeraMath.calcChunkPos((int)loc.x,(int)loc.y,(int)loc.z);
+        Vector3i chunkPos=ChunkMath.calcChunkPos((int)loc.x,(int)loc.y,(int)loc.z);
         Collection<EntityRef> collection=chunkPosToEntitiesMap.get(chunkPos);
         if (collection == null) {
           collection=Lists.newArrayList();

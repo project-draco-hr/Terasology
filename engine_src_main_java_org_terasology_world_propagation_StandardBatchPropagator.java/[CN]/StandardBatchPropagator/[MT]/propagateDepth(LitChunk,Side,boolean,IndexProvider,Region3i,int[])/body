@@ -3,7 +3,7 @@
   int[] adjDepth=new int[depths.length];
   int dimA=(side == Side.LEFT || side == Side.RIGHT) ? ChunkConstants.SIZE_Y : ChunkConstants.SIZE_X;
   int dimB=(side == Side.FRONT || side == Side.BACK) ? ChunkConstants.SIZE_Y : ChunkConstants.SIZE_Z;
-  TeraMath.populateMinAdjacent2D(depths,adjDepth,dimA,dimB,!propagateExternal);
+  ChunkMath.populateMinAdjacent2D(depths,adjDepth,dimA,dimB,!propagateExternal);
   if (propagateExternal) {
     for (int y=0; y < dimB; ++y) {
       adjDepth[y * dimA]=0;

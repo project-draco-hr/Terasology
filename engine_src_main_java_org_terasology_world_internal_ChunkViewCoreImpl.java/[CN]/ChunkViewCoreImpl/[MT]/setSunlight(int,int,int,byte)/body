@@ -1,7 +1,7 @@
 {
   if (locked.get() && blockRegion.encompasses(blockX,blockY,blockZ)) {
     int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
-    chunks[chunkIndex].setSunlight(TeraMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize),light);
+    chunks[chunkIndex].setSunlight(ChunkMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize),light);
   }
  else {
     throw new IllegalStateException("Attempted to modify sunlight though an unlocked view");

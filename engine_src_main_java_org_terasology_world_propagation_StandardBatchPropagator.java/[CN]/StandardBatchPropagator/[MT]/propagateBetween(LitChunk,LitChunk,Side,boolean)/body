@@ -1,6 +1,6 @@
 {
   IndexProvider indexProvider=createIndexProvider(side);
-  Region3i edgeRegion=TeraMath.getEdgeRegion(Region3i.createFromMinAndSize(Vector3i.zero(),ChunkConstants.CHUNK_SIZE),side);
+  Region3i edgeRegion=ChunkMath.getEdgeRegion(Region3i.createFromMinAndSize(Vector3i.zero(),ChunkConstants.CHUNK_SIZE),side);
   int edgeSize=edgeRegion.size().x * edgeRegion.size().y * edgeRegion.size().z;
   int[] depth=new int[edgeSize];
   propagateSide(chunk,adjChunk,side,indexProvider,edgeRegion,depth);

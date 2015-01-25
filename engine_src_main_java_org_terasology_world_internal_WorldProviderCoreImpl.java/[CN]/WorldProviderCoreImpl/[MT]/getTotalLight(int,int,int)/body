@@ -1,8 +1,8 @@
 {
-  Vector3i chunkPos=TeraMath.calcChunkPos(x,y,z);
+  Vector3i chunkPos=ChunkMath.calcChunkPos(x,y,z);
   LitChunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
-    Vector3i blockPos=TeraMath.calcBlockPos(x,y,z);
+    Vector3i blockPos=ChunkMath.calcBlockPos(x,y,z);
     return (byte)Math.max(chunk.getSunlight(blockPos),chunk.getLight(blockPos));
   }
   logger.warn("Attempted to access unavailable chunk via total light at {}, {}, {}",x,y,z);
