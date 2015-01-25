@@ -3,13 +3,13 @@
   DefaultRenderingProcess.getInstance().beginRenderSceneReflectiveRefractive();
   boolean isHeadUnderWater=isHeadUnderWater();
   if (isHeadUnderWater) {
-    glDisable(GL11.GL_CULL_FACE);
+    GL11.glDisable(GL11.GL_CULL_FACE);
   }
   while (renderQueues.chunksAlphaBlend.size() > 0) {
     renderChunk(renderQueues.chunksAlphaBlend.poll(),ChunkMesh.RenderPhase.REFRACTIVE,playerCamera,ChunkRenderMode.DEFAULT);
   }
   if (isHeadUnderWater) {
-    glEnable(GL11.GL_CULL_FACE);
+    GL11.glEnable(GL11.GL_CULL_FACE);
   }
   DefaultRenderingProcess.getInstance().endRenderSceneReflectiveRefractive();
   PerformanceMonitor.endActivity();

@@ -2,7 +2,7 @@
   if (renderingConfig.isDynamicShadows() && isFirstRenderingStageForCurrentFrame) {
     PerformanceMonitor.startActivity("Render World (Shadow Map)");
     DefaultRenderingProcess.getInstance().beginRenderSceneShadowMap();
-    glDisable(GL_CULL_FACE);
+    GL11.glDisable(GL_CULL_FACE);
     shadowMapCamera.lookThrough();
     while (renderQueues.chunksOpaqueShadow.size() > 0) {
       renderChunk(renderQueues.chunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,ChunkRenderMode.SHADOW_MAP);
@@ -11,7 +11,7 @@
       renderer.renderShadows();
     }
     playerCamera.lookThrough();
-    glEnable(GL_CULL_FACE);
+    GL11.glEnable(GL_CULL_FACE);
     DefaultRenderingProcess.getInstance().endRenderSceneShadowMap();
     PerformanceMonitor.endActivity();
   }
