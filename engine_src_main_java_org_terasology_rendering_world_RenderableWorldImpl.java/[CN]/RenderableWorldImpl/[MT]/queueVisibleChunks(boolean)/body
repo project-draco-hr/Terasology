@@ -1,34 +1,8 @@
 {
+  PerformanceMonitor.startActivity("Queueing Visible Chunks");
   statDirtyChunks=0;
   statVisibleChunks=0;
   statIgnoredPhases=0;
-  if (isFirstRenderingStageForCurrentFrame) {
-    PerformanceMonitor.startActivity("Building Mesh VBOs");
-    chunkMeshUpdateManager.setCameraPosition(playerCamera.getPosition());
-    for (    RenderableChunk chunk : chunkMeshUpdateManager.availableChunksForUpdate()) {
-      if (chunksInProximityOfCamera.contains(chunk) && chunk.hasPendingMesh()) {
-        for (        ChunkMesh pendingMesh : chunk.getPendingMesh()) {
-          pendingMesh.generateVBOs();
-        }
-        if (chunk.hasMesh()) {
-          for (          ChunkMesh mesh : chunk.getMesh()) {
-            mesh.dispose();
-          }
-        }
-        chunk.setMesh(chunk.getPendingMesh());
-        chunk.setPendingMesh(null);
-      }
- else {
-        if (chunk.hasPendingMesh()) {
-          for (          ChunkMesh pendingMesh : chunk.getPendingMesh()) {
-            pendingMesh.dispose();
-          }
-          chunk.setPendingMesh(null);
-        }
-      }
-    }
-    PerformanceMonitor.endActivity();
-  }
   int processedChunks=0;
   int chunkCounter=0;
   ChunkMesh[] mesh;
@@ -77,11 +51,16 @@
       if (isChunkVisibleReflection(chunk)) {
         renderQueues.chunksOpaqueReflection.add(chunk);
       }
-      if (isFirstRenderingStageForCurrentFrame && processChunkUpdate(chunk)) {
-        processedChunks++;
+      if (isFirstRenderingStageForCurrentFrame) {
+        if ((chunk.isDirty() || !chunk.hasMesh())) {
+          statDirtyChunks++;
+          chunkMeshUpdateManager.queueChunkUpdate(chunk);
+          processedChunks++;
+        }
       }
     }
     chunkCounter++;
   }
+  PerformanceMonitor.endActivity();
   return processedChunks;
 }
