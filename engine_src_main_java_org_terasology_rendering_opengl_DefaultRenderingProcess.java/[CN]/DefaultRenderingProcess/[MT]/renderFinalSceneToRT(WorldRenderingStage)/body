@@ -8,10 +8,10 @@
   }
   material.enable();
   bindFbo("sceneFinal");
-  if (stereoRenderState == StereoRenderState.MONO || stereoRenderState == StereoRenderState.OCULUS_LEFT_EYE) {
+  if (renderingStage == WorldRenderingStage.MONO || renderingStage == WorldRenderingStage.OCULUS_LEFT_EYE) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
-switch (stereoRenderState) {
+switch (renderingStage) {
 case MONO:
     renderFullscreenQuad(0,0,rtFullWidth,rtFullHeight);
   break;

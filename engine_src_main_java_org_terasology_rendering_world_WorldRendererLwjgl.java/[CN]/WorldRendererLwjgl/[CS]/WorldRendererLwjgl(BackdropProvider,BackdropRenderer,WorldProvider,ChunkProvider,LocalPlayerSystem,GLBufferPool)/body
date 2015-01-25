@@ -4,9 +4,11 @@
   this.backdropRenderer=backdropRenderer;
   if (renderingConfig.isOculusVrSupport()) {
     playerCamera=new OculusStereoCamera();
+    currentRenderingStage=WorldRenderingStage.OCULUS_LEFT_EYE;
   }
  else {
     playerCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
+    currentRenderingStage=WorldRenderingStage.MONO;
   }
   localPlayerSystem.setPlayerCamera(playerCamera);
   initMainDirectionalLight();
