@@ -1,0 +1,11 @@
+{
+  float result=0.0f;
+  float workingX=x;
+  float workingY=y;
+  for (int i=0; i < getOctaves(); i++) {
+    result+=other.noise(workingX,workingY) * spectralWeights[i];
+    workingX*=getLacunarity();
+    workingY*=getLacunarity();
+  }
+  return result * scale;
+}
