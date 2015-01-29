@@ -1,14 +1,14 @@
 {
   FastRandom rng=new FastRandom(0xBEEF);
-  FastNoise noiseGen=new FastNoise(0xDEADC0DE);
-  int count=1000000;
+  WhiteNoise noiseGen=new WhiteNoise(0xDEADC0DE);
+  int count=100000;
   int bucketCount=20;
   int[] buckets=new int[bucketCount];
   for (int i=0; i < count; i++) {
     float posX=rng.nextFloat() * 100f;
     float posY=rng.nextFloat() * 100f;
     float posZ=rng.nextFloat() * 100f;
-    float noise=noiseGen.noise(posX,posY,posZ);
+    float noise=0.5f + 0.5f * noiseGen.noise(posX,posY,posZ);
     int idx=(int)(noise * bucketCount);
     if (idx == bucketCount) {
       idx=bucketCount - 1;
