@@ -8,17 +8,17 @@
   }
   material.enable();
   bindFbo("sceneFinal");
-  if (renderingStage == WorldRenderingStage.MONO || renderingStage == WorldRenderingStage.OCULUS_LEFT_EYE) {
+  if (renderingStage == WorldRenderingStage.MONO || renderingStage == WorldRenderingStage.LEFT_EYE) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
 switch (renderingStage) {
 case MONO:
     renderFullscreenQuad(0,0,rtFullWidth,rtFullHeight);
   break;
-case OCULUS_LEFT_EYE:
+case LEFT_EYE:
 renderFullscreenQuad(0,0,rtFullWidth / 2,rtFullHeight);
 break;
-case OCULUS_RIGHT_EYE:
+case RIGHT_EYE:
 renderFullscreenQuad(rtFullWidth / 2,0,rtFullWidth / 2,rtFullHeight);
 break;
 }
