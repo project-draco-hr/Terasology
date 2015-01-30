@@ -1,0 +1,19 @@
+{
+  return new Predicate<Vector3i>(){
+    @Override public boolean apply(    Vector3i input){
+      int x=input.getX();
+      int z=input.getZ();
+      int level=input.getY() - 1;
+      int min=level - divDown;
+      int max=level + divUp;
+      return inBounds(blockHeightAt(x - 1,z),min,max) && inBounds(blockHeightAt(x + 1,z),min,max) && inBounds(blockHeightAt(x,z - 1),min,max)&& inBounds(blockHeightAt(x,z + 1),min,max);
+    }
+    private boolean inBounds(    int height,    int min,    int max){
+      return height >= min && height <= max;
+    }
+    private int blockHeightAt(    int x,    int z){
+      return TeraMath.floorToInt(surfaceFacet.getWorld(x,z));
+    }
+  }
+;
+}

@@ -1,17 +1,10 @@
 {
   TreeFacet facet=chunkRegion.getFacet(TreeFacet.class);
-  BiomeFacet biomeFacet=chunkRegion.getFacet(BiomeFacet.class);
-  for (  Map.Entry<Vector3i,Number> entry : facet.getRelativeEntries().entrySet()) {
-    float facetValue=entry.getValue().floatValue();
-    if (facetValue > 0) {
-      Vector3i pos=entry.getKey();
-      CoreBiome biome=biomeFacet.get(pos.x,pos.z);
-      for (      TreeGenerator generator : treeGeneratorLookup.get(biome)) {
-        if (generator.getGenerationProbability() > (facetValue / 256f)) {
-          generator.generate(chunk,new FastRandom((long)facetValue),pos.x,pos.y,pos.z);
-          break;
-        }
-      }
-    }
+  for (  Map.Entry<Vector3i,TreeGenerator> entry : facet.getRelativeEntries().entrySet()) {
+    Vector3i pos=entry.getKey();
+    TreeGenerator treeGen=entry.getValue();
+    int seed=relativeToWorld(facet,pos).hashCode();
+    Random random=new FastRandom(seed);
+    treeGen.generate(blockManager,chunk,random,pos.x,pos.y,pos.z);
   }
 }

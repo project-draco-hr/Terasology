@@ -1,0 +1,15 @@
+{
+  SurfaceHeightFacet surface=region.getRegionFacet(SurfaceHeightFacet.class);
+  BiomeFacet biome=region.getRegionFacet(BiomeFacet.class);
+  SeaLevelFacet seaLevel=region.getRegionFacet(SeaLevelFacet.class);
+  List<Predicate<Vector3i>> filters=Lists.newArrayList();
+  filters.add(PositionFilters.minHeight(seaLevel.getSeaLevel()));
+  filters.add(PositionFilters.probability(densityNoiseGen,configuration.density * 0.1f));
+  filters.add(PositionFilters.flatness(surface,1,0));
+  int maxRad=13;
+  int maxHeight=32;
+  Border3D borderForTreeFacet=region.getBorderForFacet(TreeFacet.class);
+  TreeFacet facet=new TreeFacet(region.getRegion(),borderForTreeFacet.extendBy(0,maxHeight,maxRad));
+  populateFacet(facet,surface,biome,filters);
+  region.setRegionFacet(TreeFacet.class,facet);
+}

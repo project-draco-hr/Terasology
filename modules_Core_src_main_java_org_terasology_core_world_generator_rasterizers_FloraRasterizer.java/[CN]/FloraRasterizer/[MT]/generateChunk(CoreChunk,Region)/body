@@ -1,9 +1,15 @@
 {
-  PlantFacet facet=chunkRegion.getFacet(PlantFacet.class);
-  SeaLevelFacet seaLevel=chunkRegion.getFacet(SeaLevelFacet.class);
-  for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
-    if (pos.y + chunk.getChunkWorldOffsetY() > seaLevel.getSeaLevel() && facet.get(pos)) {
-      chunk.setBlock(pos,tallGrass);
+  FloraFacet facet=chunkRegion.getFacet(FloraFacet.class);
+  Block air=BlockManager.getAir();
+  NoiseTable noise=new NoiseTable(chunk.getPosition().hashCode());
+  Map<Vector3i,FloraType> entries=facet.getRelativeEntries();
+  for (  Vector3i pos : entries.keySet()) {
+    if (chunk.getBlock(pos).equals(air)) {
+      FloraType type=entries.get(pos);
+      List<Block> list=flora.get(type);
+      int blockIdx=noise.noise(pos.x,pos.y,pos.z) % list.size();
+      Block block=list.get(blockIdx);
+      chunk.setBlock(pos,block);
     }
   }
 }
