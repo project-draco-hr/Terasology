@@ -5,7 +5,7 @@
   float y=(float)vpY / rtFullHeight;
   float as=(float)vpWidth / vpHeight;
   program.setFloat4("ocHmdWarpParam",OculusVrHelper.getDistortionParams()[0],OculusVrHelper.getDistortionParams()[1],OculusVrHelper.getDistortionParams()[2],OculusVrHelper.getDistortionParams()[3],true);
-  float ocLensCenter=(stereoRenderState == StereoRenderState.OCULUS_RIGHT_EYE) ? -1.0f * OculusVrHelper.getLensViewportShift() : OculusVrHelper.getLensViewportShift();
+  float ocLensCenter=(renderingStage == WorldRenderingStage.RIGHT_EYE) ? -1.0f * OculusVrHelper.getLensViewportShift() : OculusVrHelper.getLensViewportShift();
   program.setFloat2("ocLensCenter",x + (w + ocLensCenter * 0.5f) * 0.5f,y + h * 0.5f,true);
   program.setFloat2("ocScreenCenter",x + w * 0.5f,y + h * 0.5f,true);
   float scaleFactor=1.0f / OculusVrHelper.getScaleFactor();

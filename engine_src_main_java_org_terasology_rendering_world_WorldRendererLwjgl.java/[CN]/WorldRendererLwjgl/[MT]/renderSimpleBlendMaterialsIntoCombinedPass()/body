@@ -1,14 +1,14 @@
 {
   PerformanceMonitor.startActivity("Render Objects (Transparent)");
   DefaultRenderingProcess.getInstance().beginRenderSceneOpaque();
-  glEnable(GL_BLEND);
-  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-  glDepthMask(false);
+  GL11.glEnable(GL_BLEND);
+  GL11.glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  GL11.glDepthMask(false);
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderAlphaBlend();
   }
-  glDisable(GL_BLEND);
-  glDepthMask(true);
+  GL11.glDisable(GL_BLEND);
+  GL11.glDepthMask(true);
   DefaultRenderingProcess.getInstance().endRenderSceneOpaque();
   PerformanceMonitor.endActivity();
 }

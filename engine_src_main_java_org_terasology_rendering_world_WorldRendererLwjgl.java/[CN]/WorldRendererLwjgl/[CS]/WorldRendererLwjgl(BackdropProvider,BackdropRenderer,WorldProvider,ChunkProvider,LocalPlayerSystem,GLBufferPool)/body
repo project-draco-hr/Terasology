@@ -4,12 +4,15 @@
   this.backdropRenderer=backdropRenderer;
   if (renderingConfig.isOculusVrSupport()) {
     playerCamera=new OculusStereoCamera();
+    currentRenderingStage=WorldRenderingStage.LEFT_EYE;
   }
  else {
     playerCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
+    currentRenderingStage=WorldRenderingStage.MONO;
   }
   localPlayerSystem.setPlayerCamera(playerCamera);
   initMainDirectionalLight();
+  initMaterials();
   renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,playerCamera,shadowMapCamera);
   renderQueues=renderableWorld.getRenderQueues();
 }
