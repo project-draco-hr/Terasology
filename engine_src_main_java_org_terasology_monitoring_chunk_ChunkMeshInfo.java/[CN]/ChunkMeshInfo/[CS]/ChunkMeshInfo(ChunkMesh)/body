@@ -1,0 +1,17 @@
+{
+  checkNotNull(mesh,"The parameter 'mesh' must not be null");
+  int vertices=0;
+  int indices=0;
+  if (!mesh.isGenerated()) {
+    for (    ChunkMesh.RenderType type : ChunkMesh.RenderType.values()) {
+      final ChunkMesh.VertexElements element=mesh.getVertexElements(type);
+      vertices+=element.finalVertices.limit();
+      indices+=element.finalIndices.limit();
+    }
+  }
+  this.totalFinalVertices=vertices;
+  this.totalFinalIndices=indices;
+  this.totalTriangles=indices / 3;
+  this.totalTimeToGenerateBlockVertices=mesh.getTimeToGenerateBlockVertices();
+  this.totalTimeToGenerateOptimizedBuffers=mesh.getTimeToGenerateOptimizedBuffers();
+}

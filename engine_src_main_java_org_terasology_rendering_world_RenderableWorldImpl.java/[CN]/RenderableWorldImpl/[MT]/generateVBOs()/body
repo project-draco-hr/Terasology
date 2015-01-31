@@ -1,24 +1,21 @@
 {
   PerformanceMonitor.startActivity("Building Mesh VBOs");
+  ChunkMesh pendingMesh;
+  ChunkMesh mesh;
   chunkMeshUpdateManager.setCameraPosition(playerCamera.getPosition());
   for (  RenderableChunk chunk : chunkMeshUpdateManager.availableChunksForUpdate()) {
-    if (chunksInProximityOfCamera.contains(chunk) && chunk.hasPendingMesh()) {
-      for (      ChunkMesh pendingMesh : chunk.getPendingMesh()) {
-        pendingMesh.generateVBOs();
-      }
+    if (chunk.hasPendingMesh() && chunksInProximityOfCamera.contains(chunk)) {
+      pendingMesh=chunk.getPendingMesh();
+      pendingMesh.generateVBOs();
       if (chunk.hasMesh()) {
-        for (        ChunkMesh mesh : chunk.getMesh()) {
-          mesh.dispose();
-        }
+        chunk.getMesh().dispose();
       }
-      chunk.setMesh(chunk.getPendingMesh());
+      chunk.setMesh(pendingMesh);
       chunk.setPendingMesh(null);
     }
  else {
       if (chunk.hasPendingMesh()) {
-        for (        ChunkMesh pendingMesh : chunk.getPendingMesh()) {
-          pendingMesh.dispose();
-        }
+        chunk.getPendingMesh().dispose();
         chunk.setPendingMesh(null);
       }
     }
