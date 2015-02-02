@@ -1,6 +1,11 @@
 {
   if (value != null) {
-    return delayedEntityRefFactory.createDelayedEntityRef(value.getId());
+    if (value.exists() && value.isPersistent()) {
+      return delayedEntityRefFactory.createDelayedEntityRef(value.getId());
+    }
+ else {
+      return EntityRef.NULL;
+    }
   }
  else {
     return null;
