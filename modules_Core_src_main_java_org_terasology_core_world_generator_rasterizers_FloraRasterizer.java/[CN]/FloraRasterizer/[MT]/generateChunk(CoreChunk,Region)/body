@@ -1,13 +1,13 @@
 {
   FloraFacet facet=chunkRegion.getFacet(FloraFacet.class);
   Block air=BlockManager.getAir();
-  NoiseTable noise=new NoiseTable(chunk.getPosition().hashCode());
+  WhiteNoise noise=new WhiteNoise(chunk.getPosition().hashCode());
   Map<Vector3i,FloraType> entries=facet.getRelativeEntries();
   for (  Vector3i pos : entries.keySet()) {
     if (chunk.getBlock(pos).equals(air)) {
       FloraType type=entries.get(pos);
       List<Block> list=flora.get(type);
-      int blockIdx=noise.noise(pos.x,pos.y,pos.z) % list.size();
+      int blockIdx=noise.intNoise(pos.x,pos.y,pos.z) % list.size();
       Block block=list.get(blockIdx);
       chunk.setBlock(pos,block);
     }
