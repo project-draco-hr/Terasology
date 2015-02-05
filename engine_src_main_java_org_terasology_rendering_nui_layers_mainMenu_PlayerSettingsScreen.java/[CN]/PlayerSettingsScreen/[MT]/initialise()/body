@@ -5,12 +5,11 @@
   }
   Color color=config.getPlayer().getColor();
   img=find("image",UIImage.class);
-  sliderRed=find("red",UISlider.class);
-  sliderGreen=find("green",UISlider.class);
-  sliderBlue=find("blue",UISlider.class);
-  sliderRed.bindValue(new NotifyingBinding(color.rf()));
-  sliderGreen.bindValue(new NotifyingBinding(color.gf()));
-  sliderBlue.bindValue(new NotifyingBinding(color.bf()));
+  slider=find("tone",UISlider.class);
+  slider.bindValue(new NotifyingBinding(findClosestIndex(color)));
+  slider.setIncrement(0.01f);
+  Function<Object,String> constant=Functions.constant("  ");
+  slider.setLabelFunction(constant);
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().popScreen();
