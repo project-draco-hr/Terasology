@@ -7,10 +7,10 @@
     }
   }
  catch (  Exception pathManagerConstructorFailure) {
-    e.addSuppressed(pathManagerConstructorFailure);
+    throwable.addSuppressed(pathManagerConstructorFailure);
   }
   if (crashReportEnabled) {
     Path logFile=logPath.resolve("Terasology.log");
-    CrashReporter.report(e,logFile);
+    CrashReporter.report(throwable,logFile);
   }
 }
