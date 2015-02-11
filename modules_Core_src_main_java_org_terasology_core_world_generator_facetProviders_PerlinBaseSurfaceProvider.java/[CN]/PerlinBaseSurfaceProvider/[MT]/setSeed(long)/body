@@ -1,3 +1,4 @@
 {
-  surfaceNoise=new SubSampledNoise2D(new Noise3DTo2DAdapter(new BrownianNoise3D(new PerlinNoise(seed),8)),new Vector2f(0.004f,0.004f),SAMPLE_RATE);
+  BrownianNoise source=new BrownianNoise(new PerlinNoise(seed),8);
+  surfaceNoise=new SubSampledNoise(source,new Vector2f(0.004f,0.004f),SAMPLE_RATE);
 }

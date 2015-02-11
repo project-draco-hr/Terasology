@@ -6,7 +6,7 @@
   Rect2i processRegion=facet.getWorldRegion();
   float[] noise=surfaceNoise.noise(processRegion);
   for (int i=0; i < noise.length; ++i) {
-    noise[i]=seaLevel + seaLevel * ((noise[i] + 1f) / 2f);
+    noise[i]=seaLevel + seaLevel * ((noise[i] * 2.11f + 1f) / 2f);
   }
   facet.set(noise);
   region.setRegionFacet(SurfaceHeightFacet.class,facet);

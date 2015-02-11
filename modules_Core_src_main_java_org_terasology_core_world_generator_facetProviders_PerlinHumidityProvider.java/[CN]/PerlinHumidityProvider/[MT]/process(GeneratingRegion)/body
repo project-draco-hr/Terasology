@@ -3,7 +3,7 @@
   SurfaceHumidityFacet facet=new SurfaceHumidityFacet(region.getRegion(),border);
   float[] noise=humidityNoise.noise(facet.getWorldRegion());
   for (int i=0; i < noise.length; ++i) {
-    noise[i]=TeraMath.clamp((noise[i] + 1f) * 0.5f);
+    noise[i]=TeraMath.clamp((noise[i] * 2.11f + 1f) * 0.5f);
   }
   facet.set(noise);
   region.setRegionFacet(SurfaceHumidityFacet.class,facet);

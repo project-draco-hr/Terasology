@@ -1,0 +1,19 @@
+{
+  float[] fullData=new float[fullRegion.size().x * fullRegion.size().y];
+  int samplesX=fullRegion.size().x / sampleRate + 1;
+  int samplesY=fullRegion.size().y / sampleRate + 1;
+  for (int y=0; y < samplesY - 1; y++) {
+    for (int x=0; x < samplesX - 1; x++) {
+      float q11=keyData[x + y * samplesX];
+      float q21=keyData[x + 1 + y * samplesX];
+      float q12=keyData[x + (y + 1) * samplesX];
+      float q22=keyData[(x + 1) + (y + 1) * samplesX];
+      for (int innerY=0; innerY < sampleRate; ++innerY) {
+        for (int innerX=0; innerX < sampleRate; ++innerX) {
+          fullData[x * sampleRate + innerX + fullRegion.size().x * (y * sampleRate + innerY)]=TeraMath.biLerp(q11,q21,q12,q22,(float)innerX / sampleRate,(float)innerY / sampleRate);
+        }
+      }
+    }
+  }
+  return fullData;
+}
