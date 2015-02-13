@@ -1,11 +1,5 @@
 {
   MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-  if (meshComp.hideFromOwner) {
-    ClientComponent owner=network.getOwnerEntity(entity).getComponent(ClientComponent.class);
-    if (owner != null && owner.local) {
-      return;
-    }
-  }
   if (meshComp.material != null) {
     if (meshComp.translucent) {
       translucentMesh.put(meshComp.material,entity);

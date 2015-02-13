@@ -1,7 +1,9 @@
 {
-  EntityDelta entityDelta=getOrCreateEntityDeltaFor(entity);
-  for (  Component component : components) {
-    Component componentSnapshot=componentLibrary.copy(component);
-    entityDelta.setChangedComponent(componentSnapshot);
+  if (entity.isPersistent()) {
+    EntityDelta entityDelta=getOrCreateEntityDeltaFor(entity);
+    for (    Component component : components) {
+      Component componentSnapshot=componentLibrary.copy(component);
+      entityDelta.setChangedComponent(componentSnapshot);
+    }
   }
 }

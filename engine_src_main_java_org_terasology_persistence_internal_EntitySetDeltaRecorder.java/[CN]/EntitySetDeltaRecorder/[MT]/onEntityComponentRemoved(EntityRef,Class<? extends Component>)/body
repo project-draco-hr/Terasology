@@ -1,4 +1,6 @@
 {
-  EntityDelta entityDelta=getOrCreateEntityDeltaFor(entity);
-  entityDelta.removeComponent(component);
+  if (entity.isPersistent()) {
+    EntityDelta entityDelta=getOrCreateEntityDeltaFor(entity);
+    entityDelta.removeComponent(component);
+  }
 }
