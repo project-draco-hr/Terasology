@@ -4,18 +4,18 @@
   program.setFloat3("inLiquidTint",tint.x,tint.y,tint.z,true);
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  DefaultRenderingProcess.getInstance().bindFboTexture("sceneOpaque");
+  LwjglRenderingProcess.getInstance().bindFboTexture("sceneOpaque");
   program.setInt("texScene",texId++,true);
   if (CoreRegistry.get(Config.class).getRendering().isBloom()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    DefaultRenderingProcess.getInstance().bindFboTexture("sceneBloom2");
+    LwjglRenderingProcess.getInstance().bindFboTexture("sceneBloom2");
     program.setInt("texBloom",texId++,true);
     program.setFloat("bloomFactor",bloomFactor,true);
   }
   program.setFloat2("aberrationOffset",aberrationOffsetX,aberrationOffsetY,true);
   if (CoreRegistry.get(Config.class).getRendering().isLightShafts()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    DefaultRenderingProcess.getInstance().bindFboTexture("lightShafts");
+    LwjglRenderingProcess.getInstance().bindFboTexture("lightShafts");
     program.setInt("texLightShafts",texId++,true);
   }
   Texture vignetteTexture=Assets.getTexture("engine:vignette");

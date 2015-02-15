@@ -1,0 +1,25 @@
+{
+  resetStats();
+  preRenderUpdate(renderingStage);
+  renderShadowMap();
+  renderWorldReflection();
+  LwjglRenderingProcess.getInstance().enableWireframeIf(renderingDebugConfig.isWireframe());
+  LwjglRenderingProcess.getInstance().clear();
+  LwjglRenderingProcess.getInstance().beginRenderSceneOpaque();
+  renderSky();
+  try (Activity ignored=PerformanceMonitor.startActivity("Render World")){
+    renderObjectsOpaque();
+    renderChunksOpaque();
+    renderChunksAlphaReject();
+    renderOverlays();
+    renderFirstPersonView();
+    LwjglRenderingProcess.getInstance().endRenderSceneOpaque();
+    renderLightGeometry();
+    renderChunksRefractiveReflective();
+  }
+   LwjglRenderingProcess.getInstance().disableWireframeIf(renderingDebugConfig.isWireframe());
+  combineRefractiveReflectiveAndOpaquePasses();
+  renderSimpleBlendMaterialsIntoCombinedPass();
+  renderFinalPostProcessedScene();
+  playerCamera.updatePrevViewProjectionMatrix();
+}
