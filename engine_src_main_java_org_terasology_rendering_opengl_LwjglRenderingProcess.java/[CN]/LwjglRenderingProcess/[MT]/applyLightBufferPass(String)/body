@@ -1,0 +1,29 @@
+{
+  Material program=Assets.getMaterial("engine:prog.lightBufferPass");
+  program.enable();
+  LwjglRenderingProcess.FBO targetFbo=getFBO(target);
+  int texId=0;
+  if (targetFbo != null) {
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    targetFbo.bindTexture();
+    program.setInt("texSceneOpaque",texId++);
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    targetFbo.bindDepthTexture();
+    program.setInt("texSceneOpaqueDepth",texId++);
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    targetFbo.bindNormalsTexture();
+    program.setInt("texSceneOpaqueNormals",texId++);
+    GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+    targetFbo.bindLightBufferTexture();
+    program.setInt("texSceneOpaqueLightBuffer",texId++,true);
+  }
+  bindFbo(target + "PingPong");
+  setRenderBufferMask(true,true,true);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  unbindFbo(target + "PingPong");
+  flipPingPongFbo(target);
+  if (target.equals("sceneOpaque")) {
+    attachDepthBufferToFbo("sceneOpaque","sceneReflectiveRefractive");
+  }
+}

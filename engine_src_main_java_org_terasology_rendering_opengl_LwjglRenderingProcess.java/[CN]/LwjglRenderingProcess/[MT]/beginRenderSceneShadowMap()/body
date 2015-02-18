@@ -1,0 +1,10 @@
+{
+  FBO shadowMap=getFBO("sceneShadowMap");
+  if (shadowMap == null) {
+    return;
+  }
+  shadowMap.bind();
+  glViewport(0,0,shadowMap.width,shadowMap.height);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  GL11.glDisable(GL_CULL_FACE);
+}
