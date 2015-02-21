@@ -2,6 +2,7 @@
   SplashScreen.getInstance().post("Java Runtime " + System.getProperty("java.version") + " loaded");
   handlePrintUsageRequest(args);
   handleLaunchArguments(args);
+  setupLogging();
   try (final TerasologyEngine engine=new TerasologyEngine(createSubsystemList())){
     if (!writeSaveGamesEnabled) {
       CoreRegistry.get(Config.class).getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);

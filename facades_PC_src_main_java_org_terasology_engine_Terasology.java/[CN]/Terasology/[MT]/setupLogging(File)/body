@@ -1,0 +1,17 @@
+{
+  LoggerContext context=(LoggerContext)LoggerFactory.getILoggerFactory();
+  FileAppender<ILoggingEvent> fileAppender=new FileAppender<>();
+  fileAppender.setContext(context);
+  fileAppender.setName("FILE");
+  fileAppender.setAppend(false);
+  fileAppender.setFile(file.getAbsolutePath());
+  PatternLayoutEncoder encoder=new PatternLayoutEncoder();
+  encoder.setContext(context);
+  encoder.setPattern("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n");
+  encoder.start();
+  fileAppender.setEncoder(encoder);
+  fileAppender.start();
+  Logger logbackLogger=context.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+  logbackLogger.addAppender(fileAppender);
+  StatusPrinter.print(context);
+}
