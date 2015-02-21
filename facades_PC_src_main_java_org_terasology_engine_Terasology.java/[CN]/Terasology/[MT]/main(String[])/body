@@ -4,8 +4,12 @@
   handleLaunchArguments(args);
   setupLogging();
   try (final TerasologyEngine engine=new TerasologyEngine(createSubsystemList())){
+    Config config=CoreRegistry.get(Config.class);
     if (!writeSaveGamesEnabled) {
-      CoreRegistry.get(Config.class).getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);
+      config.getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);
+    }
+    if (serverPort != -1) {
+      config.getTransients().setServerPort(serverPort);
     }
     if (isHeadless) {
       engine.subscribeToStateChange(new HeadlessStateChangeListener());
