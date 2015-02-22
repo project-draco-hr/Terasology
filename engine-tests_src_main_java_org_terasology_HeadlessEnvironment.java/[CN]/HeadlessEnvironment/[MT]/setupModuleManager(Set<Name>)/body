@@ -5,10 +5,10 @@
   ResolutionResult result=resolver.resolve(moduleNames);
   if (result.isSuccess()) {
     ModuleEnvironment modEnv=moduleManager.loadEnvironment(result.getModules(),true);
-    Log.debug("Loaded modules: " + modEnv.getModuleIdsOrderedByDependencies());
+    logger.debug("Loaded modules: " + modEnv.getModuleIdsOrderedByDependencies());
   }
  else {
-    Log.error("Could not resolve module dependencies for " + moduleNames);
+    logger.error("Could not resolve module dependencies for " + moduleNames);
   }
   CoreRegistry.put(ModuleManager.class,moduleManager);
 }
