@@ -2,7 +2,12 @@
   Files.walkFileTree(path,new SimpleFileVisitor<Path>(){
     @Override public FileVisitResult visitFile(    Path file,    BasicFileAttributes attrs) throws IOException {
       if (file.toString().endsWith(".log")) {
-        Files.delete(file);
+        try {
+          Files.delete(file);
+        }
+ catch (        IOException e) {
+          System.err.println(String.format("Could not delete log file \"%s\" - %s",path.relativize(file),e.getMessage()));
+        }
       }
       return FileVisitResult.CONTINUE;
     }
