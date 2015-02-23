@@ -1,0 +1,9 @@
+{
+  for (  EntityRef entityRef : CoreRegistry.get(EntityManager.class).getEntitiesWith(ClientInfoComponent.class)) {
+    ClientInfoComponent clientInfoComponent=entityRef.getComponent(ClientInfoComponent.class);
+    if (clientInfoComponent.playerId.equals(getId())) {
+      return entityRef;
+    }
+  }
+  return EntityRef.NULL;
+}
