@@ -1,15 +1,18 @@
 {
-  Files.walkFileTree(path,new SimpleFileVisitor<Path>(){
+  Files.walkFileTree(rootPath,new SimpleFileVisitor<Path>(){
     @Override public FileVisitResult visitFile(    Path file,    BasicFileAttributes attrs) throws IOException {
       if (file.toString().endsWith(".log")) {
-        try {
-          Files.delete(file);
-        }
- catch (        IOException e) {
-          System.err.println(String.format("Could not delete log file \"%s\" - %s",path.relativize(file),e.getMessage()));
-        }
+        tryDelete(rootPath,file);
       }
       return FileVisitResult.CONTINUE;
+    }
+    private void tryDelete(    Path path,    Path file){
+      try {
+        Files.delete(file);
+      }
+ catch (      IOException e) {
+        System.err.println(String.format("Could not delete log file \"%s\" - %s",path.relativize(file),e.getMessage()));
+      }
     }
   }
 );
