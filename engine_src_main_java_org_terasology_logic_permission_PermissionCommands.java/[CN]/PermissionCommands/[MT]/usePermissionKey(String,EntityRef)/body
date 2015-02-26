@@ -6,7 +6,13 @@
     ClientComponent clientComponent=client.getComponent(ClientComponent.class);
     EntityRef clientInfo=clientComponent.clientInfo;
     for (    String permission : findAllPermissions()) {
-      permissionManager.addPermission(clientInfo,permission);
+      boolean add=true;
+      if (permission.equals(PermissionManager.DEBUG_PERMISSION)) {
+        add=config.getSystem().isDebugEnabled();
+      }
+      if (add) {
+        permissionManager.addPermission(clientInfo,permission);
+      }
     }
     PermissionSetComponent permissionSetComp=clientInfo.getComponent(PermissionSetComponent.class);
     return "Permission key used: You have now the following permissions: " + permissionSetComp.permissions;
