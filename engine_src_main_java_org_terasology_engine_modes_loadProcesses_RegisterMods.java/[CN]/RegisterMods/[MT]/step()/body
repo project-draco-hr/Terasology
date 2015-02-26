@@ -7,10 +7,14 @@
   DependencyResolver resolver=new DependencyResolver(moduleManager.getRegistry());
   ResolutionResult result=resolver.resolve(moduleIds);
   if (result.isSuccess()) {
-    moduleManager.loadEnvironment(result.getModules(),true);
+    ModuleEnvironment env=moduleManager.loadEnvironment(result.getModules(),true);
+    for (    Module moduleInfo : env.getModulesOrderedByDependencies()) {
+      logger.info("Activating module: {}:{}",moduleInfo.getId(),moduleInfo.getVersion());
+    }
     ApplyModulesUtil.applyModules();
   }
  else {
+    logger.warn("Missing at least one required module or dependency: {}",moduleIds);
     CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Missing required module or dependency"));
   }
   return true;

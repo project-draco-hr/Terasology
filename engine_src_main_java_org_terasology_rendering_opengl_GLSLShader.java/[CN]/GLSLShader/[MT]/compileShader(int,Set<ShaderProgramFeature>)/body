@@ -29,13 +29,17 @@
     vertexPrograms.put(featureHash,shaderId);
     debugShaderType="VERTEX";
   }
-  final String strippedTitle=getURI().toString().replace(":","-");
-  Path path=PathManager.getInstance().getShaderLogPath().resolve(debugShaderType.toLowerCase() + "_" + strippedTitle+ "_"+ featureHash+ ".glsl");
-  try (BufferedWriter writer=Files.newBufferedWriter(path,TerasologyConstants.CHARSET)){
-    writer.write(shader.toString());
-  }
- catch (  IOException e) {
-    logger.error("Failed to dump shader source.");
+  Config config=CoreRegistry.get(Config.class);
+  if (config.getRendering().isDumpShaders()) {
+    final String strippedTitle=getURI().toString().replace(":","-");
+    String fname=debugShaderType.toLowerCase() + "_" + strippedTitle+ "_"+ featureHash+ ".glsl";
+    Path path=PathManager.getInstance().getShaderLogPath().resolve(fname);
+    try (BufferedWriter writer=Files.newBufferedWriter(path,TerasologyConstants.CHARSET)){
+      writer.write(shader.toString());
+    }
+ catch (    IOException e) {
+      logger.error("Failed to dump shader source.");
+    }
   }
   GL20.glShaderSource(shaderId,shader.toString());
   GL20.glCompileShader(shaderId);
