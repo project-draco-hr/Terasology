@@ -2,6 +2,7 @@
   clientEntity=entityManager.create("engine:client");
   EntityRef clientInfo=findClientEntityRef();
   if (!clientInfo.exists()) {
+    String name=findUniquePlayerName(preferredName,entityManager);
     clientInfo=createClientInfoEntity(name,color,entityManager);
   }
   ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);

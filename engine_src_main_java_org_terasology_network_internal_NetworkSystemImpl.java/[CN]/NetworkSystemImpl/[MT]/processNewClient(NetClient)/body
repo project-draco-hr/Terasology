@@ -1,6 +1,6 @@
 {
-  logger.info("New client connected: {}",client.getName());
   client.connected(entityManager,entitySerializer,eventSerializer,entitySystemLibrary);
+  logger.info("New client connected: {}",client.getName());
   client.send(NetData.NetMessage.newBuilder().setJoinComplete(NetData.JoinCompleteMessage.newBuilder().setClientId(client.getEntity().getComponent(NetworkComponent.class).getNetworkId())).build());
   clientList.add(client);
   netClientList.add(client);

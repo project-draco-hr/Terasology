@@ -1,0 +1,9 @@
+{
+  Set<String> usedNames=new HashSet<String>();
+  for (  EntityRef clientInfo : entityManager.getEntitiesWith(ClientInfoComponent.class)) {
+    DisplayNameComponent displayInfo=clientInfo.getComponent(DisplayNameComponent.class);
+    String usedName=displayInfo.name;
+    usedNames.add(usedName);
+  }
+  return usedNames;
+}
