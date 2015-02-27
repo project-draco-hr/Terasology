@@ -24,7 +24,8 @@
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneCombined.bindDepthTexture();
     program.setInt("texDepth",texId++,true);
-    Texture filmGrainNoiseTexture=Assets.getTexture("engine:noise");
+    AssetUri noiseTextureUri=TextureUtil.getTextureUriForWhiteNoise(1024,0x1234,0,512);
+    Texture filmGrainNoiseTexture=Assets.getTexture(noiseTextureUri.toSimpleString());
     if (CoreRegistry.get(Config.class).getRendering().isFilmGrain()) {
       GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
       glBindTexture(GL11.GL_TEXTURE_2D,filmGrainNoiseTexture.getId());
