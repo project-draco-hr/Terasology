@@ -1,9 +1,14 @@
 {
   boolean permissionGiven=false;
+  ClientComponent requesterClientComponent=requester.getComponent(ClientComponent.class);
+  EntityRef requesterClientInfo=requesterClientComponent.clientInfo;
+  if (!permissionManager.hasPermission(requesterClientInfo,permission)) {
+    return String.format("You can't give the permission %s because you don't have it yourself",permission);
+  }
   for (  EntityRef client : entityManager.getEntitiesWith(ClientComponent.class)) {
     ClientComponent clientComponent=client.getComponent(ClientComponent.class);
     if (clientHasName(clientComponent,player)) {
-      permissionManager.addPermission(clientComponent.character,permission);
+      permissionManager.addPermission(clientComponent.clientInfo,permission);
       permissionGiven=true;
     }
   }

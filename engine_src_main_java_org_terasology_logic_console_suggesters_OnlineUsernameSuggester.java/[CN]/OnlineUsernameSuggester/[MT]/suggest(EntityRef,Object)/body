@@ -1,0 +1,11 @@
+{
+  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
+  Iterable<EntityRef> clients=entityManager.getEntitiesWith(ClientComponent.class);
+  Set<String> clientNames=Sets.newHashSet();
+  for (  EntityRef client : clients) {
+    ClientComponent clientComponent=client.getComponent(ClientComponent.class);
+    DisplayNameComponent displayNameComponent=clientComponent.clientInfo.getComponent(DisplayNameComponent.class);
+    clientNames.add(displayNameComponent.name);
+  }
+  return clientNames;
+}

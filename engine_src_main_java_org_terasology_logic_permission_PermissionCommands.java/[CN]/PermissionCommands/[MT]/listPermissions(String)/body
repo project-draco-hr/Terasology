@@ -1,0 +1,11 @@
+{
+  for (  EntityRef client : entityManager.getEntitiesWith(ClientComponent.class)) {
+    ClientComponent clientComponent=client.getComponent(ClientComponent.class);
+    if (clientHasName(clientComponent,player)) {
+      EntityRef clientInfo=clientComponent.clientInfo;
+      PermissionSetComponent permissionSetComp=clientInfo.getComponent(PermissionSetComponent.class);
+      return Objects.toString(permissionSetComp.permissions);
+    }
+  }
+  return "Player not found";
+}
