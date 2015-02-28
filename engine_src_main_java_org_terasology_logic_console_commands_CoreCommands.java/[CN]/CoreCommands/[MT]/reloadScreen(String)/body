@@ -1,9 +1,16 @@
 {
-  CoreRegistry.get(NUIManager.class).clear();
   AssetUri uri=new AssetUri(AssetType.UI_ELEMENT,ui);
   UIData uiData=CoreRegistry.get(AssetManager.class).loadAssetData(uri,UIData.class);
   if (uiData != null) {
+    NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
+    boolean wasOpen=nuiManager.isOpen(uri);
+    if (wasOpen) {
+      nuiManager.closeScreen(uri);
+    }
     CoreRegistry.get(AssetManager.class).generateAsset(uri,uiData);
+    if (wasOpen) {
+      nuiManager.pushScreen(uri);
+    }
     return "Success";
   }
  else {
