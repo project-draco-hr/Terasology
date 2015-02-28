@@ -11,7 +11,7 @@
       BufferedImage icon32=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_32.png"));
       BufferedImage icon64=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_64.png"));
       BufferedImage icon128=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_128.png"));
-      Display.setIcon(new ByteBuffer[]{imageToByteBuffer(icon16),imageToByteBuffer(icon32),imageToByteBuffer(icon64),imageToByteBuffer(icon128)});
+      Display.setIcon(new ByteBuffer[]{TextureUtil.convertToByteBuffer(icon16),TextureUtil.convertToByteBuffer(icon32),TextureUtil.convertToByteBuffer(icon64),TextureUtil.convertToByteBuffer(icon128)});
     }
  catch (    IOException|IllegalArgumentException e) {
       logger.warn("Could not set icon",e);
