@@ -8,8 +8,8 @@
     if (!writeSaveGamesEnabled) {
       config.getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);
     }
-    if (serverPort != -1) {
-      config.getTransients().setServerPort(serverPort);
+    if (serverPort != null) {
+      config.getTransients().setServerPort(Integer.parseInt(serverPort));
     }
     if (isHeadless) {
       engine.subscribeToStateChange(new HeadlessStateChangeListener());
@@ -32,11 +32,7 @@
     }
   }
  catch (  Throwable e) {
-    if (!GraphicsEnvironment.isHeadless()) {
-      reportException(e);
-    }
-  }
- finally {
     SplashScreen.getInstance().close();
+    reportException(e);
   }
 }

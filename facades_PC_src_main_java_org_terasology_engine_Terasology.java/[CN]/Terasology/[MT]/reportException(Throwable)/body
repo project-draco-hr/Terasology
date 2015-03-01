@@ -9,7 +9,11 @@
  catch (  Exception pathManagerConstructorFailure) {
     throwable.addSuppressed(pathManagerConstructorFailure);
   }
-  if (crashReportEnabled) {
+  if (!GraphicsEnvironment.isHeadless() && crashReportEnabled) {
     CrashReporter.report(throwable,logPath);
+  }
+ else {
+    throwable.printStackTrace();
+    System.err.println("For more details, see the log files in " + logPath.toAbsolutePath().normalize());
   }
 }

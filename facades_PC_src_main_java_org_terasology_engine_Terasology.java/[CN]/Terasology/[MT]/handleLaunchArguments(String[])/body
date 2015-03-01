@@ -25,12 +25,7 @@
       loadLastGame=true;
     }
  else     if (arg.startsWith(SERVER_PORT)) {
-      try {
-        serverPort=Integer.parseInt(arg.substring(SERVER_PORT.length()));
-      }
- catch (      NumberFormatException e) {
-        reportException(e);
-      }
+      serverPort=arg.substring(SERVER_PORT.length());
     }
  else {
       recognized=false;
@@ -46,9 +41,7 @@
     }
   }
  catch (  IOException e) {
-    if (!isHeadless) {
-      reportException(e);
-    }
+    reportException(e);
     System.exit(0);
   }
 }
