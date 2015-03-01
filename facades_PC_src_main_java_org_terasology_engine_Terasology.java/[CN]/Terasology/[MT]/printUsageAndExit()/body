@@ -1,6 +1,6 @@
 {
   String printUsageFlags=Joiner.on("|").join(PRINT_USAGE_FLAGS);
-  List<String> opts=ImmutableList.of(printUsageFlags,USE_CURRENT_DIR_AS_HOME + "|" + USE_SPECIFIED_DIR_AS_HOME+ "<path>",START_HEADLESS,LOAD_LAST_GAME,NO_CRASH_REPORT,NO_SAVE_GAMES,NO_SOUND);
+  List<String> opts=ImmutableList.of(printUsageFlags,USE_CURRENT_DIR_AS_HOME + "|" + USE_SPECIFIED_DIR_AS_HOME+ "<path>",START_HEADLESS,LOAD_LAST_GAME,NO_CRASH_REPORT,NO_SAVE_GAMES,NO_SOUND,SERVER_PORT + "<port>");
   StringBuilder optText=new StringBuilder();
   for (  String opt : opts) {
     optText.append(" [" + opt + "]");
@@ -27,6 +27,8 @@
   System.out.println();
   System.out.println("To disable sound use the " + NO_SOUND + " launch argument (default in headless mode).");
   System.out.println();
+  System.out.println("To change the port the server is hosted on use the " + SERVER_PORT + " launch argument.");
+  System.out.println();
   System.out.println("Examples:");
   System.out.println();
   System.out.println("    Use the current directory as the home directory:");
@@ -35,8 +37,8 @@
   System.out.println("    Use \"myPath\" as the home directory:");
   System.out.println("    terasology " + USE_SPECIFIED_DIR_AS_HOME + "myPath");
   System.out.println();
-  System.out.println("    Start terasology in headless mode (no graphics):");
-  System.out.println("    terasology " + START_HEADLESS);
+  System.out.println("    Start terasology in headless mode (no graphics) and enforce using the default port:");
+  System.out.println("    terasology " + START_HEADLESS + " "+ SERVER_PORT+ TerasologyConstants.DEFAULT_PORT);
   System.out.println();
   System.out.println("    Load the latest game on startup and disable crash reporting");
   System.out.println("    terasology " + LOAD_LAST_GAME + " "+ NO_CRASH_REPORT);
