@@ -2,8 +2,13 @@
   clientEntity=entityManager.create("engine:client");
   EntityRef clientInfo=findClientEntityRef();
   if (!clientInfo.exists()) {
-    String name=findUniquePlayerName(preferredName,entityManager);
-    clientInfo=createClientInfoEntity(name,color,entityManager);
+    clientInfo=createClientInfoEntity(entityManager);
+  }
+  addOrSetColorComponent(clientInfo,color);
+  DisplayNameComponent displayNameComponent=clientInfo.getComponent(DisplayNameComponent.class);
+  if (displayNameComponent == null || !displayNameComponent.name.equals(preferredName)) {
+    String bestAvailableName=findUniquePlayerName(preferredName,entityManager,clientInfo);
+    addOrSetDisplayNameComponent(clientInfo,bestAvailableName);
   }
   ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);
   clientComponent.clientInfo=clientInfo;
