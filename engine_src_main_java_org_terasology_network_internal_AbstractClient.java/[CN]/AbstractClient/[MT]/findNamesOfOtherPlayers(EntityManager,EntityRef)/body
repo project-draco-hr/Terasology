@@ -1,0 +1,11 @@
+{
+  Set<String> otherNames=new HashSet<String>();
+  for (  EntityRef clientInfo : entityManager.getEntitiesWith(ClientInfoComponent.class)) {
+    if (!clientInfo.equals(player)) {
+      DisplayNameComponent displayInfo=clientInfo.getComponent(DisplayNameComponent.class);
+      String usedName=displayInfo.name;
+      otherNames.add(usedName);
+    }
+  }
+  return otherNames;
+}
