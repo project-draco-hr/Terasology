@@ -3,10 +3,7 @@ switch (type) {
 case FOREST:
 case PLAINS:
 case MOUNTAINS:
-    if (height >= 28 && height <= 34) {
-      return sand;
-    }
- else     if (depth == 0 && height > 32 && height < 128) {
+    if (depth == 0 && height > 32 && height < 128) {
       return grass;
     }
  else     if (depth == 0 && height >= 128) {
@@ -19,7 +16,7 @@ case MOUNTAINS:
       return dirt;
     }
 case SNOW:
-  if (depth == 0.0 && height > 32) {
+  if (depth == 0 && height > 32) {
     return snow;
   }
  else   if (depth > 32) {
@@ -34,6 +31,20 @@ if (depth > 8) {
 }
  else {
   return sand;
+}
+case OCEAN:
+if (depth == 0) {
+return sand;
+}
+ else {
+return stone;
+}
+case BEACH:
+if (depth < 3) {
+return sand;
+}
+ else {
+return stone;
 }
 }
 return dirt;
