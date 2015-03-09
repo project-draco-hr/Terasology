@@ -10,7 +10,7 @@
   fboSceneFinal.bindTexture();
   GL11.glGetTexImage(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,buffer);
   fboSceneFinal.unbindTexture();
-  Runnable r=new Runnable(){
+  Runnable task=new Runnable(){
     @Override public void run(){
       SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
       final String format=config.getRendering().getScreenshotFormat().toString();
@@ -36,7 +36,7 @@
     }
   }
 ;
-  CoreRegistry.get(GameEngine.class).submitTask("Write screenshot",r);
+  CoreRegistry.get(GameEngine.class).submitTask("Write screenshot",task);
   takeScreenshot=false;
   overwriteRtWidth=0;
   overwriteRtWidth=0;

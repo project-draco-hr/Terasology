@@ -1,15 +1,6 @@
 {
   takeScreenshot=true;
-  if (config.getRendering().getScreenshotSize() == null) {
-    config.getRendering().setScreenshotSize(ScreenshotSize.NORMAL_SIZE);
-  }
-  if (config.getRendering().getScreenshotSize().isWithMultiplier()) {
-    overwriteRtWidth=(int)((float)Display.getWidth() * config.getRendering().getScreenshotSize().getMultiplier());
-    overwriteRtHeight=(int)((float)Display.getHeight() * config.getRendering().getScreenshotSize().getMultiplier());
-  }
- else {
-    overwriteRtWidth=config.getRendering().getScreenshotSize().getWidth();
-    overwriteRtHeight=config.getRendering().getScreenshotSize().getHeight();
-  }
+  overwriteRtWidth=config.getRendering().getScreenshotSize().getWidth(Display.getWidth());
+  overwriteRtHeight=config.getRendering().getScreenshotSize().getHeight(Display.getHeight());
   createOrUpdateFullscreenFbos();
 }
