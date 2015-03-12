@@ -3,26 +3,28 @@
   DensityFacet solidityFacet=chunkRegion.getFacet(DensityFacet.class);
   SurfaceHeightFacet surfaceFacet=chunkRegion.getFacet(SurfaceHeightFacet.class);
   BiomeFacet biomeFacet=chunkRegion.getFacet(BiomeFacet.class);
+  SeaLevelFacet seaLevelFacet=chunkRegion.getFacet(SeaLevelFacet.class);
+  int seaLevel=seaLevelFacet.getSeaLevel();
   Vector2i pos2d=new Vector2i();
   for (  Vector3i pos : ChunkConstants.CHUNK_REGION) {
     pos2d.set(pos.x,pos.z);
     CoreBiome biome=biomeFacet.get(pos2d);
     chunk.setBiome(pos.x,pos.y,pos.z,biome);
+    int posY=pos.y + chunk.getChunkWorldOffsetY();
     float density=solidityFacet.get(pos);
     if (density >= 32) {
       chunk.setBlock(pos,stone);
     }
  else     if (density >= 0) {
-      int depth=TeraMath.floorToInt(surfaceFacet.get(pos2d)) - pos.y - chunk.getChunkWorldOffsetY();
-      Block block=getSurfaceBlock(depth,pos.y + chunk.getChunkWorldOffsetY(),biome);
+      int depth=TeraMath.floorToInt(surfaceFacet.get(pos2d)) - posY;
+      Block block=getSurfaceBlock(depth,posY,biome);
       chunk.setBlock(pos,block);
     }
  else {
-      int posY=pos.y + chunk.getChunkWorldOffsetY();
-      if (posY == 32 && CoreBiome.SNOW == biomeFacet.get(pos2d)) {
+      if (posY == seaLevel && CoreBiome.SNOW == biome) {
         chunk.setBlock(pos,ice);
       }
- else       if (posY <= 32) {
+ else       if (posY <= seaLevel) {
         chunk.setBlock(pos,water);
         chunk.setLiquid(pos,waterLiquid);
       }
