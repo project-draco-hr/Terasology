@@ -5,6 +5,9 @@
   if (address == null || address.isEmpty()) {
     throw new IllegalArgumentException("Server address must not be null or empty");
   }
+  if (port < 0 || port > 65535) {
+    throw new IllegalArgumentException("Server port must be in the range [0..65535]");
+  }
   this.name=name;
   this.address=address;
   this.port=port;

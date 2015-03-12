@@ -1,0 +1,20 @@
+{
+  try {
+    URL url=new URL("http://master-server.herokuapp.com/servers/list");
+    Charset cs=StandardCharsets.UTF_8;
+    Gson gson=new GsonBuilder().create();
+    @SuppressWarnings("serial") Type entryListType=new TypeToken<List<ServerInfo>>(){
+    }
+.getType();
+    try (Reader reader=new InputStreamReader(url.openStream(),cs)){
+      List<ServerInfo> onlineServers=gson.fromJson(reader,entryListType);
+      for (      ServerInfo entry : onlineServers) {
+        logger.debug("Retrieved online game server {}",entry);
+      }
+      servers.addAll(onlineServers);
+    }
+   }
+ catch (  Exception e) {
+    logger.error("Error downloading online server list!",e);
+  }
+}

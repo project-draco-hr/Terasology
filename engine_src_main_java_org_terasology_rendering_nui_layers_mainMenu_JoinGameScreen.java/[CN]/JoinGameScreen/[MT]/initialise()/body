@@ -1,7 +1,8 @@
 {
   serverList=find("serverList",UIList.class);
   if (serverList != null) {
-    serverList.bindList(BindHelper.bindBeanListProperty("servers",config.getNetwork(),ServerInfo.class));
+    List<ServerInfo> locals=config.getNetwork().getServers();
+    serverList.bindList(new OnlineServerListBinding(locals));
     serverList.setItemRenderer(new StringTextRenderer<ServerInfo>(){
       @Override public String getString(      ServerInfo value){
         return value.getName();
@@ -27,13 +28,25 @@
       }
     }
 );
-    WidgetUtil.trySubscribe(this,"edit",new ActivateEventListener(){
-      @Override public void onActivated(      UIWidget button){
-        AddServerPopup popup=getManager().pushScreen(AddServerPopup.ASSET_URI,AddServerPopup.class);
-        popup.setServerInfo(infoBinding.get());
+    UIButton edit=find("edit",UIButton.class);
+    if (edit != null) {
+      edit.bindEnabled(new ReadOnlyBinding<Boolean>(){
+        @Override public Boolean get(){
+          if (infoBinding.get() == null) {
+            return false;
+          }
+          return locals.contains(infoBinding.get());
+        }
       }
-    }
 );
+      edit.subscribe(new ActivateEventListener(){
+        @Override public void onActivated(        UIWidget button){
+          AddServerPopup popup=getManager().pushScreen(AddServerPopup.ASSET_URI,AddServerPopup.class);
+          popup.setServerInfo(infoBinding.get());
+        }
+      }
+);
+    }
     WidgetUtil.trySubscribe(this,"remove",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
         if (serverList.getSelection() != null) {
@@ -62,7 +75,6 @@
     UIButton editButton=find("edit",UIButton.class);
     UIButton removeButton=find("remove",UIButton.class);
     UIButton joinButton=find("join",UIButton.class);
-    editButton.bindEnabled(hasSelection);
     removeButton.bindEnabled(hasSelection);
     joinButton.bindEnabled(hasSelection);
   }
