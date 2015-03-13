@@ -22,6 +22,15 @@
     address.bindText(BindHelper.bindBoundBeanProperty("address",infoBinding,ServerInfo.class,String.class));
     UILabel port=find("port",UILabel.class);
     port.bindText(new IntToStringBinding(BindHelper.bindBoundBeanProperty("port",infoBinding,ServerInfo.class,int.class)));
+    ReadOnlyBinding<Boolean> localSelectedServerOnly=new ReadOnlyBinding<Boolean>(){
+      @Override public Boolean get(){
+        if (infoBinding.get() == null) {
+          return false;
+        }
+        return locals.contains(infoBinding.get());
+      }
+    }
+;
     WidgetUtil.trySubscribe(this,"add",new ActivateEventListener(){
       @Override public void onActivated(      UIWidget button){
         getManager().pushScreen(AddServerPopup.ASSET_URI);
@@ -30,15 +39,7 @@
 );
     UIButton edit=find("edit",UIButton.class);
     if (edit != null) {
-      edit.bindEnabled(new ReadOnlyBinding<Boolean>(){
-        @Override public Boolean get(){
-          if (infoBinding.get() == null) {
-            return false;
-          }
-          return locals.contains(infoBinding.get());
-        }
-      }
-);
+      edit.bindEnabled(localSelectedServerOnly);
       edit.subscribe(new ActivateEventListener(){
         @Override public void onActivated(        UIWidget button){
           AddServerPopup popup=getManager().pushScreen(AddServerPopup.ASSET_URI,AddServerPopup.class);
@@ -72,11 +73,14 @@
       }
     }
 ;
-    UIButton editButton=find("edit",UIButton.class);
     UIButton removeButton=find("remove",UIButton.class);
+    if (removeButton != null) {
+      removeButton.bindEnabled(localSelectedServerOnly);
+    }
     UIButton joinButton=find("join",UIButton.class);
-    removeButton.bindEnabled(hasSelection);
-    joinButton.bindEnabled(hasSelection);
+    if (joinButton != null) {
+      joinButton.bindEnabled(hasSelection);
+    }
   }
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
