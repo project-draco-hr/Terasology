@@ -1,16 +1,16 @@
 {
   NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
   if (message.hasServerInfo()) {
-    receivedServerInfo(message.getServerInfo());
+    receivedServerInfo(ctx,message.getServerInfo());
   }
  else   if (message.hasModuleDataHeader()) {
-    receiveModuleStart(message.getModuleDataHeader());
+    receiveModuleStart(ctx,message.getModuleDataHeader());
   }
  else   if (message.hasModuleData()) {
-    receiveModule(message.getModuleData());
+    receiveModule(ctx,message.getModuleData());
   }
  else   if (message.hasJoinComplete()) {
-    completeJoin(message.getJoinComplete());
+    completeJoin(ctx,message.getJoinComplete());
   }
  else {
     logger.error("Received unexpected message");

@@ -1,0 +1,29 @@
+{
+  JoinStatusImpl joinStatus=new JoinStatusImpl();
+  ChannelPipeline p=pipeline();
+  p.addLast(MetricRecordingHandler.NAME,new MetricRecordingHandler());
+  p.addLast("lengthFrameDecoder",new LengthFieldBasedFrameDecoder(8388608,0,3,0,3));
+  p.addLast("inflateDecoder",new ZlibDecoder());
+  p.addLast("frameDecoder",new ProtobufVarint32FrameDecoder());
+  p.addLast("protobufDecoder",new ProtobufDecoder(NetData.NetMessage.getDefaultInstance()));
+  p.addLast("frameEncoder",new ProtobufVarint32LengthFieldPrepender());
+  p.addLast("protobufEncoder",new ProtobufEncoder());
+  p.addLast("authenticationHandler",new ClientHandshakeHandler(joinStatus));
+  p.addLast("connectionHandler",new ClientConnectionHandler(joinStatus,null){
+    @Override public void messageReceived(    ChannelHandlerContext ctx,    MessageEvent e){
+      NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
+      if (message.hasServerInfo()) {
+        receivedServerInfo2(message.getServerInfo());
+      }
+ else {
+        logger.error("Received unexpected message");
+      }
+      ctx.getChannel().close();
+    }
+    private void receivedServerInfo2(    ServerInfoMessage serverInfo){
+      System.out.println("RECEIVED INFO: " + serverInfo.toString());
+    }
+  }
+);
+  return p;
+}

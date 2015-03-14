@@ -1,0 +1,14 @@
+{
+  NioClientSocketChannelFactory factory=new NioClientSocketChannelFactory(Executors.newCachedThreadPool(),Executors.newCachedThreadPool());
+  ClientBootstrap bootstrap=new ClientBootstrap(factory);
+  bootstrap.setPipelineFactory(new InfoRequestPipelineFactory());
+  bootstrap.setOption("tcpNoDelay",true);
+  bootstrap.setOption("keepAlive",true);
+  ChannelFuture connectCheck=bootstrap.connect(new InetSocketAddress(address,port));
+  connectCheck.await();
+  connectCheck.getChannel().getCloseFuture().awaitUninterruptibly();
+  factory.releaseExternalResources();
+  ClientConnectionHandler handler=connectCheck.getChannel().getPipeline().get(ClientConnectionHandler.class);
+  System.out.println(handler);
+  return null;
+}
