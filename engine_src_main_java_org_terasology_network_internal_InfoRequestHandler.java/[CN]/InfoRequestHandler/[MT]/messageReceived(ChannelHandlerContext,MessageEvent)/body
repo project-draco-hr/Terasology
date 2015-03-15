@@ -1,0 +1,10 @@
+{
+  NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
+  if (message.hasServerInfo()) {
+    receivedServerInfo(message.getServerInfo());
+  }
+ else {
+    logger.error("Received unexpected message");
+  }
+  ctx.getChannel().close();
+}
