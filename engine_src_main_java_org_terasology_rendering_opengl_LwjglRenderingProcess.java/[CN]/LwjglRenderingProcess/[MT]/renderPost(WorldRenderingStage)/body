@@ -1,5 +1,5 @@
 {
-  if (config.getRendering().isLightShafts()) {
+  if (renderingConfig.isLightShafts()) {
     PerformanceMonitor.startActivity("Rendering light shafts");
     generateLightShafts();
     PerformanceMonitor.endActivity();
@@ -7,7 +7,7 @@
   PerformanceMonitor.startActivity("Pre-post processing");
   generatePrePost();
   PerformanceMonitor.endActivity();
-  if (config.getRendering().isEyeAdaptation()) {
+  if (renderingConfig.isEyeAdaptation()) {
     PerformanceMonitor.startActivity("Rendering eye adaption");
     generateDownsampledScene();
     PerformanceMonitor.endActivity();
@@ -18,7 +18,7 @@
   PerformanceMonitor.startActivity("Tone mapping");
   generateToneMappedScene();
   PerformanceMonitor.endActivity();
-  if (config.getRendering().isBloom()) {
+  if (renderingConfig.isBloom()) {
     PerformanceMonitor.startActivity("Applying bloom");
     generateHighPass();
     for (int i=0; i < 3; i++) {
@@ -28,7 +28,7 @@
   }
   PerformanceMonitor.startActivity("Applying blur");
   for (int i=0; i < 2; i++) {
-    if (config.getRendering().getBlurIntensity() != 0) {
+    if (renderingConfig.getBlurIntensity() != 0) {
       generateBlur(i);
     }
   }

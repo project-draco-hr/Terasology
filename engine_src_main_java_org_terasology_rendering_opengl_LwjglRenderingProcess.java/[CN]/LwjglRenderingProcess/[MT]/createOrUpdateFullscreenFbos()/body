@@ -7,7 +7,6 @@
   if (overwriteRtHeight == 0) {
     rtFullHeight=org.lwjgl.opengl.Display.getHeight();
   }
-  RenderingConfig renderingConfig=CoreRegistry.get(Config.class).getRendering();
   rtFullWidth*=renderingConfig.getFboScale() / 100f;
   rtFullHeight*=renderingConfig.getFboScale() / 100f;
   if (renderingConfig.isOculusVrSupport()) {
@@ -38,7 +37,7 @@
   createFBO("sceneReflectiveRefractive",rtFullWidth,rtFullHeight,FBOType.HDR,false,true);
   attachDepthBufferToFbo("sceneOpaque","sceneReflectiveRefractive");
   createFBO("sceneReflected",rtWidth2,rtHeight2,FBOType.DEFAULT,true);
-  createFBO("sceneShadowMap",config.getRendering().getShadowMapResolution(),config.getRendering().getShadowMapResolution(),FBOType.NO_COLOR,true,false);
+  createFBO("sceneShadowMap",renderingConfig.getShadowMapResolution(),renderingConfig.getShadowMapResolution(),FBOType.NO_COLOR,true,false);
   createFBO("scenePrePost",rtFullWidth,rtFullHeight,FBOType.HDR);
   createFBO("sceneToneMapped",rtFullWidth,rtFullHeight,FBOType.HDR);
   createFBO("sceneFinal",rtFullWidth,rtFullHeight,FBOType.DEFAULT);

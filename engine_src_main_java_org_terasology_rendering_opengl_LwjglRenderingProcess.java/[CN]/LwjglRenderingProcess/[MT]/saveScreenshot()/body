@@ -13,7 +13,7 @@
   Runnable task=new Runnable(){
     @Override public void run(){
       SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
-      final String format=config.getRendering().getScreenshotFormat().toString();
+      final String format=renderingConfig.getScreenshotFormat().toString();
       final String fileName="Terasology-" + sdf.format(new Date()) + "-"+ fboSceneFinal.width+ "x"+ fboSceneFinal.height+ "."+ format;
       Path path=PathManager.getInstance().getScreenshotPath().resolve(fileName);
       BufferedImage image=new BufferedImage(fboSceneFinal.width,fboSceneFinal.height,BufferedImage.TYPE_INT_RGB);
