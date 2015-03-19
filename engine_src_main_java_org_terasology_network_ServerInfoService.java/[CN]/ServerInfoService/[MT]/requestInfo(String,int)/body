@@ -1,0 +1,5 @@
+{
+  ChannelFuture connectCheck=bootstrap.connect(new InetSocketAddress(address,port));
+  InfoRequestHandler handler=connectCheck.getChannel().getPipeline().get(InfoRequestHandler.class);
+  return handler.getServerInfoFuture();
+}

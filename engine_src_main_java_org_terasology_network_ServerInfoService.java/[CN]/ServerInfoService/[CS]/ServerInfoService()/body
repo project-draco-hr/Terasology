@@ -1,0 +1,8 @@
+{
+  pool=Executors.newFixedThreadPool(2);
+  factory=new NioClientSocketChannelFactory(pool,pool,1,1);
+  bootstrap=new ClientBootstrap(factory);
+  bootstrap.setPipelineFactory(new InfoRequestPipelineFactory());
+  bootstrap.setOption("tcpNoDelay",true);
+  bootstrap.setOption("keepAlive",true);
+}

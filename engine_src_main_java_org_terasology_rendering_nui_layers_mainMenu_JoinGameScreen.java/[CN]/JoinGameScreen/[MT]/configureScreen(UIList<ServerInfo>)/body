@@ -53,7 +53,7 @@
       @Override public void onActivated(      UIWidget button){
         ServerInfo item=serverList.getSelection();
         if (!extInfo.containsKey(item)) {
-          Future<ServerInfoMessage> futureInfo=networkSystem.requestInfo(item.getAddress(),item.getPort());
+          Future<ServerInfoMessage> futureInfo=infoService.requestInfo(item.getAddress(),item.getPort());
           extInfo.put(item,futureInfo);
         }
       }
