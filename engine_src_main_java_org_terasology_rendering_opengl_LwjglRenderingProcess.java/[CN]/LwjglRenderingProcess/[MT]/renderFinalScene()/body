@@ -1,12 +1,12 @@
 {
   Material material;
-  if (config.getRendering().isOculusVrSupport()) {
+  if (renderingConfig.isOculusVrSupport()) {
     material=Assets.getMaterial("engine:prog.ocDistortion");
     material.enable();
     updateOcShaderParametersForVP(material,0,0,rtFullWidth / 2,rtFullHeight,WorldRenderingStage.LEFT_EYE);
   }
  else {
-    if (config.getRendering().getDebug().isEnabled()) {
+    if (renderingDebugConfig.isEnabled()) {
       material=Assets.getMaterial("engine:prog.debug");
     }
  else {
@@ -15,7 +15,7 @@
     material.enable();
   }
   renderFullscreenQuad(0,0,org.lwjgl.opengl.Display.getWidth(),org.lwjgl.opengl.Display.getHeight());
-  if (config.getRendering().isOculusVrSupport()) {
+  if (renderingConfig.isOculusVrSupport()) {
     updateOcShaderParametersForVP(material,rtFullWidth / 2,0,rtFullWidth / 2,rtFullHeight,WorldRenderingStage.RIGHT_EYE);
     renderFullscreenQuad(0,0,org.lwjgl.opengl.Display.getWidth(),Display.getHeight());
   }

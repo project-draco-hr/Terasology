@@ -1,7 +1,7 @@
 {
   super.applyParameters(program);
   int texId=0;
-  LwjglRenderingProcess.FBO sceneOpaque=LwjglRenderingProcess.getInstance().getFBO("sceneOpaque");
+  FBO sceneOpaque=LwjglRenderingProcess.getInstance().getFBO("sceneOpaque");
   if (sceneOpaque != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneOpaque.bindTexture();
@@ -16,7 +16,7 @@
     sceneOpaque.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
-  LwjglRenderingProcess.FBO sceneReflectiveRefractive=LwjglRenderingProcess.getInstance().getFBO("sceneReflectiveRefractive");
+  FBO sceneReflectiveRefractive=LwjglRenderingProcess.getInstance().getFBO("sceneReflectiveRefractive");
   if (sceneReflectiveRefractive != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneReflectiveRefractive.bindTexture();
