@@ -16,10 +16,7 @@
     Collections.sort(codedModInfo,String.CASE_INSENSITIVE_ORDER);
     return Joiner.on('\n').join(codedModInfo);
   }
- catch (  InterruptedException e) {
-    return "Timeout";
-  }
-catch (  ExecutionException e) {
-    return "Failed: " + e.getLocalizedMessage();
+ catch (  ExecutionException|InterruptedException e) {
+    return FontColor.getColored("Connection Failed!",Color.RED);
   }
 }
