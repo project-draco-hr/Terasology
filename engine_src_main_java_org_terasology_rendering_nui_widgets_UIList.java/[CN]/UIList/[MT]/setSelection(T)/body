@@ -1,5 +1,8 @@
 {
   if (isSelectable()) {
-    selection.set(val);
+    selection.set(item);
+    for (    ItemSelectEventListener<T> listener : selectionListeners) {
+      listener.onItemSelected(this,item);
+    }
   }
 }

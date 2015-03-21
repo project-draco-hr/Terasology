@@ -18,9 +18,8 @@
     }
   }
 );
-  serverList.bindSelection(new DefaultBinding<ServerInfo>(){
-    @Override public void set(    ServerInfo item){
-      super.set(item);
+  serverList.subscribeSelection(new ItemSelectEventListener<ServerInfo>(){
+    @Override public void onItemSelected(    UIWidget widget,    ServerInfo item){
       if (!extInfo.containsKey(item)) {
         extInfo.put(item,infoService.requestInfo(item.getAddress(),item.getPort()));
       }
