@@ -3,8 +3,7 @@
     List<String> codedWorldInfo=new ArrayList<>();
     for (    WorldInfo wi : info.get().getWorldInfoList()) {
       float timeInDays=wi.getTime() / (float)WorldTime.DAY_LENGTH;
-      codedWorldInfo.add("World: " + wi.getTitle());
-      codedWorldInfo.add(String.format("World Time: %.2f days",timeInDays));
+      codedWorldInfo.add(String.format("%s (%.2f days)",wi.getTitle(),timeInDays));
     }
     return Joiner.on('\n').join(codedWorldInfo);
   }

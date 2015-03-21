@@ -1,5 +1,12 @@
 {
-  ChannelFuture connectCheck=bootstrap.connect(new InetSocketAddress(address,port));
-  InfoRequestHandler handler=connectCheck.getChannel().getPipeline().get(InfoRequestHandler.class);
-  return handler.getServerInfoFuture();
+  return pool.submit(new Callable<ServerInfoMessage>(){
+    @Override public ServerInfoMessage call() throws Exception {
+      InetSocketAddress remoteAddress=new InetSocketAddress(address,port);
+      ChannelFuture connectCheck=bootstrap.connect(remoteAddress);
+      connectCheck.getChannel().getCloseFuture().syncUninterruptibly();
+      InfoRequestHandler handler=connectCheck.getChannel().getPipeline().get(InfoRequestHandler.class);
+      return handler.getServerInfo();
+    }
+  }
+);
 }
