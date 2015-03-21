@@ -1,7 +1,7 @@
 {
   final List<ServerInfo> locals=config.getNetwork().getServers();
-  final ServerListDownloader downloader=new ServerListDownloader(config.getNetwork().getMasterServer());
-  serverList.bindList(new CombinedListBinding<ServerInfo>(locals,downloader.getServers()));
+  servers.addAll(locals);
+  serverList.bindList(new DefaultBinding<List<ServerInfo>>(servers));
   serverList.setItemRenderer(new StringTextRenderer<ServerInfo>(){
     @Override public String getString(    ServerInfo value){
       String name=value.getName();

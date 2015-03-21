@@ -1,0 +1,9 @@
+{
+  super.update(delta);
+  Queue<ServerInfo> newServers=downloader.getServers();
+  ServerInfo next=newServers.poll();
+  while (next != null) {
+    servers.add(next);
+    next=newServers.poll();
+  }
+}
