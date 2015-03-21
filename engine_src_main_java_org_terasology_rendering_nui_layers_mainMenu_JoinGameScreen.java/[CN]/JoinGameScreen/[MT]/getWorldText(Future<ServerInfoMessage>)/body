@@ -1,0 +1,17 @@
+{
+  try {
+    List<String> codedWorldInfo=new ArrayList<>();
+    for (    WorldInfo wi : info.get().getWorldInfoList()) {
+      float timeInDays=wi.getTime() / (float)WorldTime.DAY_LENGTH;
+      codedWorldInfo.add("World: " + wi.getTitle());
+      codedWorldInfo.add(String.format("World Time: %.2f days",timeInDays));
+    }
+    return Joiner.on('\n').join(codedWorldInfo);
+  }
+ catch (  InterruptedException e) {
+    return "Timeout";
+  }
+catch (  ExecutionException e) {
+    return "Failed: " + e.getLocalizedMessage();
+  }
+}

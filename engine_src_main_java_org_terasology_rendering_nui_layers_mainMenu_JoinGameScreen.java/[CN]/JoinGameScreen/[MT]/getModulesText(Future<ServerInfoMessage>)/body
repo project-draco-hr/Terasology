@@ -1,0 +1,24 @@
+{
+  int maxElements=9;
+  try {
+    ServerInfoMessage serverInfoMessage=info.get();
+    List<String> codedModInfo=new ArrayList<>();
+    ModuleRegistry reg=moduleManager.getRegistry();
+    for (    NameVersion entry : serverInfoMessage.getModuleList()) {
+      boolean isInstalled=reg.getModule(entry.getName(),entry.getVersion()) != null;
+      Color color=isInstalled ? Color.GREEN : Color.RED;
+      codedModInfo.add(FontColor.getColored(entry.toString(),color));
+    }
+    if (codedModInfo.size() > maxElements) {
+      codedModInfo=codedModInfo.subList(0,maxElements - 1);
+      codedModInfo.add("...");
+    }
+    return Joiner.on('\n').join(codedModInfo);
+  }
+ catch (  InterruptedException e) {
+    return "Timeout";
+  }
+catch (  ExecutionException e) {
+    return "Failed: " + e.getLocalizedMessage();
+  }
+}
