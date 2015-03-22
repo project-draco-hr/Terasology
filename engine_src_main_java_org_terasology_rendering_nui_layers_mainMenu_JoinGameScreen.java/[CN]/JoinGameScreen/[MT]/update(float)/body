@@ -1,9 +1,8 @@
 {
   super.update(delta);
-  Queue<ServerInfo> newServers=downloader.getServers();
-  ServerInfo next=newServers.poll();
-  while (next != null) {
-    servers.add(next);
-    next=newServers.poll();
-  }
+  List<ServerInfo> onlineServers=downloader.getServers();
+  List<ServerInfo> localServers=config.getNetwork().getServers();
+  servers.clear();
+  servers.addAll(localServers);
+  servers.addAll(onlineServers);
 }

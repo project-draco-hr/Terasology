@@ -1,6 +1,5 @@
 {
   final List<ServerInfo> locals=config.getNetwork().getServers();
-  servers.addAll(locals);
   serverList.bindList(new DefaultBinding<List<ServerInfo>>(servers));
   serverList.setItemRenderer(new StringTextRenderer<ServerInfo>(){
     @Override public String getString(    ServerInfo value){
@@ -20,7 +19,7 @@
 );
   serverList.subscribeSelection(new ItemSelectEventListener<ServerInfo>(){
     @Override public void onItemSelected(    UIWidget widget,    ServerInfo item){
-      if (!extInfo.containsKey(item)) {
+      if (item != null && !extInfo.containsKey(item)) {
         extInfo.put(item,infoService.requestInfo(item.getAddress(),item.getPort()));
       }
     }
