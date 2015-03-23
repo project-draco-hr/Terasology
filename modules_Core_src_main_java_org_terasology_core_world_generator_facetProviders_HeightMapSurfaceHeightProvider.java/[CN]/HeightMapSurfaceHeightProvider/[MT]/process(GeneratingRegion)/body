@@ -2,18 +2,19 @@
   Border3D border=region.getBorderForFacet(SurfaceHeightFacet.class);
   SurfaceHeightFacet facet=new SurfaceHeightFacet(region.getRegion(),border);
   for (  Vector2i pos : facet.getWorldRegion()) {
-    int wrapX=IntMath.mod(pos.getX(),mapWidth * terrainScale);
-    int wrapZ=IntMath.mod(pos.getY(),mapHeight * terrainScale);
-    int mapX=wrapX / terrainScale;
-    int mapZ=wrapZ / terrainScale;
+    int xzScale=configuration.terrainScale;
+    int wrapX=IntMath.mod(pos.getX(),mapWidth * xzScale);
+    int wrapZ=IntMath.mod(pos.getY(),mapHeight * xzScale);
+    int mapX=wrapX / xzScale;
+    int mapZ=wrapZ / xzScale;
     double p00=heightmap[mapX][mapZ];
     double p10=heightmap[(mapX - 1 + 512) % 512][(mapZ) % 512];
     double p11=heightmap[(mapX - 1 + 512) % 512][(mapZ + 1 + 512) % 512];
     double p01=heightmap[(mapX) % 512][(mapZ + 1 + 512) % 512];
-    float relX=(wrapX % terrainScale) / (float)terrainScale;
-    float relZ=(wrapZ % terrainScale) / (float)terrainScale;
+    float relX=(wrapX % xzScale) / (float)xzScale;
+    float relZ=(wrapZ % xzScale) / (float)xzScale;
     float interpolatedHeight=(float)lerp(relX,lerp(relZ,p10,p11),lerp(relZ,p00,p01));
-    float height=heightOffset + heightScale * interpolatedHeight;
+    float height=configuration.heightOffset + configuration.heightScale * interpolatedHeight;
     facet.setWorld(pos,height);
   }
   region.setRegionFacet(SurfaceHeightFacet.class,facet);
