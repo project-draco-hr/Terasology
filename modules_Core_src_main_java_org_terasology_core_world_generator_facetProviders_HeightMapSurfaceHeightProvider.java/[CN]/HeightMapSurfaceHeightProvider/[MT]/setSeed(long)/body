@@ -3,13 +3,13 @@
   Texture texture=Assets.getTexture("core:platec_heightmap");
   ByteBuffer[] bb=texture.getData().getBuffers();
   IntBuffer intBuf=bb[0].asIntBuffer();
-  int width=texture.getWidth();
-  int height=texture.getHeight();
-  heightmap=new float[width][height];
+  mapWidth=texture.getWidth();
+  mapHeight=texture.getHeight();
+  heightmap=new float[mapWidth][mapHeight];
   while (intBuf.position() < intBuf.limit()) {
     int pos=intBuf.position();
-    int val=intBuf.get();
-    heightmap[pos % width][pos / width]=val / (256 * 256 * 256* 12.8f);
+    long val=intBuf.get() & 0xFFFFFFFFL;
+    heightmap[pos % mapWidth][pos / mapWidth]=val / (256 * 256 * 256* 256f);
   }
   heightmap=shiftArray(rotateArray(heightmap),-50,-100);
 }
