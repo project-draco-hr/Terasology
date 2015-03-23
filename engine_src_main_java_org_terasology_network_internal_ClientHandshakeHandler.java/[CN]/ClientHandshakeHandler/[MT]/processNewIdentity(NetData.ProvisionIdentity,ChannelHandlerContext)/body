@@ -35,7 +35,7 @@
     config.getSecurity().addIdentity(serverCertificate,identity);
     config.save();
     ctx.getPipeline().remove(this);
-    clientConnectionHandler.channelAuthenticated(ctx);
+    channelAuthenticated(ctx);
   }
  catch (  InvalidProtocolBufferException e) {
     logger.error("Received invalid certificate data: cancelling authentication",e);

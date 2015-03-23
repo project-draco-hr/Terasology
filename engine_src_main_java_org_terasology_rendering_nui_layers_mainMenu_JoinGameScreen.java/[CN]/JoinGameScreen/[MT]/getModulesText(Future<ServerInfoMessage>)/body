@@ -1,0 +1,22 @@
+{
+  int maxElements=9;
+  try {
+    ServerInfoMessage serverInfoMessage=info.get();
+    List<String> codedModInfo=new ArrayList<>();
+    ModuleRegistry reg=moduleManager.getRegistry();
+    for (    NameVersion entry : serverInfoMessage.getModuleList()) {
+      boolean isInstalled=reg.getModule(entry.getName(),entry.getVersion()) != null;
+      Color color=isInstalled ? Color.GREEN : Color.RED;
+      codedModInfo.add(FontColor.getColored(entry.toString(),color));
+    }
+    if (codedModInfo.size() > maxElements) {
+      codedModInfo=codedModInfo.subList(0,maxElements - 1);
+      codedModInfo.add("...");
+    }
+    Collections.sort(codedModInfo,String.CASE_INSENSITIVE_ORDER);
+    return Joiner.on('\n').join(codedModInfo);
+  }
+ catch (  ExecutionException|InterruptedException e) {
+    return FontColor.getColored("Connection Failed!",Color.RED);
+  }
+}

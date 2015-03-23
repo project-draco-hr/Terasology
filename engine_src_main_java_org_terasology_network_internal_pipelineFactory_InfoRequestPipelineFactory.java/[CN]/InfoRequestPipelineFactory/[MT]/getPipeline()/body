@@ -1,0 +1,14 @@
+{
+  JoinStatusImpl joinStatus=new JoinStatusImpl();
+  ChannelPipeline p=Channels.pipeline();
+  p.addLast(MetricRecordingHandler.NAME,new MetricRecordingHandler());
+  p.addLast("lengthFrameDecoder",new LengthFieldBasedFrameDecoder(8388608,0,3,0,3));
+  p.addLast("inflateDecoder",new ZlibDecoder());
+  p.addLast("frameDecoder",new ProtobufVarint32FrameDecoder());
+  p.addLast("protobufDecoder",new ProtobufDecoder(NetData.NetMessage.getDefaultInstance()));
+  p.addLast("frameEncoder",new ProtobufVarint32LengthFieldPrepender());
+  p.addLast("protobufEncoder",new ProtobufEncoder());
+  p.addLast("authenticationHandler",new ClientHandshakeHandler(joinStatus));
+  p.addLast("connectionHandler",new ServerInfoRequestHandler());
+  return p;
+}

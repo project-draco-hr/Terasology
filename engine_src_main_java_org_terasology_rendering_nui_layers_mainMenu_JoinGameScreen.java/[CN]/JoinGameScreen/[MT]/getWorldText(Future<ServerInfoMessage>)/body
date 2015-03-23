@@ -1,0 +1,13 @@
+{
+  try {
+    List<String> codedWorldInfo=new ArrayList<>();
+    for (    WorldInfo wi : info.get().getWorldInfoList()) {
+      float timeInDays=wi.getTime() / (float)WorldTime.DAY_LENGTH;
+      codedWorldInfo.add(String.format("%s (%.2f days)",wi.getTitle(),timeInDays));
+    }
+    return Joiner.on('\n').join(codedWorldInfo);
+  }
+ catch (  ExecutionException|InterruptedException e) {
+    return FontColor.getColored("Connection Failed!",Color.RED);
+  }
+}
