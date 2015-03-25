@@ -1,10 +1,10 @@
 {
-  assertFalse(Vector3i.zero().isUnitVector());
-  assertTrue(Vector3i.unitX().isUnitVector());
-  assertTrue(Vector3i.unitY().isUnitVector());
-  assertTrue(Vector3i.unitZ().isUnitVector());
-  Vector3i v=Vector3i.unitX();
+  assertFalse(Vector3iUtil.isUnitVector(Vector3i.zero()));
+  assertTrue(Vector3iUtil.isUnitVector(Vector3iUtil.unitX()));
+  assertTrue(Vector3iUtil.isUnitVector(Vector3iUtil.unitY()));
+  assertTrue(Vector3iUtil.isUnitVector(Vector3iUtil.unitZ()));
+  Vector3i v=Vector3iUtil.unitX();
   v.scale(-1);
-  assertTrue(v.isUnitVector());
-  assertFalse(Vector3i.one().isUnitVector());
+  assertTrue(Vector3iUtil.isUnitVector(v));
+  assertFalse(Vector3iUtil.isUnitVector(Vector3i.one()));
 }
