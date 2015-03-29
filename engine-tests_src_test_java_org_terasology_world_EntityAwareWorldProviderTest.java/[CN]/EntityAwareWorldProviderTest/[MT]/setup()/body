@@ -1,6 +1,6 @@
 {
   GameThread.setToCurrentThread();
-  AssetManager assetManager=CoreRegistry.put(AssetManager.class,new AssetManager(moduleManager.getEnvironment()));
+  AssetManager assetManager=CoreRegistry.put(AssetManager.class,new AssetManagerImpl(moduleManager.getEnvironment()));
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
       return new PojoPrefab(uri,data);
