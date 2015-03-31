@@ -1,10 +1,10 @@
 {
-  if (subRegion.size().x != fullRegion.size().x || subRegion.size().y != fullRegion.size().y || subRegion.size().z != fullRegion.size().z) {
-    float[] result=new float[subRegion.size().x * subRegion.size().y * subRegion.size().z];
+  if (subRegion.sizeX() != fullRegion.sizeX() || subRegion.sizeY() != fullRegion.sizeY() || subRegion.sizeZ() != fullRegion.sizeZ()) {
+    float[] result=new float[subRegion.sizeX() * subRegion.sizeY() * subRegion.sizeZ()];
     Vector3i offset=new Vector3i(subRegion.minX() - fullRegion.minX(),subRegion.minY() - fullRegion.minY(),subRegion.minZ() - fullRegion.minZ());
-    for (int z=0; z < subRegion.size().z; ++z) {
-      for (int y=0; y < subRegion.size().y; ++y) {
-        System.arraycopy(fullData,offset.x + fullRegion.sizeX() * (y + offset.y + fullRegion.sizeY() * (z + offset.z)),result,subRegion.sizeX() * (y + subRegion.sizeY() * z),subRegion.size().x);
+    for (int z=0; z < subRegion.sizeZ(); ++z) {
+      for (int y=0; y < subRegion.sizeY(); ++y) {
+        System.arraycopy(fullData,offset.x + fullRegion.sizeX() * (y + offset.y + fullRegion.sizeY() * (z + offset.z)),result,subRegion.sizeX() * (y + subRegion.sizeY() * z),subRegion.sizeX());
       }
     }
     return result;
