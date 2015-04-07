@@ -12,8 +12,8 @@
   if (!worldGenConfig.getDefaultGenerator().isValid()) {
     for (    Name moduleName : config.getDefaultModSelection().listModules()) {
       Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
-      if (moduleManager.isGameplayModule(module)) {
-        SimpleUri defaultWorldGenerator=moduleManager.getDefaultWorldGenerator(module);
+      if (StandardModuleExtension.isGameplayModule(module)) {
+        SimpleUri defaultWorldGenerator=StandardModuleExtension.getDefaultWorldGenerator(module);
         worldGenConfig.setDefaultGenerator(defaultWorldGenerator);
         break;
       }

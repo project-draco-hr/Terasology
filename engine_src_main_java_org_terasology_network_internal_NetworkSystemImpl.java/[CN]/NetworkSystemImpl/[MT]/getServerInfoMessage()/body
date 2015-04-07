@@ -13,8 +13,7 @@
     serverInfoMessageBuilder.setReflectionHeight(worldGen.getWorld().getSeaLevel());
   }
   for (  Module module : CoreRegistry.get(ModuleManager.class).getEnvironment()) {
-    Boolean serverSideOnly=module.getMetadata().getExtension(ModuleManager.SERVER_SIDE_ONLY_EXT,Boolean.class);
-    if (serverSideOnly == null || !serverSideOnly) {
+    if (!StandardModuleExtension.isServerSideOnly(module)) {
       serverInfoMessageBuilder.addModule(NetData.ModuleInfo.newBuilder().setModuleId(module.getId().toString()).setModuleVersion(module.getVersion().toString()).build());
     }
   }

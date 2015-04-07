@@ -1,5 +1,5 @@
 {
-  ModuleManager moduleManager=new ModuleManager();
+  ModuleManager moduleManager=new ModuleManagerImpl();
   try (Reader reader=new InputStreamReader(ModuleManagerFactory.class.getResourceAsStream("/module.txt"),TerasologyConstants.CHARSET)){
     ModuleMetadata metadata=new ModuleMetadataReader().read(reader);
     moduleManager.getRegistry().add(ClasspathModule.create(metadata,ModuleManagerFactory.class));
