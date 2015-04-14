@@ -5,9 +5,9 @@
   if (ssao == null) {
     return;
   }
-  shader.setFloat2("texelSize",1.0f / ssao.width,1.0f / ssao.height,true);
+  shader.setFloat2("texelSize",1.0f / ssao.width(),1.0f / ssao.height(),true);
   ssao.bind();
-  glViewport(0,0,ssao.width,ssao.height);
+  glViewport(0,0,ssao.width(),ssao.height());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   bindFboTexture("ssao");
   renderFullscreenQuad();

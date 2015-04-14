@@ -6,9 +6,9 @@
   if (bloom == null) {
     return;
   }
-  shader.setFloat2("texelSize",1.0f / bloom.width,1.0f / bloom.height,true);
+  shader.setFloat2("texelSize",1.0f / bloom.width(),1.0f / bloom.height(),true);
   bloom.bind();
-  glViewport(0,0,bloom.width,bloom.height);
+  glViewport(0,0,bloom.width(),bloom.height());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   if (id == 0) {
     getFBO("sceneHighPass").bindTexture();

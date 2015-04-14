@@ -6,9 +6,9 @@
   if (blur == null) {
     return;
   }
-  material.setFloat2("texelSize",1.0f / blur.width,1.0f / blur.height,true);
+  material.setFloat2("texelSize",1.0f / blur.width(),1.0f / blur.height(),true);
   blur.bind();
-  glViewport(0,0,blur.width,blur.height);
+  glViewport(0,0,blur.width(),blur.height());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   if (id == 0) {
     bindFboTexture("sceneToneMapped");
