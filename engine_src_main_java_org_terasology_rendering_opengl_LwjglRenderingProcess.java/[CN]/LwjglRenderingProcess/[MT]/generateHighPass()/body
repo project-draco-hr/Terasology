@@ -12,9 +12,9 @@
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   sceneOpaque.bindTexture();
   program.setInt("tex",texId++);
-  glViewport(0,0,highPass.width(),highPass.height());
+  setViewportTo(highPass.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   highPass.unbind();
-  glViewport(0,0,rtFullWidth,rtFullHeight);
+  setViewportToFullSize();
 }

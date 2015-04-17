@@ -15,9 +15,9 @@
  else {
     bindFboTexture("sceneSkyBand" + (id - 1));
   }
-  glViewport(0,0,skyBand.width(),skyBand.height());
+  setViewportTo(skyBand.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   skyBand.unbind();
-  glViewport(0,0,rtFullWidth,rtFullHeight);
+  setViewportToFullSize();
 }
