@@ -1,6 +1,6 @@
 {
-  if (mesh == null || mesh.isDisposed()) {
-    generateMesh();
+  if (meshGenerator != null) {
+    return meshGenerator.getStandaloneMesh();
   }
-  return mesh;
+  return new Tessellator().generateMesh(new AssetUri(AssetType.MESH,uri.toString()));
 }

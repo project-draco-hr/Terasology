@@ -7,13 +7,11 @@
   mat.enable();
   mat.setFloat("sunlight",sunlight);
   mat.setFloat("blockLight",blockLight);
-  if (mesh == null || mesh.isDisposed()) {
-    generateMesh();
+  if (meshGenerator != null) {
+    Mesh mesh=meshGenerator.getStandaloneMesh();
+    if (mesh != null) {
+      mesh.render();
+    }
   }
- else   if (mesh.isDisposed()) {
-    logger.error("Cannot render disposed mesh");
-    return;
-  }
-  mesh.render();
   mat.deactivateFeature(ShaderProgramFeature.FEATURE_USE_MATRIX_STACK);
 }
