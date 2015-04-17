@@ -1,0 +1,12 @@
+{
+  fbo.colorBufferTextureId=glGenTextures();
+  GL11.glBindTexture(GL11.GL_TEXTURE_2D,fbo.colorBufferTextureId);
+  setTextureParameters(GL11.GL_LINEAR);
+  if (type == Type.HDR) {
+    allocateTexture(dimensions,GL11.GL_RGBA,GL11.GL_RGBA,ARBHalfFloatPixel.GL_HALF_FLOAT_ARB);
+  }
+ else {
+    allocateTexture(dimensions,GL11.GL_RGBA,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE);
+  }
+  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_COLOR_ATTACHMENT0_EXT,GL11.GL_TEXTURE_2D,fbo.colorBufferTextureId,0);
+}

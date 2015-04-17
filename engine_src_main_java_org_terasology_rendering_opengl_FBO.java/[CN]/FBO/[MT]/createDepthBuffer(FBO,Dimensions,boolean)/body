@@ -1,0 +1,25 @@
+{
+  fbo.depthStencilTextureId=glGenTextures();
+  GL11.glBindTexture(GL11.GL_TEXTURE_2D,fbo.depthStencilTextureId);
+  setTextureParameters(GL11.GL_NEAREST);
+  if (!useStencilBuffer) {
+    allocateTexture(dimensions,GL14.GL_DEPTH_COMPONENT24,GL11.GL_DEPTH_COMPONENT,GL11.GL_UNSIGNED_INT);
+  }
+ else {
+    allocateTexture(dimensions,EXTPackedDepthStencil.GL_DEPTH24_STENCIL8_EXT,EXTPackedDepthStencil.GL_DEPTH_STENCIL_EXT,EXTPackedDepthStencil.GL_UNSIGNED_INT_24_8_EXT);
+  }
+  fbo.depthStencilRboId=glGenRenderbuffersEXT();
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,fbo.depthStencilRboId);
+  if (!useStencilBuffer) {
+    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,GL14.GL_DEPTH_COMPONENT24,fbo.dimensions.width,fbo.dimensions.height);
+  }
+ else {
+    glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT,EXTPackedDepthStencil.GL_DEPTH24_STENCIL8_EXT,fbo.dimensions.width,fbo.dimensions.height);
+  }
+  glBindRenderbufferEXT(GL_RENDERBUFFER_EXT,0);
+  glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL_RENDERBUFFER_EXT,fbo.depthStencilRboId);
+  glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_DEPTH_ATTACHMENT_EXT,GL11.GL_TEXTURE_2D,fbo.depthStencilTextureId,0);
+  if (useStencilBuffer) {
+    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT,GL_STENCIL_ATTACHMENT_EXT,GL11.GL_TEXTURE_2D,fbo.depthStencilTextureId,0);
+  }
+}
