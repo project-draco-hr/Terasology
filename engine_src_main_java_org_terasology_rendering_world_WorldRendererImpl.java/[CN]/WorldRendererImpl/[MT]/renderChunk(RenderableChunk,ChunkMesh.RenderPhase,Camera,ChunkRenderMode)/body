@@ -26,7 +26,7 @@
  else     if (mode == ChunkRenderMode.Z_PRE_PASS) {
       CoreRegistry.get(ShaderManager.class).disableShader();
     }
-    LwjglRenderingProcess.getInstance().preChunkRenderSetup(chunkPositionRelativeToCamera);
+    renderingProcess.preChunkRenderSetup(chunkPositionRelativeToCamera);
     if (chunk.hasMesh()) {
       if (renderingDebugConfig.isRenderChunkBoundingBoxes()) {
         AABBRenderer aabbRenderer=new AABBRenderer(chunk.getAABB());
@@ -36,7 +36,7 @@
       chunk.getMesh().render(phase);
       statRenderedTriangles+=chunk.getMesh().triangleCount();
     }
-    LwjglRenderingProcess.getInstance().postChunkRenderCleanup();
+    renderingProcess.postChunkRenderCleanup();
     if (mode == ChunkRenderMode.DEFAULT || mode == ChunkRenderMode.REFLECTION) {
       if (phase == ChunkMesh.RenderPhase.REFRACTIVE) {
         chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_REFRACTIVE_PASS);
