@@ -1,9 +1,9 @@
 {
   Tessellator tessellator=new Tessellator();
   for (  BlockPart dir : BlockPart.values()) {
-    BlockMeshPart part=primaryAppearance.getPart(dir);
+    BlockMeshPart part=block.getPrimaryAppearance().getPart(dir);
     if (part != null) {
-      if (doubleSided) {
+      if (block.isDoubleSided()) {
         tessellator.addMeshPartDoubleSided(part);
       }
  else {
@@ -11,5 +11,5 @@
       }
     }
   }
-  mesh=tessellator.generateMesh(new AssetUri(AssetType.MESH,uri.toString()));
+  mesh=tessellator.generateMesh(new AssetUri(AssetType.MESH,block.getURI().toString()));
 }
