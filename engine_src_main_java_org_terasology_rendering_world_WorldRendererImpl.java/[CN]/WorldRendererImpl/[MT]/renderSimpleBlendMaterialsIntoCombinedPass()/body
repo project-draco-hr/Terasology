@@ -1,9 +1,9 @@
 {
   PerformanceMonitor.startActivity("Render Objects (Transparent)");
-  LwjglRenderingProcess.getInstance().beginRenderSimpleBlendMaterialsIntoCombinedPass();
+  renderingProcess.beginRenderSimpleBlendMaterialsIntoCombinedPass();
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderAlphaBlend();
   }
-  LwjglRenderingProcess.getInstance().endRenderSimpleBlendMaterialsIntoCombinedPass();
+  renderingProcess.endRenderSimpleBlendMaterialsIntoCombinedPass();
   PerformanceMonitor.endActivity();
 }
