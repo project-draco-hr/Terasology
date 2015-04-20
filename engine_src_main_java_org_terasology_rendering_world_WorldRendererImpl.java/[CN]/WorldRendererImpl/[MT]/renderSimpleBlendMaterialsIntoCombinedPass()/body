@@ -1,9 +1,9 @@
 {
   PerformanceMonitor.startActivity("Render Objects (Transparent)");
-  graphicState.beginRenderSimpleBlendMaterialsIntoCombinedPass();
+  graphicState.preRenderSetupSimpleBlendMaterials();
   for (  RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
     renderer.renderAlphaBlend();
   }
-  graphicState.endRenderSimpleBlendMaterialsIntoCombinedPass();
+  graphicState.postRenderCleanupSimpleBlendMaterials();
   PerformanceMonitor.endActivity();
 }

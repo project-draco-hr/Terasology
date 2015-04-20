@@ -20,7 +20,8 @@
     return;
   }
   int shadowMapResolution=renderingConfig.getShadowMapResolution();
-  new FBObuilder("sceneShadowMap",shadowMapResolution,shadowMapResolution,FBO.Type.NO_COLOR).useDepthBuffer().build();
+  FBO sceneShadowMap=new FBObuilder("sceneShadowMap",shadowMapResolution,shadowMapResolution,FBO.Type.NO_COLOR).useDepthBuffer().build();
+  graphicState.setSceneShadowMap(sceneShadowMap);
   FBO sceneOpaque=new FBObuilder("sceneOpaque",fullScale,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer().build();
   new FBObuilder("sceneOpaquePingPong",fullScale,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer().build();
   new FBObuilder("sceneSkyBand0",one16thScale,FBO.Type.DEFAULT).build();
@@ -42,5 +43,5 @@
   new FBObuilder("sceneBlur1",halfScale,FBO.Type.DEFAULT).build();
   new FBObuilder("ocUndistorted",fullScale,FBO.Type.DEFAULT).build();
   new FBObuilder("sceneFinal",fullScale,FBO.Type.DEFAULT).build();
-  graphicState.setFullScale(fullScale);
+  graphicState.refreshDynamicFBOs();
 }

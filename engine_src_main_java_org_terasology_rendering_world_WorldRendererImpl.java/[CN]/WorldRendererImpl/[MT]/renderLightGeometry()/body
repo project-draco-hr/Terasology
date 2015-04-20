@@ -1,6 +1,6 @@
 {
   PerformanceMonitor.startActivity("Render Light Geometry");
-  graphicState.beginRenderLightGeometry();
+  graphicState.preRenderSetupLightGeometry();
   EntityManager entityManager=CoreRegistry.get(EntityManager.class);
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
     LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
@@ -8,12 +8,13 @@
     final Vector3f worldPosition=locationComponent.getWorldPosition();
     renderLightComponent(lightComponent,worldPosition,lightGeometryShader,false);
   }
-  graphicState.endRenderLightGeometry();
-  graphicState.beginRenderDirectionalLights();
+  graphicState.postRenderCleanupLightGeometry();
+  graphicState.preRenderSetupDirectionalLights();
   Vector3f sunlightWorldPosition=new Vector3f(backdropProvider.getSunDirection(true));
   sunlightWorldPosition.scale(50000f);
   sunlightWorldPosition.add(playerCamera.getPosition());
   renderLightComponent(mainDirectionalLight,sunlightWorldPosition,lightGeometryShader,false);
-  graphicState.endRenderDirectionalLights();
+  graphicState.postRenderCleanupDirectionalLights();
+  renderingProcess.applyLightBufferPass("sceneOpaque");
   PerformanceMonitor.endActivity();
 }
