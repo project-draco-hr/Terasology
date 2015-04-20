@@ -1,6 +1,9 @@
 {
   renderingProcess=new LwjglRenderingProcess();
   CoreRegistry.put(LwjglRenderingProcess.class,renderingProcess);
+  graphicState=new GraphicState(renderingProcess);
+  renderingProcess.setGraphicState(graphicState);
+  renderingProcess.initialize();
   CoreRegistry.get(ShaderManager.class).initShaders();
   initMaterials();
 }

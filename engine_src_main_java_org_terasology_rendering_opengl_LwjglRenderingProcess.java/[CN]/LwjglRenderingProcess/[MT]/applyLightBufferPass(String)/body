@@ -17,8 +17,9 @@
     targetFbo.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
-  bindFbo(target + "PingPong");
-  setRenderBufferMask(true,true,true);
+  String fboName=target + "PingPong";
+  bindFbo(fboName);
+  graphicState.setRenderBufferMask(fboName,true,true,true);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   unbindFbo(target + "PingPong");

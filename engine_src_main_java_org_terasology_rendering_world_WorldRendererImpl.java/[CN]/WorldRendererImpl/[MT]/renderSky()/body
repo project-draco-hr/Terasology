@@ -1,9 +1,14 @@
 {
   PerformanceMonitor.startActivity("Render Sky");
   playerCamera.lookThroughNormalized();
-  renderingProcess.beginRenderSceneSky();
+  graphicState.beginRenderSceneSky();
   backdropRenderer.render(playerCamera);
-  renderingProcess.endRenderSceneSky();
+  graphicState.endRenderSceneSky();
+  if (renderingConfig.isInscattering()) {
+    renderingProcess.generateSkyBand(0);
+    renderingProcess.generateSkyBand(1);
+  }
+  graphicState.endRenderSkyBands();
   playerCamera.lookThrough();
   PerformanceMonitor.endActivity();
 }

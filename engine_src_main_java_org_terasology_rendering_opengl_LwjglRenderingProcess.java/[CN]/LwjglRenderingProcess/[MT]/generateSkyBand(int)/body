@@ -1,10 +1,11 @@
 {
-  FBO skyBand=getFBO("sceneSkyBand" + id);
+  String fboName="sceneSkyBand" + id;
+  FBO skyBand=getFBO(fboName);
   if (skyBand == null) {
     return;
   }
   skyBand.bind();
-  setRenderBufferMask(true,false,false);
+  graphicState.setRenderBufferMask(fboName,true,false,false);
   Material material=Assets.getMaterial("engine:prog.blur");
   material.enable();
   material.setFloat("radius",8.0f,true);

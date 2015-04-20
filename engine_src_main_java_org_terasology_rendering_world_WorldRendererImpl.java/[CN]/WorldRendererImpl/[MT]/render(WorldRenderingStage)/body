@@ -3,9 +3,9 @@
   preRenderUpdate(renderingStage);
   renderShadowMap();
   renderWorldReflection();
-  renderingProcess.enableWireframeIf(renderingDebugConfig.isWireframe());
-  renderingProcess.clear();
-  renderingProcess.beginRenderSceneOpaque();
+  graphicState.enableWireframeIf(renderingDebugConfig.isWireframe());
+  graphicState.clear();
+  graphicState.beginRenderSceneOpaque();
   renderSky();
   try (Activity ignored=PerformanceMonitor.startActivity("Render World")){
     renderObjectsOpaque();
@@ -13,11 +13,11 @@
     renderChunksAlphaReject();
     renderOverlays();
     renderFirstPersonView();
-    renderingProcess.endRenderSceneOpaque();
+    graphicState.endRenderSceneOpaque();
     renderLightGeometry();
     renderChunksRefractiveReflective();
   }
-   renderingProcess.disableWireframeIf(renderingDebugConfig.isWireframe());
+   graphicState.disableWireframeIf(renderingDebugConfig.isWireframe());
   combineRefractiveReflectiveAndOpaquePasses();
   renderSimpleBlendMaterialsIntoCombinedPass();
   renderFinalPostProcessedScene();
