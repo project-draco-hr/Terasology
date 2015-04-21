@@ -1,6 +1,6 @@
 {
   logger.info("Reading height map..");
-  Texture texture=Assets.getTexture("core:platec_heightmap");
+  Texture texture=Assets.getTexture("core",configuration.heightMap);
   ByteBuffer[] bb=texture.getData().getBuffers();
   IntBuffer intBuf=bb[0].asIntBuffer();
   mapWidth=texture.getWidth();
@@ -11,5 +11,4 @@
     long val=intBuf.get() & 0xFFFFFFFFL;
     heightmap[pos % mapWidth][pos / mapWidth]=val / (256 * 256 * 256* 256f);
   }
-  heightmap=shiftArray(rotateArray(heightmap),-50,-100);
 }
