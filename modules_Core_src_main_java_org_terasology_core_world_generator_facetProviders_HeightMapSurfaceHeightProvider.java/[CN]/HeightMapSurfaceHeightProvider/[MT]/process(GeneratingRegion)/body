@@ -3,19 +3,35 @@
   SurfaceHeightFacet facet=new SurfaceHeightFacet(region.getRegion(),border);
   for (  Vector2i pos : facet.getWorldRegion()) {
     int xzScale=configuration.terrainScale;
-    int wrapX=IntMath.mod(pos.getX(),mapWidth * xzScale);
-    int wrapZ=IntMath.mod(pos.getY(),mapHeight * xzScale);
-    int mapX=wrapX / xzScale;
-    int mapZ=wrapZ / xzScale;
-    double p00=heightmap[mapX][mapZ];
-    double p10=heightmap[(mapX - 1 + 512) % 512][(mapZ) % 512];
-    double p11=heightmap[(mapX - 1 + 512) % 512][(mapZ + 1 + 512) % 512];
-    double p01=heightmap[(mapX) % 512][(mapZ + 1 + 512) % 512];
-    float relX=(wrapX % xzScale) / (float)xzScale;
-    float relZ=(wrapZ % xzScale) / (float)xzScale;
-    float interpolatedHeight=(float)lerp(relX,lerp(relZ,p10,p11),lerp(relZ,p00,p01));
-    float height=configuration.heightOffset + configuration.heightScale * interpolatedHeight;
-    facet.setWorld(pos,height);
-  }
-  region.setRegionFacet(SurfaceHeightFacet.class,facet);
+    int mapX0;
+    int mapZ0;
+    int mapX1;
+    int mapZ1;
+switch (configuration.wrapMode) {
+case CLAMP:
+      mapX0=TeraMath.clamp(pos.getX(),0,mapWidth * xzScale - 1) / xzScale;
+    mapZ0=TeraMath.clamp(pos.getY(),0,mapHeight * xzScale - 1) / xzScale;
+  mapX1=TeraMath.clamp(mapX0 + 1,0,mapWidth - 1);
+mapZ1=TeraMath.clamp(mapZ0 + 1,0,mapHeight - 1);
+break;
+case REPEAT:
+mapX0=IntMath.mod(pos.getX(),mapWidth * xzScale) / xzScale;
+mapZ0=IntMath.mod(pos.getY(),mapHeight * xzScale) / xzScale;
+mapX1=IntMath.mod(mapX0 + 1,mapWidth);
+mapZ1=IntMath.mod(mapZ0 + 1,mapHeight);
+break;
+default :
+throw new UnsupportedOperationException("Not supported: " + configuration.wrapMode);
+}
+double p00=heightmap[mapX0][mapZ0];
+double p10=heightmap[mapX1][mapZ0];
+double p11=heightmap[mapX1][mapZ1];
+double p01=heightmap[mapX0][mapZ1];
+float relX=IntMath.mod(pos.getX(),xzScale) / (float)xzScale;
+float relZ=IntMath.mod(pos.getY(),xzScale) / (float)xzScale;
+float interpolatedHeight=(float)lerp(relX,lerp(relZ,p00,p01),lerp(relZ,p10,p11));
+float height=configuration.heightOffset + configuration.heightScale * interpolatedHeight;
+facet.setWorld(pos,height);
+}
+region.setRegionFacet(SurfaceHeightFacet.class,facet);
 }
