@@ -1,13 +1,30 @@
 {
-  canvas.setPart("slider");
+  if (vertical) {
+    canvas.setPart("sliderVertical");
+  }
+ else {
+    canvas.setPart("sliderHorizontal");
+  }
   canvas.drawBackground();
   canvas.addInteractionRegion(sliderListener);
   canvas.setPart("handle");
-  sliderSize=canvas.size().y - canvas.getCurrentStyle().getFixedHeight();
+  if (vertical) {
+    sliderSize=canvas.size().y - canvas.getCurrentStyle().getFixedHeight();
+  }
+ else {
+    sliderSize=canvas.size().x - canvas.getCurrentStyle().getFixedWidth();
+  }
   if (sliderSize > 0) {
     int drawLocation=pixelOffsetFor(getValue());
-    handleSize=canvas.getCurrentStyle().getFixedHeight();
-    Rect2i handleRegion=Rect2i.createFromMinAndSize(0,drawLocation,canvas.getCurrentStyle().getFixedWidth(),handleSize);
+    Rect2i handleRegion;
+    if (vertical) {
+      handleSize=canvas.getCurrentStyle().getFixedHeight();
+      handleRegion=Rect2i.createFromMinAndSize(0,drawLocation,canvas.getCurrentStyle().getFixedWidth(),handleSize);
+    }
+ else {
+      handleSize=canvas.getCurrentStyle().getFixedWidth();
+      handleRegion=Rect2i.createFromMinAndSize(drawLocation,0,handleSize,canvas.getCurrentStyle().getFixedHeight());
+    }
     canvas.drawBackground(handleRegion);
     canvas.addInteractionRegion(handleListener,handleRegion);
   }
