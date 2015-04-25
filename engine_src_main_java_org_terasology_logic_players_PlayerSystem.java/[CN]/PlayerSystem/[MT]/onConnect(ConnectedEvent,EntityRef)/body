@@ -15,10 +15,12 @@
  else {
     Vector3i pos=Vector3i.zero();
     if (worldProvider.isBlockRelevant(pos)) {
-      spawnPlayer(entity,getSafeSpawnPosition());
+      spawnPlayer(entity);
     }
  else {
-      Vector3f spawnPosition=getSafeSpawnPosition().toVector3f();
+      Spawner spawner=worldGenerator.getSpawner();
+      World world=worldGenerator.getWorld();
+      Vector3f spawnPosition=spawner.getSpawnPosition(world,entity);
       loc.setWorldPosition(spawnPosition);
       entity.saveComponent(loc);
       SpawningClientInfo spawningClientInfo=new SpawningClientInfo(entity,spawnPosition);

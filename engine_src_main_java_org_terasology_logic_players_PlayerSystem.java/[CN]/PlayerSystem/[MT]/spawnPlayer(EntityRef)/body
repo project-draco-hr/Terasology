@@ -1,9 +1,13 @@
 {
-  Vector3i spawnPos=getSafeSpawnPosition(initialSpawnPosition);
+  Spawner spawner=worldGenerator.getSpawner();
+  World world=worldGenerator.getWorld();
+  Vector3f spawnPos=spawner.getSpawnPosition(world,clientEntity);
   ClientComponent client=clientEntity.getComponent(ClientComponent.class);
   if (client != null) {
     PlayerFactory playerFactory=new PlayerFactory(entityManager);
-    EntityRef playerCharacter=playerFactory.newInstance(new Vector3f(spawnPos.x,spawnPos.y + 1.5f,spawnPos.z),clientEntity);
+    float heightOffset=1.5f;
+    Vector3f spawnPosition=new Vector3f(spawnPos.x,spawnPos.y + heightOffset,spawnPos.z);
+    EntityRef playerCharacter=playerFactory.newInstance(spawnPosition,clientEntity);
     Location.attachChild(playerCharacter,clientEntity,new Vector3f(),new Quat4f(0,0,0,1));
     Client clientListener=networkSystem.getOwner(clientEntity);
     Vector3i distance=clientListener.getViewDistance().getChunkDistance();
