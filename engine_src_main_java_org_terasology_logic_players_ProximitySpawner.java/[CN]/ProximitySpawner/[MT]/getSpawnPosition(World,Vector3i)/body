@@ -1,0 +1,20 @@
+{
+  int rad=16;
+  Vector3i ext=new Vector3i(rad,8,rad);
+  Region3i spawnArea=Region3i.createFromCenterExtents(spawnPos,ext);
+  Region worldRegion=world.getWorldData(spawnArea);
+  Vector2i spawnPos2d=new Vector2i(spawnPos.getX(),spawnPos.getZ());
+  SurfaceHeightFacet surfaceHeightFacet=worldRegion.getFacet(SurfaceHeightFacet.class);
+  SeaLevelFacet seaLevelFacet=worldRegion.getFacet(SeaLevelFacet.class);
+  int seaLevel=(seaLevelFacet != null) ? seaLevelFacet.getSeaLevel() : 0;
+  if (surfaceHeightFacet != null) {
+    for (    BaseVector2i pos : SpiralIterable.clockwise(spawnPos2d,rad)) {
+      float val=surfaceHeightFacet.get(pos.getX(),pos.getY());
+      int height=TeraMath.floorToInt(val);
+      if (height > seaLevel) {
+        return new Vector3f(pos.getX(),height,pos.getY());
+      }
+    }
+  }
+  return spawnPos.toVector3f();
+}
