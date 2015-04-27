@@ -2,7 +2,8 @@
   int targetBlockX=TeraMath.floorToInt(targetPos.x);
   int targetBlockY=TeraMath.floorToInt(targetPos.y);
   int targetBlockZ=TeraMath.floorToInt(targetPos.z);
-  for (  BaseVector2i pos : SpiralIterable.clockwise(new Vector2i(targetBlockX,targetBlockZ),4)) {
+  Vector2i center=new Vector2i(targetBlockX,targetBlockZ);
+  for (  BaseVector2i pos : SpiralIterable.clockwise(center).maxRadius(3).scale(2).build()) {
     Vector3i testPos=new Vector3i(pos.getX(),targetBlockY,pos.getY());
     Vector3i spawnPos=findOpenVerticalPosition(testPos,playerHeight);
     if (spawnPos != null) {
