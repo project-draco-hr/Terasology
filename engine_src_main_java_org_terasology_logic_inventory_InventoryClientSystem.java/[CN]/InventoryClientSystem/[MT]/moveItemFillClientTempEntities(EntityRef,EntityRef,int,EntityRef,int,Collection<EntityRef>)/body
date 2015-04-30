@@ -1,0 +1,20 @@
+{
+  boolean slotFromEmpty=!InventoryUtils.getItemAt(fromInventory,slotFrom).exists();
+  boolean slotToEmpty=!InventoryUtils.getItemAt(toInventory,slotTo).exists();
+  if (!InventoryUtils.moveItem(instigator,fromInventory,slotFrom,toInventory,slotTo)) {
+    return true;
+  }
+  if (slotFromEmpty) {
+    EntityRef itemAt=InventoryUtils.getItemAt(fromInventory,slotFrom);
+    if (itemAt.exists()) {
+      clientTempEntities.add(itemAt);
+    }
+  }
+  if (slotToEmpty) {
+    EntityRef itemAt=InventoryUtils.getItemAt(toInventory,slotTo);
+    if (itemAt.exists()) {
+      clientTempEntities.add(itemAt);
+    }
+  }
+  return false;
+}

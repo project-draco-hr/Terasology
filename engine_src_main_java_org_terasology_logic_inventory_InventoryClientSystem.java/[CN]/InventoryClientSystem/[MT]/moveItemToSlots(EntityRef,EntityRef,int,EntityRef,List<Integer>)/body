@@ -1,8 +1,9 @@
 {
-  if (!InventoryUtils.moveItemToSlots(instigator,fromInventory,slotFrom,toInventory,toSlots)) {
+  Collection<EntityRef> clientTempEntities=new HashSet<>();
+  if (moveItemToSlotsFillClientTempEntities(instigator,fromInventory,slotFrom,toInventory,toSlots,clientTempEntities)) {
     return false;
   }
-  MoveItemToSlotsRequest request=new MoveItemToSlotsRequest(instigator,fromInventory,slotFrom,toInventory,toSlots,changeId++);
+  MoveItemToSlotsRequest request=new MoveItemToSlotsRequest(instigator,fromInventory,slotFrom,toInventory,toSlots,changeId++,clientTempEntities);
   pendingMoves.put(request.getChangeId(),request);
   localPlayer.getClientEntity().send(request);
   return true;

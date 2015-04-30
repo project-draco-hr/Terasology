@@ -1,0 +1,11 @@
+{
+  EntityRef itemAtBefore=InventoryUtils.getItemAt(toInventory,slotTo);
+  boolean itemExisted=itemAtBefore.exists();
+  if (!InventoryUtils.moveItemAmount(instigator,fromInventory,slotFrom,toInventory,slotTo,count)) {
+    return true;
+  }
+  if (!itemExisted) {
+    clientTempEntities.add(InventoryUtils.getItemAt(toInventory,slotTo));
+  }
+  return false;
+}

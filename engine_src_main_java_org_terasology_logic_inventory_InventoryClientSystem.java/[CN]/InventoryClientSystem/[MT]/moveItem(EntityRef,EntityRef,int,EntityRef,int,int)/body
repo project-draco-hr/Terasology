@@ -1,8 +1,9 @@
 {
-  if (!InventoryUtils.moveItemAmount(instigator,fromInventory,slotFrom,toInventory,slotTo,count)) {
+  Collection<EntityRef> clientTempEntities=new HashSet<>();
+  if (moveItemAmountFillClientTempEntities(fromInventory,instigator,slotFrom,toInventory,slotTo,count,clientTempEntities)) {
     return false;
   }
-  MoveItemAmountRequest request=new MoveItemAmountRequest(instigator,fromInventory,slotFrom,toInventory,slotTo,count,changeId++);
+  MoveItemAmountRequest request=new MoveItemAmountRequest(instigator,fromInventory,slotFrom,toInventory,slotTo,count,changeId++,clientTempEntities);
   pendingMoves.put(request.getChangeId(),request);
   localPlayer.getClientEntity().send(request);
   return true;

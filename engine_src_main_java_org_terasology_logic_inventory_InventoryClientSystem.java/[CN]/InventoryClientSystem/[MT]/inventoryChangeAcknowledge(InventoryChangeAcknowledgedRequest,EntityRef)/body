@@ -1,4 +1,7 @@
 {
-  pendingMoves.remove(event.getChangeId());
+  AbstractMoveItemRequest removedRequest=pendingMoves.remove(event.getChangeId());
+  if (removedRequest != null) {
+    destroyClientTempEntities(removedRequest);
+  }
   recalculatePredictedState();
 }

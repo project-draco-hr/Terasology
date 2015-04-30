@@ -2,15 +2,24 @@
   for (  AbstractMoveItemRequest request : pendingMoves.values()) {
     if (request instanceof MoveItemRequest) {
       MoveItemRequest r=(MoveItemRequest)request;
-      InventoryUtils.moveItem(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlot());
+      destroyClientTempEntities(r);
+      Collection<EntityRef> newClientTempEntities=new HashSet<>();
+      moveItemFillClientTempEntities(request.getFromInventory(),r.getInstigator(),r.getFromSlot(),r.getToInventory(),r.getToSlot(),newClientTempEntities);
+      r.setClientSideTempEntities(newClientTempEntities);
     }
  else     if (request instanceof MoveItemAmountRequest) {
       MoveItemAmountRequest r=(MoveItemAmountRequest)request;
-      InventoryUtils.moveItemAmount(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlot(),r.getAmount());
+      destroyClientTempEntities(r);
+      Collection<EntityRef> newClientTempEntities=new HashSet<>();
+      moveItemAmountFillClientTempEntities(r.getFromInventory(),r.getInstigator(),r.getFromSlot(),r.getToInventory(),r.getToSlot(),r.getAmount(),newClientTempEntities);
+      r.setClientSideTempEntities(newClientTempEntities);
     }
  else     if (request instanceof MoveItemToSlotsRequest) {
       MoveItemToSlotsRequest r=(MoveItemToSlotsRequest)request;
-      InventoryUtils.moveItemToSlots(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlots());
+      destroyClientTempEntities(r);
+      Collection<EntityRef> newClientTempEntities=new HashSet<>();
+      moveItemToSlotsFillClientTempEntities(r.getInstigator(),r.getFromInventory(),r.getFromSlot(),r.getToInventory(),r.getToSlots(),newClientTempEntities);
+      r.setClientSideTempEntities(newClientTempEntities);
     }
   }
 }
