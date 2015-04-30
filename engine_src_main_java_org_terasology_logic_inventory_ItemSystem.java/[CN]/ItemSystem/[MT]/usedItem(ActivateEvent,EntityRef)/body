@@ -1,12 +1,7 @@
 {
   ItemComponent itemComp=item.getComponent(ItemComponent.class);
   if (itemComp.consumedOnUse) {
-    itemComp.stackCount--;
-    if (itemComp.stackCount == 0) {
-      item.destroy();
-    }
- else {
-      item.saveComponent(itemComp);
-    }
+    int slot=InventoryUtils.getSlotWithItem(event.getInstigator(),item);
+    inventoryManager.removeItem(event.getInstigator(),event.getInstigator(),slot,true,1);
   }
 }
