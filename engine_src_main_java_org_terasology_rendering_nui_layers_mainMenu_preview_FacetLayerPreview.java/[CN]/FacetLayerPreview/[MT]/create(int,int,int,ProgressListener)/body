@@ -1,0 +1,31 @@
+{
+  final int offX=-width * scale / 2;
+  final int offY=-height * scale / 2;
+  Rect2i tileArea=worldToTileArea(Rect2i.createFromMinAndSize(offX,offY,width * scale,height * scale));
+  int tileIdx=0;
+  float tileCount=tileArea.area();
+  int[] masks=colorModel.getMasks();
+  DataBufferInt imageBuffer=new DataBufferInt(width * height);
+  WritableRaster raster=Raster.createPackedRaster(imageBuffer,width,height,width,masks,null);
+  BufferedImage view=new BufferedImage(colorModel,raster,false,null);
+  Graphics2D g=view.createGraphics();
+  g.scale(1f / scale,1f / scale);
+  g.translate(-offX,-offY);
+  for (int z=tileArea.minY(); z < tileArea.maxY(); z++) {
+    for (int x=tileArea.minX(); x < tileArea.maxX(); x++) {
+      ImmutableVector2i pos=new ImmutableVector2i(x,z);
+      Region region=createRegion(pos);
+      BufferedImage image=rasterize(region);
+      g.drawImage(image,x * TILE_SIZE_X,z * TILE_SIZE_Y,null);
+      tileIdx++;
+      if (progressListener != null) {
+        progressListener.onProgress(tileIdx / tileCount);
+      }
+    }
+  }
+  g.dispose();
+  int[] data=imageBuffer.getData();
+  ByteBuffer byteBuffer=ByteBuffer.allocateDirect(data.length * Integer.BYTES);
+  byteBuffer.asIntBuffer().put(data);
+  return byteBuffer;
+}

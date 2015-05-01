@@ -1,0 +1,11 @@
+{
+  double value=facet.get(x,z);
+  if (Double.isFinite(value)) {
+    int round=DoubleMath.roundToInt(config.offset + config.scale * value,RoundingMode.HALF_UP);
+    int idx=TeraMath.clamp(round,0,255);
+    return GRAYS.get(idx);
+  }
+ else {
+    return MISSING;
+  }
+}

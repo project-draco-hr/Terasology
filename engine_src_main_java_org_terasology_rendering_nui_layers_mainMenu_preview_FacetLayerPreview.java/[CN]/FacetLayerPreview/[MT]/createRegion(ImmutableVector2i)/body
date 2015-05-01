@@ -1,0 +1,10 @@
+{
+  int vertChunks=4;
+  int minX=chunkPos.getX() * TILE_SIZE_X;
+  int minZ=chunkPos.getY() * TILE_SIZE_Y;
+  int height=vertChunks * ChunkConstants.SIZE_Y;
+  Region3i area3d=Region3i.createFromMinAndSize(new Vector3i(minX,0,minZ),new Vector3i(TILE_SIZE_X,height,TILE_SIZE_Y));
+  World world=worldGenerator.getWorld();
+  Region region=world.getWorldData(area3d);
+  return region;
+}

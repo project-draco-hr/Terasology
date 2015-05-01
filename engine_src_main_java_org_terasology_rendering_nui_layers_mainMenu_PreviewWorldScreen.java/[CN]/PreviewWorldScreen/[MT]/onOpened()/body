@@ -3,18 +3,11 @@
   CoreRegistry.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary());
   WorldGeneratorInfo info=worldGeneratorManager.getWorldGeneratorInfo(config.getWorldGeneration().getDefaultGenerator());
   try {
-    WorldGenerator worldGenerator=worldGeneratorManager.createGenerator(info.getUri());
-    seedBinding.setWorldGenerator(worldGenerator);
-    if (worldGenerator instanceof WorldGenerator2DPreview) {
-      previewGenerator=(WorldGenerator2DPreview)worldGenerator;
-    }
- else {
-      logger.info(info.getUri().toString() + " does not support a 2d preview");
-    }
+    worldGenerator=worldGeneratorManager.createGenerator(info.getUri());
+    worldGenerator.setWorldSeed(seed.getText());
   }
  catch (  Exception e) {
-    seedBinding=new SeedBinding();
-    previewGenerator=null;
-    logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview");
+    worldGenerator=null;
+    logger.error("Unable to load world generator: " + info.getUri().toString() + " for a 2d preview",e);
   }
 }
