@@ -1,0 +1,18 @@
+{
+  Client clientListener=networkSystem.getOwner(entity);
+  updateRelevanceEntity(entity,clientListener.getViewDistance().getChunkDistance());
+  ClientComponent client=entity.getComponent(ClientComponent.class);
+  client.character=character;
+  entity.saveComponent(client);
+  CharacterComponent characterComp=character.getComponent(CharacterComponent.class);
+  if (characterComp != null) {
+    characterComp.controller=entity;
+    character.saveComponent(characterComp);
+    character.setOwner(entity);
+    Location.attachChild(character,entity,new Vector3f(),new Quat4f(0,0,0,1));
+  }
+ else {
+    character.destroy();
+    spawnPlayer(entity);
+  }
+}

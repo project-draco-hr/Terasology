@@ -1,17 +1,15 @@
 {
-  ClientComponent client=entity.getComponent(ClientComponent.class);
-  if (!client.character.exists()) {
-    Vector3i pos=Vector3i.zero();
-    if (worldProvider.isBlockRelevant(pos)) {
-      spawnPlayer(entity,getSafeSpawnPosition());
-    }
+  Vector3f spawnPosition=worldGenerator.getSpawnPosition(entity);
+  LocationComponent loc=entity.getComponent(LocationComponent.class);
+  loc.setWorldPosition(spawnPosition);
+  loc.setLocalRotation(new Quat4f());
+  entity.saveComponent(loc);
+  if (worldProvider.isBlockRelevant(spawnPosition)) {
+    spawnPlayer(entity);
+  }
  else {
-      LocationComponent loc=entity.getComponent(LocationComponent.class);
-      loc.setWorldPosition(getSafeSpawnPosition().toVector3f());
-      entity.saveComponent(loc);
-      updateRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance());
-      SpawningClientInfo info=new SpawningClientInfo(entity,getSafeSpawnPosition().toVector3f());
-      clientsPreparingToSpawn.add(info);
-    }
+    updateRelevanceEntity(entity,ViewDistance.LEGALLY_BLIND.getChunkDistance());
+    SpawningClientInfo info=new SpawningClientInfo(entity,spawnPosition);
+    clientsPreparingToSpawn.add(info);
   }
 }

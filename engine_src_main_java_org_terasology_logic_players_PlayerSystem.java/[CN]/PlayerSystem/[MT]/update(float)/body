@@ -3,15 +3,14 @@
   while (i.hasNext()) {
     SpawningClientInfo spawning=i.next();
     if (worldProvider.isBlockRelevant(spawning.position)) {
-      if (spawning.playerStore == null) {
-        spawnPlayer(spawning.clientEntity,getSafeSpawnPosition());
-      }
- else       if (!spawning.playerStore.hasCharacter()) {
-        spawning.playerStore.restoreEntities();
-        spawnPlayer(spawning.clientEntity,getSafeSpawnPosition());
+      PlayerStore playerStore=spawning.playerStore;
+      if (playerStore == null) {
+        spawnPlayer(spawning.clientEntity);
       }
  else {
-        restoreCharacter(spawning.clientEntity,spawning.playerStore);
+        playerStore.restoreEntities();
+        EntityRef character=playerStore.getCharacter();
+        restoreCharacter(spawning.clientEntity,character);
       }
       i.remove();
     }
