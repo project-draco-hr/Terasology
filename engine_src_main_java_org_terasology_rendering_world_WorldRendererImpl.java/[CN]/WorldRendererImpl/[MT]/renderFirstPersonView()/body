@@ -1,7 +1,7 @@
 {
   if (!renderingDebugConfig.isFirstPersonElementsHidden()) {
     PerformanceMonitor.startActivity("Render First Person");
-    renderingProcess.beginRenderFirstPerson();
+    graphicState.preRenderSetupFirstPerson();
     playerCamera.updateMatrices(90f);
     playerCamera.loadProjectionMatrix();
     for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
@@ -9,7 +9,7 @@
     }
     playerCamera.updateMatrices();
     playerCamera.loadProjectionMatrix();
-    renderingProcess.endRenderFirstPerson();
+    graphicState.postRenderClenaupFirstPerson();
     PerformanceMonitor.endActivity();
   }
 }
