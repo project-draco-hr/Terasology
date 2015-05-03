@@ -1,0 +1,12 @@
+{
+  float dx=cursor.getX() - locX;
+  float dy=cursor.getY() - locY;
+  float distSq=dx * dx + dy * dy;
+  float rad=radiusFunc.apply(object).floatValue();
+  if (distSq < rad * rad) {
+    if (distSq < minDistSq) {
+      minDistSq=distSq;
+      closest=object;
+    }
+  }
+}

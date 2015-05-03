@@ -7,9 +7,12 @@
   Graphics2D g=image.createGraphics();
   g.setColor(Color.BLACK);
   g.fillRect(0,0,width,height);
-  FacetLayer layer=new SurfaceHeightFacetLayer();
   try {
-    layer.render(image,region);
+    for (    FacetLayer layer : facetLayers) {
+      if (layer.isVisible()) {
+        layer.render(image,region);
+      }
+    }
   }
   finally {
     g.dispose();
