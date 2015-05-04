@@ -1,11 +1,7 @@
 {
   zoomSlider=find("zoomSlider",UISlider.class);
   if (zoomSlider != null) {
-    zoomSlider.setMinimum(1.0f);
-    zoomSlider.setRange(99.f);
-    zoomSlider.setIncrement(1.0f);
-    zoomSlider.setValue(10f);
-    zoomSlider.setPrecision(0);
+    zoomSlider.setValue(2f);
   }
   seed=find("seed",UIText.class);
   applyButton=find("apply",UIButton.class);
@@ -23,31 +19,6 @@
     errorLabel.setVisible(false);
   }
   previewImage=find("preview",UIImage.class);
-  layerDropdown=find("display",UIDropdown.class);
-  layerDropdown.bindOptions(new ReadOnlyBinding<List<String>>(){
-    @Override public List<String> get(){
-      if (worldGenerator instanceof WorldGenerator2DPreview) {
-        return Lists.newArrayList(((WorldGenerator2DPreview)worldGenerator).getLayers());
-      }
- else {
-        return Lists.newArrayList();
-      }
-    }
-  }
-);
-  layerDropdown.bindSelection(new Binding<String>(){
-    String selection;
-    @Override public String get(){
-      if (selection == null && layerDropdown.getOptions().size() > 0) {
-        selection=layerDropdown.getOptions().get(0);
-      }
-      return selection;
-    }
-    @Override public void set(    String value){
-      selection=value;
-    }
-  }
-);
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().popScreen();

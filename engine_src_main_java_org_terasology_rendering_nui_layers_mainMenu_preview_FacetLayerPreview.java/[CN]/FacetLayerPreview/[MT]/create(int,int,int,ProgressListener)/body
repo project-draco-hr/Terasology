@@ -21,6 +21,9 @@
       if (progressListener != null) {
         progressListener.onProgress(tileIdx / tileCount);
       }
+      if (Thread.currentThread().isInterrupted()) {
+        throw new InterruptedException();
+      }
     }
   }
   g.dispose();
