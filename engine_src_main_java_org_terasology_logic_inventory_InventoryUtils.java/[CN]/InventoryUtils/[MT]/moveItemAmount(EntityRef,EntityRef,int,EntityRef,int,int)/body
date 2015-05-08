@@ -9,7 +9,6 @@
     ItemComponent copyItem=fromCopy.getComponent(ItemComponent.class);
     copyItem.stackCount=(byte)amount;
     fromCopy.saveComponent(copyItem);
-    putItemIntoSlot(to,fromCopy,slotTo);
     ItemComponent fromItem=itemFrom.getComponent(ItemComponent.class);
     if (fromItem.stackCount == amount) {
       putItemIntoSlot(from,EntityRef.NULL,slotFrom);
@@ -17,10 +16,9 @@
  else {
       adjustStackSize(from,slotFrom,fromItem.stackCount - amount);
     }
+    putItemIntoSlot(to,fromCopy,slotTo);
   }
  else {
-    ItemComponent itemToComponent=itemTo.getComponent(ItemComponent.class);
-    adjustStackSize(to,slotTo,itemToComponent.stackCount + amount);
     ItemComponent itemFromComponent=itemFrom.getComponent(ItemComponent.class);
     if (itemFromComponent.stackCount == amount) {
       putItemIntoSlot(from,EntityRef.NULL,slotFrom);
@@ -28,6 +26,8 @@
  else {
       adjustStackSize(from,slotFrom,itemFromComponent.stackCount - amount);
     }
+    ItemComponent itemToComponent=itemTo.getComponent(ItemComponent.class);
+    adjustStackSize(to,slotTo,itemToComponent.stackCount + amount);
   }
   return true;
 }

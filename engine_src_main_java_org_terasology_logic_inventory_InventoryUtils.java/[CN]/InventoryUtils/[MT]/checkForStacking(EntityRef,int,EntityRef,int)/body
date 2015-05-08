@@ -4,8 +4,8 @@
   if (itemFrom.exists() && itemTo.exists() && canStackInto(itemFrom,itemTo)) {
     int fromCount=itemFrom.getComponent(ItemComponent.class).stackCount;
     int toCount=itemTo.getComponent(ItemComponent.class).stackCount;
-    adjustStackSize(to,slotTo,fromCount + toCount);
     putItemIntoSlot(from,EntityRef.NULL,slotFrom);
+    adjustStackSize(to,slotTo,fromCount + toCount);
     return true;
   }
   return false;
