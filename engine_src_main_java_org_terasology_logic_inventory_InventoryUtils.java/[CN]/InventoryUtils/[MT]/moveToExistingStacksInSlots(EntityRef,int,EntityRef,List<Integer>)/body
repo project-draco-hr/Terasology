@@ -2,10 +2,10 @@
   EntityRef fromItem=getItemAt(from,fromSlot);
   ItemComponent fromItemComp=fromItem.getComponent(ItemComponent.class);
   if (fromItemComp == null) {
-    return false;
+    return 0;
   }
+  int oldFromStackCount=fromItemComp.stackCount;
   int newFromStackCount=fromItemComp.stackCount;
-  int slotCount=getSlotCount(to);
   for (  int toSlot : toSlots) {
     EntityRef toItem=getItemAt(to,toSlot);
     if (isSameItem(toItem,fromItem)) {
@@ -16,22 +16,19 @@
       int spaceLeft=toItemComp.maxStackSize - toItemComp.stackCount;
       if (spaceLeft > 0) {
         int amountToTransfer=Math.min(spaceLeft,newFromStackCount);
-        adjustStackSize(to,toSlot,toItemComp.stackCount + amountToTransfer);
         newFromStackCount-=amountToTransfer;
+        if (newFromStackCount == 0) {
+          putItemIntoSlot(from,EntityRef.NULL,fromSlot);
+        }
+ else {
+          adjustStackSize(from,fromSlot,newFromStackCount);
+        }
+        adjustStackSize(to,toSlot,toItemComp.stackCount + amountToTransfer);
       }
     }
-  }
-  if (newFromStackCount == 0) {
-    putItemIntoSlot(from,EntityRef.NULL,fromSlot);
-    return true;
-  }
- else {
-    if (newFromStackCount != fromItemComp.stackCount) {
-      adjustStackSize(from,fromSlot,newFromStackCount);
-      return true;
-    }
- else {
-      return false;
+    if (newFromStackCount == 0) {
+      break;
     }
   }
+  return oldFromStackCount - newFromStackCount;
 }

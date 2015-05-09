@@ -6,7 +6,17 @@
     for (int i=0; i < componentParams.size(); ++i) {
       params[i + 2]=entity.getComponent(componentParams.get(i));
     }
-    methodAccess.invoke(handler,methodIndex,params);
+    if (!activity.isEmpty()) {
+      PerformanceMonitor.startActivity(activity);
+    }
+    try {
+      methodAccess.invoke(handler,methodIndex,params);
+    }
+  finally {
+      if (!activity.isEmpty()) {
+        PerformanceMonitor.endActivity();
+      }
+    }
   }
  catch (  IllegalArgumentException ex) {
     logger.error("Failed to invoke event",ex);

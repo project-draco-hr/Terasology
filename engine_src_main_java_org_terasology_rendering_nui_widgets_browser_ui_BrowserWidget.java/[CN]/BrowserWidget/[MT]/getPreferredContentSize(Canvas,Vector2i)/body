@@ -1,0 +1,37 @@
+{
+  int x=0;
+  int y=0;
+  if (displayedPage != null) {
+    DefaultDocumentRenderStyle defaultDocumentRenderStyle=new DefaultDocumentRenderStyle(canvas);
+    DocumentRenderStyle documentRenderStyle=getDocumentRenderStyle(defaultDocumentRenderStyle,displayedPage);
+    y+=documentRenderStyle.getDocumentIndentTop();
+    int documentIndentSides=documentRenderStyle.getDocumentIndentLeft() + documentRenderStyle.getDocumentIndentRight();
+    int availableSpace=canvas.getRegion().sizeX() - documentIndentSides;
+    for (    ParagraphData paragraphData : displayedPage.getParagraphs()) {
+      ParagraphRenderStyle paragraphRenderStyle=getParagraphRenderStyle(documentRenderStyle,paragraphData);
+      int paragraphSideIndent=paragraphRenderStyle.getParagraphIndentLeft() + paragraphRenderStyle.getParagraphIndentRight() + paragraphRenderStyle.getParagraphBackgroundIndentLeft()+ paragraphRenderStyle.getParagraphBackgroundIndentRight();
+      int paragraphMinWidth=Math.max(paragraphRenderStyle.getParagraphMinimumWidth(),paragraphData.getParagraphContents().getMinWidth(canvas,paragraphRenderStyle));
+      availableSpace=Math.max(availableSpace,paragraphSideIndent + paragraphMinWidth);
+    }
+    ParagraphRenderStyle lastRenderStyle=null;
+    boolean first=true;
+    for (    ParagraphData paragraphData : displayedPage.getParagraphs()) {
+      if (lastRenderStyle != null) {
+        y+=lastRenderStyle.getParagraphIndentBottom(false);
+      }
+      ParagraphRenderStyle paragraphRenderStyle=getParagraphRenderStyle(documentRenderStyle,paragraphData);
+      y+=paragraphRenderStyle.getParagraphIndentTop(first);
+      y+=paragraphRenderStyle.getParagraphBackgroundIndentTop() + paragraphRenderStyle.getParagraphBackgroundIndentBottom();
+      int paragraphSideIndent=paragraphRenderStyle.getParagraphIndentLeft() + paragraphRenderStyle.getParagraphIndentRight() + paragraphRenderStyle.getParagraphBackgroundIndentLeft()+ paragraphRenderStyle.getParagraphBackgroundIndentRight();
+      y+=paragraphData.getParagraphContents().getPreferredHeight(canvas,paragraphRenderStyle,availableSpace - paragraphSideIndent);
+      lastRenderStyle=paragraphRenderStyle;
+      first=false;
+    }
+    if (lastRenderStyle != null) {
+      y+=lastRenderStyle.getParagraphIndentBottom(true);
+    }
+    y+=documentRenderStyle.getDocumentIndentBottom();
+    x+=availableSpace + documentIndentSides;
+  }
+  return new Vector2i(x,y);
+}

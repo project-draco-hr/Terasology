@@ -5,7 +5,11 @@
   if (removeFrom.isConsumed()) {
     return false;
   }
-  boolean movedToStack=moveToExistingStacksInSlots(from,fromSlot,to,toSlots);
-  boolean movedToFreeSlot=moveToFreeSlots(instigator,from,fromSlot,to,toSlots);
-  return movedToStack || movedToFreeSlot;
+  int stackCount=InventoryUtils.getStackCount(fromItem);
+  int movedToStack=moveToExistingStacksInSlots(from,fromSlot,to,toSlots);
+  boolean movedToFreeSlot=false;
+  if (stackCount != movedToStack) {
+    movedToFreeSlot=moveToFreeSlots(instigator,from,fromSlot,to,toSlots);
+  }
+  return movedToStack > 0 || movedToFreeSlot;
 }
