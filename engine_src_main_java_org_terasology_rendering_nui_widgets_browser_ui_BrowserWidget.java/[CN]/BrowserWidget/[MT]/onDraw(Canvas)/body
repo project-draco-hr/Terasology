@@ -1,0 +1,54 @@
+{
+  hyperlinkBoxes.clear();
+  if (displayedPage != null) {
+    DefaultDocumentRenderStyle defaultDocumentRenderStyle=new DefaultDocumentRenderStyle(canvas);
+    DocumentRenderStyle documentRenderStyle=getDocumentRenderStyle(defaultDocumentRenderStyle,displayedPage);
+    Rect2i region=canvas.getRegion();
+    int x=region.minX() + documentRenderStyle.getDocumentIndentLeft();
+    int y=region.minY() + documentRenderStyle.getDocumentIndentTop();
+    int availableWidth=region.width() - documentRenderStyle.getDocumentIndentLeft() - documentRenderStyle.getDocumentIndentRight();
+    Color backgroundColor=documentRenderStyle.getBackgroundColor();
+    if (backgroundColor != null) {
+      canvas.drawFilledRectangle(canvas.getRegion(),backgroundColor);
+    }
+    y+=documentRenderStyle.getDocumentIndentTop();
+    ParagraphRenderStyle lastRenderStyle=null;
+    boolean first=true;
+    for (    ParagraphData paragraphData : displayedPage.getParagraphs()) {
+      if (lastRenderStyle != null) {
+        y+=lastRenderStyle.getParagraphIndentBottom(false);
+      }
+      ParagraphRenderStyle paragraphRenderStyle=getParagraphRenderStyle(documentRenderStyle,paragraphData);
+      int paragraphBorderWidth=availableWidth - paragraphRenderStyle.getParagraphIndentLeft() - paragraphRenderStyle.getParagraphIndentRight();
+      int paragraphWidth=paragraphBorderWidth - paragraphRenderStyle.getParagraphBackgroundIndentLeft() - paragraphRenderStyle.getParagraphBackgroundIndentRight();
+      ParagraphRenderable paragraphContents=paragraphData.getParagraphContents();
+      int paragraphHeight=paragraphContents.getPreferredHeight(canvas,paragraphRenderStyle,paragraphWidth);
+      int paragraphBorderHeight=paragraphHeight + paragraphRenderStyle.getParagraphBackgroundIndentTop() + paragraphRenderStyle.getParagraphBackgroundIndentBottom();
+      Rect2i paragraphBorderRegion=Rect2i.createFromMinAndSize(x + paragraphRenderStyle.getParagraphIndentLeft(),y + paragraphRenderStyle.getParagraphIndentTop(first),paragraphBorderWidth,paragraphBorderHeight);
+      Color paragraphBackground=paragraphRenderStyle.getParagraphBackground();
+      if (paragraphBackground != null) {
+        canvas.drawFilledRectangle(paragraphBorderRegion,paragraphBackground);
+      }
+      Rect2i paragraphRegion=Rect2i.createFromMinAndSize(x + paragraphRenderStyle.getParagraphIndentLeft() + paragraphRenderStyle.getParagraphBackgroundIndentLeft(),y + paragraphRenderStyle.getParagraphIndentTop(first) + paragraphRenderStyle.getParagraphBackgroundIndentTop(),paragraphWidth,paragraphHeight);
+      paragraphContents.render(canvas,paragraphRegion,paragraphRenderStyle,register);
+      y+=paragraphRenderStyle.getParagraphIndentTop(first);
+      y+=paragraphBorderHeight;
+      lastRenderStyle=paragraphRenderStyle;
+      first=false;
+    }
+  }
+  canvas.addInteractionRegion(new BaseInteractionListener(){
+    @Override public boolean onMouseClick(    MouseInput button,    Vector2i pos){
+      for (      HyperlinkBox hyperlinkBox : hyperlinkBoxes) {
+        if (hyperlinkBox.box.contains(pos)) {
+          for (          BrowserHyperlinkListener browserHyperlinkListener : listenerList) {
+            browserHyperlinkListener.hyperlinkClicked(hyperlinkBox.hyperlink);
+          }
+          break;
+        }
+      }
+      return true;
+    }
+  }
+);
+}
