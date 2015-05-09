@@ -1,0 +1,9 @@
+{
+  int imgWidth=384;
+  int imgHeight=384;
+  ByteBuffer buffer=ByteBuffer.allocateDirect(imgWidth * imgHeight * Integer.BYTES);
+  ByteBuffer[] data=new ByteBuffer[]{buffer};
+  AssetUri uri=new AssetUri(AssetType.TEXTURE,"engine:terrainPreview");
+  TextureData texData=new TextureData(imgWidth,imgHeight,data,Texture.WrapMode.CLAMP,Texture.FilterMode.LINEAR);
+  texture=Assets.generateAsset(uri,texData,Texture.class);
+}
