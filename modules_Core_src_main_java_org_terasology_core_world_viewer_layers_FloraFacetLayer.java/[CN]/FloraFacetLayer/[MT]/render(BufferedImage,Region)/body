@@ -1,0 +1,19 @@
+{
+  FloraFacet treeFacet=region.getFacet(FloraFacet.class);
+  Graphics2D g=img.createGraphics();
+  int width=img.getWidth();
+  ColorModel colorModel=img.getColorModel();
+  ColorBlender blender=ColorBlenders.forColorModel(ColorModels.RGBA,colorModel);
+  DataBufferInt dataBuffer=(DataBufferInt)img.getRaster().getDataBuffer();
+  for (  Entry<Vector3i,FloraType> entry : treeFacet.getRelativeEntries().entrySet()) {
+    FloraType treeGen=entry.getValue();
+    int wx=entry.getKey().getX();
+    int wz=entry.getKey().getZ();
+    Color color=colorFunc.apply(treeGen);
+    int src=color.rgba();
+    int dst=dataBuffer.getElem(wz * width + wx);
+    int mix=blender.blend(src,dst);
+    dataBuffer.setElem(wz * width + wx,mix);
+  }
+  g.dispose();
+}

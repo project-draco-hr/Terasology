@@ -1,0 +1,17 @@
+{
+  TreeFacet treeFacet=region.getFacet(TreeFacet.class);
+  Graphics2D g=img.createGraphics();
+  g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+  for (  Entry<Vector3i,TreeGenerator> entry : treeFacet.getRelativeEntries().entrySet()) {
+    TreeGenerator treeGen=entry.getValue();
+    int wx=entry.getKey().getX();
+    int wz=entry.getKey().getZ();
+    int r=radiusFunc.apply(treeGen);
+    Color color=colorFunc.apply(treeGen);
+    g.setColor(color);
+    g.fillOval(wx - r + 1,wz - r + 1,r * 2 - 1,r * 2 - 1);
+    g.setColor(color.darker());
+    g.drawOval(wx - r,wz - r,r * 2,r * 2);
+  }
+  g.dispose();
+}

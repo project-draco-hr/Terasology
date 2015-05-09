@@ -1,0 +1,11 @@
+{
+  Class<? extends WorldFacet> facetClass=getFacetClass();
+  if (facetClass == null) {
+    return super.toString();
+  }
+ else {
+    String name=facetClass.getSimpleName();
+    name=name.replaceAll("Facet","").replaceAll("(.)([A-Z])","$1 $2");
+    return name;
+  }
+}
