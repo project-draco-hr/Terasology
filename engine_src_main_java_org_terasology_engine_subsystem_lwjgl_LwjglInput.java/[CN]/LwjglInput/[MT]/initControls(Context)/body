@@ -1,0 +1,14 @@
+{
+  try {
+    Keyboard.create();
+    Keyboard.enableRepeatEvents(true);
+    Mouse.create();
+    InputSystem inputSystem=new InputSystem();
+    context.put(InputSystem.class,inputSystem);
+    inputSystem.setMouseDevice(new LwjglMouseDevice());
+    inputSystem.setKeyboardDevice(new LwjglKeyboardDevice());
+  }
+ catch (  LWJGLException e) {
+    throw new RuntimeException("Could not initialize controls.",e);
+  }
+}

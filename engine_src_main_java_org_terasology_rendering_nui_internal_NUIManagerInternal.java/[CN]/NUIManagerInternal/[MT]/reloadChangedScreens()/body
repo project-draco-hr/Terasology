@@ -17,9 +17,9 @@
         logger.info("File in folder with screens changed: {}",fullPath);
         AssetUri uri=filePathToAssetUriMap.get(fullPath);
         if (uri != null) {
-          UIData uiData=CoreRegistry.get(AssetManager.class).loadAssetData(uri,UIData.class);
+          UIData uiData=context.get(AssetManager.class).loadAssetData(uri,UIData.class);
           if (uiData != null) {
-            CoreRegistry.get(AssetManager.class).generateAsset(uri,uiData);
+            context.get(AssetManager.class).generateAsset(uri,uiData);
             closeScreenWithoutEvent(uri);
             pushScreen(uri);
             logger.info("Reloaded screen {}",uri);

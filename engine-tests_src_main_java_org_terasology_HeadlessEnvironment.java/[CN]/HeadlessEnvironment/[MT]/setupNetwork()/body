@@ -1,6 +1,6 @@
 {
   EngineTime mockTime=mock(EngineTime.class);
-  CoreRegistry.put(Time.class,mockTime);
-  NetworkSystem networkSystem=new NetworkSystemImpl(mockTime);
-  CoreRegistry.put(NetworkSystem.class,networkSystem);
+  context.put(Time.class,mockTime);
+  NetworkSystem networkSystem=new NetworkSystemImpl(mockTime,getContext());
+  context.put(NetworkSystem.class,networkSystem);
 }

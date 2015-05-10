@@ -1,0 +1,19 @@
+{
+  Config config=context.get(Config.class);
+  if (config.getAudio().isDisableSound()) {
+    audioManager=new NullAudioManager();
+  }
+ else {
+    try {
+      audioManager=new OpenALManager(config.getAudio());
+    }
+ catch (    LWJGLException|OpenALException e) {
+      logger.warn("Could not load OpenAL manager - sound is disabled",e);
+      audioManager=new NullAudioManager();
+    }
+  }
+  context.put(AudioManager.class,audioManager);
+  AssetManager assetManager=context.get(AssetManager.class);
+  assetManager.setAssetFactory(AssetType.SOUND,audioManager.getStaticSoundFactory());
+  assetManager.setAssetFactory(AssetType.MUSIC,audioManager.getStreamingSoundFactory());
+}

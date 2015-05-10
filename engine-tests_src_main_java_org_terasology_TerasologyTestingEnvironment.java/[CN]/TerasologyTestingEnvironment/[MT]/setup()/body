@@ -1,19 +1,19 @@
 {
-  CoreRegistry.put(ModuleManager.class,moduleManager);
+  context.put(ModuleManager.class,moduleManager);
   mockTime=mock(EngineTime.class);
-  CoreRegistry.put(Time.class,mockTime);
-  NetworkSystemImpl networkSystem=new NetworkSystemImpl(mockTime);
-  CoreRegistry.put(NetworkSystem.class,networkSystem);
-  engineEntityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  context.put(Time.class,mockTime);
+  NetworkSystemImpl networkSystem=new NetworkSystemImpl(mockTime,context);
+  context.put(NetworkSystem.class,networkSystem);
+  engineEntityManager=new EntitySystemBuilder().build(context.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
   Path savePath=PathManager.getInstance().getSavePath("world1");
-  CoreRegistry.put(StorageManager.class,new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),engineEntityManager));
+  context.put(StorageManager.class,new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),engineEntityManager));
   componentSystemManager=new ComponentSystemManager();
-  CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
+  context.put(ComponentSystemManager.class,componentSystemManager);
   LoadPrefabs prefabLoadStep=new LoadPrefabs();
   boolean complete=false;
   prefabLoadStep.begin();
   while (!complete) {
     complete=prefabLoadStep.step();
   }
-  CoreRegistry.get(ComponentSystemManager.class).initialise();
+  context.get(ComponentSystemManager.class).initialise();
 }

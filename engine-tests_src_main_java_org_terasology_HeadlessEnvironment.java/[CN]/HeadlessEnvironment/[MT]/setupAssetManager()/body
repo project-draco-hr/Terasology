@@ -1,7 +1,7 @@
 {
   setupEmptyAssetManager();
-  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
-  AudioManager audioManager=CoreRegistry.get(AudioManager.class);
+  AssetManager assetManager=context.get(AssetManager.class);
+  AudioManager audioManager=context.get(AudioManager.class);
   AssetType.registerAssetTypes(assetManager);
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){

@@ -11,7 +11,7 @@
     for (    Module moduleInfo : env.getModulesOrderedByDependencies()) {
       logger.info("Activating module: {}:{}",moduleInfo.getId(),moduleInfo.getVersion());
     }
-    ApplyModulesUtil.applyModules();
+    ApplyModulesUtil.applyModules(CoreRegistry.get(Context.class));
   }
  else {
     logger.warn("Missing at least one required module or dependency: {}",moduleIds);

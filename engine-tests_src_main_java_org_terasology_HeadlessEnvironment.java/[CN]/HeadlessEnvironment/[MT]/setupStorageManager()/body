@@ -1,6 +1,6 @@
 {
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
-  EngineEntityManager engineEntityManager=CoreRegistry.get(EngineEntityManager.class);
+  ModuleManager moduleManager=context.get(ModuleManager.class);
+  EngineEntityManager engineEntityManager=context.get(EngineEntityManager.class);
   Path savePath=PathManager.getInstance().getSavePath("world1");
-  CoreRegistry.put(StorageManager.class,new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),engineEntityManager));
+  context.put(StorageManager.class,new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),engineEntityManager));
 }
