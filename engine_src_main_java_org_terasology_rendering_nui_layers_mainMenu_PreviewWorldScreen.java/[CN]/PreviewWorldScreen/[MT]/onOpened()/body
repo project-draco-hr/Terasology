@@ -8,11 +8,12 @@
     if (result.isSuccess()) {
       environment=moduleManager.loadEnvironment(result.getModules(),false);
       CoreRegistry.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment));
-      CoreRegistry.get(AssetManager.class).setEnvironment(environment);
+      assetManager.setEnvironment(environment);
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());
       previewGen=new FacetLayerPreview(environment,worldGenerator);
       configureProperties();
+      triggerUpdate=true;
     }
  else {
       logger.error("Could not resolve modules for: {}",worldGenUri);
