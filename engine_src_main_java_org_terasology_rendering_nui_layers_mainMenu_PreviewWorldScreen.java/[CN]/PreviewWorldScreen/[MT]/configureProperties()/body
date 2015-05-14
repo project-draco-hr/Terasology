@@ -2,22 +2,17 @@
   PropertyLayout properties=find("properties",PropertyLayout.class);
   properties.setOrdering(PropertyOrdering.byLabel());
   properties.clear();
-  if (worldGenerator.getConfigurator().isPresent()) {
-    WorldConfigurator worldConfig=worldGenerator.getConfigurator().get();
-    Map<String,Component> params=worldConfig.getProperties();
-    for (    String key : params.keySet()) {
-      Class<? extends Component> clazz=params.get(key).getClass();
-      Component comp=config.getModuleConfig(worldGenerator.getUri(),key,clazz);
-      if (comp != null) {
-        worldConfig.setProperty(key,comp);
-      }
-    }
-    for (    String label : params.keySet()) {
-      PropertyProvider<?> provider=new PropertyProvider<>(params.get(label));
-      properties.addPropertyProvider(label,provider);
+  WorldConfigurator worldConfig=worldGenerator.getConfigurator();
+  Map<String,Component> params=worldConfig.getProperties();
+  for (  String key : params.keySet()) {
+    Class<? extends Component> clazz=params.get(key).getClass();
+    Component comp=config.getModuleConfig(worldGenerator.getUri(),key,clazz);
+    if (comp != null) {
+      worldConfig.setProperty(key,comp);
     }
   }
- else {
-    logger.info(worldGenerator.getUri().toString() + " does not support configuration");
+  for (  String label : params.keySet()) {
+    PropertyProvider<?> provider=new PropertyProvider<>(params.get(label));
+    properties.addPropertyProvider(label,provider);
   }
 }

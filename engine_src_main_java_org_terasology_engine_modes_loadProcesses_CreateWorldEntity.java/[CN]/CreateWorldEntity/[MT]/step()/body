@@ -6,16 +6,13 @@
     EntityRef worldEntity=worldEntityIterator.next();
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
     WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
-    Optional<WorldConfigurator> ocf=worldGenerator.getConfigurator();
-    if (ocf.isPresent()) {
-      WorldConfigurator worldConfigurator=ocf.get();
-      Map<String,Component> params=worldConfigurator.getProperties();
-      for (      Map.Entry<String,Component> entry : params.entrySet()) {
-        Class<? extends Component> clazz=entry.getValue().getClass();
-        Component comp=worldEntity.getComponent(clazz);
-        if (comp != null) {
-          worldConfigurator.setProperty(entry.getKey(),comp);
-        }
+    WorldConfigurator worldConfigurator=worldGenerator.getConfigurator();
+    Map<String,Component> params=worldConfigurator.getProperties();
+    for (    Map.Entry<String,Component> entry : params.entrySet()) {
+      Class<? extends Component> clazz=entry.getValue().getClass();
+      Component comp=worldEntity.getComponent(clazz);
+      if (comp != null) {
+        worldConfigurator.setProperty(entry.getKey(),comp);
       }
     }
   }
@@ -24,22 +21,19 @@
     worldEntity.addComponent(new WorldComponent());
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
     WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
-    Optional<WorldConfigurator> ocf=worldGenerator.getConfigurator();
-    if (ocf.isPresent()) {
-      SimpleUri generatorUri=worldGenerator.getUri();
-      Config config=CoreRegistry.get(Config.class);
-      WorldConfigurator worldConfigurator=ocf.get();
-      Map<String,Component> params=worldConfigurator.getProperties();
-      for (      Map.Entry<String,Component> entry : params.entrySet()) {
-        Class<? extends Component> clazz=entry.getValue().getClass();
-        Component comp=config.getModuleConfig(generatorUri,entry.getKey(),clazz);
-        if (comp != null) {
-          worldEntity.addComponent(comp);
-          worldConfigurator.setProperty(entry.getKey(),comp);
-        }
+    SimpleUri generatorUri=worldGenerator.getUri();
+    Config config=CoreRegistry.get(Config.class);
+    WorldConfigurator worldConfigurator=worldGenerator.getConfigurator();
+    Map<String,Component> params=worldConfigurator.getProperties();
+    for (    Map.Entry<String,Component> entry : params.entrySet()) {
+      Class<? extends Component> clazz=entry.getValue().getClass();
+      Component comp=config.getModuleConfig(generatorUri,entry.getKey(),clazz);
+      if (comp != null) {
+        worldEntity.addComponent(comp);
+        worldConfigurator.setProperty(entry.getKey(),comp);
+      }
  else {
-          worldEntity.addComponent(entry.getValue());
-        }
+        worldEntity.addComponent(entry.getValue());
       }
     }
   }

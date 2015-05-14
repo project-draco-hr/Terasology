@@ -9,12 +9,10 @@
     previewGen.close();
     previewGen=null;
   }
-  if (worldGenerator.getConfigurator().isPresent()) {
-    WorldConfigurator worldConfig=worldGenerator.getConfigurator().get();
-    Map<String,Component> params=worldConfig.getProperties();
-    if (params != null) {
-      config.setModuleConfigs(worldGenerator.getUri(),params);
-    }
+  WorldConfigurator worldConfig=worldGenerator.getConfigurator();
+  Map<String,Component> params=worldConfig.getProperties();
+  if (params != null) {
+    config.setModuleConfigs(worldGenerator.getUri(),params);
   }
   super.onClosed();
 }
