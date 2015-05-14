@@ -1,5 +1,7 @@
 {
-  moduleManager=ModuleManagerFactory.create();
+  context=new ContextImpl();
+  ModuleManager moduleManager=ModuleManagerFactory.create();
+  context.put(ModuleManager.class,moduleManager);
   AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
@@ -7,7 +9,6 @@
     }
   }
 );
-  Context contex=new ContextImpl();
-  contex.put(AssetManager.class,assetManager);
-  CoreRegistry.setContext(contex);
+  context.put(AssetManager.class,assetManager);
+  CoreRegistry.setContext(context);
 }

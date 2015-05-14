@@ -4,7 +4,9 @@
   context.put(Time.class,mockTime);
   NetworkSystemImpl networkSystem=new NetworkSystemImpl(mockTime,context);
   context.put(NetworkSystem.class,networkSystem);
-  engineEntityManager=new EntitySystemBuilder().build(context.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  engineEntityManager=context.get(EngineEntityManager.class);
   Path savePath=PathManager.getInstance().getSavePath("world1");
   context.put(StorageManager.class,new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),engineEntityManager));
   componentSystemManager=new ComponentSystemManager();

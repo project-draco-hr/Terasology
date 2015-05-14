@@ -4,7 +4,10 @@
   context.put(ModuleManager.class,moduleManager);
   EngineTime mockTime=mock(EngineTime.class);
   networkSystem=new NetworkSystemImpl(mockTime,context);
-  entityManager=new EntitySystemBuilder().build(context.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  context.put(NetworkSystem.class,networkSystem);
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  entityManager=(PojoEntityManager)context.get(EntityManager.class);
   context.put(ComponentSystemManager.class,new ComponentSystemManager());
   entityManager.clear();
   client=mock(NetClient.class);

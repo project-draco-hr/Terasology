@@ -1,9 +1,10 @@
 {
-  CoreRegistry.setContext(engine.createChildContext());
+  this.context=engine.createChildContext();
+  CoreRegistry.setContext(context);
   EngineTime time=(EngineTime)CoreRegistry.get(Time.class);
   time.setPaused(true);
   time.setGameTime(0);
-  CoreRegistry.get(Game.class).load(gameManifest);
+  context.get(Game.class).load(gameManifest);
 switch (netMode) {
 case CLIENT:
     initClient();

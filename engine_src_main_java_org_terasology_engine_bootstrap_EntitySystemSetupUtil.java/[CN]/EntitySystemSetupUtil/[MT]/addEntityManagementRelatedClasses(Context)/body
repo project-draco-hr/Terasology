@@ -1,0 +1,28 @@
+{
+  ModuleEnvironment environment=context.get(ModuleManager.class).getEnvironment();
+  NetworkSystem networkSystem=context.get(NetworkSystem.class);
+  ReflectFactory reflectFactory=context.get(ReflectFactory.class);
+  CopyStrategyLibrary copyStrategyLibrary=context.get(CopyStrategyLibrary.class);
+  PojoEntityManager entityManager=new PojoEntityManager();
+  context.put(EntityManager.class,entityManager);
+  context.put(EngineEntityManager.class,entityManager);
+  TypeSerializationLibrary typeSerializationLibrary=TypeSerializationLibrary.createDefaultLibrary(entityManager,reflectFactory,copyStrategyLibrary);
+  entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
+  EntitySystemLibrary library=new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary);
+  context.put(EntitySystemLibrary.class,library);
+  entityManager.setComponentLibrary(library.getComponentLibrary());
+  context.put(ComponentLibrary.class,library.getComponentLibrary());
+  context.put(EventLibrary.class,library.getEventLibrary());
+  PrefabManager prefabManager=new PojoPrefabManager();
+  entityManager.setPrefabManager(prefabManager);
+  context.put(PrefabManager.class,prefabManager);
+  EventSystem eventSystem=new EventSystemImpl(library.getEventLibrary(),networkSystem);
+  entityManager.setEventSystem(eventSystem);
+  context.put(EventSystem.class,eventSystem);
+  context.put(OneOfProviderFactory.class,new OneOfProviderFactory());
+  NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(reflectFactory,copyStrategyLibrary);
+  context.put(NodesClassLibrary.class,nodesClassLibrary);
+  nodesClassLibrary.scan(environment);
+  registerComponents(library.getComponentLibrary(),environment);
+  registerEvents(entityManager.getEventSystem(),environment);
+}

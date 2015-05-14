@@ -7,12 +7,14 @@
     }
   }
 );
-  EntitySystemBuilder builder=new EntitySystemBuilder();
-  CoreRegistry.put(ComponentSystemManager.class,mock(ComponentSystemManager.class));
+  context.put(ComponentSystemManager.class,mock(ComponentSystemManager.class));
   blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl(mock(WorldAtlas.class),new DefaultBlockFamilyFactoryRegistry()));
   NetworkSystem networkSystem=mock(NetworkSystem.class);
   when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  entityManager=builder.build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  context.put(NetworkSystem.class,networkSystem);
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  entityManager=context.get(EngineEntityManager.class);
   worldStub=new WorldProviderCoreStub();
   worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);
   plainBlock=new Block();

@@ -16,7 +16,9 @@
   entity.addComponent(locationComponent);
   esm.waitForCompletionOfPreviousSaveAndStartSaving();
   esm.finishSavingAndShutdown();
-  EngineEntityManager newEntityManager=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  EngineEntityManager newEntityManager=context.get(EngineEntityManager.class);
   StorageManager newSM=new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),newEntityManager,false);
   newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);

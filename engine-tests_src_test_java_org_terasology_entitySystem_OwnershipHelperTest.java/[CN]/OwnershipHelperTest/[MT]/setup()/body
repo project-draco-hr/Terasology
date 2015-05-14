@@ -1,5 +1,9 @@
 {
-  CoreRegistry.setContext(new ContextImpl());
-  EntitySystemBuilder builder=new EntitySystemBuilder();
-  entityManager=builder.build(moduleManager.getEnvironment(),mock(NetworkSystem.class),new ReflectionReflectFactory());
+  ContextImpl context=new ContextImpl();
+  context.put(ModuleManager.class,moduleManager);
+  context.put(NetworkSystem.class,mock(NetworkSystem.class));
+  CoreRegistry.setContext(context);
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  entityManager=context.get(EngineEntityManager.class);
 }
