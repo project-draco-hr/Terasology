@@ -4,7 +4,7 @@
   properties.clear();
   if (worldGenerator.getConfigurator().isPresent()) {
     WorldConfigurator worldConfig=worldGenerator.getConfigurator().get();
-    Map<String,Component> params=Maps.newHashMap(worldConfig.getProperties());
+    Map<String,Component> params=worldConfig.getProperties();
     for (    String key : params.keySet()) {
       Class<? extends Component> clazz=params.get(key).getClass();
       Component comp=config.getModuleConfig(worldGenerator.getUri(),key,clazz);
