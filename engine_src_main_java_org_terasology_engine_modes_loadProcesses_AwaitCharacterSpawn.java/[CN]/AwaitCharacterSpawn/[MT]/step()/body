@@ -1,12 +1,12 @@
 {
-  ComponentSystemManager componentSystemManager=CoreRegistry.get(ComponentSystemManager.class);
+  ComponentSystemManager componentSystemManager=context.get(ComponentSystemManager.class);
   for (  UpdateSubscriberSystem updater : componentSystemManager.iterateUpdateSubscribers()) {
     updater.update(0.0f);
   }
-  LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
+  LocalPlayer localPlayer=context.get(LocalPlayer.class);
   ClientComponent client=localPlayer.getClientEntity().getComponent(ClientComponent.class);
   if (client != null && client.character.exists()) {
-    worldRenderer.setPlayer(CoreRegistry.get(LocalPlayer.class));
+    worldRenderer.setPlayer(context.get(LocalPlayer.class));
     return true;
   }
  else {

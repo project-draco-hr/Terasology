@@ -1,7 +1,8 @@
 {
   this.context=engine.createChildContext();
   CoreRegistry.setContext(context);
-  EngineTime time=(EngineTime)CoreRegistry.get(Time.class);
+  this.nuiManager=context.get(NUIManager.class);
+  EngineTime time=(EngineTime)context.get(Time.class);
   time.setPaused(true);
   time.setGameTime(0);
   context.get(Game.class).load(gameManifest);
