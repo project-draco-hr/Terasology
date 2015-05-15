@@ -8,7 +8,7 @@
   context.put(EngineEntityManager.class,entityManager);
   TypeSerializationLibrary typeSerializationLibrary=TypeSerializationLibrary.createDefaultLibrary(entityManager,reflectFactory,copyStrategyLibrary);
   entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
-  EntitySystemLibrary library=new EntitySystemLibrary(reflectFactory,copyStrategyLibrary,typeSerializationLibrary);
+  EntitySystemLibrary library=new EntitySystemLibrary(context,typeSerializationLibrary);
   context.put(EntitySystemLibrary.class,library);
   entityManager.setComponentLibrary(library.getComponentLibrary());
   context.put(ComponentLibrary.class,library.getComponentLibrary());
@@ -20,7 +20,7 @@
   entityManager.setEventSystem(eventSystem);
   context.put(EventSystem.class,eventSystem);
   context.put(OneOfProviderFactory.class,new OneOfProviderFactory());
-  NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(reflectFactory,copyStrategyLibrary);
+  NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(context);
   context.put(NodesClassLibrary.class,nodesClassLibrary);
   nodesClassLibrary.scan(environment);
   registerComponents(library.getComponentLibrary(),environment);

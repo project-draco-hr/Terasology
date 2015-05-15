@@ -1,26 +1,26 @@
 {
-  ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).getEnvironment();
-  CoreRegistry.put(WorldGeneratorPluginLibrary.class,new DefaultWorldGeneratorPluginLibrary(environment,CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class)));
+  ModuleEnvironment environment=context.get(ModuleManager.class).getEnvironment();
+  context.put(WorldGeneratorPluginLibrary.class,new DefaultWorldGeneratorPluginLibrary(environment,context));
   WorldInfo worldInfo=gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD);
   if (worldInfo.getSeed() == null || worldInfo.getSeed().isEmpty()) {
     FastRandom random=new FastRandom();
     worldInfo.setSeed(random.nextString(16));
   }
   logger.info("World seed: \"{}\"",worldInfo.getSeed());
-  WorldGeneratorManager worldGeneratorManager=CoreRegistry.get(WorldGeneratorManager.class);
+  WorldGeneratorManager worldGeneratorManager=context.get(WorldGeneratorManager.class);
   WorldGenerator worldGenerator;
   try {
     worldGenerator=worldGeneratorManager.createGenerator(worldInfo.getWorldGenerator());
     worldGenerator.setWorldSeed(worldInfo.getSeed());
-    CoreRegistry.put(WorldGenerator.class,worldGenerator);
+    context.put(WorldGenerator.class,worldGenerator);
   }
  catch (  UnresolvedWorldGeneratorException e) {
     logger.error("Unable to load world generator {}. Available world generators: {}",worldInfo.getWorldGenerator(),worldGeneratorManager.getWorldGenerators());
-    CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Failed to resolve world generator."));
+    context.get(GameEngine.class).changeState(new StateMainMenu("Failed to resolve world generator."));
     return true;
   }
-  EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
-  boolean writeSaveGamesEnabled=CoreRegistry.get(Config.class).getTransients().isWriteSaveGamesEnabled();
+  EngineEntityManager entityManager=(EngineEntityManager)context.get(EntityManager.class);
+  boolean writeSaveGamesEnabled=context.get(Config.class).getTransients().isWriteSaveGamesEnabled();
   Path savePath=PathManager.getInstance().getSavePath(gameManifest.getTitle());
   StorageManager storageManager;
   try {
@@ -28,30 +28,30 @@
   }
  catch (  IOException e) {
     logger.error("Unable to create storage manager!",e);
-    CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Unable to create storage manager!"));
+    context.get(GameEngine.class).changeState(new StateMainMenu("Unable to create storage manager!"));
     return true;
   }
-  CoreRegistry.put(StorageManager.class,storageManager);
+  context.put(StorageManager.class,storageManager);
   LocalChunkProvider chunkProvider=new LocalChunkProvider(storageManager,entityManager,worldGenerator);
-  CoreRegistry.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
+  context.get(ComponentSystemManager.class).register(new RelevanceSystem(chunkProvider),"engine:relevanceSystem");
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(new WorldProviderCoreImpl(worldInfo,chunkProvider));
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);
-  CoreRegistry.put(WorldProvider.class,worldProvider);
+  context.put(WorldProvider.class,worldProvider);
   chunkProvider.setBlockEntityRegistry(entityWorldProvider);
-  CoreRegistry.put(BlockEntityRegistry.class,entityWorldProvider);
-  CoreRegistry.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
+  context.put(BlockEntityRegistry.class,entityWorldProvider);
+  context.get(ComponentSystemManager.class).register(entityWorldProvider,"engine:BlockEntityRegistry");
   DefaultCelestialSystem celestialSystem=new DefaultCelestialSystem(new BasicCelestialModel());
-  CoreRegistry.put(CelestialSystem.class,celestialSystem);
-  CoreRegistry.get(ComponentSystemManager.class).register(celestialSystem);
+  context.put(CelestialSystem.class,celestialSystem);
+  context.get(ComponentSystemManager.class).register(celestialSystem);
   Skysphere skysphere=new Skysphere();
   BackdropProvider backdropProvider=skysphere;
   BackdropRenderer backdropRenderer=skysphere;
-  CoreRegistry.put(BackdropProvider.class,backdropProvider);
-  CoreRegistry.put(BackdropRenderer.class,backdropRenderer);
-  RenderingSubsystemFactory engineSubsystemFactory=CoreRegistry.get(RenderingSubsystemFactory.class);
-  WorldRenderer worldRenderer=engineSubsystemFactory.createWorldRenderer(backdropProvider,backdropRenderer,worldProvider,chunkProvider,CoreRegistry.get(LocalPlayerSystem.class));
-  CoreRegistry.put(WorldRenderer.class,worldRenderer);
-  CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
-  CoreRegistry.put(Camera.class,worldRenderer.getActiveCamera());
+  context.put(BackdropProvider.class,backdropProvider);
+  context.put(BackdropRenderer.class,backdropRenderer);
+  RenderingSubsystemFactory engineSubsystemFactory=context.get(RenderingSubsystemFactory.class);
+  WorldRenderer worldRenderer=engineSubsystemFactory.createWorldRenderer(backdropProvider,backdropRenderer,worldProvider,chunkProvider,context.get(LocalPlayerSystem.class));
+  context.put(WorldRenderer.class,worldRenderer);
+  context.put(LocalPlayer.class,new LocalPlayer());
+  context.put(Camera.class,worldRenderer.getActiveCamera());
   return true;
 }
