@@ -2,22 +2,12 @@
   final JavaArchive homeArchive=ShrinkWrap.create(JavaArchive.class);
   final FileSystem vfs=ShrinkWrapFileSystems.newFileSystem(homeArchive);
   PathManager.getInstance().useOverrideHomePath(vfs.getPath(""));
-  if (!setup) {
-    setup=true;
-    env=new HeadlessEnvironment();
-    assetManager=CoreRegistry.get(AssetManager.class);
-    blockManager=CoreRegistry.get(BlockManager.class);
-    config=CoreRegistry.get(Config.class);
-    audioManager=CoreRegistry.get(AudioManager.class);
-    collisionGroupManager=CoreRegistry.get(CollisionGroupManager.class);
-    moduleManager=CoreRegistry.get(ModuleManager.class);
-  }
- else {
-    CoreRegistry.put(AssetManager.class,assetManager);
-    CoreRegistry.put(BlockManager.class,blockManager);
-    CoreRegistry.put(Config.class,config);
-    CoreRegistry.put(AudioManager.class,audioManager);
-    CoreRegistry.put(CollisionGroupManager.class,collisionGroupManager);
-    CoreRegistry.put(ModuleManager.class,moduleManager);
-  }
+  env=new HeadlessEnvironment();
+  context=env.getContext();
+  assetManager=context.get(AssetManager.class);
+  blockManager=context.get(BlockManager.class);
+  config=context.get(Config.class);
+  audioManager=context.get(AudioManager.class);
+  collisionGroupManager=context.get(CollisionGroupManager.class);
+  moduleManager=context.get(ModuleManager.class);
 }

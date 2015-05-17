@@ -4,7 +4,7 @@
   handleLaunchArguments(args);
   setupLogging();
   try (final TerasologyEngine engine=new TerasologyEngine(createSubsystemList())){
-    Config config=CoreRegistry.get(Config.class);
+    Config config=engine.getFromEngineContext(Config.class);
     if (!writeSaveGamesEnabled) {
       config.getTransients().setWriteSaveGamesEnabled(writeSaveGamesEnabled);
     }

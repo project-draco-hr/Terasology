@@ -1,9 +1,11 @@
 {
   super.setup();
+  ModuleManager moduleManager=ModuleManagerFactory.create();
+  context.put(ModuleManager.class,moduleManager);
   EngineTime mockTime=mock(EngineTime.class);
-  networkSystem=new NetworkSystemImpl(mockTime);
-  entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  CoreRegistry.put(ComponentSystemManager.class,new ComponentSystemManager());
+  networkSystem=new NetworkSystemImpl(mockTime,context);
+  entityManager=new EntitySystemBuilder().build(context.get(ModuleManager.class).getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  context.put(ComponentSystemManager.class,new ComponentSystemManager());
   entityManager.clear();
   client=mock(NetClient.class);
   NetworkComponent clientNetComp=new NetworkComponent();
@@ -12,6 +14,6 @@
   when(client.getEntity()).thenReturn(clientEntity);
   when(client.getId()).thenReturn("dummyID");
   networkSystem.mockHost();
-  networkSystem.connectToEntitySystem(entityManager,CoreRegistry.get(EntitySystemLibrary.class),mock(BlockEntityRegistry.class));
+  networkSystem.connectToEntitySystem(entityManager,context.get(EntitySystemLibrary.class),mock(BlockEntityRegistry.class));
   networkSystem.registerNetworkEntity(clientEntity);
 }

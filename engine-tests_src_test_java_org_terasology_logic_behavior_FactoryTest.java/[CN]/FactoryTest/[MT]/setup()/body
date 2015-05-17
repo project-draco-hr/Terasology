@@ -1,11 +1,13 @@
 {
+  Context context=new ContextImpl();
+  CoreRegistry.setContext(context);
   ModuleManager moduleManager=ModuleManagerFactory.create();
   ReflectionReflectFactory reflectFactory=new ReflectionReflectFactory();
-  CoreRegistry.put(ReflectFactory.class,reflectFactory);
+  context.put(ReflectFactory.class,reflectFactory);
   CopyStrategyLibrary copyStrategies=new CopyStrategyLibrary(reflectFactory);
-  CoreRegistry.put(CopyStrategyLibrary.class,copyStrategies);
-  CoreRegistry.put(ModuleManager.class,moduleManager);
+  context.put(CopyStrategyLibrary.class,copyStrategies);
+  context.put(ModuleManager.class,moduleManager);
   NodesClassLibrary nodesClassLibrary=new NodesClassLibrary(reflectFactory,copyStrategies);
-  CoreRegistry.put(NodesClassLibrary.class,nodesClassLibrary);
+  context.put(NodesClassLibrary.class,nodesClassLibrary);
   nodesClassLibrary.scan(moduleManager.getEnvironment());
 }

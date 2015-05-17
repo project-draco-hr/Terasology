@@ -1,0 +1,65 @@
+{
+  checkOpenGL();
+  glViewport(0,0,Display.getWidth(),Display.getHeight());
+  initOpenGLParams();
+  AssetManager assetManager=context.get(AssetManager.class);
+  assetManager.setAssetFactory(AssetType.FONT,new AssetFactory<FontData,Font>(){
+    @Override public Font buildAsset(    AssetUri uri,    FontData data){
+      return new FontImpl(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.TEXTURE,new AssetFactory<TextureData,Texture>(){
+    @Override public Texture buildAsset(    AssetUri uri,    TextureData data){
+      return new OpenGLTexture(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SHADER,new AssetFactory<ShaderData,Shader>(){
+    @Override public Shader buildAsset(    AssetUri uri,    ShaderData data){
+      return new GLSLShader(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.MATERIAL,new AssetFactory<MaterialData,Material>(){
+    @Override public Material buildAsset(    AssetUri uri,    MaterialData data){
+      return new GLSLMaterial(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.MESH,new AssetFactory<MeshData,Mesh>(){
+    @Override public Mesh buildAsset(    AssetUri uri,    MeshData data){
+      return new OpenGLMesh(uri,data,bufferPool);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SKELETON_MESH,new AssetFactory<SkeletalMeshData,SkeletalMesh>(){
+    @Override public SkeletalMesh buildAsset(    AssetUri uri,    SkeletalMeshData data){
+      return new OpenGLSkeletalMesh(uri,data,bufferPool);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.ANIMATION,new AssetFactory<MeshAnimationData,MeshAnimation>(){
+    @Override public MeshAnimation buildAsset(    AssetUri uri,    MeshAnimationData data){
+      return new MeshAnimationImpl(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.ATLAS,new AssetFactory<AtlasData,Atlas>(){
+    @Override public Atlas buildAsset(    AssetUri uri,    AtlasData data){
+      return new Atlas(uri,data);
+    }
+  }
+);
+  assetManager.setAssetFactory(AssetType.SUBTEXTURE,new AssetFactory<SubtextureData,Subtexture>(){
+    @Override public Subtexture buildAsset(    AssetUri uri,    SubtextureData data){
+      return new Subtexture(uri,data);
+    }
+  }
+);
+  assetManager.addResolver(AssetType.SUBTEXTURE,new SubtextureFromAtlasResolver());
+  assetManager.addResolver(AssetType.TEXTURE,new ColorTextureAssetResolver());
+  assetManager.addResolver(AssetType.TEXTURE,new NoiseTextureAssetResolver());
+  assetManager.addResolver(AssetType.MESH,new IconMeshResolver());
+  context.put(ShaderManager.class,new ShaderManagerLwjgl());
+}

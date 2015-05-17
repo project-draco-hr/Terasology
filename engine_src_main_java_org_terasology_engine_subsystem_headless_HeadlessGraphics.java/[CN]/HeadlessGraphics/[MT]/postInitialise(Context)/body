@@ -1,0 +1,7 @@
+{
+  context.put(RenderingSubsystemFactory.class,new HeadlessRenderingSubsystemFactory());
+  HeadlessDisplayDevice headlessDisplay=new HeadlessDisplayDevice();
+  context.put(DisplayDevice.class,headlessDisplay);
+  initHeadless(context);
+  context.put(NUIManager.class,new NUIManagerInternal(new HeadlessCanvasRenderer(),context));
+}

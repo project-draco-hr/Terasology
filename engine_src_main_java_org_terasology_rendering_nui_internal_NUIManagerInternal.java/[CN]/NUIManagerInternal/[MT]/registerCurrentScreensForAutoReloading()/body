@@ -2,7 +2,7 @@
   for (  AssetUri uri : screenLookup.keySet()) {
     if (!autoReloadingScreensUris.contains(uri)) {
       autoReloadingScreensUris.add(uri);
-      List<URL> urls=CoreRegistry.get(AssetManager.class).getAssetURLs(uri);
+      List<URL> urls=context.get(AssetManager.class).getAssetURLs(uri);
       URL firstURL=urls.get(0);
       Path filePath=Paths.get(firstURL.toURI());
       Path directory=filePath.getParent();

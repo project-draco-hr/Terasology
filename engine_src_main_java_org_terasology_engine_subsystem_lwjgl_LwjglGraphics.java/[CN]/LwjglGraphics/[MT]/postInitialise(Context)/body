@@ -1,0 +1,8 @@
+{
+  context.put(RenderingSubsystemFactory.class,new LwjglRenderingSubsystemFactory(bufferPool));
+  LwjglDisplayDevice lwjglDisplay=new LwjglDisplayDevice(context);
+  context.put(DisplayDevice.class,lwjglDisplay);
+  initDisplay(context.get(Config.class),lwjglDisplay);
+  initOpenGL(context);
+  context.put(NUIManager.class,new NUIManagerInternal(new LwjglCanvasRenderer(context),context));
+}

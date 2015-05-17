@@ -1,25 +1,28 @@
 {
-  entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class).getEnvironment(),CoreRegistry.get(NetworkSystem.class),CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
-  eventSystem=CoreRegistry.get(EventSystem.class);
-  CoreRegistry.put(Console.class,new ConsoleImpl());
-  nuiManager=CoreRegistry.get(NUIManager.class);
+  context=gameEngine.createChildContext();
+  CoreRegistry.setContext(context);
+  entityManager=new EntitySystemBuilder().build(context.get(ModuleManager.class).getEnvironment(),context.get(NetworkSystem.class),context.get(ReflectFactory.class),context.get(CopyStrategyLibrary.class));
+  eventSystem=context.get(EventSystem.class);
+  context.put(Console.class,new ConsoleImpl());
+  nuiManager=context.get(NUIManager.class);
   ((NUIManagerInternal)nuiManager).refreshWidgetsLibrary();
   eventSystem.registerEventHandler(nuiManager);
   componentSystemManager=new ComponentSystemManager();
-  CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
+  context.put(ComponentSystemManager.class,componentSystemManager);
   CameraTargetSystem cameraTargetSystem=new CameraTargetSystem();
-  CoreRegistry.put(CameraTargetSystem.class,cameraTargetSystem);
+  context.put(CameraTargetSystem.class,cameraTargetSystem);
   componentSystemManager.register(cameraTargetSystem,"engine:CameraTargetSystem");
   componentSystemManager.register(new ConsoleSystem(),"engine:ConsoleSystem");
   componentSystemManager.register(new CoreCommands(),"engine:CoreCommands");
-  inputSystem=CoreRegistry.get(InputSystem.class);
+  inputSystem=context.get(InputSystem.class);
   new RegisterInputSystem().step();
   EntityRef localPlayerEntity=entityManager.create(new ClientComponent());
-  LocalPlayer localPlayer=CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
+  LocalPlayer localPlayer=new LocalPlayer();
+  context.put(LocalPlayer.class,localPlayer);
   localPlayer.setClientEntity(localPlayerEntity);
   componentSystemManager.initialise();
   playBackgroundMusic();
-  CoreRegistry.get(NUIManager.class).pushScreen("engine:mainMenuScreen");
+  context.get(NUIManager.class).pushScreen("engine:mainMenuScreen");
   if (!messageOnLoad.isEmpty()) {
     nuiManager.pushScreen(MessagePopup.ASSET_URI,MessagePopup.class).setMessage("Error",messageOnLoad);
   }

@@ -1,20 +1,23 @@
 {
   SplashScreen.getInstance().post("Loading modules ...");
-  ModuleManager moduleManager=CoreRegistry.putPermanently(ModuleManager.class,new ModuleManagerImpl());
+  ModuleManager moduleManager=new ModuleManagerImpl();
+  context.put(ModuleManager.class,moduleManager);
   SplashScreen.getInstance().post("Loading reflections ...");
-  ReflectFactory reflectFactory=CoreRegistry.putPermanently(ReflectFactory.class,new ReflectionReflectFactory());
-  CopyStrategyLibrary copyStrategyLibrary=CoreRegistry.putPermanently(CopyStrategyLibrary.class,new CopyStrategyLibrary(reflectFactory));
-  CoreRegistry.putPermanently(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
+  ReflectFactory reflectFactory=new ReflectionReflectFactory();
+  context.put(ReflectFactory.class,reflectFactory);
+  CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
+  context.put(CopyStrategyLibrary.class,copyStrategyLibrary);
+  context.put(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
   SplashScreen.getInstance().post("Loading assets ...");
-  AssetManager assetManager=CoreRegistry.putPermanently(AssetManager.class,new AssetManagerImpl(moduleManager.getEnvironment()));
+  AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
   assetManager.setEnvironment(moduleManager.getEnvironment());
-  CoreRegistry.putPermanently(CollisionGroupManager.class,new CollisionGroupManager());
-  CoreRegistry.putPermanently(WorldGeneratorManager.class,new WorldGeneratorManager());
-  CoreRegistry.putPermanently(ComponentSystemManager.class,new ComponentSystemManager());
-  CoreRegistry.putPermanently(ParameterAdapterManager.class,ParameterAdapterManager.createCore());
-  CoreRegistry.putPermanently(NetworkSystem.class,new NetworkSystemImpl(time));
-  CoreRegistry.putPermanently(Game.class,new Game(this,time));
-  assetManager.setEnvironment(moduleManager.getEnvironment());
+  context.put(AssetManager.class,assetManager);
+  context.put(CollisionGroupManager.class,new CollisionGroupManager());
+  context.put(WorldGeneratorManager.class,new WorldGeneratorManager(context));
+  context.put(ComponentSystemManager.class,new ComponentSystemManager());
+  context.put(ParameterAdapterManager.class,ParameterAdapterManager.createCore());
+  context.put(NetworkSystem.class,new NetworkSystemImpl(time,context));
+  context.put(Game.class,new Game(this,time));
   AssetType.registerAssetTypes(assetManager);
-  ApplyModulesUtil.applyModules();
+  ApplyModulesUtil.applyModules(context);
 }
