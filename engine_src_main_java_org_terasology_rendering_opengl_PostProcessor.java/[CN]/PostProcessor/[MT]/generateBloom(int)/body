@@ -1,0 +1,22 @@
+{
+  Material shader=Assets.getMaterial("engine:prog.blur");
+  shader.enable();
+  shader.setFloat("radius",bloomBlurRadius,true);
+  FBO bloom=getFBO("sceneBloom" + id);
+  if (bloom == null) {
+    return;
+  }
+  shader.setFloat2("texelSize",1.0f / bloom.width(),1.0f / bloom.height(),true);
+  bloom.bind();
+  setViewportTo(bloom.dimensions());
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  if (id == 0) {
+    getFBO("sceneHighPass").bindTexture();
+  }
+ else {
+    getFBO("sceneBloom" + (id - 1)).bindTexture();
+  }
+  renderFullscreenQuad();
+  bloom.unbind();
+  setViewportToFullSize();
+}

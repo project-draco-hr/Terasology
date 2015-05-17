@@ -1,0 +1,13 @@
+{
+  Assets.getMaterial("engine:prog.lightshaft").enable();
+  FBO lightshaft=getFBO("lightShafts");
+  if (lightshaft == null) {
+    return;
+  }
+  lightshaft.bind();
+  setViewportTo(lightshaft.dimensions());
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  lightshaft.unbind();
+  setViewportToFullSize();
+}

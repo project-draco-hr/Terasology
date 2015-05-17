@@ -1,0 +1,23 @@
+{
+  FBO skyBand=getFBO("sceneSkyBand" + id);
+  if (skyBand == null) {
+    return;
+  }
+  skyBand.bind();
+  graphicState.setRenderBufferMask(skyBand,true,false,false);
+  Material material=Assets.getMaterial("engine:prog.blur");
+  material.enable();
+  material.setFloat("radius",8.0f,true);
+  material.setFloat2("texelSize",1.0f / skyBand.width(),1.0f / skyBand.height(),true);
+  if (id == 0) {
+    bindFboTexture("sceneOpaque");
+  }
+ else {
+    bindFboTexture("sceneSkyBand" + (id - 1));
+  }
+  setViewportTo(skyBand.dimensions());
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  skyBand.unbind();
+  setViewportToFullSize();
+}
