@@ -5,9 +5,9 @@
   Vector2i center=new Vector2i(targetBlockX,targetBlockZ);
   for (  BaseVector2i pos : SpiralIterable.clockwise(center).maxRadius(3).scale(2).build()) {
     Vector3i testPos=new Vector3i(pos.getX(),targetBlockY,pos.getY());
-    Vector3i spawnPos=findOpenVerticalPosition(testPos,playerHeight);
+    Vector3i spawnPos=findOpenVerticalPosition(testPos,entityHeight);
     if (spawnPos != null) {
-      return new Vector3f(spawnPos.getX(),spawnPos.getY() + playerHeight,spawnPos.getZ());
+      return new Vector3f(spawnPos.getX(),spawnPos.getY() + entityHeight,spawnPos.getZ());
     }
   }
   return null;
