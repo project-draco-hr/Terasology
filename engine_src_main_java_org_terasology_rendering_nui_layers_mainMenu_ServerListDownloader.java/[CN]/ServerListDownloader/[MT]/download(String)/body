@@ -1,0 +1,20 @@
+{
+  status="Downloading server list ..";
+  @SuppressWarnings("serial") Type entryListType=new TypeToken<List<ServerInfo>>(){
+  }
+.getType();
+  URL url=new URL("http",address,"/servers/list");
+  try (Reader reader=new InputStreamReader(url.openStream(),charset)){
+    status="Parsing content ..";
+    List<ServerInfo> onlineServers=GSON.fromJson(reader,entryListType);
+    if (onlineServers == null) {
+      throw new IOException("Invalid server list file content!");
+    }
+    for (    ServerInfo entry : onlineServers) {
+      logger.debug("Retrieved online game server {}",entry);
+    }
+    int count=onlineServers.size();
+    status=String.format("Retrieved %d %s",count,(count == 1) ? "entry" : "entries");
+    servers.addAll(onlineServers);
+  }
+ }
