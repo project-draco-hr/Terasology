@@ -1,75 +1,76 @@
 {
   String preProcessorPreamble="#version 120\n";
-  if (CoreRegistry.get(WorldAtlas.class) != null) {
-    preProcessorPreamble+="#define TEXTURE_OFFSET " + CoreRegistry.get(WorldAtlas.class).getRelativeTileSize() + "\n";
+  WorldAtlas worldAtlas=CoreRegistry.get(WorldAtlas.class);
+  if (worldAtlas != null) {
+    preProcessorPreamble+="#define TEXTURE_OFFSET " + worldAtlas.getRelativeTileSize() + "\n";
   }
  else {
     preProcessorPreamble+="#define TEXTURE_OFFSET 0.06125\n";
   }
+  RenderingConfig renderConfig=config.getRendering();
   preProcessorPreamble+="#define BLOCK_LIGHT_POW " + WorldRenderer.BLOCK_LIGHT_POW + "\n";
   preProcessorPreamble+="#define BLOCK_LIGHT_SUN_POW " + WorldRenderer.BLOCK_LIGHT_SUN_POW + "\n";
   preProcessorPreamble+="#define BLOCK_INTENSITY_FACTOR " + WorldRenderer.BLOCK_INTENSITY_FACTOR + "\n";
-  preProcessorPreamble+="#define SHADOW_MAP_RESOLUTION " + (float)CoreRegistry.get(Config.class).getRendering().getShadowMapResolution() + "\n";
+  preProcessorPreamble+="#define SHADOW_MAP_RESOLUTION " + (float)renderConfig.getShadowMapResolution() + "\n";
   preProcessorPreamble+="#define SSAO_KERNEL_ELEMENTS " + ShaderParametersSSAO.SSAO_KERNEL_ELEMENTS + "\n";
   preProcessorPreamble+="#define SSAO_NOISE_SIZE " + ShaderParametersSSAO.SSAO_NOISE_SIZE + "\n";
   preProcessorPreamble+="#define TEXTURE_OFFSET_EFFECTS " + 0.0625f + "\n";
-  Config config=CoreRegistry.get(Config.class);
   StringBuilder builder=new StringBuilder().append(preProcessorPreamble);
-  if (config.getRendering().isAnimateGrass()) {
+  if (renderConfig.isAnimateGrass()) {
     builder.append("#define ANIMATED_GRASS \n");
   }
-  if (config.getRendering().isAnimateWater()) {
+  if (renderConfig.isAnimateWater()) {
     builder.append("#define ANIMATED_WATER \n");
   }
-  if (config.getRendering().getBlurIntensity() == 0) {
+  if (renderConfig.getBlurIntensity() == 0) {
     builder.append("#define NO_BLUR \n");
   }
-  if (config.getRendering().isFlickeringLight()) {
+  if (renderConfig.isFlickeringLight()) {
     builder.append("#define FLICKERING_LIGHT \n");
   }
-  if (config.getRendering().isVignette()) {
+  if (renderConfig.isVignette()) {
     builder.append("#define VIGNETTE \n");
   }
-  if (config.getRendering().isBloom()) {
+  if (renderConfig.isBloom()) {
     builder.append("#define BLOOM \n");
   }
-  if (config.getRendering().isMotionBlur()) {
+  if (renderConfig.isMotionBlur()) {
     builder.append("#define MOTION_BLUR \n");
   }
-  if (config.getRendering().isSsao()) {
+  if (renderConfig.isSsao()) {
     builder.append("#define SSAO \n");
   }
-  if (config.getRendering().isFilmGrain()) {
+  if (renderConfig.isFilmGrain()) {
     builder.append("#define FILM_GRAIN \n");
   }
-  if (config.getRendering().isOutline()) {
+  if (renderConfig.isOutline()) {
     builder.append("#define OUTLINE \n");
   }
-  if (config.getRendering().isLightShafts()) {
+  if (renderConfig.isLightShafts()) {
     builder.append("#define LIGHT_SHAFTS \n");
   }
-  if (config.getRendering().isDynamicShadows()) {
+  if (renderConfig.isDynamicShadows()) {
     builder.append("#define DYNAMIC_SHADOWS \n");
   }
-  if (config.getRendering().isNormalMapping()) {
+  if (renderConfig.isNormalMapping()) {
     builder.append("#define NORMAL_MAPPING \n");
   }
-  if (config.getRendering().isParallaxMapping()) {
+  if (renderConfig.isParallaxMapping()) {
     builder.append("#define PARALLAX_MAPPING \n");
   }
-  if (config.getRendering().isDynamicShadowsPcfFiltering()) {
+  if (renderConfig.isDynamicShadowsPcfFiltering()) {
     builder.append("#define DYNAMIC_SHADOWS_PCF \n");
   }
-  if (config.getRendering().isCloudShadows()) {
+  if (renderConfig.isCloudShadows()) {
     builder.append("#define CLOUD_SHADOWS \n");
   }
-  if (config.getRendering().isLocalReflections()) {
+  if (renderConfig.isLocalReflections()) {
     builder.append("#define LOCAL_REFLECTIONS \n");
   }
-  if (config.getRendering().isInscattering()) {
+  if (renderConfig.isInscattering()) {
     builder.append("#define INSCATTERING \n");
   }
-  if (config.getRendering().isClampLighting()) {
+  if (renderConfig.isClampLighting()) {
     builder.append("#define CLAMP_LIGHTING \n");
   }
   for (  RenderingDebugConfig.DebugRenderingStage stage : RenderingDebugConfig.DebugRenderingStage.values()) {

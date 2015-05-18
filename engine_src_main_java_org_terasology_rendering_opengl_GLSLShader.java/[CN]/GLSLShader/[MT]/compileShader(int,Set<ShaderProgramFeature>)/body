@@ -1,78 +1,10 @@
 {
   int shaderId=GL20.glCreateShader(type);
-  StringBuilder shader=createShaderBuilder();
-  for (  ShaderProgramFeature feature : features) {
-    shader.append("#define ").append(feature.name()).append("\n");
-  }
-  shader.append("\n");
-  shader.append(includedDefines);
-  shader.append(includedUniforms);
-  if (type == GL20.GL_FRAGMENT_SHADER) {
-    shader.append(includedFunctionsFragment).append("\n");
-  }
- else {
-    shader.append(includedFunctionsVertex).append("\n");
-  }
-  if (type == GL20.GL_FRAGMENT_SHADER) {
-    shader.append(shaderProgramBase.getFragmentProgram());
-  }
- else   if (type == GL20.GL_VERTEX_SHADER) {
-    shader.append(shaderProgramBase.getVertexProgram());
-  }
-  String debugShaderType="UNKNOWN";
-  int featureHash=ShaderProgramFeature.getBitset(features);
-  if (type == GL20.GL_FRAGMENT_SHADER) {
-    fragmentPrograms.put(featureHash,shaderId);
-    debugShaderType="FRAGMENT";
-  }
- else   if (type == GL20.GL_VERTEX_SHADER) {
-    vertexPrograms.put(featureHash,shaderId);
-    debugShaderType="VERTEX";
-  }
-  Config config=CoreRegistry.get(Config.class);
+  String shader=assembleShader(type,features);
   if (config.getRendering().isDumpShaders()) {
-    final String strippedTitle=getUrn().toString().replace(":","-");
-    String fname=debugShaderType.toLowerCase() + "_" + strippedTitle+ "_"+ featureHash+ ".glsl";
-    Path path=PathManager.getInstance().getShaderLogPath().resolve(fname);
-    try (BufferedWriter writer=Files.newBufferedWriter(path,TerasologyConstants.CHARSET)){
-      writer.write(shader.toString());
-    }
- catch (    IOException e) {
-      logger.error("Failed to dump shader source.");
-    }
+    dumpCode(type,features,shader);
   }
-  GL20.glShaderSource(shaderId,shader.toString());
+  GL20.glShaderSource(shaderId,shader);
   GL20.glCompileShader(shaderId);
-  StringBuilder error=new StringBuilder();
-  boolean success=printLogInfo(shaderId,error);
-  String errorLine="";
-  if (error.length() > 0) {
-    try {
-      Pattern p=Pattern.compile("-?\\d+");
-      Matcher m=p.matcher(error.toString());
-      int counter=0;
-      while (m.find()) {
-        if (counter++ % 2 == 1) {
-          int lineNumberInt=Integer.parseInt(m.group());
-          try (Scanner reader=new Scanner(shader.toString())){
-            for (int i=0; i < lineNumberInt - 1; ++i) {
-              reader.nextLine();
-            }
-            errorLine=reader.nextLine();
-            errorLine="Error prone line: '" + errorLine + "'";
-            logger.warn("{} \n Line: {}",error,errorLine);
-          }
-           break;
-        }
-      }
-    }
- catch (    Exception e) {
-      logger.error("Error parsing shader compile error: {}",error,e);
-    }
-  }
-  if (!success) {
-    String errorMessage=debugShaderType + " Shader '" + getUrn()+ "' failed to compile. Terasology might not look quite as good as it should now...\n\n"+ error+ "\n\n"+ errorLine;
-    logger.error(errorMessage);
-    JOptionPane.showMessageDialog(null,errorMessage,"Shader compilation error",JOptionPane.ERROR_MESSAGE);
-  }
+  return shaderId;
 }
