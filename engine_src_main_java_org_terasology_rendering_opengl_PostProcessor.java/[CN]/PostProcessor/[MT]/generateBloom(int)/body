@@ -2,7 +2,7 @@
   Material shader=Assets.getMaterial("engine:prog.blur");
   shader.enable();
   shader.setFloat("radius",bloomBlurRadius,true);
-  FBO bloom=getFBO("sceneBloom" + id);
+  FBO bloom=renderingProcess.getFBO("sceneBloom" + id);
   if (bloom == null) {
     return;
   }
@@ -11,10 +11,10 @@
   setViewportTo(bloom.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   if (id == 0) {
-    getFBO("sceneHighPass").bindTexture();
+    renderingProcess.getFBO("sceneHighPass").bindTexture();
   }
  else {
-    getFBO("sceneBloom" + (id - 1)).bindTexture();
+    renderingProcess.getFBO("sceneBloom" + (id - 1)).bindTexture();
   }
   renderFullscreenQuad();
   bloom.unbind();

@@ -1,7 +1,7 @@
 {
   Material shader=Assets.getMaterial("engine:prog.ssaoBlur");
   shader.enable();
-  FBO ssao=getFBO("ssaoBlurred");
+  FBO ssao=renderingProcess.getFBO("ssaoBlurred");
   if (ssao == null) {
     return;
   }
@@ -9,7 +9,7 @@
   ssao.bind();
   setViewportTo(ssao.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  bindFboTexture("ssao");
+  renderingProcess.bindFboTexture("ssao");
   renderFullscreenQuad();
   ssao.unbind();
   setViewportToFullSize();

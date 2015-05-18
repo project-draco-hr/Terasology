@@ -2,12 +2,12 @@
   Material program=Assets.getMaterial("engine:prog.highp");
   program.setFloat("highPassThreshold",bloomHighPassThreshold,true);
   program.enable();
-  FBO highPass=getFBO("sceneHighPass");
+  FBO highPass=renderingProcess.getFBO("sceneHighPass");
   if (highPass == null) {
     return;
   }
   highPass.bind();
-  FBO sceneOpaque=getFBO("sceneOpaque");
+  FBO sceneOpaque=renderingProcess.getFBO("sceneOpaque");
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   sceneOpaque.bindTexture();

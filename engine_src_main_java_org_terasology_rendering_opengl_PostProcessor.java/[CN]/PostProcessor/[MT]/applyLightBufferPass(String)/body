@@ -1,7 +1,7 @@
 {
   Material program=Assets.getMaterial("engine:prog.lightBufferPass");
   program.enable();
-  FBO targetFbo=getFBO(target);
+  FBO targetFbo=renderingProcess.getFBO(target);
   int texId=0;
   if (targetFbo != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
@@ -17,13 +17,13 @@
     targetFbo.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
-  FBO targetPingPong=getFBO(target + "PingPong");
+  FBO targetPingPong=renderingProcess.getFBO(target + "PingPong");
   targetPingPong.bind();
   graphicState.setRenderBufferMask(targetPingPong,true,true,true);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
-  unbindFbo(target + "PingPong");
-  flipPingPongFbo(target);
+  renderingProcess.unbindFbo(target + "PingPong");
+  renderingProcess.flipPingPongFbo(target);
   if (target.equals("sceneOpaque")) {
     attachDepthBufferToFbo("sceneOpaque","sceneReflectiveRefractive");
   }

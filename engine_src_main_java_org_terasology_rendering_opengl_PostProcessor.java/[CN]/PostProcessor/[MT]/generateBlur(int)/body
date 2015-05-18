@@ -2,7 +2,7 @@
   Material material=Assets.getMaterial("engine:prog.blur");
   material.enable();
   material.setFloat("radius",overallBlurRadiusFactor * renderingConfig.getBlurRadius(),true);
-  FBO blur=getFBO("sceneBlur" + id);
+  FBO blur=renderingProcess.getFBO("sceneBlur" + id);
   if (blur == null) {
     return;
   }
@@ -11,10 +11,10 @@
   setViewportTo(blur.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   if (id == 0) {
-    bindFboTexture("sceneToneMapped");
+    renderingProcess.bindFboTexture("sceneToneMapped");
   }
  else {
-    bindFboTexture("sceneBlur" + (id - 1));
+    renderingProcess.bindFboTexture("sceneBlur" + (id - 1));
   }
   renderFullscreenQuad();
   blur.unbind();

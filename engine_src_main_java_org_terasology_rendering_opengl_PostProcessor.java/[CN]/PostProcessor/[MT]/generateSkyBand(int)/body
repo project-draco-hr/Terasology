@@ -1,5 +1,5 @@
 {
-  FBO skyBand=getFBO("sceneSkyBand" + id);
+  FBO skyBand=renderingProcess.getFBO("sceneSkyBand" + id);
   if (skyBand == null) {
     return;
   }
@@ -10,10 +10,10 @@
   material.setFloat("radius",8.0f,true);
   material.setFloat2("texelSize",1.0f / skyBand.width(),1.0f / skyBand.height(),true);
   if (id == 0) {
-    bindFboTexture("sceneOpaque");
+    renderingProcess.bindFboTexture("sceneOpaque");
   }
  else {
-    bindFboTexture("sceneSkyBand" + (id - 1));
+    renderingProcess.bindFboTexture("sceneSkyBand" + (id - 1));
   }
   setViewportTo(skyBand.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

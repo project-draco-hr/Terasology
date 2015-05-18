@@ -34,10 +34,10 @@
   }
   PerformanceMonitor.endActivity();
   PerformanceMonitor.startActivity("Rendering final scene");
-  if (worldRenderingStage == WorldRenderer.WorldRenderingStage.LEFT_EYE || worldRenderingStage == WorldRenderer.WorldRenderingStage.RIGHT_EYE || (worldRenderingStage == WorldRenderer.WorldRenderingStage.MONO && takeScreenshot)) {
+  if (worldRenderingStage == WorldRenderer.WorldRenderingStage.LEFT_EYE || worldRenderingStage == WorldRenderer.WorldRenderingStage.RIGHT_EYE || (worldRenderingStage == WorldRenderer.WorldRenderingStage.MONO && renderingProcess.isTakingScreenshot())) {
     renderFinalSceneToRT(worldRenderingStage);
-    if (takeScreenshot) {
-      saveScreenshot();
+    if (renderingProcess.isTakingScreenshot()) {
+      renderingProcess.saveScreenshot();
     }
   }
   if (worldRenderingStage == WorldRenderer.WorldRenderingStage.MONO || worldRenderingStage == WorldRenderer.WorldRenderingStage.RIGHT_EYE) {
