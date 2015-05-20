@@ -1,7 +1,6 @@
 {
-  Material program=Assets.getMaterial("engine:prog.highp");
-  program.setFloat("highPassThreshold",bloomHighPassThreshold,true);
-  program.enable();
+  materials.highPass.enable();
+  materials.highPass.setFloat("highPassThreshold",bloomHighPassThreshold,true);
   FBO highPass=renderingProcess.getFBO("sceneHighPass");
   if (highPass == null) {
     return;
@@ -11,7 +10,7 @@
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   sceneOpaque.bindTexture();
-  program.setInt("tex",texId++);
+  materials.highPass.setInt("tex",texId++);
   setViewportTo(highPass.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();

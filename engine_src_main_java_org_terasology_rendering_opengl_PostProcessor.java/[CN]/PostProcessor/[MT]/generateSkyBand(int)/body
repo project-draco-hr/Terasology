@@ -5,10 +5,9 @@
   }
   skyBand.bind();
   graphicState.setRenderBufferMask(skyBand,true,false,false);
-  Material material=Assets.getMaterial("engine:prog.blur");
-  material.enable();
-  material.setFloat("radius",8.0f,true);
-  material.setFloat2("texelSize",1.0f / skyBand.width(),1.0f / skyBand.height(),true);
+  materials.blur.enable();
+  materials.blur.setFloat("radius",8.0f,true);
+  materials.blur.setFloat2("texelSize",1.0f / skyBand.width(),1.0f / skyBand.height(),true);
   if (id == 0) {
     renderingProcess.bindFboTexture("sceneOpaque");
   }

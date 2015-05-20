@@ -1,16 +1,16 @@
 {
   Material material;
   if (renderingConfig.isOculusVrSupport()) {
-    material=Assets.getMaterial("engine:prog.ocDistortion");
+    material=materials.ocDistortion;
     material.enable();
     updateOcShaderParametersForVP(material,0,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.LEFT_EYE);
   }
  else {
     if (renderingDebugConfig.isEnabled()) {
-      material=Assets.getMaterial("engine:prog.debug");
+      material=materials.debug;
     }
  else {
-      material=Assets.getMaterial("engine:prog.post");
+      material=materials.post;
     }
     material.enable();
   }

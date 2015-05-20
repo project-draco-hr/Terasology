@@ -1,21 +1,20 @@
 {
-  Material program=Assets.getMaterial("engine:prog.lightBufferPass");
-  program.enable();
+  materials.lightBufferPass.enable();
   FBO targetFbo=renderingProcess.getFBO(target);
   int texId=0;
   if (targetFbo != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     targetFbo.bindTexture();
-    program.setInt("texSceneOpaque",texId++);
+    materials.lightBufferPass.setInt("texSceneOpaque",texId++);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     targetFbo.bindDepthTexture();
-    program.setInt("texSceneOpaqueDepth",texId++);
+    materials.lightBufferPass.setInt("texSceneOpaqueDepth",texId++);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     targetFbo.bindNormalsTexture();
-    program.setInt("texSceneOpaqueNormals",texId++);
+    materials.lightBufferPass.setInt("texSceneOpaqueNormals",texId++);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     targetFbo.bindLightBufferTexture();
-    program.setInt("texSceneOpaqueLightBuffer",texId++,true);
+    materials.lightBufferPass.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
   FBO targetPingPong=renderingProcess.getFBO(target + "PingPong");
   targetPingPong.bind();
