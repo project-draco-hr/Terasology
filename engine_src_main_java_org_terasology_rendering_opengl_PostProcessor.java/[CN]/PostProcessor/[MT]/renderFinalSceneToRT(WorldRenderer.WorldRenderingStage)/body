@@ -7,7 +7,7 @@
     material=materials.post;
   }
   material.enable();
-  renderingProcess.bindFbo("sceneFinal");
+  buffers.sceneFinal.bind();
   if (renderingStage == WorldRenderer.WorldRenderingStage.MONO || renderingStage == WorldRenderer.WorldRenderingStage.LEFT_EYE) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   }
@@ -22,5 +22,6 @@ case RIGHT_EYE:
 renderFullscreenQuad(fullScale.width() / 2,0,fullScale.width() / 2,fullScale.height());
 break;
 }
-renderingProcess.unbindFbo("sceneFinal");
+graphicState.bindDisplay();
+setViewportToFullSize();
 }

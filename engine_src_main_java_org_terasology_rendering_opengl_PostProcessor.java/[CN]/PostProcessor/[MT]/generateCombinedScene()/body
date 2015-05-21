@@ -1,9 +1,11 @@
 {
   materials.combine.enable();
-  renderingProcess.bindFbo("sceneOpaquePingPong");
+  buffers.sceneOpaquePingPong.bind();
+  setViewportTo(buffers.sceneOpaquePingPong.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
-  renderingProcess.unbindFbo("sceneOpaquePingPong");
-  renderingProcess.flipPingPongFbo("sceneOpaque");
-  attachDepthBufferToFbo("sceneOpaque","sceneReflectiveRefractive");
+  graphicState.bindDisplay();
+  setViewportToFullSize();
+  renderingProcess.swapSceneOpaqueFBOs();
+  buffers.sceneOpaque.attachDepthBufferTo(buffers.sceneReflectiveRefractive);
 }

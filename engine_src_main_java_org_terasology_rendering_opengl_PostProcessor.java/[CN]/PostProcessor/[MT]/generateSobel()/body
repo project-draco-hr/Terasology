@@ -1,13 +1,11 @@
 {
-  materials.sobel.enable();
-  FBO sobel=renderingProcess.getFBO("sobel");
-  if (sobel == null) {
-    return;
+  if (renderingConfig.isOutline()) {
+    materials.sobel.enable();
+    buffers.sobel.bind();
+    setViewportTo(buffers.sobel.dimensions());
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderFullscreenQuad();
+    graphicState.bindDisplay();
+    setViewportToFullSize();
   }
-  sobel.bind();
-  setViewportTo(sobel.dimensions());
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  renderFullscreenQuad();
-  sobel.unbind();
-  setViewportToFullSize();
 }

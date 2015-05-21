@@ -1,10 +1,8 @@
 {
   if (renderingConfig.isEyeAdaptation()) {
-    FBO scene=renderingProcess.getFBO("scene1");
-    if (scene == null) {
-      return;
-    }
-    renderingProcess.getCurrentReadbackPBO().copyFromFBO(scene.fboId,1,1,GL12.GL_BGRA,GL11.GL_UNSIGNED_BYTE);
+    PerformanceMonitor.startActivity("Updating exposure");
+    downsampleSceneInto1x1pixelsBuffer();
+    renderingProcess.getCurrentReadbackPBO().copyFromFBO(buffers.downSampledScene[0].fboId,1,1,GL12.GL_BGRA,GL11.GL_UNSIGNED_BYTE);
     renderingProcess.swapReadbackPBOs();
     ByteBuffer pixels=renderingProcess.getCurrentReadbackPBO().readBackPixels();
     if (pixels.limit() < 3) {
@@ -36,4 +34,5 @@
       currentExposure=hdrExposureDefault;
     }
   }
+  PerformanceMonitor.endActivity();
 }

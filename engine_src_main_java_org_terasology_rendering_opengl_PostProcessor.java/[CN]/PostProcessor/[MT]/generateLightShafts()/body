@@ -1,13 +1,13 @@
 {
-  materials.lightShafts.enable();
-  FBO lightshaft=renderingProcess.getFBO("lightShafts");
-  if (lightshaft == null) {
-    return;
+  if (renderingConfig.isLightShafts()) {
+    PerformanceMonitor.startActivity("Rendering light shafts");
+    materials.lightShafts.enable();
+    buffers.lightShafts.bind();
+    setViewportTo(buffers.lightShafts.dimensions());
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderFullscreenQuad();
+    graphicState.bindDisplay();
+    setViewportToFullSize();
+    PerformanceMonitor.endActivity();
   }
-  lightshaft.bind();
-  setViewportTo(lightshaft.dimensions());
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  renderFullscreenQuad();
-  lightshaft.unbind();
-  setViewportToFullSize();
 }

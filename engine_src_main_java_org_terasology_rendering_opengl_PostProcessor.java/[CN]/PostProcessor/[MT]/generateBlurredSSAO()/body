@@ -1,15 +1,11 @@
 {
   materials.ssaoBlur.enable();
-  FBO ssao=renderingProcess.getFBO("ssaoBlurred");
-  if (ssao == null) {
-    return;
-  }
-  materials.ssaoBlur.setFloat2("texelSize",1.0f / ssao.width(),1.0f / ssao.height(),true);
-  ssao.bind();
-  setViewportTo(ssao.dimensions());
+  materials.ssaoBlur.setFloat2("texelSize",1.0f / buffers.ssaoBlurred.width(),1.0f / buffers.ssaoBlurred.height(),true);
+  buffers.ssaoBlurred.bind();
+  setViewportTo(buffers.ssaoBlurred.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  renderingProcess.bindFboTexture("ssao");
+  buffers.ssao.bindTexture();
   renderFullscreenQuad();
-  ssao.unbind();
+  graphicState.bindDisplay();
   setViewportToFullSize();
 }

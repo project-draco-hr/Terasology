@@ -18,7 +18,12 @@
     renderChunksRefractiveReflective();
   }
    graphicState.disableWireframeIf(renderingDebugConfig.isWireframe());
-  combineRefractiveReflectiveAndOpaquePasses();
+  PerformanceMonitor.startActivity("Render Combined Scene");
+  renderingProcess.createOrUpdateFullscreenFbos();
+  postProcessor.generateSobel();
+  postProcessor.generateAmbientOcclusionPasses();
+  postProcessor.generateCombinedScene();
+  PerformanceMonitor.endActivity();
   renderSimpleBlendMaterialsIntoCombinedPass();
   renderFinalPostProcessedScene();
   playerCamera.updatePrevViewProjectionMatrix();
