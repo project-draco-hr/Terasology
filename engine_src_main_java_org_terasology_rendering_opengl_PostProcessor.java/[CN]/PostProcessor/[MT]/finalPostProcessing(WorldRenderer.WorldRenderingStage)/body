@@ -1,0 +1,16 @@
+{
+  PerformanceMonitor.startActivity("Rendering final scene");
+  if (!renderingDebugConfig.isEnabled()) {
+    materials.post.enable();
+  }
+ else {
+    materials.debug.enable();
+  }
+  if (!renderingConfig.isOculusVrSupport()) {
+    renderFinalMonoImage();
+  }
+ else {
+    renderFinalStereoImage(renderingStage);
+  }
+  PerformanceMonitor.endActivity();
+}
