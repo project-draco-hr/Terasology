@@ -1,3 +1,7 @@
 {
-  return (byte)((yaw.getIndex() << 4) + (pitch.getIndex() << 2) + roll.getIndex());
+  byte index=(byte)((yaw.getIndex() << 4) + (pitch.getIndex() << 2) + roll.getIndex());
+  if (DUPLICATE_ROTATIONS.containsKey(index)) {
+    return DUPLICATE_ROTATIONS.get(index);
+  }
+  return index;
 }

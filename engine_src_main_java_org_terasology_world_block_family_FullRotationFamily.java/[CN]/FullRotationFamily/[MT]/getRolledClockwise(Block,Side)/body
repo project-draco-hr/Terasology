@@ -1,0 +1,9 @@
+{
+  Rotation currentRotation=findRotationForBlock(currentBlock);
+  SideMapping sideMapping=findSideMappingForSide(relativeSide);
+  Side originalSide=findOriginalSide(currentRotation,relativeSide);
+  Side originalRotatedSide=findOriginalSide(currentRotation,sideMapping.originalSide);
+  Side resultRotatedSide=sideMapping.resultSide;
+  Rotation resultRotation=findDesiredRotation(originalSide,relativeSide,originalRotatedSide,resultRotatedSide);
+  return blocks.get(resultRotation);
+}
