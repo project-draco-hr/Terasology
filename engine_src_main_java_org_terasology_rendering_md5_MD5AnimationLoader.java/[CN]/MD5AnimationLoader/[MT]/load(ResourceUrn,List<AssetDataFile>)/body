@@ -1,0 +1,9 @@
+{
+  try (InputStream stream=inputs.get(0).openStream()){
+    MD5 md5=parse(stream);
+    return createAnimation(md5);
+  }
+ catch (  NumberFormatException e) {
+    throw new IOException("Error parsing " + inputs.get(0).getFilename(),e);
+  }
+}

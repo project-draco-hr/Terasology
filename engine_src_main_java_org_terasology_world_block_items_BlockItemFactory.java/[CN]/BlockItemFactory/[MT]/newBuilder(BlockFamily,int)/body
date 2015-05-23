@@ -3,9 +3,9 @@
   if (blockFamily.getArchetypeBlock().getLuminance() > 0) {
     builder.addComponent(new LightComponent());
   }
-  Prefab prefab=Assets.getPrefab(blockFamily.getArchetypeBlock().getPrefab());
-  if (prefab != null) {
-    for (    Component component : prefab.iterateComponents()) {
+  Optional<Prefab> prefab=blockFamily.getArchetypeBlock().getPrefab();
+  if (prefab.isPresent()) {
+    for (    Component component : prefab.get().iterateComponents()) {
       if (component.getClass().getAnnotation(AddToBlockBasedItem.class) != null) {
         builder.addComponent(entityManager.getComponentLibrary().copy(component));
       }

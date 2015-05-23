@@ -1,26 +1,19 @@
 {
   BlockFamily family=registeredBlockInfo.get().registeredFamilyByUri.get(uri);
   if (family == null && generateNewIds) {
-    if (isFreeformFamily(uri.getRootFamilyUri())) {
-      family=blockLoader.loadWithShape(uri);
-    }
- else {
-      family=getAvailableBlockFamily(uri);
-    }
-    if (family != null) {
+    Optional<BlockFamily> newFamily=loadFamily(uri);
+    if (newFamily.isPresent()) {
       lock.lock();
       try {
-        for (        Block block : family.getBlocks()) {
+        for (        Block block : newFamily.get().getBlocks()) {
           block.setId(getNextId());
         }
-        registerFamily(family);
+        registerFamily(newFamily.get());
       }
   finally {
         lock.unlock();
       }
-    }
- else {
-      logger.warn("Unable to resolve block family {}",uri);
+      return newFamily.get();
     }
   }
   return family;

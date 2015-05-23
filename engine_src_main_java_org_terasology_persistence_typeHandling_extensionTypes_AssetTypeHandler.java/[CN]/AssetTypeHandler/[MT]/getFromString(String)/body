@@ -1,7 +1,7 @@
 {
-  Asset asset=Assets.resolve(type,representation);
-  if (asset != null && assetClass.isAssignableFrom(asset.getClass())) {
-    return assetClass.cast(asset);
+  Optional<T> asset=Assets.get(representation,assetClass);
+  if (asset.isPresent()) {
+    return assetClass.cast(asset.get());
   }
   return null;
 }

@@ -1,17 +1,17 @@
 {
   BlockComponent blockComponent=blockEntity.getComponent(BlockComponent.class);
-  Prefab oldPrefab=Assets.getPrefab(oldType.getPrefab());
-  EntityBuilder oldEntityBuilder=entityManager.newBuilder(oldPrefab);
+  Optional<Prefab> oldPrefab=oldType.getPrefab();
+  EntityBuilder oldEntityBuilder=entityManager.newBuilder(oldPrefab.orElse(null));
   oldEntityBuilder.addComponent(new BlockComponent(oldType,new Vector3i(blockComponent.getPosition())));
-  BeforeEntityCreated oldEntityEvent=new BeforeEntityCreated(oldPrefab,oldEntityBuilder.iterateComponents());
+  BeforeEntityCreated oldEntityEvent=new BeforeEntityCreated(oldPrefab.orElse(null),oldEntityBuilder.iterateComponents());
   blockEntity.send(oldEntityEvent);
   for (  Component comp : oldEntityEvent.getResultComponents()) {
     oldEntityBuilder.addComponent(comp);
   }
-  Prefab newPrefab=Assets.getPrefab(type.getPrefab());
-  EntityBuilder newEntityBuilder=entityManager.newBuilder(newPrefab);
+  Optional<Prefab> newPrefab=type.getPrefab();
+  EntityBuilder newEntityBuilder=entityManager.newBuilder(newPrefab.orElse(null));
   newEntityBuilder.addComponent(new BlockComponent(type,new Vector3i(blockComponent.getPosition())));
-  BeforeEntityCreated newEntityEvent=new BeforeEntityCreated(newPrefab,newEntityBuilder.iterateComponents());
+  BeforeEntityCreated newEntityEvent=new BeforeEntityCreated(newPrefab.orElse(null),newEntityBuilder.iterateComponents());
   blockEntity.send(newEntityEvent);
   for (  Component comp : newEntityEvent.getResultComponents()) {
     newEntityBuilder.addComponent(comp);

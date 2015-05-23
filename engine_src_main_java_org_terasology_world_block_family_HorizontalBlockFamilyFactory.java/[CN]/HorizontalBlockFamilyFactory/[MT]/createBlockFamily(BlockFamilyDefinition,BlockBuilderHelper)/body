@@ -1,0 +1,11 @@
+{
+  if (definition.isFreeform()) {
+    throw new IllegalStateException("A shape must be provided when creating a family for a freeform block family definition");
+  }
+  Map<Side,Block> blockMap=Maps.newHashMap();
+  for (  Rotation rot : Rotation.horizontalRotations()) {
+    Side side=rot.rotate(Side.FRONT);
+    blockMap.put(side,blockBuilder.constructTransformedBlock(definition,side.toString().toLowerCase(Locale.ENGLISH),rot));
+  }
+  return new HorizontalBlockFamily(new BlockUri(definition.getUrn()),getArchetypeSide(),blockMap,definition.getCategories());
+}

@@ -1,6 +1,6 @@
 {
   Path savePath;
-  AssetUri uri=tree.getURI();
+  ResourceUrn uri=tree.getUrn();
   if (BEHAVIORS.equals(uri.getModuleName())) {
     savePath=PathManager.getInstance().getHomeModPath().resolve(BEHAVIORS.toString()).resolve("assets").resolve("behaviors");
   }
@@ -8,10 +8,10 @@
     Path overridesPath=PathManager.getInstance().getHomeModPath().resolve(BEHAVIORS.toString()).resolve("overrides");
     savePath=overridesPath.resolve(uri.getModuleName().toString()).resolve("behaviors");
   }
-  BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  BehaviorTreeFormat loader=new BehaviorTreeFormat();
   try {
     Files.createDirectories(savePath);
-    Path file=savePath.resolve(uri.getAssetName() + ".behavior");
+    Path file=savePath.resolve(uri.getResourceName() + ".behavior");
     try (FileOutputStream fos=new FileOutputStream(file.toFile())){
       loader.save(fos,tree.getData());
     }

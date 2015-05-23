@@ -3,13 +3,12 @@
   WorldAtlas atlas=new WorldAtlasImpl(context.get(Config.class).getRendering().getMaxTextureAtlasResolution());
   context.put(WorldAtlas.class,atlas);
   BlockManagerImpl blockManager;
-  BlockFamilyFactoryRegistry blockFamilyFactoryRegistry=context.get(BlockFamilyFactoryRegistry.class);
   if (networkSystem.getMode().isAuthority()) {
-    blockManager=new BlockManagerImpl(atlas,gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),true,blockFamilyFactoryRegistry);
+    blockManager=new BlockManagerImpl(atlas,context.get(AssetManager.class),gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),true);
     blockManager.subscribe(context.get(NetworkSystem.class));
   }
  else {
-    blockManager=new BlockManagerImpl(atlas,gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),false,blockFamilyFactoryRegistry);
+    blockManager=new BlockManagerImpl(atlas,context.get(AssetManager.class),gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),false);
   }
   context.put(BlockManager.class,blockManager);
   return true;

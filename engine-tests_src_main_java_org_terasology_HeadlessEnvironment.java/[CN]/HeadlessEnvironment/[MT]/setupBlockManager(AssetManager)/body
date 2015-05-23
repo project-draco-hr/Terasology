@@ -1,0 +1,8 @@
+{
+  DefaultBlockFamilyFactoryRegistry blockFamilyFactoryRegistry=new DefaultBlockFamilyFactoryRegistry();
+  blockFamilyFactoryRegistry.setBlockFamilyFactory("horizontal",new HorizontalBlockFamilyFactory());
+  blockFamilyFactoryRegistry.setBlockFamilyFactory("alignToSurface",new AttachedToSurfaceFamilyFactory());
+  WorldAtlas worldAtlas=new NullWorldAtlas();
+  BlockManagerImpl blockManager=new BlockManagerImpl(worldAtlas,assetManager);
+  context.put(BlockManager.class,blockManager);
+}

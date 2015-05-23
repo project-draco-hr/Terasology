@@ -1,0 +1,13 @@
+{
+  try (BufferedReader reader=new BufferedReader(new InputStreamReader(inputs.get(0).openStream(),Charsets.UTF_8))){
+    EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
+    if (prefabData != null) {
+      EngineEntityManager entityManager=CoreRegistry.get(EngineEntityManager.class);
+      PrefabSerializer serializer=new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
+      return serializer.deserialize(prefabData);
+    }
+ else {
+      throw new IOException("Failed to read prefab for '" + resourceUrn + "'");
+    }
+  }
+ }

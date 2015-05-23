@@ -1,0 +1,11 @@
+{
+  logger.debug("Recompiling shader {}.",getUrn());
+  doDispose();
+  shaderProgramBase=data;
+  parameters.clear();
+  for (  ShaderParameterMetadata metadata : shaderProgramBase.getParameterMetadata()) {
+    parameters.put(metadata.getName(),metadata);
+  }
+  updateAvailableFeatures();
+  recompile();
+}

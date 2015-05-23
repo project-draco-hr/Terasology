@@ -1,6 +1,5 @@
 {
   ModuleManager moduleManager=context.get(ModuleManager.class);
-  AssetManager assetManager=context.get(AssetManager.class);
   Config config=context.get(Config.class);
   Set<Module> selectedModules=Sets.newHashSet();
   for (  Name moduleName : config.getDefaultModSelection().listModules()) {
@@ -13,6 +12,6 @@
     }
   }
   ModuleEnvironment environment=moduleManager.loadEnvironment(selectedModules,false);
-  assetManager.setEnvironment(environment);
+  context.get(ModuleAwareAssetTypeManager.class).switchEnvironment(environment);
   return environment;
 }

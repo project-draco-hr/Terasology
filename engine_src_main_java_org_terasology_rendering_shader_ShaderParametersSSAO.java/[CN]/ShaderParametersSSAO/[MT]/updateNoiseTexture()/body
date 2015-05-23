@@ -1,6 +1,6 @@
 {
-  Texture texture=CoreRegistry.get(AssetManager.class).tryLoadAsset(new AssetUri(AssetType.TEXTURE,"engine:ssaoNoise"),Texture.class);
-  if (texture == null) {
+  Optional<Texture> texture=CoreRegistry.get(AssetManager.class).getAsset("engine:ssaoNoise",Texture.class);
+  if (!texture.isPresent()) {
     ByteBuffer noiseValues=BufferUtils.createByteBuffer(SSAO_NOISE_SIZE * SSAO_NOISE_SIZE * 4);
     for (int i=0; i < SSAO_NOISE_SIZE * SSAO_NOISE_SIZE; ++i) {
       Vector3f noiseVector=new Vector3f(random.nextFloat(-1.0f,1.0f),random.nextFloat(-1.0f,1.0f),0.0f);
@@ -11,7 +11,7 @@
       noiseValues.put((byte)0x0);
     }
     noiseValues.flip();
-    texture=Assets.generateAsset(new AssetUri(AssetType.TEXTURE,"engine:ssaoNoise"),new TextureData(SSAO_NOISE_SIZE,SSAO_NOISE_SIZE,new ByteBuffer[]{noiseValues},Texture.WrapMode.REPEAT,Texture.FilterMode.NEAREST),Texture.class);
+    return Assets.generateAsset(new ResourceUrn("engine:ssaoNoise"),new TextureData(SSAO_NOISE_SIZE,SSAO_NOISE_SIZE,new ByteBuffer[]{noiseValues},Texture.WrapMode.REPEAT,Texture.FilterMode.NEAREST),Texture.class);
   }
-  return texture;
+  return texture.get();
 }

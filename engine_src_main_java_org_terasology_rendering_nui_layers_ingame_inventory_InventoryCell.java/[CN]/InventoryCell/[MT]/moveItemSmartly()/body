@@ -1,7 +1,7 @@
 {
   EntityRef fromEntity=getTargetInventory();
   int fromSlot=getTargetSlot();
-  EntityRef playerEntity=localPlayer.getCharacterEntity();
+  EntityRef playerEntity=CoreRegistry.get(LocalPlayer.class).getCharacterEntity();
   InventoryComponent playerInventory=playerEntity.getComponent(InventoryComponent.class);
   if (playerInventory == null) {
     return;
@@ -38,5 +38,5 @@
     targetEntity=playerEntity;
     toSlots=numbersBetween(0,totalSlotCount);
   }
-  inventoryManager.moveItemToSlots(getTransferEntity(),fromEntity,fromSlot,targetEntity,toSlots);
+  CoreRegistry.get(InventoryManager.class).moveItemToSlots(getTransferEntity(),fromEntity,fromSlot,targetEntity,toSlots);
 }

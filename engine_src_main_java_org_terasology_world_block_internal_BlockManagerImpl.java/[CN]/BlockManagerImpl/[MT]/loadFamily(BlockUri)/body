@@ -1,0 +1,18 @@
+{
+  Optional<BlockFamilyDefinition> familyDef=assetManager.getAsset(uri.getBlockFamilyDefinitionUrn(),BlockFamilyDefinition.class);
+  if (familyDef.isPresent() && !familyDef.get().getData().isTemplate()) {
+    if (familyDef.get().isFreeform() && uri.getShapeUrn().isPresent()) {
+      Optional<BlockShape> shape=assetManager.getAsset(uri.getShapeUrn().get(),BlockShape.class);
+      if (shape.isPresent()) {
+        return Optional.of(familyDef.get().createFamily(shape.get(),blockBuilder));
+      }
+    }
+ else     if (!familyDef.get().isFreeform()) {
+      return Optional.of(familyDef.get().createFamily(blockBuilder));
+    }
+  }
+ else {
+    logger.error("Family not available: {}",uri);
+  }
+  return Optional.empty();
+}

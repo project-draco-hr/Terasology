@@ -1,7 +1,7 @@
 {
-  AssetUri resolvedUri=Assets.resolveAssetUri(AssetType.UI_ELEMENT,uri);
-  if (resolvedUri != null) {
-    return addHUDElement(resolvedUri,type,region);
+  Optional<? extends UIElement> data=assetManager.getAsset(urn,UIElement.class);
+  if (data.isPresent() && type.isInstance(data.get().getRootWidget())) {
+    return addHUDElement(data.get().getUrn(),type.cast(data.get().getRootWidget()),region);
   }
   return null;
 }

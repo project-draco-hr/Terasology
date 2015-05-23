@@ -1,7 +1,6 @@
 {
-  AssetManager assetManager=new AssetManagerImpl(context.get(ModuleManager.class).getEnvironment());
-  for (  AssetType type : AssetType.values()) {
-    assetManager.setAssetFactory(type,mock(AssetFactory.class));
-  }
-  context.put(AssetManager.class,assetManager);
+  ModuleAwareAssetTypeManager assetTypeManager=new ModuleAwareAssetTypeManager();
+  assetTypeManager.switchEnvironment(context.get(ModuleManager.class).getEnvironment());
+  context.put(AssetManager.class,assetTypeManager.getAssetManager());
+  return assetTypeManager.getAssetManager();
 }

@@ -1,7 +1,7 @@
 {
   ClientComponent clientComp=client.getComponent(ClientComponent.class);
-  Asset<?> asset=Assets.get(new AssetUri("prefab:engine:player"));
-  CharacterMovementComponent moveDefault=((PojoPrefab)asset).getComponent(CharacterMovementComponent.class);
+  Optional<Prefab> prefab=Assets.get(new ResourceUrn("engine:player"),Prefab.class);
+  CharacterMovementComponent moveDefault=prefab.get().getComponent(CharacterMovementComponent.class);
   CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
   if (move != null && moveDefault != null) {
     move.jumpSpeed=moveDefault.jumpSpeed;
@@ -12,7 +12,7 @@
     move.distanceBetweenFootsteps=moveDefault.distanceBetweenFootsteps;
     clientComp.character.saveComponent(move);
   }
-  HealthComponent healthDefault=((PojoPrefab)asset).getComponent(HealthComponent.class);
+  HealthComponent healthDefault=prefab.get().getComponent(HealthComponent.class);
   HealthComponent health=clientComp.character.getComponent(HealthComponent.class);
   if (health != null && healthDefault != null) {
     health.fallingDamageSpeedThreshold=healthDefault.fallingDamageSpeedThreshold;

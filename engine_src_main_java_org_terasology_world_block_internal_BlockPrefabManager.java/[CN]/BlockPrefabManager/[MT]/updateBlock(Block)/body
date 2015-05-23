@@ -1,10 +1,9 @@
 {
-  String prefab=block.getPrefab();
+  Optional<Prefab> prefab=block.getPrefab();
   boolean keepActive=block.isKeepActive();
   boolean requiresLifecycleEvents=false;
-  if (!prefab.isEmpty()) {
-    Prefab blockPrefab=prefabManager.getPrefab(prefab);
-    for (    Component comp : blockPrefab.iterateComponents()) {
+  if (prefab.isPresent()) {
+    for (    Component comp : prefab.get().iterateComponents()) {
       ComponentMetadata<?> metadata=entityManager.getComponentLibrary().getMetadata(comp.getClass());
       if (metadata.isForceBlockActive()) {
         keepActive=true;

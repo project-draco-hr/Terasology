@@ -1,42 +1,39 @@
 {
   super.setup();
   lightRules=new LightPropagationRules();
-  blockManager=new BlockManagerImpl(new NullWorldAtlas(),Lists.<String>newArrayList(),Maps.<String,Short>newHashMap(),true,new DefaultBlockFamilyFactoryRegistry());
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  blockManager=new BlockManagerImpl(new NullWorldAtlas(),assetManager,Lists.<String>newArrayList(),Maps.<String,Short>newHashMap(),true);
   CoreRegistry.put(BlockManager.class,blockManager);
-  fullLight=new Block();
-  fullLight.setDisplayName("Torch");
-  fullLight.setUri(new BlockUri("engine:torch"));
-  fullLight.setId((short)2);
-  fullLight.setLuminance(ChunkConstants.MAX_LIGHT);
-  blockManager.addBlockFamily(new SymmetricFamily(fullLight.getURI(),fullLight),true);
-  weakLight=new Block();
-  weakLight.setDisplayName("PartLight");
-  weakLight.setUri(new BlockUri("engine:weakLight"));
-  weakLight.setId((short)3);
-  weakLight.setLuminance((byte)2);
-  blockManager.addBlockFamily(new SymmetricFamily(weakLight.getURI(),weakLight),true);
-  mediumLight=new Block();
-  mediumLight.setDisplayName("MediumLight");
-  mediumLight.setUri(new BlockUri("engine:mediumLight"));
-  mediumLight.setId((short)4);
-  mediumLight.setLuminance((byte)5);
-  blockManager.addBlockFamily(new SymmetricFamily(mediumLight.getURI(),mediumLight),true);
-  solid=new Block();
-  solid.setDisplayName("Solid");
-  solid.setUri(new BlockUri("engine:solid"));
-  solid.setId((short)5);
-  for (  Side side : Side.values()) {
-    solid.setFullSide(side,true);
-  }
-  blockManager.addBlockFamily(new SymmetricFamily(solid.getURI(),solid),true);
-  solidMediumLight=new Block();
-  solidMediumLight.setDisplayName("SolidMediumLight");
-  solidMediumLight.setUri(new BlockUri("engine:solidMediumLight"));
-  solidMediumLight.setId((short)6);
-  solidMediumLight.setLuminance((byte)5);
-  for (  Side side : Side.values()) {
-    solidMediumLight.setFullSide(side,true);
-  }
-  blockManager.addBlockFamily(new SymmetricFamily(solidMediumLight.getURI(),solidMediumLight),true);
-  air=BlockManager.getAir();
+  BlockFamilyDefinitionData fullLightData=new BlockFamilyDefinitionData();
+  fullLightData.getBaseSection().setDisplayName("Torch");
+  fullLightData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
+  fullLightData.getBaseSection().setLuminance(ChunkConstants.MAX_LIGHT);
+  assetManager.loadAsset(new ResourceUrn("engine:torch"),fullLightData,BlockFamilyDefinition.class);
+  fullLight=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:torch")));
+  BlockFamilyDefinitionData weakLightData=new BlockFamilyDefinitionData();
+  weakLightData.getBaseSection().setDisplayName("PartLight");
+  weakLightData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
+  weakLightData.getBaseSection().setLuminance((byte)2);
+  assetManager.loadAsset(new ResourceUrn("engine:weakLight"),weakLightData,BlockFamilyDefinition.class);
+  weakLight=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:weakLight")));
+  BlockFamilyDefinitionData mediumLightData=new BlockFamilyDefinitionData();
+  mediumLightData.getBaseSection().setDisplayName("MediumLight");
+  mediumLightData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
+  mediumLightData.getBaseSection().setLuminance((byte)5);
+  assetManager.loadAsset(new ResourceUrn("engine:mediumLight"),mediumLightData,BlockFamilyDefinition.class);
+  mediumLight=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:mediumLight")));
+  BlockFamilyDefinitionData solidData=new BlockFamilyDefinitionData();
+  solidData.getBaseSection().setDisplayName("Stone");
+  solidData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
+  solidData.getBaseSection().setTranslucent(false);
+  assetManager.loadAsset(new ResourceUrn("engine:stone"),solidData,BlockFamilyDefinition.class);
+  solid=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:stone")));
+  BlockFamilyDefinitionData solidMediumLightData=new BlockFamilyDefinitionData();
+  solidMediumLightData.getBaseSection().setDisplayName("SolidMediumLight");
+  solidMediumLightData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
+  solidMediumLightData.getBaseSection().setTranslucent(false);
+  solidMediumLightData.getBaseSection().setLuminance((byte)5);
+  assetManager.loadAsset(new ResourceUrn("engine:solidMediumLight"),solidMediumLightData,BlockFamilyDefinition.class);
+  solidMediumLight=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:solidMediumLight")));
+  air=blockManager.getBlock(BlockManager.AIR_ID);
 }

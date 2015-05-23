@@ -1,4 +1,7 @@
 {
-  UIElement element=Assets.getUIElement(screenUri);
-  return addOverlay(element,expectedType);
+  Optional<UIElement> element=Assets.getUIElement(screenUri);
+  if (element.isPresent()) {
+    return addOverlay(element.get(),expectedType);
+  }
+  return null;
 }

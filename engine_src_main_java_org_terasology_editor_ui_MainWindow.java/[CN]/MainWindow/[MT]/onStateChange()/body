@@ -1,23 +1,2 @@
 {
-  shaderPropertyMenuEntries.clear();
-  shaderPropertiesMenu.removeAll();
-  for (  GLSLMaterial material : CoreRegistry.get(AssetManager.class).listLoadedAssets(AssetType.MATERIAL,GLSLMaterial.class)) {
-    if (material.getShaderParameters() != null) {
-      GLSLMaterial finalMat=material;
-      final PropertyProvider provider=new ReflectionProvider(finalMat.getShaderParameters());
-      if (!provider.getProperties().isEmpty()) {
-        final String programName=material.getURI().toString();
-        JMenuItem menuItem=new JMenuItem(programName);
-        menuItem.addActionListener(new ActionListener(){
-          @Override public void actionPerformed(          ActionEvent e){
-            propertyPanel.setActivePropertyProvider(provider);
-            propertyPanel.setTitle(programName);
-          }
-        }
-);
-        shaderPropertyMenuEntries.add(menuItem);
-        shaderPropertiesMenu.add(menuItem);
-      }
-    }
-  }
 }

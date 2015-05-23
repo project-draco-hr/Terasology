@@ -1,0 +1,70 @@
+{
+  final TypeAdapter<T> delegate=gson.getDelegateAdapter(this,type);
+  return new TypeAdapter<T>(){
+    private NodesClassLibrary nodesClassLibrary=CoreRegistry.get(NodesClassLibrary.class);
+    @Override public void write(    JsonWriter out,    T value) throws IOException {
+      if (value instanceof Node) {
+        Node node=(Node)value;
+        ClassMetadata<?,?> metadata=nodesClassLibrary.getMetadata(node.getClass());
+        if (metadata != null) {
+          out.beginObject();
+          idNodes.put(currentId,node);
+          nodeIds.put(node,currentId);
+          TypeAdapter<T> delegateAdapter=getDelegateAdapter(value.getClass());
+          String metadataVal=metadata.getUri().toString();
+          out.name("nodeType").value(metadataVal).name("nodeId").value(currentId);
+          currentId++;
+          out.name("node");
+          delegateAdapter.write(out,value);
+          out.endObject();
+        }
+ else {
+          delegate.write(out,null);
+        }
+      }
+ else {
+        delegate.write(out,value);
+      }
+    }
+    @Override public T read(    JsonReader in) throws IOException {
+      if (in.peek() == JsonToken.BEGIN_OBJECT) {
+        in.beginObject();
+        nextName(in,"nodeType");
+        String nodeType=in.nextString();
+        ClassMetadata<? extends Node,?> classMetadata=CoreRegistry.get(NodesClassLibrary.class).resolve(nodeType);
+        nextName(in,"nodeId");
+        int id=in.nextInt();
+        nextName(in,"node");
+        if (classMetadata != null) {
+          TypeAdapter<T> delegateAdapter=getDelegateAdapter(classMetadata.getType());
+          Node result;
+          if (classMetadata.getType() == LookupNode.class) {
+            result=classMetadata.newInstance();
+            in.beginObject();
+            nextName(in,"tree");
+            String uri=in.nextString();
+            ((LookupNode)result).tree=Assets.get(uri,BehaviorTree.class).orElse(null);
+            in.endObject();
+          }
+ else {
+            result=(Node)delegateAdapter.read(in);
+          }
+          idNodes.put(id,result);
+          nodeIds.put(result,id);
+          in.endObject();
+          return (T)result;
+        }
+ else {
+          throw new NotSerializableException(nodeType);
+        }
+      }
+ else {
+        return delegate.read(in);
+      }
+    }
+    private TypeAdapter<T> getDelegateAdapter(    Class cls){
+      return (TypeAdapter<T>)gson.getDelegateAdapter(NodeTypeAdapterFactory.this,TypeToken.get(cls));
+    }
+  }
+;
+}
