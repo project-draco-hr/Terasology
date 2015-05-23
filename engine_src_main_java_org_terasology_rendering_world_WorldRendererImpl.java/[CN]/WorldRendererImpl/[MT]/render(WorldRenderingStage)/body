@@ -19,9 +19,9 @@
    graphicState.disableWireframeIf(renderingDebugConfig.isWireframe());
   PerformanceMonitor.startActivity("Pre-post composite");
   renderingProcess.createOrUpdateFullscreenFbos();
-  postProcessor.generateSobel();
+  postProcessor.generateOutline();
   postProcessor.generateAmbientOcclusionPasses();
-  postProcessor.generateCombinedScene();
+  postProcessor.generatePrePostComposite();
   PerformanceMonitor.endActivity();
   renderSimpleBlendMaterials();
   PerformanceMonitor.startActivity("Post-Processing");
