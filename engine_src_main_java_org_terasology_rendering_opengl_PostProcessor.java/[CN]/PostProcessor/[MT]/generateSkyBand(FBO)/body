@@ -1,6 +1,4 @@
 {
-  skyBand.bind();
-  graphicState.setRenderBufferMask(skyBand,true,false,false);
   materials.blur.enable();
   materials.blur.setFloat("radius",8.0f,true);
   materials.blur.setFloat2("texelSize",1.0f / skyBand.width(),1.0f / skyBand.height(),true);
@@ -10,6 +8,8 @@
  else {
     buffers.sceneSkyBand0.bindTexture();
   }
+  skyBand.bind();
+  graphicState.setRenderBufferMask(skyBand,true,false,false);
   setViewportTo(skyBand.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();

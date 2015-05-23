@@ -1,11 +1,11 @@
 {
   materials.highPass.enable();
   materials.highPass.setFloat("highPassThreshold",bloomHighPassThreshold,true);
-  buffers.sceneHighPass.bind();
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   buffers.sceneOpaque.bindTexture();
   materials.highPass.setInt("tex",texId++);
+  buffers.sceneHighPass.bind();
   setViewportTo(buffers.sceneHighPass.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
