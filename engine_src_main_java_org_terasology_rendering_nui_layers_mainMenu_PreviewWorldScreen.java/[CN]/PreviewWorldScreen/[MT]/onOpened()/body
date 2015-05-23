@@ -7,10 +7,11 @@
     ResolutionResult result=resolver.resolve(moduleName);
     if (result.isSuccess()) {
       environment=moduleManager.loadEnvironment(result.getModules(),false);
-      CoreRegistry.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment));
+      context.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment));
       assetManager.setEnvironment(environment);
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());
+      worldGenerator.initialize();
       previewGen=new FacetLayerPreview(environment,worldGenerator);
       configureProperties();
       triggerUpdate=true;
