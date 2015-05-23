@@ -1,8 +1,8 @@
 {
-  NetworkSystemImpl networkSystem=(NetworkSystemImpl)CoreRegistry.get(NetworkSystem.class);
+  NetworkSystemImpl networkSystem=(NetworkSystemImpl)context.get(NetworkSystem.class);
   EntityRef client=networkSystem.getServer().getClientEntity();
   if (client.exists()) {
-    CoreRegistry.get(LocalPlayer.class).setClientEntity(client);
+    context.get(LocalPlayer.class).setClientEntity(client);
     return true;
   }
   return false;

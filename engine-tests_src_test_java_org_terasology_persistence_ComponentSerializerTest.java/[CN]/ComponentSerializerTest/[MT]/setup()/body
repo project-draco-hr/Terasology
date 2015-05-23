@@ -1,10 +1,15 @@
 {
+  context=new ContextImpl();
+  context.put(ModuleManager.class,moduleManager);
+  CoreRegistry.setContext(context);
   TypeSerializationLibrary serializationLibrary=new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary);
   serializationLibrary.add(Vector3f.class,new Vector3fTypeHandler());
   serializationLibrary.add(Quat4f.class,new Quat4fTypeHandler());
   NetworkSystem networkSystem=mock(NetworkSystem.class);
-  EntitySystemBuilder builder=new EntitySystemBuilder();
-  EngineEntityManager entityManager=builder.build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
+  context.put(NetworkSystem.class,networkSystem);
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  EngineEntityManager entityManager=context.get(EngineEntityManager.class);
   entityManager.getComponentLibrary().register(new SimpleUri("test","gettersetter"),GetterSetterComponent.class);
   entityManager.getComponentLibrary().register(new SimpleUri("test","string"),StringComponent.class);
   entityManager.getComponentLibrary().register(new SimpleUri("test","integer"),IntegerComponent.class);

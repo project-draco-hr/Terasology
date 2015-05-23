@@ -1,16 +1,19 @@
 {
-  CoreRegistry.setContext(gameEngine.createChildContext());
-  entityManager=new EntitySystemBuilder().build(CoreRegistry.get(ModuleManager.class).getEnvironment(),CoreRegistry.get(NetworkSystem.class),CoreRegistry.get(ReflectFactory.class),CoreRegistry.get(CopyStrategyLibrary.class));
+  Context context=gameEngine.createChildContext();
+  CoreRegistry.setContext(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  entityManager=context.get(EngineEntityManager.class);
   eventSystem=CoreRegistry.get(EventSystem.class);
-  CoreRegistry.put(Console.class,new ConsoleImpl());
+  context.put(Console.class,new ConsoleImpl());
   NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
   ((NUIManagerInternal)nuiManager).refreshWidgetsLibrary();
   componentSystemManager=new ComponentSystemManager();
-  CoreRegistry.put(ComponentSystemManager.class,componentSystemManager);
+  context.put(ComponentSystemManager.class,componentSystemManager);
   componentSystemManager.register(new ConsoleSystem(),"engine:ConsoleSystem");
   componentSystemManager.register(new CoreCommands(),"engine:CoreCommands");
   EntityRef localPlayerEntity=entityManager.create(new ClientComponent());
-  LocalPlayer localPlayer=CoreRegistry.put(LocalPlayer.class,new LocalPlayer());
+  LocalPlayer localPlayer=new LocalPlayer();
+  context.put(LocalPlayer.class,localPlayer);
   localPlayer.setClientEntity(localPlayerEntity);
   componentSystemManager.initialise();
 }
