@@ -1,7 +1,7 @@
 {
-  UIElement element=Assets.getUIElement(screenUri);
-  if (element != null) {
-    return pushScreen(element);
+  Optional<UIElement> element=Assets.getUIElement(screenUri);
+  if (element.isPresent()) {
+    return pushScreen(element.get());
   }
  else {
     logger.error("Can't find screen " + screenUri);

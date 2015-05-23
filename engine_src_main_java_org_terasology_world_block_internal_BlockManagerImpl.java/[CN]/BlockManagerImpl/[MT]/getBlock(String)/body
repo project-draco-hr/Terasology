@@ -1,3 +1,9 @@
 {
-  return getBlock(new BlockUri(uri));
+  try {
+    return getBlock(new BlockUri(uri));
+  }
+ catch (  BlockUriParseException e) {
+    logger.error("Attempt to fetch block with illegal uri '{}'",uri);
+    return getBlock(AIR_ID);
+  }
 }

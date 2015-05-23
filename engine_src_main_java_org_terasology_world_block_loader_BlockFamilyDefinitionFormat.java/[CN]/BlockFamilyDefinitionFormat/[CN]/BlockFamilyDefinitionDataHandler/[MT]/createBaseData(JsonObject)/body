@@ -1,0 +1,16 @@
+{
+  JsonPrimitive basedOn=jsonObject.getAsJsonPrimitive("basedOn");
+  if (basedOn != null && !basedOn.getAsString().isEmpty()) {
+    Optional<BlockFamilyDefinition> baseDef=assetManager.getAsset(basedOn.getAsString(),BlockFamilyDefinition.class);
+    if (baseDef.isPresent()) {
+      return baseDef.get().getData();
+    }
+ else {
+      throw new JsonParseException("Unable to resolve based block definition '" + basedOn.getAsString() + "'");
+    }
+  }
+  BlockFamilyDefinitionData data=new BlockFamilyDefinitionData();
+  data.setFamilyFactory(factoryRegistry.getBlockFamilyFactory("symmetric"));
+  data.getBaseSection().setSounds(assetManager.getAsset("engine:default",BlockSounds.class).get());
+  return data;
+}

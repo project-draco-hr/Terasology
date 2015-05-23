@@ -1,7 +1,15 @@
 {
-  BlockUri blockUri=resolveBlockFamilyUri(uri);
-  if (blockUri != null) {
-    return getBlockFamily(blockUri);
+  Set<ResourceUrn> resourceUrns=assetManager.resolve(uri,BlockFamilyDefinition.class);
+  if (resourceUrns.size() == 1) {
+    return getBlockFamily(new BlockUri(resourceUrns.iterator().next()));
   }
-  return null;
+ else {
+    if (resourceUrns.size() > 0) {
+      logger.error("Failed to resolve block family '{}', too many options - {}",uri,resourceUrns);
+    }
+ else {
+      logger.error("Failed to resolve block family '{}'",uri);
+    }
+    return getBlockFamily(AIR_ID);
+  }
 }

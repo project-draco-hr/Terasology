@@ -1,0 +1,11 @@
+{
+  BlockShape shape=definition.getData().getBaseSection().getShape();
+  if (shape == null) {
+    shape=cubeShape;
+  }
+  Block block=constructBlock(definition.getUrn().getResourceName().toString(),shape,Rotation.none(),definition.getData().getBaseSection());
+  if (block.isLiquid()) {
+    applyLoweredShape(block,loweredShape,definition.getData().getBaseSection().getBlockTiles());
+  }
+  return block;
+}

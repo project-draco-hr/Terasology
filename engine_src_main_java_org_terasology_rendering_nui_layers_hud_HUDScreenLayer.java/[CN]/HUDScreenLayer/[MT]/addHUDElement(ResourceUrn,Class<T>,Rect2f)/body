@@ -1,0 +1,7 @@
+{
+  Optional<? extends UIElement> data=assetManager.getAsset(urn,UIElement.class);
+  if (data.isPresent() && type.isInstance(data.get().getRootWidget())) {
+    return addHUDElement(urn,type.cast(data.get().getRootWidget()),region);
+  }
+  return null;
+}

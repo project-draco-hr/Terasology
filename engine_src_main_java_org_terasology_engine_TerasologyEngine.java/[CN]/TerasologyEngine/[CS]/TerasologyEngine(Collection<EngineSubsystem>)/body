@@ -11,14 +11,16 @@
     verifyRequiredSystemIsRegistered(Time.class);
     time=(EngineTime)CoreRegistry.get(Time.class);
     GameThread.setToCurrentThread();
+    initSubsystems();
     initManagers();
+    initAssets();
+    ApplyModulesUtil.applyModules();
     SplashScreen.getInstance().post("Post-initialize subsystems ...");
     postInitSubsystems();
     verifyRequiredSystemIsRegistered(DisplayDevice.class);
     verifyRequiredSystemIsRegistered(RenderingSubsystemFactory.class);
     verifyRequiredSystemIsRegistered(InputSystem.class);
     SplashScreen.getInstance().post("Initialize assets ...");
-    initAssets();
     initAdvancedMonitor();
     engineState=EngineState.INITIALIZED;
   }

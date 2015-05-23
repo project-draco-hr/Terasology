@@ -1,18 +1,10 @@
 {
-  if (config.getAudio().isDisableSound()) {
+  try {
+    audioManager=new OpenALManager(config.getAudio());
+  }
+ catch (  LWJGLException|OpenALException e) {
+    logger.warn("Could not load OpenAL manager - sound is disabled",e);
     audioManager=new NullAudioManager();
   }
- else {
-    try {
-      audioManager=new OpenALManager(config.getAudio());
-    }
- catch (    LWJGLException|OpenALException e) {
-      logger.warn("Could not load OpenAL manager - sound is disabled",e);
-      audioManager=new NullAudioManager();
-    }
-  }
   CoreRegistry.putPermanently(AudioManager.class,audioManager);
-  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
-  assetManager.setAssetFactory(AssetType.SOUND,audioManager.getStaticSoundFactory());
-  assetManager.setAssetFactory(AssetType.MUSIC,audioManager.getStreamingSoundFactory());
 }

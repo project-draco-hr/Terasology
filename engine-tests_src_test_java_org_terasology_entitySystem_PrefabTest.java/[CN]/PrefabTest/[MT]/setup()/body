@@ -1,17 +1,2 @@
 {
-  ModuleManager moduleManager=ModuleManagerFactory.create();
-  AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
-  CoreRegistry.put(ModuleManager.class,moduleManager);
-  CoreRegistry.put(AssetManager.class,assetManager);
-  AssetType.registerAssetTypes(assetManager);
-  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
-    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
-      return new PojoPrefab(uri,data);
-    }
-  }
-);
-  NetworkSystem networkSystem=mock(NetworkSystem.class);
-  when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  EntityManager em=new EntitySystemBuilder().build(moduleManager.getEnvironment(),networkSystem,new ReflectionReflectFactory());
-  prefabManager=new PojoPrefabManager();
 }

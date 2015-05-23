@@ -23,10 +23,9 @@
     storageManager.finishSavingAndShutdown();
   }
   ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
-  CoreRegistry.get(AssetManager.class).setEnvironment(environment);
+  CoreRegistry.get(ModuleAwareAssetTypeManager.class).switchEnvironment(environment);
   CoreRegistry.get(Console.class).dispose();
   CoreRegistry.clear();
-  BlockManager.getAir().setEntity(EntityRef.NULL);
   GameThread.clearWaitingProcesses();
   nuiManager.getHUD().clearVisibleBinding();
 }

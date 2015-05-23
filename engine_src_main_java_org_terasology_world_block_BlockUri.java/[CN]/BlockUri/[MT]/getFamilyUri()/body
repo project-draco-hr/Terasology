@@ -1,9 +1,8 @@
 {
-  if (blockIdentifier.isEmpty()) {
+  if (blockName.isPresent()) {
+    return new BlockUri(blockFamilyDefinition,shape,Optional.empty());
+  }
+ else {
     return this;
   }
-  if (shape != null) {
-    return new BlockUri(moduleName,familyName,shape.getModuleName(),shape.getAssetName());
-  }
-  return new BlockUri(moduleName,familyName);
 }

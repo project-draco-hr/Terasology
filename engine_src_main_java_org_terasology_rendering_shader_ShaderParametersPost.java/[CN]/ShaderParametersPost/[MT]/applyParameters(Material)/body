@@ -14,7 +14,7 @@
       program.setFloat("focalDistance",cameraTargetSystem.getFocalDistance(),true);
     }
   }
-  Texture colorGradingLut=Assets.getTexture("engine:colorGradingLut1");
+  Texture colorGradingLut=Assets.getTexture("engine:colorGradingLut1").get();
   if (colorGradingLut != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     glBindTexture(GL12.GL_TEXTURE_3D,colorGradingLut.getId());
@@ -25,8 +25,8 @@
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneCombined.bindDepthTexture();
     program.setInt("texDepth",texId++,true);
-    AssetUri noiseTextureUri=TextureUtil.getTextureUriForWhiteNoise(1024,0x1234,0,512);
-    Texture filmGrainNoiseTexture=Assets.getTexture(noiseTextureUri.toSimpleString());
+    ResourceUrn noiseTextureUri=TextureUtil.getTextureUriForWhiteNoise(1024,0x1234,0,512);
+    Texture filmGrainNoiseTexture=Assets.getTexture(noiseTextureUri).get();
     if (CoreRegistry.get(Config.class).getRendering().isFilmGrain()) {
       GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
       glBindTexture(GL11.GL_TEXTURE_2D,filmGrainNoiseTexture.getId());

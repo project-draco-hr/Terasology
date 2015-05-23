@@ -1,23 +1,23 @@
 {
-  BlockFamily family;
-  if (isFreeformFamily(familyUri)) {
-    family=blockLoader.loadWithShape(familyUri);
-  }
+  Optional<BlockFamily> family=loadFamily(familyUri);
+  if (family.isPresent()) {
+    lock.lock();
+    try {
+      for (      Block block : family.get().getBlocks()) {
+        Integer id=registration.get(block.getURI().toString());
+        if (id != null) {
+          block.setId((short)id.intValue());
+        }
  else {
-    family=getAvailableBlockFamily(familyUri);
-  }
-  if (family != null) {
-    for (    Block block : family.getBlocks()) {
-      Integer id=registration.get(block.getURI().toString());
-      if (id != null) {
-        block.setId((short)id.intValue());
+          logger.error("Missing id for block {} in registered family {}",block.getURI(),familyUri);
+          block.setId(UNKNOWN_ID);
+        }
       }
- else {
-        logger.error("Missing id for block {} in registered family {}",block.getURI(),familyUri);
-        block.setId(UNKNOWN_ID);
-      }
+      registerFamily(family.get());
     }
-    registerFamily(family);
+  finally {
+      lock.unlock();
+    }
   }
  else {
     logger.error("Block family not available: {}",familyUri);
