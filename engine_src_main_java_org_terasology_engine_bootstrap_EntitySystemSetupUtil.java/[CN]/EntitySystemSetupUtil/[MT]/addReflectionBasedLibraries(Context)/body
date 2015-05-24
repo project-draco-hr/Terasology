@@ -1,5 +1,7 @@
 {
   ReflectionReflectFactory reflectFactory=new ReflectionReflectFactory();
   context.put(ReflectFactory.class,reflectFactory);
-  context.put(CopyStrategyLibrary.class,new CopyStrategyLibrary(reflectFactory));
+  CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
+  context.put(CopyStrategyLibrary.class,copyStrategyLibrary);
+  context.put(TypeSerializationLibrary.class,TypeSerializationLibrary.createDefaultLibrary(reflectFactory,copyStrategyLibrary));
 }

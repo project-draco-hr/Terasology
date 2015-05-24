@@ -2,7 +2,7 @@
   final JavaArchive homeArchive=ShrinkWrap.create(JavaArchive.class);
   final FileSystem vfs=ShrinkWrapFileSystems.newFileSystem(homeArchive);
   PathManager.getInstance().useOverrideHomePath(vfs.getPath(""));
-  env=new HeadlessEnvironment();
+  env=new HeadlessEnvironment(new Name("engine"));
   context=env.getContext();
   assetManager=context.get(AssetManager.class);
   blockManager=context.get(BlockManager.class);
