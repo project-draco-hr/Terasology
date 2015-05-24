@@ -2,8 +2,9 @@
   try (BufferedReader reader=new BufferedReader(new InputStreamReader(inputs.get(0).openStream(),Charsets.UTF_8))){
     EntityData.Prefab prefabData=EntityDataJSONFormat.readPrefab(reader);
     if (prefabData != null) {
-      EngineEntityManager entityManager=CoreRegistry.get(EngineEntityManager.class);
-      PrefabSerializer serializer=new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
+      ComponentLibrary componentLibrary=CoreRegistry.get(ComponentLibrary.class);
+      TypeSerializationLibrary typeSerializationLibrary=CoreRegistry.get(TypeSerializationLibrary.class);
+      PrefabSerializer serializer=new PrefabSerializer(componentLibrary,typeSerializationLibrary);
       return serializer.deserialize(prefabData);
     }
  else {

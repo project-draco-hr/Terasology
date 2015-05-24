@@ -1,12 +1,11 @@
 {
   ModuleEnvironment environment=context.get(ModuleManager.class).getEnvironment();
   NetworkSystem networkSystem=context.get(NetworkSystem.class);
-  ReflectFactory reflectFactory=context.get(ReflectFactory.class);
-  CopyStrategyLibrary copyStrategyLibrary=context.get(CopyStrategyLibrary.class);
   PojoEntityManager entityManager=new PojoEntityManager();
   context.put(EntityManager.class,entityManager);
   context.put(EngineEntityManager.class,entityManager);
-  TypeSerializationLibrary typeSerializationLibrary=TypeSerializationLibrary.createDefaultLibrary(entityManager,reflectFactory,copyStrategyLibrary);
+  TypeSerializationLibrary typeSerializationLibrary=context.get(TypeSerializationLibrary.class);
+  typeSerializationLibrary.add(EntityRef.class,new EntityRefTypeHandler(entityManager));
   entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
   EntitySystemLibrary library=new EntitySystemLibrary(context,typeSerializationLibrary);
   context.put(EntitySystemLibrary.class,library);

@@ -1,4 +1,7 @@
 {
+  if (uri.getShapeUrn().isPresent() && uri.getShapeUrn().get().equals(CUBE_SHAPE_URN)) {
+    return getBlockFamily(uri.getShapelessUri());
+  }
   BlockFamily family=registeredBlockInfo.get().registeredFamilyByUri.get(uri);
   if (family == null && generateNewIds) {
     Optional<BlockFamily> newFamily=loadFamily(uri);

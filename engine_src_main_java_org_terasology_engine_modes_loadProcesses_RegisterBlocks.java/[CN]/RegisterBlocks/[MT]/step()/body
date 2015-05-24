@@ -4,12 +4,15 @@
   context.put(WorldAtlas.class,atlas);
   BlockManagerImpl blockManager;
   if (networkSystem.getMode().isAuthority()) {
-    blockManager=new BlockManagerImpl(atlas,context.get(AssetManager.class),gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),true);
+    blockManager=new BlockManagerImpl(atlas,context.get(AssetManager.class),true);
     blockManager.subscribe(context.get(NetworkSystem.class));
   }
  else {
-    blockManager=new BlockManagerImpl(atlas,context.get(AssetManager.class),gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap(),false);
+    blockManager=new BlockManagerImpl(atlas,context.get(AssetManager.class),false);
   }
   context.put(BlockManager.class,blockManager);
+  context.get(TypeSerializationLibrary.class).add(Block.class,new BlockTypeHandler(blockManager));
+  context.get(TypeSerializationLibrary.class).add(BlockFamily.class,new BlockFamilyTypeHandler(blockManager));
+  blockManager.initialise(gameManifest.getRegisteredBlockFamilies(),gameManifest.getBlockIdMap());
   return true;
 }

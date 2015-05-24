@@ -19,8 +19,10 @@
       logger.error("Cannot register CopyStrategy '{}' - unable to determine target type",copyStrategy);
     }
   }
-  ModuleAwareAssetTypeManager assetTypeManager=context.get(ModuleAwareAssetTypeManager.class);
-  assetTypeManager.switchEnvironment(moduleManager.getEnvironment());
+  ReflectFactory reflectFactory=context.get(ReflectFactory.class);
+  context.put(TypeSerializationLibrary.class,TypeSerializationLibrary.createDefaultLibrary(reflectFactory,copyStrategyLibrary));
   BlockFamilyFactoryRegistry blockFamilyFactoryRegistry=context.get(BlockFamilyFactoryRegistry.class);
   loadFamilies((DefaultBlockFamilyFactoryRegistry)blockFamilyFactoryRegistry,moduleManager.getEnvironment());
+  ModuleAwareAssetTypeManager assetTypeManager=context.get(ModuleAwareAssetTypeManager.class);
+  assetTypeManager.switchEnvironment(moduleManager.getEnvironment());
 }

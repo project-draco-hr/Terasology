@@ -1,13 +1,11 @@
 {
-  this.generateNewIds=generateNewIds;
-  this.assetManager=assetManager;
-  this.blockBuilder=new BlockBuilder(assetManager,atlas);
   if (knownBlockMappings.size() >= MAX_ID) {
     nextId=UNKNOWN_ID;
   }
  else   if (knownBlockMappings.size() > 0) {
     nextId=(short)knownBlockMappings.size();
   }
+  registeredBlockInfo.set(new RegisteredState());
   for (  String rawFamilyUri : registeredBlockFamilies) {
     try {
       BlockUri familyUri=new BlockUri(rawFamilyUri);
@@ -29,9 +27,6 @@
           }
         }
         registerFamily(family.get());
-      }
- else {
-        logger.error("Family not available {}",rawFamilyUri);
       }
     }
  catch (    BlockUriParseException e) {

@@ -4,7 +4,7 @@
   for (  NetData.EventMessage eventMessage : message.getEventList()) {
     try {
       Event event=eventSerializer.deserialize(eventMessage.getEvent());
-      EventMetadata<?> metadata=entitySystemLibrary.getEventLibrary().getMetadata(event.getClass());
+      EventMetadata<?> metadata=eventLibrary.getMetadata(event.getClass());
       if (metadata.getNetworkEventType() != NetworkEventType.SERVER) {
         logger.warn("Received non-server event '{}' from client '{}'",metadata,getName());
         continue;

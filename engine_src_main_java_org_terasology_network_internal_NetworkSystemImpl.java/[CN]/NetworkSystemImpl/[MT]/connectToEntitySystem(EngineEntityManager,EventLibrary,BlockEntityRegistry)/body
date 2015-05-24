@@ -8,12 +8,13 @@
   this.biomeManager=CoreRegistry.get(BiomeManager.class);
   this.ownershipHelper=new OwnershipHelper(newEntityManager.getComponentLibrary());
   this.storageManager=CoreRegistry.get(StorageManager.class);
-  this.entitySystemLibrary=library;
+  this.eventLibrary=newEventLibrary;
+  this.componentLibrary=entityManager.getComponentLibrary();
   CoreRegistry.get(ComponentSystemManager.class).register(new NetworkEntitySystem(this),"engine:networkEntitySystem");
-  TypeSerializationLibrary typeSerializationLibrary=new TypeSerializationLibrary(library.getSerializationLibrary());
+  TypeSerializationLibrary typeSerializationLibrary=new TypeSerializationLibrary(entityManager.getTypeSerializerLibrary());
   typeSerializationLibrary.add(EntityRef.class,new NetEntityRefTypeHandler(this,blockEntityRegistry));
-  eventSerializer=new EventSerializer(library.getEventLibrary(),typeSerializationLibrary);
-  entitySerializer=new NetworkEntitySerializer(newEntityManager,entityManager.getComponentLibrary(),typeSerializationLibrary);
+  eventSerializer=new EventSerializer(eventLibrary,typeSerializationLibrary);
+  entitySerializer=new NetworkEntitySerializer(newEntityManager,entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
   entitySerializer.setComponentSerializeCheck(new NetComponentSerializeCheck());
   if (mode == NetworkMode.CLIENT) {
     entityManager.setEntityRefStrategy(new NetworkClientRefStrategy(this));

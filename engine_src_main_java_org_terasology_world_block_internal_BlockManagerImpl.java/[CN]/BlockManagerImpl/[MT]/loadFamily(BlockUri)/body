@@ -1,8 +1,15 @@
 {
   Optional<BlockFamilyDefinition> familyDef=assetManager.getAsset(uri.getBlockFamilyDefinitionUrn(),BlockFamilyDefinition.class);
   if (familyDef.isPresent() && !familyDef.get().getData().isTemplate()) {
-    if (familyDef.get().isFreeform() && uri.getShapeUrn().isPresent()) {
-      Optional<BlockShape> shape=assetManager.getAsset(uri.getShapeUrn().get(),BlockShape.class);
+    if (familyDef.get().isFreeform()) {
+      ResourceUrn shapeUrn;
+      if (uri.getShapeUrn().isPresent()) {
+        shapeUrn=uri.getShapeUrn().get();
+      }
+ else {
+        shapeUrn=CUBE_SHAPE_URN;
+      }
+      Optional<BlockShape> shape=assetManager.getAsset(shapeUrn,BlockShape.class);
       if (shape.isPresent()) {
         return Optional.of(familyDef.get().createFamily(shape.get(),blockBuilder));
       }

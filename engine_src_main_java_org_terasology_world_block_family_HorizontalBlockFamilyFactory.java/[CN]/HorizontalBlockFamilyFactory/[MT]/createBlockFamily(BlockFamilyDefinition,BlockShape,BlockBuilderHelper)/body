@@ -7,5 +7,12 @@
     Side side=rot.rotate(Side.FRONT);
     blockMap.put(side,blockBuilder.constructTransformedBlock(definition,shape,side.toString().toLowerCase(Locale.ENGLISH),rot));
   }
-  return new HorizontalBlockFamily(new BlockUri(definition.getUrn(),shape.getUrn()),getArchetypeSide(),blockMap,definition.getCategories());
+  BlockUri uri;
+  if (CUBE_SHAPE_URN.equals(shape.getUrn())) {
+    uri=new BlockUri(definition.getUrn());
+  }
+ else {
+    uri=new BlockUri(definition.getUrn(),shape.getUrn());
+  }
+  return new HorizontalBlockFamily(uri,getArchetypeSide(),blockMap,definition.getCategories());
 }
