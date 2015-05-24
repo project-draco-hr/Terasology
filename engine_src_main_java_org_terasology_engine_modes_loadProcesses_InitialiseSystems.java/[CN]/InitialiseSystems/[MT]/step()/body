@@ -1,9 +1,9 @@
 {
-  EngineEntityManager entityManager=(EngineEntityManager)CoreRegistry.get(EntityManager.class);
-  EntitySystemLibrary entitySystemLibrary=CoreRegistry.get(EntitySystemLibrary.class);
-  BlockEntityRegistry blockEntityRegistry=CoreRegistry.get(BlockEntityRegistry.class);
-  CoreRegistry.get(NetworkSystem.class).connectToEntitySystem(entityManager,entitySystemLibrary,blockEntityRegistry);
-  ComponentSystemManager csm=CoreRegistry.get(ComponentSystemManager.class);
+  EngineEntityManager entityManager=(EngineEntityManager)context.get(EntityManager.class);
+  EntitySystemLibrary entitySystemLibrary=context.get(EntitySystemLibrary.class);
+  BlockEntityRegistry blockEntityRegistry=context.get(BlockEntityRegistry.class);
+  context.get(NetworkSystem.class).connectToEntitySystem(entityManager,entitySystemLibrary,blockEntityRegistry);
+  ComponentSystemManager csm=context.get(ComponentSystemManager.class);
   csm.initialise();
   return true;
 }

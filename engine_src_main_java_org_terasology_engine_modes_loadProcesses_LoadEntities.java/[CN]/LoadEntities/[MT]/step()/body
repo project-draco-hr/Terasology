@@ -1,5 +1,5 @@
 {
-  EntityManager em=CoreRegistry.get(EntityManager.class);
+  EntityManager em=context.get(EntityManager.class);
   boolean entityCreated=false;
   for (  EntityRef entity : em.getAllEntities()) {
     entityCreated=true;
@@ -8,7 +8,7 @@
   if (entityCreated) {
     throw new IllegalStateException("Entity creation detected during component system initialisation, game load aborting");
   }
-  StorageManager storageManager=CoreRegistry.get(StorageManager.class);
+  StorageManager storageManager=context.get(StorageManager.class);
   try {
     storageManager.loadGlobalStore();
   }

@@ -1,6 +1,6 @@
 {
-  PlayerConfig playerConfig=CoreRegistry.get(Config.class).getPlayer();
-  Client localClient=CoreRegistry.get(NetworkSystem.class).joinLocal(playerConfig.getName(),playerConfig.getColor());
-  CoreRegistry.get(LocalPlayer.class).setClientEntity(localClient.getEntity());
+  PlayerConfig playerConfig=context.get(Config.class).getPlayer();
+  Client localClient=context.get(NetworkSystem.class).joinLocal(playerConfig.getName(),playerConfig.getColor());
+  context.get(LocalPlayer.class).setClientEntity(localClient.getEntity());
   return true;
 }

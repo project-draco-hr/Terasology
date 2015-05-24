@@ -1,5 +1,5 @@
 {
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  ModuleManager moduleManager=context.get(ModuleManager.class);
   List<Name> moduleIds=Lists.newArrayListWithCapacity(gameManifest.getModules().size());
   for (  NameVersion moduleInfo : gameManifest.getModules()) {
     moduleIds.add(moduleInfo.getName());
@@ -11,11 +11,11 @@
     for (    Module moduleInfo : env.getModulesOrderedByDependencies()) {
       logger.info("Activating module: {}:{}",moduleInfo.getId(),moduleInfo.getVersion());
     }
-    ApplyModulesUtil.applyModules(CoreRegistry.get(Context.class));
+    ApplyModulesUtil.applyModules(context.get(Context.class));
   }
  else {
     logger.warn("Missing at least one required module or dependency: {}",moduleIds);
-    CoreRegistry.get(GameEngine.class).changeState(new StateMainMenu("Missing required module or dependency"));
+    context.get(GameEngine.class).changeState(new StateMainMenu("Missing required module or dependency"));
   }
   return true;
 }

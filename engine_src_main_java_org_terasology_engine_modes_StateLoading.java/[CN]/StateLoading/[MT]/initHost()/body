@@ -1,26 +1,26 @@
 {
-  loadProcesses.add(new RegisterMods(gameManifest));
+  loadProcesses.add(new RegisterMods(context,gameManifest));
   loadProcesses.add(new CacheTextures());
-  loadProcesses.add(new RegisterBlockFamilyFactories());
-  loadProcesses.add(new RegisterBlocks(gameManifest));
-  loadProcesses.add(new RegisterBiomes(gameManifest));
+  loadProcesses.add(new RegisterBlockFamilyFactories(context));
+  loadProcesses.add(new RegisterBlocks(context,gameManifest));
+  loadProcesses.add(new RegisterBiomes(context,gameManifest));
   loadProcesses.add(new CacheBlocks());
-  loadProcesses.add(new InitialiseGraphics());
-  loadProcesses.add(new InitialiseEntitySystem());
+  loadProcesses.add(new InitialiseGraphics(context));
+  loadProcesses.add(new InitialiseEntitySystem(context));
   loadProcesses.add(new LoadPrefabs());
-  loadProcesses.add(new ProcessBlockPrefabs());
-  loadProcesses.add(new RegisterInputSystem());
-  loadProcesses.add(new RegisterSystems(netMode));
-  loadProcesses.add(new InitialiseCommandSystem());
-  loadProcesses.add(new InitialiseWorld(gameManifest));
-  loadProcesses.add(new EnsureSaveGameConsistency());
-  loadProcesses.add(new InitialisePhysics());
-  loadProcesses.add(new InitialiseSystems());
-  loadProcesses.add(new LoadEntities());
-  loadProcesses.add(new PreBeginSystems());
-  loadProcesses.add(new InitialiseBlockTypeEntities());
-  loadProcesses.add(new CreateWorldEntity());
-  loadProcesses.add(new InitialiseWorldGenerator());
+  loadProcesses.add(new ProcessBlockPrefabs(context));
+  loadProcesses.add(new RegisterInputSystem(context));
+  loadProcesses.add(new RegisterSystems(context,netMode));
+  loadProcesses.add(new InitialiseCommandSystem(context));
+  loadProcesses.add(new InitialiseWorld(gameManifest,context));
+  loadProcesses.add(new EnsureSaveGameConsistency(context));
+  loadProcesses.add(new InitialisePhysics(context));
+  loadProcesses.add(new InitialiseSystems(context));
+  loadProcesses.add(new LoadEntities(context));
+  loadProcesses.add(new PreBeginSystems(context));
+  loadProcesses.add(new InitialiseBlockTypeEntities(context));
+  loadProcesses.add(new CreateWorldEntity(context));
+  loadProcesses.add(new InitialiseWorldGenerator(context));
   if (netMode.isServer()) {
     boolean dedicated;
     if (netMode == NetworkMode.DEDICATED_SERVER) {
@@ -32,12 +32,12 @@
  else {
       throw new IllegalStateException("Invalid server mode: " + netMode);
     }
-    loadProcesses.add(new StartServer(dedicated));
+    loadProcesses.add(new StartServer(context,dedicated));
   }
-  loadProcesses.add(new PostBeginSystems());
+  loadProcesses.add(new PostBeginSystems(context));
   if (netMode.hasLocalClient()) {
-    loadProcesses.add(new SetupLocalPlayer());
-    loadProcesses.add(new AwaitCharacterSpawn());
+    loadProcesses.add(new SetupLocalPlayer(context));
+    loadProcesses.add(new AwaitCharacterSpawn(context));
   }
-  loadProcesses.add(new PrepareWorld());
+  loadProcesses.add(new PrepareWorld(context));
 }

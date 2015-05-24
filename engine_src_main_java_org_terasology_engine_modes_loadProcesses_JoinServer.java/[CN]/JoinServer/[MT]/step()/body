@@ -27,13 +27,13 @@
     gameManifest.setBlockIdMap(blockMap);
     gameManifest.setBiomeIdMap(biomeMap);
     gameManifest.setTime(networkSystem.getServer().getInfo().getTime());
-    ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+    ModuleManager moduleManager=context.get(ModuleManager.class);
     Set<Module> moduleSet=Sets.newLinkedHashSet();
     for (    NameVersion moduleInfo : networkSystem.getServer().getInfo().getModuleList()) {
       Module module=moduleManager.getRegistry().getModule(moduleInfo.getName(),moduleInfo.getVersion());
       if (module == null) {
         StateMainMenu mainMenu=new StateMainMenu("Missing required module: " + moduleInfo);
-        CoreRegistry.get(GameEngine.class).changeState(mainMenu);
+        context.get(GameEngine.class).changeState(mainMenu);
         return false;
       }
  else {
@@ -43,13 +43,13 @@
       }
     }
     moduleManager.loadEnvironment(moduleSet,true);
-    CoreRegistry.get(Game.class).load(gameManifest);
-    ApplyModulesUtil.applyModules(CoreRegistry.get(Context.class));
+    context.get(Game.class).load(gameManifest);
+    ApplyModulesUtil.applyModules(context.get(Context.class));
     return true;
   }
  else   if (joinStatus.getStatus() == JoinStatus.Status.FAILED) {
     StateMainMenu mainMenu=new StateMainMenu("Failed to connect to server: " + joinStatus.getErrorMessage());
-    CoreRegistry.get(GameEngine.class).changeState(mainMenu);
+    context.get(GameEngine.class).changeState(mainMenu);
   }
   return false;
 }

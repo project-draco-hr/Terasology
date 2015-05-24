@@ -1,7 +1,8 @@
 {
-  Context context=new ContextImpl();
+  context=new ContextImpl();
   CoreRegistry.setContext(context);
   moduleManager=ModuleManagerFactory.create();
+  context.put(ModuleManager.class,moduleManager);
   AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){

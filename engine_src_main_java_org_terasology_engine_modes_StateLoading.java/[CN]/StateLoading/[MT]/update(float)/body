@@ -1,6 +1,6 @@
 {
-  GameEngine gameEngine=CoreRegistry.get(GameEngine.class);
-  EngineTime time=(EngineTime)CoreRegistry.get(Time.class);
+  GameEngine gameEngine=context.get(GameEngine.class);
+  EngineTime time=(EngineTime)context.get(Time.class);
   long startTime=time.getRawTimeInMs();
   while (current != null && time.getRawTimeInMs() - startTime < 20 && !gameEngine.hasPendingState()) {
     if (current.step()) {
@@ -10,7 +10,7 @@
   if (current == null) {
     nuiManager.closeScreen(loadingScreen);
     nuiManager.setHUDVisible(true);
-    CoreRegistry.get(GameEngine.class).changeState(new StateIngame(gameManifest));
+    context.get(GameEngine.class).changeState(new StateIngame(gameManifest));
   }
  else {
     float progressValue=(progress + current.getExpectedCost() * current.getProgress()) / maxProgress;

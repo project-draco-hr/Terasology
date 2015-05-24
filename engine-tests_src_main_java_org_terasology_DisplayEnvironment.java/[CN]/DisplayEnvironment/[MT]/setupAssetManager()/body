@@ -1,6 +1,6 @@
 {
-  AssetManager assetManager=new AssetManagerImpl(CoreRegistry.get(ModuleManager.class).getEnvironment());
-  CoreRegistry.put(AssetManager.class,assetManager);
+  AssetManager assetManager=new AssetManagerImpl(context.get(ModuleManager.class).getEnvironment());
+  context.put(AssetManager.class,assetManager);
   AssetType.registerAssetTypes(assetManager);
   assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
     @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
@@ -50,7 +50,7 @@
     }
   }
 );
-  CoreRegistry.get(AssetManager.class).setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
+  context.get(AssetManager.class).setAssetFactory(AssetType.UI_SKIN,new AssetFactory<UISkinData,UISkin>(){
     @Override public UISkin buildAsset(    AssetUri uri,    UISkinData data){
       return new UISkin(uri,data);
     }

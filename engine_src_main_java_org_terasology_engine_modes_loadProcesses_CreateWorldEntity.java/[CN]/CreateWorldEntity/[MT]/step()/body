@@ -1,11 +1,11 @@
 {
-  EntityManager entityManager=CoreRegistry.get(EntityManager.class);
-  WorldRenderer worldRenderer=CoreRegistry.get(WorldRenderer.class);
+  EntityManager entityManager=context.get(EntityManager.class);
+  WorldRenderer worldRenderer=context.get(WorldRenderer.class);
   Iterator<EntityRef> worldEntityIterator=entityManager.getEntitiesWith(WorldComponent.class).iterator();
   if (worldEntityIterator.hasNext()) {
     EntityRef worldEntity=worldEntityIterator.next();
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
-    WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
+    WorldGenerator worldGenerator=context.get(WorldGenerator.class);
     WorldConfigurator worldConfigurator=worldGenerator.getConfigurator();
     Map<String,Component> params=worldConfigurator.getProperties();
     for (    Map.Entry<String,Component> entry : params.entrySet()) {
@@ -20,9 +20,9 @@
     EntityRef worldEntity=entityManager.create();
     worldEntity.addComponent(new WorldComponent());
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
-    WorldGenerator worldGenerator=CoreRegistry.get(WorldGenerator.class);
+    WorldGenerator worldGenerator=context.get(WorldGenerator.class);
     SimpleUri generatorUri=worldGenerator.getUri();
-    Config config=CoreRegistry.get(Config.class);
+    Config config=context.get(Config.class);
     WorldConfigurator worldConfigurator=worldGenerator.getConfigurator();
     Map<String,Component> params=worldConfigurator.getProperties();
     for (    Map.Entry<String,Component> entry : params.entrySet()) {

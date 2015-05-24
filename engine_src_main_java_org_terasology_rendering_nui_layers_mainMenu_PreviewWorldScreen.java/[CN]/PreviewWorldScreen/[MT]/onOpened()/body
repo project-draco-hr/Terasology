@@ -7,7 +7,7 @@
     ResolutionResult result=resolver.resolve(moduleName);
     if (result.isSuccess()) {
       environment=moduleManager.loadEnvironment(result.getModules(),false);
-      context.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment));
+      context.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,context));
       assetManager.setEnvironment(environment);
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());

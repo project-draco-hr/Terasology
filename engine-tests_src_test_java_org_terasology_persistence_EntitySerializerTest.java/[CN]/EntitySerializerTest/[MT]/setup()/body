@@ -1,6 +1,8 @@
 {
-  EntitySystemBuilder builder=new EntitySystemBuilder();
-  entityManager=builder.build(moduleManager.getEnvironment(),mock(NetworkSystem.class),new ReflectionReflectFactory());
+  context.put(NetworkSystem.class,mock(NetworkSystem.class));
+  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
+  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
+  entityManager=context.get(EngineEntityManager.class);
   entityManager.getComponentLibrary().register(new SimpleUri("test","gettersetter"),GetterSetterComponent.class);
   entityManager.getComponentLibrary().register(new SimpleUri("test","string"),StringComponent.class);
   entityManager.getComponentLibrary().register(new SimpleUri("test","integer"),IntegerComponent.class);

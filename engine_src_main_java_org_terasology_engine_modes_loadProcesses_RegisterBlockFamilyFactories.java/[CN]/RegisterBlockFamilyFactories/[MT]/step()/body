@@ -1,7 +1,7 @@
 {
   DefaultBlockFamilyFactoryRegistry registry=new DefaultBlockFamilyFactoryRegistry();
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  ModuleManager moduleManager=context.get(ModuleManager.class);
   loadFamilies(registry,moduleManager.getEnvironment());
-  CoreRegistry.put(BlockFamilyFactoryRegistry.class,registry);
+  context.put(BlockFamilyFactoryRegistry.class,registry);
   return true;
 }
