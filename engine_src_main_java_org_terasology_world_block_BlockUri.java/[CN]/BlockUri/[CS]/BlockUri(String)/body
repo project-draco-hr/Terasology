@@ -11,10 +11,10 @@
       split=split[3].split(IDENTIFIER_SEPARATOR_REGEX,2);
       shape=Optional.of(new ResourceUrn(shapeModuleName,new Name(split[0])));
       if (split.length > 1) {
-        blockName=Optional.of(new Name(split[1]));
+        blockName=new Name(split[1]);
       }
  else {
-        blockName=Optional.empty();
+        blockName=Name.EMPTY;
       }
     }
  else {
@@ -22,10 +22,10 @@
       split=split[1].split(IDENTIFIER_SEPARATOR_REGEX,2);
       blockFamilyDefinition=new ResourceUrn(blockFamilyDefModule,new Name(split[0]));
       if (split.length > 1) {
-        blockName=Optional.of(new Name(split[1]));
+        blockName=new Name(split[1]);
       }
  else {
-        blockName=Optional.empty();
+        blockName=Name.EMPTY;
       }
     }
   }

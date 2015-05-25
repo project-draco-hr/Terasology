@@ -11,6 +11,7 @@
       environment=moduleManager.loadEnvironment(result.getModules(),false);
       subContext.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,subContext));
       assetTypeManager.switchEnvironment(environment);
+      genTexture();
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());
       previewGen=new FacetLayerPreview(environment,worldGenerator);
