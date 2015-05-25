@@ -1,16 +1,7 @@
 {
   super.update(delta);
-  if (worldGenerator != null) {
-    PreviewSettings newSettings=new PreviewSettings(TeraMath.floorToInt(zoomSlider.getValue()),seed.getText());
-    if (currentSettings == null || !currentSettings.equals(newSettings)) {
-      boolean firstTime=currentSettings == null;
-      currentSettings=newSettings;
-      if (applyButton != null && !firstTime) {
-        applyButton.setEnabled(true);
-      }
- else {
-        updatePreview();
-      }
-    }
+  if (triggerUpdate) {
+    updatePreview();
+    triggerUpdate=false;
   }
 }

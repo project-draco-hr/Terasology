@@ -6,7 +6,7 @@
   Module engineModule;
   try (Reader reader=new InputStreamReader(getClass().getResourceAsStream("/engine-module.txt"),TerasologyConstants.CHARSET)){
     ModuleMetadata metadata=metadataReader.read(reader);
-    engineModule=ClasspathModule.create(metadata,getClass(),Module.class);
+    engineModule=ClasspathModule.create(metadata,getClass(),Module.class,Asset.class);
   }
  catch (  IOException e) {
     throw new RuntimeException("Failed to read engine metadata",e);

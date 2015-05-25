@@ -1,7 +1,18 @@
 {
-  super.onClosed();
+  CoreRegistry.setContext(context);
   if (environment != null) {
+    assetTypeManager.switchEnvironment(moduleManager.getEnvironment());
     environment.close();
     environment=null;
   }
+  if (previewGen != null) {
+    previewGen.close();
+    previewGen=null;
+  }
+  WorldConfigurator worldConfig=worldGenerator.getConfigurator();
+  Map<String,Component> params=worldConfig.getProperties();
+  if (params != null) {
+    config.setModuleConfigs(worldGenerator.getUri(),params);
+  }
+  super.onClosed();
 }

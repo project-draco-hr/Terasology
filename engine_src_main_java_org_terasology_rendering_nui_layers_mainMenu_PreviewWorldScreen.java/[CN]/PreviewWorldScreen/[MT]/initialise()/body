@@ -6,7 +6,6 @@
   seed=find("seed",UIText.class);
   applyButton=find("apply",UIButton.class);
   if (applyButton != null) {
-    applyButton.setEnabled(false);
     applyButton.subscribe(new ActivateEventListener(){
       @Override public void onActivated(      UIWidget widget){
         updatePreview();
@@ -14,11 +13,8 @@
     }
 );
   }
-  errorLabel=find("error",UILabel.class);
-  if (errorLabel != null) {
-    errorLabel.setVisible(false);
-  }
   previewImage=find("preview",UIImage.class);
+  previewImage.setImage(texture);
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().popScreen();

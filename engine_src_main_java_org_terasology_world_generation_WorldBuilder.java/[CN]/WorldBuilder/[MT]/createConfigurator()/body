@@ -1,10 +1,10 @@
 {
-  FacetedWorldConfigurator worldConfigurator=new FacetedWorldConfigurator();
+  List<ConfigurableFacetProvider> configurables=new ArrayList<>();
   for (  FacetProvider facetProvider : providersList) {
     if (facetProvider instanceof ConfigurableFacetProvider) {
-      ConfigurableFacetProvider configurableFacetProvider=(ConfigurableFacetProvider)facetProvider;
-      worldConfigurator.addProperty(configurableFacetProvider.getConfigurationName(),configurableFacetProvider.getConfiguration());
+      configurables.add((ConfigurableFacetProvider)facetProvider);
     }
   }
+  FacetedWorldConfigurator worldConfigurator=new FacetedWorldConfigurator(configurables);
   return worldConfigurator;
 }

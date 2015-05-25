@@ -1,16 +1,21 @@
 {
   super.onOpened();
-  context.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(context));
   SimpleUri worldGenUri=config.getWorldGeneration().getDefaultGenerator();
+  Name moduleName=worldGenUri.getModuleName();
   try {
     DependencyResolver resolver=new DependencyResolver(moduleManager.getRegistry());
-    Name moduleName=worldGenUri.getModuleName();
     ResolutionResult result=resolver.resolve(moduleName);
     if (result.isSuccess()) {
+      subContext=new ContextImpl(context);
+      CoreRegistry.setContext(subContext);
       environment=moduleManager.loadEnvironment(result.getModules(),false);
+      subContext.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,subContext));
+      assetTypeManager.switchEnvironment(environment);
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());
       previewGen=new FacetLayerPreview(environment,worldGenerator);
+      configureProperties();
+      triggerUpdate=true;
     }
  else {
       logger.error("Could not resolve modules for: {}",worldGenUri);
