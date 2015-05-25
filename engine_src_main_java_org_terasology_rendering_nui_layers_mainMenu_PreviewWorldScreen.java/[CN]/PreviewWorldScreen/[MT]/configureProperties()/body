@@ -1,7 +1,7 @@
 {
-  PropertyLayout properties=find("properties",PropertyLayout.class);
-  properties.setOrdering(PropertyOrdering.byLabel());
-  properties.clear();
+  PropertyLayout propLayout=find("properties",PropertyLayout.class);
+  propLayout.setOrdering(PropertyOrdering.byLabel());
+  propLayout.clear();
   WorldConfigurator worldConfig=worldGenerator.getConfigurator();
   Map<String,Component> params=worldConfig.getProperties();
   for (  String key : params.keySet()) {
@@ -11,8 +11,10 @@
       worldConfig.setProperty(key,comp);
     }
   }
+  PropertyProvider provider=new PropertyProvider();
   for (  String label : params.keySet()) {
-    PropertyProvider<?> provider=new PropertyProvider<>(params.get(label));
-    properties.addPropertyProvider(label,provider);
+    Component target=params.get(label);
+    List<Property<?,?>> properties=provider.createProperties(target);
+    propLayout.addProperties(label,properties);
   }
 }

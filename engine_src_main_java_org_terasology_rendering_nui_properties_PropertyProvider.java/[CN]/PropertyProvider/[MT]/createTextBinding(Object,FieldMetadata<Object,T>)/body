@@ -1,0 +1,20 @@
+{
+  Class<?> type=fieldMetadata.getType();
+  TextBinding<?> textBinding;
+  if (type == String.class) {
+    textBinding=new StringTextBinding(target,(FieldMetadata<Object,String>)fieldMetadata);
+  }
+ else   if (type == Integer.TYPE || type == Integer.class) {
+    textBinding=new IntegerTextBinding(target,(FieldMetadata<Object,Integer>)fieldMetadata);
+  }
+ else   if (type == Float.TYPE || type == Float.class) {
+    textBinding=new FloatTextBinding(target,(FieldMetadata<Object,Float>)fieldMetadata);
+  }
+ else   if (type == Vector3f.class) {
+    textBinding=new Vector3fTextBinding(target,(FieldMetadata<Object,Vector3f>)fieldMetadata);
+  }
+ else {
+    throw new IllegalArgumentException("Cannot create Binding<String> for a field of type " + type);
+  }
+  return (TextBinding<T>)textBinding;
+}
