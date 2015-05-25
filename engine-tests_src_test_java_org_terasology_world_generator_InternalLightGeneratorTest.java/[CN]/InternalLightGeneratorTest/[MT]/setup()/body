@@ -8,12 +8,14 @@
   solidData.getBaseSection().setDisplayName("Stone");
   solidData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
   solidData.getBaseSection().setTranslucent(false);
+  solidData.setFamilyFactory(new SymmetricBlockFamilyFactory());
   assetManager.loadAsset(new ResourceUrn("engine:stone"),solidData,BlockFamilyDefinition.class);
   solidBlock=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:stone")));
   BlockFamilyDefinitionData fullLightData=new BlockFamilyDefinitionData();
   fullLightData.getBaseSection().setDisplayName("Torch");
   fullLightData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
   fullLightData.getBaseSection().setLuminance(ChunkConstants.MAX_LIGHT);
+  fullLightData.setFamilyFactory(new SymmetricBlockFamilyFactory());
   assetManager.loadAsset(new ResourceUrn("engine:torch"),fullLightData,BlockFamilyDefinition.class);
   fullLight=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:torch")));
 }
