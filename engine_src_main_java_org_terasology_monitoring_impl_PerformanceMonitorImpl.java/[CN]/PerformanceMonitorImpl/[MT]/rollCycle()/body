@@ -1,52 +1,52 @@
 {
-  metricData.add(currentData);
-  allocationData.add(currentMemData);
+  executionData.add(currentExecutionData);
+  allocationData.add(currentAllocationData);
   spikeData.forEachEntry(new TObjectDoubleProcedure<String>(){
-    public boolean execute(    String s,    double v){
-      spikeData.put(s,v * DECAY_RATE);
+    public boolean execute(    String activityName,    double executionTime){
+      spikeData.put(activityName,executionTime * DECAY_RATE);
       return true;
     }
   }
 );
-  currentData.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String s,    long v){
-      runningTotals.adjustOrPutValue(s,v,v);
-      double time=v * timeFactor;
-      double prev=spikeData.get(s);
-      if (time > prev) {
-        spikeData.put(s,time);
+  currentExecutionData.forEachEntry(new TObjectLongProcedure<String>(){
+    public boolean execute(    String activityName,    long executionTime){
+      runningExecutionTotals.adjustOrPutValue(activityName,executionTime,executionTime);
+      double time=executionTime * timeFactor;
+      double latestSpike=spikeData.get(activityName);
+      if (time > latestSpike) {
+        spikeData.put(activityName,time);
       }
       return true;
     }
   }
 );
-  currentMemData.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String s,    long v){
-      runningAllocationTotals.adjustOrPutValue(s,v,v);
+  currentAllocationData.forEachEntry(new TObjectLongProcedure<String>(){
+    public boolean execute(    String activityName,    long allocationValue){
+      runningAllocationTotals.adjustOrPutValue(activityName,allocationValue,allocationValue);
       return true;
     }
   }
 );
-  while (metricData.size() > RETAINED_CYCLES) {
-    metricData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
-      public boolean execute(      String s,      long v){
-        runningTotals.adjustValue(s,-v);
+  while (executionData.size() > RETAINED_CYCLES) {
+    executionData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
+      public boolean execute(      String activityName,      long v){
+        runningExecutionTotals.adjustValue(activityName,-v);
         return true;
       }
     }
 );
-    metricData.remove(0);
+    executionData.remove(0);
   }
   while (allocationData.size() > RETAINED_CYCLES) {
     allocationData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
-      public boolean execute(      String s,      long v){
-        runningAllocationTotals.adjustValue(s,-v);
+      public boolean execute(      String activityName,      long v){
+        runningAllocationTotals.adjustValue(activityName,-v);
         return true;
       }
     }
 );
     allocationData.remove(0);
   }
-  currentData=new TObjectLongHashMap<>();
-  currentMemData=new TObjectLongHashMap<>();
+  currentExecutionData=new TObjectLongHashMap<>();
+  currentAllocationData=new TObjectLongHashMap<>();
 }

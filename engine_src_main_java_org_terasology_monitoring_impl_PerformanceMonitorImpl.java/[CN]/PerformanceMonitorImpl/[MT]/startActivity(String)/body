@@ -2,10 +2,7 @@
   if (Thread.currentThread() != mainThread) {
     return OFF_THREAD_ACTIVITY;
   }
-  ActivityInfo newActivity=new ActivityInfo();
-  newActivity.name=activity;
-  newActivity.startTime=timer.getRawTimeInMs();
-  newActivity.startMem=Runtime.getRuntime().freeMemory();
+  ActivityInfo newActivity=new ActivityInfo(activityName).initialize();
   if (!activityStack.isEmpty()) {
     ActivityInfo currentActivity=activityStack.peek();
     currentActivity.ownTime+=newActivity.startTime - ((currentActivity.resumeTime > 0) ? currentActivity.resumeTime : currentActivity.startTime);
