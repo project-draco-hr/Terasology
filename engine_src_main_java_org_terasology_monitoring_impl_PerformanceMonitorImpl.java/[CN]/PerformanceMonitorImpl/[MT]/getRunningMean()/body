@@ -1,14 +1,7 @@
 {
-  final TObjectDoubleMap<String> activityToMeanMap=new TObjectDoubleHashMap<>();
-  final double factor=timeFactor / executionData.size();
-  runningExecutionTotals.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String activityName,    long executionTotal){
-      if (executionTotal > 0) {
-        activityToMeanMap.put(activityName,executionTotal * factor);
-      }
-      return true;
-    }
-  }
-);
+  TObjectDoubleMap<String> activityToMeanMap=new TObjectDoubleHashMap<>();
+  double factor=timeFactor / executionData.size();
+  TObjectLongProcedure<String> setExecutionTimeRunningMean=new SetterOfActivityToRunningMeanMapEntry(activityToMeanMap,factor);
+  runningExecutionTotals.forEachEntry(setExecutionTimeRunningMean);
   return activityToMeanMap;
 }

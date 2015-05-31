@@ -7,6 +7,11 @@
   runningExecutionTotals=new TObjectLongHashMap<>();
   runningAllocationTotals=new TObjectLongHashMap<>();
   spikeData=new TObjectDoubleHashMap<>();
+  decayLargestExecutionTime=new DecayerOfActivityLargestExecutionTime();
+  updateExecutionTimeTotalAndSpikeData=new UpdaterOfActivityExecutionTimeTotalAndSpikeData();
+  updateAllocatedMemoryTotal=new UpdaterOfActivityAllocatedMemoryTotal();
+  removeExpiredExecutionTimeValueFromTotal=new RemoverFromTotalOfActivityExpiredExecutionTimeValue();
+  removeExpiredAllocatedMemoryValueFromTotal=new RemoverFromTotalOfActivityExpiredAllocatedMemoryValue();
   timerTicksPerSecond=1000;
   timeFactor=1000.0 / timerTicksPerSecond;
   timer=(EngineTime)CoreRegistry.get(Time.class);

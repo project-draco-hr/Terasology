@@ -1,50 +1,15 @@
 {
   executionData.add(currentExecutionData);
   allocationData.add(currentAllocationData);
-  spikeData.forEachEntry(new TObjectDoubleProcedure<String>(){
-    public boolean execute(    String activityName,    double executionTime){
-      spikeData.put(activityName,executionTime * DECAY_RATE);
-      return true;
-    }
-  }
-);
-  currentExecutionData.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String activityName,    long executionTime){
-      runningExecutionTotals.adjustOrPutValue(activityName,executionTime,executionTime);
-      double time=executionTime * timeFactor;
-      double latestSpike=spikeData.get(activityName);
-      if (time > latestSpike) {
-        spikeData.put(activityName,time);
-      }
-      return true;
-    }
-  }
-);
-  currentAllocationData.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String activityName,    long allocationValue){
-      runningAllocationTotals.adjustOrPutValue(activityName,allocationValue,allocationValue);
-      return true;
-    }
-  }
-);
+  spikeData.forEachEntry(decayLargestExecutionTime);
+  currentExecutionData.forEachEntry(updateExecutionTimeTotalAndSpikeData);
+  currentAllocationData.forEachEntry(updateAllocatedMemoryTotal);
   while (executionData.size() > RETAINED_CYCLES) {
-    executionData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
-      public boolean execute(      String activityName,      long v){
-        runningExecutionTotals.adjustValue(activityName,-v);
-        return true;
-      }
-    }
-);
+    executionData.get(0).forEachEntry(removeExpiredExecutionTimeValueFromTotal);
     executionData.remove(0);
   }
   while (allocationData.size() > RETAINED_CYCLES) {
-    allocationData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
-      public boolean execute(      String activityName,      long v){
-        runningAllocationTotals.adjustValue(activityName,-v);
-        return true;
-      }
-    }
-);
+    allocationData.get(0).forEachEntry(removeExpiredAllocatedMemoryValueFromTotal);
     allocationData.remove(0);
   }
   currentExecutionData=new TObjectLongHashMap<>();

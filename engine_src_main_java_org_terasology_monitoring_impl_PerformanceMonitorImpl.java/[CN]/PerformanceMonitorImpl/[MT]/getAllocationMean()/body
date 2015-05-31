@@ -1,14 +1,7 @@
 {
-  final TObjectDoubleMap<String> activityToAllocationMap=new TObjectDoubleHashMap<>();
-  final double factor=1.0 / allocationData.size();
-  runningAllocationTotals.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String activityName,    long allocationTotal){
-      if (allocationTotal > 0) {
-        activityToAllocationMap.put(activityName,allocationTotal * factor);
-      }
-      return true;
-    }
-  }
-);
-  return activityToAllocationMap;
+  TObjectDoubleMap<String> activityToMeanMap=new TObjectDoubleHashMap<>();
+  double factor=1.0 / allocationData.size();
+  TObjectLongProcedure<String> setAllocatedMemoryRunningMean=new SetterOfActivityToRunningMeanMapEntry(activityToMeanMap,factor);
+  runningAllocationTotals.forEachEntry(setAllocatedMemoryRunningMean);
+  return activityToMeanMap;
 }
