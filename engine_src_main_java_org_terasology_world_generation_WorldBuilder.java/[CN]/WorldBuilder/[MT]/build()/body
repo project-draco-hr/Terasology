@@ -1,4 +1,10 @@
 {
+  if (seed == null) {
+    throw new IllegalStateException("Seed has not been set");
+  }
+  for (  FacetProvider provider : providersList) {
+    provider.setSeed(seed);
+  }
   ListMultimap<Class<? extends WorldFacet>,FacetProvider> providerChains=determineProviderChains();
   return new WorldImpl(providerChains,rasterizers,determineBorders(providerChains),seaLevel);
 }

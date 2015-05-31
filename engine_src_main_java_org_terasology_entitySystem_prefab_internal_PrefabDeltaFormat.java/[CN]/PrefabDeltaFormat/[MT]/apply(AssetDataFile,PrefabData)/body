@@ -1,8 +1,9 @@
 {
   try (BufferedReader deltaReader=new BufferedReader(new InputStreamReader(assetDataFile.openStream(),Charsets.UTF_8))){
     EntityData.Prefab delta=EntityDataJSONFormat.readPrefab(deltaReader);
-    EngineEntityManager entityManager=CoreRegistry.get(EngineEntityManager.class);
-    PrefabSerializer serializer=new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
+    ComponentLibrary componentLibrary=CoreRegistry.get(ComponentLibrary.class);
+    TypeSerializationLibrary typeSerializationLibrary=CoreRegistry.get(TypeSerializationLibrary.class);
+    PrefabSerializer serializer=new PrefabSerializer(componentLibrary,typeSerializationLibrary);
     serializer.deserializeDeltaOnto(delta,assetData);
   }
  }
