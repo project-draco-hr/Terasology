@@ -7,14 +7,11 @@
   TypeSerializationLibrary typeSerializationLibrary=context.get(TypeSerializationLibrary.class);
   typeSerializationLibrary.add(EntityRef.class,new EntityRefTypeHandler(entityManager));
   entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
-  EntitySystemLibrary library=new EntitySystemLibrary(context,typeSerializationLibrary);
-  context.put(EntitySystemLibrary.class,library);
-  entityManager.setComponentLibrary(library.getComponentLibrary());
-  context.put(ComponentLibrary.class,library.getComponentLibrary());
-  context.put(EventLibrary.class,library.getEventLibrary());
   PrefabManager prefabManager=new PojoPrefabManager();
   entityManager.setPrefabManager(prefabManager);
   context.put(PrefabManager.class,prefabManager);
+  EntitySystemLibrary library=context.get(EntitySystemLibrary.class);
+  entityManager.setComponentLibrary(library.getComponentLibrary());
   EventSystem eventSystem=new EventSystemImpl(library.getEventLibrary(),networkSystem);
   entityManager.setEventSystem(eventSystem);
   context.put(EventSystem.class,eventSystem);

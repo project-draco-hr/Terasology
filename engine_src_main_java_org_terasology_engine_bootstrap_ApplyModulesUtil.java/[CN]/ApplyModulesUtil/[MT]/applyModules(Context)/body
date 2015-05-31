@@ -23,6 +23,10 @@
   TypeSerializationLibrary typeSerializationLibrary=TypeSerializationLibrary.createDefaultLibrary(reflectFactory,copyStrategyLibrary);
   typeSerializationLibrary.add(CollisionGroup.class,new CollisionGroupTypeHandler(context.get(CollisionGroupManager.class)));
   context.put(TypeSerializationLibrary.class,typeSerializationLibrary);
+  EntitySystemLibrary library=new EntitySystemLibrary(context,typeSerializationLibrary);
+  context.put(EntitySystemLibrary.class,library);
+  context.put(ComponentLibrary.class,library.getComponentLibrary());
+  context.put(EventLibrary.class,library.getEventLibrary());
   BlockFamilyFactoryRegistry blockFamilyFactoryRegistry=context.get(BlockFamilyFactoryRegistry.class);
   loadFamilies((DefaultBlockFamilyFactoryRegistry)blockFamilyFactoryRegistry,moduleManager.getEnvironment());
   ModuleAwareAssetTypeManager assetTypeManager=context.get(ModuleAwareAssetTypeManager.class);
