@@ -1,5 +1,7 @@
 {
-  String pathString=logFileFolder.normalize().toString();
+  String timestamp=TIMESTAMP_FORMAT.format(new Date());
+  loggingPath=logFileFolder.resolve(timestamp).normalize();
+  String pathString=loggingPath.toString();
   System.setProperty(LOG_FILE_FOLDER,pathString);
   try {
     deleteLogFiles(logFileFolder,5 * 24 * 60* 60);
