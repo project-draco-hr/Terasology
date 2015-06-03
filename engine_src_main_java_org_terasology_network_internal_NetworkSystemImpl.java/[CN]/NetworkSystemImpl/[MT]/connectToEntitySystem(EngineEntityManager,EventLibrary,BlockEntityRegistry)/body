@@ -14,7 +14,7 @@
   TypeSerializationLibrary typeSerializationLibrary=new TypeSerializationLibrary(entityManager.getTypeSerializerLibrary());
   typeSerializationLibrary.add(EntityRef.class,new NetEntityRefTypeHandler(this,blockEntityRegistry));
   eventSerializer=new EventSerializer(eventLibrary,typeSerializationLibrary);
-  entitySerializer=new NetworkEntitySerializer(newEntityManager,entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
+  entitySerializer=new NetworkEntitySerializer(newEntityManager,entityManager.getComponentLibrary(),typeSerializationLibrary);
   entitySerializer.setComponentSerializeCheck(new NetComponentSerializeCheck());
   if (mode == NetworkMode.CLIENT) {
     entityManager.setEntityRefStrategy(new NetworkClientRefStrategy(this));
