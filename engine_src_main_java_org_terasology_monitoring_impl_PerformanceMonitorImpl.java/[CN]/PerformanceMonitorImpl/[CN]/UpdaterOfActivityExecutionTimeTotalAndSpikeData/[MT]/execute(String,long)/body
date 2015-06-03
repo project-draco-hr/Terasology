@@ -1,9 +1,8 @@
 {
   runningExecutionTotals.adjustOrPutValue(activityName,latestExecutionTime,latestExecutionTime);
-  time=latestExecutionTime * timeFactor;
   latestSpike=spikeData.get(activityName);
-  if (time > latestSpike) {
-    spikeData.put(activityName,time);
+  if (latestExecutionTime > latestSpike) {
+    spikeData.put(activityName,latestExecutionTime);
   }
   return true;
 }

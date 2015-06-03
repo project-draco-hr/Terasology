@@ -1,7 +1,7 @@
 {
   TObjectDoubleMap<String> activityToMeanMap=new TObjectDoubleHashMap<>();
-  double factor=timeFactor / executionData.size();
-  TObjectLongProcedure<String> setExecutionTimeRunningMean=new SetterOfActivityToRunningMeanMapEntry(activityToMeanMap,factor);
+  setExecutionTimeRunningMean.setActivityToMeanMap(activityToMeanMap);
+  setExecutionTimeRunningMean.setFactor(1.0 / executionData.size());
   runningExecutionTotals.forEachEntry(setExecutionTimeRunningMean);
   return activityToMeanMap;
 }
