@@ -1,14 +1,19 @@
 {
-  timer=(EngineTime)CoreRegistry.get(Time.class);
   activityStack=Queues.newArrayDeque();
-  metricData=Lists.newLinkedList();
+  executionData=Lists.newLinkedList();
   allocationData=Lists.newLinkedList();
-  runningTotals=new TObjectLongHashMap<>();
+  currentExecutionData=new TObjectLongHashMap<>();
+  currentAllocationData=new TObjectLongHashMap<>();
+  runningExecutionTotals=new TObjectLongHashMap<>();
   runningAllocationTotals=new TObjectLongHashMap<>();
-  timerTicksPerSecond=1000;
-  currentData=new TObjectLongHashMap<>();
-  currentMemData=new TObjectLongHashMap<>();
   spikeData=new TObjectDoubleHashMap<>();
-  timeFactor=1000.0 / timerTicksPerSecond;
+  decayLargestExecutionTime=new DecayerOfActivityLargestExecutionTime();
+  updateExecutionTimeTotalAndSpikeData=new UpdaterOfActivityExecutionTimeTotalAndSpikeData();
+  updateAllocatedMemoryTotal=new UpdaterOfActivityAllocatedMemoryTotal();
+  removeExpiredExecutionTimeValueFromTotal=new RemoverFromTotalOfActivityExpiredExecutionTimeValue();
+  removeExpiredAllocatedMemoryValueFromTotal=new RemoverFromTotalOfActivityExpiredAllocatedMemoryValue();
+  setExecutionTimeRunningMean=new SetterOfActivityToRunningMeanMapEntry();
+  setAllocatedMemoryRunningMean=new SetterOfActivityToRunningMeanMapEntry();
+  timer=(EngineTime)CoreRegistry.get(Time.class);
   mainThread=Thread.currentThread();
 }
