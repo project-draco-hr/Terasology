@@ -5,9 +5,8 @@
         return FileVisitResult.CONTINUE;
       }
       String relPath=rootPath.relativize(path).getName(0).toString();
-      SimpleDateFormat sdf=new SimpleDateFormat(TIMESTAMP_FORMAT);
       try {
-        Date folderDate=sdf.parse(relPath);
+        Date folderDate=TIMESTAMP_FORMAT.parse(relPath);
         long ageInSecs=(new Date().getTime() - folderDate.getTime()) / 1000;
         return ageInSecs > maxAgeInSecs ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
       }
