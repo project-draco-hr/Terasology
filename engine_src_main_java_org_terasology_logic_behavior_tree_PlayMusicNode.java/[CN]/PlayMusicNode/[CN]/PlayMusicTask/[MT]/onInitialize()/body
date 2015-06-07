@@ -1,9 +1,9 @@
 {
-  AssetUri uri=getNode().music;
+  ResourceUrn uri=getNode().music;
   if (uri != null) {
-    StreamingSound asset=assetManager.loadAsset(uri,StreamingSound.class);
-    if (asset != null) {
-      audioManager.playMusic(asset,this);
+    Optional<StreamingSound> asset=assetManager.getAsset(uri,StreamingSound.class);
+    if (asset.isPresent()) {
+      audioManager.playMusic(asset.get(),this);
       playing=true;
     }
   }

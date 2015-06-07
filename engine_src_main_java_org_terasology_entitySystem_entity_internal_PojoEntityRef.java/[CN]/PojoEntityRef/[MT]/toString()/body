@@ -1,5 +1,5 @@
 {
-  AssetUri prefabUri=getPrefabURI();
+  Prefab parent=getParentPrefab();
   StringBuilder builder=new StringBuilder();
   builder.append("EntityRef{id = ");
   builder.append(id);
@@ -8,9 +8,9 @@
     builder.append(", netId = ");
     builder.append(networkComponent.getNetworkId());
   }
-  if (prefabUri != null) {
+  if (parent != null) {
     builder.append(", prefab = '");
-    builder.append(prefabUri.toSimpleString());
+    builder.append(parent.getUrn());
     builder.append("'");
   }
   builder.append("}");

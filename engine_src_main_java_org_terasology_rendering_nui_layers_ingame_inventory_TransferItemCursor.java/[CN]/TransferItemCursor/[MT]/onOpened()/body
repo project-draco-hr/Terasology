@@ -12,7 +12,7 @@
           }
           BlockItemComponent blockItemComp=getItem().getComponent(BlockItemComponent.class);
           if (blockItemComp == null || blockItemComp.blockFamily == null) {
-            return Assets.getTextureRegion("engine:items.questionMark");
+            return Assets.getTextureRegion("engine:items#questionMark").orElse(null);
           }
         }
         return null;
@@ -29,7 +29,7 @@
       }
     }
 );
-    icon.setMeshTexture(Assets.getTexture("engine:terrain"));
+    icon.setMeshTexture(Assets.getTexture("engine:terrain").get());
     icon.bindQuantity(new ReadOnlyBinding<Integer>(){
       @Override public Integer get(){
         ItemComponent itemComp=getItem().getComponent(ItemComponent.class);

@@ -1,15 +1,13 @@
 {
-  AssetUri uri=new AssetUri(AssetType.UI_ELEMENT,ui);
-  UIData uiData=CoreRegistry.get(AssetManager.class).loadAssetData(uri,UIData.class);
-  if (uiData != null) {
+  Optional<UIElement> uiData=CoreRegistry.get(AssetManager.class).getAsset(ui,UIElement.class);
+  if (uiData.isPresent()) {
     NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
-    boolean wasOpen=nuiManager.isOpen(uri);
+    boolean wasOpen=nuiManager.isOpen(uiData.get().getUrn());
     if (wasOpen) {
-      nuiManager.closeScreen(uri);
+      nuiManager.closeScreen(uiData.get().getUrn());
     }
-    CoreRegistry.get(AssetManager.class).generateAsset(uri,uiData);
     if (wasOpen) {
-      nuiManager.pushScreen(uri);
+      nuiManager.pushScreen(uiData.get());
     }
     return "Success";
   }

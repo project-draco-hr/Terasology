@@ -9,15 +9,13 @@
   context.put(CopyStrategyLibrary.class,copyStrategyLibrary);
   context.put(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
   SplashScreen.getInstance().post("Loading assets ...");
-  AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
-  assetManager.setEnvironment(moduleManager.getEnvironment());
-  context.put(AssetManager.class,assetManager);
+  assetTypeManager=new ModuleAwareAssetTypeManager();
+  context.put(ModuleAwareAssetTypeManager.class,assetTypeManager);
+  context.put(AssetManager.class,assetTypeManager.getAssetManager());
   context.put(CollisionGroupManager.class,new CollisionGroupManager());
   context.put(WorldGeneratorManager.class,new WorldGeneratorManager(context));
   context.put(ComponentSystemManager.class,new ComponentSystemManager());
   context.put(ParameterAdapterManager.class,ParameterAdapterManager.createCore());
   context.put(NetworkSystem.class,new NetworkSystemImpl(time,context));
   context.put(Game.class,new Game(this,time));
-  AssetType.registerAssetTypes(assetManager);
-  ApplyModulesUtil.applyModules(context);
 }

@@ -1,0 +1,11 @@
+{
+  Map<Side,Block> blocksBySide=new EnumMap<>(Side.class);
+  blocksBySide.put(Side.FRONT,blockBuilder.constructSimpleBlock(definition,"front"));
+  blocksBySide.put(Side.LEFT,blockBuilder.constructTransformedBlock(definition,"left",Rotation.rotate(Yaw.CLOCKWISE_90)));
+  blocksBySide.put(Side.BACK,blockBuilder.constructTransformedBlock(definition,"back",Rotation.rotate(Yaw.CLOCKWISE_180)));
+  blocksBySide.put(Side.RIGHT,blockBuilder.constructTransformedBlock(definition,"right",Rotation.rotate(Yaw.CLOCKWISE_270)));
+  blocksBySide.put(Side.TOP,blockBuilder.constructTransformedBlock(definition,"top",Rotation.rotate(Pitch.CLOCKWISE_90)));
+  blocksBySide.put(Side.BOTTOM,blockBuilder.constructTransformedBlock(definition,"bottom",Rotation.rotate(Pitch.CLOCKWISE_270)));
+  BlockUri familyUri=new BlockUri(definition.getUrn());
+  return new AllSidesFamily(familyUri,definition.getCategories(),blocksBySide.get(Side.LEFT),blocksBySide);
+}

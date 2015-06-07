@@ -1,0 +1,22 @@
+{
+  if (tiles.size() == MAX_TILES) {
+    logger.error("Maximum tiles exceeded");
+    return 0;
+  }
+  Optional<BlockTile> tile=Assets.get(uri,BlockTile.class);
+  if (tile.isPresent()) {
+    if (checkTile(tile.get())) {
+      int index=tiles.size();
+      tiles.add(tile.get());
+      addNormal(uri);
+      addHeightMap(uri);
+      tileIndexes.put(uri,index);
+      return index;
+    }
+ else {
+      logger.error("Invalid tile {}, must be a square with power-of-two sides.",uri);
+      return 0;
+    }
+  }
+  return 0;
+}

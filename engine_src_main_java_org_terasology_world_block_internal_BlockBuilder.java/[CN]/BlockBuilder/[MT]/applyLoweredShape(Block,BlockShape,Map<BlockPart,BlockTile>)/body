@@ -1,0 +1,10 @@
+{
+  for (  Side side : Side.values()) {
+    BlockPart part=BlockPart.fromSide(side);
+    BlockTile blockTile=tiles.get(part);
+    if (blockTile != null) {
+      BlockMeshPart meshPart=shape.getMeshPart(part).rotate(Rotation.none().getQuat4f()).mapTexCoords(worldAtlas.getTexCoords(blockTile,true),worldAtlas.getRelativeTileSize());
+      block.setLoweredLiquidMesh(part.getSide(),meshPart);
+    }
+  }
+}

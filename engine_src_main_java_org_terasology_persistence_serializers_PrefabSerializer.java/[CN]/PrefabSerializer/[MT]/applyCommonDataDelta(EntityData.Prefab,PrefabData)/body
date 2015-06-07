@@ -6,7 +6,7 @@
     result.setAlwaysRelevant(delta.getAlwaysRelevant());
   }
   if (delta.hasParentName()) {
-    Prefab parent=Assets.get(AssetType.PREFAB,delta.getParentName(),Prefab.class);
-    result.setParent(parent);
+    Optional<? extends Prefab> parent=Assets.get(delta.getParentName(),Prefab.class);
+    result.setParent(parent.orElse(null));
   }
 }

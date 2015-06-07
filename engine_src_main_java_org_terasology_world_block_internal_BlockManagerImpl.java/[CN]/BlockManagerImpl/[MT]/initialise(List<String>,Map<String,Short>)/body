@@ -1,0 +1,36 @@
+{
+  if (knownBlockMappings.size() >= MAX_ID) {
+    nextId=UNKNOWN_ID;
+  }
+ else   if (knownBlockMappings.size() > 0) {
+    nextId=(short)knownBlockMappings.size();
+  }
+  registeredBlockInfo.set(new RegisteredState());
+  for (  String rawFamilyUri : registeredBlockFamilies) {
+    try {
+      BlockUri familyUri=new BlockUri(rawFamilyUri);
+      Optional<BlockFamily> family=loadFamily(familyUri);
+      if (family.isPresent()) {
+        for (        Block block : family.get().getBlocks()) {
+          Short id=knownBlockMappings.get(block.getURI().toString());
+          if (id != null) {
+            block.setId(id);
+          }
+ else {
+            logger.error("Missing id for block {} in provided family {}",block.getURI(),family.get().getURI());
+            if (generateNewIds) {
+              block.setId(getNextId());
+            }
+ else {
+              block.setId(UNKNOWN_ID);
+            }
+          }
+        }
+        registerFamily(family.get());
+      }
+    }
+ catch (    BlockUriParseException e) {
+      logger.error("Failed to parse block family, skipping",e);
+    }
+  }
+}

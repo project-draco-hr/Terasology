@@ -1,14 +1,2 @@
 {
-  context=new ContextImpl();
-  ModuleManager moduleManager=ModuleManagerFactory.create();
-  context.put(ModuleManager.class,moduleManager);
-  AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
-  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
-    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
-      return new PojoPrefab(uri,data);
-    }
-  }
-);
-  context.put(AssetManager.class,assetManager);
-  CoreRegistry.setContext(context);
 }

@@ -23,7 +23,7 @@
         }
         BlockItemComponent blockItemComp=getTargetItem().getComponent(BlockItemComponent.class);
         if (blockItemComp == null || blockItemComp.blockFamily == null) {
-          return Assets.getTextureRegion("engine:items.questionMark");
+          return Assets.getTextureRegion("engine:items#questionMark").get();
         }
       }
       return null;
@@ -40,7 +40,13 @@
     }
   }
 );
-  icon.setMeshTexture(Assets.getTexture("engine:terrain"));
+  Optional<Texture> terrainTex=Assets.getTexture("engine:terrain");
+  if (terrainTex.isPresent()) {
+    icon.setMeshTexture(terrainTex.get());
+  }
+ else {
+    icon.setMeshTexture(Assets.getTexture("engine:default").get());
+  }
   icon.bindQuantity(new ReadOnlyBinding<Integer>(){
     @Override public Integer get(){
       ItemComponent itemComp=getTargetItem().getComponent(ItemComponent.class);

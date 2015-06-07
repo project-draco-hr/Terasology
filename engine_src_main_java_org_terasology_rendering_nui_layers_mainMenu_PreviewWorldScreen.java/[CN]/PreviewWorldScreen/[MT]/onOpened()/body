@@ -6,9 +6,12 @@
     DependencyResolver resolver=new DependencyResolver(moduleManager.getRegistry());
     ResolutionResult result=resolver.resolve(moduleName);
     if (result.isSuccess()) {
+      subContext=new ContextImpl(context);
+      CoreRegistry.setContext(subContext);
       environment=moduleManager.loadEnvironment(result.getModules(),false);
-      context.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,context));
-      assetManager.setEnvironment(environment);
+      subContext.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,subContext));
+      assetTypeManager.switchEnvironment(environment);
+      genTexture();
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());
       previewGen=new FacetLayerPreview(environment,worldGenerator);

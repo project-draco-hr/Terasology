@@ -1,0 +1,7 @@
+{
+  if (definition.isFreeform()) {
+    throw new IllegalStateException("A shape must be provided when creating a family for a freeform block family definition");
+  }
+  Block block=blockBuilder.constructSimpleBlock(definition);
+  return new SymmetricFamily(new BlockUri(definition.getUrn()),block,definition.getCategories());
+}

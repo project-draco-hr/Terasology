@@ -1,0 +1,15 @@
+{
+  MaterialMetadata metadata=gson.fromJson(new InputStreamReader(inputs.get(0).openStream(),Charsets.UTF_8),MaterialMetadata.class);
+  Optional<? extends Shader> shader=assetManager.getAsset(metadata.shader,Shader.class);
+  if (shader.isPresent()) {
+    MaterialData data=new MaterialData(shader.get());
+    data.setTextureParams(metadata.textures);
+    data.setFloatParams(metadata.floatParams);
+    data.setFloatArrayParams(metadata.floatArrayParams);
+    data.setIntParams(metadata.intParams);
+    return data;
+  }
+ else {
+    throw new IOException("Unable to resolve shader '" + metadata.shader + "'");
+  }
+}

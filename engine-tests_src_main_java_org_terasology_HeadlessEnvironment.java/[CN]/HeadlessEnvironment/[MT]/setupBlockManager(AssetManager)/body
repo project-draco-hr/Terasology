@@ -1,0 +1,8 @@
+{
+  WorldAtlas worldAtlas=new NullWorldAtlas();
+  BlockManagerImpl blockManager=new BlockManagerImpl(worldAtlas,assetManager);
+  context.put(BlockManager.class,blockManager);
+  TypeSerializationLibrary typeSerializationLibrary=context.get(TypeSerializationLibrary.class);
+  typeSerializationLibrary.add(BlockFamily.class,new BlockFamilyTypeHandler(blockManager));
+  typeSerializationLibrary.add(Block.class,new BlockTypeHandler(blockManager));
+}

@@ -31,7 +31,7 @@
   }
   Config config=CoreRegistry.get(Config.class);
   if (config.getRendering().isDumpShaders()) {
-    final String strippedTitle=getURI().toString().replace(":","-");
+    final String strippedTitle=getUrn().toString().replace(":","-");
     String fname=debugShaderType.toLowerCase() + "_" + strippedTitle+ "_"+ featureHash+ ".glsl";
     Path path=PathManager.getInstance().getShaderLogPath().resolve(fname);
     try (BufferedWriter writer=Files.newBufferedWriter(path,TerasologyConstants.CHARSET)){
@@ -71,7 +71,7 @@
     }
   }
   if (!success) {
-    String errorMessage=debugShaderType + " Shader '" + getURI()+ "' failed to compile. Terasology might not look quite as good as it should now...\n\n"+ error+ "\n\n"+ errorLine;
+    String errorMessage=debugShaderType + " Shader '" + getUrn()+ "' failed to compile. Terasology might not look quite as good as it should now...\n\n"+ error+ "\n\n"+ errorLine;
     logger.error(errorMessage);
     JOptionPane.showMessageDialog(null,errorMessage,"Shader compilation error",JOptionPane.ERROR_MESSAGE);
   }

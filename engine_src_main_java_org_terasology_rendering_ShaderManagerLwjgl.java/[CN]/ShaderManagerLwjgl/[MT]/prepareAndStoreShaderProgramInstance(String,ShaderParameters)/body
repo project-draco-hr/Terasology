@@ -1,9 +1,9 @@
 {
   String uri="engine:" + title;
-  Shader shader=Assets.getShader(uri);
-  checkNotNull(shader,"Failed to resolve %s",uri);
-  shader.recompile();
-  GLSLMaterial material=Assets.generateAsset(new AssetUri(AssetType.MATERIAL,"engine:prog." + title),new MaterialData(shader),GLSLMaterial.class);
+  Optional<? extends Shader> shader=Assets.getShader(uri);
+  checkState(shader.isPresent(),"Failed to resolve %s",uri);
+  shader.get().recompile();
+  GLSLMaterial material=(GLSLMaterial)Assets.generateAsset(new ResourceUrn("engine:prog." + title),new MaterialData(shader.get()),Material.class);
   material.setShaderParameters(params);
   return material;
 }

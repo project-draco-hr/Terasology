@@ -1,12 +1,10 @@
 {
-  List<AssetUri> uris=Lists.newArrayList();
-  for (  AssetUri uri : assetManager.listAssets(AssetType.SOUND)) {
-    uris.add(uri);
-  }
-  for (  AssetUri uri : assetManager.listAssets(AssetType.BEHAVIOR)) {
-    BehaviorTree asset=assetManager.loadAsset(uri,BehaviorTree.class);
-    if (asset != null) {
-      trees.add(asset);
+  List<ResourceUrn> uris=Lists.newArrayList();
+  uris.addAll(assetManager.getAvailableAssets(StaticSound.class).stream().collect(Collectors.toList()));
+  for (  ResourceUrn uri : assetManager.getAvailableAssets(BehaviorTree.class)) {
+    Optional<BehaviorTree> asset=assetManager.getAsset(uri,BehaviorTree.class);
+    if (asset.isPresent()) {
+      trees.add(asset.get());
     }
   }
 }

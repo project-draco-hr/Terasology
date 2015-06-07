@@ -1,11 +1,11 @@
 {
   BehaviorTreeData data=new BehaviorTreeData();
   data.setRoot(node.getNode());
-  BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  BehaviorTreeFormat loader=new BehaviorTreeFormat();
   ByteArrayOutputStream os=new ByteArrayOutputStream(10000);
   try {
     loader.save(os,data);
-    BehaviorTreeData copy=loader.load(null,new ByteArrayInputStream(os.toByteArray()),null,Collections.<URL>emptyList());
+    BehaviorTreeData copy=loader.load(new ByteArrayInputStream(os.toByteArray()));
     Port.OutputPort parent=node.getInputPort().getTargetPort();
     copy.createRenderable();
     RenderableNode copyRenderable=copy.getRenderableNode(copy.getRoot());
@@ -24,6 +24,6 @@
     nodeToLayout.move(oldPos);
   }
  catch (  IOException e) {
-    e.printStackTrace();
+    logger.error("Failed to copy node",e);
   }
 }

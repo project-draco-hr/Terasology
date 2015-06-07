@@ -1,6 +1,6 @@
 {
-  AssetUri assetUri=Assets.resolveAssetUri(AssetType.UI_ELEMENT,uri);
-  if (assetUri != null) {
-    removeOverlay(assetUri);
+  Set<ResourceUrn> assetUri=Assets.resolveAssetUri(uri,UIElement.class);
+  if (assetUri.size() == 1) {
+    removeOverlay(assetUri.iterator().next());
   }
 }

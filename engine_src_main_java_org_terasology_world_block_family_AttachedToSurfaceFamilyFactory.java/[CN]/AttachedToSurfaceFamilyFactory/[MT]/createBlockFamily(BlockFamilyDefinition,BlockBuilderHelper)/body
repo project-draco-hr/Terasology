@@ -1,0 +1,20 @@
+{
+  Map<Side,Block> blockMap=Maps.newEnumMap(Side.class);
+  if (definition.getData().hasSection("top")) {
+    Block block=blockBuilder.constructSimpleBlock(definition,"top");
+    block.setDirection(Side.TOP);
+    blockMap.put(Side.TOP,block);
+  }
+  if (definition.getData().hasSection("front")) {
+    for (    Rotation rot : Rotation.horizontalRotations()) {
+      Side side=rot.rotate(Side.FRONT);
+      blockMap.put(side,blockBuilder.constructTransformedBlock(definition,side.toString().toLowerCase(Locale.ENGLISH),rot));
+    }
+  }
+  if (definition.getData().hasSection("bottom")) {
+    Block block=blockBuilder.constructSimpleBlock(definition,"bottom");
+    block.setDirection(Side.BOTTOM);
+    blockMap.put(Side.BOTTOM,block);
+  }
+  return new AttachedToSurfaceFamily(new BlockUri(definition.getUrn()),blockMap,definition.getCategories());
+}

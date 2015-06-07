@@ -2,7 +2,7 @@
   result.setPersisted((prefabData.hasPersisted()) ? prefabData.getPersisted() : true);
   result.setAlwaysRelevant(prefabData.hasAlwaysRelevant() ? prefabData.getAlwaysRelevant() : false);
   if (prefabData.hasParentName()) {
-    Prefab parent=Assets.get(AssetType.PREFAB,prefabData.getParentName(),Prefab.class);
+    Prefab parent=Assets.get(prefabData.getParentName(),Prefab.class).orElse(null);
     result.setParent(parent);
   }
 }
