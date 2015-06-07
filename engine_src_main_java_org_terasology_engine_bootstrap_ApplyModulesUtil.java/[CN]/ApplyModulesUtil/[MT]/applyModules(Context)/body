@@ -27,6 +27,7 @@
   context.put(EntitySystemLibrary.class,library);
   context.put(ComponentLibrary.class,library.getComponentLibrary());
   context.put(EventLibrary.class,library.getEventLibrary());
+  registerComponents(library.getComponentLibrary(),moduleManager.getEnvironment());
   BlockFamilyFactoryRegistry blockFamilyFactoryRegistry=context.get(BlockFamilyFactoryRegistry.class);
   loadFamilies((DefaultBlockFamilyFactoryRegistry)blockFamilyFactoryRegistry,moduleManager.getEnvironment());
   ModuleAwareAssetTypeManager assetTypeManager=context.get(ModuleAwareAssetTypeManager.class);
