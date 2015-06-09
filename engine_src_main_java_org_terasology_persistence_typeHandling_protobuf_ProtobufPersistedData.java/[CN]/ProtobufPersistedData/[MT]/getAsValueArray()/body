@@ -35,6 +35,9 @@
       result.add(new PersistedString(data.getString(i)));
     }
   }
+ else   if (data.getNameValueCount() > 0) {
+    result.add(new ProtobufPersistedData(data));
+  }
  else   if (data.hasBytes()) {
     throw new IllegalStateException("Data is not an array");
   }
