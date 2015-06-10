@@ -1,10 +1,4 @@
 {
-  Side frontResult=rotation.rotate(Side.FRONT);
-  Side topResult=rotation.rotate(Side.TOP);
-  for (  Rotation possibility : values()) {
-    if (possibility.rotate(frontResult) == Side.FRONT && possibility.rotate(topResult) == Side.TOP) {
-      return possibility;
-    }
-  }
-  return null;
+  Preconditions.checkNotNull(rotation);
+  return REVERSE_ROTATIONS_MAP.get(rotation);
 }
