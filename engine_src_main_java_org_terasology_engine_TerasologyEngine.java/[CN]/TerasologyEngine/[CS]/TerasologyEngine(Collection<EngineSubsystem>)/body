@@ -3,6 +3,9 @@
   this.context=new ContextImpl();
   CoreRegistry.setContext(context);
   this.subsystems=Queues.newArrayDeque(subsystems);
+  ThreadManagerSubsystem threadManager=new ThreadManagerSubsystem();
+  subsystems.add(threadManager);
+  context.put(ThreadManager.class,threadManager);
   try {
     logger.info("Initializing Terasology...");
     logEnvironmentInfo();

@@ -17,7 +17,7 @@
     }
  else {
       if (loadLastGame) {
-        engine.submitTask("loadGame",new Runnable(){
+        engine.getFromEngineContext(ThreadManager.class).submitTask("loadGame",new Runnable(){
           @Override public void run(){
             GameManifest gameManifest=getLatestGameManifest();
             if (gameManifest != null) {

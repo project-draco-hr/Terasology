@@ -1,18 +1,13 @@
 {
   logger.info("Shutting down Terasology...");
-  try {
-    Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
-    while (iter.hasNext()) {
-      EngineSubsystem subsystem=iter.next();
-      subsystem.shutdown(config);
-    }
-    config.save();
-    if (currentState != null) {
-      currentState.dispose();
-      currentState=null;
-    }
+  Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
+  while (iter.hasNext()) {
+    EngineSubsystem subsystem=iter.next();
+    subsystem.shutdown(config);
   }
-  finally {
-    stopThreads();
+  config.save();
+  if (currentState != null) {
+    currentState.dispose();
+    currentState=null;
   }
 }
