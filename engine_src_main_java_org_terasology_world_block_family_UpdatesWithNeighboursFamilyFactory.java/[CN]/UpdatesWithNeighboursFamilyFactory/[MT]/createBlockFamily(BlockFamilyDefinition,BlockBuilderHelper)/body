@@ -1,0 +1,27 @@
+{
+  TByteObjectMap<String>[] basicBlocks=new TByteObjectMap[7];
+  TByteObjectMap<Block> blocksForConnections=new TByteObjectHashMap<>();
+  addConnections(basicBlocks,0,NO_CONNECTIONS);
+  addConnections(basicBlocks,1,ONE_CONNECTION);
+  addConnections(basicBlocks,2,TWO_CONNECTIONS_LINE);
+  addConnections(basicBlocks,2,TWO_CONNECTIONS_CORNER);
+  addConnections(basicBlocks,3,THREE_CONNECTIONS_CORNER);
+  addConnections(basicBlocks,3,THREE_CONNECTIONS_T);
+  addConnections(basicBlocks,4,FOUR_CONNECTIONS_CROSS);
+  addConnections(basicBlocks,4,FOUR_CONNECTIONS_SIDE);
+  addConnections(basicBlocks,5,FIVE_CONNECTIONS);
+  addConnections(basicBlocks,6,SIX_CONNECTIONS);
+  BlockUri blockUri=new BlockUri(definition.getUrn());
+  for (byte connections=0; connections < 64; connections++) {
+    if ((connections & connectionSides) == connections) {
+      Block block=constructBlockForConnections(connections,blockBuilder,definition,basicBlocks);
+      if (block == null) {
+        throw new IllegalStateException("Unable to find correct block definition for connections: " + connections);
+      }
+      block.setUri(new BlockUri(blockUri,new Name(String.valueOf(connections))));
+      blocksForConnections.put(connections,block);
+    }
+  }
+  final Block archetypeBlock=blocksForConnections.get(SideBitFlag.getSides(Side.RIGHT,Side.LEFT));
+  return new UpdatesWithNeighboursFamily(connectionCondition,blockUri,definition.getCategories(),archetypeBlock,blocksForConnections,connectionSides);
+}

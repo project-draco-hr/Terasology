@@ -1,8 +1,9 @@
 {
   int size=256;
-  AssetUri textureUriForWhiteNoise=TextureUtil.getTextureUriForWhiteNoise(size,123354,0,255);
-  String simpleString=textureUriForWhiteNoise.toSimpleString();
-  Texture tex=Assets.getTexture(simpleString);
-  Assert.assertTrue(tex.getWidth() == size);
-  Assert.assertTrue(tex.getHeight() == size);
+  ResourceUrn textureUriForWhiteNoise=TextureUtil.getTextureUriForWhiteNoise(size,123354,0,255);
+  String simpleString=textureUriForWhiteNoise.toString();
+  Optional<Texture> tex=Assets.getTexture(simpleString);
+  assertTrue(tex.isPresent());
+  assertTrue(tex.get().getWidth() == size);
+  assertTrue(tex.get().getHeight() == size);
 }

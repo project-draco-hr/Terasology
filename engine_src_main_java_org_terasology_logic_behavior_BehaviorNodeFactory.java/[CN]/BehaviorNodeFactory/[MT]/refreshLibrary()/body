@@ -1,29 +1,25 @@
 {
-  for (  AssetUri uri : assetManager.listAssets(AssetType.SOUND)) {
-    sounds.add(uri);
-  }
-  for (  AssetUri uri : assetManager.listAssets(AssetType.MUSIC)) {
-    music.add(uri);
-  }
-  providerFactory.register("sounds",new ReadOnlyBinding<List<AssetUri>>(){
-    @Override public List<AssetUri> get(){
+  sounds.addAll(assetManager.getAvailableAssets(StaticSound.class).stream().collect(Collectors.toList()));
+  music.addAll(assetManager.getAvailableAssets(StreamingSound.class).stream().collect(Collectors.toList()));
+  providerFactory.register("sounds",new ReadOnlyBinding<List<ResourceUrn>>(){
+    @Override public List<ResourceUrn> get(){
       return sounds;
     }
   }
-,new StringTextRenderer<AssetUri>(){
-    @Override public String getString(    AssetUri value){
-      return value.getAssetName().toString();
+,new StringTextRenderer<ResourceUrn>(){
+    @Override public String getString(    ResourceUrn value){
+      return value.getResourceName().toString();
     }
   }
 );
-  providerFactory.register("music",new ReadOnlyBinding<List<AssetUri>>(){
-    @Override public List<AssetUri> get(){
+  providerFactory.register("music",new ReadOnlyBinding<List<ResourceUrn>>(){
+    @Override public List<ResourceUrn> get(){
       return music;
     }
   }
-,new StringTextRenderer<AssetUri>(){
-    @Override public String getString(    AssetUri value){
-      return value.getAssetName().toString();
+,new StringTextRenderer<ResourceUrn>(){
+    @Override public String getString(    ResourceUrn value){
+      return value.getResourceName().toString();
     }
   }
 );

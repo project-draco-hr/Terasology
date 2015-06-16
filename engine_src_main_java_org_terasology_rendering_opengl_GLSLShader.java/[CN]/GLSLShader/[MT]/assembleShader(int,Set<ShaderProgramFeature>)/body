@@ -1,0 +1,20 @@
+{
+  StringBuilder shader=createShaderBuilder();
+  for (  ShaderProgramFeature feature : features) {
+    shader.append("#define ").append(feature.name()).append("\n");
+  }
+  shader.append("\n");
+  shader.append(includedDefines);
+  shader.append(includedUniforms);
+  if (type == GL20.GL_FRAGMENT_SHADER) {
+    shader.append(includedFunctionsFragment);
+    shader.append("\n");
+    shader.append(shaderProgramBase.getFragmentProgram());
+  }
+ else {
+    shader.append(includedFunctionsVertex);
+    shader.append("\n");
+    shader.append(shaderProgramBase.getVertexProgram());
+  }
+  return shader.toString();
+}

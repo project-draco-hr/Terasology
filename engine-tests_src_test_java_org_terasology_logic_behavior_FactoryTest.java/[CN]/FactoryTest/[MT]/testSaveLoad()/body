@@ -1,16 +1,16 @@
 {
-  AssetManager assetManager=mock(AssetManager.class);
-  context.put(AssetManager.class,assetManager);
   BehaviorNodeFactory nodeFactory=mock(BehaviorNodeFactory.class);
   context.put(BehaviorNodeFactory.class,nodeFactory);
-  BehaviorTreeLoader loader=new BehaviorTreeLoader();
+  BehaviorTreeFormat loader=new BehaviorTreeFormat();
   BehaviorTreeData data=buildSample();
   ByteArrayOutputStream os=new ByteArrayOutputStream(10000);
   loader.save(os,data);
   byte[] jsonExpected=os.toByteArray();
-  data=loader.load(null,new ByteArrayInputStream(jsonExpected),null,null);
+  AssetDataFile assetDataFile=mock(AssetDataFile.class);
+  when(assetDataFile.openStream()).thenReturn(new BufferedInputStream(new ByteArrayInputStream(jsonExpected)));
+  data=loader.load(null,Lists.newArrayList(assetDataFile));
   os=new ByteArrayOutputStream(10000);
-  loader=new BehaviorTreeLoader();
+  loader=new BehaviorTreeFormat();
   loader.save(os,data);
   byte[] jsonActual=os.toByteArray();
   Assert.assertArrayEquals(jsonActual,jsonExpected);

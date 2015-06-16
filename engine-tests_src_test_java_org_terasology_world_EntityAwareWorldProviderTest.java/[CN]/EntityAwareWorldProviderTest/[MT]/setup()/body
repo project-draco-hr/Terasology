@@ -1,52 +1,25 @@
 {
+  super.setup();
   GameThread.setToCurrentThread();
-  AssetManager assetManager=CoreRegistry.put(AssetManager.class,new AssetManagerImpl(moduleManager.getEnvironment()));
-  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
-    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
-      return new PojoPrefab(uri,data);
-    }
-  }
-);
-  context.put(ComponentSystemManager.class,mock(ComponentSystemManager.class));
-  blockManager=CoreRegistry.put(BlockManager.class,new BlockManagerImpl(mock(WorldAtlas.class),new DefaultBlockFamilyFactoryRegistry()));
-  NetworkSystem networkSystem=mock(NetworkSystem.class);
-  when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  context.put(NetworkSystem.class,networkSystem);
-  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
-  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
-  entityManager=context.get(EngineEntityManager.class);
-  worldStub=new WorldProviderCoreStub();
+  this.entityManager=context.get(EngineEntityManager.class);
+  AssetManager assetManager=context.get(AssetManager.class);
+  BlockManager blockManager=context.get(BlockManager.class);
+  airBlock=blockManager.getBlock(BlockManager.AIR_ID);
+  worldStub=new WorldProviderCoreStub(airBlock,null);
   worldProvider=new EntityAwareWorldProvider(worldStub,entityManager);
-  plainBlock=new Block();
-  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:plainBlock"),plainBlock),true);
-  blockWithString=new Block();
-  PrefabData prefabData=new PrefabData();
-  prefabData.addComponent(new StringComponent("Test"));
-  Assets.generateAsset(new AssetUri(AssetType.PREFAB,"test:prefabWithString"),prefabData,Prefab.class);
-  blockWithString.setPrefab("test:prefabWithString");
-  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithString"),blockWithString),true);
-  blockWithDifferentString=new Block();
-  prefabData=new PrefabData();
-  prefabData.addComponent(new StringComponent("Test2"));
-  Assets.generateAsset(new AssetUri(AssetType.PREFAB,"test:prefabWithDifferentString"),prefabData,Prefab.class);
-  blockWithDifferentString.setPrefab("test:prefabWithDifferentString");
-  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithDifferentString"),blockWithDifferentString),true);
-  blockWithRetainedComponent=new Block();
-  prefabData=new PrefabData();
-  prefabData.addComponent(new RetainedOnBlockChangeComponent(3));
-  Assets.generateAsset(new AssetUri(AssetType.PREFAB,"test:prefabWithRetainedComponent"),prefabData,Prefab.class);
-  blockWithRetainedComponent.setPrefab("test:prefabWithRetainedComponent");
-  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:blockWithRetainedComponent"),blockWithRetainedComponent),true);
-  blockInFamilyOne=new Block();
-  blockInFamilyOne.setKeepActive(true);
-  blockInFamilyOne.setPrefab("test:prefabWithString");
-  blockInFamilyTwo=new Block();
-  blockInFamilyTwo.setPrefab("test:prefabWithString");
-  blockInFamilyTwo.setKeepActive(true);
-  blockManager.addBlockFamily(new HorizontalBlockFamily(new BlockUri("test:blockFamily"),ImmutableMap.<Side,Block>of(Side.FRONT,blockInFamilyOne,Side.LEFT,blockInFamilyTwo,Side.RIGHT,blockInFamilyTwo,Side.BACK,blockInFamilyOne),Collections.<String>emptyList()),true);
-  keepActiveBlock=new Block();
-  keepActiveBlock.setKeepActive(true);
-  keepActiveBlock.setPrefab("test:prefabWithString");
-  blockManager.addBlockFamily(new SymmetricFamily(new BlockUri("test:keepActiveBlock"),keepActiveBlock),true);
+  plainBlock=createBlock("test:plainblock",assetManager,blockManager);
+  prefabWithString=createPrefabWithString("test:prefabWithString","Test",assetManager);
+  blockWithString=createBlockWithPrefab("test:blockWithString",prefabWithString,false,assetManager,blockManager);
+  keepActiveBlock=createBlockWithPrefab("test:keepActiveBlock",prefabWithString,true,assetManager,blockManager);
+  Prefab prefabWithDifferentString=createPrefabWithString("test:prefabWithDifferentString","Test2",assetManager);
+  blockWithDifferentString=createBlockWithPrefab("test:prefabWithDifferentString",prefabWithDifferentString,false,assetManager,blockManager);
+  BlockFamily blockFamily=createBlockFamily("test:blockFamily",prefabWithString,assetManager,blockManager);
+  Iterator<Block> iterator=blockFamily.getBlocks().iterator();
+  blockInFamilyOne=iterator.next();
+  blockInFamilyTwo=iterator.next();
+  PrefabData retainedPrefabData=new PrefabData();
+  retainedPrefabData.addComponent(new RetainedOnBlockChangeComponent(3));
+  Prefab retainedPrefab=assetManager.loadAsset(new ResourceUrn("test:retainedPrefab"),retainedPrefabData,Prefab.class);
+  blockWithRetainedComponent=createBlockWithPrefab("test:blockWithRetainedComponent",retainedPrefab,false,assetManager,blockManager);
   worldProvider.initialise();
 }

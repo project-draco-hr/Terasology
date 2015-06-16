@@ -1,8 +1,6 @@
 {
   PojoEntityManager pojoEntityManager=new PojoEntityManager();
-  ReflectFactory reflectFactory=new ReflectionReflectFactory();
-  CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
   pojoEntityManager.setComponentLibrary(componentLibrary);
-  pojoEntityManager.setTypeSerializerLibrary(TypeSerializationLibrary.createDefaultLibrary(pojoEntityManager,reflectFactory,copyStrategyLibrary));
+  pojoEntityManager.setTypeSerializerLibrary(CoreRegistry.get(TypeSerializationLibrary.class));
   return pojoEntityManager;
 }

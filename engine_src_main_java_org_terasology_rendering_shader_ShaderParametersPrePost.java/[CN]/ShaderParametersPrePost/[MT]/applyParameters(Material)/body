@@ -19,10 +19,10 @@
     renderingProcess.bindFboTexture("lightShafts");
     program.setInt("texLightShafts",texId++,true);
   }
-  Texture vignetteTexture=Assets.getTexture("engine:vignette");
-  if (vignetteTexture != null) {
+  Optional<? extends Texture> vignetteTexture=Assets.getTexture("engine:vignette");
+  if (vignetteTexture.isPresent()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    glBindTexture(GL11.GL_TEXTURE_2D,vignetteTexture.getId());
+    glBindTexture(GL11.GL_TEXTURE_2D,vignetteTexture.get().getId());
     program.setInt("texVignette",texId++,true);
   }
 }

@@ -2,5 +2,5 @@
   worldProvider.setBlock(Vector3i.zero(),blockWithString);
   EntityRef entity=worldProvider.getBlockEntityAt(Vector3i.zero());
   worldProvider.setBlock(Vector3i.zero(),blockWithDifferentString);
-  assertEquals(blockWithDifferentString.getPrefab(),entity.getPrefabURI().toSimpleString());
+  assertEquals(blockWithDifferentString.getPrefab().get().getUrn(),entity.getParentPrefab().getUrn());
 }

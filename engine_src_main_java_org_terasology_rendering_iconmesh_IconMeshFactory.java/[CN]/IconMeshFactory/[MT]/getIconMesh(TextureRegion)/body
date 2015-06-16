@@ -1,7 +1,13 @@
 {
   if (region instanceof Asset) {
-    AssetUri iconUri=((Asset)region).getURI();
-    return Assets.get(new AssetUri(AssetType.MESH,iconUri.getModuleName(),IconMeshResolver.ICON_DISCRIMINATOR + "." + iconUri.getAssetName()),Mesh.class);
+    ResourceUrn urn=((Asset)region).getUrn();
+    if (urn.getFragmentName().isEmpty()) {
+      return Assets.get(new ResourceUrn(urn.getModuleName(),IconMeshDataProducer.ICON_DISCRIMINATOR,urn.getResourceName()),Mesh.class).get();
+    }
+ else {
+      Name fragName=new Name(urn.getResourceName().toString() + ResourceUrn.FRAGMENT_SEPARATOR + urn.getFragmentName().toString());
+      return Assets.get(new ResourceUrn(urn.getModuleName(),IconMeshDataProducer.ICON_DISCRIMINATOR,fragName),Mesh.class).get();
+    }
   }
  else {
     return generateIconMesh(region);

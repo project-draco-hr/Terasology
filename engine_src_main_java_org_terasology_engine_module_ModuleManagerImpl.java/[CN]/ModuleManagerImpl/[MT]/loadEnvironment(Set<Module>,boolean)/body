@@ -5,11 +5,8 @@
       finalModules.add(module);
     }
   }
-  ModuleEnvironment newEnvironment=new ModuleEnvironment(finalModules,moduleSecurityManager,Collections.<BytecodeInjector>emptyList());
+  ModuleEnvironment newEnvironment=new ModuleEnvironment(finalModules,permissionProviderFactory,Collections.<BytecodeInjector>emptyList());
   if (asPrimary) {
-    if (environment != null) {
-      environment.close();
-    }
     environment=newEnvironment;
   }
   return newEnvironment;

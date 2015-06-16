@@ -1,0 +1,12 @@
+{
+  Optional<BlockTile> blockTile=assetManager.getAsset(urn,BlockTile.class);
+  if (blockTile.isPresent() && blockTile.get().isAutoBlock()) {
+    BlockFamilyDefinitionData data=new BlockFamilyDefinitionData();
+    for (    BlockPart part : BlockPart.values()) {
+      data.getBaseSection().getBlockTiles().put(part,blockTile.get());
+    }
+    data.setFamilyFactory(freeformBlockFamilyFactory);
+    return Optional.of(data);
+  }
+  return Optional.empty();
+}

@@ -1,52 +1,17 @@
 {
-  metricData.add(currentData);
-  allocationData.add(currentMemData);
-  spikeData.forEachEntry(new TObjectDoubleProcedure<String>(){
-    public boolean execute(    String s,    double v){
-      spikeData.put(s,v * DECAY_RATE);
-      return true;
-    }
-  }
-);
-  currentData.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String s,    long v){
-      runningTotals.adjustOrPutValue(s,v,v);
-      double time=v * timeFactor;
-      double prev=spikeData.get(s);
-      if (time > prev) {
-        spikeData.put(s,time);
-      }
-      return true;
-    }
-  }
-);
-  currentMemData.forEachEntry(new TObjectLongProcedure<String>(){
-    public boolean execute(    String s,    long v){
-      runningAllocationTotals.adjustOrPutValue(s,v,v);
-      return true;
-    }
-  }
-);
-  while (metricData.size() > RETAINED_CYCLES) {
-    metricData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
-      public boolean execute(      String s,      long v){
-        runningTotals.adjustValue(s,-v);
-        return true;
-      }
-    }
-);
-    metricData.remove(0);
+  executionData.add(currentExecutionData);
+  allocationData.add(currentAllocationData);
+  spikeData.forEachEntry(decayLargestExecutionTime);
+  currentExecutionData.forEachEntry(updateExecutionTimeTotalAndSpikeData);
+  currentAllocationData.forEachEntry(updateAllocatedMemoryTotal);
+  while (executionData.size() > RETAINED_CYCLES) {
+    executionData.get(0).forEachEntry(removeExpiredExecutionTimeValueFromTotal);
+    executionData.remove(0);
   }
   while (allocationData.size() > RETAINED_CYCLES) {
-    allocationData.get(0).forEachEntry(new TObjectLongProcedure<String>(){
-      public boolean execute(      String s,      long v){
-        runningAllocationTotals.adjustValue(s,-v);
-        return true;
-      }
-    }
-);
+    allocationData.get(0).forEachEntry(removeExpiredAllocatedMemoryValueFromTotal);
     allocationData.remove(0);
   }
-  currentData=new TObjectLongHashMap<>();
-  currentMemData=new TObjectLongHashMap<>();
+  currentExecutionData=new TObjectLongHashMap<>();
+  currentAllocationData=new TObjectLongHashMap<>();
 }

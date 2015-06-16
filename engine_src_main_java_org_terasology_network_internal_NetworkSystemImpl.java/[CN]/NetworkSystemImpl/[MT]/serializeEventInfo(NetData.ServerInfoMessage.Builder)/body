@@ -2,7 +2,7 @@
   Map<Class<? extends Event>,Integer> eventIdTable=eventSerializer.getIdMapping();
   for (  Map.Entry<Class<? extends Event>,Integer> eventMapping : eventIdTable.entrySet()) {
     ByteString.Output fieldIds=ByteString.newOutput();
-    EventMetadata<?> metadata=entitySystemLibrary.getEventLibrary().getMetadata(eventMapping.getKey());
+    EventMetadata<?> metadata=eventLibrary.getMetadata(eventMapping.getKey());
     NetData.SerializationInfo.Builder info=NetData.SerializationInfo.newBuilder().setId(eventMapping.getValue()).setName(metadata.getUri().toString());
     for (    FieldMetadata field : metadata.getFields()) {
       fieldIds.write(field.getId());

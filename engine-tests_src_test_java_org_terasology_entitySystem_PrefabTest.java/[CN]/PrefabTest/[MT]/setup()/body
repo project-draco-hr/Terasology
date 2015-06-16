@@ -1,21 +1,2 @@
 {
-  ContextImpl context=new ContextImpl();
-  CoreRegistry.setContext(context);
-  ModuleManager moduleManager=ModuleManagerFactory.create();
-  context.put(ModuleManager.class,moduleManager);
-  AssetManager assetManager=new AssetManagerImpl(moduleManager.getEnvironment());
-  context.put(AssetManager.class,assetManager);
-  AssetType.registerAssetTypes(assetManager);
-  assetManager.setAssetFactory(AssetType.PREFAB,new AssetFactory<PrefabData,Prefab>(){
-    @Override public Prefab buildAsset(    AssetUri uri,    PrefabData data){
-      return new PojoPrefab(uri,data);
-    }
-  }
-);
-  NetworkSystem networkSystem=mock(NetworkSystem.class);
-  when(networkSystem.getMode()).thenReturn(NetworkMode.NONE);
-  context.put(NetworkSystem.class,networkSystem);
-  EntitySystemSetupUtil.addReflectionBasedLibraries(context);
-  EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
-  prefabManager=new PojoPrefabManager();
 }

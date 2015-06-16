@@ -1,8 +1,8 @@
 {
-  if (effectsTexture == null) {
+  if (effectsTexture == null || !effectsTexture.isLoaded()) {
     return;
   }
-  Material defaultTextured=Assets.getMaterial("engine:prog.defaultTextured");
+  Material defaultTextured=Assets.getMaterial("engine:prog.defaultTextured").get();
   defaultTextured.activateFeature(ShaderProgramFeature.FEATURE_ALPHA_REJECT);
   defaultTextured.enable();
   glBindTexture(GL11.GL_TEXTURE_2D,effectsTexture.getId());

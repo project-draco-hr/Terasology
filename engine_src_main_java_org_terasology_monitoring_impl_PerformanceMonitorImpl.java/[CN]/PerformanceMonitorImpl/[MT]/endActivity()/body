@@ -3,15 +3,15 @@
     return;
   }
   ActivityInfo oldActivity=activityStack.pop();
-  long time=timer.getRawTimeInMs();
-  long total=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + time - oldActivity.resumeTime : time - oldActivity.startTime;
-  currentData.adjustOrPutValue(oldActivity.name,total,total);
+  long endTime=timer.getRawTimeInMs();
+  long totalTime=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + endTime - oldActivity.resumeTime : endTime - oldActivity.startTime;
+  currentExecutionData.adjustOrPutValue(oldActivity.name,totalTime,totalTime);
   long endMem=Runtime.getRuntime().freeMemory();
   long totalMem=(oldActivity.startMem - endMem > 0) ? oldActivity.startMem - endMem + oldActivity.ownMem : oldActivity.ownMem;
-  currentMemData.adjustOrPutValue(oldActivity.name,totalMem,totalMem);
+  currentAllocationData.adjustOrPutValue(oldActivity.name,totalMem,totalMem);
   if (!activityStack.isEmpty()) {
     ActivityInfo currentActivity=activityStack.peek();
-    currentActivity.resumeTime=time;
+    currentActivity.resumeTime=endTime;
     currentActivity.startMem=endMem;
   }
 }

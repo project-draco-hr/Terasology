@@ -1,7 +1,7 @@
 {
   BehaviorTreeData data=new BehaviorTreeData();
   data.setRoot(root);
-  BehaviorTree behaviorTree=new BehaviorTree(new AssetUri(AssetType.BEHAVIOR,BEHAVIORS,name.replaceAll("\\W+","")),data);
+  BehaviorTree behaviorTree=assetManager.loadAsset(new ResourceUrn(BEHAVIORS,new Name(name.replaceAll("\\W+",""))),data,BehaviorTree.class);
   trees.add(behaviorTree);
   save(behaviorTree);
   return behaviorTree;

@@ -1,6 +1,8 @@
 {
-  if (blockIdentifier.isEmpty() && shape == null) {
+  if (!blockName.isEmpty() || shape.isPresent()) {
+    return new BlockUri(blockFamilyDefinition);
+  }
+ else {
     return this;
   }
-  return new BlockUri(moduleName,familyName);
 }

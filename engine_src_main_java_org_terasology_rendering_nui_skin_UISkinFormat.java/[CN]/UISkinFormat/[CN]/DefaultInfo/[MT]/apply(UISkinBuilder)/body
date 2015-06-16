@@ -1,0 +1,15 @@
+{
+  super.apply(builder);
+  if (inherit != null) {
+    Optional<? extends UISkin> skin=Assets.get(inherit,UISkin.class);
+    if (skin.isPresent()) {
+      builder.setBaseSkin(skin.get());
+    }
+  }
+  if (families != null) {
+    for (    Map.Entry<String,FamilyInfo> entry : families.entrySet()) {
+      builder.setFamily(entry.getKey());
+      entry.getValue().apply(builder);
+    }
+  }
+}

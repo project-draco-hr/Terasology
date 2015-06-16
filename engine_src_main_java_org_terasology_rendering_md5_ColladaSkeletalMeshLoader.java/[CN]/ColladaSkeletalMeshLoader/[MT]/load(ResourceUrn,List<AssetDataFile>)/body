@@ -1,0 +1,10 @@
+{
+  logger.info("Loading skeletal mesh for " + urn);
+  try (InputStream stream=inputs.get(0).openStream()){
+    ColladaLoader loader=new ColladaLoader();
+    return loader.parseSkeletalMeshData(stream);
+  }
+ catch (  ColladaParseException e) {
+    throw new IOException("Unable to load skeletal mesh for " + urn,e);
+  }
+}

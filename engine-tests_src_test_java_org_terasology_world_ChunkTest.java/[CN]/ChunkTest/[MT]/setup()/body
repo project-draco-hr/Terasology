@@ -1,6 +1,14 @@
 {
   super.setup();
-  blockManager=new BlockManagerImpl(new NullWorldAtlas(),new DefaultBlockFamilyFactoryRegistry());
+  AssetManager assetManager=CoreRegistry.get(AssetManager.class);
+  blockManager=new BlockManagerImpl(new NullWorldAtlas(),assetManager);
   CoreRegistry.put(BlockManager.class,blockManager);
   chunk=new ChunkImpl(new Vector3i(0,0,0));
+  BlockFamilyDefinitionData solidData=new BlockFamilyDefinitionData();
+  solidData.getBaseSection().setDisplayName("Stone");
+  solidData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
+  solidData.getBaseSection().setTranslucent(false);
+  solidData.setFamilyFactory(new SymmetricBlockFamilyFactory());
+  assetManager.loadAsset(new ResourceUrn("engine:stone"),solidData,BlockFamilyDefinition.class);
+  solid=blockManager.getBlock(new BlockUri(new ResourceUrn("engine:stone")));
 }

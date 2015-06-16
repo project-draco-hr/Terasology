@@ -1,5 +1,12 @@
 {
   ReflectionReflectFactory reflectFactory=new ReflectionReflectFactory();
   context.put(ReflectFactory.class,reflectFactory);
-  context.put(CopyStrategyLibrary.class,new CopyStrategyLibrary(reflectFactory));
+  CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
+  context.put(CopyStrategyLibrary.class,copyStrategyLibrary);
+  TypeSerializationLibrary typeSerializationLibrary=TypeSerializationLibrary.createDefaultLibrary(reflectFactory,copyStrategyLibrary);
+  context.put(TypeSerializationLibrary.class,typeSerializationLibrary);
+  EntitySystemLibrary library=new EntitySystemLibrary(context,typeSerializationLibrary);
+  context.put(EntitySystemLibrary.class,library);
+  context.put(ComponentLibrary.class,library.getComponentLibrary());
+  context.put(EventLibrary.class,library.getEventLibrary());
 }
