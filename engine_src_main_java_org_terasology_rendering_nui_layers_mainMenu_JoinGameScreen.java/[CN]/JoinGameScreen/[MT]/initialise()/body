@@ -1,14 +1,2 @@
 {
-  downloader=new ServerListDownloader(config.getNetwork().getMasterServer());
-  UIList<ServerInfo> serverList=find("serverList",UIList.class);
-  if (serverList != null) {
-    configureScreen(serverList);
-  }
-  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      config.save();
-      getManager().popScreen();
-    }
-  }
-);
 }

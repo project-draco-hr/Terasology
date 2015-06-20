@@ -1,5 +1,4 @@
 {
-  int maxElements=9;
   try {
     ServerInfoMessage serverInfoMessage=info.get();
     List<String> codedModInfo=new ArrayList<>();
@@ -9,11 +8,11 @@
       Color color=isInstalled ? Color.GREEN : Color.RED;
       codedModInfo.add(FontColor.getColored(entry.toString(),color));
     }
+    Collections.sort(codedModInfo,String.CASE_INSENSITIVE_ORDER);
     if (codedModInfo.size() > maxElements) {
       codedModInfo=codedModInfo.subList(0,maxElements - 1);
       codedModInfo.add("...");
     }
-    Collections.sort(codedModInfo,String.CASE_INSENSITIVE_ORDER);
     return Joiner.on('\n').join(codedModInfo);
   }
  catch (  ExecutionException|InterruptedException e) {
