@@ -1,12 +1,11 @@
 {
-  resetStats();
   preRenderUpdate(renderingStage);
   renderShadowMap();
   renderWorldReflection();
   graphicState.enableWireframeIf(renderingDebugConfig.isWireframe());
   graphicState.initialClearing();
   graphicState.preRenderSetupSceneOpaque();
-  renderSky();
+  renderBackdrop();
   try (Activity ignored=PerformanceMonitor.startActivity("Render World")){
     renderObjectsOpaque();
     renderChunksOpaque();
@@ -18,8 +17,21 @@
     renderChunksRefractiveReflective();
   }
    graphicState.disableWireframeIf(renderingDebugConfig.isWireframe());
-  combineRefractiveReflectiveAndOpaquePasses();
-  renderSimpleBlendMaterialsIntoCombinedPass();
-  renderFinalPostProcessedScene();
+  PerformanceMonitor.startActivity("Pre-post composite");
+  renderingProcess.createOrUpdateFullscreenFbos();
+  postProcessor.generateOutline();
+  postProcessor.generateAmbientOcclusionPasses();
+  postProcessor.generatePrePostComposite();
+  PerformanceMonitor.endActivity();
+  renderSimpleBlendMaterials();
+  PerformanceMonitor.startActivity("Post-Processing");
+  postProcessor.generateLightShafts();
+  postProcessor.initialPostProcessing();
+  postProcessor.downsampleSceneAndUpdateExposure();
+  postProcessor.generateToneMappedScene();
+  postProcessor.generateBloomPasses();
+  postProcessor.generateBlurPasses();
+  postProcessor.finalPostProcessing(renderingStage);
+  PerformanceMonitor.endActivity();
   playerCamera.updatePrevViewProjectionMatrix();
 }

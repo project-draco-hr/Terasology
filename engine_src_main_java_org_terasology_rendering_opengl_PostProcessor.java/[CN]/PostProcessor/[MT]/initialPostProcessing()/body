@@ -1,0 +1,11 @@
+{
+  PerformanceMonitor.startActivity("Initial Post-Processing");
+  materials.initialPost.enable();
+  buffers.initialPost.bind();
+  setViewportTo(buffers.initialPost.dimensions());
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  graphicState.bindDisplay();
+  setViewportToWholeDisplay();
+  PerformanceMonitor.endActivity();
+}

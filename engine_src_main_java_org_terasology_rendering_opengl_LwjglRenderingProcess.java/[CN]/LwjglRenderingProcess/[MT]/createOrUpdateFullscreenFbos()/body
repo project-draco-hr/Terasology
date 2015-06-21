@@ -29,11 +29,11 @@
   FBO sceneReflectiveRefractive=new FBObuilder("sceneReflectiveRefractive",fullScale,FBO.Type.HDR).useNormalBuffer().build();
   sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
   new FBObuilder("sceneReflected",halfScale,FBO.Type.DEFAULT).useDepthBuffer().build();
-  new FBObuilder("sobel",fullScale,FBO.Type.DEFAULT).build();
+  new FBObuilder("outline",fullScale,FBO.Type.DEFAULT).build();
   new FBObuilder("ssao",fullScale,FBO.Type.DEFAULT).build();
   new FBObuilder("ssaoBlurred",fullScale,FBO.Type.DEFAULT).build();
-  new FBObuilder("scenePrePost",fullScale,FBO.Type.HDR).build();
   new FBObuilder("lightShafts",halfScale,FBO.Type.DEFAULT).build();
+  new FBObuilder("initialPost",fullScale,FBO.Type.HDR).build();
   new FBObuilder("sceneToneMapped",fullScale,FBO.Type.HDR).build();
   new FBObuilder("sceneHighPass",fullScale,FBO.Type.DEFAULT).build();
   new FBObuilder("sceneBloom0",halfScale,FBO.Type.DEFAULT).build();
@@ -44,4 +44,5 @@
   new FBObuilder("ocUndistorted",fullScale,FBO.Type.DEFAULT).build();
   new FBObuilder("sceneFinal",fullScale,FBO.Type.DEFAULT).build();
   graphicState.refreshDynamicFBOs();
+  postProcessor.refreshDynamicFBOs();
 }
