@@ -1,5 +1,5 @@
 {
-  if (renderingProcess.isNotTakingScreenshot()) {
+  if (buffersManager.isNotTakingScreenshot()) {
     graphicState.bindDisplay();
     renderFullscreenQuad(0,0,Display.getWidth(),Display.getHeight());
   }
@@ -7,7 +7,7 @@
     buffers.sceneFinal.bind();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderFullscreenQuad(0,0,fullScale.width(),fullScale.height());
-    renderingProcess.saveScreenshot();
+    buffersManager.saveScreenshot();
     setViewportToWholeDisplay();
   }
 }
