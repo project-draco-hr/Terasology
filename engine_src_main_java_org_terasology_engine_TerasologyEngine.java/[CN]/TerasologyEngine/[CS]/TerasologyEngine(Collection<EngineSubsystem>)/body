@@ -1,40 +1,8 @@
 {
-  Stopwatch totalInitTime=Stopwatch.createStarted();
   this.context=new ContextImpl();
   CoreRegistry.setContext(context);
   this.subsystems=Queues.newArrayDeque(subsystems);
   ThreadManagerSubsystem threadManager=new ThreadManagerSubsystem();
   subsystems.add(threadManager);
   context.put(ThreadManager.class,threadManager);
-  try {
-    logger.info("Initializing Terasology...");
-    logEnvironmentInfo();
-    SplashScreen.getInstance().post("Loading config file ...");
-    initConfig();
-    SplashScreen.getInstance().post("Pre-initialize subsystems ...");
-    preInitSubsystems();
-    verifyRequiredSystemIsRegistered(Time.class);
-    time=(EngineTime)context.get(Time.class);
-    GameThread.setToCurrentThread();
-    initSubsystems();
-    initManagers();
-    initAssets();
-    ApplyModulesUtil.applyModules(context);
-    SplashScreen.getInstance().post("Post-initialize subsystems ...");
-    postInitSubsystems();
-    verifyRequiredSystemIsRegistered(DisplayDevice.class);
-    verifyRequiredSystemIsRegistered(RenderingSubsystemFactory.class);
-    verifyRequiredSystemIsRegistered(InputSystem.class);
-    SplashScreen.getInstance().post("Initialize assets ...");
-    initAdvancedMonitor();
-    engineState=EngineState.INITIALIZED;
-    CoreRegistry.setContext(null);
-  }
- catch (  RuntimeException e) {
-    logger.error("Failed to initialise Terasology",e);
-    cleanup();
-    throw e;
-  }
-  double seconds=0.001 * totalInitTime.elapsed(TimeUnit.MILLISECONDS);
-  logger.info("Initialization completed in {}sec.",String.format("%.2f",seconds));
 }

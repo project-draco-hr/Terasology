@@ -1,5 +1,7 @@
 {
   logger.info("Shutting down Terasology...");
+  shuttingDown=true;
+  changeStatus(StandardGameStatus.SHUTTING_DOWN);
   Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
   while (iter.hasNext()) {
     EngineSubsystem subsystem=iter.next();

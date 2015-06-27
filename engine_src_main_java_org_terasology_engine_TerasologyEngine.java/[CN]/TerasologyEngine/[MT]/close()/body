@@ -1,12 +1,15 @@
 {
-  engineState=EngineState.DISPOSED;
+  Preconditions.checkState(!running);
+  disposed=true;
+  initialised=false;
+  changeStatus(StandardGameStatus.DISPOSED);
   Iterator<EngineSubsystem> iter=subsystems.descendingIterator();
   while (iter.hasNext()) {
     EngineSubsystem subsystem=iter.next();
     try {
       subsystem.dispose();
     }
- catch (    Throwable t) {
+ catch (    RuntimeException t) {
       logger.error("Unable to dispose subsystem {}",subsystem,t);
     }
   }

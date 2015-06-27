@@ -1,25 +1,28 @@
 {
+  Preconditions.checkState(!disposed);
+  running=true;
+  initialize();
+  changeStatus(StandardGameStatus.RUNNING);
   try {
     context.put(GameEngine.class,this);
     changeState(initialState);
-    engineState=EngineState.RUNNING;
     Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
     mainLoop();
-    cleanup();
   }
  catch (  RuntimeException e) {
     logger.error("Uncaught exception, attempting clean game shutdown",e);
+    throw e;
+  }
+ finally {
     try {
       cleanup();
     }
- catch (    Throwable t) {
+ catch (    RuntimeException t) {
       logger.error("Clean game shutdown after an uncaught exception failed",t);
-      logger.error("Rethrowing original exception");
     }
-    throw e;
-  }
-catch (  Throwable t) {
-    logger.error("Uncaught throwable",t);
-    throw t;
+    running=false;
+    shuttingDown=false;
+    shutdownRequested=false;
+    changeStatus(StandardGameStatus.UNSTARTED);
   }
 }

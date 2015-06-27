@@ -1,14 +1,14 @@
 {
-  SplashScreen.getInstance().post("Loading modules ...");
+  changeStatus(TerasologyEngineStatus.INITIALIZING_MODULE_MANAGER);
   ModuleManager moduleManager=new ModuleManagerImpl();
   context.put(ModuleManager.class,moduleManager);
-  SplashScreen.getInstance().post("Loading reflections ...");
+  changeStatus(TerasologyEngineStatus.INITIALIZING_REFLECTION);
   ReflectFactory reflectFactory=new ReflectionReflectFactory();
   context.put(ReflectFactory.class,reflectFactory);
   CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
   context.put(CopyStrategyLibrary.class,copyStrategyLibrary);
   context.put(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
-  SplashScreen.getInstance().post("Loading assets ...");
+  changeStatus(TerasologyEngineStatus.INITIALIZING_ASSET_TYPES);
   assetTypeManager=new ModuleAwareAssetTypeManager();
   context.put(ModuleAwareAssetTypeManager.class,assetTypeManager);
   context.put(AssetManager.class,assetTypeManager.getAssetManager());
