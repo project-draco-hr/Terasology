@@ -1,0 +1,17 @@
+{
+  status="Downloading modules ..";
+  URL url=new URL("http",address,"/modules/list/latest");
+  try (JsonReader reader=new JsonReader(new InputStreamReader(url.openStream(),TerasologyConstants.CHARSET))){
+    status="Parsing content ..";
+    reader.beginArray();
+    while (reader.hasNext()) {
+      ModuleMetadata meta=metaReader.read(reader);
+      logger.debug("Read module {} - {}",meta.getId(),meta.getVersion());
+      RemoteModule remoteModule=new RemoteModule(meta);
+      modules.add(remoteModule);
+      int count=modules.size();
+      status=String.format("Retrieved %d %s",count,(count == 1) ? "entry" : "entries");
+    }
+    reader.endArray();
+  }
+ }

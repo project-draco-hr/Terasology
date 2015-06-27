@@ -1,12 +1,12 @@
 {
   List<Name> selectedModules=Lists.newArrayList();
-  for (  SelectModulesScreen.ModuleSelectionInfo info : sortedModules) {
+  for (  ModuleSelectionInfo info : sortedModules) {
     if (info.isSelected()) {
       selectedModules.add(info.getMetadata().getId());
     }
   }
   Name[] selectedModulesArray=selectedModules.toArray(new Name[selectedModules.size()]);
-  for (  SelectModulesScreen.ModuleSelectionInfo info : sortedModules) {
+  for (  ModuleSelectionInfo info : sortedModules) {
     if (!info.isSelected()) {
       info.setValidToSelect(resolver.resolve(info.getMetadata().getId(),selectedModulesArray).isSuccess());
     }

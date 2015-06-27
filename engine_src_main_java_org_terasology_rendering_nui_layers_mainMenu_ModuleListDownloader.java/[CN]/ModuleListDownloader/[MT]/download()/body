@@ -1,0 +1,21 @@
+{
+  try {
+    try {
+      download(serverAddress);
+    }
+ catch (    Exception e) {
+      String defaultAddress=new NetworkConfig().getMasterServer();
+      if (!defaultAddress.equals(serverAddress)) {
+        logger.warn("Download server list from {} failed. Trying default ..",serverAddress);
+        download(defaultAddress);
+      }
+ else {
+        throw e;
+      }
+    }
+  }
+ catch (  Exception e) {
+    status="Error: " + e.toString();
+    logger.error("Error downloading online server list!",e.toString());
+  }
+}
