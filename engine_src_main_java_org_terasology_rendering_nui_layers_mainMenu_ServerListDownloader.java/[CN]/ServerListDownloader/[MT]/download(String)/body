@@ -1,20 +1,21 @@
 {
   status="Downloading server list ..";
-  @SuppressWarnings("serial") Type entryListType=new TypeToken<List<ServerInfo>>(){
-  }
-.getType();
   URL url=new URL("http",address,"/servers/list");
-  try (Reader reader=new InputStreamReader(url.openStream(),charset)){
+  try (Reader reader=new InputStreamReader(url.openStream(),charset);JsonReader jsonReader=new JsonReader(reader)){
     status="Parsing content ..";
-    List<ServerInfo> onlineServers=GSON.fromJson(reader,entryListType);
-    if (onlineServers == null) {
-      throw new IOException("Invalid server list file content!");
+    jsonReader.beginArray();
+    TypeAdapter<ServerInfo> adapter=GSON.getAdapter(ServerInfo.class);
+    while (jsonReader.hasNext()) {
+      ServerInfo entry=adapter.read(jsonReader);
+      servers.add(entry);
+      logger.info("Retrieved game server {}",entry);
+      try {
+        Thread.sleep(250);
+      }
+ catch (      InterruptedException e) {
+      }
     }
-    for (    ServerInfo entry : onlineServers) {
-      logger.debug("Retrieved online game server {}",entry);
-    }
-    int count=onlineServers.size();
-    status=String.format("Retrieved %d %s",count,(count == 1) ? "entry" : "entries");
-    servers.addAll(onlineServers);
+    jsonReader.endArray();
+    status=String.format("Server list complete");
   }
  }

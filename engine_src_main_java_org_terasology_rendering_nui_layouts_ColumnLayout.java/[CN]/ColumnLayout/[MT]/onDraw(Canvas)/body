@@ -40,14 +40,20 @@
       usedHeight+=row.height;
     }
     usedHeight+=(rowInfos.size() - 1) * verticalSpacing;
+    int excessHeight=canvas.size().y - usedHeight;
     if (fillVerticalSpace) {
-      int extraSpacePerRow=(canvas.size().y - usedHeight) / rowInfos.size();
-      for (      RowInfo row : rowInfos) {
-        row.height+=extraSpacePerRow;
+      if (extendLast && numRows > 0) {
+        rowInfos.get(numRows - 1).height+=excessHeight;
+      }
+ else {
+        int extraSpacePerRow=excessHeight / rowInfos.size();
+        for (        RowInfo row : rowInfos) {
+          row.height+=extraSpacePerRow;
+        }
       }
     }
  else {
-      rowOffsetY=(canvas.size().y - usedHeight) / 2;
+      rowOffsetY=excessHeight / 2;
     }
     for (int rowIndex=0; rowIndex < rows.size(); ++rowIndex) {
       List<UIWidget> row=rows.get(rowIndex);
