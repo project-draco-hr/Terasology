@@ -3,7 +3,11 @@
   if (basedOn != null && !basedOn.getAsString().isEmpty()) {
     Optional<BlockFamilyDefinition> baseDef=assetManager.getAsset(basedOn.getAsString(),BlockFamilyDefinition.class);
     if (baseDef.isPresent()) {
-      return baseDef.get().getData();
+      BlockFamilyDefinitionData data=baseDef.get().getData();
+      if (data.getFamilyFactory() instanceof FreeformBlockFamilyFactory) {
+        data.setFamilyFactory(null);
+      }
+      return data;
     }
  else {
       throw new JsonParseException("Unable to resolve based block definition '" + basedOn.getAsString() + "'");
