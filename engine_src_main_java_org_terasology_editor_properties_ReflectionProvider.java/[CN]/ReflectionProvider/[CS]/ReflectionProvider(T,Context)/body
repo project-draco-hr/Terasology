@@ -1,7 +1,7 @@
 {
   try {
-    ReflectFactory reflectFactory=CoreRegistry.get(ReflectFactory.class);
-    CopyStrategyLibrary copyStrategies=CoreRegistry.get(CopyStrategyLibrary.class);
+    ReflectFactory reflectFactory=context.get(ReflectFactory.class);
+    CopyStrategyLibrary copyStrategies=context.get(CopyStrategyLibrary.class);
     ClassMetadata<T,?> classMetadata=new DefaultClassMetadata<>(new SimpleUri(),(Class<T>)target.getClass(),reflectFactory,copyStrategies);
     for (    Field field : getAllFields(target.getClass(),and(withAnnotation(EditorRange.class),or(withType(Float.TYPE),withType(Float.class))))) {
       EditorRange range=field.getAnnotation(EditorRange.class);
