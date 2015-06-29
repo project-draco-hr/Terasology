@@ -7,7 +7,7 @@
   TypeSerializationLibrary typeSerializationLibrary=context.get(TypeSerializationLibrary.class);
   typeSerializationLibrary.add(EntityRef.class,new EntityRefTypeHandler(entityManager));
   entityManager.setTypeSerializerLibrary(typeSerializationLibrary);
-  PrefabManager prefabManager=new PojoPrefabManager();
+  PrefabManager prefabManager=new PojoPrefabManager(context);
   entityManager.setPrefabManager(prefabManager);
   context.put(PrefabManager.class,prefabManager);
   EntitySystemLibrary library=context.get(EntitySystemLibrary.class);

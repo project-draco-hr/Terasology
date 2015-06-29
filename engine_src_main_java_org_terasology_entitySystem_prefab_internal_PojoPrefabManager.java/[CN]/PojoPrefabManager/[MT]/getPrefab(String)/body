@@ -1,6 +1,7 @@
 {
   if (!name.isEmpty()) {
-    return Assets.getPrefab(name).orElse(null);
+    Preconditions.checkArgument(!Strings.isNullOrEmpty(name));
+    return assetManager.getAsset(name,Prefab.class).orElse(null);
   }
   return null;
 }
