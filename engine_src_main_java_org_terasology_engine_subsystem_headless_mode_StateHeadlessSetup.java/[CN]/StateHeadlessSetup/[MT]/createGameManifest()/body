@@ -1,7 +1,7 @@
 {
   GameManifest gameManifest=new GameManifest();
-  Config config=CoreRegistry.get(Config.class);
-  ModuleManager moduleManager=CoreRegistry.get(ModuleManager.class);
+  Config config=context.get(Config.class);
+  ModuleManager moduleManager=context.get(ModuleManager.class);
   for (  Name moduleName : config.getDefaultModSelection().listModules()) {
     Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
     if (module != null) {
