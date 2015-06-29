@@ -1,9 +1,9 @@
 {
-  if (CoreRegistry.get(Config.class).getRendering().isOculusVrSupport() && OculusVrHelper.isNativeLibraryLoaded()) {
+  if (context.get(Config.class).getRendering().isOculusVrSupport() && OculusVrHelper.isNativeLibraryLoaded()) {
     logger.info("Shutting down Oculus SDK...");
     TeraOVR.clear();
   }
-  ChunkProvider chunkProvider=CoreRegistry.get(ChunkProvider.class);
+  ChunkProvider chunkProvider=context.get(ChunkProvider.class);
   chunkProvider.dispose();
   boolean save=networkSystem.getMode().isAuthority();
   if (save) {
@@ -13,24 +13,24 @@
   eventSystem.process();
   GameThread.processWaitingProcesses();
   nuiManager.clear();
-  CoreRegistry.get(AudioManager.class).stopAllSounds();
+  context.get(AudioManager.class).stopAllSounds();
   if (worldRenderer != null) {
     worldRenderer.dispose();
     worldRenderer=null;
   }
   componentSystemManager.shutdown();
-  CoreRegistry.get(PhysicsEngine.class).dispose();
+  context.get(PhysicsEngine.class).dispose();
   entityManager.clear();
   if (storageManager != null) {
     storageManager.finishSavingAndShutdown();
   }
-  ModuleEnvironment oldEnvironment=CoreRegistry.get(ModuleManager.class).getEnvironment();
-  ModuleEnvironment environment=CoreRegistry.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
-  CoreRegistry.get(ModuleAwareAssetTypeManager.class).switchEnvironment(environment);
+  ModuleEnvironment oldEnvironment=context.get(ModuleManager.class).getEnvironment();
+  ModuleEnvironment environment=context.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
+  context.get(ModuleAwareAssetTypeManager.class).switchEnvironment(environment);
   if (oldEnvironment != null) {
     oldEnvironment.close();
   }
-  CoreRegistry.get(Console.class).dispose();
+  context.get(Console.class).dispose();
   GameThread.clearWaitingProcesses();
   nuiManager.getHUD().clearVisibleBinding();
 }
