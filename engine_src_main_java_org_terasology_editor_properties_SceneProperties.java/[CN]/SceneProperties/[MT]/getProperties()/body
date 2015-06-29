@@ -1,14 +1,20 @@
 {
   List<Property<?>> result=Lists.newArrayList();
-  BackdropProvider backdropProvider=CoreRegistry.get(BackdropProvider.class);
+  GameState gameState=engine.getState();
+  if (!(gameState instanceof StateIngame)) {
+    return result;
+  }
+  StateIngame ingameState=(StateIngame)gameState;
+  Context ingameContext=ingameState.getContext();
+  BackdropProvider backdropProvider=ingameContext.get(BackdropProvider.class);
   if (backdropProvider != null) {
     result.addAll(new ReflectionProvider(backdropProvider).getProperties());
   }
-  BackdropRenderer backdropRenderer=CoreRegistry.get(BackdropRenderer.class);
+  BackdropRenderer backdropRenderer=ingameContext.get(BackdropRenderer.class);
   if (backdropRenderer != null) {
     result.addAll(new ReflectionProvider(backdropRenderer).getProperties());
   }
-  LwjglRenderingProcess renderingProcess=CoreRegistry.get(LwjglRenderingProcess.class);
+  LwjglRenderingProcess renderingProcess=ingameContext.get(LwjglRenderingProcess.class);
   if (renderingProcess != null) {
     result.addAll(new ReflectionProvider(renderingProcess).getProperties());
   }

@@ -16,7 +16,8 @@
     Collection<EngineSubsystem> subsystemList=Lists.<EngineSubsystem>newArrayList(new LwjglGraphics(),new LwjglTimer(),new LwjglAudio(),new LwjglInput(),lwjglCustomViewPort);
     PathManager.getInstance().useDefaultHomePath();
     engine=new TerasologyEngine(subsystemList);
-    mainWindow=new MainWindow(this);
+    sceneProperties=new SceneProperties(engine);
+    mainWindow=new MainWindow(this,engine);
     lwjglCustomViewPort.setCustomViewport(mainWindow.getViewport());
     engine.setHibernationAllowed(false);
     engine.subscribeToStateChange(mainWindow);
