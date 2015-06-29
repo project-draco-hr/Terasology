@@ -1,0 +1,22 @@
+{
+  List<Property<?,?>> properties=Lists.newArrayList();
+  try {
+    Class<?> type=target.getClass();
+    ReflectFactory reflectFactory=CoreRegistry.get(ReflectFactory.class);
+    CopyStrategyLibrary copyStrategies=new CopyStrategyLibrary(reflectFactory);
+    ClassMetadata<?,?> classMetadata=new DefaultClassMetadata<>(new SimpleUri(),type,reflectFactory,copyStrategies);
+    for (    Field field : getAllFields(type)) {
+      Annotation annotation=getFactory(field);
+      if (annotation != null) {
+        FieldMetadata<Object,?> fieldMetadata=(FieldMetadata<Object,?>)classMetadata.getField(field.getName());
+        PropertyFactory factory=factories.get(annotation.annotationType());
+        Property property=factory.create(target,fieldMetadata,field.getName(),annotation);
+        properties.add(property);
+      }
+    }
+  }
+ catch (  NoSuchMethodException e) {
+    throw new RuntimeException(e);
+  }
+  return properties;
+}

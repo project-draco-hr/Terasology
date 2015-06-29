@@ -1,0 +1,12 @@
+{
+  List<Property<?,?>> props=Lists.newArrayList(properties);
+  Collections.sort(props,propertyComparator);
+  for (  Property<?,?> property : props) {
+    UILabel label=property.getLabel();
+    UIWidget editor=property.getEditor();
+    editor.setTooltip(property.getDescription());
+    layout.addWidget(label,new CCHint("newline"));
+    layout.addWidget(editor,new CCHint());
+  }
+  invalidate();
+}

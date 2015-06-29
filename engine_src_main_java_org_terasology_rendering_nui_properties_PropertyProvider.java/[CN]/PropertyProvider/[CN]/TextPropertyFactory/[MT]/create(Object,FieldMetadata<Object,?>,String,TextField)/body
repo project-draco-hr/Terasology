@@ -1,0 +1,10 @@
+{
+  UITextEntry<T> text=new UITextEntry<>();
+  Binding<T> textBinding=new TextBinding(target,(FieldMetadata<Object,T>)fieldMetadata);
+  TextMapper<T> textMapper=createTextMapping(fieldMetadata.getType());
+  text.setFormatter(textMapper);
+  text.setParser(textMapper);
+  text.bindValue(textBinding);
+  String label=fromLabelOrId(info.label(),id);
+  return new Property<>(label,textBinding,text,info.description());
+}
