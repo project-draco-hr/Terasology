@@ -11,7 +11,7 @@
   context.put(StorageManager.class,new ReadWriteStorageManager(savePath,moduleManager.getEnvironment(),engineEntityManager));
   componentSystemManager=new ComponentSystemManager(context);
   context.put(ComponentSystemManager.class,componentSystemManager);
-  LoadPrefabs prefabLoadStep=new LoadPrefabs();
+  LoadPrefabs prefabLoadStep=new LoadPrefabs(context);
   boolean complete=false;
   prefabLoadStep.begin();
   while (!complete) {
