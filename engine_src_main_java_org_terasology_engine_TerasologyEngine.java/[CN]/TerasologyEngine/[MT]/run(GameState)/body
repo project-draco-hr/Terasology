@@ -1,5 +1,5 @@
 {
-  Preconditions.checkState(!disposed);
+  Preconditions.checkState(!running);
   running=true;
   initialize();
   changeStatus(StandardGameStatus.RUNNING);
@@ -21,7 +21,6 @@
       logger.error("Clean game shutdown after an uncaught exception failed",t);
     }
     running=false;
-    shuttingDown=false;
     shutdownRequested=false;
     changeStatus(StandardGameStatus.UNSTARTED);
   }
