@@ -1,11 +1,11 @@
 {
-  Context context=gameEngine.createChildContext();
+  context=gameEngine.createChildContext();
   CoreRegistry.setContext(context);
   EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
   entityManager=context.get(EngineEntityManager.class);
-  eventSystem=CoreRegistry.get(EventSystem.class);
+  eventSystem=context.get(EventSystem.class);
   context.put(Console.class,new ConsoleImpl());
-  NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
+  NUIManager nuiManager=context.get(NUIManager.class);
   ((NUIManagerInternal)nuiManager).refreshWidgetsLibrary();
   componentSystemManager=new ComponentSystemManager(context);
   context.put(ComponentSystemManager.class,componentSystemManager);

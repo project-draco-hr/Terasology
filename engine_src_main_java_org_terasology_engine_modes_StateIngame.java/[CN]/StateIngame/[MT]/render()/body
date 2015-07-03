@@ -1,8 +1,8 @@
 {
-  DisplayDevice displayDevice=CoreRegistry.get(DisplayDevice.class);
+  DisplayDevice displayDevice=context.get(DisplayDevice.class);
   displayDevice.prepareToRender();
   if (worldRenderer != null) {
-    if (!CoreRegistry.get(Config.class).getRendering().isOculusVrSupport()) {
+    if (!context.get(Config.class).getRendering().isOculusVrSupport()) {
       worldRenderer.render(WorldRenderingStage.MONO);
     }
  else {
