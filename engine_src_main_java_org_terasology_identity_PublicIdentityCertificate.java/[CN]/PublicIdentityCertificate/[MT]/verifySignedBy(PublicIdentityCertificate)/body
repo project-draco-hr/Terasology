@@ -8,7 +8,7 @@
     signatureVerifier.update(id.getBytes(Charsets.UTF_8));
     signatureVerifier.update(modulus.toByteArray());
     signatureVerifier.update(exponent.toByteArray());
-    return signatureVerifier.verify(signature.toByteArray());
+    return signatureVerifier.verify(getSignatureBytes());
   }
  catch (  NoSuchAlgorithmException e) {
     throw new RuntimeException("Insufficient support for '" + IdentityConstants.CERTIFICATE_ALGORITHM + "', required for identity management",e);
