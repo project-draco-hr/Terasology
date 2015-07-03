@@ -2,7 +2,7 @@
   NetworkSystem networkSystem=context.get(NetworkSystem.class);
   DisplayDevice display=context.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
-  while (engineState == EngineState.RUNNING && !display.isCloseRequested()) {
+  while (!shutdownRequested && !display.isCloseRequested()) {
     long totalDelta;
     float updateDelta;
     float subsystemsDelta;
@@ -56,5 +56,4 @@
     PerformanceMonitor.startActivity("Other");
   }
   PerformanceMonitor.endActivity();
-  engineState=EngineState.INITIALIZED;
 }
