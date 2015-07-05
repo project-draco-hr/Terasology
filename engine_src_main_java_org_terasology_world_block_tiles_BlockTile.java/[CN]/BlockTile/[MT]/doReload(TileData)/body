@@ -1,4 +1,7 @@
 {
   this.image=tileData.getImage();
   this.autoBlock=tileData.isAutoBlock();
+  for (  Consumer<BlockTile> listener : reloadListeners) {
+    listener.accept(this);
+  }
 }
