@@ -1,3 +1,6 @@
 {
-  return Assets.getPrefab(name) != null;
+  if (Strings.isNullOrEmpty(name)) {
+    return false;
+  }
+  return assetManager.getAsset(name,Prefab.class).isPresent();
 }
