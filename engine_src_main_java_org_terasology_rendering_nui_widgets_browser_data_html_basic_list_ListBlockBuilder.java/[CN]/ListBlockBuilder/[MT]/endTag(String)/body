@@ -1,0 +1,15 @@
+{
+  if (tag.equalsIgnoreCase(elementTag)) {
+    if (level == 1) {
+      listParagraphRenderable.addListElement(paragraphBuilder.build());
+      paragraphBuilder=null;
+    }
+ else {
+      paragraphBuilder.endTag(tag);
+    }
+    level--;
+  }
+ else   if (paragraphBuilder != null) {
+    paragraphBuilder.endTag(tag);
+  }
+}

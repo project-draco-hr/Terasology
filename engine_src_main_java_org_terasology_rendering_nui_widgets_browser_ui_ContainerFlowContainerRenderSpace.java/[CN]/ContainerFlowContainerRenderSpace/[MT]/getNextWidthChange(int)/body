@@ -1,0 +1,16 @@
+{
+  Rect2i lastLeftFloat=findLastAtYPosition(leftFloats,y);
+  Rect2i lastRightFloat=findLastAtYPosition(rightFloats,y);
+  if (lastLeftFloat != null && lastRightFloat != null) {
+    return Math.min(lastLeftFloat.maxY(),lastRightFloat.maxY());
+  }
+ else   if (lastLeftFloat != null) {
+    return lastLeftFloat.maxY();
+  }
+ else   if (lastRightFloat != null) {
+    return lastRightFloat.maxY();
+  }
+ else {
+    return Integer.MAX_VALUE;
+  }
+}

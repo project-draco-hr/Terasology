@@ -1,0 +1,9 @@
+{
+  String text=new String(ch,start,length);
+  if (currentParagraphBuilder == null && !text.trim().isEmpty()) {
+    throw new HTMLParseException("Characters outside of <body> tag");
+  }
+ else   if (currentParagraphBuilder != null) {
+    currentParagraphBuilder.text(text);
+  }
+}

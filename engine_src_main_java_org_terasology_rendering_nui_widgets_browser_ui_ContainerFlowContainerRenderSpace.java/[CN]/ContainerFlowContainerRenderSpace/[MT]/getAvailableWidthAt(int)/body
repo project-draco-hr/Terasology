@@ -1,0 +1,12 @@
+{
+  int width=containerWidth;
+  Rect2i lastRight=findLastAtYPosition(rightFloats,y);
+  if (lastRight != null) {
+    width=lastRight.minX();
+  }
+  Rect2i lastLeft=findLastAtYPosition(leftFloats,y);
+  if (lastLeft != null) {
+    width-=lastLeft.maxX();
+  }
+  return width;
+}

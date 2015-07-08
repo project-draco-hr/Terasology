@@ -1,35 +1,12 @@
 {
-  int x=0;
-  int y=0;
   DefaultDocumentRenderStyle defaultDocumentRenderStyle=new DefaultDocumentRenderStyle(defaultFont,defaultColor);
   DocumentRenderStyle documentRenderStyle=getDocumentRenderStyle(defaultDocumentRenderStyle,documentData);
-  y+=documentRenderStyle.getDocumentIndentTop();
-  int documentIndentSides=documentRenderStyle.getDocumentIndentLeft() + documentRenderStyle.getDocumentIndentRight();
-  int availableSpace=availableWidth - documentIndentSides;
-  for (  ParagraphData paragraphData : documentData.getParagraphs()) {
-    ParagraphRenderStyle paragraphRenderStyle=getParagraphRenderStyle(documentRenderStyle,paragraphData);
-    int paragraphSideIndent=paragraphRenderStyle.getParagraphIndentLeft() + paragraphRenderStyle.getParagraphIndentRight() + paragraphRenderStyle.getParagraphBackgroundIndentLeft()+ paragraphRenderStyle.getParagraphBackgroundIndentRight();
-    int paragraphMinWidth=Math.max(paragraphRenderStyle.getParagraphMinimumWidth(),paragraphData.getParagraphContents().getMinWidth(paragraphRenderStyle));
-    availableSpace=Math.max(availableSpace,paragraphSideIndent + paragraphMinWidth);
-  }
-  ParagraphRenderStyle lastRenderStyle=null;
-  boolean first=true;
-  for (  ParagraphData paragraphData : documentData.getParagraphs()) {
-    if (lastRenderStyle != null) {
-      y+=lastRenderStyle.getParagraphIndentBottom(false);
-    }
-    ParagraphRenderStyle paragraphRenderStyle=getParagraphRenderStyle(documentRenderStyle,paragraphData);
-    y+=paragraphRenderStyle.getParagraphIndentTop(first);
-    y+=paragraphRenderStyle.getParagraphBackgroundIndentTop() + paragraphRenderStyle.getParagraphBackgroundIndentBottom();
-    int paragraphSideIndent=paragraphRenderStyle.getParagraphIndentLeft() + paragraphRenderStyle.getParagraphIndentRight() + paragraphRenderStyle.getParagraphBackgroundIndentLeft()+ paragraphRenderStyle.getParagraphBackgroundIndentRight();
-    y+=paragraphData.getParagraphContents().getPreferredHeight(paragraphRenderStyle,availableSpace - paragraphSideIndent);
-    lastRenderStyle=paragraphRenderStyle;
-    first=false;
-  }
-  if (lastRenderStyle != null) {
-    y+=lastRenderStyle.getParagraphIndentBottom(true);
-  }
-  y+=documentRenderStyle.getDocumentIndentBottom();
-  x+=availableSpace + documentIndentSides;
-  return new Vector2i(x,y);
+  Collection<ParagraphData> paragraphs=documentData.getParagraphs();
+  int minParagraphsWidth=getParagraphsMinimumWidth(availableWidth,documentRenderStyle,paragraphs);
+  int documentSideMargins=documentRenderStyle.getDocumentMarginLeft().getValue(availableWidth) + documentRenderStyle.getDocumentMarginRight().getValue(availableWidth);
+  int documentWidth=Math.max(availableWidth,minParagraphsWidth + documentSideMargins);
+  ContainerFlowContainerRenderSpace containerRenderSpace=new ContainerFlowContainerRenderSpace(documentWidth);
+  int preferredHeight=Math.max(getParagraphsPreferredHeight(documentRenderStyle,paragraphs,containerRenderSpace,0),containerRenderSpace.getNextClearYPosition(ParagraphRenderStyle.ClearStyle.BOTH));
+  int documentVerticalMargins=documentRenderStyle.getDocumentMarginTop().getValue(documentWidth) + documentRenderStyle.getDocumentMarginBottom().getValue(documentWidth);
+  return new Vector2i(documentWidth,preferredHeight + documentVerticalMargins);
 }
