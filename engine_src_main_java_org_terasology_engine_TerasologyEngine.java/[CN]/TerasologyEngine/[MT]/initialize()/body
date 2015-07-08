@@ -15,7 +15,9 @@
     initManagers();
     changeStatus(TerasologyEngineStatus.INITIALIZING_ASSET_MANAGEMENT);
     initAssets();
-    ApplyModulesUtil.applyModules(context);
+    EnvironmentSwitchHandler environmentSwitcher=new EnvironmentSwitchHandler();
+    context.put(EnvironmentSwitchHandler.class,environmentSwitcher);
+    environmentSwitcher.handleSwitchToGameEnvironment(context);
     postInitSubsystems();
     verifyRequiredSystemIsRegistered(DisplayDevice.class);
     verifyRequiredSystemIsRegistered(RenderingSubsystemFactory.class);
