@@ -5,8 +5,8 @@
   entityManager=context.get(EngineEntityManager.class);
   eventSystem=context.get(EventSystem.class);
   context.put(Console.class,new ConsoleImpl());
-  nuiManager=context.get(NUIManager.class);
-  ((NUIManagerInternal)nuiManager).refreshWidgetsLibrary();
+  nuiManager=new NUIManagerInternal(context.get(CanvasRenderer.class),context);
+  context.put(NUIManager.class,nuiManager);
   eventSystem.registerEventHandler(nuiManager);
   componentSystemManager=new ComponentSystemManager(context);
   context.put(ComponentSystemManager.class,componentSystemManager);
