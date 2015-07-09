@@ -10,7 +10,8 @@
       CoreRegistry.setContext(subContext);
       environment=moduleManager.loadEnvironment(result.getModules(),false);
       subContext.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,subContext));
-      assetTypeManager.switchEnvironment(environment);
+      EnvironmentSwitchHandler environmentSwitchHandler=context.get(EnvironmentSwitchHandler.class);
+      environmentSwitchHandler.handleSwitchToPreviewEnivronment(context,environment);
       genTexture();
       worldGenerator=worldGeneratorManager.searchForWorldGenerator(worldGenUri,environment);
       worldGenerator.setWorldSeed(seed.getText());

@@ -1,7 +1,8 @@
 {
   CoreRegistry.setContext(context);
   if (environment != null) {
-    assetTypeManager.switchEnvironment(moduleManager.getEnvironment());
+    EnvironmentSwitchHandler environmentSwitchHandler=context.get(EnvironmentSwitchHandler.class);
+    environmentSwitchHandler.handleSwitchBackFromPreviewEnivronment(context);
     environment.close();
     environment=null;
   }

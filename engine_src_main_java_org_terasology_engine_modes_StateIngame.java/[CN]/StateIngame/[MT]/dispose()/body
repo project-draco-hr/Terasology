@@ -25,8 +25,8 @@
     storageManager.finishSavingAndShutdown();
   }
   ModuleEnvironment oldEnvironment=context.get(ModuleManager.class).getEnvironment();
-  ModuleEnvironment environment=context.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
-  context.get(ModuleAwareAssetTypeManager.class).switchEnvironment(environment);
+  context.get(ModuleManager.class).loadEnvironment(Collections.<Module>emptySet(),true);
+  context.get(EnvironmentSwitchHandler.class).handleSwitchToEmptyEnivronment(context);
   if (oldEnvironment != null) {
     oldEnvironment.close();
   }
