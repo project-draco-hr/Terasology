@@ -1,0 +1,14 @@
+{
+  int maxY=0;
+  if (clearStyle == ParagraphRenderStyle.ClearStyle.LEFT || clearStyle == ParagraphRenderStyle.ClearStyle.BOTH) {
+    for (    Rect2i leftFloat : leftFloats) {
+      maxY=Math.max(maxY,leftFloat.maxY());
+    }
+  }
+  if (clearStyle == ParagraphRenderStyle.ClearStyle.RIGHT || clearStyle == ParagraphRenderStyle.ClearStyle.BOTH) {
+    for (    Rect2i rightFloat : rightFloats) {
+      maxY=Math.max(maxY,rightFloat.maxY());
+    }
+  }
+  return maxY;
+}
