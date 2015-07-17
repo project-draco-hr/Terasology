@@ -1,20 +1,20 @@
 {
   changeStatus(TerasologyEngineStatus.INITIALIZING_MODULE_MANAGER);
   ModuleManager moduleManager=new ModuleManagerImpl();
-  context.put(ModuleManager.class,moduleManager);
+  rootContext.put(ModuleManager.class,moduleManager);
   changeStatus(TerasologyEngineStatus.INITIALIZING_LOWLEVEL_OBJECT_MANIPULATION);
   ReflectFactory reflectFactory=new ReflectionReflectFactory();
-  context.put(ReflectFactory.class,reflectFactory);
+  rootContext.put(ReflectFactory.class,reflectFactory);
   CopyStrategyLibrary copyStrategyLibrary=new CopyStrategyLibrary(reflectFactory);
-  context.put(CopyStrategyLibrary.class,copyStrategyLibrary);
-  context.put(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
+  rootContext.put(CopyStrategyLibrary.class,copyStrategyLibrary);
+  rootContext.put(TypeSerializationLibrary.class,new TypeSerializationLibrary(reflectFactory,copyStrategyLibrary));
   changeStatus(TerasologyEngineStatus.INITIALIZING_ASSET_TYPES);
   assetTypeManager=new ModuleAwareAssetTypeManager();
-  context.put(ModuleAwareAssetTypeManager.class,assetTypeManager);
-  context.put(AssetManager.class,assetTypeManager.getAssetManager());
-  context.put(CollisionGroupManager.class,new CollisionGroupManager());
-  context.put(WorldGeneratorManager.class,new WorldGeneratorManager(context));
-  context.put(ParameterAdapterManager.class,ParameterAdapterManager.createCore());
-  context.put(NetworkSystem.class,new NetworkSystemImpl(time,context));
-  context.put(Game.class,new Game(this,time));
+  rootContext.put(ModuleAwareAssetTypeManager.class,assetTypeManager);
+  rootContext.put(AssetManager.class,assetTypeManager.getAssetManager());
+  rootContext.put(CollisionGroupManager.class,new CollisionGroupManager());
+  rootContext.put(WorldGeneratorManager.class,new WorldGeneratorManager(rootContext));
+  rootContext.put(ParameterAdapterManager.class,ParameterAdapterManager.createCore());
+  rootContext.put(NetworkSystem.class,new NetworkSystemImpl(timeSubsystem.getEngineTime(),rootContext));
+  rootContext.put(Game.class,new Game(this,timeSubsystem.getEngineTime()));
 }

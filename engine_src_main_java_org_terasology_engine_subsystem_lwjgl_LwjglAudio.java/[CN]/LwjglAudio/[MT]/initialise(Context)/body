@@ -1,3 +1,11 @@
 {
-  initOpenAL(context);
+  Config config=rootContext.get(Config.class);
+  try {
+    audioManager=new OpenALManager(config.getAudio());
+  }
+ catch (  LWJGLException|OpenALException e) {
+    logger.warn("Could not load OpenAL manager - sound is disabled",e);
+    audioManager=new NullAudioManager();
+  }
+  rootContext.put(AudioManager.class,audioManager);
 }

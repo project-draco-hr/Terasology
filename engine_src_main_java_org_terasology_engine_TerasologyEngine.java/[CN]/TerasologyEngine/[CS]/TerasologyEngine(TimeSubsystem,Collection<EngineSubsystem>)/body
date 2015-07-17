@@ -1,0 +1,11 @@
+{
+  this.rootContext=new ContextImpl();
+  this.timeSubsystem=timeSubsystem;
+  CoreRegistry.setContext(rootContext);
+  this.allSubsystems=Queues.newArrayDeque();
+  this.allSubsystems.add(new ConfigurationSubsystem());
+  this.allSubsystems.add(timeSubsystem);
+  this.allSubsystems.addAll(subsystems);
+  this.allSubsystems.add(new ThreadManagerSubsystem());
+  this.allSubsystems.add(new MonitoringSubsystem());
+}

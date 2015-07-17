@@ -1,24 +1,28 @@
 {
   logger.info("Shutting down Terasology...");
   changeStatus(StandardGameStatus.SHUTTING_DOWN);
-  Iterator<EngineSubsystem> shutdownIter=subsystems.descendingIterator();
-  while (shutdownIter.hasNext()) {
-    EngineSubsystem subsystem=shutdownIter.next();
-    subsystem.shutdown(config);
-  }
-  config.save();
   if (currentState != null) {
     currentState.dispose();
     currentState=null;
   }
-  Iterator<EngineSubsystem> disposeIter=subsystems.descendingIterator();
-  while (disposeIter.hasNext()) {
-    EngineSubsystem subsystem=disposeIter.next();
+  Iterator<EngineSubsystem> preshutdownIter=allSubsystems.descendingIterator();
+  while (preshutdownIter.hasNext()) {
+    EngineSubsystem subsystem=preshutdownIter.next();
     try {
-      subsystem.dispose();
+      subsystem.preShutdown();
     }
- catch (    RuntimeException t) {
-      logger.error("Unable to dispose subsystem {}",subsystem,t);
+ catch (    RuntimeException e) {
+      logger.error("Error preparing to shutdown {} subsystem",subsystem.getName(),e);
+    }
+  }
+  Iterator<EngineSubsystem> shutdownIter=allSubsystems.descendingIterator();
+  while (shutdownIter.hasNext()) {
+    EngineSubsystem subsystem=shutdownIter.next();
+    try {
+      subsystem.shutdown();
+    }
+ catch (    RuntimeException e) {
+      logger.error("Error shutting down {} subsystem",subsystem.getName(),e);
     }
   }
 }

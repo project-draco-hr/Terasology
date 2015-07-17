@@ -1,0 +1,37 @@
+{
+  try {
+    lwjglDisplay.setFullscreen(config.isFullscreen(),false);
+    Display.setLocation(config.getWindowPosX(),config.getWindowPosY());
+    Display.setTitle("Terasology" + " | " + "Pre Alpha");
+    try {
+      String root="org/terasology/icons/";
+      ClassLoader classLoader=getClass().getClassLoader();
+      BufferedImage icon16=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_16.png"));
+      BufferedImage icon32=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_32.png"));
+      BufferedImage icon64=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_64.png"));
+      BufferedImage icon128=ImageIO.read(classLoader.getResourceAsStream(root + "gooey_sweet_128.png"));
+      Display.setIcon(new ByteBuffer[]{TextureUtil.convertToByteBuffer(icon16),TextureUtil.convertToByteBuffer(icon32),TextureUtil.convertToByteBuffer(icon64),TextureUtil.convertToByteBuffer(icon128)});
+    }
+ catch (    IOException|IllegalArgumentException e) {
+      logger.warn("Could not set icon",e);
+    }
+    if (config.getDebug().isEnabled()) {
+      try {
+        ContextAttribs ctxAttribs=new ContextAttribs().withDebug(true);
+        Display.create(config.getPixelFormat(),ctxAttribs);
+        GL43.glDebugMessageCallback(new KHRDebugCallback(new DebugCallback()));
+      }
+ catch (      LWJGLException e) {
+        logger.warn("Unable to create an OpenGL debug context. Maybe your graphics card does not support it.",e);
+        Display.create(config.getPixelFormat());
+      }
+    }
+ else {
+      Display.create(config.getPixelFormat());
+    }
+    Display.setVSyncEnabled(config.isVSync());
+  }
+ catch (  LWJGLException e) {
+    throw new RuntimeException("Can not initialize graphics device.",e);
+  }
+}
