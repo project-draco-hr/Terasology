@@ -1,8 +1,11 @@
 {
-  Map<String,PersistedData> map=Maps.newLinkedHashMap();
-  map.put(LEFT_FIELD,context.create(value.getLeft()));
-  map.put(RIGHT_FIELD,context.create(value.getRight()));
-  map.put(TOP_FIELD,context.create(value.getTop()));
-  map.put(BOTTOM_FIELD,context.create(value.getBottom()));
-  return context.create(map);
+  if (value != null) {
+    Map<String,PersistedData> map=Maps.newLinkedHashMap();
+    map.put(LEFT_FIELD,context.create(value.getLeft()));
+    map.put(RIGHT_FIELD,context.create(value.getRight()));
+    map.put(TOP_FIELD,context.create(value.getTop()));
+    map.put(BOTTOM_FIELD,context.create(value.getBottom()));
+    return context.create(map);
+  }
+  return context.createNull();
 }

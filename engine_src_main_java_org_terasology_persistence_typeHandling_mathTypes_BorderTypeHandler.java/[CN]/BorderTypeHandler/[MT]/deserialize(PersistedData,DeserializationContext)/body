@@ -1,4 +1,7 @@
 {
-  PersistedDataMap map=data.getAsValueMap();
-  return new Border(map.getAsInteger(LEFT_FIELD),map.getAsInteger(RIGHT_FIELD),map.getAsInteger(TOP_FIELD),map.getAsInteger(BOTTOM_FIELD));
+  if (data.isValueMap()) {
+    PersistedDataMap map=data.getAsValueMap();
+    return new Border(map.getAsInteger(LEFT_FIELD),map.getAsInteger(RIGHT_FIELD),map.getAsInteger(TOP_FIELD),map.getAsInteger(BOTTOM_FIELD));
+  }
+  return null;
 }
