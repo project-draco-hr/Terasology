@@ -5,42 +5,42 @@
 switch (event.getKey().getId()) {
 case KeyId.LEFT:
 {
-        if (hasSelection() && !isSelectionModifierActive()) {
+        if (hasSelection() && !isSelectionModifierActive(keyboard)) {
           setCursorPosition(Math.min(getCursorPosition(),selectionStart));
         }
  else         if (getCursorPosition() > 0) {
-          decreaseCursorPosition(1,!isSelectionModifierActive());
+          decreaseCursorPosition(1,!isSelectionModifierActive(keyboard));
         }
         event.consume();
         break;
       }
 case KeyId.RIGHT:
 {
-      if (hasSelection() && !isSelectionModifierActive()) {
+      if (hasSelection() && !isSelectionModifierActive(keyboard)) {
         setCursorPosition(Math.max(getCursorPosition(),selectionStart));
       }
  else       if (getCursorPosition() < fullText.length()) {
-        increaseCursorPosition(1,!isSelectionModifierActive());
+        increaseCursorPosition(1,!isSelectionModifierActive(keyboard));
       }
       event.consume();
       break;
     }
 case KeyId.HOME:
 {
-    setCursorPosition(0,!isSelectionModifierActive());
+    setCursorPosition(0,!isSelectionModifierActive(keyboard));
     offset=0;
     event.consume();
     break;
   }
 case KeyId.END:
 {
-  setCursorPosition(fullText.length(),!isSelectionModifierActive());
+  setCursorPosition(fullText.length(),!isSelectionModifierActive(keyboard));
   event.consume();
   break;
 }
 default :
 {
-if (Keyboard.isKeyDown(KeyId.LEFT_CTRL) || Keyboard.isKeyDown(KeyId.RIGHT_CTRL)) {
+if (keyboard.isKeyDown(KeyId.LEFT_CTRL) || keyboard.isKeyDown(KeyId.RIGHT_CTRL)) {
   if (event.getKey() == Keyboard.Key.C) {
     copySelection();
     event.consume();
@@ -90,7 +90,7 @@ break;
 }
 default :
 {
-if (Keyboard.isKeyDown(KeyId.LEFT_CTRL) || Keyboard.isKeyDown(KeyId.RIGHT_CTRL)) {
+if (keyboard.isKeyDown(KeyId.LEFT_CTRL) || keyboard.isKeyDown(KeyId.RIGHT_CTRL)) {
 if (event.getKey() == Keyboard.Key.V) {
 removeSelection();
 paste();
