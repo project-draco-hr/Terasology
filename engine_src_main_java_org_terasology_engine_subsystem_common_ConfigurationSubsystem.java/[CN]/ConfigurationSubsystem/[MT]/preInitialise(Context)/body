@@ -1,0 +1,20 @@
+{
+  if (Files.isRegularFile(Config.getConfigFile())) {
+    try {
+      config=Config.load(Config.getConfigFile());
+    }
+ catch (    IOException e) {
+      logger.error("Failed to load config",e);
+      config=new Config();
+    }
+  }
+ else {
+    config=new Config();
+  }
+  if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_GAMEPLAY_MODULE)) {
+    config.getDefaultModSelection().addModule(TerasologyConstants.CORE_GAMEPLAY_MODULE);
+  }
+  checkServerIdentity();
+  logger.info("Video Settings: " + config.getRendering().toString());
+  rootContext.put(Config.class,config);
+}

@@ -1,14 +1,14 @@
 {
-  NetworkSystem networkSystem=context.get(NetworkSystem.class);
-  DisplayDevice display=context.get(DisplayDevice.class);
+  NetworkSystem networkSystem=rootContext.get(NetworkSystem.class);
+  DisplayDevice display=rootContext.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
   while (!shutdownRequested && !display.isCloseRequested()) {
     long totalDelta;
     float updateDelta;
     float subsystemsDelta;
     if (!display.hasFocus() && isHibernationAllowed()) {
-      time.setPaused(true);
-      Iterator<Float> updateCycles=time.tick();
+      timeSubsystem.getEngineTime().setPaused(true);
+      Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
       while (updateCycles.hasNext()) {
         updateCycles.next();
       }
@@ -19,7 +19,7 @@
         logger.warn("Display inactivity sleep interrupted",e);
       }
       display.processMessages();
-      time.setPaused(false);
+      timeSubsystem.getEngineTime().setPaused(false);
       continue;
     }
     assetTypeManager.reloadChangedOnDisk();
@@ -28,14 +28,14 @@
       shutdown();
       break;
     }
-    Iterator<Float> updateCycles=time.tick();
+    Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
     try (Activity ignored=PerformanceMonitor.startActivity("Network Update")){
       networkSystem.update();
     }
      totalDelta=0;
     while (updateCycles.hasNext()) {
       updateDelta=updateCycles.next();
-      totalDelta+=time.getDeltaInMs();
+      totalDelta+=timeSubsystem.getEngineTime().getDeltaInMs();
       try (Activity ignored=PerformanceMonitor.startActivity("Main Update")){
         currentState.update(updateDelta);
       }
