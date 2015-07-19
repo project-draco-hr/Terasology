@@ -3,7 +3,7 @@
     if (next.region.contains(pos)) {
       Vector2i relPos=new Vector2i(pos);
       relPos.sub(next.region.min());
-      if (next.listener.onMouseWheel(wheelTurns,relPos,keyboard)) {
+      if (next.listener.onMouseWheel(new NUIMouseWheelEvent(mouse,keyboard,relPos,wheelTurns))) {
         clickedRegion=next;
         nuiManager.setFocus(next.element);
         return true;
