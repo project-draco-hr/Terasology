@@ -7,7 +7,6 @@
     }
     SimpleAIComponent ai=entity.getComponent(SimpleAIComponent.class);
     Vector3f drive=new Vector3f();
-    LocalPlayer localPlayer=CoreRegistry.get(LocalPlayer.class);
     if (localPlayer != null) {
       Vector3f dist=new Vector3f(worldPos);
       dist.sub(localPlayer.getPosition());
@@ -18,7 +17,7 @@
         entity.saveComponent(ai);
       }
  else {
-        if (CoreRegistry.get(Time.class).getGameTimeInMs() - ai.lastChangeOfDirectionAt > 12000 || ai.followingPlayer) {
+        if (time.getGameTimeInMs() - ai.lastChangeOfDirectionAt > 12000 || ai.followingPlayer) {
           ai.movementTarget.set(worldPos.x + random.nextFloat(-500.0f,500.0f),worldPos.y,worldPos.z + random.nextFloat(-500.0f,500.0f));
           ai.lastChangeOfDirectionAt=time.getGameTimeInMs();
           ai.followingPlayer=false;
