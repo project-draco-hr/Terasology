@@ -2,29 +2,30 @@
   UIStyle style=canvas.getCurrentStyle();
   Vector2i attachmentSize=canvas.calculatePreferredSize(attachment);
   attachmentSize.add(style.getMargin().getTotals());
+  MouseDevice mouse=CoreRegistry.get(InputSystem.class).getMouseDevice();
   int top;
 switch (style.getVerticalAlignment()) {
 case TOP:
-    top=Mouse.getPosition().y - attachmentSize.y;
+    top=mouse.getPosition().y - attachmentSize.y;
   break;
 case MIDDLE:
-top=Mouse.getPosition().y - attachmentSize.y / 2;
+top=mouse.getPosition().y - attachmentSize.y / 2;
 break;
 default :
-top=Mouse.getPosition().y + MOUSE_CURSOR_HEIGHT;
+top=mouse.getPosition().y + MOUSE_CURSOR_HEIGHT;
 break;
 }
 top=TeraMath.clamp(top,0,canvas.size().y - attachmentSize.y);
 int left;
 switch (style.getHorizontalAlignment()) {
 case RIGHT:
-left=Mouse.getPosition().x - attachmentSize.x;
+left=mouse.getPosition().x - attachmentSize.x;
 break;
 case CENTER:
-left=Mouse.getPosition().x - attachmentSize.x / 2;
+left=mouse.getPosition().x - attachmentSize.x / 2;
 break;
 default :
-left=Mouse.getPosition().x;
+left=mouse.getPosition().x;
 break;
 }
 left=TeraMath.clamp(left,0,canvas.size().x - attachmentSize.x);
