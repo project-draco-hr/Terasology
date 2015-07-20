@@ -3,4 +3,7 @@
     reader.setLenient(true);
     return gson.fromJson(reader,UISkinData.class);
   }
- }
+ catch (  JsonParseException e) {
+    throw new IOException("Failed to load skin '" + urn + "'",e);
+  }
+}
