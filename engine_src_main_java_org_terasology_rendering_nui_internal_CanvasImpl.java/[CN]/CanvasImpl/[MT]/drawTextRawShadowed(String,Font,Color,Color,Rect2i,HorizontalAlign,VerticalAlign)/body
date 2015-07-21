@@ -1,12 +1,3 @@
 {
-  Rect2i absoluteRegion=relativeToAbsolute(region);
-  Rect2i cropRegion=absoluteRegion.intersect(state.cropRegion);
-  if (!cropRegion.isEmpty()) {
-    if (state.drawOnTop) {
-      drawOnTopOperations.add(new DrawTextOperation(text,font,hAlign,vAlign,absoluteRegion,cropRegion,color,shadowColor,state.getAlpha()));
-    }
- else {
-      renderer.drawText(text,font,hAlign,vAlign,absoluteRegion,color,shadowColor,state.getAlpha());
-    }
-  }
+  drawTextRawShadowed(text,font,color,shadowColor,false,region,hAlign,vAlign);
 }
