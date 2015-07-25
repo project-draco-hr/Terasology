@@ -1,0 +1,10 @@
+{
+  this.storageManager=storageManager;
+  this.entityManager=entityManager;
+  this.generator=generator;
+  this.blockManager=blockManager;
+  this.biomeManager=biomeManager;
+  this.pipeline=new ChunkGenerationPipeline(new ChunkTaskRelevanceComparator());
+  this.unloadRequestTaskMaster=TaskMaster.createFIFOTaskMaster("Chunk-Unloader",4);
+  ChunkMonitor.fireChunkProviderInitialized(this);
+}

@@ -1,0 +1,17 @@
+{
+  Preconditions.checkNotNull(message,"The parameter 'message' must not be null");
+  if (!message.hasX() || !message.hasY() || !message.hasZ()) {
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing chunk position.");
+  }
+  Vector3i pos=new Vector3i(message.getX(),message.getY(),message.getZ());
+  if (!message.hasBlockData()) {
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing block data.");
+  }
+  if (!message.hasLiquidData()) {
+    throw new IllegalArgumentException("Ill-formed protobuf message. Missing liquid data.");
+  }
+  final TeraArray blockData=runLengthDecode(message.getBlockData());
+  final TeraArray liquidData=runLengthDecode(message.getLiquidData());
+  final TeraArray biomeData=runLengthDecode(message.getBiomeData());
+  return new ChunkImpl(pos,blockData,liquidData,biomeData,blockManager,biomeManager);
+}

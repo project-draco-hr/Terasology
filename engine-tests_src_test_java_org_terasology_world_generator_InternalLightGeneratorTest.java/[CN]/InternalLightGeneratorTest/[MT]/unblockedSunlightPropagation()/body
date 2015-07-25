@@ -1,5 +1,5 @@
 {
-  Chunk chunk=new ChunkImpl(0,0,0);
+  Chunk chunk=new ChunkImpl(0,0,0,blockManager,biomeManager);
   InternalLightProcessor.generateInternalLighting(chunk);
   for (  Vector3i pos : Region3i.createFromMinAndSize(new Vector3i(0,0,0),new Vector3i(ChunkConstants.SIZE_X,15,ChunkConstants.SIZE_Z))) {
     assertEquals("Incorrect lighting at " + pos,15 - pos.y,chunk.getSunlight(pos));

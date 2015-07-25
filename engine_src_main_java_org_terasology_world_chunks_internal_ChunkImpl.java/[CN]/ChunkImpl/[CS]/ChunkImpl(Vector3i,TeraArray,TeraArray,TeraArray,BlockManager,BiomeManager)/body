@@ -1,0 +1,14 @@
+{
+  this.chunkPos.set(Preconditions.checkNotNull(chunkPos));
+  this.blockData=Preconditions.checkNotNull(blocks);
+  this.extraData=Preconditions.checkNotNull(liquid);
+  this.biomeData=Preconditions.checkNotNull(biome);
+  sunlightData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  sunlightRegenData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  lightData=new TeraDenseArray8Bit(getChunkSizeX(),getChunkSizeY(),getChunkSizeZ());
+  dirty=true;
+  this.blockManager=blockManager;
+  this.biomeManager=biomeManager;
+  region=Region3i.createFromMinAndSize(new Vector3i(chunkPos.x * ChunkConstants.SIZE_X,chunkPos.y * ChunkConstants.SIZE_Y,chunkPos.z * ChunkConstants.SIZE_Z),ChunkConstants.CHUNK_SIZE);
+  ChunkMonitor.fireChunkCreated(this);
+}

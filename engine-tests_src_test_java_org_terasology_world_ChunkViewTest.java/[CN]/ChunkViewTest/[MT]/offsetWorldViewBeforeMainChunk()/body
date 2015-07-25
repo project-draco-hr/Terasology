@@ -1,7 +1,7 @@
 {
-  Chunk chunk=new ChunkImpl(new Vector3i());
+  Chunk chunk=createChunk(0,0,0);
   chunk.setBlock(new Vector3i(ChunkConstants.SIZE_X - 1,0,ChunkConstants.SIZE_Z - 1),solidBlock);
-  Chunk[] chunks=new Chunk[]{chunk,new ChunkImpl(new Vector3i(0,0,-1)),new ChunkImpl(new Vector3i(1,0,-1)),new ChunkImpl(new Vector3i(-1,0,0)),new ChunkImpl(new Vector3i(0,0,0)),new ChunkImpl(new Vector3i(1,0,0)),new ChunkImpl(new Vector3i(-1,0,1)),new ChunkImpl(new Vector3i(0,0,1)),new ChunkImpl(new Vector3i(1,0,1))};
+  Chunk[] chunks=new Chunk[]{chunk,createChunk(0,0,-1),createChunk(1,0,-1),createChunk(-1,0,0),createChunk(0,0,0),createChunk(1,0,0),createChunk(-1,0,1),createChunk(0,0,1),createChunk(1,0,1)};
   ChunkViewCore chunkView=new ChunkViewCoreImpl(chunks,Region3i.createFromCenterExtents(new Vector3i(0,0,0),new Vector3i(1,0,1)),new Vector3i(1,0,1),airBlock);
   assertEquals(solidBlock,chunkView.getBlock(-1,0,-1));
 }

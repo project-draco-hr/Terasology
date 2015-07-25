@@ -2,8 +2,9 @@
   ContextImpl context=new ContextImpl();
   CoreRegistry.setContext(context);
   context.put(Config.class,new Config());
-  BlockManager blockManager=Mockito.mock(BlockManager.class);
+  blockManager=Mockito.mock(BlockManager.class);
   Block air=blockManager.getBlock(BlockManager.AIR_ID);
+  biomeManager=Mockito.mock(BiomeManager.class);
   Mockito.when(blockManager.getBlock(Matchers.<BlockUri>any())).thenReturn(air);
   Mockito.when(blockManager.getBlock(Matchers.<String>any())).thenReturn(air);
   context.put(BlockManager.class,blockManager);

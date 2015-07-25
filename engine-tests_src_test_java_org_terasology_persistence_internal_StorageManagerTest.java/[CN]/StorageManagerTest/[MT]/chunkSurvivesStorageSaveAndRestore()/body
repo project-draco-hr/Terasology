@@ -1,5 +1,5 @@
 {
-  Chunk chunk=new ChunkImpl(CHUNK_POS);
+  Chunk chunk=new ChunkImpl(CHUNK_POS,blockManager,biomeManager);
   chunk.setBlock(0,0,0,testBlock);
   chunk.setBlock(0,4,2,testBlock2);
   chunk.markReady();
@@ -14,7 +14,7 @@
   EntitySystemSetupUtil.addReflectionBasedLibraries(context);
   EntitySystemSetupUtil.addEntityManagementRelatedClasses(context);
   EngineEntityManager newEntityManager=context.get(EngineEntityManager.class);
-  StorageManager newSM=new ReadWriteStorageManager(savePath,moduleEnvironment,newEntityManager,storeChunkInZips);
+  StorageManager newSM=new ReadWriteStorageManager(savePath,moduleEnvironment,newEntityManager,blockManager,biomeManager,storeChunkInZips);
   newSM.loadGlobalStore();
   ChunkStore restored=newSM.loadChunkStore(CHUNK_POS);
   assertNotNull(restored);

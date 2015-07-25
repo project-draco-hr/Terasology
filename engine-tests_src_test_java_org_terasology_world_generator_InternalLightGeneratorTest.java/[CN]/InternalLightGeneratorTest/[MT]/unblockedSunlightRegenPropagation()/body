@@ -1,5 +1,5 @@
 {
-  Chunk chunk=new ChunkImpl(0,0,0);
+  Chunk chunk=new ChunkImpl(0,0,0,blockManager,biomeManager);
   InternalLightProcessor.generateInternalLighting(chunk);
   for (  Vector3i pos : Region3i.createFromMinAndSize(Vector3i.zero(),new Vector3i(ChunkConstants.SIZE_X,ChunkConstants.SIZE_Y,ChunkConstants.SIZE_Z))) {
     byte expectedRegen=(byte)Math.min(ChunkConstants.SIZE_Y - pos.y - 1,ChunkConstants.MAX_SUNLIGHT_REGEN);

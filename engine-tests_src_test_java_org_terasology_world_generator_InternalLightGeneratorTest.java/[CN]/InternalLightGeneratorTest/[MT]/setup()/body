@@ -1,9 +1,10 @@
 {
   super.setup();
   AssetManager assetManager=CoreRegistry.get(AssetManager.class);
-  BlockManagerImpl blockManager=new BlockManagerImpl(new NullWorldAtlas(),assetManager);
+  blockManager=new BlockManagerImpl(new NullWorldAtlas(),assetManager);
   CoreRegistry.put(BlockManager.class,blockManager);
   airBlock=blockManager.getBlock(BlockManager.AIR_ID);
+  biomeManager=Mockito.mock(BiomeManager.class);
   BlockFamilyDefinitionData solidData=new BlockFamilyDefinitionData();
   solidData.getBaseSection().setDisplayName("Stone");
   solidData.getBaseSection().setShape(assetManager.getAsset("engine:cube",BlockShape.class).get());
