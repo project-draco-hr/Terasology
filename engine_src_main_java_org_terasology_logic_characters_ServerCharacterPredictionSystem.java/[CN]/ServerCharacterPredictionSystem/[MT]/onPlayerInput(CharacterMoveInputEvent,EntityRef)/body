@@ -9,7 +9,7 @@
   if (input.getDelta() + lastState.getTime() < time.getGameTimeInMs() + MAX_INPUT_OVERFLOW) {
     CharacterStateEvent newState=stepState(input,lastState,entity);
     stateBuffer.add(newState);
-    CharacterStateEvent.setToState(entity,newState);
+    characterMovementSystemUtility.setToState(entity,newState);
     lastInputEvent.put(entity,input);
   }
  else {
