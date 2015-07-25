@@ -3,7 +3,9 @@
     RegisterWorldGenerator annotation=generatorClass.getAnnotation(RegisterWorldGenerator.class);
     SimpleUri generatorUri=new SimpleUri(environment.getModuleProviding(generatorClass),annotation.id());
     if (generatorUri.equals(uri)) {
-      return loadGenerator(generatorClass,generatorUri);
+      WorldGenerator worldGenerator=loadGenerator(generatorClass,generatorUri);
+      InjectionHelper.inject(worldGenerator,context);
+      return worldGenerator;
     }
   }
   throw new UnresolvedWorldGeneratorException("Unable to resolve world generator '" + uri + "' - not found");
