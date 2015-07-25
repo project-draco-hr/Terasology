@@ -1,0 +1,8 @@
+{
+  JsonObject jsonConfig=loadDefaultToJson();
+  Optional<JsonObject> userConfig=loadFileToJson();
+  if (userConfig.isPresent()) {
+    merge(jsonConfig,userConfig.get());
+  }
+  config=createGson().fromJson(jsonConfig,RootConfig.class);
+}

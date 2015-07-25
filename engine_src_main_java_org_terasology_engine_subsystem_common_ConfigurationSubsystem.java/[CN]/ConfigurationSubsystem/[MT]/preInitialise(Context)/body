@@ -1,20 +1,19 @@
 {
-  if (Files.isRegularFile(Config.getConfigFile())) {
+  config=new Config();
+  config.load();
+  String serverPortProperty=System.getProperty(SERVER_PORT_PROPERTY);
+  if (serverPortProperty != null) {
     try {
-      config=Config.load(Config.getConfigFile());
+      config.getNetwork().setServerPort(Integer.parseInt(serverPortProperty));
     }
- catch (    IOException e) {
-      logger.error("Failed to load config",e);
-      config=new Config();
+ catch (    NumberFormatException e) {
+      logger.error("Failed to set server port to invalid value: {}",serverPortProperty);
     }
-  }
- else {
-    config=new Config();
   }
   if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_GAMEPLAY_MODULE)) {
     config.getDefaultModSelection().addModule(TerasologyConstants.CORE_GAMEPLAY_MODULE);
   }
   checkServerIdentity();
-  logger.info("Video Settings: " + config.getRendering().toString());
+  logger.info("Video Settings: {}",config.renderConfigAsJson(config.getRendering()));
   rootContext.put(Config.class,config);
 }

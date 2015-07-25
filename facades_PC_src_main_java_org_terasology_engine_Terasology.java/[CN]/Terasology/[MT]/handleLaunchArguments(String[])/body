@@ -13,7 +13,7 @@
       crashReportEnabled=false;
     }
  else     if (arg.equals(NO_SAVE_GAMES)) {
-      writeSaveGamesEnabled=false;
+      System.setProperty(SystemConfig.SAVED_GAMES_ENABLED_PROPERTY,"false");
     }
  else     if (arg.equals(NO_CRASH_REPORT)) {
       crashReportEnabled=false;
@@ -25,7 +25,7 @@
       loadLastGame=true;
     }
  else     if (arg.startsWith(SERVER_PORT)) {
-      serverPort=arg.substring(SERVER_PORT.length());
+      System.setProperty(ConfigurationSubsystem.SERVER_PORT_PROPERTY,arg.substring(SERVER_PORT.length()));
     }
  else {
       recognized=false;
