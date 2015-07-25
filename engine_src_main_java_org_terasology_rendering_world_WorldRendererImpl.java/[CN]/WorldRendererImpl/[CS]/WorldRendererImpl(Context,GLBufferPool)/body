@@ -1,10 +1,12 @@
 {
+  this.context=context;
   this.worldProvider=context.get(WorldProvider.class);
   this.backdropProvider=context.get(BackdropProvider.class);
   this.backdropRenderer=context.get(BackdropRenderer.class);
   this.config=context.get(Config.class);
   this.renderingConfig=config.getRendering();
   this.renderingDebugConfig=renderingConfig.getDebug();
+  this.systemManager=context.get(ComponentSystemManager.class);
   if (renderingConfig.isOculusVrSupport()) {
     playerCamera=new OculusStereoCamera();
     currentRenderingStage=WorldRenderingStage.LEFT_EYE;

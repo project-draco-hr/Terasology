@@ -1,13 +1,13 @@
 {
   renderingProcess=new LwjglRenderingProcess();
-  CoreRegistry.put(LwjglRenderingProcess.class,renderingProcess);
+  context.put(LwjglRenderingProcess.class,renderingProcess);
   graphicState=new GraphicState(renderingProcess);
   postProcessor=new PostProcessor(renderingProcess,graphicState);
-  CoreRegistry.put(PostProcessor.class,postProcessor);
+  context.put(PostProcessor.class,postProcessor);
   renderingProcess.setGraphicState(graphicState);
   renderingProcess.setPostProcessor(postProcessor);
   renderingProcess.initialize();
-  CoreRegistry.get(ShaderManager.class).initShaders();
+  context.get(ShaderManager.class).initShaders();
   postProcessor.initializeMaterials();
   initMaterials();
 }
