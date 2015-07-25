@@ -1,6 +1,15 @@
 {
   config=new Config();
   config.load();
+  String serverPortProperty=System.getProperty(SERVER_PORT_PROPERTY);
+  if (serverPortProperty != null) {
+    try {
+      config.getNetwork().setServerPort(Integer.parseInt(serverPortProperty));
+    }
+ catch (    NumberFormatException e) {
+      logger.error("Failed to set server port to invalid value: {}",serverPortProperty);
+    }
+  }
   if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_GAMEPLAY_MODULE)) {
     config.getDefaultModSelection().addModule(TerasologyConstants.CORE_GAMEPLAY_MODULE);
   }
