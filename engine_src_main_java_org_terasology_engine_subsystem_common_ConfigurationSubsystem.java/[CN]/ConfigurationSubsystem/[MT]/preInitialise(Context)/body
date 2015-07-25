@@ -1,20 +1,10 @@
 {
-  if (Files.isRegularFile(Config.getConfigFile())) {
-    try {
-      config=Config.load(Config.getConfigFile());
-    }
- catch (    IOException e) {
-      logger.error("Failed to load config",e);
-      config=new Config();
-    }
-  }
- else {
-    config=new Config();
-  }
+  config=new Config();
+  config.load();
   if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_GAMEPLAY_MODULE)) {
     config.getDefaultModSelection().addModule(TerasologyConstants.CORE_GAMEPLAY_MODULE);
   }
   checkServerIdentity();
-  logger.info("Video Settings: " + config.getRendering().toString());
+  logger.info("Video Settings: {}",config.renderConfigAsJson(config.getRendering()));
   rootContext.put(Config.class,config);
 }

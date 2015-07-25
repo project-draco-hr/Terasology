@@ -1,0 +1,33 @@
+{
+  Gson gson=createGson();
+  JsonParser parser=new JsonParser();
+  JsonObject jsonConfig;
+  try (Reader baseReader=new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/default.cfg")))){
+    jsonConfig=parser.parse(baseReader).getAsJsonObject();
+  }
+ catch (  IOException e) {
+    throw new RuntimeException("Missing default configuration file");
+  }
+  Path configPath=getConfigFile();
+  if (Files.isRegularFile(configPath)) {
+    try (Reader reader=Files.newBufferedReader(configPath,TerasologyConstants.CHARSET)){
+      JsonElement userConfig=parser.parse(reader);
+      if (userConfig.isJsonObject()) {
+        merge(jsonConfig,userConfig.getAsJsonObject());
+      }
+    }
+ catch (    IOException e) {
+      logger.error("Failed to load config file {}, falling back on default config");
+    }
+  }
+  config=gson.fromJson(jsonConfig,RootConfig.class);
+  String serverPortProperty=System.getProperty(SERVER_PORT_PROPERTY);
+  if (serverPortProperty != null) {
+    try {
+      config.getNetwork().setServerPort(Integer.parseInt(serverPortProperty));
+    }
+ catch (    NumberFormatException e) {
+      logger.error("Failed to set server port to invalid value: {}",serverPortProperty);
+    }
+  }
+}
