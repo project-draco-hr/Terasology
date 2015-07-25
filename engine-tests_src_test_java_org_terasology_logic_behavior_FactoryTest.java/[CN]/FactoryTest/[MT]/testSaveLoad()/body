@@ -2,7 +2,7 @@
   BehaviorNodeFactory nodeFactory=mock(BehaviorNodeFactory.class);
   context.put(BehaviorNodeFactory.class,nodeFactory);
   BehaviorTreeFormat loader=new BehaviorTreeFormat();
-  BehaviorTreeData data=buildSample();
+  BehaviorTreeData data=buildSample(nodeFactory);
   ByteArrayOutputStream os=new ByteArrayOutputStream(10000);
   loader.save(os,data);
   byte[] jsonExpected=os.toByteArray();

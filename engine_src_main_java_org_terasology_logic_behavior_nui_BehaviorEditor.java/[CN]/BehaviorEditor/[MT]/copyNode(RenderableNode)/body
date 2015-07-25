@@ -7,7 +7,7 @@
     loader.save(os,data);
     BehaviorTreeData copy=loader.load(new ByteArrayInputStream(os.toByteArray()));
     Port.OutputPort parent=node.getInputPort().getTargetPort();
-    copy.createRenderable();
+    copy.createRenderable(behaviorNodeFactory);
     RenderableNode copyRenderable=copy.getRenderableNode(copy.getRoot());
     addNode(copyRenderable);
     RenderableNode nodeToLayout;
