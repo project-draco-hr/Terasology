@@ -2,7 +2,7 @@
   context.put(LocalPlayer.class,new LocalPlayer());
   BlockManager blockManager=context.get(BlockManager.class);
   RemoteChunkProvider chunkProvider=new RemoteChunkProvider(blockManager);
-  WorldProviderCoreImpl worldProviderCore=new WorldProviderCoreImpl(gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD),chunkProvider,blockManager.getBlock(BlockManager.AIR_ID));
+  WorldProviderCoreImpl worldProviderCore=new WorldProviderCoreImpl(gameManifest.getWorldInfo(TerasologyConstants.MAIN_WORLD),chunkProvider,blockManager.getBlock(BlockManager.AIR_ID),context);
   EntityAwareWorldProvider entityWorldProvider=new EntityAwareWorldProvider(worldProviderCore);
   WorldProvider worldProvider=new WorldProviderWrapper(entityWorldProvider);
   context.put(WorldProvider.class,worldProvider);

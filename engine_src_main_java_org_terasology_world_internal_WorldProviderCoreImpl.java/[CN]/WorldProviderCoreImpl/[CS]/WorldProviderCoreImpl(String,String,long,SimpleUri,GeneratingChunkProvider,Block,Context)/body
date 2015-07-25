@@ -4,7 +4,8 @@
   this.worldGenerator=worldGenerator;
   this.chunkProvider=chunkProvider;
   this.defaultBlock=defaultBlock;
-  CoreRegistry.put(ChunkProvider.class,chunkProvider);
+  this.entityManager=context.get(EntityManager.class);
+  context.put(ChunkProvider.class,chunkProvider);
   this.worldTime=new WorldTimeImpl();
   worldTime.setMilliseconds(time);
   propagators.add(new StandardBatchPropagator(new LightPropagationRules(),new LightWorldView(chunkProvider)));
