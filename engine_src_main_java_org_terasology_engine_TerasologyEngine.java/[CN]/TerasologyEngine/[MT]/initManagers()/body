@@ -12,9 +12,6 @@
   assetTypeManager=new ModuleAwareAssetTypeManager();
   rootContext.put(ModuleAwareAssetTypeManager.class,assetTypeManager);
   rootContext.put(AssetManager.class,assetTypeManager.getAssetManager());
-  rootContext.put(CollisionGroupManager.class,new CollisionGroupManager());
   rootContext.put(WorldGeneratorManager.class,new WorldGeneratorManager(rootContext));
-  rootContext.put(ParameterAdapterManager.class,ParameterAdapterManager.createCore());
-  rootContext.put(NetworkSystem.class,new NetworkSystemImpl(timeSubsystem.getEngineTime(),rootContext));
-  rootContext.put(Game.class,new Game(this,timeSubsystem.getEngineTime()));
+  rootContext.put(Game.class,new Game());
 }

@@ -15,7 +15,15 @@
     Object result=executionMethod.getAccessibleObject().invoke(executionMethod.getTarget(),processedParameters);
     return result != null ? String.valueOf(result) : null;
   }
- catch (  Throwable t) {
-    throw new CommandExecutionException(t.getCause());
+ catch (  InvocationTargetException t) {
+    if (t.getCause() != null) {
+      throw new CommandExecutionException(t.getCause());
+    }
+ else {
+      throw new CommandExecutionException(t);
+    }
+  }
+catch (  IllegalAccessException|RuntimeException t) {
+    throw new CommandExecutionException(t);
   }
 }

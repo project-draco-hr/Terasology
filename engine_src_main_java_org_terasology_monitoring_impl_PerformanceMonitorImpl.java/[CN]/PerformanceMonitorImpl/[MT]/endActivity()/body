@@ -3,7 +3,7 @@
     return;
   }
   ActivityInfo oldActivity=activityStack.pop();
-  long endTime=timer.getRawTimeInMs();
+  long endTime=timer.getRealTimeInMs();
   long totalTime=(oldActivity.resumeTime > 0) ? oldActivity.ownTime + endTime - oldActivity.resumeTime : endTime - oldActivity.startTime;
   currentExecutionData.adjustOrPutValue(oldActivity.name,totalTime,totalTime);
   long endMem=Runtime.getRuntime().freeMemory();

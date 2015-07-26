@@ -2,8 +2,9 @@
   BlockManager blockManager=CoreRegistry.get(BlockManager.class);
   BiomeManager biomeManager=CoreRegistry.get(BiomeManager.class);
   WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
+  Time time=CoreRegistry.get(Time.class);
   Game game=CoreRegistry.get(Game.class);
-  GameManifest gameManifest=new GameManifest(game.getName(),game.getSeed(),game.getTime().getGameTimeInMs());
+  GameManifest gameManifest=new GameManifest(game.getName(),game.getSeed(),time.getGameTimeInMs());
   for (  Module module : CoreRegistry.get(ModuleManager.class).getEnvironment()) {
     gameManifest.addModule(module.getId(),module.getVersion());
   }

@@ -35,7 +35,7 @@
      totalDelta=0;
     while (updateCycles.hasNext()) {
       updateDelta=updateCycles.next();
-      totalDelta+=timeSubsystem.getEngineTime().getDeltaInMs();
+      totalDelta+=timeSubsystem.getEngineTime().getGameDeltaInMs();
       try (Activity ignored=PerformanceMonitor.startActivity("Main Update")){
         currentState.update(updateDelta);
       }
