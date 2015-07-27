@@ -3,9 +3,6 @@
   DisplayDevice display=rootContext.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
   while (!shutdownRequested && !display.isCloseRequested()) {
-    long totalDelta;
-    float updateDelta;
-    float subsystemsDelta;
     if (!display.hasFocus() && isHibernationAllowed()) {
       timeSubsystem.getEngineTime().setPaused(true);
       Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
@@ -32,15 +29,15 @@
     try (Activity ignored=PerformanceMonitor.startActivity("Network Update")){
       networkSystem.update();
     }
-     totalDelta=0;
+     long totalDelta=0;
     while (updateCycles.hasNext()) {
-      updateDelta=updateCycles.next();
+      float updateDelta=updateCycles.next();
       totalDelta+=timeSubsystem.getEngineTime().getGameDeltaInMs();
       try (Activity ignored=PerformanceMonitor.startActivity("Main Update")){
         currentState.update(updateDelta);
       }
      }
-    subsystemsDelta=totalDelta / 1000f;
+    float subsystemsDelta=totalDelta / 1000f;
     for (    EngineSubsystem subsystem : getSubsystems()) {
       try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName())){
         subsystem.preUpdate(currentState,subsystemsDelta);

@@ -1,4 +1,5 @@
 {
+  Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
   Stopwatch totalInitTime=Stopwatch.createStarted();
   try {
     logger.info("Initializing Terasology...");
@@ -13,10 +14,7 @@
     rootContext.put(EnvironmentSwitchHandler.class,environmentSwitcher);
     environmentSwitcher.handleSwitchToGameEnvironment(rootContext);
     postInitSubsystems();
-    verifyRequiredSystemIsRegistered(Time.class);
-    verifyRequiredSystemIsRegistered(DisplayDevice.class);
-    verifyRequiredSystemIsRegistered(RenderingSubsystemFactory.class);
-    verifyRequiredSystemIsRegistered(InputSystem.class);
+    verifyInitialisation();
     CoreRegistry.setContext(null);
   }
  catch (  RuntimeException e) {
