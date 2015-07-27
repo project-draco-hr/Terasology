@@ -1,13 +1,13 @@
 {
   return new Iterator<Vector2i>(){
-    private Vector2i pos=new Vector2i(posX - 1,posY);
+    private Vector2i pos=new Vector2i(minX() - 1,minY());
     @Override public boolean hasNext(){
       return pos.getY() < maxY() || pos.getX() < maxX();
     }
     @Override public Vector2i next(){
       pos.x++;
       if (pos.x > maxX()) {
-        pos.x=posX;
+        pos.x=minX();
         pos.y++;
       }
       return pos;
