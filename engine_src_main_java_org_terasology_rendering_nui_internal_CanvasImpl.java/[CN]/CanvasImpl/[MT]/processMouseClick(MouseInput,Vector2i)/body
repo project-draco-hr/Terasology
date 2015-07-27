@@ -8,12 +8,12 @@
       Vector2i relPos=new Vector2i(pos);
       relPos.sub(next.offset);
       if (possibleDoubleClick && nuiManager.getFocus() == next.element) {
-        if (next.listener.onMouseDoubleClick(button,relPos)) {
+        if (next.listener.onMouseDoubleClick(createDoubleClickEvent(button,relPos))) {
           clickedRegion=next;
           return true;
         }
       }
- else       if (next.listener.onMouseClick(button,relPos)) {
+ else       if (next.listener.onMouseClick(createClickEvent(button,relPos))) {
         clickedRegion=next;
         nuiManager.setFocus(next.element);
         return true;

@@ -4,9 +4,9 @@
     DocumentRenderer.drawDocumentInRegion(displayedPage,canvas,canvas.getCurrentStyle().getFont(),canvas.getCurrentStyle().getTextColor(),canvas.size(),register);
   }
   canvas.addInteractionRegion(new BaseInteractionListener(){
-    @Override public boolean onMouseClick(    MouseInput button,    Vector2i pos){
+    @Override public boolean onMouseClick(    NUIMouseClickEvent event){
       for (      HyperlinkBox hyperlinkBox : hyperlinkBoxes) {
-        if (hyperlinkBox.box.contains(pos)) {
+        if (hyperlinkBox.box.contains(event.getRelativeMousePosition())) {
           for (          BrowserHyperlinkListener browserHyperlinkListener : listenerList) {
             browserHyperlinkListener.hyperlinkClicked(hyperlinkBox.hyperlink);
           }
