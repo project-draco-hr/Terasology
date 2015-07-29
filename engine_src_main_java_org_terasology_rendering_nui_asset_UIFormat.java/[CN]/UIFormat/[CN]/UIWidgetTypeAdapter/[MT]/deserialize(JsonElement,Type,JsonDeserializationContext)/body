@@ -3,19 +3,19 @@
     return new UILabel(json.getAsString());
   }
   JsonObject jsonObject=json.getAsJsonObject();
-  String type=jsonObject.get("type").getAsString();
+  String type=jsonObject.get(TYPE_FIELD).getAsString();
   ClassMetadata<? extends UIWidget,?> elementMetadata=nuiManager.getWidgetMetadataLibrary().resolve(type,ModuleContext.getContext());
   if (elementMetadata == null) {
     logger.error("Unknown UIWidget type {}",type);
     return null;
   }
   String id=null;
-  if (jsonObject.has("id")) {
-    id=jsonObject.get("id").getAsString();
+  if (jsonObject.has(ID_FIELD)) {
+    id=jsonObject.get(ID_FIELD).getAsString();
   }
   UIWidget element=elementMetadata.newInstance();
   if (id != null) {
-    FieldMetadata fieldMetadata=elementMetadata.getField("id");
+    FieldMetadata fieldMetadata=elementMetadata.getField(ID_FIELD);
     if (fieldMetadata == null) {
       logger.warn("UIWidget type {} lacks id field",elementMetadata.getUri());
     }
@@ -23,8 +23,16 @@
       fieldMetadata.setValue(element,id);
     }
   }
+  Set<String> unknownFields=new HashSet<>();
+  for (  Entry<String,JsonElement> entry : jsonObject.entrySet()) {
+    String name=entry.getKey();
+    if (!ID_FIELD.equals(name) && !CONTENTS_FIELD.equals(name) && !TYPE_FIELD.equals(name)&& !LAYOUT_INFO_FIELD.equals(name)) {
+      unknownFields.add(name);
+    }
+  }
   for (  FieldMetadata<? extends UIWidget,?> field : elementMetadata.getFields()) {
     if (jsonObject.has(field.getSerializationName())) {
+      unknownFields.remove(field.getSerializationName());
       if (field.getName().equals(CONTENTS_FIELD) && UILayout.class.isAssignableFrom(elementMetadata.getType())) {
         continue;
       }
@@ -48,6 +56,9 @@
         logger.error("Failed to deserialize field {} of {}",field.getName(),type,e);
       }
     }
+  }
+  for (  String key : unknownFields) {
+    logger.warn("Field '{}' not recognized for {} in {}",key,typeOfT,json);
   }
   if (UILayout.class.isAssignableFrom(elementMetadata.getType())) {
     UILayout layout=(UILayout)element;
