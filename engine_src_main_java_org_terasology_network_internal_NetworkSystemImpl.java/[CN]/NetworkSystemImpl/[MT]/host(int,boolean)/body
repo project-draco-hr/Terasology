@@ -1,6 +1,7 @@
 {
   if (mode == NetworkMode.NONE) {
     try {
+      hibernationSettings.setHibernationAllowed(false);
       mode=dedicatedServer ? NetworkMode.DEDICATED_SERVER : NetworkMode.LISTEN_SERVER;
       for (      EntityRef entity : entityManager.getEntitiesWith(NetworkComponent.class)) {
         registerNetworkEntity(entity);

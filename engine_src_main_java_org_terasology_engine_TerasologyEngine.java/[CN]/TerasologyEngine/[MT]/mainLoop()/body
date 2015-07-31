@@ -1,24 +1,6 @@
 {
-  NetworkSystem networkSystem=rootContext.get(NetworkSystem.class);
-  DisplayDevice display=rootContext.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
-  while (!shutdownRequested && !display.isCloseRequested()) {
-    if (!display.hasFocus() && isHibernationAllowed()) {
-      timeSubsystem.getEngineTime().setPaused(true);
-      Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
-      while (updateCycles.hasNext()) {
-        updateCycles.next();
-      }
-      try {
-        Thread.sleep(100);
-      }
- catch (      InterruptedException e) {
-        logger.warn("Display inactivity sleep interrupted",e);
-      }
-      display.processMessages();
-      timeSubsystem.getEngineTime().setPaused(false);
-      continue;
-    }
+  while (!shutdownRequested) {
     assetTypeManager.reloadChangedOnDisk();
     processPendingState();
     if (currentState == null) {
