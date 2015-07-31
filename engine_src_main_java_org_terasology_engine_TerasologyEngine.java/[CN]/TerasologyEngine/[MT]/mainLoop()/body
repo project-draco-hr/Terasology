@@ -26,27 +26,21 @@
       break;
     }
     Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
-    try (Activity ignored=PerformanceMonitor.startActivity("Network Update")){
-      networkSystem.update();
-    }
-     long totalDelta=0;
+    for (    EngineSubsystem subsystem : allSubsystems) {
+      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getName() + " PreUpdate")){
+        subsystem.preUpdate(currentState,timeSubsystem.getEngineTime().getRealDelta());
+      }
+     }
     while (updateCycles.hasNext()) {
       float updateDelta=updateCycles.next();
-      totalDelta+=timeSubsystem.getEngineTime().getGameDeltaInMs();
       try (Activity ignored=PerformanceMonitor.startActivity("Main Update")){
         currentState.update(updateDelta);
       }
      }
-    float subsystemsDelta=totalDelta / 1000f;
-    for (    EngineSubsystem subsystem : getSubsystems()) {
-      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName())){
-        subsystem.preUpdate(currentState,subsystemsDelta);
-      }
-     }
     GameThread.processWaitingProcesses();
     for (    EngineSubsystem subsystem : getSubsystems()) {
-      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName())){
-        subsystem.postUpdate(currentState,subsystemsDelta);
+      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getName() + " Subsystem postUpdate")){
+        subsystem.postUpdate(currentState,timeSubsystem.getEngineTime().getRealDelta());
       }
      }
     PerformanceMonitor.rollCycle();
