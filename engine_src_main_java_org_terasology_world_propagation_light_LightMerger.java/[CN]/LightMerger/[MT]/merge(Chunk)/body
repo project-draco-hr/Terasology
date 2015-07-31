@@ -3,7 +3,7 @@
   localChunks[CENTER_INDEX]=chunk;
   for (  Chunk localChunk : localChunks) {
     if (localChunk != null) {
-      localChunk.lock();
+      localChunk.writeLock();
     }
   }
   try {
@@ -39,7 +39,7 @@
   finally {
     for (    Chunk localChunk : localChunks) {
       if (localChunk != null) {
-        localChunk.unlock();
+        localChunk.writeUnlock();
       }
     }
   }
