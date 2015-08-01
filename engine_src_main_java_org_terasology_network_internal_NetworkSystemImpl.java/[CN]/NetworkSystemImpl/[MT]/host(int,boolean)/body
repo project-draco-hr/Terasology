@@ -1,6 +1,9 @@
 {
   if (mode == NetworkMode.NONE) {
     try {
+      if (hibernationSettings.isPresent()) {
+        hibernationSettings.get().setHibernationAllowed(false);
+      }
       mode=dedicatedServer ? NetworkMode.DEDICATED_SERVER : NetworkMode.LISTEN_SERVER;
       for (      EntityRef entity : entityManager.getEntitiesWith(NetworkComponent.class)) {
         registerNetworkEntity(entity);
@@ -24,7 +27,7 @@
           }
         }
       }
-      nextNetworkTick=time.getRawTimeInMs();
+      nextNetworkTick=time.getRealTimeInMs();
     }
  catch (    SocketException e) {
       throw new HostingFailedException("Could not identify network interfaces",e);

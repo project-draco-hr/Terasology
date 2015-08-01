@@ -1,27 +1,6 @@
 {
-  NetworkSystem networkSystem=rootContext.get(NetworkSystem.class);
-  DisplayDevice display=rootContext.get(DisplayDevice.class);
   PerformanceMonitor.startActivity("Other");
-  while (!shutdownRequested && !display.isCloseRequested()) {
-    long totalDelta;
-    float updateDelta;
-    float subsystemsDelta;
-    if (!display.hasFocus() && isHibernationAllowed()) {
-      timeSubsystem.getEngineTime().setPaused(true);
-      Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
-      while (updateCycles.hasNext()) {
-        updateCycles.next();
-      }
-      try {
-        Thread.sleep(100);
-      }
- catch (      InterruptedException e) {
-        logger.warn("Display inactivity sleep interrupted",e);
-      }
-      display.processMessages();
-      timeSubsystem.getEngineTime().setPaused(false);
-      continue;
-    }
+  while (!shutdownRequested) {
     assetTypeManager.reloadChangedOnDisk();
     processPendingState();
     if (currentState == null) {
@@ -29,27 +8,21 @@
       break;
     }
     Iterator<Float> updateCycles=timeSubsystem.getEngineTime().tick();
-    try (Activity ignored=PerformanceMonitor.startActivity("Network Update")){
-      networkSystem.update();
-    }
-     totalDelta=0;
+    for (    EngineSubsystem subsystem : allSubsystems) {
+      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getName() + " PreUpdate")){
+        subsystem.preUpdate(currentState,timeSubsystem.getEngineTime().getRealDelta());
+      }
+     }
     while (updateCycles.hasNext()) {
-      updateDelta=updateCycles.next();
-      totalDelta+=timeSubsystem.getEngineTime().getDeltaInMs();
+      float updateDelta=updateCycles.next();
       try (Activity ignored=PerformanceMonitor.startActivity("Main Update")){
         currentState.update(updateDelta);
       }
      }
-    subsystemsDelta=totalDelta / 1000f;
-    for (    EngineSubsystem subsystem : getSubsystems()) {
-      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName())){
-        subsystem.preUpdate(currentState,subsystemsDelta);
-      }
-     }
     GameThread.processWaitingProcesses();
     for (    EngineSubsystem subsystem : getSubsystems()) {
-      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getClass().getSimpleName())){
-        subsystem.postUpdate(currentState,subsystemsDelta);
+      try (Activity ignored=PerformanceMonitor.startActivity(subsystem.getName() + " Subsystem postUpdate")){
+        subsystem.postUpdate(currentState,timeSubsystem.getEngineTime().getRealDelta());
       }
      }
     PerformanceMonitor.rollCycle();

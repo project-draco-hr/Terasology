@@ -11,13 +11,15 @@
     now=getRawTimeInMs();
     newDelta=now - last.get();
   }
+  last.set(now);
+  realDelta.set(newDelta);
+  frameDelta=frameDelta * DECAY_RATE + newDelta * ONE_MINUS_DECAY_RATE;
+  newDelta=(long)(newDelta * getGameTimeDilation());
   if (newDelta >= UPDATE_CAP) {
     logger.warn("Delta too great ({}), capping to {}",newDelta,UPDATE_CAP);
     newDelta=UPDATE_CAP;
   }
   int updateCycles=(int)((newDelta - 1) / MAX_UPDATE_CYCLE_LENGTH) + 1;
-  last.set(now);
-  avgDelta=avgDelta * DECAY_RATE + newDelta * ONE_MINUS_DECAY_RATE;
   if (desynch != 0) {
     long diff=(long)Math.ceil(desynch * RESYNC_TIME_RATE);
     if (diff == 0) {
@@ -27,12 +29,12 @@
     desynch-=diff;
   }
   if (paused) {
-    delta.set(0);
+    gameDelta.set(0);
     return new TimeStepper(1,0);
   }
  else {
     if (updateCycles > 0) {
-      delta.set(newDelta / updateCycles);
+      gameDelta.set(newDelta / updateCycles);
     }
     return new TimeStepper(updateCycles,newDelta / updateCycles);
   }
