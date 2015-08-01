@@ -7,13 +7,13 @@
   EntityRef owner=itemEntity.getOwner();
   if (owner.hasComponent(InventoryComponent.class)) {
     if (dropAll) {
-      final EntityRef removedItem=CoreRegistry.get(InventoryManager.class).removeItem(owner,EntityRef.NULL,pickupItem,false);
+      final EntityRef removedItem=inventoryManager.removeItem(owner,EntityRef.NULL,pickupItem,false);
       if (removedItem != null) {
         pickupItem=removedItem;
       }
     }
  else {
-      final EntityRef removedItem=CoreRegistry.get(InventoryManager.class).removeItem(owner,EntityRef.NULL,pickupItem,false,1);
+      final EntityRef removedItem=inventoryManager.removeItem(owner,EntityRef.NULL,pickupItem,false,1);
       if (removedItem != null) {
         pickupItem=removedItem;
       }
