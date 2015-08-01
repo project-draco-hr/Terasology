@@ -1,0 +1,9 @@
+{
+  try {
+    CommandParameterSuggester<T> suggester=suggesterClass != null ? suggesterClass.newInstance() : null;
+    return single(name,type,required,suggester,parameterAdapterManager);
+  }
+ catch (  InstantiationException|IllegalAccessException e) {
+    throw new SuggesterInstantiationException(e);
+  }
+}

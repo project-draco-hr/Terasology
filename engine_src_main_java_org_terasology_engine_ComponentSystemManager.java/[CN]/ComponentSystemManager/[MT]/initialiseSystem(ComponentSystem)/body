@@ -1,7 +1,8 @@
 {
   InjectionHelper.inject(system);
   if (console != null) {
-    MethodCommand.registerAvailable(system);
+    ParameterAdapterManager parameterAdapterManager=context.get(ParameterAdapterManager.class);
+    MethodCommand.registerAvailable(system,console,parameterAdapterManager);
   }
   try {
     system.initialise();

@@ -1,0 +1,7 @@
+{
+  if (childType.isArray()) {
+    throw new IllegalArgumentException("The child type of an array CommandParameterDefinition must not be an array!");
+  }
+  Class<?> type=getArrayClass(childType);
+  return new CommandParameter(name,type,required,suggester,parameterAdapterManager);
+}
