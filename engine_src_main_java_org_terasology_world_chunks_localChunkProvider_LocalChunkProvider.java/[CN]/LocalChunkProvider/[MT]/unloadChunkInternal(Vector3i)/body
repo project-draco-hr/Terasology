@@ -3,7 +3,7 @@
   if (chunk.isLocked()) {
     return false;
   }
-  chunk.lock();
+  chunk.writeLock();
   try {
     if (!chunk.isReady()) {
       Iterator<ReadyChunkInfo> infoIterator=sortedReadyChunks.iterator();
@@ -32,6 +32,6 @@
     return true;
   }
   finally {
-    chunk.unlock();
+    chunk.writeUnlock();
   }
 }

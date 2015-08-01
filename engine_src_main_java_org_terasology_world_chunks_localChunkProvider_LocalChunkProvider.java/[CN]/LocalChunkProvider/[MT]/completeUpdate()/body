@@ -2,7 +2,7 @@
   ReadyChunkInfo readyChunkInfo=lightMerger.completeMerge();
   if (readyChunkInfo != null) {
     Chunk chunk=readyChunkInfo.getChunk();
-    chunk.lock();
+    chunk.writeLock();
     try {
       chunk.markReady();
       updateAdjacentChunksReadyFieldOf(chunk);
@@ -48,7 +48,7 @@
       }
     }
   finally {
-      chunk.unlock();
+      chunk.writeUnlock();
     }
   }
 }

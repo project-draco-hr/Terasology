@@ -3,9 +3,9 @@
   CoreChunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
     Vector3i blockPos=ChunkMath.calcBlockPos(worldPos);
-    chunk.lock();
+    chunk.writeLock();
     Biome oldBiomeType=chunk.setBiome(blockPos.x,blockPos.y,blockPos.z,biome);
-    chunk.unlock();
+    chunk.writeUnlock();
     if (oldBiomeType != biome) {
       BiomeChange oldChange=biomeChanges.get(worldPos);
       if (oldChange == null) {

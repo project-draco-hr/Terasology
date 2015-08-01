@@ -1,3 +1,7 @@
 {
-  return lock.isLocked();
+  if (readWriteLock.writeLock().tryLock()) {
+    readWriteLock.writeLock().unlock();
+    return false;
+  }
+  return true;
 }
