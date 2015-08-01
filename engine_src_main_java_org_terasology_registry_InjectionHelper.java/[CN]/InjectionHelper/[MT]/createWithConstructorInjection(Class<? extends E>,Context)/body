@@ -1,0 +1,9 @@
+{
+  SimpleClassFactory simpleClassFactory=new SimpleClassFactory(new ParameterProvider(){
+    @Override public <T>Optional<T> get(    Class<T> x){
+      return Optional.of(context.get(x));
+    }
+  }
+);
+  return simpleClassFactory.instantiateClass(clazz).get();
+}
