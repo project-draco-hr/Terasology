@@ -2,7 +2,7 @@
   if (!texture.getTexture().isLoaded()) {
     return;
   }
-  if (!currentTextureCropRegion.equals(requestedCropRegion) && !(currentTextureCropRegion.encompasses(region) && requestedCropRegion.encompasses(region))) {
+  if (!currentTextureCropRegion.equals(requestedCropRegion) && !(currentTextureCropRegion.contains(region) && requestedCropRegion.contains(region))) {
     textureMat.setFloat4(CROPPING_BOUNDARIES_PARAM,requestedCropRegion.minX(),requestedCropRegion.maxX() + 1,requestedCropRegion.minY(),requestedCropRegion.maxY() + 1);
     currentTextureCropRegion=requestedCropRegion;
   }
