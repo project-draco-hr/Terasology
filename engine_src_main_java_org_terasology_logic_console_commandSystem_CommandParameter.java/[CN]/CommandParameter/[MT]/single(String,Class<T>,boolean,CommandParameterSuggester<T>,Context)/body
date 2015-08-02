@@ -1,0 +1,7 @@
+{
+  if (type.isArray()) {
+    throw new IllegalArgumentException("The type of a simple CommandParameterDefinition must not be an array!");
+  }
+  ParameterAdapterManager parameterAdapterManager=context.get(ParameterAdapterManager.class);
+  return new CommandParameter(name,type,required,suggester,parameterAdapterManager);
+}

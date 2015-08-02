@@ -2,8 +2,8 @@
   if (tree == null) {
     return null;
   }
-  Node node=CoreRegistry.get(BehaviorNodeFactory.class).getNode(data);
-  newNode=tree.createNode(node);
-  CoreRegistry.get(BehaviorSystem.class).treeModified(tree);
+  Node node=behaviorNodeFactory.getNode(data);
+  newNode=tree.createNode(node,behaviorNodeFactory);
+  behaviorSystem.treeModified(tree);
   return newNode;
 }

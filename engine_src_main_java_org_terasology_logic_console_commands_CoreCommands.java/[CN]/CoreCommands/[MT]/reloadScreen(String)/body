@@ -1,7 +1,6 @@
 {
-  Optional<UIElement> uiData=CoreRegistry.get(AssetManager.class).getAsset(ui,UIElement.class);
+  Optional<UIElement> uiData=assetManager.getAsset(ui,UIElement.class);
   if (uiData.isPresent()) {
-    NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
     boolean wasOpen=nuiManager.isOpen(uiData.get().getUrn());
     if (wasOpen) {
       nuiManager.closeScreen(uiData.get().getUrn());
