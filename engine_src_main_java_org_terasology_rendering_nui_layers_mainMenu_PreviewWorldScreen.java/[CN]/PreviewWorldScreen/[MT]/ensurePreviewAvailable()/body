@@ -1,0 +1,12 @@
+{
+  if (previewInitialized) {
+    return false;
+  }
+ else {
+    EnvironmentSwitchHandler environmentSwitchHandler=context.get(EnvironmentSwitchHandler.class);
+    environmentSwitchHandler.handleSwitchToPreviewEnivronment(context,environment);
+    genTexture();
+    previewGen=new FacetLayerPreview(environment,worldGenerator);
+    return true;
+  }
+}

@@ -10,14 +10,9 @@
       CoreRegistry.setContext(subContext);
       environment=moduleManager.loadEnvironment(result.getModules(),false);
       subContext.put(WorldGeneratorPluginLibrary.class,new TempWorldGeneratorPluginLibrary(environment,subContext));
-      EnvironmentSwitchHandler environmentSwitchHandler=context.get(EnvironmentSwitchHandler.class);
-      environmentSwitchHandler.handleSwitchToPreviewEnivronment(context,environment);
-      genTexture();
       worldGenerator=worldGeneratorManager.createWorldGenerator(worldGenUri,subContext,environment);
       worldGenerator.setWorldSeed(seed.getText());
-      previewGen=new FacetLayerPreview(environment,worldGenerator);
       configureProperties();
-      triggerUpdate=true;
     }
  else {
       logger.error("Could not resolve modules for: {}",worldGenUri);
