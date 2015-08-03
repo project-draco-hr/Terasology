@@ -1,0 +1,17 @@
+{
+  long nread=0L;
+  int bufferSize=0x10000;
+  byte[] buf=new byte[bufferSize];
+  int n;
+  while ((n=source.read(buf)) > 0) {
+    sink.write(buf,0,n);
+    nread+=n;
+    if (max <= 0) {
+      listener.onProgress(0);
+    }
+ else {
+      listener.onProgress((float)nread / max);
+    }
+  }
+  return nread;
+}
