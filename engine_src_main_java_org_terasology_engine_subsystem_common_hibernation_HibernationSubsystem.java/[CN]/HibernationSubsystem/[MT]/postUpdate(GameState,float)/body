@@ -2,14 +2,11 @@
   if (hibernationManager.isHibernating()) {
     if (!hibernationManager.isHibernationAllowed() || displayDevice.hasFocus()) {
       hibernationManager.setHibernating(false);
-      time.setPaused(pausedBeforeHibernation);
     }
   }
  else {
     if (hibernationManager.isHibernationAllowed() && !displayDevice.hasFocus()) {
       hibernationManager.setHibernating(true);
-      pausedBeforeHibernation=time.isPaused();
-      time.setPaused(true);
     }
   }
   if (hibernationManager.isHibernating()) {
