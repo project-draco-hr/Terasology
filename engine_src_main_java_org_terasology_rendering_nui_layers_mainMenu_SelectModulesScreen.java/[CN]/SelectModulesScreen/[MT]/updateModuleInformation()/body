@@ -1,2 +1,17 @@
 {
+  Set<Name> filtered=ImmutableSet.of(new Name("engine"),new Name("engine-test"));
+  for (  RemoteModule remote : metaDownloader.getModules()) {
+    ModuleSelectionInfo info=modulesLookup.get(remote.getId());
+    if (!filtered.contains(remote.getId())) {
+      if (info == null) {
+        info=ModuleSelectionInfo.remote(remote);
+        modulesLookup.put(remote.getId(),info);
+        int pos=Collections.binarySearch(sortedModules,info,moduleInfoComparator);
+        if (pos < 0) {
+          sortedModules.add(-pos - 1,info);
+        }
+      }
+      info.setOnlineVersion(remote);
+    }
+  }
 }
