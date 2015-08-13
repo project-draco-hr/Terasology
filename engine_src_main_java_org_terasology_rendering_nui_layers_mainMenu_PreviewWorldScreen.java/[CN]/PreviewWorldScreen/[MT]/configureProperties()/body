@@ -14,13 +14,11 @@
   for (  String label : params.keySet()) {
     PropertyProvider provider=new PropertyProvider(){
       @Override protected <T>Binding<T> createTextBinding(      Object target,      FieldMetadata<Object,T> fieldMetadata){
-        Binding<T> binding=super.createTextBinding(target,fieldMetadata);
-        Binding<T> wrap=new WorldConfigBinding<T>(binding,worldConfig,label,(Component)target);
+        Binding<T> wrap=new WorldConfigBinding<T>(worldConfig,label,fieldMetadata);
         return wrap;
       }
       @Override protected Binding<Float> createFloatBinding(      Object target,      FieldMetadata<Object,?> fieldMetadata){
-        Binding<Float> binding=super.createFloatBinding(target,fieldMetadata);
-        Binding<Float> wrap=new WorldConfigBinding<Float>(binding,worldConfig,label,(Component)target);
+        Binding<Float> wrap=new WorldConfigNumberBinding(worldConfig,label,(FieldMetadata<Object,Float>)fieldMetadata);
         return wrap;
       }
     }

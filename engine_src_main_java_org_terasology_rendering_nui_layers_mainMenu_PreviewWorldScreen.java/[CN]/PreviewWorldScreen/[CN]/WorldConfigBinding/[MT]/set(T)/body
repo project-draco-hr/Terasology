@@ -1,7 +1,6 @@
 {
-  T old=binding.get();
-  binding.set(value);
+  T old=get();
   if (!Objects.equals(old,value)) {
-    worldConfig.setProperty(label,target);
+    notifyObservers(label,fieldMetadata.getName(),value);
   }
 }
