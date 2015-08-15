@@ -1,0 +1,18 @@
+{
+  Iterable<EntityRef> clientInfoEntities=entityManager.getEntitiesWith(ClientInfoComponent.class);
+  for (  EntityRef clientInfo : clientInfoEntities) {
+    DisplayNameComponent nameComp=clientInfo.getComponent(DisplayNameComponent.class);
+    if (newUserName.equals(nameComp.name)) {
+      throw new IllegalArgumentException("New user name is already in use");
+    }
+  }
+  for (  EntityRef clientInfo : clientInfoEntities) {
+    DisplayNameComponent nameComp=clientInfo.getComponent(DisplayNameComponent.class);
+    if (userName.equals(nameComp.name)) {
+      nameComp.name=newUserName;
+      clientInfo.saveComponent(nameComp);
+      return "User " + userName + " has been renamed to "+ newUserName;
+    }
+  }
+  throw new IllegalArgumentException("No such user '" + userName + "'");
+}
