@@ -11,15 +11,14 @@
       worldConfig.setProperty(key,comp);
     }
   }
+  ComponentLibrary compLib=subContext.get(ComponentLibrary.class);
   for (  String label : params.keySet()) {
     PropertyProvider provider=new PropertyProvider(){
       @Override protected <T>Binding<T> createTextBinding(      Object target,      FieldMetadata<Object,T> fieldMetadata){
-        Binding<T> wrap=new WorldConfigBinding<T>(worldConfig,label,fieldMetadata);
-        return wrap;
+        return new WorldConfigBinding<T>(worldConfig,label,compLib,fieldMetadata);
       }
       @Override protected Binding<Float> createFloatBinding(      Object target,      FieldMetadata<Object,?> fieldMetadata){
-        Binding<Float> wrap=new WorldConfigNumberBinding(worldConfig,label,(FieldMetadata<Object,Float>)fieldMetadata);
-        return wrap;
+        return new WorldConfigNumberBinding(worldConfig,label,compLib,fieldMetadata);
       }
     }
 ;
