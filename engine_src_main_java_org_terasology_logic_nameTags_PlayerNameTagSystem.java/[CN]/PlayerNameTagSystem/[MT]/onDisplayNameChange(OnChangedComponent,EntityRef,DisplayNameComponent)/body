@@ -1,0 +1,25 @@
+{
+  ClientInfoComponent clientInfoComp=clientInfoEntity.getComponent(ClientInfoComponent.class);
+  if (clientInfoComp == null) {
+    return;
+  }
+  EntityRef clientEntity=clientInfoComp.client;
+  if (!clientEntity.exists()) {
+    return;
+  }
+  ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);
+  if (clientComponent == null) {
+    logger.warn("Can't update name tag as client entity lacks ClietnComponent");
+    return;
+  }
+  EntityRef characterEntity=clientComponent.character;
+  if (characterEntity == null || !characterEntity.exists()) {
+    return;
+  }
+  NameTagComponent nameTagComponent=characterEntity.getComponent(NameTagComponent.class);
+  if (nameTagComponent == null) {
+    logger.warn("Tried to update the name tag component with a new player name but it was missing");
+  }
+  nameTagComponent.text=displayNameComponent.name;
+  characterEntity.saveComponent(nameTagComponent);
+}

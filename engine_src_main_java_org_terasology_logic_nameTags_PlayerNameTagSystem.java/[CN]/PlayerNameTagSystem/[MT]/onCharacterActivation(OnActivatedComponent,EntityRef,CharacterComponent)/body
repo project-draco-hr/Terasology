@@ -1,0 +1,38 @@
+{
+  EntityRef ownerEntity=networkSystem.getOwnerEntity(characterEntity);
+  if (ownerEntity == null) {
+    return;
+  }
+  ClientComponent clientComponent=ownerEntity.getComponent(ClientComponent.class);
+  if (clientComponent == null) {
+    logger.warn("Can't create player based name tag for character as owner has no client component");
+    return;
+  }
+  EntityRef clientInfoEntity=clientComponent.clientInfo;
+  DisplayNameComponent displayNameComponent=clientInfoEntity.getComponent(DisplayNameComponent.class);
+  if (displayNameComponent == null) {
+    logger.error("Can't create player based name tag for character as client info has no DisplayNameComponent");
+    return;
+  }
+  String name=displayNameComponent.name;
+  float yOffset=characterComponent.nameTagOffset;
+  Color color=Color.WHITE;
+  ColorComponent colorComponent=clientInfoEntity.getComponent(ColorComponent.class);
+  if (colorComponent != null) {
+    color=colorComponent.color;
+  }
+  NameTagComponent nameTagComponent=characterEntity.getComponent(NameTagComponent.class);
+  boolean newComponent=nameTagComponent == null;
+  if (nameTagComponent == null) {
+    nameTagComponent=new NameTagComponent();
+  }
+  nameTagComponent.text=name;
+  nameTagComponent.textColor=color;
+  nameTagComponent.yOffset=yOffset;
+  if (newComponent) {
+    characterEntity.addComponent(nameTagComponent);
+  }
+ else {
+    characterEntity.saveComponent(nameTagComponent);
+  }
+}
