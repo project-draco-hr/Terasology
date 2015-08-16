@@ -1,0 +1,13 @@
+{
+  if (inputs.size() != 1) {
+    throw new IOException("Failed to load i18n data'" + urn + "'");
+  }
+  AssetDataFile file=inputs.get(0);
+  Locale locale=localeFromFilename(file.getFilename());
+  I18nData data=new I18nData(locale);
+  try (InputStreamReader isr=new InputStreamReader(file.openStream(),Charsets.UTF_8)){
+    Map<String,String> entry=gson.fromJson(isr,MAP_TOKEN.getType());
+    data.addAll(entry);
+  }
+   return data;
+}
