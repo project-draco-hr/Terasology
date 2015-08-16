@@ -13,6 +13,7 @@
     EnvironmentSwitchHandler environmentSwitcher=new EnvironmentSwitchHandler();
     rootContext.put(EnvironmentSwitchHandler.class,environmentSwitcher);
     environmentSwitcher.handleSwitchToGameEnvironment(rootContext);
+    rootContext.put(TranslationSystem.class,new TranslationSystemImpl(rootContext));
     postInitSubsystems();
     verifyInitialisation();
     CoreRegistry.setContext(null);

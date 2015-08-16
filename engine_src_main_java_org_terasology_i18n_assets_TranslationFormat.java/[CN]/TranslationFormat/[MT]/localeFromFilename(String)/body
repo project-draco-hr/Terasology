@@ -1,7 +1,7 @@
 {
   Matcher m=FILENAME_PATTERN.matcher(filename);
-  if (m.matches()) {
-    return Locale.forLanguageTag(m.group(3));
+  if (m.matches() && m.group(2) != null) {
+    return Locale.forLanguageTag(m.group(2));
   }
   return Locale.ROOT;
 }

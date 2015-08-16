@@ -10,5 +10,8 @@
     Map<String,String> entry=gson.fromJson(isr,MAP_TOKEN.getType());
     data.addAll(entry);
   }
-   return data;
+ catch (  JsonParseException e) {
+    throw new IOException("Could not parse file '" + file + "'",e);
+  }
+  return data;
 }
