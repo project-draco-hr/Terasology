@@ -2,6 +2,6 @@
   AssetDataFile assetDataFile=mockAssetDataFile("menu.lang","{}".getBytes(StandardCharsets.UTF_8));
   ResourceUrn urn=createUrnFromFile(format,assetDataFile);
   TranslationData data=format.load(urn,Collections.singletonList(assetDataFile));
-  Assert.assertEquals(new Name("menu"),data.getName());
+  Assert.assertEquals(new SimpleUri("engine:menu"),data.getProjectUri());
   Assert.assertEquals(Locale.ROOT,data.getLocale());
 }

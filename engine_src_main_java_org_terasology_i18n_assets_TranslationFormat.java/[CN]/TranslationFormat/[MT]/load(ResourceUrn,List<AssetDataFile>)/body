@@ -4,8 +4,9 @@
   }
   AssetDataFile file=inputs.get(0);
   Locale locale=localeFromFilename(file.getFilename());
-  Name name=basenameFromFilename(file.getFilename());
-  TranslationData data=new TranslationData(name,locale);
+  Name projName=basenameFromFilename(file.getFilename());
+  SimpleUri projUri=new SimpleUri(urn.getModuleName(),projName);
+  TranslationData data=new TranslationData(projUri,locale);
   try (InputStreamReader isr=new InputStreamReader(file.openStream(),Charsets.UTF_8)){
     Map<String,String> entry=gson.fromJson(isr,MAP_TOKEN.getType());
     data.addAll(entry);
