@@ -1,7 +1,8 @@
 {
   Matcher m=FILENAME_PATTERN.matcher(filename);
-  if (m.matches() && m.group(2) != null) {
-    return Locale.forLanguageTag(m.group(2));
+  if (m.matches()) {
+    String langTag=m.group(2);
+    return (langTag != null) ? Locale.forLanguageTag(langTag) : Locale.ROOT;
   }
-  return Locale.ROOT;
+  throw new IOException("Could not parse locale: " + filename);
 }

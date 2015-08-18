@@ -3,9 +3,13 @@
   if (splitPoint > 0) {
     String projName=id.substring(0,splitPoint);
     String fragment=id.substring(splitPoint + 1);
-    TranslationProject project=getProject(new SimpleUri(projName));
+    SimpleUri uri=new SimpleUri(projName);
+    TranslationProject project=getProject(uri);
     if (project != null) {
       return project.translate(fragment,otherLocale);
+    }
+ else {
+      logger.warn("Invalid project for '{}'",id);
     }
   }
   return null;
