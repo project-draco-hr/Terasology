@@ -8,6 +8,9 @@
     logger.warn("Can't create player based name tag for character as owner has no client component");
     return;
   }
+  if (clientComponent.local) {
+    return;
+  }
   EntityRef clientInfoEntity=clientComponent.clientInfo;
   DisplayNameComponent displayNameComponent=clientInfoEntity.getComponent(DisplayNameComponent.class);
   if (displayNameComponent == null) {
