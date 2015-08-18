@@ -9,7 +9,13 @@
     result=translateExact(key,fallbackLocale);
   }
   if (result == null) {
+    result=translateExact(key,Locale.ENGLISH);
+  }
+  if (result == null) {
     result=translateExact(key,Locale.ROOT);
+  }
+  if (result == null) {
+    return "<" + key + ">";
   }
   return result;
 }
