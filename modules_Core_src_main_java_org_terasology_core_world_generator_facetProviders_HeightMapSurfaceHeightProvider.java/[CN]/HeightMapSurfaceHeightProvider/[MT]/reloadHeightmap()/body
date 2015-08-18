@@ -1,0 +1,15 @@
+{
+  logger.info("Reading height map '{}'",configuration.heightMap);
+  ResourceUrn urn=new ResourceUrn("core",configuration.heightMap);
+  Texture texture=Assets.getTexture(urn).get();
+  ByteBuffer[] bb=texture.getData().getBuffers();
+  IntBuffer intBuf=bb[0].asIntBuffer();
+  mapWidth=texture.getWidth();
+  mapHeight=texture.getHeight();
+  heightmap=new float[mapWidth][mapHeight];
+  while (intBuf.position() < intBuf.limit()) {
+    int pos=intBuf.position();
+    long val=intBuf.get() & 0xFFFFFFFFL;
+    heightmap[pos % mapWidth][pos / mapWidth]=val / (256 * 256 * 256* 256f);
+  }
+}

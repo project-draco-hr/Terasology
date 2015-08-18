@@ -3,15 +3,7 @@
   Object[] items=cls.getEnumConstants();
   UIDropdown dropdown=new UIDropdown();
   dropdown.bindOptions(new DefaultBinding(Arrays.asList(items)));
-  Binding binding=new Binding(){
-    @Override public Object get(){
-      return fieldMetadata.getValueChecked(target);
-    }
-    @Override public void set(    Object value){
-      fieldMetadata.setValue(target,value);
-    }
-  }
-;
+  Binding binding=createTextBinding(target,fieldMetadata);
   dropdown.bindSelection(binding);
   String label=fromLabelOrId(info.label(),id);
   return new Property<>(label,binding,dropdown,info.description());
