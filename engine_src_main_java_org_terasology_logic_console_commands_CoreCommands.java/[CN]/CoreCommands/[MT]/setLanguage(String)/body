@@ -1,6 +1,14 @@
 {
   Locale locale=Locale.forLanguageTag(langTag);
-  String nat=translationSystem.translate("engine:menu#this-language-native",locale);
-  String eng=translationSystem.translate("engine:menu#this-language-English",locale);
-  return String.format("Language set to %s (%s)",nat,eng);
+  TranslationProject proj=translationSystem.getProject(new SimpleUri("engine:menu"));
+  if (proj.getAvailableLocales().contains(locale)) {
+    String nat=translationSystem.translate("engine:menu#this-language-native",locale);
+    String eng=translationSystem.translate("engine:menu#this-language-English",locale);
+    config.getSystem().setLocale(locale);
+    nuiManager.invalidate();
+    return String.format("Language set to %s (%s)",nat,eng);
+  }
+ else {
+    return "Unrecognized locale! Try one of: " + proj.getAvailableLocales();
+  }
 }
