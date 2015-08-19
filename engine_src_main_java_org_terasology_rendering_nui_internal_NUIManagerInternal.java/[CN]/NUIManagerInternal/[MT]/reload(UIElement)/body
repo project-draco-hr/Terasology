@@ -1,0 +1,11 @@
+{
+  CoreScreenLayer newScreen=(CoreScreenLayer)element.getRootWidget();
+  UIScreenLayer oldScreen=screenLookup.get(element.getUrn());
+  oldScreen.onClosed();
+  newScreen.setId(element.getUrn().toString());
+  newScreen.setManager(this);
+  prepare(newScreen);
+  int idx=screens.indexOf(oldScreen);
+  screens.set(idx,newScreen);
+  screenLookup.put(element.getUrn(),newScreen);
+}
