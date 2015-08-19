@@ -1,0 +1,7 @@
+{
+  Uri uri=trans.getProjectUri();
+  TranslationProject project=projects.get(uri);
+  for (  Consumer<TranslationProject> listener : changeListeners) {
+    listener.accept(project);
+  }
+}

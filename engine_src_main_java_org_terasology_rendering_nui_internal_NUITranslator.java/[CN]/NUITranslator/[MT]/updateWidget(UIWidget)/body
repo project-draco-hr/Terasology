@@ -1,5 +1,4 @@
 {
-  TranslationSystem system=context.get(TranslationSystem.class);
   Collection<UIWidget> elements=container.findAll(UIWidget.class);
   for (  UIWidget element : elements) {
     ClassMetadata<UIWidget,?> metadata=classLibrary.getMetadata(element);
@@ -9,7 +8,7 @@
           String value=(String)field.getValue(element);
           String i18nId=extractId(value);
           if (i18nId != null) {
-            String i18nText=system.translate(i18nId);
+            String i18nText=translationSystem.translate(i18nId);
             field.setValue(element,i18nText);
           }
         }
