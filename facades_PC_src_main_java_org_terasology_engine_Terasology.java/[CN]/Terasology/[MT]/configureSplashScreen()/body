@@ -1,0 +1,14 @@
+{
+  int imageHeight=283;
+  int maxTextWidth=450;
+  int width=600;
+  int height=30;
+  int left=20;
+  int top=imageHeight - height - 20;
+  Rectangle rectRc=new Rectangle(left,top,width,height);
+  Rectangle textRc=new Rectangle(left + 10,top + 5,maxTextWidth,height);
+  Rectangle boxRc=new Rectangle(left + maxTextWidth + 10,top,width - maxTextWidth - 20,height);
+  SplashScreenBuilder builder=new SplashScreenBuilder();
+  SplashScreen instance=builder.add(new RectOverlay(rectRc)).add(new TextOverlay(textRc)).add(new AnimatedBoxRowOverlay(boxRc)).build();
+  return instance;
+}
