@@ -1,7 +1,9 @@
 {
   Preconditions.checkArgument(newData != null);
   this.data=newData;
-  for (  Consumer<Translation> listener : reloadListeners) {
+  this.projectUri=data.getProjectUri();
+  this.locale=data.getLocale();
+  for (  Consumer<Translation> listener : changeListeners) {
     listener.accept(this);
   }
 }
