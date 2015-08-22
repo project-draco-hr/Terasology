@@ -1,16 +1,13 @@
 {
-  int splitPoint=id.indexOf('#');
-  if (splitPoint > 0) {
-    String projName=id.substring(0,splitPoint);
-    String fragment=id.substring(splitPoint + 1);
-    SimpleUri uri=new SimpleUri(projName);
-    TranslationProject project=getProject(uri);
+  TranslationUri uri=new TranslationUri(id);
+  if (uri.isValid()) {
+    TranslationProject project=getProject(uri.getProjectUri());
     if (project != null) {
-      return project.translate(fragment,otherLocale);
+      return project.translate(uri.getId(),otherLocale);
     }
  else {
       logger.warn("Invalid project for '{}'",id);
     }
   }
-  return null;
+  return Optional.empty();
 }

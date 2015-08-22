@@ -1,9 +1,13 @@
 {
-  Preconditions.checkArgument(newData != null);
-  this.data=newData;
-  this.projectUri=data.getProjectUri();
-  this.locale=data.getLocale();
-  for (  Consumer<Translation> listener : changeListeners) {
-    listener.accept(this);
+  Preconditions.checkArgument(data != null);
+  boolean isEqual=Objects.equal(data.getProjectUri(),projectUri) && Objects.equal(data.getLocale(),locale) && Objects.equal(data.getTranslations(),dictionary);
+  if (!isEqual) {
+    this.dictionary.clear();
+    this.dictionary.putAll(data.getTranslations());
+    this.projectUri=data.getProjectUri();
+    this.locale=data.getLocale();
+    for (    Consumer<Translation> listener : changeListeners) {
+      listener.accept(this);
+    }
   }
 }

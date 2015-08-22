@@ -1,6 +1,5 @@
 {
-  TranslationSystem translationSystem=context.get(TranslationSystem.class);
-  String nat=translationSystem.translate("engine:menu#this-language-native",locale);
-  String eng=translationSystem.translate("engine:menu#this-language-English",locale);
+  String nat=translationSystem.translate("engine:menu#this-language-native",locale).orElse("");
+  String eng=translationSystem.translate("engine:menu#this-language-English",locale).orElse(locale.toString());
   return String.format("%s (%s)",nat,eng);
 }
