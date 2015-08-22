@@ -4,13 +4,16 @@
   if (!clientInfo.exists()) {
     clientInfo=createClientInfoEntity(entityManager);
   }
+  ClientInfoComponent clientInfoComp=clientInfo.getComponent(ClientInfoComponent.class);
+  clientInfoComp.client=clientEntity;
+  clientInfo.saveComponent(clientInfoComp);
+  ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);
+  clientComponent.clientInfo=clientInfo;
+  clientEntity.saveComponent(clientComponent);
   addOrSetColorComponent(clientInfo,color);
   DisplayNameComponent displayNameComponent=clientInfo.getComponent(DisplayNameComponent.class);
   if (displayNameComponent == null || !displayNameComponent.name.equals(preferredName)) {
     String bestAvailableName=findUniquePlayerName(preferredName,entityManager,clientInfo);
     addOrSetDisplayNameComponent(clientInfo,bestAvailableName);
   }
-  ClientComponent clientComponent=clientEntity.getComponent(ClientComponent.class);
-  clientComponent.clientInfo=clientInfo;
-  clientEntity.saveComponent(clientComponent);
 }
