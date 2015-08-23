@@ -1,13 +1,19 @@
 {
-  TranslationUri uri=new TranslationUri(id);
-  if (uri.isValid()) {
-    TranslationProject project=getProject(uri.getProjectUri());
-    if (project != null) {
-      return project.translate(uri.getId(),otherLocale);
+  Optional<String> idOpt=extractId(text);
+  if (idOpt.isPresent()) {
+    String id=idOpt.get();
+    TranslationUri uri=new TranslationUri(id);
+    if (uri.isValid()) {
+      TranslationProject project=getProject(uri.getProjectUri());
+      if (project != null) {
+        Optional<String> opt=project.translate(uri.getId(),otherLocale);
+        if (opt.isPresent()) {
+          return opt.get();
+        }
+      }
     }
- else {
-      logger.warn("Invalid project for '{}'",id);
-    }
+    logger.warn("Invalid id '{}'",id);
+    return "?" + id + "?";
   }
-  return Optional.empty();
+  return text;
 }

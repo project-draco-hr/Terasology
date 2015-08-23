@@ -3,8 +3,8 @@
     int start=text.indexOf("${");
     int end=text.lastIndexOf('}');
     if (start >= 0 && end > start) {
-      return text.substring(start + 2,end);
+      return Optional.of(text.substring(start + 2,end));
     }
   }
-  return null;
+  return Optional.empty();
 }
