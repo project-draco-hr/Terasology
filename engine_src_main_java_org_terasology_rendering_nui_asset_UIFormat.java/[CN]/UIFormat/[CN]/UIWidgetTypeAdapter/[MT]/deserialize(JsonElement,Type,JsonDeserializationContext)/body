@@ -48,12 +48,6 @@
             field.setValue(element,result);
           }
         }
- else         if (field.getType().equals(String.class)) {
-          JsonElement jsonValue=jsonObject.get(field.getSerializationName());
-          String text=context.deserialize(jsonValue,field.getType());
-          String i18nText=translationSystem.translate(text);
-          field.setValue(element,i18nText);
-        }
  else {
           field.setValue(element,context.deserialize(jsonObject.get(field.getSerializationName()),field.getType()));
         }
