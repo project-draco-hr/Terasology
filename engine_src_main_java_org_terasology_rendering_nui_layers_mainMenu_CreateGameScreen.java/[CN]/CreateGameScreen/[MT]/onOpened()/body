@@ -1,0 +1,16 @@
+{
+  super.onOpened();
+  final UIDropdown<Module> gameplay=find("gameplay",UIDropdown.class);
+  Name defaultGameplayModuleName=new Name(config.getDefaultModSelection().getDefaultGameplayModuleName());
+  Module defaultGameplayModule=moduleManager.getRegistry().getLatestModuleVersion(defaultGameplayModuleName);
+  if (defaultGameplayModule != null) {
+    gameplay.setSelection(defaultGameplayModule);
+  }
+ else {
+    for (    Module module : moduleManager.getRegistry()) {
+      if (module != null && StandardModuleExtension.isGameplayModule(module)) {
+        gameplay.setSelection(module);
+      }
+    }
+  }
+}

@@ -24,19 +24,6 @@
   gameplay.bindSelection(new Binding<Module>(){
     Module selected;
     @Override public Module get(){
-      if (selected == null) {
-        Module defaultGameplayModule=moduleManager.getRegistry().getLatestModuleVersion(new Name(config.getDefaultModSelection().getDefaultGameplayModuleName()));
-        if (defaultGameplayModule != null) {
-          set(defaultGameplayModule);
-          return selected;
-        }
-        for (        Module module : moduleManager.getRegistry()) {
-          if (module != null && StandardModuleExtension.isGameplayModule(module)) {
-            set(module);
-            return selected;
-          }
-        }
-      }
       return selected;
     }
     @Override public void set(    Module value){
