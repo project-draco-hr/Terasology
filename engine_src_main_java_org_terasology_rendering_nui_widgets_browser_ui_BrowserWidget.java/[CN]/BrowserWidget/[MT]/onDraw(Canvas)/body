@@ -1,8 +1,5 @@
 {
   hyperlinkBoxes.clear();
-  if (displayedPage != null) {
-    DocumentRenderer.drawDocumentInRegion(displayedPage,canvas,canvas.getCurrentStyle().getFont(),canvas.getCurrentStyle().getTextColor(),canvas.size(),register);
-  }
   canvas.addInteractionRegion(new BaseInteractionListener(){
     @Override public boolean onMouseClick(    NUIMouseClickEvent event){
       for (      HyperlinkBox hyperlinkBox : hyperlinkBoxes) {
@@ -17,4 +14,7 @@
     }
   }
 );
+  if (displayedPage != null) {
+    DocumentRenderer.drawDocumentInRegion(displayedPage,canvas,canvas.getCurrentStyle().getFont(),canvas.getCurrentStyle().getTextColor(),canvas.size(),register);
+  }
 }
