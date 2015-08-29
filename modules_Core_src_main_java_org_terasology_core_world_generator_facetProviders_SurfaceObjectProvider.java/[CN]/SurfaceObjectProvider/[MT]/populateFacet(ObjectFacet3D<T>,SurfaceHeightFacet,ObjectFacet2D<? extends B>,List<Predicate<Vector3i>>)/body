@@ -2,11 +2,12 @@
   Region3i worldRegion=facet.getWorldRegion();
   int minY=worldRegion.minY();
   int maxY=worldRegion.maxY();
+  Vector3i pos=new Vector3i();
   for (int z=worldRegion.minZ(); z <= worldRegion.maxZ(); z++) {
     for (int x=worldRegion.minX(); x <= worldRegion.maxX(); x++) {
       int height=TeraMath.floorToInt(surfaceFacet.getWorld(x,z)) + 1;
       if (height >= minY && height <= maxY) {
-        Vector3i pos=new Vector3i(x,height,z);
+        pos.set(x,height,z);
         if (applyAll(filters,pos)) {
           B biome=typeFacet.getWorld(x,z);
           Map<T,Float> plantProb=probsTable.row(biome);
