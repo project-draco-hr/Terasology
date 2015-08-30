@@ -1,18 +1,29 @@
 {
-  Optional<String> idOpt=extractId(text);
-  if (idOpt.isPresent()) {
-    String id=idOpt.get();
+  int cursor=0;
+  Matcher m=ID_PATTERN.matcher(text);
+  StringBuffer sb=new StringBuffer();
+  while (m.find()) {
+    sb.append(text,cursor,m.start());
+    String id=m.group(1);
     ResourceUrn uri=new ResourceUrn(id);
     SimpleUri projectUri=new SimpleUri(uri.getModuleName(),uri.getResourceName());
     TranslationProject project=getProject(projectUri);
     if (project != null) {
       Optional<String> opt=project.translate(uri.getFragmentName(),otherLocale);
       if (opt.isPresent()) {
-        return opt.get();
+        sb.append(opt.get());
+      }
+ else {
+        logger.warn("No translation for '{}'",id);
+        sb.append("?" + uri.getFragmentName() + "?");
       }
     }
-    logger.warn("Invalid id '{}'",id);
-    return "?" + id + "?";
+ else {
+      logger.warn("Invalid project id '{}'",id);
+      sb.append("?" + uri.getFragmentName() + "?");
+    }
+    cursor=m.end();
   }
-  return text;
+  sb.append(text,cursor,text.length());
+  return sb.toString();
 }
