@@ -9,16 +9,18 @@
       @Override public void run(){
         ChunkStore chunkStore=storageManager.loadChunkStore(getPosition());
         Chunk chunk;
+        EntityBufferImpl buffer=new EntityBufferImpl();
         if (chunkStore == null) {
           chunk=new ChunkImpl(getPosition(),blockManager,biomeManager);
-          generator.createChunk(chunk);
+          generator.createChunk(chunk,buffer);
         }
  else {
           chunk=chunkStore.getChunk();
         }
         InternalLightProcessor.generateInternalLighting(chunk);
         chunk.deflate();
-        readyChunks.offer(new ReadyChunkInfo(chunk,createBatchBlockEventMappings(chunk),chunkStore));
+        TShortObjectMap<TIntList> mappings=createBatchBlockEventMappings(chunk);
+        readyChunks.offer(new ReadyChunkInfo(chunk,mappings,chunkStore,buffer.getAll()));
       }
     }
 );
