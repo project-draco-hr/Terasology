@@ -1,11 +1,9 @@
 {
   Module module=moduleManager.getRegistry().getLatestModuleVersion(moduleName);
   if (module != null) {
-    if (module != null) {
-      for (      DependencyInfo dependencyInfo : module.getMetadata().getDependencies()) {
-        modules.add(dependencyInfo.getId());
-        recursivelyAddModuleDependencies(modules,dependencyInfo.getId());
-      }
+    for (    DependencyInfo dependencyInfo : module.getMetadata().getDependencies()) {
+      modules.add(dependencyInfo.getId());
+      recursivelyAddModuleDependencies(modules,dependencyInfo.getId());
     }
   }
 }
