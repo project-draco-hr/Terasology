@@ -12,6 +12,13 @@
         generateBlockEntities(chunk);
         PerformanceMonitor.endActivity();
       }
+      if (readyChunkInfo.isNewChunk()) {
+        PerformanceMonitor.startActivity("Generating queued Entities");
+        for (        EntityStore entity : readyChunkInfo.getEntities()) {
+          generateQueuedEntities(entity);
+        }
+        PerformanceMonitor.endActivity();
+      }
       if (readyChunkInfo.getChunkStore() != null) {
         readyChunkInfo.getChunkStore().restoreEntities();
       }

@@ -1,0 +1,9 @@
+{
+  Region chunkRegion=getWorldData(chunk.getRegion());
+  for (  WorldRasterizer rasterizer : worldRasterizers) {
+    rasterizer.generateChunk(chunk,chunkRegion);
+  }
+  for (  EntityProvider entityProvider : entityProviders) {
+    entityProvider.process(chunkRegion,buffer);
+  }
+}
