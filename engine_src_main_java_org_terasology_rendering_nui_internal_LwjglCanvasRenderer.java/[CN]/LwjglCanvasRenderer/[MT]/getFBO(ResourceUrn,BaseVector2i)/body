@@ -1,0 +1,11 @@
+{
+  LwjglFrameBufferObject frameBufferObject=fboMap.get(urn);
+  if (frameBufferObject == null || !Assets.getTexture(urn).isPresent()) {
+    if (frameBufferObject != null) {
+      frameBufferObject.dispose();
+    }
+    frameBufferObject=new LwjglFrameBufferObject(urn,size);
+    fboMap.put(urn,frameBufferObject);
+  }
+  return frameBufferObject;
+}
