@@ -10,7 +10,7 @@
       logger.error("Failed to set server port to invalid value: {}",serverPortProperty);
     }
   }
-  if (!config.getDefaultModSelection().hasModule(TerasologyConstants.CORE_GAMEPLAY_MODULE)) {
+  if (Iterables.isEmpty(config.getDefaultModSelection().listModules())) {
     config.getDefaultModSelection().addModule(TerasologyConstants.CORE_GAMEPLAY_MODULE);
   }
   checkServerIdentity();
