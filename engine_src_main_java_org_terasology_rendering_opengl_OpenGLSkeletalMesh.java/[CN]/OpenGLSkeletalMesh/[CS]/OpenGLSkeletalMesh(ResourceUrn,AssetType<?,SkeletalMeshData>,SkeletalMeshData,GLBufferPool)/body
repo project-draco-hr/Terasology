@@ -1,5 +1,6 @@
 {
   super(urn,assetType);
-  this.bufferPool=bufferPool;
+  disposalAction=new DisposalAction(urn,bufferPool);
+  getDisposalHook().setDisposeAction(disposalAction);
   reload(data);
 }

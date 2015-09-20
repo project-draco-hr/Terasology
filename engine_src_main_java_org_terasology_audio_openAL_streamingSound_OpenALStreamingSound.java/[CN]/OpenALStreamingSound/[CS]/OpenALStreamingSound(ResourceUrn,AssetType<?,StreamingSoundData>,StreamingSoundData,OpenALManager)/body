@@ -1,5 +1,7 @@
 {
   super(urn,assetType);
+  this.internalResources=new InternalResources(urn,this);
   this.audioManager=audioManager;
+  getDisposalHook().setDisposeAction(internalResources);
   reload(data);
 }

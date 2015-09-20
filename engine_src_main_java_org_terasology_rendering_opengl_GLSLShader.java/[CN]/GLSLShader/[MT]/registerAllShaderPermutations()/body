@@ -5,8 +5,8 @@
     int vertShaderId=compileShader(GL20.GL_VERTEX_SHADER,permutation);
     if (compileSuccess(fragShaderId) && compileSuccess(vertShaderId)) {
       int featureHash=ShaderProgramFeature.getBitset(permutation);
-      fragmentPrograms.put(featureHash,fragShaderId);
-      vertexPrograms.put(featureHash,vertShaderId);
+      disposalAction.fragmentPrograms.put(featureHash,fragShaderId);
+      disposalAction.vertexPrograms.put(featureHash,vertShaderId);
     }
  else {
       throw new RuntimeException(String.format("Shader '%s' failed to compile for features '%s'.\n\n" + "Vertex Shader Info: \n%s\n" + "Fragment Shader Info: \n%s",getUrn(),permutation,getLogInfo(vertShaderId),getLogInfo(fragShaderId)));
