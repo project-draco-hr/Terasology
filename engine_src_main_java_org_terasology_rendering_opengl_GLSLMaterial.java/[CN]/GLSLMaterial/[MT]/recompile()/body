@@ -1,15 +1,15 @@
 {
-  TIntIntIterator it=shaderPrograms.iterator();
+  TIntIntIterator it=disposalAction.shaderPrograms.iterator();
   while (it.hasNext()) {
     it.advance();
     GL20.glDeleteProgram(it.value());
   }
-  shaderPrograms.clear();
+  disposalAction.shaderPrograms.clear();
   uniformLocationMap.clear();
-  shaderPrograms.put(0,shader.linkShaderProgram(0));
+  disposalAction.shaderPrograms.put(0,shader.linkShaderProgram(0));
   for (  Set<ShaderProgramFeature> permutation : Sets.powerSet(shader.getAvailableFeatures())) {
     int featureMask=ShaderProgramFeature.getBitset(permutation);
-    shaderPrograms.put(featureMask,shader.linkShaderProgram(featureMask));
+    disposalAction.shaderPrograms.put(featureMask,shader.linkShaderProgram(featureMask));
   }
   if (shaderParameters != null) {
     shaderParameters.initialParameters(this);
