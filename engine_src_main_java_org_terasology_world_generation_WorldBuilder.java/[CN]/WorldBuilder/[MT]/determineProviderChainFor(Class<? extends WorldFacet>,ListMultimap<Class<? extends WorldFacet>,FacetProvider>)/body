@@ -6,25 +6,38 @@
     throw new RuntimeException("Circular dependency detected when calculating facet provider ordering for " + facet);
   }
   Set<FacetProvider> orderedProviders=Sets.newLinkedHashSet();
+  FacetProvider producer=null;
   for (  FacetProvider provider : providersList) {
     if (producesFacet(provider,facet)) {
-      Requires requirements=provider.getClass().getAnnotation(Requires.class);
-      if (requirements != null) {
-        for (        Facet requirement : requirements.value()) {
-          determineProviderChainFor(requirement.value(),result);
-          orderedProviders.addAll(result.get(requirement.value()));
-        }
+      if (producer != null) {
+        logger.warn("Facet already produced by {} and overwritten by {}",producer,provider);
+      }
+      for (      Facet requirement : requiredFacets(provider)) {
+        determineProviderChainFor(requirement.value(),result);
+        orderedProviders.addAll(result.get(requirement.value()));
+      }
+      for (      Facet updated : updatedFacets(provider)) {
+        determineProviderChainFor(updated.value(),result);
+        orderedProviders.addAll(result.get(updated.value()));
       }
       orderedProviders.add(provider);
+      producer=provider;
     }
+  }
+  if (producer == null) {
+    logger.warn("No facet provider found that produces {}",facet);
   }
   for (  FacetProvider provider : providersList) {
     if (updatesFacet(provider,facet)) {
-      Requires requirements=provider.getClass().getAnnotation(Requires.class);
-      if (requirements != null) {
-        for (        Facet requirement : requirements.value()) {
-          determineProviderChainFor(requirement.value(),result);
-          orderedProviders.addAll(result.get(requirement.value()));
+      for (      Facet requirement : requiredFacets(provider)) {
+        determineProviderChainFor(requirement.value(),result);
+        orderedProviders.addAll(result.get(requirement.value()));
+      }
+      for (      Facet updated : updatedFacets(provider)) {
+        for (        FacetProvider fp : providersList) {
+          if (producesFacet(fp,updated.value())) {
+            orderedProviders.add(fp);
+          }
         }
       }
       orderedProviders.add(provider);

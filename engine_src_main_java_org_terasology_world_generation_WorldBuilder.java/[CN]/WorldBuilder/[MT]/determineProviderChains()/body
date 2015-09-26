@@ -1,6 +1,6 @@
 {
   ListMultimap<Class<? extends WorldFacet>,FacetProvider> result=ArrayListMultimap.create();
-  Set<Class<? extends WorldFacet>> facets=Sets.newHashSet();
+  Set<Class<? extends WorldFacet>> facets=new LinkedHashSet<>();
   for (  FacetProvider provider : providersList) {
     Produces produces=provider.getClass().getAnnotation(Produces.class);
     if (produces != null) {
@@ -15,6 +15,18 @@
   }
   for (  Class<? extends WorldFacet> facet : facets) {
     determineProviderChainFor(facet,result);
+    if (logger.isDebugEnabled()) {
+      StringBuilder text=new StringBuilder(facet.getSimpleName());
+      text.append(" --> ");
+      Iterator<FacetProvider> it=result.get(facet).iterator();
+      while (it.hasNext()) {
+        text.append(it.next().getClass().getSimpleName());
+        if (it.hasNext()) {
+          text.append(", ");
+        }
+      }
+      logger.debug(text.toString());
+    }
   }
   return result;
 }
