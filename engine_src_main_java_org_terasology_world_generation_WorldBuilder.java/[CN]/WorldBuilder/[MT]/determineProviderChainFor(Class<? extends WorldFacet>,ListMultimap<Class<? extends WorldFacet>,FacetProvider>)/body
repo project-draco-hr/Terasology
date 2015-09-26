@@ -18,6 +18,18 @@
       orderedProviders.add(provider);
     }
   }
+  for (  FacetProvider provider : providersList) {
+    if (updatesFacet(provider,facet)) {
+      Requires requirements=provider.getClass().getAnnotation(Requires.class);
+      if (requirements != null) {
+        for (        Facet requirement : requirements.value()) {
+          determineProviderChainFor(requirement.value(),result);
+          orderedProviders.addAll(result.get(requirement.value()));
+        }
+      }
+      orderedProviders.add(provider);
+    }
+  }
   result.putAll(facet,orderedProviders);
   facetCalculationInProgress.remove(facet);
 }
