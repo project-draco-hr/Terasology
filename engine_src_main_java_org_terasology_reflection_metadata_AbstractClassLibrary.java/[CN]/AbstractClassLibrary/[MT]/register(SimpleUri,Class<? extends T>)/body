@@ -2,6 +2,9 @@
   ClassMetadata<? extends T,?> metadata=createMetadata(clazz,reflectFactory,copyStrategyLibrary,uri);
   if (metadata != null) {
     classLookup.put(clazz,metadata);
-    uriLookup.put(uri.getObjectName(),uri.getModuleName(),metadata);
+    ClassMetadata<? extends T,?> prev=uriLookup.put(uri.getObjectName(),uri.getModuleName(),metadata);
+    if (prev != null && !prev.equals(metadata)) {
+      logger.warn("Duplicate entry for '{}': {} and {}",uri,prev.getType(),metadata.getType());
+    }
   }
 }
