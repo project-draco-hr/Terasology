@@ -1,0 +1,20 @@
+{
+  WorldBuilder worldBuilder=new WorldBuilder(context.get(WorldGeneratorPluginLibrary.class));
+  worldBuilder.setSeed(12);
+  worldBuilder.addProvider(new Facet1Provider());
+  worldBuilder.addProvider(new Facet2Provider());
+  worldBuilder.addProvider(new Facet3Provider());
+  worldBuilder.addProvider(new Facet4Provider());
+  worldBuilder.addProvider(new FacetUpdater());
+  Region3i regionToGenerate=Region3i.createFromCenterExtents(new Vector3i(),1);
+  World world;
+  Region regionData;
+  world=worldBuilder.build();
+  regionData=world.getWorldData(regionToGenerate);
+  assertTrue(regionData.getFacet(Facet1.class).updated);
+  assertTrue(regionData.getFacet(Facet4.class).updated);
+  world=worldBuilder.build();
+  regionData=world.getWorldData(regionToGenerate);
+  assertNotNull(regionData.getFacet(Facet3.class));
+  assertTrue(regionData.getFacet(Facet4.class).updated);
+}
