@@ -1,0 +1,13 @@
+{
+  for (  Class<? extends TypeHandler> handler : environment.getSubtypesOf(TypeHandler.class)) {
+    RegisterTypeHandler register=handler.getAnnotation(RegisterTypeHandler.class);
+    if (register != null) {
+      Optional<Type> opt=GenericsUtil.getTypeParameterBindingForInheritedClass(handler,TypeHandler.class,0);
+      if (opt.isPresent()) {
+        TypeHandler instance=InjectionHelper.createWithConstructorInjection(handler,context);
+        InjectionHelper.inject(instance,context);
+        library.add((Class)opt.get(),instance);
+      }
+    }
+  }
+}

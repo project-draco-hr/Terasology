@@ -1,3 +1,7 @@
 {
-  return type.cast(typeSerializationLibrary.getHandlerFor(type).deserialize(data,this));
+  TypeHandler<?> handler=typeSerializationLibrary.getHandlerFor(type);
+  if (handler == null) {
+    throw new DeserializationException("No handler found for " + type);
+  }
+  return type.cast(handler.deserialize(data,this));
 }
