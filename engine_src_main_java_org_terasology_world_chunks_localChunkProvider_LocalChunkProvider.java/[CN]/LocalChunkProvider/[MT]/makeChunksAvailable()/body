@@ -5,6 +5,7 @@
     nearCache.put(readyChunkInfo.getPos(),readyChunkInfo.getChunk());
     preparingChunks.remove(readyChunkInfo.getPos());
   }
+  updateRelevanceRegionsWithNewChunks(newReadyChunks);
   if (!newReadyChunks.isEmpty()) {
     sortedReadyChunks.addAll(newReadyChunks);
     Collections.sort(sortedReadyChunks,new ReadyChunkRelevanceComparator());

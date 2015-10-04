@@ -4,10 +4,10 @@
     if (chunkRelevanceRegion.isDirty()) {
       for (      Vector3i pos : chunkRelevanceRegion.getNeededChunks()) {
         Chunk chunk=nearCache.get(pos);
-        if (chunk != null && chunk.isReady()) {
-          chunkRelevanceRegion.chunkReady(chunk);
+        if (chunk != null) {
+          chunkRelevanceRegion.checkIfChunkIsRelevant(chunk);
         }
- else         if (chunk == null) {
+ else {
           createOrLoadChunk(pos);
         }
       }
