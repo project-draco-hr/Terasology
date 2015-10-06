@@ -1,0 +1,11 @@
+{
+  super.onOpened();
+  if (nametext != null) {
+    nametext.setText(config.getPlayer().getName());
+  }
+  if (slider != null) {
+    Color color=config.getPlayer().getColor();
+    slider.bindValue(new NotifyingBinding(findClosestIndex(color)));
+  }
+  updateImage();
+}

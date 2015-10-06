@@ -1,20 +1,23 @@
 {
-  UIText nametext=find("playername",UIText.class);
-  if (nametext != null) {
-    nametext.bindText(BindHelper.bindBeanProperty("name",config.getPlayer(),String.class));
-  }
-  Color color=config.getPlayer().getColor();
+  nametext=find("playername",UIText.class);
   img=find("image",UIImage.class);
   slider=find("tone",UISlider.class);
-  slider.bindValue(new NotifyingBinding(findClosestIndex(color)));
-  slider.setIncrement(0.01f);
-  Function<Object,String> constant=Functions.constant("  ");
-  slider.setLabelFunction(constant);
+  if (slider != null) {
+    slider.setIncrement(0.01f);
+    Function<Object,String> constant=Functions.constant("  ");
+    slider.setLabelFunction(constant);
+  }
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().popScreen();
     }
   }
 );
-  updateImage();
+  WidgetUtil.trySubscribe(this,"ok",new ActivateEventListener(){
+    @Override public void onActivated(    UIWidget button){
+      savePlayerSettings();
+      getManager().popScreen();
+    }
+  }
+);
 }

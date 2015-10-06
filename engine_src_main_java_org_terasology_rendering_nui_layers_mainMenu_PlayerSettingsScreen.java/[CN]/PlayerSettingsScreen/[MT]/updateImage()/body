@@ -1,8 +1,8 @@
 {
-  float index=slider.getValue();
-  Color color=findClosestColor(index);
-  config.getPlayer().setColor(color);
+  Color color=getColor();
   ResourceUrn uri=TextureUtil.getTextureUriForColor(color);
   Texture tex=Assets.get(uri,Texture.class).get();
-  img.setImage(tex);
+  if (img != null) {
+    img.setImage(tex);
+  }
 }
