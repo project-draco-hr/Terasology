@@ -1,5 +1,14 @@
 {
   nametext=find("playername",UIText.class);
+  if (nametext != null) {
+    nametext.setTooltipDelay(0);
+    nametext.bindTooltipString(new ReadOnlyBinding<String>(){
+      @Override public String get(){
+        return validateScreen();
+      }
+    }
+);
+  }
   img=find("image",UIImage.class);
   slider=find("tone",UISlider.class);
   if (slider != null) {
@@ -13,11 +22,27 @@
     }
   }
 );
-  WidgetUtil.trySubscribe(this,"ok",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      savePlayerSettings();
-      getManager().popScreen();
+  UIButton okButton=find("ok",UIButton.class);
+  if (okButton != null) {
+    okButton.subscribe(new ActivateEventListener(){
+      @Override public void onActivated(      UIWidget button){
+        savePlayerSettings();
+        getManager().popScreen();
+      }
     }
-  }
 );
+    okButton.bindEnabled(new ReadOnlyBinding<Boolean>(){
+      @Override public Boolean get(){
+        return Strings.isNullOrEmpty(validateScreen());
+      }
+    }
+);
+    okButton.setTooltipDelay(0);
+    okButton.bindTooltipString(new ReadOnlyBinding<String>(){
+      @Override public String get(){
+        return validateScreen();
+      }
+    }
+);
+  }
 }
