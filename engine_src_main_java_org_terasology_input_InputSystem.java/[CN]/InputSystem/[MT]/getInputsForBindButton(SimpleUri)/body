@@ -1,0 +1,20 @@
+{
+  List<Input> inputs=new ArrayList<>();
+  for (  Entry<Integer,BindableButtonImpl> entry : keyBinds.entrySet()) {
+    if (entry.getValue().getId().equals(bindId)) {
+      inputs.add(InputType.KEY.getInput(entry.getKey()));
+    }
+  }
+  for (  Entry<MouseInput,BindableButtonImpl> entry : mouseButtonBinds.entrySet()) {
+    if (entry.getValue().getId().equals(bindId)) {
+      inputs.add(entry.getKey());
+    }
+  }
+  if (mouseWheelUpBind.getId().equals(bindId)) {
+    inputs.add(MouseInput.WHEEL_UP);
+  }
+  if (mouseWheelDownBind.getId().equals(bindId)) {
+    inputs.add(MouseInput.WHEEL_DOWN);
+  }
+  return inputs;
+}
