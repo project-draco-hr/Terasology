@@ -1,0 +1,14 @@
+{
+  LinkedHashMap<URL,Path> urlToTargetMap=Maps.newLinkedHashMap();
+  for (  ModuleSelectionInfo moduleSelectionInfo : modulesToDownload) {
+    ModuleMetadata metaData=moduleSelectionInfo.getOnlineVersion().getMetadata();
+    String version=metaData.getVersion().toString();
+    String id=metaData.getId().toString();
+    URL url=RemoteModuleExtension.getDownloadUrl(metaData);
+    String fileName=String.format("%s-%s.jar",id,version);
+    Path folder=PathManager.getInstance().getHomeModPath().normalize();
+    Path target=folder.resolve(fileName);
+    urlToTargetMap.put(url,target);
+  }
+  return urlToTargetMap;
+}

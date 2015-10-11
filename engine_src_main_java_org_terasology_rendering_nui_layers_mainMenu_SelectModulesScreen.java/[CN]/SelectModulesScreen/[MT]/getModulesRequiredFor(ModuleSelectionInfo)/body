@@ -1,0 +1,38 @@
+{
+  ModuleMetadata mainModuleMetadata=mainModuleInfo.getOnlineVersion().getMetadata();
+  LinkedList<Name> idsToCheck=Lists.newLinkedList();
+  idsToCheck.add(mainModuleMetadata.getId());
+  Map<Name,ModuleSelectionInfo> requiredIdToMetaDataMap=Maps.newLinkedHashMap();
+  requiredIdToMetaDataMap.put(mainModuleMetadata.getId(),mainModuleInfo);
+  while (!idsToCheck.isEmpty()) {
+    Name moduleToCheck=idsToCheck.removeFirst();
+    ModuleSelectionInfo moduleToCheckInfo=requiredIdToMetaDataMap.get(moduleToCheck);
+    ModuleMetadata metaDataOfModuleToCheck=moduleToCheckInfo.getOnlineVersion().getMetadata();
+    for (    DependencyInfo dependencyInfo : metaDataOfModuleToCheck.getDependencies()) {
+      Name depName=dependencyInfo.getId();
+      ModuleMetadata depMetaData;
+      if (depName.equals(ENGINE_MODULE_NAME)) {
+        depMetaData=moduleManager.getRegistry().getLatestModuleVersion(ENGINE_MODULE_NAME).getMetadata();
+        if (!dependencyInfo.versionRange().contains(depMetaData.getVersion())) {
+          throw new DependencyResolutionFailed(String.format("Module %s %s requires %s in version range %s, but you are using version %s",moduleToCheck,metaDataOfModuleToCheck.getVersion(),depName,dependencyInfo.versionRange(),depMetaData.getVersion()));
+        }
+      }
+ else {
+        ModuleSelectionInfo depInfo=modulesLookup.get(depName);
+        if (depInfo == null) {
+          throw new DependencyResolutionFailed(String.format("%s requires %s which is missing",moduleToCheck,depName));
+        }
+        depMetaData=depInfo.getOnlineVersion().getMetadata();
+        if (!dependencyInfo.versionRange().contains(depMetaData.getVersion())) {
+          throw new DependencyResolutionFailed(String.format("Module %s %s requires %s in version range %s, but the online version has version %s",moduleToCheck,metaDataOfModuleToCheck.getVersion(),depName,dependencyInfo.versionRange(),depMetaData.getVersion()));
+        }
+        if (!requiredIdToMetaDataMap.containsKey(depName)) {
+          idsToCheck.add(depName);
+          requiredIdToMetaDataMap.put(depName,depInfo);
+        }
+      }
+    }
+  }
+  List<ModuleSelectionInfo> sortedDependencies=Lists.newArrayList(requiredIdToMetaDataMap.values());
+  return sortedDependencies;
+}

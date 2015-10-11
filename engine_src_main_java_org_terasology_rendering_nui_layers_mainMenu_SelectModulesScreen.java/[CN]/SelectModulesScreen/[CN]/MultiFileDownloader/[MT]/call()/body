@@ -1,0 +1,20 @@
+{
+  List<Path> downloadedFiles=new ArrayList<>();
+  float fractionPerFile=(float)1 / urlToTargetMap.size();
+  int index=0;
+  for (  Map.Entry<URL,Path> entry : urlToTargetMap.entrySet()) {
+    float progressWithFiles=fractionPerFile * index;
+    ProgressListener singleDownloadListener=new ProgressListener(){
+      @Override public void onProgress(      float fraction){
+        float totalPrecentDone=progressWithFiles + (fraction / urlToTargetMap.size());
+        progressListener.onProgress(totalPrecentDone);
+      }
+    }
+;
+    FileDownloader fileDownloader=new FileDownloader(entry.getKey(),entry.getValue(),singleDownloadListener);
+    downloadedFiles.add(fileDownloader.call());
+    index++;
+  }
+  ;
+  return downloadedFiles;
+}
