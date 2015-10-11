@@ -1,0 +1,18 @@
+{
+  if (onlineVersion == null) {
+    return false;
+  }
+  if (latestVersion == null) {
+    return true;
+  }
+  int versionCompare=onlineVersion.getVersion().compareTo(latestVersion.getVersion());
+  if (versionCompare > 0) {
+    return true;
+  }
+ else   if (versionCompare == 0) {
+    return onlineVersion.getVersion().isSnapshot();
+  }
+ else {
+    return false;
+  }
+}
