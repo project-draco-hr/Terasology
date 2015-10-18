@@ -1,0 +1,19 @@
+{
+  if (targetBlockPos != null && !target.exists()) {
+    target=blockRegistry.getEntityAt(targetBlockPos);
+  }
+  HitResult hitInfo=physics.rayTrace(pos,dir,maxDist,filter);
+  EntityRef newTarget=hitInfo.getEntity();
+  if (target.equals(newTarget)) {
+    return false;
+  }
+  if (hitInfo.isWorldHit()) {
+    targetBlockPos=hitInfo.getBlockPosition();
+  }
+ else {
+    targetBlockPos=null;
+  }
+  prevTarget=target;
+  target=newTarget;
+  return true;
+}

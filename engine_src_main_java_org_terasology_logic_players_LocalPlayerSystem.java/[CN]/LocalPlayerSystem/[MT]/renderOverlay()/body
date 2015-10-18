@@ -1,22 +1,5 @@
 {
   if (config.getRendering().isRenderPlacingBox()) {
-    EntityRef target=cameraTargetSystem.getTarget();
-    Vector3i blockPos=cameraTargetSystem.getTargetBlockPosition();
-    AABB aabb=null;
-    BlockComponent blockComp=target.getComponent(BlockComponent.class);
-    BlockRegionComponent blockRegion=target.getComponent(BlockRegionComponent.class);
-    if (blockComp != null || blockRegion != null) {
-      Block block=worldProvider.getBlock(blockPos);
-      aabb=block.getBounds(blockPos);
-    }
- else {
-      MeshComponent mesh=target.getComponent(MeshComponent.class);
-      LocationComponent location=target.getComponent(LocationComponent.class);
-      if (mesh != null && mesh.mesh != null && location != null) {
-        aabb=mesh.mesh.getAABB();
-        aabb=aabb.transform(location.getWorldRotation(),location.getWorldPosition(),location.getWorldScale());
-      }
-    }
     if (aabb != null) {
       aabbRenderer.setAABB(aabb);
       aabbRenderer.render(2f);
