@@ -16,6 +16,14 @@
     Function<Object,String> constant=Functions.constant("  ");
     slider.setLabelFunction(constant);
   }
+  language=find("language",UIDropdown.class);
+  if (language != null) {
+    SimpleUri menuUri=new SimpleUri("engine:menu");
+    TranslationProject menuProject=translationSystem.getProject(menuUri);
+    List<Locale> locales=new ArrayList<>(menuProject.getAvailableLocales());
+    language.setOptions(Lists.newArrayList(locales));
+    language.setOptionRenderer(new LocaleRenderer(translationSystem));
+  }
   WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
     @Override public void onActivated(    UIWidget button){
       getManager().popScreen();
