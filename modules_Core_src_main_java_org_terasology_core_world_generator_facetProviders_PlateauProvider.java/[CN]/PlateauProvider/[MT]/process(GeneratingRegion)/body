@@ -1,0 +1,19 @@
+{
+  Region3i reg=region.getRegion();
+  Rect2i rc=Rect2i.createFromMinAndMax(reg.minX(),reg.minZ(),reg.maxX(),reg.maxZ());
+  if (rc.distanceSquared(centerPos.x(),centerPos.y()) <= outerRadius * outerRadius) {
+    SurfaceHeightFacet facet=region.getRegionFacet(SurfaceHeightFacet.class);
+    for (    Vector2i pos : facet.getWorldRegion()) {
+      float originalValue=facet.getWorld(pos);
+      int distSq=pos.distanceSquared(centerPos);
+      if (distSq <= innerRadius * innerRadius) {
+        facet.setWorld(pos,targetHeight);
+      }
+ else       if (distSq <= outerRadius * outerRadius) {
+        double dist=pos.distance(centerPos) - innerRadius;
+        float norm=(float)dist / (outerRadius - innerRadius);
+        facet.setWorld(pos,TeraMath.lerp(targetHeight,originalValue,norm));
+      }
+    }
+  }
+}
