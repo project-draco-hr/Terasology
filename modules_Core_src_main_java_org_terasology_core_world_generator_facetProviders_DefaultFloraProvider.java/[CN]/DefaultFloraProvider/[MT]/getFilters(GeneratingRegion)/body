@@ -1,0 +1,7 @@
+{
+  List<Predicate<Vector3i>> filters=Lists.newArrayList();
+  SeaLevelFacet seaLevel=region.getRegionFacet(SeaLevelFacet.class);
+  filters.add(PositionFilters.minHeight(seaLevel.getSeaLevel()));
+  filters.add(PositionFilters.probability(densityNoiseGen,configuration.density));
+  return filters;
+}
