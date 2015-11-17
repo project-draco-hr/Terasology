@@ -1,0 +1,29 @@
+{
+  if (newDiving) {
+    if (state.getMode() != MovementMode.DIVING) {
+      state.setMode(MovementMode.DIVING);
+    }
+  }
+ else   if (newSwimming) {
+    if (state.getMode() != MovementMode.SWIMMING) {
+      state.setMode(MovementMode.SWIMMING);
+    }
+    state.getVelocity().y+=0.02;
+  }
+ else   if (state.getMode() == MovementMode.SWIMMING || state.getMode() == MovementMode.DIVING) {
+    if (newClimbing) {
+      state.setMode(MovementMode.CLIMBING);
+      state.getVelocity().y=0;
+    }
+ else {
+      if (state.getVelocity().y > 0) {
+        state.getVelocity().y+=4;
+      }
+      state.setMode(MovementMode.WALKING);
+    }
+  }
+ else   if (newClimbing != (state.getMode() == MovementMode.CLIMBING)) {
+    state.getVelocity().y=0;
+    state.setMode((newClimbing) ? MovementMode.CLIMBING : MovementMode.WALKING);
+  }
+}

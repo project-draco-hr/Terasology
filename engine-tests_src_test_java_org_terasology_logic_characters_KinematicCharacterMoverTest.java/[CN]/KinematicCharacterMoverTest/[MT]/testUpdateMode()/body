@@ -1,0 +1,22 @@
+{
+  CharacterStateEvent state=new CharacterStateEvent();
+  state.setMode(MovementMode.WALKING);
+  KinematicCharacterMover.updateMode(state,false,true,true);
+  Assert.assertSame(MovementMode.DIVING,state.getMode());
+  KinematicCharacterMover.updateMode(state,true,false,true);
+  Assert.assertSame(MovementMode.SWIMMING,state.getMode());
+  state.setMode(MovementMode.FLYING);
+  KinematicCharacterMover.updateMode(state,false,true,true);
+  Assert.assertSame(MovementMode.DIVING,state.getMode());
+  KinematicCharacterMover.updateMode(state,false,false,false);
+  Assert.assertSame(MovementMode.WALKING,state.getMode());
+  KinematicCharacterMover.updateMode(state,false,false,true);
+  Assert.assertSame(MovementMode.CLIMBING,state.getMode());
+  KinematicCharacterMover.updateMode(state,false,false,false);
+  Assert.assertSame(MovementMode.WALKING,state.getMode());
+  state.setMode(MovementMode.GHOSTING);
+  KinematicCharacterMover.updateMode(state,false,true,false);
+  Assert.assertSame(MovementMode.DIVING,state.getMode());
+  KinematicCharacterMover.updateMode(state,false,false,true);
+  Assert.assertSame(MovementMode.CLIMBING,state.getMode());
+}
