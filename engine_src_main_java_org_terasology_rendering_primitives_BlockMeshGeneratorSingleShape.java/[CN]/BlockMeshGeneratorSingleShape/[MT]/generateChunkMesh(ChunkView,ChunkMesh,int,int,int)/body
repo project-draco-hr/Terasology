@@ -72,7 +72,12 @@
         blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(chunkMesh,x,y,z,colorOffset,renderType,ChunkVertexFlag.COLOR_MASK);
       }
  else {
-        blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(chunkMesh,x,y,z,colorOffset,renderType,vertexFlag);
+        if (blockAppearance.getPart(BlockPart.fromSide(dir)) == null) {
+          logger.debug("Cannot render side '{}' for a block - no stored block appearance for it. renderType {}, vertexFlag {}",dir,renderType,vertexFlag);
+        }
+ else {
+          blockAppearance.getPart(BlockPart.fromSide(dir)).appendTo(chunkMesh,x,y,z,colorOffset,renderType,vertexFlag);
+        }
       }
     }
   }
