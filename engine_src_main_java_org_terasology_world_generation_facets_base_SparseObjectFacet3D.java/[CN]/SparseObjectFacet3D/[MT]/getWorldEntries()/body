@@ -1,8 +1,8 @@
 {
-  Map<Vector3i,T> result=Maps.newLinkedHashMap();
-  for (  Entry<Vector3i,T> entry : relData.entrySet()) {
-    Vector3i relPos=entry.getKey();
-    Vector3i worldPos=relativeToWorld(relPos.x,relPos.y,relPos.z);
+  Map<BaseVector3i,T> result=Maps.newLinkedHashMap();
+  for (  Entry<BaseVector3i,T> entry : relData.entrySet()) {
+    BaseVector3i relPos=entry.getKey();
+    BaseVector3i worldPos=relativeToWorld(relPos.x(),relPos.y(),relPos.z());
     result.put(worldPos,entry.getValue());
   }
   return result;

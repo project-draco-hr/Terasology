@@ -1,10 +1,10 @@
 {
   TreeFacet facet=chunkRegion.getFacet(TreeFacet.class);
-  for (  Map.Entry<Vector3i,TreeGenerator> entry : facet.getRelativeEntries().entrySet()) {
-    Vector3i pos=entry.getKey();
+  for (  Map.Entry<BaseVector3i,TreeGenerator> entry : facet.getRelativeEntries().entrySet()) {
+    BaseVector3i pos=entry.getKey();
     TreeGenerator treeGen=entry.getValue();
     int seed=relativeToWorld(facet,pos).hashCode();
     Random random=new FastRandom(seed);
-    treeGen.generate(blockManager,chunk,random,pos.x,pos.y,pos.z);
+    treeGen.generate(blockManager,chunk,random,pos.x(),pos.y(),pos.z());
   }
 }

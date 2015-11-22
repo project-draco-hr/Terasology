@@ -6,7 +6,7 @@
     float seaLevel=seaLevelFacet.getSeaLevel();
     float targetHeight=seaLevel + 1;
     Vector2i middlePos=new Vector2i(centerChunkPos.x,centerChunkPos.z);
-    for (    Vector2i pos : facet.getWorldRegion()) {
+    for (    BaseVector2i pos : facet.getWorldRegion().contents()) {
       float originalValue=facet.getWorld(pos);
       if (seaLevel > originalValue) {
         float scaleTowardsSeaLevel=(float)pos.gridDistance(middlePos) / (float)(ChunkConstants.SIZE_X / 2);
