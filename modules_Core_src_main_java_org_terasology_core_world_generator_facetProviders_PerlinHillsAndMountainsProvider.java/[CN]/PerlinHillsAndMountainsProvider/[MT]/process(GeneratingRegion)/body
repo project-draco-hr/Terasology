@@ -5,9 +5,9 @@
   SurfaceTemperatureFacet temperatureData=region.getRegionFacet(SurfaceTemperatureFacet.class);
   SurfaceHumidityFacet humidityData=region.getRegionFacet(SurfaceHumidityFacet.class);
   float[] heightData=facet.getInternal();
-  Iterator<Vector2i> positionIterator=facet.getRelativeRegion().iterator();
+  Iterator<BaseVector2i> positionIterator=facet.getRelativeRegion().contents().iterator();
   for (int i=0; i < heightData.length; ++i) {
-    Vector2i pos=positionIterator.next();
+    BaseVector2i pos=positionIterator.next();
     float temp=temperatureData.get(pos);
     float tempHumid=temp * humidityData.get(pos);
     Vector2f distanceToMountainBiome=new Vector2f(temp - 0.25f,tempHumid - 0.35f);

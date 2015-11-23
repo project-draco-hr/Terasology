@@ -3,10 +3,10 @@
   DensityFacet facet=new DensityFacet(region.getRegion(),region.getBorderForFacet(DensityFacet.class));
   Region3i area=region.getRegion();
   Rect2i rect=Rect2i.createFromMinAndMax(facet.getRelativeRegion().minX(),facet.getRelativeRegion().minZ(),facet.getRelativeRegion().maxX(),facet.getRelativeRegion().maxZ());
-  for (  Vector2i pos : rect) {
+  for (  BaseVector2i pos : rect.contents()) {
     float height=surfaceHeight.get(pos);
     for (int y=facet.getRelativeRegion().minY(); y <= facet.getRelativeRegion().maxY(); ++y) {
-      facet.set(pos.x,y,pos.y,height - area.minY() - y);
+      facet.set(pos.x(),y,pos.y(),height - area.minY() - y);
     }
   }
   region.setRegionFacet(DensityFacet.class,facet);

@@ -4,8 +4,8 @@
   Region3i relativeRegion=floraFacet.getRelativeRegion();
   int rx=wx - worldRegion.minX() + relativeRegion.minX();
   int rz=wy - worldRegion.minZ() + relativeRegion.minZ();
-  for (  Entry<Vector3i,FloraType> entry : floraFacet.getRelativeEntries().entrySet()) {
-    Vector3i treePos=entry.getKey();
+  for (  Entry<BaseVector3i,FloraType> entry : floraFacet.getRelativeEntries().entrySet()) {
+    BaseVector3i treePos=entry.getKey();
     if (treePos.getX() == rx && treePos.getZ() == rz) {
       FloraType flora=entry.getValue();
       return labelFunc.apply(flora);
