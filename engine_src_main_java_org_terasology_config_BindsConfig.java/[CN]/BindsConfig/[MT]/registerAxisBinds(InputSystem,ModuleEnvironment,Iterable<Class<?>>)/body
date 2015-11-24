@@ -1,6 +1,6 @@
 {
-  for (  Class registerBindClass : classes) {
-    RegisterBindAxis info=(RegisterBindAxis)registerBindClass.getAnnotation(RegisterBindAxis.class);
+  for (  Class<?> registerBindClass : classes) {
+    RegisterBindAxis info=registerBindClass.getAnnotation(RegisterBindAxis.class);
     Name moduleId=environment.getModuleProviding(registerBindClass);
     SimpleUri id=new SimpleUri(moduleId,info.id());
     if (BindAxisEvent.class.isAssignableFrom(registerBindClass)) {

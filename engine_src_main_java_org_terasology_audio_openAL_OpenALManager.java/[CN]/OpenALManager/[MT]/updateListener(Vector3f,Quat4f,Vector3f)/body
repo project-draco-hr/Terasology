@@ -1,8 +1,8 @@
 {
   AL10.alListener3f(AL10.AL_VELOCITY,velocity.x,velocity.y,velocity.z);
   OpenALException.checkState("Setting listener velocity");
-  Vector3f dir=QuaternionUtil.quatRotate(orientation,Direction.FORWARD.getVector3f(),new Vector3f());
-  Vector3f up=QuaternionUtil.quatRotate(orientation,Direction.UP.getVector3f(),new Vector3f());
+  Vector3f dir=orientation.rotate(Direction.FORWARD.getVector3f(),new Vector3f());
+  Vector3f up=orientation.rotate(Direction.UP.getVector3f(),new Vector3f());
   FloatBuffer listenerOri=BufferUtils.createFloatBuffer(6).put(new float[]{dir.x,dir.y,dir.z,up.x,up.y,up.z});
   listenerOri.flip();
   AL10.alListener(AL10.AL_ORIENTATION,listenerOri);
