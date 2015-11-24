@@ -3,7 +3,7 @@
   cameraPosition.add(0,characterComponent.eyeOffset,0);
   playerCamera.getPosition().set(cameraPosition);
   Vector3f viewDir=Direction.FORWARD.getVector3f();
-  QuaternionUtil.quatRotate(rotation,viewDir,playerCamera.getViewingDirection());
+  rotation.rotate(viewDir,playerCamera.getViewingDirection());
   float stepDelta=charMovementComp.footstepDelta - lastStepDelta;
   if (stepDelta < 0) {
     stepDelta+=1;
