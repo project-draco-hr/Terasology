@@ -4,7 +4,7 @@
     int index=result.size();
     result.put(metadata.getType(),index);
     int fieldId=0;
-    for (    FieldMetadata field : metadata.getFields()) {
+    for (    FieldMetadata<?,?> field : metadata.getFields()) {
       if (fieldId >= 256) {
         logger.error("Class {} has too many fields (>255), serialization will be incomplete",metadata.getUri());
         break;

@@ -4,7 +4,7 @@
     ByteString.Output fieldIds=ByteString.newOutput();
     EventMetadata<?> metadata=eventLibrary.getMetadata(eventMapping.getKey());
     NetData.SerializationInfo.Builder info=NetData.SerializationInfo.newBuilder().setId(eventMapping.getValue()).setName(metadata.getUri().toString());
-    for (    FieldMetadata field : metadata.getFields()) {
+    for (    FieldMetadata<?,?> field : metadata.getFields()) {
       fieldIds.write(field.getId());
       info.addFieldName(field.getName());
     }
