@@ -9,13 +9,13 @@
         }
       }
  else {
-        Vector3i location=new Vector3i(blockRegion.region.center(),0.5f);
+        Vector3i location=new Vector3i(blockRegion.region.center(),RoundingMode.HALF_UP);
         commonDefaultDropsHandling(event,entity,location,blockComponent.block.getArchetypeBlock());
       }
     }
  else     if (entity.hasComponent(LocationComponent.class)) {
       LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
-      Vector3i location=new Vector3i(locationComponent.getWorldPosition(),0.5f);
+      Vector3i location=new Vector3i(locationComponent.getWorldPosition(),RoundingMode.HALF_UP);
       commonDefaultDropsHandling(event,entity,location,blockComponent.block.getArchetypeBlock());
     }
   }

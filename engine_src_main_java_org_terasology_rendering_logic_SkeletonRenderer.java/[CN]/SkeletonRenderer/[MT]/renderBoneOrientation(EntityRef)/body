@@ -7,7 +7,7 @@
   Vector3f worldPosA=loc.getWorldPosition();
   Quat4f worldRot=loc.getWorldRotation();
   Vector3f offset=new Vector3f(0,0,0.1f);
-  QuaternionUtil.quatRotate(worldRot,offset,offset);
+  worldRot.rotate(offset,offset);
   offset.add(worldPosA);
   glBegin(GL11.GL_LINES);
   glVertex3f(worldPosA.x,worldPosA.y,worldPosA.z);

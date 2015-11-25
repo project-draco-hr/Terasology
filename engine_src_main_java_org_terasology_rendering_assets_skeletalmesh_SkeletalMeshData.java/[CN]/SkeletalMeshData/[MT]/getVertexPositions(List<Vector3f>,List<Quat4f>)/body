@@ -5,7 +5,7 @@
     for (int weightIndexOffset=0; weightIndexOffset < vertexWeightCounts.get(i); ++weightIndexOffset) {
       int weightIndex=vertexStartWeights.get(i) + weightIndexOffset;
       BoneWeight weight=weights.get(weightIndex);
-      Vector3f current=QuaternionUtil.quatRotate(boneRotations.get(weight.getBoneIndex()),weight.getPosition(),new Vector3f());
+      Vector3f current=boneRotations.get(weight.getBoneIndex()).rotate(weight.getPosition(),new Vector3f());
       current.add(bonePositions.get(weight.getBoneIndex()));
       current.scale(weight.getBias());
       vertexPos.add(current);

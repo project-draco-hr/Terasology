@@ -7,9 +7,9 @@
   float fitScale=0.35f * Math.min(drawRegion.width(),drawRegion.height()) / Math.max(meshExtents.x,Math.max(meshExtents.y,meshExtents.z));
   Vector3f centerOffset=meshAABB.getCenter();
   centerOffset.scale(-1.0f);
-  Matrix4f centerTransform=new Matrix4f(Quat4f.IDENTITY,centerOffset,1.0f);
+  Matrix4f centerTransform=new Matrix4f(BaseQuat4f.IDENTITY,centerOffset,1.0f);
   Matrix4f userTransform=new Matrix4f(rotation,offset,-fitScale * scale);
-  Matrix4f translateTransform=new Matrix4f(Quat4f.IDENTITY,new Vector3f(drawRegion.minX() + drawRegion.width() / 2,drawRegion.minY() + drawRegion.height() / 2,0),1);
+  Matrix4f translateTransform=new Matrix4f(BaseQuat4f.IDENTITY,new Vector3f(drawRegion.minX() + drawRegion.width() / 2,drawRegion.minY() + drawRegion.height() / 2,0),1);
   userTransform.mul(centerTransform);
   translateTransform.mul(userTransform);
   Matrix4f finalMat=new Matrix4f(modelView);
