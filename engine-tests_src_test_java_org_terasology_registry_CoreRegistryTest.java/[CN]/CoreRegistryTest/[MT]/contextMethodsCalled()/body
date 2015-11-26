@@ -1,0 +1,11 @@
+{
+  Integer value=10;
+  CoreRegistry.put(Integer.class,value);
+  assertEquals(value,context.get(Integer.class));
+  assertEquals(context.get(Integer.class),CoreRegistry.get(Integer.class));
+  CoreRegistry.setContext(new ContextImplementation());
+  assertNotEquals(CoreRegistry.get(Context.class),context);
+  assertEquals(CoreRegistry.get(Integer.class),null);
+  CoreRegistry.setContext(context);
+  assertEquals(CoreRegistry.get(Integer.class),value);
+}
