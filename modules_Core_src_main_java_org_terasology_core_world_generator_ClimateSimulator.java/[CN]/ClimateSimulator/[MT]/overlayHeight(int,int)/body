@@ -1,8 +1,8 @@
 {
-  for (int width=0; width < size; width++) {
-    for (int height=0; height < size; height++) {
+  for (int width=0; width < climateDistanceData.getSize(); width++) {
+    for (int height=0; height < climateDistanceData.getSize(); height++) {
       float distToEq=(float)(0.5f - Math.abs(((height / 512.) * 2) - 1)) * 2;
-      float heightFactor=heightmap[height][width] - 1;
+      float heightFactor=climateDistanceData.getHeightmap()[height][width] - 1;
       if (heightFactor < 0) {
         climate[height][width]=distToEq * 0.4f;
       }

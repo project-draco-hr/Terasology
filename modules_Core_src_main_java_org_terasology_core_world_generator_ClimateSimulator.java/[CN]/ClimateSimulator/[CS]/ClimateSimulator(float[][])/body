@@ -1,14 +1,13 @@
 {
-  heightmap=hm;
-  size=heightmap.length;
-  climate=new float[size][size];
-  float[][] t1=distanceFrom("poles",10);
-  float[][] t2=distanceFrom("equator",10);
-  for (int width=0; width < size; width++) {
-    for (int height=0; height < size; height++) {
+  climateDistanceData=new ClimateSimulatorData(hm,hm.length);
+  climate=new float[climateDistanceData.getSize()][climateDistanceData.getSize()];
+  float[][] t1=climateDistanceData.distanceFrom("poles",10);
+  float[][] t2=climateDistanceData.distanceFrom("equator",10);
+  for (int width=0; width < climateDistanceData.getSize(); width++) {
+    for (int height=0; height < climateDistanceData.getSize(); height++) {
       climate[width][height]=t1[width][height] + t2[width][height] - 1;
     }
   }
   overlayHeight(0,0);
-  humidity=distanceFrom("water",5);
+  humidity=climateDistanceData.distanceFrom("water",5);
 }
