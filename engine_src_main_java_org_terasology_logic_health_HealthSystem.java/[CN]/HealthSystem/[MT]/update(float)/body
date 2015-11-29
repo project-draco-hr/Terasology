@@ -8,13 +8,7 @@
       continue;
     }
     int healAmount=0;
-    while (time.getGameTimeInMs() >= health.nextRegenTick) {
-      healAmount++;
-      health.nextRegenTick=health.nextRegenTick + (long)(1000 / health.regenRate);
-    }
-    if (healAmount > 0) {
-      checkHeal(entity,healAmount,entity,health);
-      entity.saveComponent(health);
-    }
+    healAmount=regenerateHealth(health,healAmount);
+    checkHealed(entity,health,healAmount);
   }
 }
