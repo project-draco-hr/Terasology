@@ -1,6 +1,6 @@
 {
   Rotation rotation=Rotation.rotate(Yaw.CLOCKWISE_180,Pitch.CLOCKWISE_90,Roll.CLOCKWISE_90);
   Quat4f rot=rotation.getQuat4f();
-  Vector3f dir=QuaternionUtil.quatRotate(rot,Side.FRONT.toDirection().getVector3f(),new Vector3f());
+  Vector3f dir=rot.rotate(Side.FRONT.toDirection().getVector3f(),new Vector3f());
   assertEquals(Direction.inDirection(dir).toSide(),rotation.rotate(Side.FRONT));
 }
