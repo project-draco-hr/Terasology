@@ -5,7 +5,7 @@
     ByteArrayInputStream bais=new ByteArrayInputStream(chunkData);
     try (GZIPInputStream gzipIn=new GZIPInputStream(bais)){
       EntityData.ChunkStore storeData=EntityData.ChunkStore.parseFrom(gzipIn);
-      store=new ChunkStoreInternal(storeData,this,entityManager,blockManager,biomeManager);
+      store=new ChunkStoreInternal(storeData,entityManager,blockManager,biomeManager);
     }
  catch (    IOException e) {
       logger.error("Failed to read existing saved chunk {}",chunkPos);

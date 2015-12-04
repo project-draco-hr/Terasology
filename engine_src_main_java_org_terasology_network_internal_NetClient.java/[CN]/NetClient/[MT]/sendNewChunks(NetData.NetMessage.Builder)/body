@@ -6,7 +6,7 @@
       Vector3i center=new Vector3i();
       LocationComponent loc=getEntity().getComponent(ClientComponent.class).character.getComponent(LocationComponent.class);
       if (loc != null) {
-        center.set(ChunkMath.calcChunkPos(new Vector3i(loc.getWorldPosition(),0.5f)));
+        center.set(ChunkMath.calcChunkPos(new Vector3i(loc.getWorldPosition(),RoundingMode.HALF_UP)));
       }
       Vector3i pos=null;
       int distance=Integer.MAX_VALUE;

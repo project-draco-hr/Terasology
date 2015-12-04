@@ -5,7 +5,7 @@
   if (worldProvider.isBlockRelevant(initial.getPosition())) {
     updatePosition(characterMovementComponent,result,input,entity);
     if (input.isFirstRun()) {
-      checkBlockEntry(entity,new Vector3i(initial.getPosition(),0.5f),new Vector3i(result.getPosition(),0.5f),characterMovementComponent.height);
+      checkBlockEntry(entity,new Vector3i(initial.getPosition(),RoundingMode.HALF_UP),new Vector3i(result.getPosition(),RoundingMode.HALF_UP),characterMovementComponent.height);
     }
     if (result.getMode() != MovementMode.GHOSTING && result.getMode() != MovementMode.NONE) {
       checkMode(characterMovementComponent,result,initial,entity,input.isFirstRun());

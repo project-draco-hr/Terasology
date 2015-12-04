@@ -6,7 +6,7 @@
     if (copyStrategy.getAnnotation(RegisterCopyStrategy.class) == null) {
       continue;
     }
-    Class targetType=ReflectionUtil.getTypeParameterForSuper(copyStrategy,CopyStrategy.class,0);
+    Class<?> targetType=ReflectionUtil.getTypeParameterForSuper(copyStrategy,CopyStrategy.class,0);
     if (targetType != null) {
       try {
         copyStrategyLibrary.register(targetType,copyStrategy.newInstance());

@@ -42,7 +42,7 @@
       if (boneLocation != null) {
         Vector3f pos=boneLocation.getWorldPosition();
         pos.sub(worldPos);
-        QuaternionUtil.quatRotate(inverseWorldRot,pos,pos);
+        inverseWorldRot.rotate(pos,pos);
         bonePositions.add(pos);
         Quat4f rot=new Quat4f(inverseWorldRot);
         rot.mul(boneLocation.getWorldRotation());

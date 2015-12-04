@@ -27,7 +27,7 @@
     for (int weightIndex=0; weightIndex < vertexWeightCounts.get(vertIndex); ++weightIndex) {
       BoneWeight weight=weights.get(weightIndex + vertexStartWeights.get(vertIndex));
       inverseRot.inverse(bones.get(weight.getBoneIndex()).getObjectRotation());
-      QuaternionUtil.quatRotate(inverseRot,normal,norm);
+      inverseRot.rotate(normal,norm);
       weight.setNormal(norm);
     }
   }
