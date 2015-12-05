@@ -1,7 +1,8 @@
 {
+  int newHeal=healAmount;
   while (time.getGameTimeInMs() >= health.nextRegenTick) {
-    healAmount++;
+    newHeal++;
     health.nextRegenTick=health.nextRegenTick + (long)(1000 / health.regenRate);
   }
-  return healAmount;
+  return newHeal;
 }
