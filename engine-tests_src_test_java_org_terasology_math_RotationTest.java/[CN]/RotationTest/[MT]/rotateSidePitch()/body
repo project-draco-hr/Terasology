@@ -1,7 +1,7 @@
 {
   Rotation rotation=Rotation.rotate(Pitch.CLOCKWISE_90);
   Quat4f rot=rotation.getQuat4f();
-  Vector3f dir=QuaternionUtil.quatRotate(rot,Side.FRONT.toDirection().getVector3f(),new Vector3f());
+  Vector3f dir=rot.rotate(Side.FRONT.toDirection().getVector3f(),new Vector3f());
   assertEquals(Direction.inDirection(dir).toSide(),rotation.rotate(Side.FRONT));
   assertEquals(Side.TOP,Rotation.rotate(Pitch.CLOCKWISE_90).rotate(Side.FRONT));
   assertEquals(Side.RIGHT,Rotation.rotate(Pitch.CLOCKWISE_90).rotate(Side.RIGHT));
