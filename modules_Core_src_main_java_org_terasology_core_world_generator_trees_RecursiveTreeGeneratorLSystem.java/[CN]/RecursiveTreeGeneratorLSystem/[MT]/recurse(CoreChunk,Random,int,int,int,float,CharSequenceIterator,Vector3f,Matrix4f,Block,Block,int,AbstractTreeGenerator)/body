@@ -5,10 +5,10 @@
 switch (c) {
 case 'G':
 case 'F':
-      safelySetBlock(view,posX + (int)position.x + 1,posY + (int)position.y,posZ + (int)position.z,bark);
-    safelySetBlock(view,posX + (int)position.x - 1,posY + (int)position.y,posZ + (int)position.z,bark);
-  safelySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z + 1,bark);
-safelySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z - 1,bark);
+      treeGenerator.safelySetBlock(view,posX + (int)position.x + 1,posY + (int)position.y,posZ + (int)position.z,bark);
+    treeGenerator.safelySetBlock(view,posX + (int)position.x - 1,posY + (int)position.y,posZ + (int)position.z,bark);
+  treeGenerator.safelySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z + 1,bark);
+treeGenerator.safelySetBlock(view,posX + (int)position.x,posY + (int)position.y,posZ + (int)position.z - 1,bark);
 if (depth > 1) {
 int size=1;
 for (int x=-size; x <= size; x++) {
@@ -17,10 +17,10 @@ for (int x=-size; x <= size; x++) {
       if (Math.abs(x) == size && Math.abs(y) == size && Math.abs(z) == size) {
         continue;
       }
-      safelySetBlock(view,posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z,leaf);
-      safelySetBlock(view,posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z,leaf);
-      safelySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1,leaf);
-      safelySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1,leaf);
+      treeGenerator.safelySetBlock(view,posX + (int)position.x + x+ 1,posY + (int)position.y + y,posZ + z + (int)position.z,leaf);
+      treeGenerator.safelySetBlock(view,posX + (int)position.x + x - 1,posY + (int)position.y + y,posZ + z + (int)position.z,leaf);
+      treeGenerator.safelySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z+ 1,leaf);
+      treeGenerator.safelySetBlock(view,posX + (int)position.x + x,posY + (int)position.y + y,posZ + z + (int)position.z - 1,leaf);
     }
   }
 }
@@ -30,7 +30,7 @@ rotation.transformVector(dir);
 position.add(dir);
 break;
 case '[':
-recurse(view,rand,posX,posY,posZ,angleOffset,axiomIterator,new Vector3f(position),new Matrix4f(rotation),bark,leaf,depth);
+recurse(view,rand,posX,posY,posZ,angleOffset,axiomIterator,new Vector3f(position),new Matrix4f(rotation),bark,leaf,depth,treeGenerator);
 break;
 case ']':
 return;
@@ -70,7 +70,7 @@ float weightedFailureProbability=TeraMath.pow(1f - rule.getProbability(),maxDept
 if (rand.nextFloat() < weightedFailureProbability) {
 break;
 }
-recurse(view,rand,posX,posY,posZ,angleOffset,new CharSequenceIterator(rule.getAxiom()),position,rotation,bark,leaf,depth + 1);
+recurse(view,rand,posX,posY,posZ,angleOffset,new CharSequenceIterator(rule.getAxiom()),position,rotation,bark,leaf,depth + 1,treeGenerator);
 }
 }
 }

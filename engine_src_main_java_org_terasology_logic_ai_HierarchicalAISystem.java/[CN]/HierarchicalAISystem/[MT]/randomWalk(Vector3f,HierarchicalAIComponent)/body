@@ -1,0 +1,14 @@
+{
+  if (ai.flying) {
+    float targetY=0;
+    do {
+      targetY=worldPos.y + random.nextFloat(-100.0f,100.0f);
+    }
+ while (targetY > ai.maxAltitude);
+    ai.movementTarget.set(worldPos.x + random.nextFloat(-500.0f,500.0f),targetY,worldPos.z + random.nextFloat(-500.0f,500.0f));
+  }
+ else {
+    ai.movementTarget.set(worldPos.x + random.nextFloat(-500.0f,500.0f),worldPos.y,worldPos.z + random.nextFloat(-500.0f,500.0f));
+  }
+  ai.lastChangeOfDirectionAt=time.getGameTimeInMs();
+}

@@ -1,0 +1,11 @@
+{
+  Vector3f tempTarget=localPlayer.getPosition();
+  if (ai.forgiving != 0) {
+    ai.movementTarget.set(new Vector3f(-tempTarget.x + random.nextFloat(-ai.forgiving,ai.forgiving),-tempTarget.y + random.nextFloat(-ai.forgiving,ai.forgiving),-tempTarget.z + random.nextFloat(-ai.forgiving,ai.forgiving)));
+  }
+ else {
+    ai.movementTarget.set(new Vector3f(tempTarget.x * -1,tempTarget.y * -1,tempTarget.z * -1));
+  }
+  entity.saveComponent(ai);
+  ai.inDanger=true;
+}
