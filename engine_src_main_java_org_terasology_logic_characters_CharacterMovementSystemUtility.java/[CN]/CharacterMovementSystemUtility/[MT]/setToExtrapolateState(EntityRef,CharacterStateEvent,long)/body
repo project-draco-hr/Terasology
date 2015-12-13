@@ -3,18 +3,8 @@
   Vector3f newPos=new Vector3f(state.getVelocity());
   newPos.scale(t);
   newPos.add(state.getPosition());
-  LocationComponent location=entity.getComponent(LocationComponent.class);
-  location.setWorldPosition(newPos);
-  location.setWorldRotation(state.getRotation());
-  entity.saveComponent(location);
-  CharacterMovementComponent movementComponent=entity.getComponent(CharacterMovementComponent.class);
-  movementComponent.mode=state.getMode();
-  movementComponent.setVelocity(state.getVelocity());
-  movementComponent.grounded=state.isGrounded();
-  entity.saveComponent(movementComponent);
-  CharacterComponent characterComponent=entity.getComponent(CharacterComponent.class);
-  characterComponent.pitch=state.getPitch();
-  characterComponent.yaw=state.getYaw();
-  entity.saveComponent(characterComponent);
+  extrapolateLocationComponent(entity,state,newPos);
+  extrapolateCharacterMovementComponent(entity,state);
+  extrapolateCharacterComponent(entity,state);
   setPhysicsLocation(entity,newPos);
 }
