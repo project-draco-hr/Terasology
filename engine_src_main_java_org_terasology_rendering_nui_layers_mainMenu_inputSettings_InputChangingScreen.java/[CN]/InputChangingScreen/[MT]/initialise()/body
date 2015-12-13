@@ -1,0 +1,49 @@
+{
+  ColumnLayout mainLayout=new ColumnLayout();
+  mainLayout.setHorizontalSpacing(8);
+  mainLayout.setVerticalSpacing(8);
+  mainLayout.setFamily("option-grid");
+  mainLayout.addWidget(new UISpace(new Vector2i(1,16)));
+  mainLayout.addWidget(new UILabel("subtitle","title",getDescription()));
+  RowLayout currentBinding=new RowLayout("current-binding");
+  currentBinding.addWidget(new UILabel("Current binding"),null);
+  UIButton currentBindingName=new UIButton();
+  currentBindingName.setEnabled(false);
+  if (inputBind.getInput() != null) {
+    currentBindingName.setText(inputBind.getInput().getDisplayName());
+  }
+  currentBinding.addWidget(currentBindingName,null);
+  currentBinding.setColumnRatios(0.3f);
+  int horizontalSpacing=20;
+  currentBinding.setHorizontalSpacing(horizontalSpacing);
+  mainLayout.addWidget(currentBinding);
+  mainLayout.addWidget(new UISpace(new Vector2i(1,16)));
+  RowLayout newBinding=new RowLayout("new-binding");
+  newBinding.addWidget(new UILabel("New binding"),null);
+  newBinding.addWidget(inputBind,null);
+  newBinding.setColumnRatios(0.3f);
+  newBinding.setHorizontalSpacing(horizontalSpacing);
+  mainLayout.addWidget(newBinding);
+  mainLayout.addWidget(new UISpace(new Vector2i(1,16)));
+  ColumnLayout optionsGrid=new ColumnLayout("options");
+  optionsGrid.setFamily("menu-options");
+  optionsGrid.setColumns(2);
+  optionsGrid.addWidget(new UIButton("remove","Remove"));
+  optionsGrid.addWidget(new UIButton("default","Default"));
+  optionsGrid.setHorizontalSpacing(8);
+  mainLayout.addWidget(optionsGrid);
+  ScrollableArea area=new ScrollableArea();
+  area.setContent(mainLayout);
+  ColumnLayout footerGrid=new ColumnLayout("footer");
+  footerGrid.setFamily("menu-options");
+  footerGrid.setColumns(2);
+  footerGrid.addWidget(new UIButton("save","Save"));
+  footerGrid.addWidget(new UIButton("cancel","Cancel"));
+  footerGrid.setHorizontalSpacing(8);
+  RelativeLayout layout=new RelativeLayout();
+  layout.addWidget(new UIImage("title",Assets.getTexture("engine:terasology").get()),HorizontalHint.create().fixedWidth(512).center(),VerticalHint.create().fixedHeight(128).alignTop(48));
+  layout.addWidget(new UILabel("subtitle","title","Input Binding"),HorizontalHint.create().center(),VerticalHint.create().fixedHeight(48).alignTopRelativeTo("title",VerticalAlign.BOTTOM));
+  layout.addWidget(area,HorizontalHint.create().fixedWidth(640).center(),VerticalHint.create().alignTopRelativeTo("subtitle",VerticalAlign.BOTTOM).alignBottomRelativeTo("footer",VerticalAlign.TOP,48));
+  layout.addWidget(footerGrid,HorizontalHint.create().center().fixedWidth(400),VerticalHint.create().fixedHeight(48).alignBottom(48));
+  setContents(layout);
+}

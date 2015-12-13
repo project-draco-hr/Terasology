@@ -1,7 +1,11 @@
 {
-  UIInputBind inputBind=new UIInputBind();
+  UIInputBindButton inputBind=new UIInputBindButton();
+  inputBind.setManager(getManager());
+  inputBind.setDescription(bind.description());
   inputBind.bindInput(new InputConfigBinding(config.getInput().getBinds(),uri));
-  UIInputBind secondaryInputBind=new UIInputBind();
+  UIInputBindButton secondaryInputBind=new UIInputBindButton();
+  secondaryInputBind.setManager(getManager());
+  inputBind.setDescription(bind.description());
   secondaryInputBind.bindInput(new InputConfigBinding(config.getInput().getBinds(),uri,1));
   layout.addWidget(new RowLayout(new UILabel(bind.description()),inputBind,secondaryInputBind).setColumnRatios(0.4f).setHorizontalSpacing(horizontalSpacing));
 }
