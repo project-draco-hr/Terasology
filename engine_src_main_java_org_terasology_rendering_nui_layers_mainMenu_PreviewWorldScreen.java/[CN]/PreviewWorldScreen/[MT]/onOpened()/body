@@ -1,10 +1,9 @@
 {
   super.onOpened();
   SimpleUri worldGenUri=config.getWorldGeneration().getDefaultGenerator();
-  Name moduleName=worldGenUri.getModuleName();
   try {
     DependencyResolver resolver=new DependencyResolver(moduleManager.getRegistry());
-    ResolutionResult result=resolver.resolve(moduleName);
+    ResolutionResult result=resolver.resolve(config.getDefaultModSelection().listModules());
     if (result.isSuccess()) {
       subContext=new ContextImpl(context);
       CoreRegistry.setContext(subContext);
