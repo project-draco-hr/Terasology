@@ -55,7 +55,7 @@
     }
     Block blockToCheck=adjacentBlocks.get(Side.TOP);
     drawDir[Side.TOP.ordinal()]|=!blockToCheck.isLiquid();
-    if (bottomBlock.isLiquid() || bottomBlock.isInvisible()) {
+    if (bottomBlock.isLiquid() || bottomBlock.getMeshGenerator() == null) {
       for (      Side dir : Side.values()) {
         if (drawDir[dir.ordinal()]) {
           Vector4f colorOffset=selfBlock.calcColorOffsetFor(BlockPart.fromSide(dir),selfBiome);
