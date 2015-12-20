@@ -1,0 +1,17 @@
+{
+  ModuleManager moduleManager=ModuleManagerFactory.create();
+  ModuleEnvironment environment=moduleManager.getEnvironment();
+  ClassLoader classLoader=Thread.currentThread().getContextClassLoader();
+  for (  Class<?> apiClass : environment.getTypesAnnotatedWith(API.class)) {
+    if (apiClass.isSynthetic()) {
+      String pkgName=apiClass.getPackage().getName();
+      URL url=classLoader.getResource(pkgName.replace('.','/'));
+      if (url.getProtocol().equals("file")) {
+        System.out.println("Package: " + pkgName);
+      }
+    }
+ else {
+      System.out.println("Class: " + apiClass);
+    }
+  }
+}
