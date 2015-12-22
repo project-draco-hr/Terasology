@@ -7,7 +7,7 @@
       String relPath=rootPath.relativize(path).getName(0).toString();
       try {
         Date folderDate=TIMESTAMP_FORMAT.parse(relPath);
-        long ageInSecs=(new Date().getTime() - folderDate.getTime()) / 1000;
+        long ageInSecs=folderDate.toInstant().until(Instant.now(),ChronoUnit.SECONDS);
         return ageInSecs > maxAgeInSecs ? FileVisitResult.CONTINUE : FileVisitResult.SKIP_SUBTREE;
       }
  catch (      ParseException e) {
