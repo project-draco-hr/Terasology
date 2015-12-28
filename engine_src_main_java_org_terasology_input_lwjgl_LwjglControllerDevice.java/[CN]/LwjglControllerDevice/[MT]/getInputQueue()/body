@@ -1,0 +1,14 @@
+{
+  Queue<ControllerAction> result=new ArrayDeque<>();
+  while (Controllers.next()) {
+    if (Controllers.isEventButton()) {
+      ButtonState state=Controllers.getEventButtonState() ? ButtonState.DOWN : ButtonState.UP;
+      Input input=InputType.CONTROLLER_BUTTON.getInput(Controllers.getEventControlIndex());
+      int controller=Controllers.getEventSource().getIndex();
+      float axisX=Controllers.getEventXAxisValue();
+      float axisY=Controllers.getEventYAxisValue();
+      result.add(new ControllerAction(input,state,controller,axisX,axisY));
+    }
+  }
+  return result;
+}
