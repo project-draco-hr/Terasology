@@ -1,0 +1,9 @@
+{
+  for (  ControllerAction action : controllers.getInputQueue()) {
+    boolean consumed=false;
+    BindableButtonImpl bind=controllerBinds.get(action.getInput());
+    if (bind != null) {
+      bind.updateBindState(action.getInput(),(action.getState() == ButtonState.DOWN),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+    }
+  }
+}
