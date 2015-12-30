@@ -1,5 +1,7 @@
 {
   inputSystem.clearBinds();
-  registerButtonBinds(inputSystem,moduleManager.getEnvironment(),moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindButton.class));
-  registerAxisBinds(inputSystem,moduleManager.getEnvironment(),moduleManager.getEnvironment().getTypesAnnotatedWith(RegisterBindAxis.class));
+  ModuleEnvironment env=moduleManager.getEnvironment();
+  registerButtonBinds(inputSystem,env,env.getTypesAnnotatedWith(RegisterBindButton.class));
+  registerAxisBinds(inputSystem,env,env.getTypesAnnotatedWith(RegisterBindAxis.class));
+  registerRealAxisBinds(inputSystem,env,env.getTypesAnnotatedWith(RegisterRealBindAxis.class));
 }

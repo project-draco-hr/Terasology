@@ -1,9 +1,18 @@
 {
   for (  ControllerAction action : controllers.getInputQueue()) {
     boolean consumed=false;
-    BindableButtonImpl bind=controllerBinds.get(action.getInput());
-    if (bind != null) {
-      bind.updateBindState(action.getInput(),(action.getState() == ButtonState.DOWN),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+    Input input=action.getInput();
+    if (input.getType() == InputType.CONTROLLER_BUTTON) {
+      BindableButtonImpl bind=controllerBinds.get(input);
+      if (bind != null) {
+        bind.updateBindState(input,(action.getState() == ButtonState.DOWN),delta,getInputEntities(),targetSystem.getTarget(),targetSystem.getTargetBlockPosition(),targetSystem.getHitPosition(),targetSystem.getHitNormal(),consumed);
+      }
+    }
+ else     if (input.getType() == InputType.CONTROLLER_AXIS) {
+      BindableRealAxis axis=controllerAxisBinds.get(input);
+      if (axis != null) {
+        axis.setTargetValue(action.getAxisValue());
+      }
     }
   }
 }

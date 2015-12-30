@@ -1,0 +1,11 @@
+{
+  for (  Class<?> axisEvent : classes) {
+    if (AxisEvent.class.isAssignableFrom(axisEvent)) {
+      RegisterRealBindAxis info=axisEvent.getAnnotation(RegisterRealBindAxis.class);
+      SimpleUri bindUri=new SimpleUri(moduleId,info.id());
+      if (!hasBinds(bindUri)) {
+        addBind(moduleId,axisEvent,info.id());
+      }
+    }
+  }
+}
