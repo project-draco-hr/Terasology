@@ -1,0 +1,14 @@
+{
+  if (!event.isDown() || time.getGameTimeInMs() - lastItemUse < 200) {
+    return;
+  }
+  EntityRef selectedItemEntity=characterHeldItemComponent.selectedItem;
+  if (!selectedItemEntity.exists()) {
+    return;
+  }
+  localPlayer.activateOwnedEntityAsClient(selectedItemEntity);
+  lastItemUse=time.getGameTimeInMs();
+  characterHeldItemComponent.handAnimation=0.5f;
+  entity.saveComponent(characterHeldItemComponent);
+  event.consume();
+}

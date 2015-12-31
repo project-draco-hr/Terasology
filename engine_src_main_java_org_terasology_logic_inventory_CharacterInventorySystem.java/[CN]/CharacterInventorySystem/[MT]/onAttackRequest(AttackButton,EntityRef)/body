@@ -1,0 +1,12 @@
+{
+  if (!event.isDown() || time.getGameTimeInMs() - lastInteraction < 200) {
+    return;
+  }
+  CharacterHeldItemComponent characterHeldItemComponent=entity.getComponent(CharacterHeldItemComponent.class);
+  EntityRef selectedItemEntity=characterHeldItemComponent.selectedItem;
+  entity.send(new AttackRequest(selectedItemEntity));
+  lastInteraction=time.getGameTimeInMs();
+  characterHeldItemComponent.handAnimation=0.5f;
+  entity.saveComponent(characterHeldItemComponent);
+  event.consume();
+}

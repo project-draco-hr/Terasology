@@ -1,0 +1,8 @@
+{
+  if (request.getSlot() >= 0 && request.getSlot() < 10 && request.getSlot() != selectedInventorySlotComponent.slot) {
+    EntityRef newItem=InventoryUtils.getItemAt(character,request.getSlot());
+    selectedInventorySlotComponent.slot=request.getSlot();
+    character.saveComponent(selectedInventorySlotComponent);
+    character.send(new ChangeHeldItemRequest(newItem));
+  }
+}

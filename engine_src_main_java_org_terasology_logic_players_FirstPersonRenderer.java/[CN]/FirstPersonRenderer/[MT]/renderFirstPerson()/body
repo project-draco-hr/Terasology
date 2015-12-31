@@ -1,6 +1,6 @@
 {
-  CharacterComponent character=localPlayer.getCharacterEntity().getComponent(CharacterComponent.class);
-  if (character == null) {
+  CharacterHeldItemComponent characterHeldItemComponent=localPlayer.getCharacterEntity().getComponent(CharacterHeldItemComponent.class);
+  if (characterHeldItemComponent == null) {
     return;
   }
   CharacterMovementComponent charMoveComp=localPlayer.getCharacterEntity().getComponent(CharacterMovementComponent.class);
@@ -8,9 +8,8 @@
     return;
   }
   float bobOffset=calcBobbingOffset(charMoveComp.footstepDelta,(float)java.lang.Math.PI / 8f,0.05f);
-  float handMovementAnimationOffset=character.handAnimation;
-  int invSlotIndex=character.selectedItem;
-  EntityRef heldItem=InventoryUtils.getItemAt(localPlayer.getCharacterEntity(),invSlotIndex);
+  float handMovementAnimationOffset=characterHeldItemComponent.handAnimation;
+  EntityRef heldItem=characterHeldItemComponent.selectedItem;
   ItemComponent heldItemComp=heldItem.getComponent(ItemComponent.class);
   BlockItemComponent blockItem=heldItem.getComponent(BlockItemComponent.class);
   if (blockItem != null && blockItem.blockFamily != null) {
