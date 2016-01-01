@@ -1,0 +1,13 @@
+{
+  UILabel categoryHeader=new UILabel(name);
+  categoryHeader.setFamily("subheading");
+  layout.addWidget(categoryHeader);
+  float columnRatio=0.4f;
+  UICheckbox invertX=new UICheckbox();
+  invertX.bindChecked(BindHelper.bindBeanProperty("invertX",info,Boolean.TYPE));
+  layout.addWidget(new RowLayout(new UILabel("Invert X Axis"),invertX).setColumnRatios(columnRatio).setHorizontalSpacing(horizontalSpacing));
+  UICheckbox invertY=new UICheckbox();
+  invertY.bindChecked(BindHelper.bindBeanProperty("invertY",info,Boolean.TYPE));
+  layout.addWidget(new RowLayout(new UILabel("Invert Y Axis"),invertY).setColumnRatios(columnRatio).setHorizontalSpacing(horizontalSpacing));
+  layout.addWidget(new UISpace(new Vector2i(0,16)));
+}

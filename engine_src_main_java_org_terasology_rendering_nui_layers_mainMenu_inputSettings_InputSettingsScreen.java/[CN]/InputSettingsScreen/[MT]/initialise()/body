@@ -40,6 +40,10 @@
     addInputSection(category,mainLayout,inputsById);
   }
   mainLayout.addWidget(new UISpace(new Vector2i(1,16)));
+  for (  String name : inputSystem.getControllerDevice().getControllers()) {
+    ControllerInfo cfg=config.getInput().getControllers().getController(name);
+    addInputSection(mainLayout,name,cfg);
+  }
   ScrollableArea area=new ScrollableArea();
   area.setContent(mainLayout);
   ColumnLayout footerGrid=new ColumnLayout("footer");
