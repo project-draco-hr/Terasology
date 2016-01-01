@@ -9,5 +9,21 @@
   UICheckbox invertY=new UICheckbox();
   invertY.bindChecked(BindHelper.bindBeanProperty("invertY",info,Boolean.TYPE));
   layout.addWidget(new RowLayout(new UILabel("Invert Y Axis"),invertY).setColumnRatios(columnRatio).setHorizontalSpacing(horizontalSpacing));
+  UISlider deadZone=new UISlider();
+  deadZone.setIncrement(0.01f);
+  deadZone.setMinimum(0);
+  deadZone.setRange(1);
+  deadZone.setPrecision(2);
+  deadZone.bindValue(new Binding<Float>(){
+    @Override public void set(    Float value){
+      info.setDeadZone(value);
+      inputSystem.getControllerDevice().setDeadZone(index,value);
+    }
+    @Override public Float get(){
+      return info.getDeadZone();
+    }
+  }
+);
+  layout.addWidget(new RowLayout(new UILabel("Dead Zone"),deadZone).setColumnRatios(columnRatio).setHorizontalSpacing(horizontalSpacing));
   layout.addWidget(new UISpace(new Vector2i(0,16)));
 }

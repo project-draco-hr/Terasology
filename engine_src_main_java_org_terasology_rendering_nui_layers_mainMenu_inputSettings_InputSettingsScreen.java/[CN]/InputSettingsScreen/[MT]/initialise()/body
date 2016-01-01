@@ -40,9 +40,11 @@
     addInputSection(category,mainLayout,inputsById);
   }
   mainLayout.addWidget(new UISpace(new Vector2i(1,16)));
-  for (  String name : inputSystem.getControllerDevice().getControllers()) {
+  List<String> controllers=inputSystem.getControllerDevice().getControllers();
+  for (int i=0; i < controllers.size(); i++) {
+    String name=controllers.get(i);
     ControllerInfo cfg=config.getInput().getControllers().getController(name);
-    addInputSection(mainLayout,name,cfg);
+    addInputSection(mainLayout,name,i,cfg);
   }
   ScrollableArea area=new ScrollableArea();
   area.setContent(mainLayout);
