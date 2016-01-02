@@ -1,2 +1,7 @@
 {
+  for (  Map.Entry<FieldMetadata<?,?>,PersistedData> field : values.entrySet()) {
+    if (check.shouldDeserialize(classMetadata,field.getKey())) {
+      deserializeOnto(target,field.getKey(),field.getValue(),context);
+    }
+  }
 }
