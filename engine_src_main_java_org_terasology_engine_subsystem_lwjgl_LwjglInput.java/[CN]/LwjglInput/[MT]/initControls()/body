@@ -3,13 +3,12 @@
     Keyboard.create();
     Keyboard.enableRepeatEvents(true);
     Mouse.create();
-    Controllers.create();
     InputSystem inputSystem=new InputSystem();
     context.put(InputSystem.class,inputSystem);
     inputSystem.setMouseDevice(new LwjglMouseDevice());
     inputSystem.setKeyboardDevice(new LwjglKeyboardDevice());
     ControllerConfig controllerConfig=context.get(Config.class).getInput().getControllers();
-    LwjglControllerDevice controllerDevice=new LwjglControllerDevice();
+    JinputControllerDevice controllerDevice=new JinputControllerDevice();
     for (int idx=0; idx < controllerDevice.getControllers().size(); idx++) {
       String name=controllerDevice.getControllers().get(idx);
       float deadZone=controllerConfig.getController(name).getDeadZone();

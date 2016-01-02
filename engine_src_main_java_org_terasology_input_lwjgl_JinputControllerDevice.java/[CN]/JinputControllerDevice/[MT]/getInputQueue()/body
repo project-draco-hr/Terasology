@@ -1,0 +1,19 @@
+{
+  Queue<ControllerAction> result=new ArrayDeque<>();
+  Event event=new Event();
+  for (  Controller c : controllers) {
+    if (c.poll()) {
+      EventQueue queue=c.getEventQueue();
+      while (queue.getNextEvent(event)) {
+        ControllerAction action=convertEvent(c,event);
+        if (action != null) {
+          result.add(action);
+        }
+      }
+    }
+ else {
+      removeController(c);
+    }
+  }
+  return result;
+}
