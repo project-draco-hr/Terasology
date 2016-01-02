@@ -1,18 +1,2 @@
 {
-  Set<Integer> emptySlotsBefore=new HashSet<>();
-  for (  Integer toSlot : toSlots) {
-    if (!InventoryUtils.getItemAt(toInventory,toSlot).exists()) {
-      emptySlotsBefore.add(toSlot);
-    }
-  }
-  if (!InventoryUtils.moveItemToSlots(instigator,fromInventory,slotFrom,toInventory,toSlots)) {
-    return true;
-  }
-  for (  Integer slot : emptySlotsBefore) {
-    EntityRef itemAt=InventoryUtils.getItemAt(toInventory,slot);
-    if (itemAt.exists()) {
-      clientTempEntities.add(itemAt);
-    }
-  }
-  return false;
 }

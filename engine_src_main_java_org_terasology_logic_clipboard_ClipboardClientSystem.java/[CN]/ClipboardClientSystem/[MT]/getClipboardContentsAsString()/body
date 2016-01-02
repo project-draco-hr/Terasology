@@ -1,17 +1,2 @@
 {
-  return AccessController.doPrivileged(new PrivilegedAction<String>(){
-    @Override public String run(){
-      Transferable t=Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-      try {
-        if (t != null) {
-          return (String)t.getTransferData(DataFlavor.stringFlavor);
-        }
-      }
- catch (      UnsupportedFlavorException|IOException e) {
-        return null;
-      }
-      return null;
-    }
-  }
-);
 }

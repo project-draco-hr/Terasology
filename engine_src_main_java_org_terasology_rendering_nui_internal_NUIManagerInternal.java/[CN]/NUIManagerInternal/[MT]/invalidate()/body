@@ -1,24 +1,2 @@
 {
-  AssetManager assetManager=context.get(AssetManager.class);
-  for (  UIElement element : assetManager.getLoadedAssets(UIElement.class)) {
-    element.dispose();
-  }
-  boolean hudVisible=isHUDVisible();
-  if (hudVisible) {
-    setHUDVisible(false);
-  }
-  Deque<ResourceUrn> reverseUrns=new LinkedList<>();
-  Map<UIScreenLayer,ResourceUrn> inverseLookup=screenLookup.inverse();
-  for (  UIScreenLayer screen : screens) {
-    screen.onClosed();
-    reverseUrns.addFirst(inverseLookup.get(screen));
-  }
-  screens.clear();
-  screenLookup.clear();
-  for (  ResourceUrn urn : reverseUrns) {
-    pushScreen(urn);
-  }
-  if (hudVisible) {
-    setHUDVisible(true);
-  }
 }

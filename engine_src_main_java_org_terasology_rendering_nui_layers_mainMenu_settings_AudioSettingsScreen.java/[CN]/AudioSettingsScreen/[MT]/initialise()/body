@@ -1,24 +1,2 @@
 {
-  UISlider sound=find("sound",UISlider.class);
-  if (sound != null) {
-    sound.setIncrement(0.05f);
-    sound.setPrecision(2);
-    sound.setMinimum(0);
-    sound.setRange(1.0f);
-    sound.bindValue(BindHelper.bindBeanProperty("soundVolume",config.getAudio(),Float.TYPE));
-  }
-  UISlider music=find("music",UISlider.class);
-  if (music != null) {
-    music.setIncrement(0.05f);
-    music.setPrecision(2);
-    music.setMinimum(0);
-    music.setRange(1.0f);
-    music.bindValue(BindHelper.bindBeanProperty("musicVolume",config.getAudio(),Float.TYPE));
-  }
-  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      getManager().popScreen();
-    }
-  }
-);
 }

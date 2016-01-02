@@ -1,20 +1,2 @@
 {
-  executor.execute(new Runnable(){
-    @Override public void run(){
-      Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-      try {
-        while (true) {
-          Thread.sleep(1000);
-          try (ThreadActivity ignored=ThreadMonitor.startThreadActivity("Poll")){
-            updateEntries(PerformanceMonitor.getRunningMean(),PerformanceMonitor.getDecayingSpikes());
-          }
-         }
-      }
- catch (      Exception e) {
-        ThreadMonitor.addError(e);
-        logger.error("Error executing performance monitor update",e);
-      }
-    }
-  }
-);
 }

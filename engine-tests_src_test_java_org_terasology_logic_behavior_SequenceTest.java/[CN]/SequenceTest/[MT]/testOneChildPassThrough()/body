@@ -1,22 +1,2 @@
 {
-  final Task[] spies=new Task[1];
-  Status[] stats=new Status[]{Status.SUCCESS,Status.FAILURE};
-  for (  final Status status : stats) {
-    Interpreter interpreter=new Interpreter(null);
-    Node mock=create(new Mocker(){
-      @Override public void mock(      Task spy){
-        when(spy.update(0)).thenReturn(Status.RUNNING,status);
-        spies[0]=spy;
-      }
-    }
-);
-    SequenceNode node=new SequenceNode();
-    node.children().add(mock);
-    Task task=interpreter.start(node);
-    interpreter.tick(0);
-    Assert.assertEquals(Status.RUNNING,task.getStatus());
-    interpreter.tick(0);
-    Assert.assertEquals(status,task.getStatus());
-    verify(spies[0]).onTerminate(status);
-  }
 }

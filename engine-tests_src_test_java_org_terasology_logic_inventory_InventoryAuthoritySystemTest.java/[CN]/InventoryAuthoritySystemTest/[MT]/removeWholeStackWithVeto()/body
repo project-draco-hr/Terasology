@@ -1,23 +1,2 @@
 {
-  ItemComponent itemComp=new ItemComponent();
-  EntityRef item=Mockito.mock(EntityRef.class);
-  setupItemRef(item,itemComp,2,10);
-  inventoryComp.itemSlots.set(0,item);
-  Mockito.when(inventory.send(Matchers.any(BeforeItemRemovedFromInventory.class))).then(new Answer<Object>(){
-    @Override public Object answer(    InvocationOnMock invocation) throws Exception {
-      BeforeItemRemovedFromInventory event=(BeforeItemRemovedFromInventory)invocation.getArguments()[0];
-      event.consume();
-      return null;
-    }
-  }
-);
-  RemoveItemAction action=new RemoveItemAction(instigator,item,true,2);
-  inventoryAuthoritySystem.removeItem(action,inventory);
-  assertFalse(action.isConsumed());
-  assertNull(action.getRemovedItem());
-  Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
-  Mockito.verify(item,new AtLeast(0)).exists();
-  Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
-  Mockito.verify(inventory).send(Matchers.any(BeforeItemRemovedFromInventory.class));
-  Mockito.verifyNoMoreInteractions(instigator,inventory,entityManager,item);
 }

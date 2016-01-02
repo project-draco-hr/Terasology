@@ -1,23 +1,2 @@
 {
-  AccessController.doPrivileged(new PrivilegedAction<Object>(){
-    @Override public Object run(){
-      for (      Field field : ReflectionUtils.getAllFields(object.getClass(),ReflectionUtils.withAnnotation(annotation))) {
-        Object value=source.get(field.getType());
-        if (value != null) {
-          try {
-            field.setAccessible(true);
-            field.set(object,value);
-          }
- catch (          IllegalAccessException e) {
-            logger.error("Failed to inject value {} into field {}",value,field,e);
-          }
-        }
- else {
-          logger.error("Failed to inject into field {}, nothing to inject",field);
-        }
-      }
-      return null;
-    }
-  }
-);
 }

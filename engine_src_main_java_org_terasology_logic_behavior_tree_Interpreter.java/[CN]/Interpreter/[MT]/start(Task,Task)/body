@@ -1,21 +1,2 @@
 {
-  task.setActor(actor);
-  task.setInterpreter(this);
-  task.setParent(parent);
-  if (parent != null) {
-    List<Task> subTasks=startedTasks.get(parent);
-    if (subTasks == null) {
-      subTasks=Lists.newArrayList();
-      startedTasks.put(parent,subTasks);
-    }
-    subTasks.add(task);
-  }
-  tasks.addFirst(task);
-  return AccessController.doPrivileged(new PrivilegedAction<Task>(){
-    @Override public Task run(){
-      InjectionHelper.inject(task);
-      return task;
-    }
-  }
-);
 }

@@ -1,21 +1,2 @@
 {
-  Vector3i extent=region.getRegion().size();
-  int width=extent.x;
-  int height=extent.z;
-  WritableRaster raster=colorModel.createCompatibleWritableRaster(width,height);
-  BufferedImage image=new BufferedImage(colorModel,raster,false,null);
-  Graphics2D g=image.createGraphics();
-  g.setColor(Color.BLACK);
-  g.fillRect(0,0,width,height);
-  try {
-    for (    FacetLayer layer : facetLayers) {
-      if (layer.isVisible()) {
-        layer.render(image,region);
-      }
-    }
-  }
-  finally {
-    g.dispose();
-  }
-  return image;
 }

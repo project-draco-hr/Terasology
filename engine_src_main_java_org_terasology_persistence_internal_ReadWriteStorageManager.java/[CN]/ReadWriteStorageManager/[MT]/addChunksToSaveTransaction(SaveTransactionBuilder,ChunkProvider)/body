@@ -1,19 +1,2 @@
 {
-  unloadedAndSavingChunkMap.clear();
-  Iterator<Map.Entry<Vector3i,CompressedChunkBuilder>> unsavedEntryIterator=unloadedAndUnsavedChunkMap.entrySet().iterator();
-  while (unsavedEntryIterator.hasNext()) {
-    Map.Entry<Vector3i,CompressedChunkBuilder> entry=unsavedEntryIterator.next();
-    unloadedAndSavingChunkMap.put(entry.getKey(),entry.getValue());
-    unsavedEntryIterator.remove();
-  }
-  for (  Chunk chunk : chunkProvider.getAllChunks()) {
-    if (chunk.isReady()) {
-      unloadedAndSavingChunkMap.remove(chunk.getPosition());
-      ChunkImpl chunkImpl=(ChunkImpl)chunk;
-      saveTransactionBuilder.addLoadedChunk(chunk.getPosition(),chunkImpl);
-    }
-  }
-  for (  Map.Entry<Vector3i,CompressedChunkBuilder> entry : unloadedAndSavingChunkMap.entrySet()) {
-    saveTransactionBuilder.addUnloadedChunk(entry.getKey(),entry.getValue());
-  }
 }

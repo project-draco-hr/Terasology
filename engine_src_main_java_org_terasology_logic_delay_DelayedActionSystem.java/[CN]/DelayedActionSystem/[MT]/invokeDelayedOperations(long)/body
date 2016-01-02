@@ -1,26 +1,2 @@
 {
-  List<EntityRef> operationsToInvoke=new LinkedList<>();
-  Iterator<Long> scheduledOperationsIterator=delayedOperationsSortedByTime.keySet().iterator();
-  long processedTime;
-  while (scheduledOperationsIterator.hasNext()) {
-    processedTime=scheduledOperationsIterator.next();
-    if (processedTime > currentWorldTime) {
-      break;
-    }
-    operationsToInvoke.addAll(delayedOperationsSortedByTime.get(processedTime));
-    scheduledOperationsIterator.remove();
-  }
-  for (  EntityRef delayedEntity : operationsToInvoke) {
-    if (delayedEntity.exists()) {
-      final DelayedActionComponent delayedActions=delayedEntity.getComponent(DelayedActionComponent.class);
-      final Set<String> actionIds=delayedActions.removeActionsUpTo(currentWorldTime);
-      saveOrRemoveComponent(delayedEntity,delayedActions);
-      if (!delayedActions.isEmpty()) {
-        delayedOperationsSortedByTime.put(delayedActions.getLowestWakeUp(),delayedEntity);
-      }
-      for (      String actionId : actionIds) {
-        delayedEntity.send(new DelayedActionTriggeredEvent(actionId));
-      }
-    }
-  }
 }

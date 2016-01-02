@@ -1,22 +1,2 @@
 {
-  final Map<Name,Map<Name,SubtextureData>> textureAtlases=Maps.newHashMap();
-  final Vector2f texSize=new Vector2f(getRelativeTileSize(),getRelativeTileSize());
-  tileIndexes.forEachEntry(new TObjectIntProcedure<ResourceUrn>(){
-    @Override public boolean execute(    ResourceUrn tileUri,    int index){
-      Vector2f coords=getTexCoords(index);
-      SubtextureData subtextureData=new SubtextureData(texture,Rect2f.createFromMinAndSize(coords,texSize));
-      Map<Name,SubtextureData> textureAtlas=textureAtlases.get(tileUri.getModuleName());
-      if (textureAtlas == null) {
-        textureAtlas=Maps.newHashMap();
-        textureAtlases.put(tileUri.getModuleName(),textureAtlas);
-      }
-      textureAtlas.put(tileUri.getResourceName(),subtextureData);
-      return true;
-    }
-  }
-);
-  for (  Map.Entry<Name,Map<Name,SubtextureData>> atlas : textureAtlases.entrySet()) {
-    AtlasData data=new AtlasData(atlas.getValue());
-    Assets.generateAsset(new ResourceUrn(atlas.getKey(),new Name("terrain")),data,Atlas.class);
-  }
 }

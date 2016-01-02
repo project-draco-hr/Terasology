@@ -1,16 +1,2 @@
 {
-  Collection<Chunk> chunks=chunkProvider.getAllChunks();
-  Function<Chunk,Region3i> mapping=new Function<Chunk,Region3i>(){
-    @Override public Region3i apply(    Chunk input){
-      return input.getRegion();
-    }
-  }
-;
-  Predicate<Chunk> isReady=new Predicate<Chunk>(){
-    @Override public boolean apply(    Chunk input){
-      return input.isReady();
-    }
-  }
-;
-  return FluentIterable.from(chunks).filter(isReady).transform(mapping).toList();
 }

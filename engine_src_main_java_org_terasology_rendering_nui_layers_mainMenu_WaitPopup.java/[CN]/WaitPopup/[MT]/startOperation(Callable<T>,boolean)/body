@@ -1,13 +1,2 @@
 {
-  Preconditions.checkState(parallelTask == null,"startOperation() cannot be called twice");
-  cancelButton.setVisible(canBeCancelled);
-  parallelTask=new FutureTask<>(operation);
-  thread=new Thread(parallelTask,"Parallel Operation");
-  thread.start();
-  WidgetUtil.trySubscribe(this,"cancel",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      parallelTask.cancel(true);
-    }
-  }
-);
 }

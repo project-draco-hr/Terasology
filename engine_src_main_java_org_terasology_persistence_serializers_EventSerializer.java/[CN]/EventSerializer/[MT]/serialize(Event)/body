@@ -1,24 +1,2 @@
 {
-  EventMetadata<?> eventMetadata=eventLibrary.getMetadata(event.getClass());
-  if (eventMetadata == null) {
-    throw new SerializationException("Unregistered event type: " + event.getClass());
-  }
- else   if (!eventMetadata.isConstructable()) {
-    throw new SerializationException("Cannot serialize event '" + eventMetadata + "' - lacks default constructor so cannot be deserialized");
-  }
-  EntityData.Event.Builder eventData=EntityData.Event.newBuilder();
-  serializeEventType(event,eventData);
-  Serializer eventSerializer=typeSerializationLibrary.getSerializerFor(eventMetadata);
-  ByteString.Output fieldIds=ByteString.newOutput();
-  for (  ReplicatedFieldMetadata field : eventMetadata.getFields()) {
-    if (field.isReplicated()) {
-      EntityData.Value serializedValue=((ProtobufPersistedData)eventSerializer.serialize(field,event,serializationContext)).getValue();
-      if (serializedValue != null) {
-        eventData.addFieldValue(serializedValue);
-        fieldIds.write(field.getId());
-      }
-    }
-  }
-  eventData.setFieldIds(fieldIds.toByteString());
-  return eventData.build();
 }

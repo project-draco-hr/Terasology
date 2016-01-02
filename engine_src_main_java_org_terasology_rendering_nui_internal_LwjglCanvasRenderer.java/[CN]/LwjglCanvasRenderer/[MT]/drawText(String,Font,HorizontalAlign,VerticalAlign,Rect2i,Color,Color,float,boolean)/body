@@ -1,29 +1,2 @@
 {
-  TextCacheKey key=new TextCacheKey(text,font,absoluteRegion.width(),hAlign,color,shadowColor,underlined);
-  usedText.add(key);
-  Map<Material,Mesh> fontMesh=cachedText.get(key);
-  List<String> lines=TextLineBuilder.getLines(font,text,absoluteRegion.width());
-  if (fontMesh != null) {
-    for (    Mesh mesh : fontMesh.values()) {
-      if (mesh.isDisposed()) {
-        fontMesh=null;
-        break;
-      }
-    }
-  }
-  if (fontMesh == null) {
-    fontMesh=fontMeshBuilder.createTextMesh(font,lines,absoluteRegion.width(),hAlign,color,shadowColor,underlined);
-    cachedText.put(key,fontMesh);
-  }
-  Vector2i offset=new Vector2i(absoluteRegion.minX(),absoluteRegion.minY());
-  offset.y+=vAlign.getOffset(lines.size() * font.getLineHeight(),absoluteRegion.height());
-  for (  Map.Entry<Material,Mesh> entry : fontMesh.entrySet()) {
-    if (entry.getKey().isRenderable()) {
-      entry.getKey().bindTextures();
-      entry.getKey().setFloat4(CROPPING_BOUNDARIES_PARAM,requestedCropRegion.minX(),requestedCropRegion.maxX() + 1,requestedCropRegion.minY(),requestedCropRegion.maxY() + 1);
-      entry.getKey().setFloat2("offset",offset.x,offset.y);
-      entry.getKey().setFloat("alpha",alpha);
-      entry.getValue().render();
-    }
-  }
 }

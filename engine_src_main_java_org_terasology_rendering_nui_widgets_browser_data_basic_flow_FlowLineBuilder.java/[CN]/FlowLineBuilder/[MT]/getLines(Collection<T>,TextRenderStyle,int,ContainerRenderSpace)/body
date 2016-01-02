@@ -11,7 +11,7 @@
     FlowRenderable<T> flowRenderable=renderablesQueue.removeFirst();
     FlowRenderable.SplitResult<T> splitResult=flowRenderable.splitAt(defaultRenderStyle,availableWidth - x);
     if (splitResult.before == null) {
-      result.add(new DefaultLaidFlowLine<T>(x,maxHeightInLine,renderablesInLine));
+      result.add(new DefaultLaidFlowLine<>(x,maxHeightInLine,renderablesInLine));
       renderablesInLine=new LinkedList<>();
       x=0;
       y+=maxHeightInLine;
@@ -26,7 +26,7 @@
       maxHeightInLine=Math.max(maxHeightInLine,renderableHeight);
       renderablesInLine.add(splitResult.before);
       if (splitResult.rest != null) {
-        result.add(new DefaultLaidFlowLine<T>(x,maxHeightInLine,renderablesInLine));
+        result.add(new DefaultLaidFlowLine<>(x,maxHeightInLine,renderablesInLine));
         renderablesInLine=new LinkedList<>();
         x=0;
         y+=maxHeightInLine;
@@ -36,6 +36,6 @@
       }
     }
   }
-  result.add(new DefaultLaidFlowLine<T>(x,maxHeightInLine,renderablesInLine));
+  result.add(new DefaultLaidFlowLine<>(x,maxHeightInLine,renderablesInLine));
   return result;
 }
