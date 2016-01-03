@@ -9,32 +9,33 @@
     input=InputType.CONTROLLER_BUTTON.getInput(buttonMap.get(id));
   }
  else   if (id instanceof Identifier.Axis) {
+    ControllerInfo info=config.getController(c.getName());
     if (id.equals(Identifier.Axis.X)) {
-      if (Math.abs(axisValue) < info.movementDeadZone) {
+      if (Math.abs(axisValue) < info.getMovementDeadZone()) {
         axisValue=0;
       }
       input=InputType.CONTROLLER_AXIS.getInput(ControllerId.X_AXIS);
     }
  else     if (id.equals(Identifier.Axis.Y)) {
-      if (Math.abs(axisValue) < info.movementDeadZone) {
+      if (Math.abs(axisValue) < info.getMovementDeadZone()) {
         axisValue=0;
       }
       input=InputType.CONTROLLER_AXIS.getInput(ControllerId.Y_AXIS);
     }
  else     if (id.equals(Identifier.Axis.Z)) {
-      if (Math.abs(axisValue) < info.movementDeadZone) {
+      if (Math.abs(axisValue) < info.getMovementDeadZone()) {
         axisValue=0;
       }
       input=InputType.CONTROLLER_AXIS.getInput(ControllerId.Z_AXIS);
     }
  else     if (id.equals(Identifier.Axis.RX)) {
-      if (Math.abs(axisValue) < info.rotationDeadZone) {
+      if (Math.abs(axisValue) < info.getRotationDeadZone()) {
         axisValue=0;
       }
       input=InputType.CONTROLLER_AXIS.getInput(ControllerId.RX_AXIS);
     }
  else     if (id.equals(Identifier.Axis.RY)) {
-      if (Math.abs(axisValue) < info.rotationDeadZone) {
+      if (Math.abs(axisValue) < info.getRotationDeadZone()) {
         axisValue=0;
       }
       input=InputType.CONTROLLER_AXIS.getInput(ControllerId.RY_AXIS);
@@ -62,5 +63,5 @@
  else {
     return null;
   }
-  return new ControllerAction(input,info.controller.getName(),state,axisValue);
+  return new ControllerAction(input,c.getName(),state,axisValue);
 }
