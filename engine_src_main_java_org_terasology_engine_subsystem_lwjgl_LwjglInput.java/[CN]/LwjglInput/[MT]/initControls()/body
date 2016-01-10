@@ -7,6 +7,9 @@
     context.put(InputSystem.class,inputSystem);
     inputSystem.setMouseDevice(new LwjglMouseDevice());
     inputSystem.setKeyboardDevice(new LwjglKeyboardDevice());
+    ControllerConfig controllerConfig=context.get(Config.class).getInput().getControllers();
+    JInputControllerDevice controllerDevice=new JInputControllerDevice(controllerConfig);
+    inputSystem.setControllerDevice(controllerDevice);
   }
  catch (  LWJGLException e) {
     throw new RuntimeException("Could not initialize controls.",e);

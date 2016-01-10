@@ -1,5 +1,5 @@
 {
-  Queue<InputAction> result=Queues.newArrayDeque();
+  Queue<KeyboardAction> result=Queues.newArrayDeque();
   while (Keyboard.next()) {
     ButtonState state;
     if (Keyboard.isRepeatEvent()) {
@@ -8,7 +8,8 @@
  else {
       state=(Keyboard.getEventKeyState()) ? ButtonState.DOWN : ButtonState.UP;
     }
-    result.add(new InputAction(InputType.KEY.getInput(Keyboard.getEventKey()),state,Keyboard.getEventCharacter()));
+    Input input=InputType.KEY.getInput(Keyboard.getEventKey());
+    result.add(new KeyboardAction(input,state,Keyboard.getEventCharacter()));
   }
   return result;
 }

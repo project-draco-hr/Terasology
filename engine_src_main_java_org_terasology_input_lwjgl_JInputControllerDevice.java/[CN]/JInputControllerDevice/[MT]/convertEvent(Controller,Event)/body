@@ -1,0 +1,67 @@
+{
+  Component comp=event.getComponent();
+  Identifier id=comp.getIdentifier();
+  float axisValue=comp.getPollData();
+  Input input;
+  ButtonState state=ButtonState.UP;
+  if (id instanceof Identifier.Button) {
+    state=event.getValue() != 0 ? ButtonState.DOWN : ButtonState.UP;
+    input=InputType.CONTROLLER_BUTTON.getInput(buttonMap.get(id));
+  }
+ else   if (id instanceof Identifier.Axis) {
+    ControllerInfo info=config.getController(c.getName());
+    if (id.equals(Identifier.Axis.X)) {
+      if (Math.abs(axisValue) < info.getMovementDeadZone()) {
+        axisValue=0;
+      }
+      input=InputType.CONTROLLER_AXIS.getInput(ControllerId.X_AXIS);
+    }
+ else     if (id.equals(Identifier.Axis.Y)) {
+      if (Math.abs(axisValue) < info.getMovementDeadZone()) {
+        axisValue=0;
+      }
+      input=InputType.CONTROLLER_AXIS.getInput(ControllerId.Y_AXIS);
+    }
+ else     if (id.equals(Identifier.Axis.Z)) {
+      if (Math.abs(axisValue) < info.getMovementDeadZone()) {
+        axisValue=0;
+      }
+      input=InputType.CONTROLLER_AXIS.getInput(ControllerId.Z_AXIS);
+    }
+ else     if (id.equals(Identifier.Axis.RX)) {
+      if (Math.abs(axisValue) < info.getRotationDeadZone()) {
+        axisValue=0;
+      }
+      input=InputType.CONTROLLER_AXIS.getInput(ControllerId.RX_AXIS);
+    }
+ else     if (id.equals(Identifier.Axis.RY)) {
+      if (Math.abs(axisValue) < info.getRotationDeadZone()) {
+        axisValue=0;
+      }
+      input=InputType.CONTROLLER_AXIS.getInput(ControllerId.RY_AXIS);
+    }
+ else     if (id.equals(Identifier.Axis.POV)) {
+      boolean isX=(axisValue == Component.POV.LEFT) || (axisValue == Component.POV.RIGHT);
+      boolean isY=(axisValue == Component.POV.UP) || (axisValue == Component.POV.DOWN);
+      if (isX || isY) {
+        input=InputType.CONTROLLER_AXIS.getInput(isX ? ControllerId.POVX_AXIS : ControllerId.POVY_AXIS);
+        if ((axisValue == Component.POV.UP) || (axisValue == Component.POV.LEFT)) {
+          axisValue=-1;
+        }
+        if ((axisValue == Component.POV.DOWN) || (axisValue == Component.POV.RIGHT)) {
+          axisValue=1;
+        }
+      }
+ else {
+        return null;
+      }
+    }
+ else {
+      return null;
+    }
+  }
+ else {
+    return null;
+  }
+  return new ControllerAction(input,c.getName(),state,axisValue);
+}

@@ -6,7 +6,11 @@
       ResolutionResult result=resolver.resolve(moduleId);
       if (result.isSuccess()) {
         try (ModuleEnvironment environment=moduleManager.loadEnvironment(result.getModules(),false)){
-          updateInputsFor(moduleId,environment.getTypesAnnotatedWith(RegisterBindButton.class,new FromModule(environment,moduleId)));
+          FromModule filter=new FromModule(environment,moduleId);
+          Iterable<Class<?>> buttons=environment.getTypesAnnotatedWith(RegisterBindButton.class,filter);
+          Iterable<Class<?>> axes=environment.getTypesAnnotatedWith(RegisterRealBindAxis.class,filter);
+          updateButtonInputsFor(moduleId,buttons);
+          updateAxisInputsFor(moduleId,axes);
         }
        }
     }

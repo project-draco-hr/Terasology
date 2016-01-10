@@ -1,0 +1,15 @@
+{
+  if (filter.contains(c.getType())) {
+    logger.debug("Ignoring controller: " + c.getName());
+    return;
+  }
+  if (c.getControllers().length == 0) {
+    controllers.add(c);
+    logger.info("Registered controller: " + c.getName());
+  }
+ else {
+    for (    Controller sub : c.getControllers()) {
+      addController(sub);
+    }
+  }
+}
