@@ -1,29 +1,2 @@
 {
-  List<NetData.NetMessage> messages=Lists.newArrayListWithExpectedSize(queuedMessages.size());
-  queuedMessages.drainTo(messages);
-  for (  NetData.NetMessage message : messages) {
-    if (message.hasTime()) {
-      time.updateTimeFromServer(message.getTime());
-    }
-    processBlockRegistrations(message);
-    processReceivedChunks(message);
-    processInvalidatedChunks(message);
-    processBlockChanges(message);
-    processBiomeChanges(message);
-    processRemoveEntities(message);
-    for (    NetData.CreateEntityMessage createEntity : message.getCreateEntityList()) {
-      createEntityMessage(createEntity);
-    }
-    for (    NetData.UpdateEntityMessage updateEntity : message.getUpdateEntityList()) {
-      updateEntity(updateEntity);
-    }
-    for (    NetData.EventMessage event : message.getEventList()) {
-      try {
-        processEvent(event);
-      }
- catch (      RuntimeException e) {
-        logger.error("Error processing server event",e);
-      }
-    }
-  }
 }

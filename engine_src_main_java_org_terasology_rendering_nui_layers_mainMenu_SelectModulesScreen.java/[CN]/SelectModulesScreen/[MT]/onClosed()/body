@@ -1,16 +1,2 @@
 {
-  ModuleConfig moduleConfig=config.getDefaultModSelection();
-  moduleConfig.clear();
-  for (  ModuleSelectionInfo info : sortedModules) {
-    if (info.isSelected() && info.isExplicitSelection()) {
-      moduleConfig.addModule(info.getMetadata().getId());
-    }
-  }
-  SimpleUri defaultGenerator=config.getWorldGeneration().getDefaultGenerator();
-  ModuleSelectionInfo info=modulesLookup.get(defaultGenerator.getModuleName());
-  if (info != null && !info.isSelected()) {
-    config.getWorldGeneration().setDefaultGenerator(new SimpleUri());
-  }
-  worldGenManager.refresh();
-  config.save();
 }

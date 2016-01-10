@@ -1,14 +1,2 @@
 {
-  T facet=generatedFacets.get(dataType);
-  if (facet == null) {
-    for (    FacetProvider provider : facetProviderChains.get(dataType)) {
-      if (!processedProviders.contains(provider)) {
-        provider.process(this);
-        processedProviders.add(provider);
-      }
-    }
-    facet=generatingFacets.get(dataType);
-    generatedFacets.put(dataType,facet);
-  }
-  return facet;
 }

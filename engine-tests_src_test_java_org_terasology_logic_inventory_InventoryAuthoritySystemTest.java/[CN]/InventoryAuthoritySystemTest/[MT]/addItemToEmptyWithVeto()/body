@@ -1,21 +1,2 @@
 {
-  ItemComponent itemComp=new ItemComponent();
-  EntityRef item=Mockito.mock(EntityRef.class);
-  setupItemRef(item,itemComp,2,10);
-  Mockito.when(inventory.send(Matchers.any(BeforeItemPutInInventory.class))).then(new Answer<Object>(){
-    @Override public Object answer(    InvocationOnMock invocation) throws Exception {
-      BeforeItemPutInInventory event=(BeforeItemPutInInventory)invocation.getArguments()[0];
-      event.consume();
-      return null;
-    }
-  }
-);
-  GiveItemAction action=new GiveItemAction(instigator,item);
-  inventoryAuthoritySystem.giveItem(action,inventory);
-  Mockito.verify(item,new AtLeast(0)).getComponent(ItemComponent.class);
-  Mockito.verify(item,new AtLeast(0)).exists();
-  Mockito.verify(inventory,new AtLeast(0)).getComponent(InventoryComponent.class);
-  Mockito.verify(inventory,new Times(5)).send(Matchers.any(BeforeItemPutInInventory.class));
-  Mockito.verifyNoMoreInteractions(instigator,inventory,entityManager,item);
-  assertFalse(action.isConsumed());
 }

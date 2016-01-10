@@ -1,13 +1,2 @@
 {
-  Set<Module> finalModules=Sets.newLinkedHashSet(modules);
-  for (  Module module : registry) {
-    if (module.isOnClasspath()) {
-      finalModules.add(module);
-    }
-  }
-  ModuleEnvironment newEnvironment=new ModuleEnvironment(finalModules,permissionProviderFactory,Collections.<BytecodeInjector>emptyList());
-  if (asPrimary) {
-    environment=newEnvironment;
-  }
-  return newEnvironment;
 }

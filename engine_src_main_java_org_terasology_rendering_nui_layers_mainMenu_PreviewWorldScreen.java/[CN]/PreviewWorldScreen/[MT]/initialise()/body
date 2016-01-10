@@ -1,22 +1,2 @@
 {
-  zoomSlider=find("zoomSlider",UISlider.class);
-  if (zoomSlider != null) {
-    zoomSlider.setValue(2f);
-  }
-  seed=find("seed",UIText.class);
-  applyButton=find("apply",UIButton.class);
-  if (applyButton != null) {
-    applyButton.subscribe(new ActivateEventListener(){
-      @Override public void onActivated(      UIWidget widget){
-        updatePreview();
-      }
-    }
-);
-  }
-  WidgetUtil.trySubscribe(this,"close",new ActivateEventListener(){
-    @Override public void onActivated(    UIWidget button){
-      getManager().popScreen();
-    }
-  }
-);
 }

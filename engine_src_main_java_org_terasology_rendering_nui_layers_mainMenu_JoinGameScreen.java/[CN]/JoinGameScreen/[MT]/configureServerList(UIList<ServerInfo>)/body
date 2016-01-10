@@ -1,22 +1,2 @@
 {
-  serverList.subscribe(new ItemActivateEventListener<ServerInfo>(){
-    @Override public void onItemActivated(    UIWidget widget,    ServerInfo item){
-      join(item.getAddress(),item.getPort());
-    }
-  }
-);
-  serverList.subscribeSelection(new ItemSelectEventListener<ServerInfo>(){
-    @Override public void onItemSelected(    UIWidget widget,    ServerInfo item){
-      if (item != null && !extInfo.containsKey(item)) {
-        extInfo.put(item,infoService.requestInfo(item.getAddress(),item.getPort()));
-      }
-    }
-  }
-);
-  serverList.setItemRenderer(new StringTextRenderer<ServerInfo>(){
-    @Override public String getString(    ServerInfo value){
-      return value.getName();
-    }
-  }
-);
 }

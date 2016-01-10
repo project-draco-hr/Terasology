@@ -1,25 +1,2 @@
 {
-  Interpreter interpreter=new Interpreter(null);
-  ParallelNode parallel=new ParallelNode(ParallelNode.Policy.RequireOne,ParallelNode.Policy.RequireAll);
-  Node one=create(new Mocker(){
-    @Override public void mock(    Task spy){
-      when(spy.update(anyInt())).thenReturn(Status.RUNNING,Status.FAILURE);
-    }
-  }
-);
-  Node two=create(new Mocker(){
-    @Override public void mock(    Task spy){
-      when(spy.update(anyInt())).thenReturn(Status.RUNNING,Status.RUNNING,Status.FAILURE);
-    }
-  }
-);
-  parallel.children().add(one);
-  parallel.children().add(two);
-  Task task=interpreter.start(parallel);
-  interpreter.tick(0);
-  Assert.assertEquals(Status.RUNNING,task.getStatus());
-  interpreter.tick(0);
-  Assert.assertEquals(Status.RUNNING,task.getStatus());
-  interpreter.tick(0);
-  Assert.assertEquals(Status.FAILURE,task.getStatus());
 }

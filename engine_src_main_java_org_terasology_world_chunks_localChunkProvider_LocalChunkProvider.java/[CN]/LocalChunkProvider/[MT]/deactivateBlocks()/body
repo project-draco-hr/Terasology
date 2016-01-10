@@ -1,15 +1,2 @@
 {
-  List<TShortObjectMap<TIntList>> deactivatedBlockSets=Lists.newArrayListWithExpectedSize(deactivateBlocksQueue.size());
-  deactivateBlocksQueue.drainTo(deactivatedBlockSets);
-  for (  TShortObjectMap<TIntList> deactivatedBlockSet : deactivatedBlockSets) {
-    deactivatedBlockSet.forEachEntry(new TShortObjectProcedure<TIntList>(){
-      @Override public boolean execute(      short id,      TIntList positions){
-        if (positions.size() > 0) {
-          blockManager.getBlock(id).getEntity().send(new BeforeDeactivateBlocks(positions,registry));
-        }
-        return true;
-      }
-    }
-);
-  }
 }

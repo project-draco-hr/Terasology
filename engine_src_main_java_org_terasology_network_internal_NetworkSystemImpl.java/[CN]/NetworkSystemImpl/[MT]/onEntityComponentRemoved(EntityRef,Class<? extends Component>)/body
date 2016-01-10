@@ -1,19 +1,2 @@
 {
-  ComponentMetadata<? extends Component> metadata=componentLibrary.getMetadata(component);
-  NetworkComponent netComp=entity.getComponent(NetworkComponent.class);
-  if (netComp != null && netComp.getNetworkId() != NULL_NET_ID) {
-    if (mode.isServer()) {
-      if (metadata.isReplicated()) {
-        for (        NetClient client : netClientList) {
-          logger.info("Component {} removed from {}",component,entity);
-          client.setComponentRemoved(netComp.getNetworkId(),component);
-        }
-      }
-    }
-  }
-  if (mode.isAuthority() && metadata.isReferenceOwner()) {
-    for (    EntityRef ownedEntity : ownershipHelper.listOwnedEntities(entity.getComponent(component))) {
-      ownedEntity.destroy();
-    }
-  }
 }

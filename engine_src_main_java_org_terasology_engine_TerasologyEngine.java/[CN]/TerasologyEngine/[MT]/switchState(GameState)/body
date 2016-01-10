@@ -1,14 +1,2 @@
 {
-  if (currentState != null) {
-    currentState.dispose();
-  }
-  currentState=newState;
-  LoggingContext.setGameState(newState);
-  newState.init(this);
-  for (  StateChangeSubscriber subscriber : stateChangeSubscribers) {
-    subscriber.onStateChange();
-  }
-  InputSystem inputSystem=rootContext.get(InputSystem.class);
-  inputSystem.getMouseDevice().getInputQueue();
-  inputSystem.getKeyboard().getInputQueue();
 }

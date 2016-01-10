@@ -1,15 +1,2 @@
 {
-  Collection<Side> originalSides=SideBitFlag.getSides(source);
-  Iterable<Rotation> rotations=horizontalOnly ? Rotation.horizontalRotations() : Rotation.values();
-  for (  Rotation rot : rotations) {
-    Set<Side> transformedSides=Sets.newHashSet();
-    for (    Side originalSide : originalSides) {
-      transformedSides.add(rot.rotate(originalSide));
-    }
-    byte transformedSide=SideBitFlag.getSides(transformedSides);
-    if (transformedSide == target) {
-      return rot;
-    }
-  }
-  return null;
 }

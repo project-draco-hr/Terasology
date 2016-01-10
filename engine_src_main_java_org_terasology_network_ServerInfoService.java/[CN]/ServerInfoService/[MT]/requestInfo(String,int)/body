@@ -1,15 +1,2 @@
 {
-  return pool.submit(new Callable<ServerInfoMessage>(){
-    @Override public ServerInfoMessage call() throws Exception {
-      InetSocketAddress remoteAddress=new InetSocketAddress(address,port);
-      ChannelFuture connectCheck=bootstrap.connect(remoteAddress);
-      connectCheck.syncUninterruptibly();
-      Channel channel=connectCheck.getChannel();
-      channel.getCloseFuture().syncUninterruptibly();
-      ServerInfoRequestHandler handler=channel.getPipeline().get(ServerInfoRequestHandler.class);
-      ServerInfoMessage serverInfo=handler.getServerInfo();
-      return serverInfo;
-    }
-  }
-);
 }
