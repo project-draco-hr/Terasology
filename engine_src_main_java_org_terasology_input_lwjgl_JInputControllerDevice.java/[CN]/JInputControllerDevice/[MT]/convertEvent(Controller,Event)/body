@@ -6,7 +6,11 @@
   ButtonState state=ButtonState.UP;
   if (id instanceof Identifier.Button) {
     state=event.getValue() != 0 ? ButtonState.DOWN : ButtonState.UP;
-    input=InputType.CONTROLLER_BUTTON.getInput(buttonMap.get(id));
+    Integer buttonId=buttonMap.get(id);
+    if (buttonId == null) {
+      return null;
+    }
+    input=InputType.CONTROLLER_BUTTON.getInput(buttonId);
   }
  else   if (id instanceof Identifier.Axis) {
     ControllerInfo info=config.getController(c.getName());
