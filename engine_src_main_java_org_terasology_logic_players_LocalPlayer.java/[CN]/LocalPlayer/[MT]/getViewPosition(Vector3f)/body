@@ -1,0 +1,11 @@
+{
+  ClientComponent clientComponent=getClientEntity().getComponent(ClientComponent.class);
+  if (clientComponent == null) {
+    return out;
+  }
+  LocationComponent location=clientComponent.camera.getComponent(LocationComponent.class);
+  if (location == null) {
+    return getPosition();
+  }
+  return location.getWorldPosition(out);
+}

@@ -4,9 +4,6 @@
   }
   EntityRef entity=localPlayer.getCharacterEntity();
   CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
-  CharacterComponent characterComp=entity.getComponent(CharacterComponent.class);
-  LocationComponent location=entity.getComponent(LocationComponent.class);
-  processInput(entity,characterComp,characterMovementComponent);
-  updateCamera(characterComp,characterMovementComponent,characterComp,location);
-  entity.saveComponent(characterComp);
+  processInput(entity,characterMovementComponent);
+  updateCamera(characterMovementComponent,localPlayer.getViewPosition(),localPlayer.getViewRotation());
 }

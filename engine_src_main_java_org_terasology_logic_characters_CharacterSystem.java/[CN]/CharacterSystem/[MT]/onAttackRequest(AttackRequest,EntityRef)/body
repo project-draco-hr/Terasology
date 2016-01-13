@@ -4,11 +4,11 @@
       return;
     }
   }
-  LocationComponent location=character.getComponent(LocationComponent.class);
   CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
-  Vector3f direction=characterComponent.getLookDirection();
-  Vector3f originPos=location.getWorldPosition();
-  originPos.y+=characterComponent.eyeOffset;
+  EntityRef gazeEntity=GazeAuthoritySystem.getGazeEntityForCharacter(character);
+  LocationComponent gazeLocation=gazeEntity.getComponent(LocationComponent.class);
+  Vector3f direction=gazeLocation.getWorldDirection();
+  Vector3f originPos=gazeLocation.getWorldPosition();
   HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
   if (result.isHit()) {
     int damage=1;

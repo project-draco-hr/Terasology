@@ -15,9 +15,10 @@
   float dropPower=getDropPower();
   if (!event.isDown()) {
     dropPower*=150f;
-    Camera playerCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
-    Vector3f newPosition=new Vector3f(playerCamera.getPosition().x + playerCamera.getViewingDirection().x * 1.5f,playerCamera.getPosition().y + playerCamera.getViewingDirection().y * 1.5f,playerCamera.getPosition().z + playerCamera.getViewingDirection().z * 1.5f);
-    Vector3f impulseVector=new Vector3f(playerCamera.getViewingDirection());
+    Vector3f position=localPlayer.getViewPosition();
+    Vector3f direction=localPlayer.getViewDirection();
+    Vector3f newPosition=new Vector3f(position.x + direction.x * 1.5f,position.y + direction.y * 1.5f,position.z + direction.z * 1.5f);
+    Vector3f impulseVector=new Vector3f(direction);
     impulseVector.scale(dropPower);
     entity.send(new DropItemRequest(selectedItemEntity,entity,impulseVector,newPosition));
     characterHeldItemComponent.handAnimation=0.5f;

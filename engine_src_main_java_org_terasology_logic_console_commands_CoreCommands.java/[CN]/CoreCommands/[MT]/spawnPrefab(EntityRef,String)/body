@@ -1,0 +1,28 @@
+{
+  ClientComponent clientComponent=sender.getComponent(ClientComponent.class);
+  LocationComponent characterLocation=clientComponent.character.getComponent(LocationComponent.class);
+  Vector3f spawnPos=characterLocation.getWorldPosition();
+  Vector3f offset=new Vector3f(characterLocation.getWorldDirection());
+  offset.scale(2);
+  spawnPos.add(offset);
+  Vector3f dir=new Vector3f(characterLocation.getWorldDirection());
+  dir.y=0;
+  if (dir.lengthSquared() > 0.001f) {
+    dir.normalize();
+  }
+ else {
+    dir.set(Direction.FORWARD.getVector3f());
+  }
+  Quat4f rotation=Quat4f.shortestArcQuat(Direction.FORWARD.getVector3f(),dir);
+  Optional<Prefab> prefab=Assets.getPrefab(prefabName);
+  if (prefab.isPresent() && prefab.get().getComponent(LocationComponent.class) != null) {
+    entityManager.create(prefab.get(),spawnPos,rotation);
+    return "Done";
+  }
+ else   if (!prefab.isPresent()) {
+    return "Unknown prefab";
+  }
+ else {
+    return "Prefab cannot be spawned (no location component)";
+  }
+}

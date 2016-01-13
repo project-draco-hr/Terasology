@@ -1,0 +1,16 @@
+{
+  ClientComponent clientComponent=sender.getComponent(ClientComponent.class);
+  LocationComponent characterLocation=clientComponent.character.getComponent(LocationComponent.class);
+  Vector3f spawnPos=characterLocation.getWorldPosition();
+  Vector3f offset=characterLocation.getWorldDirection();
+  offset.scale(3);
+  spawnPos.add(offset);
+  BlockFamily block=blockManager.getBlockFamily(blockName);
+  if (block == null) {
+    return "";
+  }
+  BlockItemFactory blockItemFactory=new BlockItemFactory(entityManager);
+  EntityRef blockItem=blockItemFactory.newInstance(block);
+  pickupBuilder.createPickupFor(blockItem,spawnPos,60);
+  return "Spawned block.";
+}

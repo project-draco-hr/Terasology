@@ -1,6 +1,6 @@
 {
   Vector3f[] aabbVertices=aabb.getVertices();
-  Vector3f cp=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+  Vector3f cp=CoreRegistry.get(LocalPlayer.class).getViewPosition();
   for (int i=0; i < 6; i++) {
     if (planes[i].getA() * (aabbVertices[0].x - cp.x) + planes[i].getB() * (aabbVertices[0].y - cp.y) + planes[i].getC() * (aabbVertices[0].z - cp.z) + planes[i].getD() > 0) {
       continue;

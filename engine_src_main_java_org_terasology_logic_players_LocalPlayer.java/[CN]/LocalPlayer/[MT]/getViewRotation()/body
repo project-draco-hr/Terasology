@@ -1,8 +1,11 @@
 {
-  CharacterComponent character=getCharacterEntity().getComponent(CharacterComponent.class);
-  if (character == null) {
-    return new Quat4f(0,0,0,1);
+  ClientComponent clientComponent=getClientEntity().getComponent(ClientComponent.class);
+  if (clientComponent == null) {
+    return new Quat4f(Quat4f.IDENTITY);
   }
-  Quat4f rot=new Quat4f(TeraMath.DEG_TO_RAD * character.yaw,TeraMath.DEG_TO_RAD * character.pitch,0);
-  return rot;
+  LocationComponent location=clientComponent.camera.getComponent(LocationComponent.class);
+  if (location == null) {
+    return getRotation();
+  }
+  return location.getWorldRotation();
 }

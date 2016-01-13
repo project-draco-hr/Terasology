@@ -1,10 +1,8 @@
 {
   EntityRef character=getCharacterEntity();
-  LocationComponent location=character.getComponent(LocationComponent.class);
   CharacterComponent characterComponent=character.getComponent(CharacterComponent.class);
-  Vector3f direction=characterComponent.getLookDirection();
-  Vector3f originPos=location.getWorldPosition();
-  originPos.y+=characterComponent.eyeOffset;
+  Vector3f direction=getViewDirection();
+  Vector3f originPos=getViewPosition();
   boolean ownedEntityUsage=usedOwnedEntity.exists();
   int activationId=nextActivationId++;
   Physics physics=CoreRegistry.get(Physics.class);
