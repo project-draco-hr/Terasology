@@ -1,10 +1,10 @@
 {
-  if (fboLookup.containsKey(title)) {
-    FBO fbo=fboLookup.get(title);
-    glDeleteFramebuffersEXT(fbo.fboId);
-    glDeleteRenderbuffersEXT(fbo.depthStencilRboId);
-    GL11.glDeleteTextures(fbo.normalsBufferTextureId);
-    GL11.glDeleteTextures(fbo.depthStencilTextureId);
-    GL11.glDeleteTextures(fbo.colorBufferTextureId);
+  FBO fbo=fboLookup.get(title);
+  if (fbo != null) {
+    fbo.dispose();
+    fboLookup.remove(title);
+  }
+ else {
+    logger.error("Failed to delete FBO '" + title + "': it doesn't exist!");
   }
 }
