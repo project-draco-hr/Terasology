@@ -1,9 +1,5 @@
 {
-  CharacterComponent character=getCharacterEntity().getComponent(CharacterComponent.class);
-  if (character == null) {
-    return Direction.FORWARD.getVector3f();
-  }
-  Quat4f rot=new Quat4f(TeraMath.DEG_TO_RAD * character.yaw,TeraMath.DEG_TO_RAD * character.pitch,0);
+  Quat4f rot=getViewRotation();
   Vector3f dir=Direction.FORWARD.getVector3f();
   return rot.rotate(dir,dir);
 }

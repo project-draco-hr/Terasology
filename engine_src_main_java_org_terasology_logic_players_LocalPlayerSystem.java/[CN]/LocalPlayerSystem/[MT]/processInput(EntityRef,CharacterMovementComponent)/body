@@ -1,0 +1,24 @@
+{
+  lookYaw=(lookYaw - lookYawDelta) % 360;
+  lookYawDelta=0f;
+  lookPitch=TeraMath.clamp(lookPitch + lookPitchDelta,-89,89);
+  lookPitchDelta=0f;
+  Vector3f relMove=new Vector3f(relativeMovement);
+  relMove.y=0;
+  Quat4f viewRot;
+switch (characterMovementComponent.mode) {
+case WALKING:
+    viewRot=new Quat4f(TeraMath.DEG_TO_RAD * lookYaw,0,0);
+  viewRot.rotate(relMove,relMove);
+break;
+case CLIMBING:
+break;
+default :
+viewRot=new Quat4f(TeraMath.DEG_TO_RAD * lookYaw,TeraMath.DEG_TO_RAD * lookPitch,0);
+viewRot.rotate(relMove,relMove);
+relMove.y+=relativeMovement.y;
+break;
+}
+entity.send(new CharacterMoveInputEvent(inputSequenceNumber++,lookPitch,lookYaw,relMove,run,jump,time.getGameDeltaInMs()));
+jump=false;
+}

@@ -1,8 +1,7 @@
 {
   LocationComponent location=entity.getComponent(LocationComponent.class);
   CharacterMovementComponent movementComp=entity.getComponent(CharacterMovementComponent.class);
-  CharacterComponent characterComponent=entity.getComponent(CharacterComponent.class);
-  if (location == null || movementComp == null || characterComponent == null) {
+  if (location == null || movementComp == null) {
     return;
   }
   location.setWorldPosition(state.getPosition());
@@ -13,8 +12,12 @@
   movementComp.grounded=state.isGrounded();
   movementComp.footstepDelta=state.getFootstepDelta();
   entity.saveComponent(movementComp);
-  characterComponent.pitch=state.getPitch();
-  characterComponent.yaw=state.getYaw();
-  entity.saveComponent(characterComponent);
   setPhysicsLocation(entity,state.getPosition());
+  Quat4f rotation=new Quat4f(0f,TeraMath.DEG_TO_RAD * state.getPitch(),0f);
+  EntityRef gazeEntity=GazeAuthoritySystem.getGazeEntityForCharacter(entity);
+  if (!gazeEntity.equals(entity)) {
+    LocationComponent gazeLocation=gazeEntity.getComponent(LocationComponent.class);
+    gazeLocation.setLocalRotation(rotation);
+    gazeEntity.saveComponent(gazeLocation);
+  }
 }

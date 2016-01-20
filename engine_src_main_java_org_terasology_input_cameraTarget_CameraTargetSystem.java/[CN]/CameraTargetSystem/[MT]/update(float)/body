@@ -5,8 +5,7 @@
     targetBlockPos=null;
     lostTarget=true;
   }
-  Camera camera=worldRenderer.getActiveCamera();
-  HitResult hitInfo=physics.rayTrace(new Vector3f(camera.getPosition()),new Vector3f(camera.getViewingDirection()),targetDistance,filter);
+  HitResult hitInfo=physics.rayTrace(new Vector3f(localPlayer.getViewPosition()),new Vector3f(localPlayer.getViewDirection()),targetDistance,filter);
   updateFocalDistance(hitInfo,delta);
   Vector3i newBlockPos=null;
   EntityRef newTarget=EntityRef.NULL;

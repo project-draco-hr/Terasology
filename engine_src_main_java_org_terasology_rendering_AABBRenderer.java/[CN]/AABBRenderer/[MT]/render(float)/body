@@ -1,7 +1,7 @@
 {
   CoreRegistry.get(ShaderManager.class).enableDefault();
   glPushMatrix();
-  Vector3f cameraPosition=CoreRegistry.get(WorldRenderer.class).getActiveCamera().getPosition();
+  Vector3f cameraPosition=CoreRegistry.get(LocalPlayer.class).getViewPosition();
   glTranslated(aabb.getCenter().x - cameraPosition.x,-cameraPosition.y,aabb.getCenter().z - cameraPosition.z);
   renderLocally(lineThickness);
   glPopMatrix();
