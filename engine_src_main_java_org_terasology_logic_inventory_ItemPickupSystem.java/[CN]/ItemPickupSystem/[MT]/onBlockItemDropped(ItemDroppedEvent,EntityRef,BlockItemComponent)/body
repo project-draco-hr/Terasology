@@ -1,11 +1,6 @@
 {
   EntityBuilder builder=event.getPickup();
   BlockFamily blockFamily=blockItemComponent.blockFamily;
-  if (builder.hasComponent(MeshComponent.class)) {
-    MeshComponent mesh=builder.getComponent(MeshComponent.class);
-    mesh.mesh=blockFamily.getArchetypeBlock().getMeshGenerator().getStandaloneMesh();
-    mesh.material=Assets.getMaterial("engine:terrain").get();
-  }
   if (blockFamily.getArchetypeBlock().getCollisionShape() instanceof BoxShape && builder.hasComponent(BoxShapeComponent.class)) {
     javax.vecmath.Vector3f extents=((BoxShape)blockFamily.getArchetypeBlock().getCollisionShape()).getHalfExtentsWithoutMargin(new javax.vecmath.Vector3f());
     extents.scale(2.0f);
@@ -13,12 +8,6 @@
     extents.y=Math.max(extents.y,0.5f);
     extents.z=Math.max(extents.z,0.5f);
     builder.getComponent(BoxShapeComponent.class).extents.set(VecMath.from(extents));
-  }
-  if (blockFamily.getArchetypeBlock().getLuminance() > 0 && !builder.hasComponent(LightComponent.class)) {
-    LightComponent lightComponent=builder.addComponent(new LightComponent());
-    Vector3f randColor=new Vector3f(rand.nextFloat(),rand.nextFloat(),rand.nextFloat());
-    lightComponent.lightColorDiffuse.set(randColor);
-    lightComponent.lightColorAmbient.set(randColor);
   }
   if (builder.hasComponent(RigidBodyComponent.class)) {
     builder.getComponent(RigidBodyComponent.class).mass=blockItemComponent.blockFamily.getArchetypeBlock().getMass();

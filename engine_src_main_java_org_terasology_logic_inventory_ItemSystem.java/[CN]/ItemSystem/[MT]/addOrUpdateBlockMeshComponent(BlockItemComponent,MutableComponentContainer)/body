@@ -1,0 +1,24 @@
+{
+  if (blockItemComponent != null) {
+    MeshComponent meshComponent=null;
+    if (entity.hasComponent(MeshComponent.class)) {
+      meshComponent=entity.getComponent(MeshComponent.class);
+    }
+ else {
+      meshComponent=new MeshComponent();
+    }
+    BlockFamily blockFamily=blockItemComponent.blockFamily;
+    if (blockFamily == null) {
+      return;
+    }
+    meshComponent.mesh=blockFamily.getArchetypeBlock().getMesh();
+    meshComponent.material=Assets.getMaterial("engine:terrain").get();
+    if (blockFamily.getArchetypeBlock().getLuminance() > 0 && !entity.hasComponent(LightComponent.class)) {
+      LightComponent lightComponent=entity.addComponent(new LightComponent());
+      Vector3f randColor=new Vector3f(rand.nextFloat(),rand.nextFloat(),rand.nextFloat());
+      lightComponent.lightColorDiffuse.set(randColor);
+      lightComponent.lightColorAmbient.set(randColor);
+    }
+    entity.addOrSaveComponent(meshComponent);
+  }
+}

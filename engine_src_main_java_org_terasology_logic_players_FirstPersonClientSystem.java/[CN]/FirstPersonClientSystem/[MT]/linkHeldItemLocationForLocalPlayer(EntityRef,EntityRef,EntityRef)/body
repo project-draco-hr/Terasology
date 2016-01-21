@@ -1,0 +1,23 @@
+{
+  if (character.equals(localPlayer.getCharacterEntity()) && !newItem.equals(oldItem)) {
+    EntityRef camera=localPlayer.getCameraEntity();
+    FirstPersonHeldItemMountPointComponent mountPointComponent=camera.getComponent(FirstPersonHeldItemMountPointComponent.class);
+    if (mountPointComponent != null) {
+      EntityRef heldItem=newItem;
+      if (!heldItem.exists()) {
+        heldItem=handEntity;
+      }
+      FirstPersonHeldItemTransformComponent heldItemTransformComponent=heldItem.getComponent(FirstPersonHeldItemTransformComponent.class);
+      heldItem.addOrSaveComponent(new LocationComponent());
+      if (oldItem.exists()) {
+        Location.removeChild(mountPointComponent.mountPointEntity,oldItem);
+        oldItem.removeComponent(LocationComponent.class);
+      }
+ else {
+        Location.removeChild(mountPointComponent.mountPointEntity,handEntity);
+        handEntity.removeComponent(LocationComponent.class);
+      }
+      Location.attachChild(mountPointComponent.mountPointEntity,heldItem,heldItemTransformComponent.translate,new Quat4f(TeraMath.DEG_TO_RAD * heldItemTransformComponent.rotateDegrees.y,TeraMath.DEG_TO_RAD * heldItemTransformComponent.rotateDegrees.x,TeraMath.DEG_TO_RAD * heldItemTransformComponent.rotateDegrees.z),heldItemTransformComponent.scale);
+    }
+  }
+}

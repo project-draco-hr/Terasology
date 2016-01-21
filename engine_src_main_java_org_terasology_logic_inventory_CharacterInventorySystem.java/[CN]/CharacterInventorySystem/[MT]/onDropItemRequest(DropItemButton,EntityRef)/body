@@ -21,9 +21,9 @@
     Vector3f impulseVector=new Vector3f(direction);
     impulseVector.scale(dropPower);
     entity.send(new DropItemRequest(selectedItemEntity,entity,impulseVector,newPosition));
-    characterHeldItemComponent.handAnimation=0.5f;
+    characterHeldItemComponent.lastItemUsedTime=time.getGameTimeInMs();
+    entity.saveComponent(characterHeldItemComponent);
     resetDropMark();
   }
-  entity.saveComponent(characterHeldItemComponent);
   event.consume();
 }
