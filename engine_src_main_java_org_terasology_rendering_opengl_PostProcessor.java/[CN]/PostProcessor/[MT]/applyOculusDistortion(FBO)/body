@@ -4,7 +4,7 @@
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   inputBuffer.bindTexture();
   materials.ocDistortion.setInt("texInputBuffer",texId,true);
-  if (buffersManager.isNotTakingScreenshot()) {
+  if (isNotTakingScreenshot()) {
     updateOcShaderParametersForVP(0,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.LEFT_EYE);
     renderFullscreenQuad(0,0,Display.getWidth(),Display.getHeight());
     updateOcShaderParametersForVP(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.RIGHT_EYE);
