@@ -1,7 +1,7 @@
 {
   super.applyParameters(program);
-  LwjglRenderingProcess renderingProcess=CoreRegistry.get(LwjglRenderingProcess.class);
-  FBO sceneOpaque=renderingProcess.getFBO("sceneOpaque");
+  FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
+  FBO sceneOpaque=buffersManager.getFBO("sceneOpaque");
   int texId=0;
   if (sceneOpaque != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
@@ -16,7 +16,7 @@
   }
   if (CoreRegistry.get(Config.class).getRendering().isDynamicShadows()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    renderingProcess.bindFboDepthTexture("sceneShadowMap");
+    buffersManager.bindFboDepthTexture("sceneShadowMap");
     program.setInt("texSceneShadowMap",texId++,true);
     Camera lightCamera=CoreRegistry.get(WorldRenderer.class).getLightCamera();
     Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();

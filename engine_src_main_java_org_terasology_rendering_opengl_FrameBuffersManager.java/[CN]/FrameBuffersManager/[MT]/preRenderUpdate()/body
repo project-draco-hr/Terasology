@@ -1,0 +1,13 @@
+{
+  refreshDynamicFBOsDimensions();
+  if (sceneOpaque.dimensions().areDifferentFrom(fullScale)) {
+    disposeOfAllDynamicFBOs();
+    recreateDynamicFBOs();
+    graphicState.refreshDynamicFBOs();
+    postProcessor.refreshDynamicFBOs();
+  }
+  if (sceneShadowMap != null && sceneShadowMap.width() != renderingConfig.getShadowMapResolution()) {
+    recreateShadowMapFBO();
+    graphicState.setSceneShadowMap(sceneShadowMap);
+  }
+}
