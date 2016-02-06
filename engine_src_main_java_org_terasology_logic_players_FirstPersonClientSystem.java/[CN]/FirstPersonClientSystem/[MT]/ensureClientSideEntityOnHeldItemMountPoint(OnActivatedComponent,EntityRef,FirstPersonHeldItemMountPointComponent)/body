@@ -1,0 +1,12 @@
+{
+  if (!firstPersonHeldItemMountPointComponent.mountPointEntity.exists()) {
+    EntityBuilder builder=entityManager.newBuilder("engine:FirstPersonHeldItemMountPoint");
+    builder.setPersistent(false);
+    firstPersonHeldItemMountPointComponent.mountPointEntity=builder.build();
+    camera.saveComponent(firstPersonHeldItemMountPointComponent);
+  }
+  if (camera.exists()) {
+    Location.removeChild(camera,firstPersonHeldItemMountPointComponent.mountPointEntity);
+    Location.attachChild(camera,firstPersonHeldItemMountPointComponent.mountPointEntity,firstPersonHeldItemMountPointComponent.translate,new Quat4f(TeraMath.DEG_TO_RAD * firstPersonHeldItemMountPointComponent.rotateDegrees.y,TeraMath.DEG_TO_RAD * firstPersonHeldItemMountPointComponent.rotateDegrees.x,TeraMath.DEG_TO_RAD * firstPersonHeldItemMountPointComponent.rotateDegrees.z),firstPersonHeldItemMountPointComponent.scale);
+  }
+}

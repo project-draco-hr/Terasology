@@ -1,17 +1,3 @@
 {
-  LocationComponent childLoc=child.getComponent(LocationComponent.class);
-  LocationComponent parentLoc=parent.getComponent(LocationComponent.class);
-  if (childLoc != null && parentLoc != null && !childLoc.getParent().equals(parent)) {
-    LocationComponent oldParentLoc=childLoc.getParent().getComponent(LocationComponent.class);
-    if (oldParentLoc != null) {
-      oldParentLoc.children.remove(child);
-      childLoc.getParent().saveComponent(oldParentLoc);
-    }
-    childLoc.parent=parent;
-    childLoc.setLocalPosition(offset);
-    childLoc.setLocalRotation(relativeRotation);
-    parentLoc.children.add(child);
-    child.saveComponent(childLoc);
-    parent.saveComponent(parentLoc);
-  }
+  attachChild(parent,child,offset,relativeRotation,1f);
 }

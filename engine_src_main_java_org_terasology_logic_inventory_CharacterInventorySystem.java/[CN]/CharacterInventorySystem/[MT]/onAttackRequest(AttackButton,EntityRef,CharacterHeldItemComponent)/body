@@ -3,10 +3,7 @@
     return;
   }
   EntityRef selectedItemEntity=characterHeldItemComponent.selectedItem;
-  if (!selectedItemEntity.exists()) {
-    return;
-  }
-  localPlayer.activateOwnedEntityAsClient(selectedItemEntity);
+  entity.send(new AttackRequest(selectedItemEntity));
   long currentTime=time.getGameTimeInMs();
   characterHeldItemComponent.lastItemUsedTime=currentTime;
   characterHeldItemComponent.nextItemUseTime=currentTime;
