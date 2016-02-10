@@ -1,0 +1,10 @@
+{
+  if (!localPlayer.getCameraEntity().exists()) {
+    ClientComponent clientComponent=localPlayer.getClientEntity().getComponent(ClientComponent.class);
+    EntityBuilder builder=entityManager.newBuilder("engine:camera");
+    builder.setPersistent(false);
+    clientComponent.camera=builder.build();
+    localPlayer.getClientEntity().saveComponent(clientComponent);
+    mountCamera();
+  }
+}
