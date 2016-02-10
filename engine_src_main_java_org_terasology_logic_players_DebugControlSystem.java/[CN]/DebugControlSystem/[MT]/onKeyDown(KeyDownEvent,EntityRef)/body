@@ -2,13 +2,10 @@
   boolean debugEnabled=config.getSystem().isDebugEnabled();
   if (debugEnabled) {
 switch (event.getKey().getId()) {
-case Keyboard.KeyId.K:
-      entity.send(new DoDamageEvent(9999,null));
-    break;
 case Keyboard.KeyId.F6:
-  config.getRendering().getDebug().setEnabled(!config.getRendering().getDebug().isEnabled());
-event.consume();
-break;
+      config.getRendering().getDebug().setEnabled(!config.getRendering().getDebug().isEnabled());
+    event.consume();
+  break;
 case Keyboard.KeyId.F7:
 config.getRendering().getDebug().cycleStage();
 entity.send(new ConsoleMessageEvent("Set debug stage to: " + config.getRendering().getDebug().getStage()));

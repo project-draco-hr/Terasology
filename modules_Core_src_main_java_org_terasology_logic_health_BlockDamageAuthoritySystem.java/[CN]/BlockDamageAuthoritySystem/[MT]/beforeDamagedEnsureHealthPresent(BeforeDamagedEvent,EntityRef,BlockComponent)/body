@@ -1,0 +1,12 @@
+{
+  if (!blockEntity.hasComponent(HealthComponent.class)) {
+    Block type=blockComponent.getBlock();
+    if (blockComponent != null) {
+      if (type.isDestructible()) {
+        HealthComponent healthComponent=new HealthComponent(type.getHardness(),type.getHardness() / BLOCK_REGEN_SECONDS,1.0f);
+        healthComponent.destroyEntityOnNoHealth=true;
+        blockEntity.addComponent(healthComponent);
+      }
+    }
+  }
+}

@@ -1,12 +1,8 @@
 {
   ClientComponent clientComp=client.getComponent(ClientComponent.class);
   CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
-  HealthComponent health=clientComp.character.getComponent(HealthComponent.class);
-  if (health != null && move != null) {
+  if (move != null) {
     move.jumpSpeed=75f;
-    health.fallingDamageSpeedThreshold=85f;
-    health.excessSpeedDamageMultiplier=2f;
-    clientComp.character.saveComponent(health);
     clientComp.character.saveComponent(move);
     return "High-jump mode activated";
   }

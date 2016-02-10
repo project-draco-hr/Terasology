@@ -1,0 +1,12 @@
+{
+  BeforeHealEvent beforeHeal=entity.send(new BeforeHealEvent(healAmount,instigator));
+  if (!beforeHeal.isConsumed()) {
+    int modifiedAmount=calculateTotal(beforeHeal.getBaseHeal(),beforeHeal.getMultipliers(),beforeHeal.getModifiers());
+    if (modifiedAmount > 0) {
+      doHeal(entity,modifiedAmount,instigator);
+    }
+ else     if (modifiedAmount < 0) {
+      doDamage(entity,-modifiedAmount,EngineDamageTypes.HEALING.get(),instigator,EntityRef.NULL);
+    }
+  }
+}

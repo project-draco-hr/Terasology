@@ -1,0 +1,12 @@
+{
+  HealthComponent health=entity.getComponent(HealthComponent.class);
+  if (health != null) {
+    int healedAmount=Math.min(health.currentHealth + healAmount,health.maxHealth) - health.currentHealth;
+    health.currentHealth+=healedAmount;
+    entity.saveComponent(health);
+    entity.send(new OnHealedEvent(healAmount,healedAmount,instigator));
+    if (health.currentHealth == health.maxHealth) {
+      entity.send(new FullHealthEvent(instigator));
+    }
+  }
+}

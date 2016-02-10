@@ -1,0 +1,13 @@
+{
+  int damage=1;
+  Prefab damageType=EngineDamageTypes.PHYSICAL.get();
+  ItemComponent item=event.getDirectCause().getComponent(ItemComponent.class);
+  if (item != null) {
+    damage=item.baseDamage;
+    if (item.damageType != null) {
+      damageType=item.damageType;
+    }
+  }
+  character.send(new DoDamageEvent(damage,damageType,character,event.getDirectCause()));
+  event.consume();
+}
