@@ -1,16 +1,13 @@
 {
-  EntitySystemLibrary entitySystemLibrary=CoreRegistry.get(EntitySystemLibrary.class);
   Set<Component> differentiatingComponentsFrom=new HashSet<>();
   for (  Component component : from.iterateComponents()) {
-    ComponentMetadata metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
-    if (metadata.getAnnotation(ItemDifferentiating.class) != null) {
+    if (component instanceof ItemDifferentiating) {
       differentiatingComponentsFrom.add(component);
     }
   }
   Map<Class<?>,Component> differentiatingComponentsTo=new HashMap<>();
   for (  Component component : to.iterateComponents()) {
-    ComponentMetadata metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
-    if (metadata.getAnnotation(ItemDifferentiating.class) != null) {
+    if (component instanceof ItemDifferentiating) {
       differentiatingComponentsTo.put(component.getClass(),component);
     }
   }
