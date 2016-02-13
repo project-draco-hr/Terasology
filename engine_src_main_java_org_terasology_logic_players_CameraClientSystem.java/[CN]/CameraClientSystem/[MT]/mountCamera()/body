@@ -2,12 +2,10 @@
   ClientComponent clientComponent=localPlayer.getClientEntity().getComponent(ClientComponent.class);
   EntityRef targetEntityForCamera=GazeAuthoritySystem.getGazeEntityForCharacter(clientComponent.character);
   LocationComponent cameraLocation=clientComponent.camera.getComponent(LocationComponent.class);
-  Vector3f cameraPosition;
-  if (cameraLocation == null) {
-    cameraPosition=Vector3f.zero();
+  if (cameraLocation != null) {
+    Location.attachChild(targetEntityForCamera,clientComponent.camera,cameraLocation.getLocalPosition(),new Quat4f(Quat4f.IDENTITY));
   }
  else {
-    cameraPosition=cameraLocation.getLocalPosition();
+    Location.attachChild(targetEntityForCamera,clientComponent.camera,Vector3f.zero(),new Quat4f(Quat4f.IDENTITY));
   }
-  Location.attachChild(targetEntityForCamera,clientComponent.camera,cameraPosition,new Quat4f(Quat4f.IDENTITY));
 }
