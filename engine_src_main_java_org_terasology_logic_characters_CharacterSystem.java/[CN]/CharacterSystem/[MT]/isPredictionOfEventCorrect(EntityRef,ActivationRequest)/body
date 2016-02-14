@@ -38,7 +38,7 @@
       logger.info(msg,getPlayerNameFromCharacter(character));
       return false;
     }
-    HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+    HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,Sets.newHashSet(character),DEFAULTPHYSICSFILTER);
     if (!result.isHit()) {
       String msg="Denied activation attempt by {} since at the authority there was nothing to activate at that place";
       logger.info(msg,getPlayerNameFromCharacter(character));
