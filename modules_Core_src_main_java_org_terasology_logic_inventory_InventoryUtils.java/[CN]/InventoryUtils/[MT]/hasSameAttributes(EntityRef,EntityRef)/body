@@ -1,0 +1,30 @@
+{
+  EntitySystemLibrary entitySystemLibrary=CoreRegistry.get(EntitySystemLibrary.class);
+  Set<Component> differentiatingComponentsFrom=new HashSet<>();
+  for (  Component component : from.iterateComponents()) {
+    ComponentMetadata metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
+    if (metadata.getAnnotation(ItemDifferentiating.class) != null) {
+      differentiatingComponentsFrom.add(component);
+    }
+  }
+  Map<Class<?>,Component> differentiatingComponentsTo=new HashMap<>();
+  for (  Component component : to.iterateComponents()) {
+    ComponentMetadata metadata=entitySystemLibrary.getComponentLibrary().getMetadata(component);
+    if (metadata.getAnnotation(ItemDifferentiating.class) != null) {
+      differentiatingComponentsTo.put(component.getClass(),component);
+    }
+  }
+  if (differentiatingComponentsFrom.size() != differentiatingComponentsTo.size()) {
+    return false;
+  }
+  for (  Component component : differentiatingComponentsFrom) {
+    Component componentInTarget=differentiatingComponentsTo.get(component.getClass());
+    if (componentInTarget == null) {
+      return false;
+    }
+    if (!component.equals(componentInTarget)) {
+      return false;
+    }
+  }
+  return true;
+}

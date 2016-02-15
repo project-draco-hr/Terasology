@@ -1,0 +1,29 @@
+{
+  CharacterHeldItemComponent characterHeldItemComponent=entity.getComponent(CharacterHeldItemComponent.class);
+  EntityRef selectedItemEntity=characterHeldItemComponent.selectedItem;
+  if (selectedItemEntity.equals(EntityRef.NULL)) {
+    return;
+  }
+  if (event.isDown() && lastTimeThrowInteraction == 0) {
+    lastTimeThrowInteraction=time.getGameTimeInMs();
+    return;
+  }
+  InventoryHud toolbar=nuiManager.getHUD().getHUDElement("core:InventoryHud",InventoryHud.class);
+  if (toolbar != null) {
+    toolbar.setChargeAmount(getDropPower());
+  }
+  float dropPower=getDropPower();
+  if (!event.isDown()) {
+    dropPower*=150f;
+    Vector3f position=localPlayer.getViewPosition();
+    Vector3f direction=localPlayer.getViewDirection();
+    Vector3f newPosition=new Vector3f(position.x + direction.x * 1.5f,position.y + direction.y * 1.5f,position.z + direction.z * 1.5f);
+    Vector3f impulseVector=new Vector3f(direction);
+    impulseVector.scale(dropPower);
+    entity.send(new DropItemRequest(selectedItemEntity,entity,impulseVector,newPosition));
+    characterHeldItemComponent.lastItemUsedTime=time.getGameTimeInMs();
+    entity.saveComponent(characterHeldItemComponent);
+    resetDropMark();
+  }
+  event.consume();
+}

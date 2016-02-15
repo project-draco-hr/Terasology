@@ -1,0 +1,12 @@
+{
+  for (  InventoryCell cell : findAll(InventoryCell.class)) {
+    cell.bindSelected(new SlotSelectedBinding(cell.getTargetSlot(),localPlayer));
+    cell.bindTargetInventory(new ReadOnlyBinding<EntityRef>(){
+      @Override public EntityRef get(){
+        return localPlayer.getCharacterEntity();
+      }
+    }
+);
+  }
+  crosshair=find("crosshair",UICrosshair.class);
+}
