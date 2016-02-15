@@ -6,7 +6,7 @@
   boolean ownedEntityUsage=usedOwnedEntity.exists();
   int activationId=nextActivationId++;
   Physics physics=CoreRegistry.get(Physics.class);
-  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,Sets.newHashSet(character),CharacterSystem.DEFAULTPHYSICSFILTER);
   boolean eventWithTarget=result.isHit();
   if (eventWithTarget) {
     EntityRef activatedObject=usedOwnedEntity.exists() ? usedOwnedEntity : result.getEntity();

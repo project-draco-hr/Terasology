@@ -2,16 +2,14 @@
   List<Input> binds=Lists.newArrayList(config.getBinds(bindUri));
   if (value == null) {
     if (position < binds.size()) {
-      binds.remove(position);
+      binds.set(position,null);
     }
   }
  else {
-    if (position < binds.size()) {
-      binds.set(position,value);
+    while (binds.size() <= position) {
+      binds.add(null);
     }
- else {
-      binds.add(value);
-    }
+    binds.set(position,value);
   }
   config.setBinds(bindUri,binds);
 }

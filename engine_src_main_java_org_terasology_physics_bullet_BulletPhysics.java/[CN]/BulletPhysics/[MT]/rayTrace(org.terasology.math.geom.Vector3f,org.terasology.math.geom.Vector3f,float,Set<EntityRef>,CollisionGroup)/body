@@ -1,0 +1,39 @@
+{
+  Vector3f to=new Vector3f(VecMath.to(direction));
+  Vector3f from=VecMath.to(from1);
+  to.scale(distance);
+  to.add(from);
+  short filter=combineGroups(collisionGroups);
+  Set<Integer> excludedCollisionIds=Sets.newHashSet();
+  for (  EntityRef excludedEntity : excludedEntities) {
+    if (entityRigidBodies.containsKey(excludedEntity)) {
+      excludedCollisionIds.add(entityRigidBodies.get(excludedEntity).rb.getBroadphaseHandle().getUid());
+    }
+    if (entityColliders.containsKey(excludedEntity)) {
+      excludedCollisionIds.add(entityColliders.get(excludedEntity).collider.getBroadphaseHandle().getUid());
+    }
+    if (entityTriggers.containsKey(excludedEntity)) {
+      excludedCollisionIds.add(entityTriggers.get(excludedEntity).getBroadphaseHandle().getUid());
+    }
+  }
+  CollisionWorld.ClosestRayResultWithUserDataCallback closest=new ClosestRayResultWithUserDataCallbackExcludingCollisionIds(from,to,excludedCollisionIds);
+  closest.collisionFilterGroup=CollisionFilterGroups.ALL_FILTER;
+  closest.collisionFilterMask=filter;
+  discreteDynamicsWorld.rayTest(from,to,closest);
+  if (closest.hasHit()) {
+    if (closest.userData instanceof Vector3i) {
+      final EntityRef entityAt=blockEntityRegistry.getEntityAt((Vector3i)closest.userData);
+      return new HitResult(entityAt,VecMath.from(closest.hitPointWorld),VecMath.from(closest.hitNormalWorld),(Vector3i)closest.userData);
+    }
+ else     if (closest.userData instanceof EntityRef) {
+      return new HitResult((EntityRef)closest.userData,VecMath.from(closest.hitPointWorld),VecMath.from(closest.hitNormalWorld));
+    }
+ else {
+      logger.warn("Unidentified object was hit in the physics engine: {}",closest.userData);
+      return new HitResult();
+    }
+  }
+ else {
+    return new HitResult();
+  }
+}

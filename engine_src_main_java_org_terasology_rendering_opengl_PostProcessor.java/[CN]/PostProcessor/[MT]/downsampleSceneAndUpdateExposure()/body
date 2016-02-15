@@ -2,9 +2,9 @@
   if (renderingConfig.isEyeAdaptation()) {
     PerformanceMonitor.startActivity("Updating exposure");
     downsampleSceneInto1x1pixelsBuffer();
-    renderingProcess.getCurrentReadbackPBO().copyFromFBO(buffers.downSampledScene[0].fboId,1,1,GL12.GL_BGRA,GL11.GL_UNSIGNED_BYTE);
-    renderingProcess.swapReadbackPBOs();
-    ByteBuffer pixels=renderingProcess.getCurrentReadbackPBO().readBackPixels();
+    buffersManager.getCurrentReadbackPBO().copyFromFBO(buffers.downSampledScene[0].fboId,1,1,GL12.GL_BGRA,GL11.GL_UNSIGNED_BYTE);
+    buffersManager.swapReadbackPBOs();
+    ByteBuffer pixels=buffersManager.getCurrentReadbackPBO().readBackPixels();
     if (pixels.limit() < 3) {
       logger.error("Failed to auto-update the exposure value.");
       return;

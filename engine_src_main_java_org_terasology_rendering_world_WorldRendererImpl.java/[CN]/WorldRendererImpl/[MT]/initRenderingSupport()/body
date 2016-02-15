@@ -1,12 +1,12 @@
 {
-  renderingProcess=new LwjglRenderingProcess();
-  context.put(LwjglRenderingProcess.class,renderingProcess);
-  graphicState=new GraphicState(renderingProcess);
-  postProcessor=new PostProcessor(renderingProcess,graphicState);
+  buffersManager=new FrameBuffersManager();
+  context.put(FrameBuffersManager.class,buffersManager);
+  graphicState=new GraphicState(buffersManager);
+  postProcessor=new PostProcessor(buffersManager,graphicState);
   context.put(PostProcessor.class,postProcessor);
-  renderingProcess.setGraphicState(graphicState);
-  renderingProcess.setPostProcessor(postProcessor);
-  renderingProcess.initialize();
+  buffersManager.setGraphicState(graphicState);
+  buffersManager.setPostProcessor(postProcessor);
+  buffersManager.initialize();
   context.get(ShaderManager.class).initShaders();
   postProcessor.initializeMaterials();
   initMaterials();
