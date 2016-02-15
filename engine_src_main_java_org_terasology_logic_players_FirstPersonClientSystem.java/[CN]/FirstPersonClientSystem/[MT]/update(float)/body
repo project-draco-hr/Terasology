@@ -1,8 +1,11 @@
 {
   CharacterHeldItemComponent characterHeldItemComponent=localPlayer.getCharacterEntity().getComponent(CharacterHeldItemComponent.class);
   FirstPersonHeldItemMountPointComponent mountPointComponent=localPlayer.getCameraEntity().getComponent(FirstPersonHeldItemMountPointComponent.class);
+  if (characterHeldItemComponent == null || mountPointComponent == null) {
+    return;
+  }
   LocationComponent locationComponent=mountPointComponent.mountPointEntity.getComponent(LocationComponent.class);
-  if (characterHeldItemComponent == null || mountPointComponent == null || locationComponent == null) {
+  if (locationComponent == null) {
     return;
   }
   long timeElapsedSinceLastUsed=time.getGameTimeInMs() - characterHeldItemComponent.lastItemUsedTime;
