@@ -1,0 +1,35 @@
+{
+  canvas.drawBackground();
+  try (SubRegion ignored=canvas.subRegion(canvas.getCurrentStyle().getMargin().shrink(canvas.getRegion()),false)){
+    if (selection.get() != null) {
+      optionRenderer.draw(selection.get(),canvas);
+    }
+  }
+   if (opened) {
+    canvas.setPart(LIST);
+    canvas.setDrawOnTop(true);
+    Font font=canvas.getCurrentStyle().getFont();
+    Border itemMargin=canvas.getCurrentStyle().getMargin();
+    int height=(font.getLineHeight() + itemMargin.getTotalHeight()) * options.get().size() + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
+    canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y + height));
+    Rect2i location=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height);
+    canvas.drawBackground(location);
+    int itemHeight=itemMargin.getTotalHeight() + font.getLineHeight();
+    canvas.setPart(LIST_ITEM);
+    for (int i=0; i < optionListeners.size(); ++i) {
+      if (optionListeners.get(i).isMouseOver()) {
+        canvas.setMode(HOVER_MODE);
+      }
+ else {
+        canvas.setMode(DEFAULT_MODE);
+      }
+      Rect2i itemRegion=Rect2i.createFromMinAndSize(0,canvas.size().y + itemHeight * i,canvas.size().x,itemHeight);
+      canvas.drawBackground(itemRegion);
+      optionRenderer.draw(options.get().get(i),canvas,itemMargin.shrink(itemRegion));
+      canvas.addInteractionRegion(optionListeners.get(i),itemRegion);
+    }
+  }
+ else {
+    canvas.addInteractionRegion(mainListener);
+  }
+}
