@@ -2,6 +2,9 @@
   BulletRigidBody rigidBody=entityRigidBodies.remove(entity);
   if (rigidBody != null) {
     removeRigidBody(rigidBody);
+    float[] radius=new float[1];
+    rigidBody.rb.getCollisionShape().getBoundingSphere(new Vector3f(),radius);
+    awakenArea(rigidBody.getLocation(new org.terasology.math.geom.Vector3f()),radius[0]);
     return true;
   }
  else {
