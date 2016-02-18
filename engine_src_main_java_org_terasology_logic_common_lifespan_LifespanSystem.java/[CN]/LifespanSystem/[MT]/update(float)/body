@@ -1,12 +1,9 @@
 {
+  long currentTime=time.getGameTimeInMs();
   for (  EntityRef entity : entityManager.getEntitiesWith(LifespanComponent.class)) {
     LifespanComponent lifespan=entity.getComponent(LifespanComponent.class);
-    lifespan.lifespan-=delta;
-    if (lifespan.lifespan < 0) {
+    if (lifespan.deathTime < currentTime) {
       entity.destroy();
-    }
- else {
-      entity.saveComponent(lifespan);
     }
   }
 }
