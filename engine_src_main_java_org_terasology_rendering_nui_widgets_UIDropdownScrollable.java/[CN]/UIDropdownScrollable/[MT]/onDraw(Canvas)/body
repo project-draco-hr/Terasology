@@ -10,8 +10,7 @@
     canvas.setDrawOnTop(true);
     Font font=canvas.getCurrentStyle().getFont();
     Border itemMargin=canvas.getCurrentStyle().getMargin();
-    int optionsMaxNum=5;
-    int optionsSize=options.get().size() <= 5 ? options.get().size() : optionsMaxNum;
+    int optionsSize=options.get().size() <= visibleOptionsNum ? options.get().size() : visibleOptionsNum;
     int height=(font.getLineHeight() + itemMargin.getTotalHeight()) * optionsSize + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
     canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y + height));
     Rect2i frame=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height);
