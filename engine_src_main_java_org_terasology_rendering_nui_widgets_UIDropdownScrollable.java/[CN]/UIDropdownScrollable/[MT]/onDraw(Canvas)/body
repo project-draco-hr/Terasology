@@ -14,11 +14,12 @@
     int optionsSize=options.get().size() <= 5 ? options.get().size() : optionsMaxNum;
     int height=(font.getLineHeight() + itemMargin.getTotalHeight()) * optionsSize + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
     canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y + height));
-    Rect2i location=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height);
-    canvas.drawBackground(location);
+    Rect2i frame=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height);
+    canvas.drawBackground(frame);
+    Rect2i scrollableArea=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height - itemMargin.getBottom());
     int scrollbarWidth=canvas.calculateRestrictedSize(verticalBar,new Vector2i(canvas.size().x,canvas.size().y)).x;
-    int scrollbarHeight=location.size().y - itemMargin.getTop();
-    int availableWidth=location.size().x - scrollbarWidth;
+    int scrollbarHeight=frame.size().y - itemMargin.getTop();
+    int availableWidth=frame.size().x - scrollbarWidth;
     int availableHeight=scrollbarHeight;
     int itemHeight=itemMargin.getTotalHeight() + font.getLineHeight();
     int itemWidth=availableWidth;
@@ -31,7 +32,7 @@
         canvas.setMode(DEFAULT_MODE);
       }
       Rect2i itemRegion=Rect2i.createFromMinAndSize(0,itemHeight * i - verticalBar.getValue(),itemWidth,itemHeight);
-      try (SubRegion ignored=canvas.subRegion(location,true)){
+      try (SubRegion ignored=canvas.subRegion(scrollableArea,true)){
         canvas.drawBackground(itemRegion);
         optionRenderer.draw(options.get().get(i),canvas,itemMargin.shrink(itemRegion));
         canvas.addInteractionRegion(optionListeners.get(i),itemRegion);
