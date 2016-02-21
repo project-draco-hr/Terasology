@@ -6,10 +6,12 @@
       if (oldItem != null && oldItem.exists()) {
         Location.removeChild(mountPointComponent.mountPointEntity,oldItem);
         oldItem.removeComponent(LocationComponent.class);
+        oldItem.removeComponent(ItemIsHeldComponent.class);
       }
  else {
         Location.removeChild(mountPointComponent.mountPointEntity,getHandEntity());
         getHandEntity().removeComponent(LocationComponent.class);
+        getHandEntity().removeComponent(ItemIsHeldComponent.class);
       }
       EntityRef heldItem=newItem;
       if (!heldItem.exists()) {

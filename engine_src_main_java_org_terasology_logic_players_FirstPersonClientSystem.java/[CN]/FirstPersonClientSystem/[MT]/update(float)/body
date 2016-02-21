@@ -4,7 +4,7 @@
     relinkHeldItem=false;
   }
   for (  EntityRef entityRef : entityManager.getEntitiesWith(ItemIsHeldComponent.class)) {
-    if (!entityRef.equals(currentHeldItem)) {
+    if (!entityRef.equals(currentHeldItem) && !entityRef.equals(handEntity)) {
       entityRef.removeComponent(ItemIsHeldComponent.class);
       EntityRef camera=localPlayer.getCameraEntity();
       FirstPersonHeldItemMountPointComponent mountPointComponent=camera.getComponent(FirstPersonHeldItemMountPointComponent.class);
