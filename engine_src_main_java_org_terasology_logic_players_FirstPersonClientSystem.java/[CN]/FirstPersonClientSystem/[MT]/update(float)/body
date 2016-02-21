@@ -3,6 +3,17 @@
     linkHeldItemLocationForLocalPlayer(localPlayer.getCharacterEntity(),currentHeldItem,null);
     relinkHeldItem=false;
   }
+  for (  EntityRef entityRef : entityManager.getEntitiesWith(ItemIsHeldComponent.class)) {
+    if (!entityRef.equals(currentHeldItem)) {
+      entityRef.removeComponent(ItemIsHeldComponent.class);
+      EntityRef camera=localPlayer.getCameraEntity();
+      FirstPersonHeldItemMountPointComponent mountPointComponent=camera.getComponent(FirstPersonHeldItemMountPointComponent.class);
+      LocationComponent locationComponent=entityRef.getComponent(LocationComponent.class);
+      if (mountPointComponent != null && locationComponent != null && locationComponent.getParent().equals(mountPointComponent.mountPointEntity)) {
+        entityRef.removeComponent(LocationComponent.class);
+      }
+    }
+  }
   CharacterHeldItemComponent characterHeldItemComponent=localPlayer.getCharacterEntity().getComponent(CharacterHeldItemComponent.class);
   FirstPersonHeldItemMountPointComponent mountPointComponent=localPlayer.getCameraEntity().getComponent(FirstPersonHeldItemMountPointComponent.class);
   if (characterHeldItemComponent == null || mountPointComponent == null) {
