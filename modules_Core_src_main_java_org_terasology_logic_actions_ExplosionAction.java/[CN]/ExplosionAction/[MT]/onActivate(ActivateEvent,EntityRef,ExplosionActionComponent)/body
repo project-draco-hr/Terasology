@@ -33,7 +33,7 @@ target.z+=direction.z * j;
 blockPos.set((int)target.x,(int)target.y,(int)target.z);
 Block currentBlock=worldProvider.getBlock(blockPos);
 if (currentBlock.isDestructible()) {
-blockEntityRegistry.getEntityAt(blockPos).send(new DoDamageEvent(1000,EngineDamageTypes.EXPLOSIVE.get()));
+blockEntityRegistry.getEntityAt(blockPos).send(new DoDamageEvent(explosionComp.damageAmount,explosionComp.damageType));
 }
 }
 }
