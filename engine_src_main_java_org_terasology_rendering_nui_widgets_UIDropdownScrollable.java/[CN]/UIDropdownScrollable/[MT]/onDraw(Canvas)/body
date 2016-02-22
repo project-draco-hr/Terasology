@@ -20,6 +20,8 @@
     int scrollbarHeight=frame.size().y - itemMargin.getTop();
     int availableWidth=frame.size().x - scrollbarWidth;
     int availableHeight=scrollbarHeight;
+    int scrollbarXPos=availableWidth - itemMargin.getRight();
+    int scrollbarYPos=itemMargin.getTotalHeight() * 2 + font.getLineHeight();
     int itemHeight=itemMargin.getTotalHeight() + font.getLineHeight();
     int itemWidth=availableWidth;
     canvas.setPart(LIST_ITEM);
@@ -37,7 +39,8 @@
         canvas.addInteractionRegion(optionListeners.get(i),itemRegion);
       }
      }
-    canvas.drawWidget(verticalBar,Rect2i.createFromMinAndSize(availableWidth - itemMargin.getRight(),itemMargin.getTotalHeight() * 2 + font.getLineHeight(),scrollbarWidth,scrollbarHeight));
+    Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPos,scrollbarYPos,scrollbarWidth,scrollbarHeight);
+    canvas.drawWidget(verticalBar,scrollbarRegion);
   }
  else {
     canvas.addInteractionRegion(mainListener);
