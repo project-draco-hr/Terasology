@@ -1,0 +1,36 @@
+{
+  if (blockSelectionRenderer == null) {
+    Texture texture=Assets.getTextureRegion("core:blockdamageeffects#1").get().getTexture();
+    blockSelectionRenderer=new BlockSelectionRenderer(texture);
+  }
+  Multimap<Integer,Vector3i> groupedEntitiesByEffect=ArrayListMultimap.create();
+  for (  EntityRef entity : entityManager.getEntitiesWith(HealthComponent.class,BlockComponent.class)) {
+    HealthComponent health=entity.getComponent(HealthComponent.class);
+    if (health.currentHealth == health.maxHealth) {
+      continue;
+    }
+    BlockComponent blockComponent=entity.getComponent(BlockComponent.class);
+    groupedEntitiesByEffect.put(getEffectsNumber(health),blockComponent.getPosition());
+  }
+  for (  EntityRef entity : entityManager.getEntitiesWith(BlockRegionComponent.class,HealthComponent.class)) {
+    HealthComponent health=entity.getComponent(HealthComponent.class);
+    if (health.currentHealth == health.maxHealth) {
+      continue;
+    }
+    BlockRegionComponent blockRegion=entity.getComponent(BlockRegionComponent.class);
+    for (    Vector3i blockPos : blockRegion.region) {
+      groupedEntitiesByEffect.put(getEffectsNumber(health),blockPos);
+    }
+  }
+  blockSelectionRenderer.beginRenderOverlay();
+  for (  Integer effectsNumber : groupedEntitiesByEffect.keySet()) {
+    Optional<TextureRegionAsset> texture=Assets.getTextureRegion("core:blockdamageeffects#" + effectsNumber);
+    if (texture.isPresent()) {
+      blockSelectionRenderer.setEffectsTexture(texture.get());
+      for (      Vector3i position : groupedEntitiesByEffect.get(effectsNumber)) {
+        blockSelectionRenderer.renderMark(position);
+      }
+    }
+  }
+  blockSelectionRenderer.endRenderOverlay();
+}

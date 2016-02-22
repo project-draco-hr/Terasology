@@ -7,5 +7,9 @@
     logger.error("Unable to register class {}: Default Constructor Required",type.getSimpleName(),e);
     return null;
   }
+catch (  NoClassDefFoundError e) {
+    logger.error("Class not found, {}",type.getSimpleName(),e);
+    throw e;
+  }
   return info;
 }

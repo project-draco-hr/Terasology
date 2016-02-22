@@ -1,0 +1,12 @@
+{
+  BeforeDamagedEvent beforeDamage=entity.send(new BeforeDamagedEvent(amount,damageType,instigator,directCause));
+  if (!beforeDamage.isConsumed()) {
+    int damageAmount=TeraMath.floorToInt(beforeDamage.getResultValue());
+    if (damageAmount > 0) {
+      doDamage(entity,damageAmount,damageType,instigator,directCause);
+    }
+ else {
+      doHeal(entity,-damageAmount,instigator);
+    }
+  }
+}
