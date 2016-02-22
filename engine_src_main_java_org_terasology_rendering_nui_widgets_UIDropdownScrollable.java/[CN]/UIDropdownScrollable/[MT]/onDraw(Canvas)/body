@@ -19,11 +19,9 @@
     int scrollbarWidth=canvas.calculateRestrictedSize(verticalBar,new Vector2i(canvas.size().x,canvas.size().y)).x;
     int scrollbarHeight=frame.size().y - itemMargin.getTop();
     int availableWidth=frame.size().x - scrollbarWidth;
-    int availableHeight=scrollbarHeight;
     int scrollbarXPos=availableWidth - itemMargin.getRight();
     int scrollbarYPos=itemMargin.getTotalHeight() * 2 + font.getLineHeight();
     int itemHeight=itemMargin.getTotalHeight() + font.getLineHeight();
-    int itemWidth=availableWidth;
     canvas.setPart(LIST_ITEM);
     for (int i=0; i < optionListeners.size(); ++i) {
       if (optionListeners.get(i).isMouseOver()) {
@@ -32,7 +30,7 @@
  else {
         canvas.setMode(DEFAULT_MODE);
       }
-      Rect2i itemRegion=Rect2i.createFromMinAndSize(0,itemHeight * i - verticalBar.getValue(),itemWidth,itemHeight);
+      Rect2i itemRegion=Rect2i.createFromMinAndSize(0,itemHeight * i - verticalBar.getValue(),availableWidth,itemHeight);
       try (SubRegion ignored=canvas.subRegion(scrollableArea,true)){
         canvas.drawBackground(itemRegion);
         optionRenderer.draw(options.get().get(i),canvas,itemMargin.shrink(itemRegion));
