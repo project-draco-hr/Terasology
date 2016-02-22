@@ -1,0 +1,10 @@
+{
+  if (event.getTarget().hasComponent(BlockComponent.class) && event.getTarget().hasComponent(ExplosionActionComponent.class) && !event.getTarget().hasComponent(TimedExplosionComponent.class)) {
+    Optional<StaticSound> fuseBurningSound=Assets.getSound("core:FuseBurning");
+    if (fuseBurningSound.isPresent()) {
+      event.getTarget().send(new PlaySoundEvent(fuseBurningSound.get(),1f));
+    }
+    event.getTarget().addComponent(new TimedExplosionComponent());
+    delayManager.addDelayedAction(event.getTarget(),DELAYED_EXPLOSION_ACTION_ID,timedExplosionComponent.fuseTimeMs);
+  }
+}

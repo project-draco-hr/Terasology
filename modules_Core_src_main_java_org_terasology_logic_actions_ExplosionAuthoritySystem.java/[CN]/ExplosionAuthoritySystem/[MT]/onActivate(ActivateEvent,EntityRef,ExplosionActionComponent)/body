@@ -1,0 +1,21 @@
+{
+  Vector3f origin=null;
+switch (explosionComp.relativeTo) {
+case Self:
+    LocationComponent loc=entity.getComponent(LocationComponent.class);
+  if (loc != null) {
+    origin=loc.getWorldPosition();
+  }
+break;
+case Instigator:
+origin=event.getInstigatorLocation();
+break;
+default :
+origin=event.getTargetLocation();
+break;
+}
+if (origin == null) {
+return;
+}
+doExplosion(explosionComp,origin,EntityRef.NULL);
+}
