@@ -5,16 +5,16 @@
   origin.add(dir);
   Vector3i blockPos=new Vector3i();
   int particleEffects=0;
-  int blockCounter=MAX_DESTROYED_BLOCKS;
-  for (int s=0; s <= MAX_TUNNEL_DEPTH; s++) {
+  int blockCounter=tunnelActionComponent.maxDestroyedBlocks;
+  for (int s=0; s <= tunnelActionComponent.maxTunnelDepth; s++) {
     origin.add(dir);
     if (!worldProvider.isBlockRelevant(origin)) {
       break;
     }
-    for (int i=0; i < MAX_RAYS_CAST; i++) {
-      Vector3f direction=random.nextVector3f(1.0f);
+    for (int i=0; i < tunnelActionComponent.maxRaysCast; i++) {
+      Vector3f direction=random.nextVector3f();
       Vector3f impulse=new Vector3f(direction);
-      impulse.scale(200);
+      impulse.scale(tunnelActionComponent.explosiveForce);
       for (int j=0; j < 3; j++) {
         Vector3f target=new Vector3f(origin);
         target.x+=direction.x * j;
@@ -23,15 +23,15 @@
         blockPos.set((int)target.x,(int)target.y,(int)target.z);
         Block currentBlock=worldProvider.getBlock(blockPos);
         if (currentBlock.isDestructible()) {
-          if (particleEffects < MAX_PARTICLE_EFFECTS) {
+          if (particleEffects < tunnelActionComponent.maxParticalEffects) {
             EntityBuilder builder=entityManager.newBuilder("engine:smokeExplosion");
             builder.getComponent(LocationComponent.class).setWorldPosition(target);
             builder.build();
             particleEffects++;
           }
-          if (random.nextInt(4) == 0) {
+          if (random.nextFloat() < tunnelActionComponent.thoroughness) {
             EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
-            blockEntity.send(new DoDamageEvent(1000,EngineDamageTypes.EXPLOSIVE.get()));
+            blockEntity.send(new DoDamageEvent(tunnelActionComponent.damageAmount,tunnelActionComponent.damageType));
           }
           blockCounter--;
         }
@@ -41,7 +41,7 @@
       }
     }
   }
-  if (blockCounter == MAX_DESTROYED_BLOCKS) {
+  if (blockCounter == tunnelActionComponent.maxDestroyedBlocks) {
     event.consume();
   }
 }

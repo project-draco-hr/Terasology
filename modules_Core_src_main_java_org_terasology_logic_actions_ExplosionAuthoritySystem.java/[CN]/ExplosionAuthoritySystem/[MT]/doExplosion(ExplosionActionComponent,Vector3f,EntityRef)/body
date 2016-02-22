@@ -1,0 +1,27 @@
+{
+  EntityBuilder builder=entityManager.newBuilder("engine:smokeExplosion");
+  builder.getComponent(LocationComponent.class).setWorldPosition(origin);
+  EntityRef smokeEntity=builder.build();
+  smokeEntity.send(new PlaySoundEvent(getRandomExplosionSound(),1f));
+  Vector3i blockPos=new Vector3i();
+  for (int i=0; i < explosionComp.maxRange; i++) {
+    Vector3f direction=random.nextVector3f(1.0f);
+    for (int j=0; j < 4; j++) {
+      Vector3f target=new Vector3f(origin);
+      target.x+=direction.x * j;
+      target.y+=direction.y * j;
+      target.z+=direction.z * j;
+      blockPos.set((int)target.x,(int)target.y,(int)target.z);
+      Block currentBlock=worldProvider.getBlock(blockPos);
+      if (currentBlock.isDestructible()) {
+        EntityRef blockEntity=blockEntityRegistry.getEntityAt(blockPos);
+        if (!blockEntity.equals(instigatingBlockEntity) && blockEntity.hasComponent(ExplosionActionComponent.class)) {
+          doExplosion(blockEntity.getComponent(ExplosionActionComponent.class),blockPos.toVector3f(),blockEntity);
+        }
+ else {
+          blockEntity.send(new DoDamageEvent(explosionComp.damageAmount,explosionComp.damageType));
+        }
+      }
+    }
+  }
+}
