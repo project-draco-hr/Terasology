@@ -1,9 +1,0 @@
-{
-  logger.debug("Received resynch event");
-  LocationComponent loc=entity.getComponent(LocationComponent.class);
-  Vector3f delta=new Vector3f(event.getPosition());
-  delta.sub(loc.getWorldPosition());
-  RigidBody body=physics.getRigidBody(entity);
-  body.setVelocity(event.getVelocity(),event.getAngularVelocity());
-  body.setTransform(event.getPosition(),event.getRotation());
-}
