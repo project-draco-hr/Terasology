@@ -11,34 +11,18 @@
     Font font=canvas.getCurrentStyle().getFont();
     Border itemMargin=canvas.getCurrentStyle().getMargin();
     int optionsSize=options.get().size() <= visibleOptionsNum ? options.get().size() : visibleOptionsNum;
-    int height=(font.getLineHeight() + itemMargin.getTotalHeight()) * optionsSize + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
+    int itemHeight=itemMargin.getTotalHeight() + font.getLineHeight();
+    int height=itemHeight * optionsSize + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
     canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y + height));
     Rect2i frame=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height);
     canvas.drawBackground(frame);
-    Rect2i scrollableArea=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height - itemMargin.getBottom());
-    int scrollbarWidth=canvas.calculateRestrictedSize(verticalBar,new Vector2i(canvas.size().x,canvas.size().y)).x;
-    int scrollbarHeight=frame.size().y - itemMargin.getTop();
-    int availableWidth=frame.size().x - scrollbarWidth;
-    int scrollbarXPos=availableWidth - itemMargin.getRight();
-    int scrollbarYPos=itemMargin.getTotalHeight() * 2 + font.getLineHeight();
-    int itemHeight=itemMargin.getTotalHeight() + font.getLineHeight();
     canvas.setPart(LIST_ITEM);
-    for (int i=0; i < optionListeners.size(); ++i) {
-      if (optionListeners.get(i).isMouseOver()) {
-        canvas.setMode(HOVER_MODE);
-      }
+    if (options.get().size() > visibleOptionsNum) {
+      createScrollbarItems(canvas,frame,font,itemMargin,height,itemHeight);
+    }
  else {
-        canvas.setMode(DEFAULT_MODE);
-      }
-      Rect2i itemRegion=Rect2i.createFromMinAndSize(0,itemHeight * i - verticalBar.getValue(),availableWidth,itemHeight);
-      try (SubRegion ignored=canvas.subRegion(scrollableArea,true)){
-        canvas.drawBackground(itemRegion);
-        optionRenderer.draw(options.get().get(i),canvas,itemMargin.shrink(itemRegion));
-        canvas.addInteractionRegion(optionListeners.get(i),itemRegion);
-      }
-     }
-    Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPos,scrollbarYPos,scrollbarWidth,scrollbarHeight);
-    canvas.drawWidget(verticalBar,scrollbarRegion);
+      createNoScrollItems(canvas,itemMargin,itemHeight);
+    }
   }
  else {
     canvas.addInteractionRegion(mainListener);

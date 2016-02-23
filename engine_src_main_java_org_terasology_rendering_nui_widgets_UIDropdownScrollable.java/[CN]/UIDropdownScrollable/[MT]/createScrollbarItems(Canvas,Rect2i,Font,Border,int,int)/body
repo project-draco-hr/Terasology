@@ -1,0 +1,17 @@
+{
+  Rect2i scrollableArea=Rect2i.createFromMinAndSize(0,canvas.size().y,canvas.size().x,height - itemMargin.getBottom());
+  int scrollbarWidth=canvas.calculateRestrictedSize(verticalBar,new Vector2i(canvas.size().x,canvas.size().y)).x;
+  int scrollbarHeight=frame.size().y - itemMargin.getTop();
+  int availableWidth=frame.size().x - scrollbarWidth;
+  int scrollbarXPos=availableWidth - itemMargin.getRight();
+  int scrollbarYPos=itemMargin.getTotalHeight() * 2 + font.getLineHeight();
+  Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPos,scrollbarYPos,scrollbarWidth,scrollbarHeight);
+  canvas.drawWidget(verticalBar,scrollbarRegion);
+  for (int i=0; i < optionListeners.size(); ++i) {
+    readItemMouseOver(canvas,i);
+    Rect2i itemRegion=Rect2i.createFromMinAndSize(0,itemHeight * i - verticalBar.getValue(),availableWidth,itemHeight);
+    try (SubRegion ignored=canvas.subRegion(scrollableArea,true)){
+      drawItem(canvas,itemMargin,i,itemRegion);
+    }
+   }
+}
