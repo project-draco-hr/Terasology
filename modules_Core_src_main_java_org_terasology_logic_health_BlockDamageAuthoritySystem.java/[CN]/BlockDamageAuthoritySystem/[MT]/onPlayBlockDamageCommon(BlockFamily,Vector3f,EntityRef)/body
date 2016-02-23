@@ -1,7 +1,7 @@
 {
   EntityBuilder builder=entityManager.newBuilder("engine:defaultBlockParticles");
   builder.getComponent(LocationComponent.class).setWorldPosition(location);
-  builder.getComponent(BlockParticleEffectComponent.class).blockType=family;
+  builder.getComponent(BlockParticleEffectComponent.class).blockType=family.getURI().toString();
   builder.build();
   if (family.getArchetypeBlock().isDebrisOnDestroy()) {
     EntityBuilder dustBuilder=entityManager.newBuilder("engine:dustEffect");
@@ -11,6 +11,6 @@
   BlockSounds sounds=family.getArchetypeBlock().getSounds();
   if (!sounds.getDigSounds().isEmpty()) {
     StaticSound sound=random.nextItem(sounds.getDigSounds());
-    audioManager.playSound(sound,location);
+    entityRef.send(new PlaySoundEvent(sound,1f));
   }
 }

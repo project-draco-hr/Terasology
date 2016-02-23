@@ -8,7 +8,7 @@
   if (particleEffect.blockType != null) {
     final float tileSize=worldAtlas.getRelativeTileSize();
     p.texSize.set(tileSize,tileSize);
-    Block b=particleEffect.blockType.getArchetypeBlock();
+    Block b=blockManager.getBlock(particleEffect.blockType).getBlockFamily().getArchetypeBlock();
     p.texOffset.set(b.getPrimaryAppearance().getTextureAtlasPos(BlockPart.FRONT));
     if (particleEffect.randBlockTexDisplacement) {
       final float relTileSize=worldAtlas.getRelativeTileSize();

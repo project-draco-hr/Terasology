@@ -6,7 +6,7 @@
     if (characterSounds.lastSoundTime + CharacterSoundSystem.MIN_TIME < time.getGameTimeInMs()) {
       StaticSound sound=random.nextItem(characterSounds.landingSounds);
       if (sound != null) {
-        entity.send(new PlaySoundEvent(entity,sound,characterSounds.landingVolume));
+        entity.send(new PlaySoundEvent(sound,characterSounds.landingVolume));
         characterSounds.lastSoundTime=time.getGameTimeInMs();
         entity.saveComponent(characterSounds);
       }
