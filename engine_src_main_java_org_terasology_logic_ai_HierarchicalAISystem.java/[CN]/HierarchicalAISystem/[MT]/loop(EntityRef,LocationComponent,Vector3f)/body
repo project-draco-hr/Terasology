@@ -20,12 +20,6 @@
       entity.destroy();
     }
     if (ai.aggressive) {
-      if (distanceToPlayer <= ai.attackDistance) {
-        if (tempTime - lastAttack > ai.damageFrequency) {
-          localPlayer.getCharacterEntity().send(new DoDamageEvent(ai.damage,EngineDamageTypes.PHYSICAL.get(),entity));
-          lastAttack=time.getGameTimeInMs();
-        }
-      }
     }
     if (tempTime - ai.lastChangeOfDangerAt > dangerChangeTime) {
       dangerChangeTime=(long)(ai.dangerUpdateTime * random.nextDouble() * ai.hectic);

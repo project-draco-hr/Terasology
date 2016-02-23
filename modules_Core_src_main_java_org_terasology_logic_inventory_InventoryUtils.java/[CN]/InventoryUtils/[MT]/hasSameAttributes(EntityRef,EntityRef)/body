@@ -1,0 +1,27 @@
+{
+  Set<Component> differentiatingComponentsFrom=new HashSet<>();
+  for (  Component component : from.iterateComponents()) {
+    if (component instanceof ItemDifferentiating) {
+      differentiatingComponentsFrom.add(component);
+    }
+  }
+  Map<Class<?>,Component> differentiatingComponentsTo=new HashMap<>();
+  for (  Component component : to.iterateComponents()) {
+    if (component instanceof ItemDifferentiating) {
+      differentiatingComponentsTo.put(component.getClass(),component);
+    }
+  }
+  if (differentiatingComponentsFrom.size() != differentiatingComponentsTo.size()) {
+    return false;
+  }
+  for (  Component component : differentiatingComponentsFrom) {
+    Component componentInTarget=differentiatingComponentsTo.get(component.getClass());
+    if (componentInTarget == null) {
+      return false;
+    }
+    if (!component.equals(componentInTarget)) {
+      return false;
+    }
+  }
+  return true;
+}

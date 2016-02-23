@@ -1,0 +1,15 @@
+{
+  Vector3f horizVelocity=new Vector3f(event.getVelocity());
+  horizVelocity.y=0;
+  float velocity=horizVelocity.length();
+  if (velocity > healthComponent.horizontalDamageSpeedThreshold) {
+    if (characterSounds.lastSoundTime + CharacterSoundSystem.MIN_TIME < time.getGameTimeInMs()) {
+      StaticSound sound=random.nextItem(characterSounds.landingSounds);
+      if (sound != null) {
+        entity.send(new PlaySoundEvent(sound,characterSounds.landingVolume));
+        characterSounds.lastSoundTime=time.getGameTimeInMs();
+        entity.saveComponent(characterSounds);
+      }
+    }
+  }
+}

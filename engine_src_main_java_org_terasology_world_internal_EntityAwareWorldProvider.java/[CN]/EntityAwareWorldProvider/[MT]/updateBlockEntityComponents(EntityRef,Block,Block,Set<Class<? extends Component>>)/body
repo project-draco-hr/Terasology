@@ -23,18 +23,6 @@
   }
   blockComponent.setBlock(type);
   blockEntity.saveComponent(blockComponent);
-  HealthComponent health=blockEntity.getComponent(HealthComponent.class);
-  if (health == null && type.isDestructible()) {
-    blockEntity.addComponent(new HealthComponent(type.getHardness(),type.getHardness() / BLOCK_REGEN_SECONDS,1.0f));
-  }
- else   if (health != null && !type.isDestructible()) {
-    blockEntity.removeComponent(HealthComponent.class);
-  }
- else   if (health != null && type.isDestructible()) {
-    health.maxHealth=type.getHardness();
-    health.currentHealth=Math.min(health.currentHealth,health.maxHealth);
-    blockEntity.saveComponent(health);
-  }
   for (  Component comp : newEntityBuilder.iterateComponents()) {
     copyIntoPrefab(blockEntity,comp,retainComponents);
   }

@@ -1,15 +1,16 @@
 {
   PerformanceMonitor.startActivity("Physics Renderer");
-  physics.update(delta);
+  physics.update(time.getGameDelta());
   PerformanceMonitor.endActivity();
   Iterator<EntityRef> iter=physics.physicsEntitiesIterator();
   while (iter.hasNext()) {
     EntityRef entity=iter.next();
     RigidBodyComponent comp=entity.getComponent(RigidBodyComponent.class);
     RigidBody body=physics.getRigidBody(entity);
-    body.getLinearVelocity(comp.velocity);
-    body.getAngularVelocity(comp.angularVelocity);
-    entity.saveComponent(comp);
+    if (body.isActive()) {
+      body.getLinearVelocity(comp.velocity);
+      body.getAngularVelocity(comp.angularVelocity);
+    }
   }
   if (networkSystem.getMode().isServer() && time.getGameTimeInMs() - TIME_BETWEEN_NETSYNCS > lastNetsync) {
     sendSyncMessages();

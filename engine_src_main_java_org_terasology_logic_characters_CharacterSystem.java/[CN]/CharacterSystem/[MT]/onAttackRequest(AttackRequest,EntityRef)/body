@@ -9,17 +9,8 @@
   LocationComponent gazeLocation=gazeEntity.getComponent(LocationComponent.class);
   Vector3f direction=gazeLocation.getWorldDirection();
   Vector3f originPos=gazeLocation.getWorldPosition();
-  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,filter);
+  HitResult result=physics.rayTrace(originPos,direction,characterComponent.interactionRange,Sets.newHashSet(character),DEFAULTPHYSICSFILTER);
   if (result.isHit()) {
-    int damage=1;
-    Prefab damageType=EngineDamageTypes.PHYSICAL.get();
-    ItemComponent item=event.getItem().getComponent(ItemComponent.class);
-    if (item != null) {
-      damage=item.baseDamage;
-      if (item.damageType != null) {
-        damageType=item.damageType;
-      }
-    }
-    result.getEntity().send(new DoDamageEvent(damage,damageType,character,event.getItem()));
+    result.getEntity().send(new AttackEvent(character,event.getItem()));
   }
 }

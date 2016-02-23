@@ -3,13 +3,7 @@
   if (uri != null) {
     Optional<StaticSound> snd=assetManager.getAsset(uri,StaticSound.class);
     if (snd.isPresent()) {
-      if (actor().hasLocation()) {
-        Vector3f worldPosition=actor().location().getWorldPosition();
-        audioManager.playSound(snd.get(),worldPosition,getNode().volume,AudioManager.PRIORITY_NORMAL,this);
-      }
- else {
-        audioManager.playSound(snd.get(),new Vector3f(),getNode().volume,AudioManager.PRIORITY_NORMAL,this);
-      }
+      actor().minion().send(new PlaySoundEvent(snd.get(),getNode().volume));
       playing=true;
     }
   }

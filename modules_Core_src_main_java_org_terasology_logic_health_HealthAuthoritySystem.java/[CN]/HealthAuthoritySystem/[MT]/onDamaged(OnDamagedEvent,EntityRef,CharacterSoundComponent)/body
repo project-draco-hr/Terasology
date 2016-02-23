@@ -1,0 +1,19 @@
+{
+  if (characterSounds.lastSoundTime + CharacterSoundSystem.MIN_TIME < time.getGameTimeInMs()) {
+    DamageSoundComponent damageSounds=event.getType().getComponent(DamageSoundComponent.class);
+    if (damageSounds != null && !damageSounds.sounds.isEmpty()) {
+      StaticSound sound=random.nextItem(damageSounds.sounds);
+      if (sound != null) {
+        entity.send(new PlaySoundEvent(sound,1f));
+      }
+    }
+    if (!characterSounds.damageSounds.isEmpty()) {
+      StaticSound sound=random.nextItem(characterSounds.damageSounds);
+      if (sound != null) {
+        entity.send(new PlaySoundForOwnerEvent(sound,characterSounds.damageVolume));
+      }
+    }
+    characterSounds.lastSoundTime=time.getGameTimeInMs();
+    entity.saveComponent(characterSounds);
+  }
+}

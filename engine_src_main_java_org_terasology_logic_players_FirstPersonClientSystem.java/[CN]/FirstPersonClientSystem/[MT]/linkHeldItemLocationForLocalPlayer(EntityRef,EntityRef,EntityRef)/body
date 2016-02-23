@@ -1,21 +1,24 @@
 {
-  if (character.equals(localPlayer.getCharacterEntity()) && !newItem.equals(oldItem)) {
+  if (!newItem.equals(oldItem)) {
     EntityRef camera=localPlayer.getCameraEntity();
     FirstPersonHeldItemMountPointComponent mountPointComponent=camera.getComponent(FirstPersonHeldItemMountPointComponent.class);
     if (mountPointComponent != null) {
       if (oldItem != null && oldItem.exists()) {
         Location.removeChild(mountPointComponent.mountPointEntity,oldItem);
         oldItem.removeComponent(LocationComponent.class);
+        oldItem.removeComponent(ItemIsHeldComponent.class);
       }
  else {
         Location.removeChild(mountPointComponent.mountPointEntity,getHandEntity());
         getHandEntity().removeComponent(LocationComponent.class);
+        getHandEntity().removeComponent(ItemIsHeldComponent.class);
       }
       EntityRef heldItem=newItem;
       if (!heldItem.exists()) {
         heldItem=getHandEntity();
       }
       heldItem.addOrSaveComponent(new LocationComponent());
+      heldItem.addOrSaveComponent(new ItemIsHeldComponent());
       FirstPersonHeldItemTransformComponent heldItemTransformComponent=heldItem.getComponent(FirstPersonHeldItemTransformComponent.class);
       if (heldItemTransformComponent == null) {
         heldItemTransformComponent=new FirstPersonHeldItemTransformComponent();

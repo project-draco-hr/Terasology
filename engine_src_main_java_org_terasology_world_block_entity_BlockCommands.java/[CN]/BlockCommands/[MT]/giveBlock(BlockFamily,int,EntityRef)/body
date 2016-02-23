@@ -7,7 +7,9 @@
     throw new IllegalArgumentException("Unknown block or item");
   }
   EntityRef playerEntity=client.getComponent(ClientComponent.class).character;
-  if (!inventoryManager.giveItem(playerEntity,playerEntity,item)) {
+  GiveItemEvent giveItemEvent=new GiveItemEvent(playerEntity);
+  item.send(giveItemEvent);
+  if (!giveItemEvent.isHandled()) {
     item.destroy();
   }
   return "You received " + quantity + " blocks of "+ blockFamily.getDisplayName();

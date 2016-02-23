@@ -11,6 +11,6 @@
   }
   BlockItemFactory blockItemFactory=new BlockItemFactory(entityManager);
   EntityRef blockItem=blockItemFactory.newInstance(block);
-  pickupBuilder.createPickupFor(blockItem,spawnPos,60);
+  blockItem.send(new DropItemEvent(spawnPos));
   return "Spawned block.";
 }

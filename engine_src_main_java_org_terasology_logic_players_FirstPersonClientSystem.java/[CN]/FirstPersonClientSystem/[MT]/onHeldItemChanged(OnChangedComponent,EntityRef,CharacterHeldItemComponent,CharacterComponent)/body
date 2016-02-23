@@ -1,4 +1,7 @@
 {
-  linkHeldItemLocationForLocalPlayer(character,heldItemComponent.selectedItem,currentHeldItem);
-  currentHeldItem=heldItemComponent.selectedItem;
+  if (localPlayer.getCharacterEntity().equals(character)) {
+    EntityRef oldHeldItem=currentHeldItem;
+    currentHeldItem=heldItemComponent.selectedItem;
+    linkHeldItemLocationForLocalPlayer(character,currentHeldItem,oldHeldItem);
+  }
 }

@@ -1,0 +1,10 @@
+{
+  BlockDamageModifierComponent blockDamageSettings=event.getType().getComponent(BlockDamageModifierComponent.class);
+  boolean skipDamageEffects=false;
+  if (blockDamageSettings != null) {
+    skipDamageEffects=blockDamageSettings.skipPerBlockEffects;
+  }
+  if (!skipDamageEffects) {
+    onPlayBlockDamageCommon(blockFamily,location,entityRef);
+  }
+}

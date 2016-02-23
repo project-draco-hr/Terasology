@@ -19,6 +19,9 @@
  else {
     EntityRef worldEntity=entityManager.create();
     worldEntity.addComponent(new WorldComponent());
+    NetworkComponent networkComponent=new NetworkComponent();
+    networkComponent.replicateMode=NetworkComponent.ReplicateMode.ALWAYS;
+    worldEntity.addComponent(networkComponent);
     worldRenderer.getChunkProvider().setWorldEntity(worldEntity);
     WorldGenerator worldGenerator=context.get(WorldGenerator.class);
     SimpleUri generatorUri=worldGenerator.getUri();

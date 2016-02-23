@@ -1,31 +1,8 @@
 {
   PerformanceMonitor.startActivity("StructuralCheck");
   try {
-    boolean initialEvent=!midDestruction;
-    if (initialEvent) {
-      midDestruction=true;
-      gatheringEntity=entityManager.create();
-      gatheringEntity.addComponent(new InventoryComponent(GATHERING_INVENTORY_SLOT_COUNT));
-    }
-    try {
-      for (      Side side : Side.values()) {
-        validateSupportForBlockOnSide(event.getBlockPosition(),side);
-      }
-      if (initialEvent) {
-        PickupBuilder pickupBuilder=new PickupBuilder(entityManager,inventoryManager);
-        for (int i=0; i < GATHERING_INVENTORY_SLOT_COUNT; i++) {
-          EntityRef item=inventoryManager.getItemInSlot(gatheringEntity,i);
-          if (item.exists()) {
-            pickupBuilder.createPickupFor(item,event.getBlockPosition().toVector3f(),60,true);
-          }
-        }
-      }
-    }
-  finally {
-      if (initialEvent) {
-        midDestruction=false;
-        gatheringEntity.destroy();
-      }
+    for (    Side side : Side.values()) {
+      validateSupportForBlockOnSide(event.getBlockPosition(),side);
     }
   }
   finally {

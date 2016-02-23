@@ -13,15 +13,10 @@
       newRigidBody(entity);
     }
  else {
-      if (!rigidBody.rb.getAngularFactor().equals(rb.angularFactor)) {
-        rigidBody.rb.setAngularFactor(VecMath.to(rb.angularFactor));
-      }
-      if (!rigidBody.rb.getLinearFactor().equals(rb.linearFactor)) {
-        rigidBody.rb.setLinearFactor(VecMath.to(rb.linearFactor));
-      }
+      rigidBody.rb.setAngularFactor(VecMath.to(rb.angularFactor));
+      rigidBody.rb.setLinearFactor(VecMath.to(rb.linearFactor));
       rigidBody.rb.setFriction(rb.friction);
     }
-    updateKinematicSettings(entity.getComponent(RigidBodyComponent.class),rigidBody);
     return true;
   }
  else {

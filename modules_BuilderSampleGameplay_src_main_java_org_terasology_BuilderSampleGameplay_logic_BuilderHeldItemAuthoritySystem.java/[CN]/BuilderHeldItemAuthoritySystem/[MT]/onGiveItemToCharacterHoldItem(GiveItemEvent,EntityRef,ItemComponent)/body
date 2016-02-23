@@ -1,0 +1,7 @@
+{
+  if (event.getTargetEntity().hasComponent(CharacterHeldItemComponent.class)) {
+    event.getTargetEntity().addOrSaveComponent(new CharacterOwnedItemComponent(item));
+    event.getTargetEntity().send(new ChangeHeldItemRequest(item));
+    event.setHandled(true);
+  }
+}

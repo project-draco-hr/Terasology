@@ -1,0 +1,11 @@
+{
+  ClientComponent clientComp=client.getComponent(ClientComponent.class);
+  HealthComponent health=clientComp.character.getComponent(HealthComponent.class);
+  if (health != null) {
+    health.fallingDamageSpeedThreshold=85f;
+    health.excessSpeedDamageMultiplier=2f;
+    clientComp.character.saveComponent(health);
+    return "Soft landing mode activated";
+  }
+  return "";
+}

@@ -9,7 +9,7 @@
     OpenGLUtil.applyBillboardOrientation();
     glScalef(particle.size,particle.size,particle.size);
     float light=worldRenderer.getRenderingLightValueAt(new Vector3f(worldPos.x + particle.position.x,worldPos.y + particle.position.y,worldPos.z + particle.position.z));
-    renderParticle(particle,particleEffect.blockType.getArchetypeBlock(),biome,light);
+    renderParticle(particle,blockManager.getBlock(particleEffect.blockType).getBlockFamily().getArchetypeBlock(),biome,light);
     glPopMatrix();
   }
   glPopMatrix();

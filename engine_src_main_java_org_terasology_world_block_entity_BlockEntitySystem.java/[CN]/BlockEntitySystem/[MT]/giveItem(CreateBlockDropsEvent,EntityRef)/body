@@ -1,3 +1,5 @@
 {
-  return inventoryManager.giveItem(event.getInstigator(),item,item);
+  GiveItemEvent giveItemEvent=new GiveItemEvent(event.getInstigator());
+  item.send(giveItemEvent);
+  return giveItemEvent.isHandled();
 }
