@@ -3,8 +3,8 @@
   if (uri != null) {
     Optional<StaticSound> snd=assetManager.getAsset(uri,StaticSound.class);
     if (snd.isPresent()) {
-      if (actor().hasLocation()) {
-        Vector3f worldPosition=actor().location().getWorldPosition();
+      if (actor().hasComponent(LocationComponent.class)) {
+        Vector3f worldPosition=actor().getComponent(LocationComponent.class).getWorldPosition();
         audioManager.playSound(snd.get(),worldPosition,getNode().volume,AudioManager.PRIORITY_NORMAL,this);
       }
  else {
