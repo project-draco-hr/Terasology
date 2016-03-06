@@ -7,6 +7,8 @@
   int scrollbarYPos=itemMargin.getTotalHeight() * 2 + font.getLineHeight();
   Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPos,scrollbarYPos,scrollbarWidth,scrollbarHeight);
   canvas.drawWidget(verticalBar,scrollbarRegion);
+  float maxVertBarDesired=itemHeight * (optionListeners.size() - visibleOptionsNum - 0.5f) + itemMargin.getBottom();
+  verticalBar.setRange((int)maxVertBarDesired);
   for (int i=0; i < optionListeners.size(); ++i) {
     readItemMouseOver(canvas,i);
     Rect2i itemRegion=Rect2i.createFromMinAndSize(0,itemHeight * i - verticalBar.getValue(),availableWidth,itemHeight);
