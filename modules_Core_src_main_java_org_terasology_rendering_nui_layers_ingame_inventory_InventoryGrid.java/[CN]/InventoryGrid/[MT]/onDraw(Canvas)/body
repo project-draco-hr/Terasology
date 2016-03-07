@@ -2,11 +2,13 @@
   int numSlots=getNumSlots();
   if (numSlots != 0 && !cells.isEmpty()) {
     Vector2i cellSize=canvas.calculatePreferredSize(cells.get(0));
-    int horizontalCells=Math.min(maxHorizontalCells,canvas.size().getX() / cellSize.getX());
-    for (int i=0; i < numSlots && i < cells.size(); ++i) {
-      int horizPos=i % horizontalCells;
-      int vertPos=i / horizontalCells;
-      canvas.drawWidget(cells.get(i),Rect2i.createFromMinAndSize(horizPos * cellSize.x,vertPos * cellSize.y,cellSize.x,cellSize.y));
+    if (cellSize.getX() != 0 && canvas.size().getX() != 0) {
+      int horizontalCells=Math.min(maxHorizontalCells,canvas.size().getX() / cellSize.getX());
+      for (int i=0; i < numSlots && i < cells.size(); ++i) {
+        int horizPos=i % horizontalCells;
+        int vertPos=i / horizontalCells;
+        canvas.drawWidget(cells.get(i),Rect2i.createFromMinAndSize(horizPos * cellSize.x,vertPos * cellSize.y,cellSize.x,cellSize.y));
+      }
     }
   }
 }

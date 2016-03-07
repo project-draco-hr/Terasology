@@ -2,9 +2,14 @@
   int numSlots=getNumSlots();
   if (numSlots != 0 && !cells.isEmpty()) {
     Vector2i cellSize=canvas.calculatePreferredSize(cells.get(0));
-    int horizontalCells=Math.min(Math.min(maxHorizontalCells,numSlots),sizeHint.getX() / cellSize.getX());
-    int verticalCells=((numSlots - 1) / horizontalCells) + 1;
-    return new Vector2i(horizontalCells * cellSize.x,verticalCells * cellSize.y);
+    try {
+      int horizontalCells=Math.min(Math.min(maxHorizontalCells,numSlots),sizeHint.getX() / cellSize.getX());
+      int verticalCells=((numSlots - 1) / horizontalCells) + 1;
+      return new Vector2i(horizontalCells * cellSize.x,verticalCells * cellSize.y);
+    }
+ catch (    ArithmeticException e) {
+      logger.warn("Attempted zero division - possible issue in layout definition",e);
+    }
   }
   return Vector2i.zero();
 }
