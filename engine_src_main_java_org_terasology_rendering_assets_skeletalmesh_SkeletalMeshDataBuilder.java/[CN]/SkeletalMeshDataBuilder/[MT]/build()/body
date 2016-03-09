@@ -11,5 +11,12 @@
  else   if (rootBones > 1) {
     throw new IllegalStateException("Cannot create a skeleton with multiple root bones");
   }
-  return new SkeletalMeshData(bones,weights,uvs,vertexStartWeights,vertexWeightCounts,indices);
+  AABB staticAabb;
+  if (minOfAABB != null && maxOfAABB != null) {
+    staticAabb=AABB.createMinMax(minOfAABB,maxOfAABB);
+  }
+ else {
+    staticAabb=AABB.createEmpty();
+  }
+  return new SkeletalMeshData(bones,weights,uvs,vertexStartWeights,vertexWeightCounts,indices,staticAabb);
 }

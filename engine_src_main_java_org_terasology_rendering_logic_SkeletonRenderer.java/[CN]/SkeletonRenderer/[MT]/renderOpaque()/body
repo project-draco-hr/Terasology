@@ -10,19 +10,31 @@
     if (skeletalMesh.mesh == null || skeletalMesh.material == null || skeletalMesh.boneEntities == null || !skeletalMesh.material.isRenderable()) {
       continue;
     }
+    AABB aabb;
+    MeshAnimation animation=skeletalMesh.animation;
+    if (animation != null) {
+      aabb=animation.getAabb();
+    }
+ else {
+      aabb=skeletalMesh.mesh.getStaticAabb();
+    }
+    LocationComponent location=entity.getComponent(LocationComponent.class);
+    location.getWorldRotation(worldRot);
+    inverseWorldRot.inverse(worldRot);
+    location.getWorldPosition(worldPos);
+    float worldScale=location.getWorldScale();
+    aabb=aabb.transform(worldRot,worldPos,worldScale);
+    if (!worldRenderer.getActiveCamera().hasInSight(aabb)) {
+      continue;
+    }
     skeletalMesh.material.enable();
     skeletalMesh.material.setFloat("sunlight",1.0f,true);
     skeletalMesh.material.setFloat("blockLight",1.0f,true);
     skeletalMesh.material.setMatrix4("projectionMatrix",worldRenderer.getActiveCamera().getProjectionMatrix());
     skeletalMesh.material.bindTextures();
-    LocationComponent location=entity.getComponent(LocationComponent.class);
-    location.getWorldRotation(worldRot);
-    inverseWorldRot.inverse(worldRot);
-    location.getWorldPosition(worldPos);
     Vector3f worldPositionCameraSpace=new Vector3f();
     worldPositionCameraSpace.sub(worldPos,cameraPosition);
     worldPos.y-=skeletalMesh.heightOffset;
-    float worldScale=location.getWorldScale();
     Matrix4f matrixCameraSpace=new Matrix4f(worldRot,worldPositionCameraSpace,worldScale);
     Matrix4f modelViewMatrix=MatrixUtils.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
     MatrixUtils.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
