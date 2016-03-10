@@ -23,31 +23,36 @@
     sceneReflectiveRefractive.bindTexture();
     program.setInt("texSceneReflectiveRefractive",texId++,true);
   }
-  if (CoreRegistry.get(Config.class).getRendering().isLocalReflections()) {
+  RenderingConfig renderingConfig=CoreRegistry.get(Config.class).getRendering();
+  Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  if (renderingConfig == null || activeCamera == null) {
+    return;
+  }
+  if (renderingConfig.isLocalReflections()) {
     if (sceneReflectiveRefractive != null) {
       GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
       sceneReflectiveRefractive.bindNormalsTexture();
       program.setInt("texSceneReflectiveRefractiveNormals",texId++,true);
     }
-    Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
-    if (activeCamera != null) {
-      program.setMatrix4("invProjMatrix",activeCamera.getInverseProjectionMatrix(),true);
-      program.setMatrix4("projMatrix",activeCamera.getProjectionMatrix(),true);
-    }
+    program.setMatrix4("invProjMatrix",activeCamera.getInverseProjectionMatrix(),true);
+    program.setMatrix4("projMatrix",activeCamera.getProjectionMatrix(),true);
   }
-  if (CoreRegistry.get(Config.class).getRendering().isSsao()) {
+  if (renderingConfig.isSsao()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     frameBuffersManager.bindFboColorTexture("ssaoBlurred");
     program.setInt("texSsao",texId++,true);
   }
-  if (CoreRegistry.get(Config.class).getRendering().isOutline()) {
+  if (renderingConfig.isOutline()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     frameBuffersManager.bindFboColorTexture("outline");
     program.setInt("texEdges",texId++,true);
     program.setFloat("outlineDepthThreshold",outlineDepthThreshold,true);
     program.setFloat("outlineThickness",outlineThickness,true);
   }
-  if (CoreRegistry.get(Config.class).getRendering().isInscattering()) {
+  if (renderingConfig.isVolumetricFog()) {
+    program.setMatrix4("invViewProjMatrix",activeCamera.getInverseViewProjectionMatrix(),true);
+  }
+  if (renderingConfig.isInscattering()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     frameBuffersManager.bindFboColorTexture("sceneSkyBand1");
     program.setInt("texSceneSkyBand",texId++,true);
