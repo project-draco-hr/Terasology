@@ -1,4 +1,11 @@
 {
+  String prevText=getText();
+  boolean callEvent=!prevText.equals(val);
   text.set(val != null ? val : "");
   correctCursor();
+  if (callEvent) {
+    for (    TextChangeEventListener listener : textChangeListeners) {
+      listener.onTextChange(prevText,val);
+    }
+  }
 }
