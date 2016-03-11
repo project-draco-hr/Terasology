@@ -1,0 +1,9 @@
+{
+  CircularBuffer<CharacterStateEvent> stateBuffer=characterStates.get(entity);
+  CharacterStateEvent lastState=stateBuffer.getLast();
+  CharacterStateEvent newState=new CharacterStateEvent(lastState);
+  newState.setPosition(new Vector3f(event.getTargetPosition()));
+  newState.setTime(time.getGameTimeInMs());
+  stateBuffer.add(newState);
+  characterMovementSystemUtility.setToState(entity,newState);
+}
