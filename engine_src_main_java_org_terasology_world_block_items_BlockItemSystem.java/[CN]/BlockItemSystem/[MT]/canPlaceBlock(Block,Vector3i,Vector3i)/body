@@ -10,6 +10,9 @@
   if (!adjBlock.isReplacementAllowed() || adjBlock.isTargetable()) {
     return false;
   }
+  if (block.getBlockFamily().equals(adjBlock.getBlockFamily())) {
+    return false;
+  }
   if (!block.isPenetrable()) {
     Physics physics=CoreRegistry.get(Physics.class);
     AABB blockBounds=block.getBounds(blockPos);
