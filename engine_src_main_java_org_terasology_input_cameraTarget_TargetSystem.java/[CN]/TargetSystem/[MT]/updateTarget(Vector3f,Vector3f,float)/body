@@ -4,16 +4,25 @@
   }
   HitResult hitInfo=physics.rayTrace(pos,dir,maxDist,filter);
   EntityRef newTarget=hitInfo.getEntity();
-  if (target.equals(newTarget)) {
-    return false;
-  }
   if (hitInfo.isWorldHit()) {
+    if (targetBlockPos != null) {
+      if (targetBlockPos.equals(hitInfo.getBlockPosition())) {
+        return false;
+      }
+    }
     targetBlockPos=hitInfo.getBlockPosition();
   }
  else {
+    if (target.equals(newTarget)) {
+      return false;
+    }
     targetBlockPos=null;
   }
   prevTarget=target;
   target=newTarget;
+  LocationComponent location=target.getComponent(LocationComponent.class);
+  if (location != null && targetBlockPos != null) {
+    location.setLocalPosition(targetBlockPos.toVector3f());
+  }
   return true;
 }
