@@ -1,3 +1,13 @@
 {
-  return actor.component(DisplayNameComponent.class).name;
+  if (actor.hasComponent(DisplayNameComponent.class)) {
+    return actor.getComponent(DisplayNameComponent.class).name;
+  }
+  String entityId="entityId: " + actor.getEntity().getId();
+  Prefab parentPrefab=actor.getEntity().getParentPrefab();
+  if (parentPrefab != null) {
+    return "prefab: " + parentPrefab.getName() + " "+ entityId;
+  }
+ else {
+    return entityId;
+  }
 }

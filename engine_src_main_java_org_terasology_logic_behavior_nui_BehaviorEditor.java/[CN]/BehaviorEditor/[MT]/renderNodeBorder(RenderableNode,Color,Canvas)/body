@@ -1,0 +1,14 @@
+{
+  Vector2f size=node.getSize();
+  Vector2f topLeft=node.getPosition();
+  Vector2f topRight=new Vector2f(topLeft);
+  topRight.add(new Vector2f(size.x + .1f,0));
+  Vector2f bottomLeft=new Vector2f(topLeft);
+  bottomLeft.add(new Vector2f(0,size.y + .1f));
+  Vector2f bottomRight=new Vector2f(topLeft);
+  bottomRight.add(new Vector2f(size.x + 0.1f,size.y + 0.1f));
+  drawConnection(canvas,topLeft,topRight,color);
+  drawConnection(canvas,topRight,bottomRight,color);
+  drawConnection(canvas,bottomRight,bottomLeft,color);
+  drawConnection(canvas,bottomLeft,topLeft,color);
+}

@@ -1,10 +1,35 @@
 {
-  if (status == Status.INVALID) {
-    onInitialize();
+switch (status) {
+case NOT_INITIALIZED:
+{
+      onInitialize();
+      status=Status.RUNNING;
+      break;
+    }
+case RUNNING:
+{
+    Status newStatus=update(deltaSeconds);
+    if (!(newStatus == Status.RUNNING || newStatus == Status.SUCCESS || newStatus == Status.FAILURE)) {
+      LOG.warn("update of Task {} returned invalid state {}",this.getClass(),newStatus);
+    }
+    status=newStatus;
+    break;
   }
-  status=update(dt);
-  if (status != Status.RUNNING) {
-    onTerminate(status);
-  }
-  return status;
+case SUSPENDED:
+break;
+case FAILURE:
+case SUCCESS:
+{
+onTerminate(status);
+status=Status.TERMINATED;
+break;
+}
+case TERMINATED:
+{
+break;
+}
+default :
+break;
+}
+return status;
 }
