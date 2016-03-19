@@ -4,6 +4,7 @@ case NOT_INITIALIZED:
 {
       onInitialize();
       status=Status.RUNNING;
+      status=this.tick(deltaSeconds);
       break;
     }
 case RUNNING:
@@ -13,6 +14,9 @@ case RUNNING:
       LOG.warn("update of Task {} returned invalid state {}",this.getClass(),newStatus);
     }
     status=newStatus;
+    if (newStatus == Status.FAILURE || newStatus == Status.SUCCESS) {
+      onTerminate(status);
+    }
     break;
   }
 case SUSPENDED:
@@ -20,7 +24,6 @@ break;
 case FAILURE:
 case SUCCESS:
 {
-onTerminate(status);
 status=Status.TERMINATED;
 break;
 }
