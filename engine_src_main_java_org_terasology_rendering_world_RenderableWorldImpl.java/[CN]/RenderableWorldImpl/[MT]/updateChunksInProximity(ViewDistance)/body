@@ -1,4 +1,10 @@
 {
-  logger.info("New Viewing Distance: {}",viewDistance);
-  return updateChunksInProximity(calculateRenderableRegion(viewDistance));
+  if (newViewDistance != currentViewDistance) {
+    logger.info("New Viewing Distance: {}",newViewDistance);
+    currentViewDistance=newViewDistance;
+    return updateChunksInProximity(calculateRenderableRegion(newViewDistance));
+  }
+ else {
+    return false;
+  }
 }
