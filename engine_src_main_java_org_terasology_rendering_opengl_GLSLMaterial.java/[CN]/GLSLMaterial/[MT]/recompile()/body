@@ -6,6 +6,7 @@
   }
   disposalAction.shaderPrograms.clear();
   uniformLocationMap.clear();
+  bindMap.clear();
   disposalAction.shaderPrograms.put(0,shader.linkShaderProgram(0));
   for (  Set<ShaderProgramFeature> permutation : Sets.powerSet(shader.getAvailableFeatures())) {
     int featureMask=ShaderProgramFeature.getBitset(permutation);
@@ -14,4 +15,5 @@
   if (shaderParameters != null) {
     shaderParameters.initialParameters(this);
   }
+  rebindVaribles(materialData);
 }
