@@ -6,12 +6,11 @@
   LocalPlayer localPlayer=context.get(LocalPlayer.class);
   ClientComponent client=localPlayer.getClientEntity().getComponent(ClientComponent.class);
   if (client != null && client.character.exists()) {
-    worldRenderer.setPlayer(context.get(LocalPlayer.class));
     return true;
   }
  else {
-    worldRenderer.getChunkProvider().completeUpdate();
-    worldRenderer.getChunkProvider().beginUpdate();
+    chunkProvider.completeUpdate();
+    chunkProvider.beginUpdate();
   }
   return false;
 }
