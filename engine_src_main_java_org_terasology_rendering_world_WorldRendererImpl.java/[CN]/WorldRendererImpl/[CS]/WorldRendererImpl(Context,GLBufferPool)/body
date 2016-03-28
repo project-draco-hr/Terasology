@@ -3,23 +3,21 @@
   this.worldProvider=context.get(WorldProvider.class);
   this.backdropProvider=context.get(BackdropProvider.class);
   this.backdropRenderer=context.get(BackdropRenderer.class);
-  this.config=context.get(Config.class);
-  this.renderingConfig=config.getRendering();
+  this.renderingConfig=context.get(Config.class).getRendering();
   this.renderingDebugConfig=renderingConfig.getDebug();
   this.systemManager=context.get(ComponentSystemManager.class);
   if (renderingConfig.isOculusVrSupport()) {
     playerCamera=new OculusStereoCamera();
-    currentRenderingStage=WorldRenderingStage.LEFT_EYE;
+    currentRenderingStage=RenderingStage.LEFT_EYE;
   }
  else {
     playerCamera=new PerspectiveCamera(renderingConfig.getCameraSettings());
-    currentRenderingStage=WorldRenderingStage.MONO;
+    currentRenderingStage=RenderingStage.MONO;
   }
   LocalPlayerSystem localPlayerSystem=context.get(LocalPlayerSystem.class);
   localPlayerSystem.setPlayerCamera(playerCamera);
-  initMainDirectionalLight();
-  ChunkProvider chunkProvider=context.get(ChunkProvider.class);
-  renderableWorld=new RenderableWorldImpl(worldProvider,chunkProvider,bufferPool,playerCamera,shadowMapCamera);
+  renderableWorld=new RenderableWorldImpl(worldProvider,context.get(ChunkProvider.class),bufferPool,playerCamera,shadowMapCamera);
   renderQueues=renderableWorld.getRenderQueues();
+  initMainDirectionalLight();
   initRenderingSupport();
 }

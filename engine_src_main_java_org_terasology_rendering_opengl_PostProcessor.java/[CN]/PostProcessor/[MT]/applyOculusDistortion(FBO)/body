@@ -5,15 +5,15 @@
   inputBuffer.bindTexture();
   materials.ocDistortion.setInt("texInputBuffer",texId,true);
   if (isNotTakingScreenshot()) {
-    updateOcShaderParametersForVP(0,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.LEFT_EYE);
+    updateOcShaderParametersForVP(0,0,fullScale.width() / 2,fullScale.height(),RenderingStage.LEFT_EYE);
     renderFullscreenQuad(0,0,Display.getWidth(),Display.getHeight());
-    updateOcShaderParametersForVP(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.RIGHT_EYE);
+    updateOcShaderParametersForVP(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height(),RenderingStage.RIGHT_EYE);
     renderFullscreenQuad(0,0,Display.getWidth(),Display.getHeight());
   }
  else {
-    updateOcShaderParametersForVP(0,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.LEFT_EYE);
+    updateOcShaderParametersForVP(0,0,fullScale.width() / 2,fullScale.height(),RenderingStage.LEFT_EYE);
     renderFullscreenQuad(0,0,fullScale.width(),fullScale.height());
-    updateOcShaderParametersForVP(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height(),WorldRenderer.WorldRenderingStage.RIGHT_EYE);
+    updateOcShaderParametersForVP(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height(),RenderingStage.RIGHT_EYE);
     renderFullscreenQuad(0,0,fullScale.width(),fullScale.height());
   }
 }

@@ -1,0 +1,25 @@
+{
+  resetStats();
+  currentRenderingStage=renderingStage;
+  if (currentRenderingStage == RenderingStage.MONO || currentRenderingStage == RenderingStage.LEFT_EYE) {
+    isFirstRenderingStageForCurrentFrame=true;
+  }
+ else {
+    isFirstRenderingStageForCurrentFrame=false;
+  }
+  if (isFirstRenderingStageForCurrentFrame) {
+    timeSmoothedMainLightIntensity=TeraMath.lerp(timeSmoothedMainLightIntensity,getMainLightIntensityAt(playerCamera.getPosition()),secondsSinceLastFrame);
+    playerCamera.update(secondsSinceLastFrame);
+    positionShadowMapCamera();
+    shadowMapCamera.update(secondsSinceLastFrame);
+    renderableWorld.update();
+    renderableWorld.generateVBOs();
+    secondsSinceLastFrame=0;
+    buffersManager.preRenderUpdate();
+    millisecondsSinceRenderingStart+=secondsSinceLastFrame * 1000;
+  }
+  if (currentRenderingStage != RenderingStage.MONO) {
+    playerCamera.updateFrustum();
+  }
+  renderableWorld.queueVisibleChunks(isFirstRenderingStageForCurrentFrame);
+}
