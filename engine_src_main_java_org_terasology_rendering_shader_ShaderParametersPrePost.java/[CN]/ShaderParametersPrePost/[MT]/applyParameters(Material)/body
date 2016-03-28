@@ -1,7 +1,9 @@
 {
   super.applyParameters(program);
   FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
-  Vector3f tint=CoreRegistry.get(WorldRenderer.class).getTint();
+  Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
+  WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
+  Vector3f tint=worldProvider.getBlock(activeCamera.getPosition()).getTint();
   program.setFloat3("inLiquidTint",tint.x,tint.y,tint.z,true);
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);

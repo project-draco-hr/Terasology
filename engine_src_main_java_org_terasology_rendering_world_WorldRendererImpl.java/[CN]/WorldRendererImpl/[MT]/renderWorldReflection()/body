@@ -5,13 +5,13 @@
   playerCamera.lookThroughNormalized();
   backdropRenderer.render(playerCamera);
   playerCamera.lookThrough();
-  chunkShader.activateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   if (renderingConfig.isReflectiveWater()) {
+    chunkShader.activateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
     while (renderQueues.chunksOpaqueReflection.size() > 0) {
       renderChunk(renderQueues.chunksOpaqueReflection.poll(),ChunkMesh.RenderPhase.OPAQUE,playerCamera,ChunkRenderMode.REFLECTION);
     }
+    chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   }
-  chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   playerCamera.setReflected(false);
   graphicState.postRenderCleanupReflectedScene();
   PerformanceMonitor.endActivity();
