@@ -3,11 +3,11 @@
     Border3D border=new Border3D(0,0,0);
     for (    FacetProvider facetProvider : providerChains.values()) {
       Requires requires=facetProvider.getClass().getAnnotation(Requires.class);
+      Produces produces=facetProvider.getClass().getAnnotation(Produces.class);
+      Updates updates=facetProvider.getClass().getAnnotation(Updates.class);
       if (requires != null) {
         for (        Facet requiredFacet : requires.value()) {
           if (requiredFacet.value() == facet) {
-            Produces produces=facetProvider.getClass().getAnnotation(Produces.class);
-            Updates updates=facetProvider.getClass().getAnnotation(Updates.class);
             FacetBorder requiredBorder=requiredFacet.border();
             if (produces != null) {
               for (              Class<? extends WorldFacet> producedFacet : produces.value()) {
@@ -24,6 +24,27 @@
                 Border3D borderForProducedFacet=borders.get(producedFacet);
                 border=border.maxWith(borderForProducedFacet.getTop() + requiredBorder.top() + borderForFacetAnnotation.top(),borderForProducedFacet.getBottom() + requiredBorder.bottom() + borderForFacetAnnotation.bottom(),borderForProducedFacet.getSides() + requiredBorder.sides() + borderForFacetAnnotation.sides());
               }
+            }
+          }
+        }
+      }
+ else       if (updates != null) {
+        for (        Facet producedFacetAnnotation : updates.value()) {
+          if (producedFacetAnnotation.value() == facet) {
+            Class<? extends WorldFacet> updatesFacet=producedFacetAnnotation.value();
+            FacetBorder borderForFacetAnnotation=producedFacetAnnotation.border();
+            Border3D updatesBorder=borders.get(updatesFacet);
+            if (updatesBorder == null) {
+              if (providerChains.containsEntry(updatesFacet,facetProvider)) {
+                ListMultimap<Class<? extends WorldFacet>,FacetProvider> providerChainsModded=ArrayListMultimap.create();
+                providerChainsModded.putAll(providerChains);
+                providerChainsModded.remove(updatesFacet,facetProvider);
+                ensureBorderCalculatedForFacet(updatesFacet,providerChainsModded,borders);
+                updatesBorder=borders.get(updatesFacet);
+              }
+            }
+            if (updatesBorder != null) {
+              border=border.maxWith(updatesBorder.getTop() + borderForFacetAnnotation.top(),updatesBorder.getBottom() + borderForFacetAnnotation.bottom(),updatesBorder.getSides() + borderForFacetAnnotation.sides());
             }
           }
         }
