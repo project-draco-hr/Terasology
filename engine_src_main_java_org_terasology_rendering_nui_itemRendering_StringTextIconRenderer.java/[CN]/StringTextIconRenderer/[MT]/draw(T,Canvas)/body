@@ -1,0 +1,35 @@
+{
+  Texture texture=getTexture(value);
+  if (marginTop + texture.getHeight() + marginBottom > canvas.size().y) {
+    int iconHeight=canvas.size().y - marginTop - marginBottom;
+    canvas.drawTexture(texture,Rect2i.createFromMinAndSize(marginLeft,marginTop,texture.getWidth(),iconHeight));
+  }
+ else {
+    int iconVerticalPosition=(canvas.size().y - texture.getHeight()) / 2;
+    canvas.drawTexture(texture,Rect2i.createFromMinAndSize(marginLeft,iconVerticalPosition,texture.getWidth(),texture.getHeight()));
+  }
+  String text=getString(value);
+  int iconWidth=marginLeft + texture.getWidth() + marginRight;
+  if (wrap) {
+    canvas.drawText(text,Rect2i.createFromMinAndSize(iconWidth,0,canvas.getRegion().width() - iconWidth,canvas.getRegion().height()));
+  }
+ else {
+    int width=canvas.size().x - iconWidth;
+    Font font=canvas.getCurrentStyle().getFont();
+    if (font.getWidth(text) <= width) {
+      canvas.drawText(text);
+    }
+ else {
+      String shortText="...";
+      StringBuilder sb=new StringBuilder(text);
+      while (sb.length() > 0) {
+        shortText=sb.toString() + "...";
+        if (font.getWidth(shortText) <= width) {
+          break;
+        }
+        sb.setLength(sb.length() - 1);
+      }
+      canvas.drawText(shortText);
+    }
+  }
+}
