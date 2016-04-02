@@ -1,7 +1,8 @@
 {
   EngineEntityManager entityManager=context.get(EngineEntityManager.class);
   EntityBuilder entityBuilder=entityManager.newBuilder();
-  WorldSerializer worldSerializer=new WorldSerializerImpl(entityManager,new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary()));
+  PrefabSerializer prefabSerializer=new PrefabSerializer(entityManager.getComponentLibrary(),entityManager.getTypeSerializerLibrary());
+  WorldSerializer worldSerializer=new WorldSerializerImpl(entityManager,prefabSerializer);
   entityBuilder.setPersistent(false);
   @SuppressWarnings("unused") EntityRef entity=entityBuilder.build();
   EntityData.GlobalStore worldData=worldSerializer.serializeWorld(false);

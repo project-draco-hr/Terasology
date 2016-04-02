@@ -1,14 +1,28 @@
 {
-  Prefab prefab=prefabManager.getPrefab(itemPrefabName);
-  if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
-    EntityRef item=entityManager.create(prefab);
-    EntityRef playerEntity=client.getComponent(ClientComponent.class).character;
-    if (!inventoryManager.giveItem(playerEntity,playerEntity,item)) {
-      item.destroy();
-    }
-    return "You received an item of " + prefab.getName();
+  Set<ResourceUrn> matches=assetManager.resolve(itemPrefabName,Prefab.class);
+switch (matches.size()) {
+case 0:
+    return "Could not find any item matching \"" + itemPrefabName + "\"";
+case 1:
+  Prefab prefab=assetManager.getAsset(matches.iterator().next(),Prefab.class).orElse(null);
+if (prefab != null && prefab.getComponent(ItemComponent.class) != null) {
+  EntityRef item=entityManager.create(prefab);
+  EntityRef playerEntity=client.getComponent(ClientComponent.class).character;
+  if (!inventoryManager.giveItem(playerEntity,playerEntity,item)) {
+    item.destroy();
   }
+  return "You received an item of " + prefab.getName();
+}
  else {
-    return blockCommands.giveBlock(client,itemPrefabName,amount,null);
-  }
+  return blockCommands.giveBlock(client,itemPrefabName,amount,null);
+}
+default :
+StringBuilder builder=new StringBuilder();
+builder.append("Requested item \"");
+builder.append(itemPrefabName);
+builder.append("\": matches ");
+Joiner.on(" and ").appendTo(builder,matches);
+builder.append(". Please fully specify one.");
+return builder.toString();
+}
 }
