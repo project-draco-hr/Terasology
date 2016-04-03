@@ -1,0 +1,20 @@
+{
+switch (myState) {
+case STOPPED:
+    return;
+case RUNNING:
+{
+    if (myFrames.size() == 0) {
+      onEnd();
+      return;
+    }
+    myCurrentDuration+=dt;
+    if (myCurrentDuration >= myFrames.get(0).getDuration()) {
+      myLastFrame=myFrames.get(0);
+      myFrames.remove(0);
+      return;
+    }
+    break;
+  }
+}
+}
