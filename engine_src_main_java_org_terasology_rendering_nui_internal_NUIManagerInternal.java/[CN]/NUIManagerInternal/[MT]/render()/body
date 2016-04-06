@@ -1,23 +1,14 @@
 {
   canvas.preRender();
-  if (closeAnim != null) {
-    animCanvasSize=canvas.getRegion();
-  }
- else {
-    animRegion=canvas.getRegion();
-  }
   Deque<UIScreenLayer> screensToRender=Queues.newArrayDeque();
   for (  UIScreenLayer layer : screens) {
     screensToRender.push(layer);
-    if (!layer.isLowerLayerVisible()) {
+    if (!layer.isLowerLayerVisible() && !layer.isAnimating()) {
       break;
     }
   }
-  if (animRegion == null) {
-    animRegion=animCanvasSize;
-  }
   for (  UIScreenLayer screen : screensToRender) {
-    canvas.drawWidget(screen,animRegion);
+    canvas.drawWidget(screen,canvas.getRegion());
   }
   for (  ControlWidget overlay : overlays.values()) {
     canvas.drawWidget(overlay);

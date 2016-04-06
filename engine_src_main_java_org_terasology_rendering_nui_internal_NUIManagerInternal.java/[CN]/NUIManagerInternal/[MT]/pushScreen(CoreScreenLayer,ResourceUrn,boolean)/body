@@ -1,0 +1,29 @@
+{
+  if (screens == null) {
+    pushScreen(screen,uri,false);
+  }
+ else   if (doAnim && !screens.isEmpty()) {
+    Animation closeAnim=screens.peek().getCloseAnimation();
+    if (closeAnim != null) {
+      closeAnim.addListener(new Animation.ListenerAdapter(){
+        @Override public void onEnd(        int ignore){
+          pushScreen(screen,uri,false);
+        }
+      }
+);
+      screens.peek().startAnimation(closeAnim);
+    }
+ else {
+      pushScreen(screen,uri,false);
+    }
+  }
+ else {
+    screen.setManager(NUIManagerInternal.this);
+    prepare(screen);
+    screens.push(screen);
+    if (uri != null) {
+      screenLookup.put(uri,screen);
+    }
+    screen.startAnimation(screen.getOpenAnimation());
+  }
+}

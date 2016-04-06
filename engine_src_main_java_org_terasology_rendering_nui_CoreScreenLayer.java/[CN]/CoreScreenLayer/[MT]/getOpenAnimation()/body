@@ -1,0 +1,28 @@
+{
+  sizeAnim=new Animation();
+  Frame frm=new Frame();
+  frm.addComponent(new Float(0),new Float(1),new FloatInterpolator(){
+    public void setValue(    Object value){
+      float v=((Float)value).floatValue();
+      animRegion=Rect2i.createFromMinAndMax((int)(-animCanvasSize.maxX() * (1 - v)),animCanvasSize.minY(),(int)(animCanvasSize.maxX() * v),animCanvasSize.maxY());
+    }
+  }
+,new DecelerateInterpolator());
+  frm.setDuration(.75f);
+  frm.setRepeat(1);
+  sizeAnim.addFrame(frm);
+  sizeAnim.setRepeat(1);
+  sizeAnim.addListener(new Animation.ListenerAdapter(){
+    @Override public void onStart(){
+      animRegion=Rect2i.createFromMinAndMax(-9000,0,1000,1000);
+      animCanvasSize=animRegion;
+    }
+    @Override public void onEnd(    int ignore){
+      sizeAnim=null;
+      animRegion=null;
+      animCanvasSize=null;
+    }
+  }
+);
+  return sizeAnim;
+}

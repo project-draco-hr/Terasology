@@ -1,8 +1,14 @@
 {
+  if (sizeAnim != null && !sizeAnim.isFinished()) {
+    animCanvasSize=canvas.getRegion();
+  }
+ else   if (animCanvasSize == null) {
+    animRegion=canvas.getRegion();
+  }
   if (isModal()) {
     canvas.addInteractionRegion(getScreenListener());
   }
   if (contents != null) {
-    canvas.drawWidget(contents,canvas.getRegion());
+    canvas.drawWidget(contents,animRegion);
   }
 }
