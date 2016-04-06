@@ -8,7 +8,8 @@
     }
   }
   for (  UIScreenLayer screen : screensToRender) {
-    canvas.drawWidget(screen,canvas.getRegion());
+    canvas.drawWidget(screen,animRegion);
+    throw new IllegalStateException("minx=" + canvas.getRegion().minX() + " miny="+ canvas.getRegion().minY()+ " maxx="+ canvas.getRegion().maxX()+ " maxy="+ canvas.getRegion().maxY());
   }
   for (  ControlWidget overlay : overlays.values()) {
     canvas.drawWidget(overlay);

@@ -1,8 +1,23 @@
 {
-  screen.setManager(this);
+  screen.setManager(NUIManagerInternal.this);
   prepare(screen);
   screens.push(screen);
   if (uri != null) {
     screenLookup.put(uri,screen);
   }
+  Animation closeAnim=new Animation();
+  Frame frm=new Frame();
+  frm.addComponent(Rect2i.createFromMinAndSize(0,0,200,200),Rect2i.createFromMinAndSize(0,0,500,500),new RectiInterpolator(){
+    public void setValue(    Object value){
+      animRegion=(Rect2i)value;
+    }
+  }
+);
+  closeAnim.addFrame(frm);
+  closeAnim.addListener(new Animation.AnimationAdapter(){
+    @Override public void onEnd(    int ignore){
+    }
+  }
+);
+  closeAnim.start();
 }
