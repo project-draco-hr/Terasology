@@ -1,5 +1,10 @@
 {
-  if (closeAnim != null)   closeAnim.update(delta);
+  if (closeAnim != null) {
+    closeAnim.update(delta);
+    if (closeAnim.isFinished())     closeAnim=null;
+  }
+ else {
+  }
   canvas.processMousePosition(mouse.getPosition());
   for (  UIScreenLayer screen : new ArrayList<>(screens)) {
     screen.update(delta);

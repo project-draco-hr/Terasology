@@ -1,18 +1,23 @@
 {
+  if (elapsedTime > startDelay + duration) {
+    repeatCount++;
+    elapsedTime=startDelay;
+  }
   elapsedTime+=delta;
-  float tval=(elapsedTime - startDelay) / duration;
-  if (lastFrame == null) {
-    for (int i=0; i < compInterfaces.size(); i++) {
-      float val=.5f;
-      Object oval=compInterfaces.get(i).computeInterpolation(val,fromComponents.get(i),toComponents.get(i));
-      compInterfaces.get(i).setValue(oval);
+  if (elapsedTime >= startDelay) {
+    float tval=(elapsedTime - startDelay) / duration;
+    if (lastFrame == null) {
+      for (int i=0; i < compInterfaces.size(); i++) {
+        float val=compInterpolators.get(i).getInterpolation(tval);
+        Object oval=compInterfaces.get(i).computeInterpolation(val,fromComponents.get(i),toComponents.get(i));
+        compInterfaces.get(i).setValue(oval);
+      }
     }
-  }
  else {
-    for (int i=0; i < compInterfaces.size(); i++) {
-      float val=compInterpolators.get(i).getInterpolation(tval);
-      compInterfaces.get(i).computeInterpolation(val,lastFrame.toComponents.get(i),toComponents.get(i));
+      for (int i=0; i < compInterfaces.size(); i++) {
+        float val=compInterpolators.get(i).getInterpolation(tval);
+        compInterfaces.get(i).computeInterpolation(val,lastFrame.toComponents.get(i),toComponents.get(i));
+      }
     }
   }
-  repeatCount++;
 }

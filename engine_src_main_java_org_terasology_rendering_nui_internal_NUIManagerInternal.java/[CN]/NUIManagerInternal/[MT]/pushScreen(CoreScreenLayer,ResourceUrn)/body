@@ -5,19 +5,32 @@
   if (uri != null) {
     screenLookup.put(uri,screen);
   }
-  Animation closeAnim=new Animation();
+  closeAnim=new Animation();
   Frame frm=new Frame();
-  frm.addComponent(Rect2i.createFromMinAndSize(0,0,200,200),Rect2i.createFromMinAndSize(0,0,500,500),new RectiInterpolator(){
+  frm.addComponent(new Float(0),new Float(1),new FloatInterpolator(){
     public void setValue(    Object value){
-      animRegion=(Rect2i)value;
+      float v=((Float)value).floatValue();
+      animRegion=Rect2i.createFromMinAndMax(-animCanvasSize.maxX(),animCanvasSize.minY(),(int)(animCanvasSize.maxX() * v),animCanvasSize.maxY());
     }
   }
 );
+  frm.setRepeat(1);
+  closeAnim.addFrame(frm);
+  frm=new Frame();
+  frm.addComponent(new Float(1),new Float(0),new FloatInterpolator(){
+    public void setValue(    Object value){
+      float v=((Float)value).floatValue();
+      animRegion=Rect2i.createFromMinAndMax((int)(-animCanvasSize.maxX() * v),animCanvasSize.minY(),animCanvasSize.maxX(),animCanvasSize.maxY());
+    }
+  }
+);
+  frm.setRepeat(1);
   closeAnim.addFrame(frm);
   closeAnim.addListener(new Animation.AnimationAdapter(){
     @Override public void onEnd(    int ignore){
     }
   }
 );
+  closeAnim.setRepeat(1);
   closeAnim.start();
 }
