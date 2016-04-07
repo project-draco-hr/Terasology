@@ -1,15 +1,14 @@
 {
-  int repeatFinished=repeat;
-  if (repeat < 0) {
-    if (repeat == -1) {
-      return false;
-    }
- else {
-      repeatFinished=-(repeat + 1);
-    }
-  }
- else   if (repeat == 0) {
-    return false;
-  }
-  return repeatCount >= repeatFinished;
+switch (repeatMode) {
+case RUN_ONCE:
+    return currentRepeatCount >= 1;
+case REPEAT:
+case INVERSE:
+  return currentRepeatCount >= repeatCount;
+case REPEAT_INFINITE:
+case INVERSE_INFINITE:
+return false;
+default :
+return true;
+}
 }
