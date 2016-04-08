@@ -1,8 +1,8 @@
 {
   Animation closeAnim=screen.getCloseAnimation();
   if (closeAnim != null) {
-    closeAnim.addListener(new Animation.ListenerAdapter(){
-      @Override public void onEnd(      int ignore){
+    closeAnim.addListener(new AnimationListener(){
+      @Override public void onEnd(){
         if (screens.remove(screen)) {
           ResourceUrn screenUri=screenLookup.inverse().remove(screen);
           onCloseScreen(screen,screenUri,sendEvents);
