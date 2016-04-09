@@ -1,7 +1,10 @@
 {
   Set<String> suggestions=Sets.newHashSet();
   for (  ResourceUrn resolvedParameter : assetManager.getAvailableAssets(UIElement.class)) {
-    suggestions.add(resolvedParameter.getResourceName().toString());
+    Optional<UIElement> element=assetManager.getAsset(resolvedParameter,UIElement.class);
+    if (element.isPresent() && element.get().getRootWidget() instanceof UIScreenLayer) {
+      suggestions.add(resolvedParameter.toString());
+    }
   }
   return suggestions;
 }
