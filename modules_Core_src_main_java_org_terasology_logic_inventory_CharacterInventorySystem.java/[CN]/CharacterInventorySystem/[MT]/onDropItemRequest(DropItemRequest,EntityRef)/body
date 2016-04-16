@@ -2,10 +2,11 @@
   if (!event.getItem().exists() || !networkSystem.getOwnerEntity(event.getItem()).equals(networkSystem.getOwnerEntity(character))) {
     return;
   }
+  int count=event.getCount();
   EntityRef pickupItem=event.getItem();
   EntityRef owner=pickupItem.getOwner();
   if (owner.hasComponent(InventoryComponent.class)) {
-    final EntityRef removedItem=inventoryManager.removeItem(owner,EntityRef.NULL,pickupItem,false,1);
+    final EntityRef removedItem=inventoryManager.removeItem(owner,EntityRef.NULL,pickupItem,false,count);
     if (removedItem != null) {
       pickupItem=removedItem;
     }
