@@ -1,5 +1,7 @@
 {
   if (!screens.isEmpty()) {
-    closeScreen(screens.peek());
+    UIScreenLayer popped=screens.pop();
+    screenLookup.inverse().remove(popped);
+    popped.onClosed();
   }
 }

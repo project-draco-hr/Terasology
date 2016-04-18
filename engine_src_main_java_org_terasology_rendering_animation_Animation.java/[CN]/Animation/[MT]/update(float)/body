@@ -1,42 +1,16 @@
 {
-switch (this.currentState) {
-case RUNNING:
-{
-      frames.get(currentFrame).update(delta);
-      if (frames.get(currentFrame).isFinished()) {
-        currentFrame++;
-        if (currentFrame >= frames.size()) {
-          currentRepeatCount++;
-switch (repeatMode) {
-case RUN_ONCE:
-            end();
-          break;
-case REPEAT:
-case INVERSE:
-        if (currentRepeatCount >= repeatCount) {
-          end();
-          break;
-        }
-      if (repeatMode.equals(RepeatMode.INVERSE)) {
-        flipFrames();
-      }
-    currentFrame=0;
-  elapsedTime=0;
-break;
-case REPEAT_INFINITE:
-case INVERSE_INFINITE:
-if (repeatMode.equals(RepeatMode.INVERSE) || repeatMode.equals(RepeatMode.INVERSE_INFINITE)) {
-flipFrames();
-}
-currentFrame=0;
-elapsedTime=0;
-break;
-}
-}
-}
-break;
-}
-default :
-break;
-}
+  if (currentState != AnimState.RUNNING) {
+    return;
+  }
+  elapsedTime+=delta;
+  while (elapsedTime > duration) {
+    elapsedTime-=duration;
+    currentFrame++;
+    if (repeatMode == RepeatMode.RUN_ONCE) {
+      end();
+      break;
+    }
+  }
+  float ipol=timeModifier.apply(elapsedTime / duration);
+  interpolator.apply(ipol);
 }

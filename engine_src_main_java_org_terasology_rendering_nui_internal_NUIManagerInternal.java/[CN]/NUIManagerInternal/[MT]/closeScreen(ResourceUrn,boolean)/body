@@ -1,6 +1,7 @@
 {
-  UIScreenLayer screen=getScreen(screenUri);
+  UIScreenLayer screen=screenLookup.remove(screenUri);
   if (screen != null) {
-    closeScreen(screen,sendEvents);
+    screens.remove(screen);
+    onCloseScreen(screen,screenUri,sendEvents);
   }
 }

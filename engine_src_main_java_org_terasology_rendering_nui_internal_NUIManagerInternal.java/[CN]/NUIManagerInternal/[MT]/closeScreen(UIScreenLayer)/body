@@ -1,3 +1,6 @@
 {
-  closeScreen(screen,true);
+  if (screens.remove(screen)) {
+    ResourceUrn screenUri=screenLookup.inverse().remove(screen);
+    onCloseScreen(screen,screenUri,true);
+  }
 }
