@@ -7,8 +7,9 @@
     elapsedTime-=duration;
     currentFrame++;
     if (repeatMode == RepeatMode.RUN_ONCE) {
+      interpolator.apply(1f);
       end();
-      break;
+      return;
     }
   }
   float ipol=timeModifier.apply(elapsedTime / duration);
