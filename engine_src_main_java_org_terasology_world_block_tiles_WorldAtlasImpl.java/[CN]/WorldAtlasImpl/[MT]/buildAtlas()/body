@@ -2,7 +2,7 @@
   calculateAtlasSizes();
   int numMipMaps=getNumMipmaps();
   ByteBuffer[] data=createAtlasMipmaps(numMipMaps,TRANSPARENT_COLOR,tiles,"tiles.png");
-  ByteBuffer[] dataNormal=createAtlasMipmaps(numMipMaps,UNIT_Z_COLOR,tilesNormal,"tilesNormal.png");
+  ByteBuffer[] dataNormal=createAtlasMipmaps(numMipMaps,UNIT_Z_COLOR,tilesNormal,"tilesNormal.png",tilesGloss);
   ByteBuffer[] dataHeight=createAtlasMipmaps(numMipMaps,BLACK_COLOR,tilesHeight,"tilesHeight.png");
   TextureData terrainTexData=new TextureData(atlasSize,atlasSize,data,Texture.WrapMode.CLAMP,Texture.FilterMode.NEAREST);
   Texture terrainTex=Assets.generateAsset(new ResourceUrn("engine:terrain"),terrainTexData,Texture.class);

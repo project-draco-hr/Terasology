@@ -5,13 +5,15 @@
   BufferedImage result=new BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB);
   Graphics g=result.getGraphics();
   g.setColor(clearColor);
-  g.fillRect(0,0,size,size);
   for (int index=0; index < tileImages.size(); ++index) {
     int posX=(index) % tilesPerDim;
     int posY=(index) / tilesPerDim;
     BlockTile tile=tileImages.get(index);
     if (tile != null) {
       g.drawImage(tile.getImage().getScaledInstance(textureSize,textureSize,Image.SCALE_SMOOTH),posX * textureSize,posY * textureSize,null);
+    }
+ else {
+      g.fillRect(posX * textureSize,posY * textureSize,textureSize,textureSize);
     }
   }
   return result;
