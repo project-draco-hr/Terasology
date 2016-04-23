@@ -7,11 +7,9 @@
     elapsedTime-=duration;
     currentFrame++;
     if (repeatMode == RepeatMode.RUN_ONCE) {
-      animator.apply(1f);
-      end();
+      stop();
       return;
     }
   }
-  float ipol=timeModifier.apply(elapsedTime / duration);
-  animator.apply(ipol);
+  updateAnimator();
 }
