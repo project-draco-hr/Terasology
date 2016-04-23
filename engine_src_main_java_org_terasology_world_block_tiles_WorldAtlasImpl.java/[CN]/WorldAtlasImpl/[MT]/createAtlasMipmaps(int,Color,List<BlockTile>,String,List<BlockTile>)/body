@@ -4,7 +4,7 @@
     BufferedImage image=generateAtlas(i,tileImages,initialColor);
     if (alphaMaskTiles.size() > 0) {
       BufferedImage alphaMask=generateAtlas(i,alphaMaskTiles,Color.BLACK);
-      applyGrayscaleMaskToAlpha(image,alphaMask);
+      storeGreyscaleMapIntoAlpha(image,alphaMask);
     }
     if (i == 0) {
       try (OutputStream stream=new BufferedOutputStream(Files.newOutputStream(PathManager.getInstance().getScreenshotPath().resolve(screenshotName)))){
