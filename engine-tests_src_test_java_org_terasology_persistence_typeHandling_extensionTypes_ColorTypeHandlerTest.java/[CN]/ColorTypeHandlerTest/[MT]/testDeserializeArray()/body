@@ -1,0 +1,9 @@
+{
+  JsonArray array=new Gson().fromJson("[12, 34, 56, 78]",JsonArray.class);
+  PersistedData data=new GsonPersistedDataArray(array);
+  Color color=handler.deserialize(data,deserializationContext);
+  Assert.assertEquals(12,color.r());
+  Assert.assertEquals(34,color.g());
+  Assert.assertEquals(56,color.b());
+  Assert.assertEquals(78,color.a());
+}
