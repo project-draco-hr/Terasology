@@ -1,0 +1,19 @@
+{
+  Optional<UIElement> optElement=Assets.get(screenUri,UIElement.class);
+  if (optElement.isPresent()) {
+    UIElement element=optElement.get();
+    UIWidget root=element.getRootWidget();
+    if (expectedType.isInstance(root)) {
+      T screen=expectedType.cast(root);
+      InjectionHelper.inject(screen);
+      return screen;
+    }
+ else {
+      logger.error("Screen '{}' is a '{}', not a '{}'",screenUri,root.getClass(),expectedType);
+    }
+  }
+ else {
+    logger.error("Can't find screen '{}'",screenUri);
+  }
+  return null;
+}
