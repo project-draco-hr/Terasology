@@ -1,24 +1,21 @@
 {
+  NUIKeyEvent nuiEvent=new NUIKeyEvent(mouse,keyboard,ev.getKey(),ev.getKeyCharacter(),ev.getState());
   if (focus != null) {
-    if (focus.onKeyEvent(new NUIKeyEvent(mouse,keyboard,event.getKey(),event.getKeyCharacter(),event.getState()))) {
-      event.consume();
+    if (focus.onKeyEvent(nuiEvent)) {
+      ev.consume();
     }
   }
-  if (event.isDown() && !event.isConsumed() && event.getKey() == Keyboard.Key.ESCAPE) {
+  if (!ev.isConsumed()) {
     for (    UIScreenLayer screen : screens) {
-      if (screen.isEscapeToCloseAllowed()) {
-        closeScreen(screen);
-        event.consume();
+      if (screen != focus) {
+        if (screen.onKeyEvent(nuiEvent)) {
+          ev.consume();
+          break;
+        }
+      }
+      if (screen.isModal()) {
         break;
       }
- else       if (screen.isModal()) {
-        break;
-      }
-    }
-  }
-  for (  UIScreenLayer screen : screens) {
-    if (screen.isModal()) {
-      return;
     }
   }
 }
