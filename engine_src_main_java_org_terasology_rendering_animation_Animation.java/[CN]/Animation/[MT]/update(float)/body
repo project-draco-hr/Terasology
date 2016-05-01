@@ -4,11 +4,13 @@
   }
   elapsedTime+=delta;
   while (elapsedTime > duration) {
-    elapsedTime-=duration;
-    currentFrame++;
     if (repeatMode == RepeatMode.RUN_ONCE) {
+      elapsedTime=duration;
       stop();
       return;
+    }
+ else {
+      elapsedTime-=duration;
     }
   }
   updateAnimator();

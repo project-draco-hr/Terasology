@@ -1,4 +1,10 @@
 {
+  if (!screen.isLowerLayerVisible()) {
+    UIScreenLayer current=screens.peek();
+    if (current != null) {
+      current.onHide();
+    }
+  }
   screen.setManager(this);
   prepare(screen);
   screens.push(screen);
