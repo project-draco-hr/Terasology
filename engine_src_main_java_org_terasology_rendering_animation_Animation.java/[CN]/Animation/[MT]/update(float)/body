@@ -3,14 +3,14 @@
     return;
   }
   elapsedTime+=delta;
-  while (elapsedTime > duration) {
+  if (elapsedTime > duration) {
     if (repeatMode == RepeatMode.RUN_ONCE) {
       elapsedTime=duration;
       stop();
       return;
     }
  else {
-      elapsedTime-=duration;
+      elapsedTime%=duration;
     }
   }
   updateAnimator();

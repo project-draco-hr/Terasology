@@ -1,4 +1,5 @@
 {
-  float ipol=timeModifier.apply(elapsedTime / duration);
+  float time=direction == Direction.FORWARD ? elapsedTime : duration - elapsedTime;
+  float ipol=timeModifier.apply(time / duration);
   animator.apply(ipol);
 }
