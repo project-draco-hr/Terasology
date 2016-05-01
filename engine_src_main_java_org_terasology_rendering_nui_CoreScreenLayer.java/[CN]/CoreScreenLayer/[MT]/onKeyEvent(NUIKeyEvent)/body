@@ -1,6 +1,9 @@
 {
-  if (isEscapeToCloseAllowed() && event.isDown() && event.getKey() == Keyboard.Key.ESCAPE) {
-    triggerBackAnimation();
+  if (event.isDown() && event.getKey() == Keyboard.Key.ESCAPE) {
+    animationSystem.stop();
+    if (isEscapeToCloseAllowed()) {
+      triggerBackAnimation();
+    }
     return true;
   }
   return false;
