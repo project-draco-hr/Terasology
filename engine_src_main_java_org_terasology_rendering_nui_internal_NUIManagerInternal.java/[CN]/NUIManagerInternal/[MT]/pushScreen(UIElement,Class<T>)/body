@@ -1,7 +1,9 @@
 {
-  UIScreenLayer result=pushScreen(element);
-  if (expectedType.isInstance(result)) {
-    return expectedType.cast(result);
+  if (element != null && expectedType.isInstance(element.getRootWidget())) {
+    @SuppressWarnings("unchecked") T result=(T)element.getRootWidget();
+    initialiseScreen(result,element.getUrn());
+    pushScreen(result);
+    return result;
   }
   return null;
 }

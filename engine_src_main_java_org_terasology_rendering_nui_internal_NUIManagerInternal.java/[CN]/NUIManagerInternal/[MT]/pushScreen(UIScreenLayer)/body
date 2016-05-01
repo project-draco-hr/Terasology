@@ -5,10 +5,11 @@
       current.onHide();
     }
   }
-  screen.setManager(this);
-  prepare(screen);
   screens.push(screen);
-  if (uri != null) {
+  screen.onOpened();
+  String id=screen.getId();
+  if (ResourceUrn.isValid(id)) {
+    ResourceUrn uri=new ResourceUrn(id);
     screenLookup.put(uri,screen);
   }
 }
