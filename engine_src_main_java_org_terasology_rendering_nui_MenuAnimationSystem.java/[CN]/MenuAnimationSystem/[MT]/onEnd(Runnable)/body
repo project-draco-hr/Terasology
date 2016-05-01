@@ -2,7 +2,18 @@
   flyOut.removeAllListeners();
   flyOut.addListener(new AnimationListener(){
     @Override public void onEnd(){
-      listener.run();
+      if (!flyOut.isReverse()) {
+        listener.run();
+      }
+    }
+  }
+);
+  flyIn.removeAllListeners();
+  flyIn.addListener(new AnimationListener(){
+    @Override public void onEnd(){
+      if (flyIn.isReverse()) {
+        listener.run();
+      }
     }
   }
 );
