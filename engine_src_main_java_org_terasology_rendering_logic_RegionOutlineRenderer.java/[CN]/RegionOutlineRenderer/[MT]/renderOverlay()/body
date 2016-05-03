@@ -1,0 +1,26 @@
+{
+  if (entityToRegionOutlineMap.isEmpty()) {
+    return;
+  }
+  glDisable(GL_DEPTH_TEST);
+  glLineWidth(2);
+  Vector3f cameraPosition=worldRenderer.getActiveCamera().getPosition();
+  FloatBuffer tempMatrixBuffer44=BufferUtils.createFloatBuffer(16);
+  FloatBuffer tempMatrixBuffer33=BufferUtils.createFloatBuffer(12);
+  material.setFloat("sunlight",1.0f,true);
+  material.setFloat("blockLight",1.0f,true);
+  material.setMatrix4("projectionMatrix",worldRenderer.getActiveCamera().getProjectionMatrix());
+  Vector3f worldPos=new Vector3f();
+  Vector3f worldPositionCameraSpace=new Vector3f();
+  worldPositionCameraSpace.sub(worldPos,cameraPosition);
+  Matrix4f matrixCameraSpace=new Matrix4f(new Quat4f(0,0,0,1),worldPositionCameraSpace,1.0f);
+  Matrix4f modelViewMatrix=MatrixUtils.calcModelViewMatrix(worldRenderer.getActiveCamera().getViewMatrix(),matrixCameraSpace);
+  MatrixUtils.matrixToFloatBuffer(modelViewMatrix,tempMatrixBuffer44);
+  material.setMatrix4("worldViewMatrix",tempMatrixBuffer44,true);
+  MatrixUtils.matrixToFloatBuffer(MatrixUtils.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
+  material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
+  for (  RegionOutlineComponent regionOutline : entityToRegionOutlineMap.values()) {
+    drawRegionOutline(regionOutline);
+  }
+  glEnable(GL_DEPTH_TEST);
+}
