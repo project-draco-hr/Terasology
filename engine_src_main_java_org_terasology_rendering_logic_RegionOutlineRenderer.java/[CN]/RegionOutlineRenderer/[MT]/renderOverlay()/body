@@ -20,6 +20,7 @@
   MatrixUtils.matrixToFloatBuffer(MatrixUtils.calcNormalMatrix(modelViewMatrix),tempMatrixBuffer33);
   material.setMatrix3("normalMatrix",tempMatrixBuffer33,true);
   for (  RegionOutlineComponent regionOutline : entityToRegionOutlineMap.values()) {
+    material.setFloat3("colorOffset",regionOutline.color.rf(),regionOutline.color.gf(),regionOutline.color.bf(),true);
     drawRegionOutline(regionOutline);
   }
   glEnable(GL_DEPTH_TEST);
