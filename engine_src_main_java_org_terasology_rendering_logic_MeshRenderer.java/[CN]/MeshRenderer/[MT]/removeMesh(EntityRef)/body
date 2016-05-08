@@ -1,14 +1,11 @@
 {
-  Material mat=opaqueEntities.remove(entity);
-  if (mat != null) {
-    opaqueMesh.remove(mat,entity);
-    opaqueMeshSorter.remove(entity);
-  }
- else {
-    mat=translucentEntities.remove(entity);
-    if (mat != null) {
-      translucentMesh.remove(mat,entity);
+  MeshComponent meshComponent=entity.getComponent(MeshComponent.class);
+  if (meshComponent != null && meshComponent.material != null) {
+    if (meshComponent.translucent) {
       translucentMeshSorter.remove(entity);
+    }
+ else {
+      opaqueMeshSorter.remove(entity);
     }
   }
 }

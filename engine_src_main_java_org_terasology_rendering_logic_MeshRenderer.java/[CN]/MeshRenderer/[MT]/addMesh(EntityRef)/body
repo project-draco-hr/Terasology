@@ -1,14 +1,10 @@
 {
-  MeshComponent meshComp=entity.getComponent(MeshComponent.class);
-  if (meshComp.material != null) {
-    if (meshComp.translucent) {
-      translucentMesh.put(meshComp.material,entity);
-      translucentEntities.put(entity,meshComp.material);
+  MeshComponent meshComponent=entity.getComponent(MeshComponent.class);
+  if (meshComponent != null && meshComponent.material != null) {
+    if (meshComponent.translucent) {
       translucentMeshSorter.add(entity);
     }
  else {
-      opaqueMesh.put(meshComp.material,entity);
-      opaqueEntities.put(entity,meshComp.material);
       opaqueMeshSorter.add(entity);
     }
   }
