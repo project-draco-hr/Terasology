@@ -1,0 +1,11 @@
+{
+  if (currentState == AnimState.STOPPED) {
+    currentState=AnimState.RUNNING;
+    elapsedTime=0;
+    for (    AnimationListener li : this.listeners) {
+      li.onStart();
+    }
+    updateAnimator();
+  }
+  return this;
+}

@@ -1,7 +1,7 @@
 {
-  UIScreenLayer result=pushScreen(screenUri);
-  if (expectedType.isInstance(result)) {
-    return expectedType.cast(result);
+  T screen=createScreen(screenUri,expectedType);
+  if (screen != null) {
+    pushScreen(screen);
   }
-  return null;
+  return screen;
 }

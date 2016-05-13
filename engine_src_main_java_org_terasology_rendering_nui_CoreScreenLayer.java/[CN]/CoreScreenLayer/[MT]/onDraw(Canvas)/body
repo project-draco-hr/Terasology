@@ -1,8 +1,9 @@
 {
+  Rect2i region=animationSystem.animateRegion(canvas.getRegion());
   if (isModal()) {
-    canvas.addInteractionRegion(getScreenListener());
+    canvas.addInteractionRegion(getScreenListener(),region);
   }
-  if (contents != null) {
-    canvas.drawWidget(contents,canvas.getRegion());
+  if (getContents() != null) {
+    canvas.drawWidget(getContents(),region);
   }
 }

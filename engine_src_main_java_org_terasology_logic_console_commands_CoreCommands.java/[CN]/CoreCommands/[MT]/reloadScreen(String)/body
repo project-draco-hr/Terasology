@@ -1,16 +1,17 @@
 {
-  Optional<UIElement> uiData=assetManager.getAsset(ui,UIElement.class);
-  if (uiData.isPresent()) {
-    boolean wasOpen=nuiManager.isOpen(uiData.get().getUrn());
+  Set<ResourceUrn> urns=assetManager.resolve(ui,UIElement.class);
+  if (urns.size() == 1) {
+    ResourceUrn urn=urns.iterator().next();
+    boolean wasOpen=nuiManager.isOpen(urn);
     if (wasOpen) {
-      nuiManager.closeScreen(uiData.get().getUrn());
+      nuiManager.closeScreen(urn);
     }
     if (wasOpen) {
-      nuiManager.pushScreen(uiData.get());
+      nuiManager.pushScreen(urn);
     }
     return "Success";
   }
  else {
-    return "Unable to resolve ui '" + ui + "'";
+    return "No unique resource found";
   }
 }

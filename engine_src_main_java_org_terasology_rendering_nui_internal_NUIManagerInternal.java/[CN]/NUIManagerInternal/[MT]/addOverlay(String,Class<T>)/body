@@ -1,7 +1,14 @@
 {
-  Optional<UIElement> element=Assets.getUIElement(screenUri);
-  if (element.isPresent()) {
-    return addOverlay(element.get(),expectedType);
-  }
+  Set<ResourceUrn> urns=assetManager.resolve(overlayUri,UIElement.class);
+switch (urns.size()) {
+case 0:
+    logger.warn("No asset found for overlay '{}'",overlayUri);
   return null;
+case 1:
+ResourceUrn urn=urns.iterator().next();
+return addOverlay(urn,expectedType);
+default :
+logger.warn("Multiple matches for overlay '{}': {}",overlayUri,urns);
+return null;
+}
 }

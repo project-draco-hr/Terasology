@@ -3,5 +3,11 @@
     UIScreenLayer popped=screens.pop();
     screenLookup.inverse().remove(popped);
     popped.onClosed();
+    if (!popped.isLowerLayerVisible()) {
+      UIScreenLayer current=screens.peek();
+      if (current != null) {
+        current.onShow();
+      }
+    }
   }
 }

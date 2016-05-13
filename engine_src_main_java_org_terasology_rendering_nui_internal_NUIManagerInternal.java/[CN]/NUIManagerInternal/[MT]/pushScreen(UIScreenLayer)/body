@@ -1,0 +1,15 @@
+{
+  if (!screen.isLowerLayerVisible()) {
+    UIScreenLayer current=screens.peek();
+    if (current != null) {
+      current.onHide();
+    }
+  }
+  screens.push(screen);
+  screen.onOpened();
+  String id=screen.getId();
+  if (ResourceUrn.isValid(id)) {
+    ResourceUrn uri=new ResourceUrn(id);
+    screenLookup.put(uri,screen);
+  }
+}
