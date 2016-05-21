@@ -1,0 +1,23 @@
+{
+  if (!hashMap.containsKey(item)) {
+    return false;
+  }
+  Element<T> element=hashMap.get(item);
+  Element<T> prev=element.previous;
+  Element<T> subsequent=element.next;
+  if (prev == subsequent) {
+    clear();
+  }
+ else {
+    prev.next=subsequent;
+    subsequent.previous=prev;
+    if (cursor == element) {
+      cursor=subsequent;
+    }
+    if (head == element) {
+      head=subsequent;
+    }
+  }
+  hashMap.remove(item);
+  return true;
+}

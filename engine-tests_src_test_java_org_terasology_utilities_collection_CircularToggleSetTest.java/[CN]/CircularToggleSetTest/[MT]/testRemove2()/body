@@ -1,0 +1,14 @@
+{
+  CircularToggleSet<Character> set=new CircularToggleSet<>();
+  String abcd="ABCDEFG";
+  for (int i=0; i < abcd.length(); i++) {
+    Character c=abcd.charAt(i);
+    assertTrue(set.add(c));
+  }
+  assertEquals((Character)'A',set.toggle());
+  for (int i=1; i < abcd.length() - 1; i++) {
+    Character c=abcd.charAt(i);
+    assertTrue(set.remove(c));
+  }
+  assertEquals((Character)'G',set.toggle());
+}
