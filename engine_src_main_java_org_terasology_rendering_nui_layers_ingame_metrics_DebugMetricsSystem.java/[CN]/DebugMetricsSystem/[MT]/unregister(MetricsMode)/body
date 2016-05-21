@@ -1,5 +1,8 @@
 {
-  if (currentMode == mode) {
+  if (mode == defaultMode) {
+    throw new IllegalArgumentException("Removing defaultMode is not allowed!");
+  }
+  if (mode == currentMode) {
     toggle();
   }
   return modes.remove(mode);
