@@ -1,14 +1,14 @@
 {
-  assertVertexExists(sourceObject);
-  assertVertexExists(targetObject);
-  Vertex sourceVertex=objectVertexMap.get(sourceObject);
-  Vertex targetVertex=objectVertexMap.get(targetObject);
-  if (sourceVertex.hasPrecessor(targetVertex)) {
-    throw new IllegalArgumentException("Vertex " + targetVertex.toString() + " is already precessor of "+ sourceVertex.toString());
+  assertNodeExists(sourceObject);
+  assertNodeExists(targetObject);
+  Node sourceNode=objectNodeMap.get(sourceObject);
+  Node targetNode=objectNodeMap.get(targetObject);
+  if (sourceNode.hasPrecessor(targetNode)) {
+    throw new IllegalArgumentException("Node " + targetNode.toString() + " is already precessor of "+ sourceNode.toString());
   }
-  sourceVertex.addPrecessor(targetVertex);
+  sourceNode.addPrecessor(targetNode);
   if (getTopologicalOrder() == null) {
-    sourceVertex.removePrecessor(targetVertex);
+    sourceNode.removePrecessor(targetNode);
     return false;
   }
  else {
