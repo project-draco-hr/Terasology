@@ -1,6 +1,11 @@
 {
   HealthComponent health=entity.getComponent(HealthComponent.class);
-  if (health != null) {
+  CharacterMovementComponent characterMovementComponent=entity.getComponent(CharacterMovementComponent.class);
+  bool ghost=false;
+  if (characterMovementComponent != null) {
+    ghost=(characterMovementComponent.mode == MovementMode.GHOSTING);
+  }
+  if ((health != null) && !ghost) {
     int damagedAmount=health.currentHealth - Math.max(health.currentHealth - damageAmount,0);
     health.currentHealth-=damagedAmount;
     health.nextRegenTick=time.getGameTimeInMs() + TeraMath.floorToInt(health.waitBeforeRegen * 1000);
