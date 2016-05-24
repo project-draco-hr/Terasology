@@ -1,0 +1,17 @@
+{
+  assertVertexExists(sourceObject);
+  assertVertexExists(targetObject);
+  Vertex sourceVertex=objectVertexMap.get(sourceObject);
+  Vertex targetVertex=objectVertexMap.get(targetObject);
+  if (sourceVertex.hasPrecessor(targetVertex)) {
+    throw new IllegalArgumentException("Vertex " + targetVertex.toString() + " is already precessor of "+ sourceVertex.toString());
+  }
+  sourceVertex.addPrecessor(targetVertex);
+  if (getTopologicalOrder() == null) {
+    sourceVertex.removePrecessor(targetVertex);
+    return false;
+  }
+ else {
+    return true;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  DirectedAcyclicGraph<Integer> dag=new DirectedAcyclicGraph<>();
+  List<Integer> list=Lists.newArrayList(1,2,3,4);
+  for (  Integer i : list) {
+    assertTrue(dag.addVertex(i));
+  }
+  assertTrue(dag.addEdge(1,2));
+  assertTrue(dag.addEdge(2,3));
+  assertTrue(dag.addEdge(3,4));
+  assertTrue(dag.addEdge(1,3));
+  assertTrue(dag.addEdge(1,4));
+  assertFalse(dag.addEdge(4,2));
+  List<Integer> order=dag.getTopologicalOrder();
+  assertNotNull(order);
+}

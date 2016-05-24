@@ -1,0 +1,16 @@
+{
+  if (temporarilyVisited.contains(v)) {
+    throw new CycleFoundException();
+  }
+ else {
+    temporarilyVisited.add(v);
+    for (    Vertex p : v.precessors) {
+      if (unexploredSet.contains(p)) {
+        depthFirstSearch(p);
+      }
+    }
+    unexploredSet.remove(v);
+    temporarilyVisited.remove(v);
+    sorted.addFirst(v);
+  }
+}
