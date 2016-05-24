@@ -1,0 +1,16 @@
+{
+  if (renderer.config.isDynamicShadows() && isFirstRenderingStageForCurrentFrame) {
+    PerformanceMonitor.startActivity("Render World (Shadow Map)");
+    renderer.graphicState.preRenderSetupSceneShadowMap();
+    camera.lookThrough();
+    while (renderer.queues.chunksOpaqueShadow.size() > 0) {
+      renderer.renderChunk(renderer.queues.chunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,camera,WorldRendererImpl.ChunkRenderMode.SHADOW_MAP);
+    }
+    for (    RenderSystem system : renderer.systemManager.iterateRenderSubscribers()) {
+      system.renderShadows();
+    }
+    renderer.playerCamera.lookThrough();
+    renderer.graphicState.postRenderCleanupSceneShadowMap();
+    PerformanceMonitor.endActivity();
+  }
+}
