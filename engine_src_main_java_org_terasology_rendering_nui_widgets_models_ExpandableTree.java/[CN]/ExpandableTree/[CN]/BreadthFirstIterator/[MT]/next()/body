@@ -1,0 +1,13 @@
+{
+  if (!this.hasNext()) {
+    throw new NoSuchElementException("No elements left in the queue (try validating with hasMoreElements?)");
+  }
+  ExpandableTree nextElement=this.queue.remove();
+  if (!this.enumerateExpandedOnly || nextElement.isExpanded()) {
+    Enumeration childEnumeration=Collections.enumeration(nextElement.getChildren());
+    while (childEnumeration.hasMoreElements()) {
+      this.queue.add((ExpandableTree)childEnumeration.nextElement());
+    }
+  }
+  return nextElement;
+}
