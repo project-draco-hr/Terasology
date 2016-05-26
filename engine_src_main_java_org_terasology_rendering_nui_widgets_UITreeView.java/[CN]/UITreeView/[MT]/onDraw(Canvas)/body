@@ -1,14 +1,20 @@
 {
   canvas.setPart(TREE);
-  List<T> items=model.get().getItems(true);
   int yOffset=0;
-  for (int i=0; i < items.size(); i++) {
-    T item=items.get(i);
-    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item,canvas));
-    Rect2i itemRegion=Rect2i.createFromMinAndSize(0,yOffset,canvas.size().x,preferredSize.y);
+  for (int i=0; i < model.get().getElementCount(); i++) {
+    Tree<T> item=model.get().getElement(i);
+    TreeModel.TreeInteractionListener listener=model.get().getListener(i);
+    if (listener.isMouseOver()) {
+      canvas.setMode(HOVER_MODE);
+    }
+ else {
+      canvas.setMode(DEFAULT_MODE);
+    }
+    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas));
+    Rect2i itemRegion=Rect2i.createFromMinAndSize(indentation.get() * item.getDepth(),yOffset,canvas.size().x,preferredSize.y);
     canvas.drawBackground(itemRegion);
-    itemRenderer.draw(item,canvas,canvas.getCurrentStyle().getMargin().shrink(itemRegion));
-    canvas.addInteractionRegion(new ItemInteractionListener(),itemRenderer.getTooltip(item),itemRegion);
+    itemRenderer.draw(item.getValue(),canvas,canvas.getCurrentStyle().getMargin().shrink(itemRegion));
+    canvas.addInteractionRegion(listener,itemRenderer.getTooltip(item.getValue()),itemRegion);
     yOffset+=preferredSize.getY();
   }
 }
