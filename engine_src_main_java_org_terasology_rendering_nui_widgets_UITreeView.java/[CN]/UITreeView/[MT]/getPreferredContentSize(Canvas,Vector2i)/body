@@ -1,0 +1,11 @@
+{
+  canvas.setPart(TREE);
+  List<T> items=model.get().getItems(false);
+  Vector2i result=new Vector2i();
+  for (  T item : items) {
+    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item,canvas));
+    result.x=Math.max(result.x,preferredSize.x);
+    result.y+=preferredSize.y;
+  }
+  return result;
+}
