@@ -1,27 +1,14 @@
 {
   updateItemListeners();
   canvas.setPart(TREE_ITEM);
-  int yOffset=0;
-  for (int i=0; i < model.get().getElementCount(); i++) {
-    Tree<T> item=model.get().getElement(i);
-    TreeInteractionListener listener=itemListeners.get(i);
-    if (Objects.equals(item,selection.get())) {
-      canvas.setMode(ACTIVE_MODE);
-    }
- else     if (listener.isMouseOver()) {
-      canvas.setMode(isEnabled() ? HOVER_MODE : HOVER_DISABLED_MODE);
-    }
- else     if (!isEnabled()) {
-      canvas.setMode(DISABLED_MODE);
-    }
+  int itemHeight=canvas.getCurrentStyle().getMargin().getTotalHeight() + canvas.getCurrentStyle().getFont().getLineHeight();
+  int totalHeight=itemHeight * model.get().getElementCount() + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
+  int listenerHeight=itemHeight * Math.min(maxDisplayedElements.get(),model.get().getElementCount()) + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
+  canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y + listenerHeight));
+  if (model.get().getElementCount() > maxDisplayedElements.get()) {
+    drawScrollbarItems(canvas,itemHeight,totalHeight);
+  }
  else {
-      canvas.setMode(DEFAULT_MODE);
-    }
-    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas));
-    Rect2i itemRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),yOffset,canvas.size().x - item.getDepth() * itemIndent.get(),preferredSize.y);
-    canvas.drawBackground(itemRegion);
-    itemRenderer.draw(item.getValue(),canvas,canvas.getCurrentStyle().getMargin().shrink(itemRegion));
-    canvas.addInteractionRegion(listener,itemRenderer.getTooltip(item.getValue()),itemRegion);
-    yOffset+=preferredSize.getY();
+    drawNonScrollItems(canvas,itemHeight);
   }
 }

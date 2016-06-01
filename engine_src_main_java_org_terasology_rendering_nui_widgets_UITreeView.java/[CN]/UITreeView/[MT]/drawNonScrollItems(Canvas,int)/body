@@ -1,0 +1,9 @@
+{
+  for (int i=0; i < model.get().getElementCount(); i++) {
+    Tree<T> item=model.get().getElement(i);
+    TreeInteractionListener listener=itemListeners.get(i);
+    handleListeners(canvas,item,listener);
+    Rect2i itemRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),i * itemHeight,canvas.size().x - item.getDepth() * itemIndent.get(),itemHeight);
+    drawItem(canvas,itemRegion,item,listener);
+  }
+}
