@@ -1,15 +1,15 @@
 {
   Border itemMargin=canvas.getCurrentStyle().getMargin();
   int scrollbarWidth=canvas.calculateRestrictedSize(verticalBar,new Vector2i(canvas.size().x,canvas.size().y)).x;
-  int scrollbarHeight=canvas.size().y - itemMargin.getTop();
+  int scrollbarHeight=canvas.size().y - itemMargin.getTotalHeight();
   int availableWidth=canvas.size().x - scrollbarWidth;
-  int scrollbarXPos=availableWidth - itemMargin.getRight();
-  int scrollbarYPos=itemMargin.getTotalHeight();
+  int scrollbarXPosition=canvas.size().x - scrollbarWidth - itemMargin.getRight();
+  int scrollbarYPosition=itemMargin.getTop();
   Rect2i scrollableArea=Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y);
-  Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPos,scrollbarYPos,scrollbarWidth,scrollbarHeight);
+  Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPosition,scrollbarYPosition,scrollbarWidth,scrollbarHeight);
   canvas.drawWidget(verticalBar,scrollbarRegion);
-  float maxVertBarDesired=itemHeight * (model.get().getElementCount() - maxDisplayedElements.get() - 0.5f) + itemMargin.getBottom();
-  verticalBar.setRange((int)maxVertBarDesired);
+  int maxScrollbarRange=itemHeight * (model.get().getElementCount() - maxDisplayedElements.get()) + itemMargin.getBottom();
+  verticalBar.setRange(maxScrollbarRange);
   for (int i=0; i < model.get().getElementCount(); i++) {
     Tree<T> item=model.get().getElement(i);
     TreeInteractionListener listener=itemListeners.get(i);

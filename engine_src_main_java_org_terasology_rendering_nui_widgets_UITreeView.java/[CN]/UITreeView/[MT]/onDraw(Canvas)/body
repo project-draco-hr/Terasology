@@ -2,11 +2,9 @@
   updateItemListeners();
   canvas.setPart(TREE_ITEM);
   int itemHeight=canvas.getCurrentStyle().getMargin().getTotalHeight() + canvas.getCurrentStyle().getFont().getLineHeight();
-  int totalHeight=itemHeight * model.get().getElementCount() + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
-  int listenerHeight=itemHeight * Math.min(maxDisplayedElements.get(),model.get().getElementCount()) + canvas.getCurrentStyle().getBackgroundBorder().getTotalHeight();
-  canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y + listenerHeight));
+  canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y));
   if (model.get().getElementCount() > maxDisplayedElements.get()) {
-    drawScrollbarItems(canvas,itemHeight,totalHeight);
+    drawScrollbarItems(canvas,itemHeight);
   }
  else {
     drawNonScrollItems(canvas,itemHeight);
