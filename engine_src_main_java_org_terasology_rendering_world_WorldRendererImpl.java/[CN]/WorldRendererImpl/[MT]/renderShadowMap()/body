@@ -3,9 +3,7 @@
     PerformanceMonitor.startActivity("Render World (Shadow Map)");
     graphicState.preRenderSetupSceneShadowMap();
     shadowMapCamera.lookThrough();
-    while (renderQueues.chunksOpaqueShadow.size() > 0) {
-      renderChunk(renderQueues.chunksOpaqueShadow.poll(),ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,ChunkRenderMode.SHADOW_MAP);
-    }
+    renderChunks(renderQueues.chunksOpaqueShadow,ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,ChunkRenderMode.SHADOW_MAP);
     for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
       renderer.renderShadows();
     }

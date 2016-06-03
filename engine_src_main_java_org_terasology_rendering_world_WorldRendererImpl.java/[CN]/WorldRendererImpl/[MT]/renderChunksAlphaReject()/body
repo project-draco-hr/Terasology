@@ -1,7 +1,5 @@
 {
   PerformanceMonitor.startActivity("Render Chunks (Alpha Reject)");
-  while (renderQueues.chunksAlphaReject.size() > 0) {
-    renderChunk(renderQueues.chunksAlphaReject.poll(),ChunkMesh.RenderPhase.ALPHA_REJECT,playerCamera,ChunkRenderMode.DEFAULT);
-  }
+  renderChunks(renderQueues.chunksAlphaReject,ChunkMesh.RenderPhase.ALPHA_REJECT,playerCamera,ChunkRenderMode.DEFAULT);
   PerformanceMonitor.endActivity();
 }
