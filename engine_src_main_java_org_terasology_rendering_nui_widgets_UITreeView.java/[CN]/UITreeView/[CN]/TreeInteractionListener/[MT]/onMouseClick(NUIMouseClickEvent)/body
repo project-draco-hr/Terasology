@@ -1,17 +1,16 @@
 {
-  if (isEnabled()) {
+  if (event.getMouseButton() == MouseInput.MOUSE_RIGHT) {
+    model.get().getElement(index).setExpanded(!model.get().getElement(index).isExpanded());
+    model.get().resetElements(model.get().getElement(index).getRoot());
+    return true;
+  }
+ else   if (isEnabled()) {
     if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {
-      model.get().getElement(index).setExpanded(!model.get().getElement(index).isExpanded());
-      model.get().resetElements(model.get().getElement(index).getRoot());
+      selection.set(model.get().getElement(index));
       return true;
     }
- else     if (event.getMouseButton() == MouseInput.MOUSE_RIGHT) {
-      if (selection.get() == model.get().getElement(index)) {
-        selection.set(null);
-      }
- else {
-        selection.set(model.get().getElement(index));
-      }
+ else     if (event.getMouseButton() == MouseInput.MOUSE_3) {
+      model.get().removeElement(index);
       return true;
     }
   }
