@@ -2,11 +2,11 @@
   canvas.setPart(TREE_ITEM);
   model.get().setEnumerateExpandedOnly(false);
   Vector2i result=new Vector2i();
-  for (int i=0; i < model.get().getElementCount(); i++) {
-    Tree<T> item=model.get().getElement(i);
+  for (int i=0; i < model.get().getItemCount(); i++) {
+    Tree<T> item=model.get().getItem(i);
     Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas).addX(item.getDepth() * itemIndent.get()));
     result.x=Math.max(result.x,preferredSize.x);
-    if (i < maxDisplayedElements.get()) {
+    if (i < maxItems.get()) {
       result.y+=preferredSize.y;
     }
   }

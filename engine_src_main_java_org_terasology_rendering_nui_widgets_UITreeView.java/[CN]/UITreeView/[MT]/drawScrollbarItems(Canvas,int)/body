@@ -8,10 +8,10 @@
   Rect2i scrollableArea=Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y);
   Rect2i scrollbarRegion=Rect2i.createFromMinAndSize(scrollbarXPosition,scrollbarYPosition,scrollbarWidth,scrollbarHeight);
   canvas.drawWidget(verticalBar,scrollbarRegion);
-  int maxScrollbarRange=itemHeight * (model.get().getElementCount() - maxDisplayedElements.get()) + itemMargin.getBottom();
+  int maxScrollbarRange=itemHeight * (model.get().getItemCount() - maxItems.get()) + itemMargin.getBottom();
   verticalBar.setRange(maxScrollbarRange);
-  for (int i=0; i < model.get().getElementCount(); i++) {
-    Tree<T> item=model.get().getElement(i);
+  for (int i=0; i < model.get().getItemCount(); i++) {
+    Tree<T> item=model.get().getItem(i);
     TreeInteractionListener listener=itemListeners.get(i);
     handleListeners(canvas,item,listener);
     Rect2i itemRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),i * itemHeight - verticalBar.getValue(),availableWidth - item.getDepth() * itemIndent.get(),itemHeight);

@@ -1,20 +1,20 @@
 {
   if (selectedIndex.get() != null) {
-    Tree<T> selectedElement=model.get().getElement(selectedIndex.get());
-    Tree<T> parent=selectedElement.getParent();
-    if (!selectedElement.isRoot()) {
-      int indexOfElement=parent.getIndex(selectedElement);
-      if (keyId == Keyboard.KeyId.UP && indexOfElement > 0) {
-        parent.removeChild(selectedElement);
-        parent.addChild(indexOfElement - 1,selectedElement);
-        model.get().resetElements(selectedElement.getRoot());
-        selectedIndex.set(model.get().indexOf(selectedElement));
+    Tree<T> selectedItem=model.get().getItem(selectedIndex.get());
+    Tree<T> parent=selectedItem.getParent();
+    if (!selectedItem.isRoot()) {
+      int itemIndex=parent.getIndex(selectedItem);
+      if (keyId == Keyboard.KeyId.UP && itemIndex > 0) {
+        parent.removeChild(selectedItem);
+        parent.addChild(itemIndex - 1,selectedItem);
+        model.get().resetItems();
+        selectedIndex.set(model.get().indexOf(selectedItem));
       }
- else       if (keyId == Keyboard.KeyId.DOWN && indexOfElement < parent.getChildren().size() - 1) {
-        parent.removeChild(selectedElement);
-        parent.addChild(indexOfElement + 1,selectedElement);
-        model.get().resetElements(selectedElement.getRoot());
-        selectedIndex.set(model.get().indexOf(selectedElement));
+ else       if (keyId == Keyboard.KeyId.DOWN && itemIndex < parent.getChildren().size() - 1) {
+        parent.removeChild(selectedItem);
+        parent.addChild(itemIndex + 1,selectedItem);
+        model.get().resetItems();
+        selectedIndex.set(model.get().indexOf(selectedItem));
       }
     }
   }
