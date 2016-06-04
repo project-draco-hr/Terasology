@@ -6,11 +6,12 @@
   }
  else   if (isEnabled()) {
     if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {
-      selectedIndex.set(index);
-      return true;
-    }
- else     if (event.getMouseButton() == MouseInput.MOUSE_3) {
-      model.get().removeElement(index);
+      if (selectedIndex.get() != null && selectedIndex.get().equals(index)) {
+        selectedIndex.set(null);
+      }
+ else {
+        selectedIndex.set(index);
+      }
       return true;
     }
   }

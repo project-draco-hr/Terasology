@@ -1,0 +1,21 @@
+{
+  if (selectedIndex.get() != null) {
+    Tree<T> selectedElement=model.get().getElement(selectedIndex.get());
+    Tree<T> parent=selectedElement.getParent();
+    if (!selectedElement.isRoot()) {
+      int indexOfElement=parent.getIndex(selectedElement);
+      if (keyId == Keyboard.KeyId.UP && indexOfElement > 0) {
+        parent.removeChild(selectedElement);
+        parent.addChild(indexOfElement - 1,selectedElement);
+        model.get().resetElements(selectedElement.getRoot());
+        selectedIndex.set(model.get().indexOf(selectedElement));
+      }
+ else       if (keyId == Keyboard.KeyId.DOWN && indexOfElement < parent.getChildren().size() - 1) {
+        parent.removeChild(selectedElement);
+        parent.addChild(indexOfElement + 1,selectedElement);
+        model.get().resetElements(selectedElement.getRoot());
+        selectedIndex.set(model.get().indexOf(selectedElement));
+      }
+    }
+  }
+}
