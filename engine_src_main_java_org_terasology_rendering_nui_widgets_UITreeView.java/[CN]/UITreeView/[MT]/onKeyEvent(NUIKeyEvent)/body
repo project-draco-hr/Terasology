@@ -2,11 +2,23 @@
   if (event.isDown()) {
     int id=event.getKey().getId();
     if (id == Keyboard.KeyId.UP || id == Keyboard.KeyId.DOWN) {
-      moveSelectedElement(id);
+      moveSelected(id);
       return true;
     }
  else     if (id == Keyboard.KeyId.DELETE) {
-      removeSelectedElement();
+      removeSelected();
+      return true;
+    }
+ else     if (id == Keyboard.KeyId.A) {
+      addToSelected();
+      return true;
+    }
+ else     if (id == Keyboard.KeyId.C) {
+      copySelected();
+      return true;
+    }
+ else     if (id == Keyboard.KeyId.V) {
+      pasteSelected();
       return true;
     }
  else {
