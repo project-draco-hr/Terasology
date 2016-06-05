@@ -1,0 +1,21 @@
+{
+  if (selectedIndex.get() != null) {
+    Tree<T> selectedItem=model.get().getItem(selectedIndex.get());
+    Tree<T> parent=selectedItem.getParent();
+    if (!selectedItem.isRoot()) {
+      int itemIndex=parent.getIndex(selectedItem);
+      if (keyId == Keyboard.KeyId.UP && itemIndex > 0) {
+        parent.removeChild(selectedItem);
+        parent.addChild(itemIndex - 1,selectedItem);
+        model.get().resetItems();
+        selectedIndex.set(model.get().indexOf(selectedItem));
+      }
+ else       if (keyId == Keyboard.KeyId.DOWN && itemIndex < parent.getChildren().size() - 1) {
+        parent.removeChild(selectedItem);
+        parent.addChild(itemIndex + 1,selectedItem);
+        model.get().resetItems();
+        selectedIndex.set(model.get().indexOf(selectedItem));
+      }
+    }
+  }
+}
