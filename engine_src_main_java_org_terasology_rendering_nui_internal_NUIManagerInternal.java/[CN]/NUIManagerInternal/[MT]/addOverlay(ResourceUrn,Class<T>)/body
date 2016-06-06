@@ -1,7 +1,23 @@
 {
-  Optional<UIElement> element=Assets.get(screenUri,UIElement.class);
-  if (element.isPresent()) {
-    return addOverlay(element.get(),expectedType);
+  boolean existsAlready=assetManager.isLoaded(overlayUri,UIElement.class);
+  Optional<UIElement> opt=Assets.get(overlayUri,UIElement.class);
+  if (!opt.isPresent()) {
+    logger.error("Can't find overlay '{}'",overlayUri);
+  }
+ else {
+    UIElement element=opt.get();
+    UIWidget root=element.getRootWidget();
+    if (expectedType.isInstance(root)) {
+      T overlay=expectedType.cast(root);
+      if (!existsAlready) {
+        initialiseOverlay(overlay,overlayUri);
+      }
+      addOverlay(overlay,overlayUri);
+      return overlay;
+    }
+ else {
+      logger.error("Screen '{}' is a '{}' and not a '{}'",overlayUri,root.getClass(),expectedType);
+    }
   }
   return null;
 }

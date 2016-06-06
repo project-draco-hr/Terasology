@@ -6,5 +6,9 @@
       return new Color(vals.get(0),vals.get(1),vals.get(2),vals.get(3));
     }
   }
-  return null;
+  if (data.isString()) {
+    String value=data.getAsString();
+    return new Color((int)Long.parseLong(value,16));
+  }
+  throw new DeserializationException("Expecting integer array or hex-string, but found: " + String.valueOf(data));
 }

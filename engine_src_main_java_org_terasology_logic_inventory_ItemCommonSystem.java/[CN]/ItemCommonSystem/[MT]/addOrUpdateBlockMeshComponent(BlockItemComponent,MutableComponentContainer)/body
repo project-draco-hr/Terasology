@@ -14,11 +14,11 @@
     meshComponent.mesh=blockFamily.getArchetypeBlock().getMeshGenerator().getStandaloneMesh();
     meshComponent.material=Assets.getMaterial("engine:terrain").get();
     meshComponent.translucent=blockFamily.getArchetypeBlock().isTranslucent();
-    if (blockFamily.getArchetypeBlock().getLuminance() > 0 && !entity.hasComponent(LightComponent.class)) {
+    float luminance=blockFamily.getArchetypeBlock().getLuminance() / 15f;
+    meshComponent.selfLuminance=luminance;
+    if (luminance > 0 && !entity.hasComponent(LightComponent.class)) {
       LightComponent lightComponent=entity.addComponent(new LightComponent());
-      Vector3f randColor=new Vector3f(rand.nextFloat(),rand.nextFloat(),rand.nextFloat());
-      lightComponent.lightColorDiffuse.set(randColor);
-      lightComponent.lightColorAmbient.set(randColor);
+      lightComponent.lightAttenuationRange*=luminance;
     }
     entity.addOrSaveComponent(meshComponent);
   }

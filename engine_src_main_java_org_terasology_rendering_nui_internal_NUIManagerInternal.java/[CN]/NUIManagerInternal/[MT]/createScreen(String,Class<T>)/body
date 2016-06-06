@@ -1,0 +1,14 @@
+{
+  Set<ResourceUrn> urns=assetManager.resolve(screenUri,UIElement.class);
+switch (urns.size()) {
+case 0:
+    logger.warn("No asset found for screen '{}'",screenUri);
+  return null;
+case 1:
+ResourceUrn urn=urns.iterator().next();
+return createScreen(urn,expectedType);
+default :
+logger.warn("Multiple matches for screen '{}': {}",screenUri,urns);
+return null;
+}
+}

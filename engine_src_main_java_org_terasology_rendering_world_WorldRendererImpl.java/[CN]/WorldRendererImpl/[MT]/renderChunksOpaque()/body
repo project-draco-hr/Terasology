@@ -1,7 +1,5 @@
 {
   PerformanceMonitor.startActivity("Render Chunks (Opaque)");
-  while (renderQueues.chunksOpaque.size() > 0) {
-    renderChunk(renderQueues.chunksOpaque.poll(),ChunkMesh.RenderPhase.OPAQUE,playerCamera,ChunkRenderMode.DEFAULT);
-  }
+  renderChunks(renderQueues.chunksOpaque,ChunkMesh.RenderPhase.OPAQUE,playerCamera,ChunkRenderMode.DEFAULT);
   PerformanceMonitor.endActivity();
 }

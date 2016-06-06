@@ -1,4 +1,4 @@
 {
   super("skin");
-  gson=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(Font.class,new AssetTypeAdapter<>(Font.class)).registerTypeAdapter(UISkinData.class,new UISkinTypeAdapter()).registerTypeAdapter(TextureRegion.class,new TextureRegionTypeAdapter()).registerTypeAdapter(Color.class,new ColorTypeAdapter()).registerTypeAdapter(Optional.class,new OptionalTextureRegionTypeAdapter()).create();
+  gson=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(Font.class,new AssetTypeAdapter<>(Font.class)).registerTypeAdapter(UISkinData.class,new UISkinTypeAdapter()).registerTypeAdapter(TextureRegion.class,new TextureRegionTypeAdapter()).registerTypeAdapter(Color.class,new JsonTypeHandlerAdapter<>(new ColorTypeHandler())).registerTypeAdapter(Optional.class,new OptionalTextureRegionTypeAdapter()).create();
 }

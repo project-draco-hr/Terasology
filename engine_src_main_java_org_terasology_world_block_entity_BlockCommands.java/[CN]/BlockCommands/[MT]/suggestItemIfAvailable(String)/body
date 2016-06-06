@@ -1,0 +1,11 @@
+{
+  Set<ResourceUrn> matchingItems=assetManager.resolve(uri,Prefab.class);
+  StringBuilder result=new StringBuilder();
+  result.append("No block found for " + uri);
+  if (matchingItems.size() != 0) {
+    result.append(". ");
+    result.append("Item matches found, use 'giveItem' to request one: ");
+    Joiner.on(", ").appendTo(result,matchingItems);
+  }
+  return result.toString();
+}

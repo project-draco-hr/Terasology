@@ -1,0 +1,19 @@
+{
+  if (childEnumeration == null) {
+    return null;
+  }
+  if (childEnumeration.hasMoreElements()) {
+    Tree<T> child=(Tree<T>)childEnumeration.nextElement();
+    if (!enumerateExpandedOnly || child.isExpanded()) {
+      stack.push(Collections.enumeration(child.getChildren()));
+    }
+    return child;
+  }
+  stack.pop();
+  if (stack.isEmpty()) {
+    return null;
+  }
+ else {
+    return traverse(stack.peek());
+  }
+}
