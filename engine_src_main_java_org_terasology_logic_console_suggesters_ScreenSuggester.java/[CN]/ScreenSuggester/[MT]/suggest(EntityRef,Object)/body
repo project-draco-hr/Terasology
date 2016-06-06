@@ -1,13 +1,12 @@
 {
-  HashMap<String,Set<ResourceUrn>> resourceMap=new HashMap<>();
+  Map<String,Set<ResourceUrn>> resourceMap=Maps.newHashMap();
   Set<String> suggestions=Sets.newHashSet();
   for (  ResourceUrn resolvedParameter : assetManager.getAvailableAssets(UIElement.class)) {
-    Optional<UIElement> element=assetManager.getAsset(resolvedParameter,UIElement.class);
-    if (element.isPresent() && element.get().getRootWidget() instanceof UIScreenLayer) {
-      String resourceName=resolvedParameter.getResourceName().toString();
-      if (!resourceMap.containsKey(resourceName))       resourceMap.put(resourceName,Sets.newHashSet());
-      resourceMap.get(resourceName).add(resolvedParameter);
+    String resourceName=resolvedParameter.getResourceName().toString();
+    if (!resourceMap.containsKey(resourceName)) {
+      resourceMap.put(resourceName,Sets.newHashSet());
     }
+    resourceMap.get(resourceName).add(resolvedParameter);
   }
   for (  String key : resourceMap.keySet()) {
     Set<ResourceUrn> set=resourceMap.get(key);
