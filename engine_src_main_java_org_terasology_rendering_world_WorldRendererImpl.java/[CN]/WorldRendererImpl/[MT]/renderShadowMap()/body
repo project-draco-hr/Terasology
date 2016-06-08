@@ -1,14 +1,7 @@
 {
   if (renderingConfig.isDynamicShadows() && isFirstRenderingStageForCurrentFrame) {
     PerformanceMonitor.startActivity("Render World (Shadow Map)");
-    graphicState.preRenderSetupSceneShadowMap();
-    shadowMapCamera.lookThrough();
-    renderChunks(renderQueues.chunksOpaqueShadow,ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,ChunkRenderMode.SHADOW_MAP);
-    for (    RenderSystem renderer : systemManager.iterateRenderSubscribers()) {
-      renderer.renderShadows();
-    }
-    playerCamera.lookThrough();
-    graphicState.postRenderCleanupSceneShadowMap();
+    shadowMap.render();
     PerformanceMonitor.endActivity();
   }
 }

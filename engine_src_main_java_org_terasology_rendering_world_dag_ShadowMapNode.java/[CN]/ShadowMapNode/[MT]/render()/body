@@ -1,2 +1,13 @@
 {
+  fbo=state.buffers.sceneShadowMap;
+  fbo.bind();
+  glViewport(0,0,fbo.width(),fbo.height());
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  GL11.glDisable(GL_CULL_FACE);
+  camera.lookThrough();
+  shader.enable();
+  worldRenderer.renderChunks(worldRenderer.renderQueues.chunksOpaqueShadow,ChunkMesh.RenderPhase.OPAQUE,camera,WorldRendererImpl.ChunkRenderMode.SHADOW_MAP);
+  playerCamera.lookThrough();
+  GL11.glEnable(GL_CULL_FACE);
+  glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
 }

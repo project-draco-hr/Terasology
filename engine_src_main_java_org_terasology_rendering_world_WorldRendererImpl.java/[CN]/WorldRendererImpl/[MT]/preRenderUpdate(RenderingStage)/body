@@ -1,17 +1,11 @@
 {
   resetStats();
   currentRenderingStage=renderingStage;
-  if (currentRenderingStage == RenderingStage.MONO || currentRenderingStage == RenderingStage.LEFT_EYE) {
-    isFirstRenderingStageForCurrentFrame=true;
-  }
- else {
-    isFirstRenderingStageForCurrentFrame=false;
-  }
+  isFirstRenderingStageForCurrentFrame=currentRenderingStage == RenderingStage.MONO || currentRenderingStage == RenderingStage.LEFT_EYE;
   if (isFirstRenderingStageForCurrentFrame) {
     timeSmoothedMainLightIntensity=TeraMath.lerp(timeSmoothedMainLightIntensity,getMainLightIntensityAt(playerCamera.getPosition()),secondsSinceLastFrame);
     playerCamera.update(secondsSinceLastFrame);
-    positionShadowMapCamera();
-    shadowMapCamera.update(secondsSinceLastFrame);
+    shadowMap.preRender(secondsSinceLastFrame);
     renderableWorld.update();
     renderableWorld.generateVBOs();
     secondsSinceLastFrame=0;
