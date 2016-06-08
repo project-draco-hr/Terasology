@@ -59,7 +59,9 @@
     endVelocity.y=0;
     if (input.isJumpRequested()) {
       state.setGrounded(false);
-      endVelocity.y+=movementComp.jumpSpeed;
+      AffectJumpForceEvent affectJumpForceEvent=new AffectJumpForceEvent(movementComp.jumpSpeed);
+      entity.send(affectJumpForceEvent);
+      endVelocity.y+=affectJumpForceEvent.getResultValue();
       if (input.isFirstRun()) {
         entity.send(new JumpEvent());
       }
