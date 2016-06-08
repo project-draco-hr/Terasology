@@ -4,7 +4,9 @@
   }
   lastFont=canvas.getCurrentStyle().getFont();
   lastWidth=canvas.size().x;
-  canvas.addInteractionRegion(interactionListener,canvas.getRegion());
+  if (isEnabled()) {
+    canvas.addInteractionRegion(interactionListener,canvas.getRegion());
+  }
   correctCursor();
   int widthForDraw=(multiline) ? canvas.size().x : lastFont.getWidth(getText());
   try (SubRegion ignored=canvas.subRegion(canvas.getRegion(),true);SubRegion ignored2=canvas.subRegion(Rect2i.createFromMinAndSize(-offset,0,widthForDraw + 1,Integer.MAX_VALUE),false)){

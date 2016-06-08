@@ -11,6 +11,8 @@
   try (SubRegion ignored=canvas.subRegion(tickerRegion,false)){
     canvas.drawBackground();
     canvas.drawText(display);
-    canvas.addInteractionRegion(tickerListener);
+    if (isEnabled()) {
+      canvas.addInteractionRegion(tickerListener);
+    }
   }
  }
