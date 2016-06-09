@@ -1,0 +1,10 @@
+{
+  while (itemListeners.size() > model.get().getItemCount()) {
+    itemListeners.remove(itemListeners.size() - 1);
+    expandListeners.remove(expandListeners.size() - 1);
+  }
+  while (itemListeners.size() < model.get().getItemCount()) {
+    itemListeners.add(new ItemInteractionListener(itemListeners.size()));
+    expandListeners.add(new ExpandButtonInteractionListener(expandListeners.size()));
+  }
+}

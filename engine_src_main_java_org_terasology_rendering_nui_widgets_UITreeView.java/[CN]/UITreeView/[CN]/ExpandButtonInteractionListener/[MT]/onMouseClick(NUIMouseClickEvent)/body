@@ -1,5 +1,5 @@
 {
-  if (event.getMouseButton() == MouseInput.MOUSE_RIGHT) {
+  if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {
     model.get().getItem(index).setExpanded(!model.get().getItem(index).isExpanded());
     Tree<T> selectedItem=selectedIndex.get() != null ? model.get().getItem(selectedIndex.get()) : null;
     model.get().resetItems();
@@ -13,17 +13,6 @@
       }
     }
     return true;
-  }
- else   if (isEnabled()) {
-    if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {
-      if (selectedIndex.get() != null && selectedIndex.get().equals(index)) {
-        selectedIndex.set(null);
-      }
- else {
-        selectedIndex.set(index);
-      }
-      return true;
-    }
   }
   return false;
 }
