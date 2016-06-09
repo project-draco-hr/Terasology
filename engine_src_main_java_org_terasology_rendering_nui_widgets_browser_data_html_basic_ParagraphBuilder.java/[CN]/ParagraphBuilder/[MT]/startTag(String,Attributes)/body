@@ -3,10 +3,6 @@
     bold=true;
     return true;
   }
- else   if (tag.equalsIgnoreCase("i")) {
-    italic=true;
-    return true;
-  }
  else   if (tag.equalsIgnoreCase("font")) {
     String name=HTMLUtils.findAttribute(attributes,"name");
     if (name != null) {
@@ -27,7 +23,7 @@
   }
   for (  Map.Entry<String,FlowRenderableFactory> flowRenderableFactoryEntry : flowRenderableFactoryMap.entrySet()) {
     if (flowRenderableFactoryEntry.getKey().equalsIgnoreCase(tag)) {
-      paragraphData.append(flowRenderableFactoryEntry.getValue().create(attributes,htmlFontResolver.getFont(fontName,bold,italic),color,hyperlink));
+      paragraphData.append(flowRenderableFactoryEntry.getValue().create(attributes,htmlFontResolver.getFont(fontName,bold),color,hyperlink));
       return true;
     }
   }
