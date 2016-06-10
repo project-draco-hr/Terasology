@@ -46,6 +46,9 @@
   if (input.isFirstRun() && distanceMoved.length() > 0) {
     entity.send(new MovedEvent(distanceMoved,state.getPosition()));
   }
+  if (state.isGrounded()) {
+    numberOfJumpsLeft=movementComp.numberOfJumpsMax;
+  }
   if (moveResult.isBottomHit()) {
     if (!state.isGrounded() && movementComp.mode.canBeGrounded) {
       if (input.isFirstRun()) {
@@ -55,6 +58,7 @@
         entity.send(new VerticalCollisionEvent(state.getPosition(),landVelocity));
       }
       state.setGrounded(true);
+      numberOfJumpsLeft=movementComp.numberOfJumpsMax;
     }
     endVelocity.y=0;
     if (input.isJumpRequested()) {
@@ -65,11 +69,28 @@
       if (input.isFirstRun()) {
         entity.send(new JumpEvent());
       }
+      AffectMultiJumpEvent affectMultiJumpEvent=new AffectMultiJumpEvent(movementComp.numberOfJumpsMax);
+      entity.send(affectMultiJumpEvent);
+      movementComp.numberOfJumpsMax=(int)affectMultiJumpEvent.getResultValue();
+      numberOfJumpsLeft--;
     }
   }
  else {
     if (moveResult.isTopHit() && endVelocity.y > 0) {
       endVelocity.y=-0.5f * endVelocity.y;
+    }
+    if (input.isJumpRequested() && numberOfJumpsLeft > 0) {
+      state.setGrounded(false);
+      AffectJumpForceEvent affectJumpForceEvent=new AffectJumpForceEvent(movementComp.jumpSpeed);
+      entity.send(affectJumpForceEvent);
+      endVelocity.y+=affectJumpForceEvent.getResultValue();
+      if (input.isFirstRun()) {
+        entity.send(new JumpEvent());
+      }
+      AffectMultiJumpEvent affectMultiJumpEvent=new AffectMultiJumpEvent(movementComp.numberOfJumpsMax);
+      entity.send(affectMultiJumpEvent);
+      movementComp.numberOfJumpsMax=(int)affectMultiJumpEvent.getResultValue();
+      numberOfJumpsLeft--;
     }
     state.setGrounded(false);
   }
