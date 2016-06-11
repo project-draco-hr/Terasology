@@ -1,6 +1,8 @@
 {
   preRenderUpdate(renderingStage);
-  renderShadowMap();
+  if (renderingConfig.isDynamicShadows() && isFirstRenderingStageForCurrentFrame) {
+    shadowMapNode.execute();
+  }
   renderWorldReflection();
   graphicState.enableWireframeIf(renderingDebugConfig.isWireframe());
   graphicState.initialClearing();

@@ -1,7 +1,8 @@
 {
-  fbo=state.buffers.sceneShadowMap;
-  fbo.bind();
-  glViewport(0,0,fbo.width(),fbo.height());
+  PerformanceMonitor.startActivity("Render World (Shadow Map)");
+  shadowMap=state.buffers.sceneShadowMap;
+  shadowMap.bind();
+  OpenGLUtil.setViewportToSizeOf(shadowMap);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   GL11.glDisable(GL_CULL_FACE);
   camera.lookThrough();
@@ -10,4 +11,5 @@
   playerCamera.lookThrough();
   GL11.glEnable(GL_CULL_FACE);
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT,0);
+  PerformanceMonitor.endActivity();
 }
