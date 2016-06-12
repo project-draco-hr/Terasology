@@ -10,6 +10,7 @@
   shaderManager.initShaders();
   postProcessor.initializeMaterials();
   initMaterials();
-  shadowMapNode=new ShadowMapNode(getMaterial("engine:prog.shadowMap"),playerCamera,this,backdropProvider,renderingConfig,graphicState);
+  shadowMapNode=new ShadowMapNode(context,getMaterial("engine:prog.shadowMap"),playerCamera,this);
   renderingPipeline.add(shadowMapNode);
+  renderableWorld.setShadowMapCamera(shadowMapNode.camera);
 }
