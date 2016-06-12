@@ -5,7 +5,7 @@
       return new Tree<>(new JsonNode(name,json.getAsBoolean(),ElementType.PRIMITIVE));
     }
  else     if (primitive.isNumber()) {
-      return new Tree<>(new JsonNode(name,json.getAsBigDecimal(),ElementType.PRIMITIVE));
+      return new Tree<>(new JsonNode(name,json.getAsNumber(),ElementType.PRIMITIVE));
     }
  else     if (primitive.isString()) {
       return new Tree<>(new JsonNode(name,json.getAsString(),ElementType.PRIMITIVE));
@@ -15,7 +15,7 @@
     }
   }
  else   if (json.isJsonArray()) {
-    Tree<JsonNode> tree=new Tree<>(new JsonNode(name == null ? JSON_ARRAY : name,null,ElementType.ARRAY));
+    Tree<JsonNode> tree=new Tree<>(new JsonNode(name,null,ElementType.ARRAY));
     JsonArray array=json.getAsJsonArray();
     for (int i=0; i < array.size(); i++) {
       tree.addChild(serialize(array.get(i)));
@@ -23,7 +23,7 @@
     return tree;
   }
  else   if (json.isJsonObject()) {
-    Tree<JsonNode> tree=new Tree<>(new JsonNode(name == null ? JSON_OBJECT : name,null,ElementType.OBJECT));
+    Tree<JsonNode> tree=new Tree<>(new JsonNode(name,null,ElementType.OBJECT));
     JsonObject object=json.getAsJsonObject();
     for (    Map.Entry<String,JsonElement> entry : object.entrySet()) {
       tree.addChild(serialize(entry.getKey(),entry.getValue()));
@@ -31,6 +31,6 @@
     return tree;
   }
  else {
-    return new Tree<>(new JsonNode(JSON_NULL,null,ElementType.NULL));
+    return new Tree<>(new JsonNode(name,null,ElementType.NULL));
   }
 }

@@ -1,0 +1,12 @@
+{
+  File file=new File(getClass().getClassLoader().getResource("example.json").getFile());
+  String content=null;
+  try {
+    content=Files.toString(file,Charsets.UTF_8);
+  }
+ catch (  IOException e) {
+    e.printStackTrace();
+  }
+  JsonElement element=new JsonParser().parse(content);
+  assertEquals(element,JsonTreeAdapter.deserialize(JsonTreeAdapter.serialize(element)));
+}

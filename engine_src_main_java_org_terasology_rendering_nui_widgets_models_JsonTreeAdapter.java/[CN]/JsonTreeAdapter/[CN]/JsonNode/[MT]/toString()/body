@@ -1,6 +1,17 @@
 {
-  if (property != null && value != null) {
-    return property + ": " + value;
+  if (type == ElementType.PRIMITIVE) {
+    if (property != null && value != null) {
+      return property + ": " + value;
+    }
+    return property == null ? value.toString() : property;
   }
-  return property == null ? value.toString() : property;
+ else   if (type == ElementType.ARRAY) {
+    return ARRAY_STRING;
+  }
+ else   if (type == ElementType.OBJECT) {
+    return OBJECT_STRING;
+  }
+ else {
+    return NULL_STRING;
+  }
 }
