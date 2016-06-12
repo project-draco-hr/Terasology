@@ -12,11 +12,21 @@
   verticalBar.setRange(maxScrollbarRange);
   for (int i=0; i < model.get().getItemCount(); i++) {
     Tree<T> item=model.get().getItem(i);
-    TreeInteractionListener listener=itemListeners.get(i);
-    handleListeners(canvas,item,listener);
-    Rect2i itemRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),i * itemHeight - verticalBar.getValue(),availableWidth - item.getDepth() * itemIndent.get(),itemHeight);
+    ItemInteractionListener itemListener=itemListeners.get(i);
+    ExpandButtonInteractionListener buttonListener=expandListeners.get(i);
+    if (!item.getChildren().isEmpty()) {
+      canvas.setPart(EXPAND_BUTTON);
+      setButtonMode(canvas,item,buttonListener);
+      Rect2i buttonRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),i * itemHeight - verticalBar.getValue(),itemIndent.get(),itemHeight);
+      try (SubRegion ignored=canvas.subRegion(scrollableArea,true)){
+        drawButton(canvas,buttonRegion,buttonListener);
+      }
+     }
+    canvas.setPart(TREE_ITEM);
+    setItemMode(canvas,item,itemListener);
+    Rect2i itemRegion=Rect2i.createFromMinAndSize((item.getDepth() + 1) * itemIndent.get(),i * itemHeight - verticalBar.getValue(),availableWidth - (item.getDepth() + 1) * itemIndent.get(),itemHeight);
     try (SubRegion ignored=canvas.subRegion(scrollableArea,true)){
-      drawItem(canvas,itemRegion,item,listener);
+      drawItem(canvas,itemRegion,item,itemListener);
     }
    }
 }
