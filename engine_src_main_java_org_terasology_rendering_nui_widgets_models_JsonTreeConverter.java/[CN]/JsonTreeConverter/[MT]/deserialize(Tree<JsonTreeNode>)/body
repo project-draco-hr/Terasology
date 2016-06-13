@@ -1,0 +1,35 @@
+{
+  JsonTreeNode node=tree.getValue();
+  if (node.getType() == JsonTreeNode.ElementType.PRIMITIVE) {
+    Object value=node.getValue();
+    if (value instanceof Boolean) {
+      return new JsonPrimitive((Boolean)value);
+    }
+ else     if (value instanceof Number) {
+      return new JsonPrimitive((Number)value);
+    }
+ else     if (value instanceof String) {
+      return new JsonPrimitive((String)value);
+    }
+ else {
+      return JsonNull.INSTANCE;
+    }
+  }
+ else   if (node.getType() == JsonTreeNode.ElementType.ARRAY) {
+    JsonArray array=new JsonArray();
+    for (    Tree<JsonTreeNode> child : tree.getChildren()) {
+      array.add(deserialize(child));
+    }
+    return array;
+  }
+ else   if (node.getType() == JsonTreeNode.ElementType.OBJECT) {
+    JsonObject object=new JsonObject();
+    for (    Tree<JsonTreeNode> child : tree.getChildren()) {
+      object.add(child.getValue().getProperty(),deserialize(child));
+    }
+    return object;
+  }
+ else {
+    return JsonNull.INSTANCE;
+  }
+}

@@ -1,5 +1,7 @@
 {
-  Preconditions.checkState(this.hasNext(),ITERATOR_NO_ITEMS);
+  if (!this.hasNext()) {
+    throw new NoSuchElementException(ITERATOR_NO_ITEMS);
+  }
   Tree<T> current=next;
   Enumeration childEnumeration=stack.peek();
   next=traverse(childEnumeration);

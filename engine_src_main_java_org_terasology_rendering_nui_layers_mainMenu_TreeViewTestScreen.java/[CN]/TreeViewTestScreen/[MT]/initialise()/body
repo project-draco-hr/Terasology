@@ -7,10 +7,10 @@
  catch (  IOException e) {
     e.printStackTrace();
   }
-  Tree<JsonTreeAdapter.JsonNode> tree=JsonTreeAdapter.serialize(new JsonParser().parse(content));
+  JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
   Iterator it=tree.getDepthFirstIterator(false);
   while (it.hasNext()) {
-    ((Tree<JsonTreeAdapter.JsonNode>)it.next()).setExpanded(true);
+    ((Tree<JsonTreeNode>)it.next()).setExpanded(true);
   }
   for (  String id : new String[]{"treeViewDisabled","treeViewEnabled"}) {
     find(id,UITreeView.class).setModel(tree.copy());
