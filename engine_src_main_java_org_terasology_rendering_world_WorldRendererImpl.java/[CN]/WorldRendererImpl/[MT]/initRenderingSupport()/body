@@ -12,10 +12,6 @@
   initMaterials();
   context.put(WorldRenderer.class,this);
   context.put(RenderQueuesHelper.class,renderQueues);
-  shadowMapNode=new ShadowMapNode(context,getMaterial("engine:prog.shadowMap"),playerCamera);
-  worldReflectionNode=new WorldReflectionNode(context,playerCamera,chunkShader);
-  renderingPipeline=Lists.newArrayList();
-  renderingPipeline.add(shadowMapNode);
-  renderingPipeline.add(worldReflectionNode);
-  renderableWorld.setShadowMapCamera(shadowMapNode.camera);
+  context.put(RenderableWorld.class,renderableWorld);
+  initPipeline();
 }

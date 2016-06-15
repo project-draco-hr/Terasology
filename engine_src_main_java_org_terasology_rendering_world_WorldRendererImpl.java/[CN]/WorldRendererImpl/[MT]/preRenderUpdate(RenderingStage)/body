@@ -5,9 +5,6 @@
   if (isFirstRenderingStageForCurrentFrame) {
     timeSmoothedMainLightIntensity=TeraMath.lerp(timeSmoothedMainLightIntensity,getMainLightIntensityAt(playerCamera.getPosition()),secondsSinceLastFrame);
     playerCamera.update(secondsSinceLastFrame);
-    for (    Node node : renderingPipeline) {
-      node.update(secondsSinceLastFrame);
-    }
     renderableWorld.update();
     renderableWorld.generateVBOs();
     secondsSinceLastFrame=0;

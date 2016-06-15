@@ -1,7 +1,9 @@
 {
   PerformanceMonitor.startActivity("Render World (Reflection)");
+  FBO sceneReflected=frameBuffersManager.getFBO("sceneReflected");
+  FBO sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
   sceneReflected.bind();
-  OpenGLUtils.setViewportToSizeOf(sceneReflected);
+  setViewportToSizeOf(sceneReflected);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   GL11.glCullFace(GL11.GL_FRONT);
   playerCamera.setReflected(true);
@@ -16,6 +18,6 @@
   playerCamera.setReflected(false);
   GL11.glCullFace(GL11.GL_BACK);
   bindDisplay();
-  OpenGLUtils.setViewportToSizeOf(sceneOpaque);
+  setViewportToSizeOf(sceneOpaque);
   PerformanceMonitor.endActivity();
 }
