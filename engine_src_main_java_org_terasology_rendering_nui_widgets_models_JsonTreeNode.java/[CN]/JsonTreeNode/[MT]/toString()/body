@@ -1,17 +1,20 @@
 {
-  if (type == ElementType.PRIMITIVE) {
-    if (property != null && value != null) {
-      return property + ": " + value;
+  if (type == ElementType.KEY_VALUE_PAIR) {
+    if (key != null && value != null) {
+      return key + ": " + value;
     }
-    return property == null ? value.toString() : property;
+    return key == null ? value.toString() : key;
+  }
+ else   if (type == ElementType.VALUE) {
+    return value.toString();
   }
  else   if (type == ElementType.ARRAY) {
-    return property != null ? property : ARRAY_STRING;
+    return key != null ? key : ARRAY_STRING;
   }
  else   if (type == ElementType.OBJECT) {
-    return property != null ? property : OBJECT_STRING;
+    return key != null ? key : OBJECT_STRING;
   }
  else {
-    return property != null ? property : NULL_STRING;
+    return key != null ? key : NULL_STRING;
   }
 }

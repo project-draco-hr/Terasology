@@ -1,6 +1,6 @@
 {
   JsonTreeNode node=tree.getValue();
-  if (node.getType() == JsonTreeNode.ElementType.PRIMITIVE) {
+  if (node.getType() == JsonTreeNode.ElementType.KEY_VALUE_PAIR || node.getType() == JsonTreeNode.ElementType.VALUE) {
     Object value=node.getValue();
     if (value instanceof Boolean) {
       return new JsonPrimitive((Boolean)value);
@@ -25,7 +25,7 @@
  else   if (node.getType() == JsonTreeNode.ElementType.OBJECT) {
     JsonObject object=new JsonObject();
     for (    Tree<JsonTreeNode> child : tree.getChildren()) {
-      object.add(child.getValue().getProperty(),deserialize(child));
+      object.add(child.getValue().getKey(),deserialize(child));
     }
     return object;
   }

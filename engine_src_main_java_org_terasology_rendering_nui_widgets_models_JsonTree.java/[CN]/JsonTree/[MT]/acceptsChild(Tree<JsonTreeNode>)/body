@@ -2,7 +2,10 @@
   if (child == null) {
     return false;
   }
-  if (getValue().getType() == JsonTreeNode.ElementType.PRIMITIVE || getValue().getType() == JsonTreeNode.ElementType.NULL) {
+  if (getValue().getType() != JsonTreeNode.ElementType.ARRAY && getValue().getType() != JsonTreeNode.ElementType.OBJECT) {
+    return false;
+  }
+  if (getValue().getType() == JsonTreeNode.ElementType.ARRAY && child.getValue().getType() == JsonTreeNode.ElementType.KEY_VALUE_PAIR) {
     return false;
   }
   return true;
