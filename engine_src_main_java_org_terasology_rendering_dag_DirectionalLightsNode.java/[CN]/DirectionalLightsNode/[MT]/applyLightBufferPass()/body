@@ -1,0 +1,26 @@
+{
+  int texId=0;
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  sceneOpaque.bindTexture();
+  lightBufferPass.setInt("texSceneOpaque",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  sceneOpaque.bindDepthTexture();
+  lightBufferPass.setInt("texSceneOpaqueDepth",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  sceneOpaque.bindNormalsTexture();
+  lightBufferPass.setInt("texSceneOpaqueNormals",texId++,true);
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  sceneOpaque.bindLightBufferTexture();
+  lightBufferPass.setInt("texSceneOpaqueLightBuffer",texId,true);
+  FBO sceneOpaquePingPong=frameBuffersManager.getFBO("sceneOpaquePingPong");
+  FBO sceneReflectiveRefractive=frameBuffersManager.getFBO("sceneReflectiveRefractive");
+  sceneOpaquePingPong.bind();
+  setRenderBufferMask(sceneOpaquePingPong,true,true,true);
+  setViewportToSizeOf(sceneOpaquePingPong);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  setViewportToSizeOf(sceneOpaque);
+  frameBuffersManager.swapSceneOpaqueFBOs();
+  sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
+}

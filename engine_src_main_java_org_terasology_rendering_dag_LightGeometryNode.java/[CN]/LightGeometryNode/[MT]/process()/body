@@ -1,0 +1,13 @@
+{
+  PerformanceMonitor.startActivity("Render Light Geometry");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  cleanupSceneOpaque();
+  preRenderSetupLightGeometry();
+  for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
+    LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
+    LightComponent lightComponent=entity.getComponent(LightComponent.class);
+    final Vector3f worldPosition=locationComponent.getWorldPosition();
+    worldRenderer.renderLightComponent(lightComponent,worldPosition,lightGeometryShader,false);
+  }
+  postRenderCleanupLightGeometry();
+}

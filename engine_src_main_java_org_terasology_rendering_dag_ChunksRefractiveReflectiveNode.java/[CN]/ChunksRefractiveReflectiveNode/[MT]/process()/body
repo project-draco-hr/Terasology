@@ -1,0 +1,9 @@
+{
+  PerformanceMonitor.startActivity("Render Chunks (Refractive/Reflective)");
+  boolean isHeadUnderWater=worldRenderer.isHeadUnderWater();
+  preRenderSetupSceneReflectiveRefractive(isHeadUnderWater);
+  worldRenderer.renderChunks(renderQueues.chunksAlphaBlend,ChunkMesh.RenderPhase.REFRACTIVE,playerCamera,WorldRendererImpl.ChunkRenderMode.DEFAULT);
+  postRenderCleanupSceneReflectiveRefractive(isHeadUnderWater);
+  PerformanceMonitor.endActivity();
+  PerformanceMonitor.endActivity();
+}
