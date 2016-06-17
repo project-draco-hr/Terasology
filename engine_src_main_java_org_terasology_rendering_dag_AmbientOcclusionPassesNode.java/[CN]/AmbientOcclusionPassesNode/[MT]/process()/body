@@ -1,0 +1,11 @@
+{
+  PerformanceMonitor.startActivity("rendering/ambientocclusionpasses");
+  if (renderingConfig.isSsao()) {
+    sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+    ssaoBlurredFBO=frameBuffersManager.getFBO("ssaoBlurred");
+    ssaoFBO=frameBuffersManager.getFBO("ssao");
+    generateSSAO();
+    generateBlurredSSAO();
+  }
+  PerformanceMonitor.endActivity();
+}

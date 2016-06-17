@@ -1,0 +1,11 @@
+{
+  ssaoShader.enable();
+  ssaoShader.setFloat2("texelSize",1.0f / ssaoFBO.width(),1.0f / ssaoFBO.height(),true);
+  ssaoShader.setFloat2("noiseTexelSize",1.0f / 4.0f,1.0f / 4.0f,true);
+  ssaoFBO.bind();
+  setViewportToSizeOf(ssaoFBO);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  setViewportToSizeOf(sceneOpaque);
+}
