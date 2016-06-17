@@ -13,8 +13,8 @@
   buffers.sceneOpaque.bindLightBufferTexture();
   materials.lightBufferPass.setInt("texSceneOpaqueLightBuffer",texId,true);
   buffers.sceneOpaquePingPong.bind();
-  graphicState.setRenderBufferMask(buffers.sceneOpaquePingPong,true,true,true);
-  setViewportTo(buffers.sceneOpaquePingPong.dimensions());
+  setRenderBufferMask(buffers.sceneOpaquePingPong,true,true,true);
+  setViewportToSizeOf(buffers.sceneOpaquePingPong.dimensions());
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();

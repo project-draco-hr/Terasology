@@ -1,0 +1,11 @@
+{
+  PerformanceMonitor.startActivity("Render Sky");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  enableWireframeIf(renderingDebugConfig.isWireframe());
+  initialClearing();
+  sceneOpaque.bind();
+  setRenderBufferMask(sceneOpaque,true,true,true);
+  playerCamera.lookThroughNormalized();
+  setRenderBufferMask(sceneOpaque,true,false,false);
+  backdropRenderer.render(playerCamera);
+}
