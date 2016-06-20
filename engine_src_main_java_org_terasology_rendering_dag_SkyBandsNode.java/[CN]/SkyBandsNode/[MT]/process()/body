@@ -1,4 +1,5 @@
 {
+  PerformanceMonitor.startActivity("rendering/skybands");
   enableWireframeIf(renderingDebugConfig.isWireframe());
   sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
   setRenderBufferMask(sceneOpaque,true,true,true);
@@ -10,5 +11,6 @@
   }
   sceneOpaque.bind();
   playerCamera.lookThrough();
-  endRenderSkyActivity();
+  disableWireframeIf(renderingDebugConfig.isWireframe());
+  PerformanceMonitor.endActivity();
 }
