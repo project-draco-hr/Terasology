@@ -12,6 +12,8 @@
   Gson gson=gsonBuilder.create();
   try (JsonReader reader=new JsonReader(new InputStreamReader(inputs.get(0).openStream(),Charsets.UTF_8))){
     reader.setLenient(true);
-    return gson.fromJson(reader,UIData.class);
+    UIData data=gson.fromJson(reader,UIData.class);
+    data.setSource(inputs.get(0));
+    return data;
   }
  }

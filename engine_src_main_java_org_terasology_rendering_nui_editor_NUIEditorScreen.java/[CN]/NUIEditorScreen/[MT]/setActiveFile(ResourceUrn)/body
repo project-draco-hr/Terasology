@@ -1,0 +1,19 @@
+{
+  AssetDataFile source=assetManager.getAsset(urn,UIElement.class).get().getSource();
+  String content=null;
+  try (JsonReader reader=new JsonReader(new InputStreamReader(source.openStream(),Charsets.UTF_8))){
+    reader.setLenient(true);
+    content=new JsonParser().parse(reader).toString();
+  }
+ catch (  IOException e) {
+    logger.error(String.format("Could not load asset source file for %s",urn.toString()),e);
+  }
+  if (content != null) {
+    JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
+    Iterator it=tree.getDepthFirstIterator(false);
+    while (it.hasNext()) {
+      ((Tree<JsonTreeNode>)it.next()).setExpanded(true);
+    }
+    treeView.setModel(tree.copy());
+  }
+}
