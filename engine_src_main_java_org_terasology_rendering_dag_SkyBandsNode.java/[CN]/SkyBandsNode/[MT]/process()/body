@@ -1,0 +1,16 @@
+{
+  PerformanceMonitor.startActivity("rendering/skybands");
+  enableWireframeIf(renderingDebugConfig.isWireframe());
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  setRenderBufferMask(sceneOpaque,true,true,true);
+  if (renderingConfig.isInscattering()) {
+    sceneSkyBand0=frameBuffersManager.getFBO("sceneSkyBand0");
+    FBO sceneSkyBand1=frameBuffersManager.getFBO("sceneSkyBand1");
+    generateSkyBand(sceneSkyBand0);
+    generateSkyBand(sceneSkyBand1);
+  }
+  sceneOpaque.bind();
+  playerCamera.lookThrough();
+  disableWireframeIf(renderingDebugConfig.isWireframe());
+  PerformanceMonitor.endActivity();
+}

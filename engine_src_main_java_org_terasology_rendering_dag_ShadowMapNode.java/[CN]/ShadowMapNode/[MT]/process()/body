@@ -1,11 +1,11 @@
 {
-  this.shadowMap=frameBuffersManager.getFBO("sceneShadowMap");
+  shadowMap=frameBuffersManager.getFBO("sceneShadowMap");
   positionShadowMapCamera();
   boolean processCondition=renderingConfig.isDynamicShadows() && worldRenderer.isFirstRenderingStageForCurrentFrame();
   if (!processCondition) {
     return;
   }
-  PerformanceMonitor.startActivity("Render World (Shadow Map)");
+  PerformanceMonitor.startActivity("rendering/shadowmap");
   shadowMap.bind();
   setViewportToSizeOf(shadowMap);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
