@@ -22,8 +22,11 @@
         Display.create(config.getPixelFormat(),ctxAttribs);
         GL43.glDebugMessageCallback(new KHRDebugCallback(new DebugCallback()));
       }
- catch (      LWJGLException e) {
+ catch (      LWJGLException|IllegalStateException e) {
         logger.warn("Unable to create an OpenGL debug context. Maybe your graphics card does not support it.",e);
+        if (e.getClass().equals(IllegalStateException.class)) {
+          Display.destroy();
+        }
         Display.create(config.getPixelFormat());
       }
     }
