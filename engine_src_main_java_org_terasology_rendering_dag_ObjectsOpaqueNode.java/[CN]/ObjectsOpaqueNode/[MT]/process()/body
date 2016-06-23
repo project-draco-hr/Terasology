@@ -1,9 +1,9 @@
 {
-  PerformanceMonitor.startActivity("Render World");
+  PerformanceMonitor.startActivity("rendering/objectsopaque");
   enableWireframeIf(renderingDebugConfig.isWireframe());
-  PerformanceMonitor.startActivity("Render Objects (Opaque)");
   for (  RenderSystem renderer : componentSystemManager.iterateRenderSubscribers()) {
     renderer.renderOpaque();
   }
+  disableWireframeIf(renderingDebugConfig.isWireframe());
   PerformanceMonitor.endActivity();
 }

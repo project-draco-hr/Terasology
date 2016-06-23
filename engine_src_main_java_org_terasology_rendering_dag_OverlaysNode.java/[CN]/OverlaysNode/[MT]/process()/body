@@ -1,8 +1,9 @@
 {
-  PerformanceMonitor.startActivity("Render Overlays");
+  PerformanceMonitor.startActivity("rendering/overlays");
   enableWireframeIf(renderingDebugConfig.isWireframe());
   for (  RenderSystem renderer : componentSystemManager.iterateRenderSubscribers()) {
     renderer.renderOverlay();
   }
+  disableWireframeIf(renderingDebugConfig.isWireframe());
   PerformanceMonitor.endActivity();
 }
