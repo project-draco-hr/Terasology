@@ -12,14 +12,12 @@
     }
     if (content != null) {
       JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
-      Iterator it=tree.getDepthFirstIterator(false);
-      while (it.hasNext()) {
-        ((Tree<JsonTreeNode>)it.next()).setExpanded(true);
-      }
-      editorTreeView.setModel(tree.copy());
+      updateTree(tree);
+      editorHistory.clear();
+      editorHistory.add(tree);
+      editorHistoryPosition=0;
     }
-    UIWidget rootWidget=element.getRootWidget();
-    selectedScreenContainer.setContent(rootWidget);
     selectedUrn=urn;
+    selectedScreenContainer.setContent(element.getRootWidget());
   }
 }

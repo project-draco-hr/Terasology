@@ -1,18 +1,7 @@
 {
-  NUIManager nuiManager=CoreRegistry.get(NUIManager.class);
-  TranslationSystem translationSystem=CoreRegistry.get(TranslationSystem.class);
-  TypeSerializationLibrary library=new TypeSerializationLibrary(CoreRegistry.get(TypeSerializationLibrary.class));
-  library.add(UISkin.class,new AssetTypeHandler<>(UISkin.class));
-  library.add(Border.class,new BorderTypeHandler());
-  GsonBuilder gsonBuilder=new GsonBuilder().registerTypeAdapterFactory(new CaseInsensitiveEnumTypeAdapterFactory()).registerTypeAdapter(UIData.class,new UIDataTypeAdapter()).registerTypeHierarchyAdapter(UIWidget.class,new UIWidgetTypeAdapter(nuiManager));
-  for (  Class<?> handledType : library.getCoreTypes()) {
-    gsonBuilder.registerTypeAdapter(handledType,new JsonTypeHandlerAdapter<>(library.getHandlerFor(handledType)));
-  }
-  gsonBuilder.registerTypeAdapter(String.class,new I18nStringTypeAdapter(translationSystem));
-  Gson gson=gsonBuilder.create();
   try (JsonReader reader=new JsonReader(new InputStreamReader(inputs.get(0).openStream(),Charsets.UTF_8))){
     reader.setLenient(true);
-    UIData data=gson.fromJson(reader,UIData.class);
+    UIData data=load(new JsonParser().parse(reader));
     data.setSource(inputs.get(0));
     return data;
   }
