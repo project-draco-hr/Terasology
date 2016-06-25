@@ -9,7 +9,7 @@
  else {
     useThisModuleName=configDefaultModuleName;
   }
-  Name defaultGameplayModuleName=new Name(configDefaultModuleName);
+  Name defaultGameplayModuleName=new Name(useThisModuleName);
   Module defaultGameplayModule=moduleManager.getRegistry().getLatestModuleVersion(defaultGameplayModuleName);
   if (defaultGameplayModule != null) {
     gameplay.setSelection(defaultGameplayModule);
@@ -21,6 +21,7 @@
     for (    Module module : moduleManager.getRegistry()) {
       if (module != null && StandardModuleExtension.isGameplayModule(module)) {
         gameplay.setSelection(module);
+        break;
       }
     }
   }
