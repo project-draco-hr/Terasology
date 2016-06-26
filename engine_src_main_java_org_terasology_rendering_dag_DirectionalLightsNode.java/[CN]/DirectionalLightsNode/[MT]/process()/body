@@ -1,0 +1,15 @@
+{
+  PerformanceMonitor.startActivity("rendering/directionallights");
+  sceneOpaque.bind();
+  Vector3f sunlightWorldPosition=new Vector3f(backdropProvider.getSunDirection(true));
+  sunlightWorldPosition.scale(50000f);
+  sunlightWorldPosition.add(playerCamera.getPosition());
+  worldRenderer.renderLightComponent(mainDirectionalLight,sunlightWorldPosition,lightGeometryShader,false);
+  glDisable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_DEPTH_TEST);
+  setRenderBufferMask(sceneOpaque,true,true,true);
+  bindDisplay();
+  applyLightBufferPass();
+  PerformanceMonitor.endActivity();
+}
