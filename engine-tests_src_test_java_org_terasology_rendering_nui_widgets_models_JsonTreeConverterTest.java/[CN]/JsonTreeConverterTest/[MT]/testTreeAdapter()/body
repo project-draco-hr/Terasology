@@ -5,7 +5,7 @@
     content=Files.toString(file,Charsets.UTF_8);
   }
  catch (  IOException e) {
-    e.printStackTrace();
+    fail("Could not load sample file");
   }
   JsonElement element=new JsonParser().parse(content);
   assertEquals(element,JsonTreeConverter.deserialize(JsonTreeConverter.serialize(element)));

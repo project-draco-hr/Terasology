@@ -1,0 +1,23 @@
+{
+  if (assetManager.getAsset(urn,UIElement.class).isPresent()) {
+    UIElement element=assetManager.getAsset(urn,UIElement.class).get();
+    AssetDataFile source=element.getSource();
+    String content=null;
+    try (JsonReader reader=new JsonReader(new InputStreamReader(source.openStream(),Charsets.UTF_8))){
+      reader.setLenient(true);
+      content=new JsonParser().parse(reader).toString();
+    }
+ catch (    IOException e) {
+      logger.error(String.format("Could not load asset source file for %s",urn.toString()),e);
+    }
+    if (content != null) {
+      JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
+      updateTreeView(tree);
+      updateWidget(tree);
+      editorHistory.clear();
+      editorHistory.add(tree);
+      editorHistoryPosition=0;
+    }
+    selectedUrn=urn;
+  }
+}
