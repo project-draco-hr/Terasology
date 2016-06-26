@@ -9,12 +9,9 @@
     Tree<T> item=model.get().getItem(i);
     Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas).addX(item.getDepth() * itemIndent.get()));
     result.x=Math.max(result.x,preferredSize.x);
-    if (i < maxItems.get()) {
-      result.y+=preferredSize.y;
-    }
+    result.y+=preferredSize.y;
   }
   model.get().setEnumerateExpandedOnly(true);
-  result.addX(canvas.calculateRestrictedSize(verticalBar,new Vector2i(canvas.size().x,canvas.size().y)).x);
   result.addX(itemIndent.get());
   return result;
 }

@@ -1,12 +1,22 @@
 {
   updateListeners();
   canvas.setPart(TREE_ITEM);
-  int itemHeight=canvas.getCurrentStyle().getMargin().getTotalHeight() + canvas.getCurrentStyle().getFont().getLineHeight();
-  canvas.addInteractionRegion(mainListener,Rect2i.createFromMinAndSize(0,0,canvas.size().x,canvas.size().y));
-  if (model.get().getItemCount() > maxItems.get()) {
-    drawScrollbarItems(canvas,itemHeight);
-  }
- else {
-    drawNonScrollItems(canvas,itemHeight);
+  int currentHeight=0;
+  for (int i=0; i < model.get().getItemCount(); i++) {
+    Tree<T> item=model.get().getItem(i);
+    ItemInteractionListener itemListener=itemListeners.get(i);
+    ExpandButtonInteractionListener buttonListener=expandListeners.get(i);
+    int itemHeight=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas).addX(item.getDepth() * itemIndent.get())).getY();
+    if (!item.isLeaf()) {
+      canvas.setPart(EXPAND_BUTTON);
+      setButtonMode(canvas,item,buttonListener);
+      Rect2i buttonRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),currentHeight,itemIndent.get(),itemHeight);
+      drawButton(canvas,buttonRegion,buttonListener);
+    }
+    canvas.setPart(TREE_ITEM);
+    setItemMode(canvas,item,itemListener);
+    Rect2i itemRegion=Rect2i.createFromMinAndSize((item.getDepth() + 1) * itemIndent.get(),currentHeight,canvas.size().x - (item.getDepth() + 1) * itemIndent.get(),itemHeight);
+    drawItem(canvas,itemRegion,item,itemListener);
+    currentHeight+=itemHeight;
   }
 }
