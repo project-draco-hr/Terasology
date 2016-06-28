@@ -1,18 +1,35 @@
 {
+  timeoutTimer.schedule(new java.util.TimerTask(){
+    @Override public void run(){
+synchronized (joinStatus) {
+        if (System.currentTimeMillis() > timeoutPoint && joinStatus.getStatus() != JoinStatus.Status.COMPLETE) {
+          joinStatus.setErrorMessage("Server stopped responding.");
+          logger.error("Server timeout threshold of {} ms exceeded.",timeoutThreshold);
+        }
+      }
+    }
+  }
+,timeoutThreshold + 200);
+  if (joinStatus.getStatus() == JoinStatus.Status.FAILED) {
+    return;
+  }
   NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
-  if (message.hasServerInfo()) {
-    receivedServerInfo(ctx,message.getServerInfo());
-  }
- else   if (message.hasModuleDataHeader()) {
-    receiveModuleStart(ctx,message.getModuleDataHeader());
-  }
- else   if (message.hasModuleData()) {
-    receiveModule(ctx,message.getModuleData());
-  }
- else   if (message.hasJoinComplete()) {
-    completeJoin(ctx,message.getJoinComplete());
-  }
+synchronized (joinStatus) {
+    timeoutPoint=System.currentTimeMillis() + timeoutThreshold;
+    if (message.hasServerInfo()) {
+      receivedServerInfo(ctx,message.getServerInfo());
+    }
+ else     if (message.hasModuleDataHeader()) {
+      receiveModuleStart(ctx,message.getModuleDataHeader());
+    }
+ else     if (message.hasModuleData()) {
+      receiveModule(ctx,message.getModuleData());
+    }
+ else     if (message.hasJoinComplete()) {
+      completeJoin(ctx,message.getJoinComplete());
+    }
  else {
-    logger.error("Received unexpected message");
+      logger.error("Received unexpected message");
+    }
   }
 }
