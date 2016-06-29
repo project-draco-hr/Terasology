@@ -1,0 +1,10 @@
+{
+  PerformanceMonitor.startActivity("rendering/simpleblendmaterials");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  preRenderSetupSimpleBlendMaterials();
+  for (  RenderSystem renderer : componentSystemManager.iterateRenderSubscribers()) {
+    renderer.renderAlphaBlend();
+  }
+  postRenderCleanupSimpleBlendMaterials();
+  PerformanceMonitor.endActivity();
+}

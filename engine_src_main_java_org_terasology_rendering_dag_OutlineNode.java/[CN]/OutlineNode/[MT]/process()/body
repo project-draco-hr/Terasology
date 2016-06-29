@@ -1,0 +1,15 @@
+{
+  if (renderingConfig.isOutline()) {
+    PerformanceMonitor.startActivity("rendering/outline");
+    outlineFBO=frameBuffersManager.getFBO("outline");
+    sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+    outline.enable();
+    outlineFBO.bind();
+    setViewportToSizeOf(outlineFBO);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderFullscreenQuad();
+    bindDisplay();
+    setViewportToSizeOf(sceneOpaque);
+    PerformanceMonitor.endActivity();
+  }
+}

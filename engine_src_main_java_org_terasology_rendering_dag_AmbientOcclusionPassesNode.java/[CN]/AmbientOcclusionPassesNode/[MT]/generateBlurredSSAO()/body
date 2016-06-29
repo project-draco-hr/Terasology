@@ -1,0 +1,11 @@
+{
+  ssaoBlurredShader.enable();
+  ssaoBlurredShader.setFloat2("texelSize",1.0f / ssaoBlurredFBO.width(),1.0f / ssaoBlurredFBO.height(),true);
+  ssaoFBO.bindTexture();
+  ssaoBlurredFBO.bind();
+  setViewportToSizeOf(ssaoBlurredFBO);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  setViewportToSizeOf(sceneOpaque);
+}
