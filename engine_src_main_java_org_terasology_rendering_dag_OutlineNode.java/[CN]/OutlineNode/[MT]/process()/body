@@ -1,6 +1,6 @@
 {
-  PerformanceMonitor.startActivity("rendering/outline");
   if (renderingConfig.isOutline()) {
+    PerformanceMonitor.startActivity("rendering/outline");
     outlineFBO=frameBuffersManager.getFBO("outline");
     sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
     outline.enable();
@@ -10,6 +10,6 @@
     renderFullscreenQuad();
     bindDisplay();
     setViewportToSizeOf(sceneOpaque);
+    PerformanceMonitor.endActivity();
   }
-  PerformanceMonitor.endActivity();
 }
