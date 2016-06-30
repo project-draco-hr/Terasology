@@ -2,18 +2,5 @@
   this.networkSystem=networkSystem;
   this.joinStatus=joinStatus;
   this.moduleManager=CoreRegistry.get(ModuleManager.class);
-  logger.info("constructed CCH");
-  timeoutPoint=System.currentTimeMillis() + timeoutThreshold;
-  timeoutTimer.schedule(new java.util.TimerTask(){
-    @Override public void run(){
-synchronized (joinStatus) {
-        logger.info("callback");
-        if (System.currentTimeMillis() > timeoutPoint && joinStatus.getStatus() != JoinStatus.Status.COMPLETE) {
-          joinStatus.setErrorMessage("Server stopped responding.");
-          logger.error("Server timeout threshold of {} ms exceeded.",timeoutThreshold);
-        }
-      }
-    }
-  }
-,timeoutThreshold + 200);
+  scheduleTimeout();
 }

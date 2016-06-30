@@ -1,15 +1,5 @@
 {
-  timeoutTimer.schedule(new java.util.TimerTask(){
-    @Override public void run(){
-synchronized (joinStatus) {
-        if (System.currentTimeMillis() > timeoutPoint && joinStatus.getStatus() != JoinStatus.Status.COMPLETE) {
-          joinStatus.setErrorMessage("Server stopped responding.");
-          logger.error("Server timeout threshold of {} ms exceeded.",timeoutThreshold);
-        }
-      }
-    }
-  }
-,timeoutThreshold + 200);
+  scheduleTimeout();
   if (joinStatus.getStatus() == JoinStatus.Status.FAILED) {
     return;
   }
@@ -27,7 +17,7 @@ synchronized (joinStatus) {
     }
  else     if (message.hasJoinComplete()) {
       if (missingModules.size() > 0) {
-        logger.error("THe server did not send all of the modules that were needed before ending module transmission.");
+        logger.error("The server did not send all of the modules that were needed before ending module transmission.");
       }
       completeJoin(ctx,message.getJoinComplete());
     }
