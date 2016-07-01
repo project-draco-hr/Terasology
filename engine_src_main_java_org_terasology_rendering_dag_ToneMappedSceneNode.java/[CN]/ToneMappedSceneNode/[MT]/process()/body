@@ -1,8 +1,7 @@
 {
-  PerformanceMonitor.startActivity("Tone mapping");
-  disableWireframeIf(renderingDebugConfig.isWireframe());
-  FBO sceneToneMapped=frameBuffersManager.getFBO("sceneToneMapped");
-  FBO sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  PerformanceMonitor.startActivity("rendering/tonemapped");
+  sceneToneMapped=frameBuffersManager.getFBO("sceneToneMapped");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
   toneMapping.enable();
   sceneToneMapped.bind();
   setViewportToSizeOf(sceneToneMapped);

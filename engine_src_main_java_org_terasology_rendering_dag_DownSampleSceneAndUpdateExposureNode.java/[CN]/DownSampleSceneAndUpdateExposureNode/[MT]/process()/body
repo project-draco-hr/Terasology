@@ -1,9 +1,8 @@
 {
-  disableWireframeIf(renderingDebugConfig.isWireframe());
   sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
   scenePrePost=frameBuffersManager.getFBO("scenePrePost");
   if (renderingConfig.isEyeAdaptation()) {
-    PerformanceMonitor.startActivity("Updating exposure");
+    PerformanceMonitor.startActivity("rendering/downsamplesceneandupdateexposure");
     downsampleSceneInto1x1pixelsBuffer();
     frameBuffersManager.getCurrentReadbackPBO().copyFromFBO(downSampledScene[0].fboId,1,1,GL12.GL_BGRA,GL11.GL_UNSIGNED_BYTE);
     frameBuffersManager.swapReadbackPBOs();
@@ -28,6 +27,7 @@
       targetExposure=hdrMinExposure;
     }
     postProcessor.setExposure(TeraMath.lerp(postProcessor.getExposure(),targetExposure,hdrExposureAdjustmentSpeed));
+    PerformanceMonitor.endActivity();
   }
  else {
     if (backdropProvider.getDaylight() == 0.0) {
@@ -37,5 +37,4 @@
       postProcessor.setExposure(hdrExposureDefault);
     }
   }
-  PerformanceMonitor.endActivity();
 }

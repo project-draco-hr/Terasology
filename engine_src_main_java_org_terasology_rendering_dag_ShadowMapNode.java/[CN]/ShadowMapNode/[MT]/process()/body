@@ -1,20 +1,18 @@
 {
   shadowMap=frameBuffersManager.getFBO("sceneShadowMap");
   positionShadowMapCamera();
-  boolean processCondition=renderingConfig.isDynamicShadows() && worldRenderer.isFirstRenderingStageForCurrentFrame();
-  if (!processCondition) {
-    return;
+  if (renderingConfig.isDynamicShadows() && worldRenderer.isFirstRenderingStageForCurrentFrame()) {
+    PerformanceMonitor.startActivity("rendering/shadowmap");
+    shadowMap.bind();
+    setViewportToSizeOf(shadowMap);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    GL11.glDisable(GL_CULL_FACE);
+    shadowMapCamera.lookThrough();
+    shadowMapShader.enable();
+    worldRenderer.renderChunks(renderQueues.chunksOpaqueShadow,ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,WorldRendererImpl.ChunkRenderMode.SHADOW_MAP);
+    playerCamera.lookThrough();
+    GL11.glEnable(GL_CULL_FACE);
+    bindDisplay();
+    PerformanceMonitor.endActivity();
   }
-  PerformanceMonitor.startActivity("rendering/shadowmap");
-  shadowMap.bind();
-  setViewportToSizeOf(shadowMap);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  GL11.glDisable(GL_CULL_FACE);
-  shadowMapCamera.lookThrough();
-  shadowMapShader.enable();
-  worldRenderer.renderChunks(renderQueues.chunksOpaqueShadow,ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,WorldRendererImpl.ChunkRenderMode.SHADOW_MAP);
-  playerCamera.lookThrough();
-  GL11.glEnable(GL_CULL_FACE);
-  bindDisplay();
-  PerformanceMonitor.endActivity();
 }
