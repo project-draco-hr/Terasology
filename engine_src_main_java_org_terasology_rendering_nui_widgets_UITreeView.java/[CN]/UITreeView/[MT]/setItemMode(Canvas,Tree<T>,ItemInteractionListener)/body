@@ -1,5 +1,8 @@
 {
-  if (selectedIndex.get() != null && Objects.equals(item,model.get().getItem(selectedIndex.get()))) {
+  if (item instanceof JsonTree && ((JsonTree)item).isSelected()) {
+    canvas.setMode(SELECTED_MODE);
+  }
+ else   if (selectedIndex.get() != null && Objects.equals(item,model.get().getItem(selectedIndex.get()))) {
     canvas.setMode(ACTIVE_MODE);
   }
  else   if (listener.isMouseOver()) {
