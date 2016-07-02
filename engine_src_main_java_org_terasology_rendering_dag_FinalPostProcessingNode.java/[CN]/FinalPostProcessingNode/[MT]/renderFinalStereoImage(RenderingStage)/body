@@ -1,14 +1,14 @@
 {
-  if (postProcessor.isNotTakingScreenshot()) {
-    sceneFinal.bind();
-  }
- else {
-    ocUndistorted.bind();
-  }
 switch (renderingStage) {
 case LEFT_EYE:
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  renderFullscreenQuad(0,0,fullScale.width() / 2,fullScale.height());
+    if (postProcessor.isNotTakingScreenshot()) {
+      sceneFinal.bind();
+    }
+ else {
+      ocUndistorted.bind();
+    }
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+renderFullscreenQuad(0,0,fullScale.width() / 2,fullScale.height());
 break;
 case RIGHT_EYE:
 renderFullscreenQuad(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height());

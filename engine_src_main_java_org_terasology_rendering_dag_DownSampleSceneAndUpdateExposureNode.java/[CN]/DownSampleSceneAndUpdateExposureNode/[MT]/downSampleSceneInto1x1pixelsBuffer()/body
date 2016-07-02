@@ -1,7 +1,8 @@
 {
-  PerformanceMonitor.startActivity("Rendering eye adaption");
+  PerformanceMonitor.startActivity("rendering/updateExposure/downSampleScene");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  scenePrePost=frameBuffersManager.getFBO("scenePrePost");
   downSampler.enable();
-  FBO downSampledFBO;
   for (int i=4; i >= 0; i--) {
     downSampledFBO=downSampledScene[i];
     downSampler.setFloat("size",downSampledFBO.width(),true);
