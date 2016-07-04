@@ -7,16 +7,7 @@
     return;
   }
   localPlayer.activateOwnedEntityAsClient(selectedItemEntity);
-  long currentTime=time.getGameTimeInMs();
-  characterHeldItemComponent.lastItemUsedTime=currentTime;
-  characterHeldItemComponent.nextItemUseTime=currentTime;
-  ItemComponent itemComponent=selectedItemEntity.getComponent(ItemComponent.class);
-  if (itemComponent != null) {
-    characterHeldItemComponent.nextItemUseTime+=itemComponent.cooldownTime;
-  }
- else {
-    characterHeldItemComponent.nextItemUseTime+=200;
-  }
+  entity.send(new OnItemUseEvent());
   entity.saveComponent(characterHeldItemComponent);
   event.consume();
 }
