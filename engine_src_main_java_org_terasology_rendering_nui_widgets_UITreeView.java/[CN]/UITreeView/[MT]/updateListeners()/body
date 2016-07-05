@@ -1,10 +1,20 @@
 {
-  while (itemInteractionListeners.size() > model.get().getItemCount()) {
-    itemInteractionListeners.remove(itemInteractionListeners.size() - 1);
+  boolean mouseOver=false;
+  for (  ItemListenerSet set : itemListenerSets) {
+    if (set.isMouseOver()) {
+      mouseOver=true;
+      break;
+    }
+  }
+  if (!mouseOver) {
+    onItemMouseRelease();
+  }
+  while (itemListenerSets.size() > model.get().getItemCount()) {
+    itemListenerSets.remove(itemListenerSets.size() - 1);
     expandListeners.remove(expandListeners.size() - 1);
   }
-  while (itemInteractionListeners.size() < model.get().getItemCount()) {
-    itemInteractionListeners.add(new ItemInteractionListener(itemInteractionListeners.size()));
+  while (itemListenerSets.size() < model.get().getItemCount()) {
+    itemListenerSets.add(new ItemListenerSet(new ItemTopListener(itemListenerSets.size()),new ItemCenterListener(itemListenerSets.size()),new ItemBottomListener(itemListenerSets.size())));
     expandListeners.add(new ExpandButtonInteractionListener(expandListeners.size()));
   }
 }

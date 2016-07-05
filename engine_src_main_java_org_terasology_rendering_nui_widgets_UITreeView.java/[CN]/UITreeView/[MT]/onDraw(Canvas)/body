@@ -4,7 +4,7 @@
   int currentHeight=0;
   for (int i=0; i < model.get().getItemCount(); i++) {
     Tree<T> item=model.get().getItem(i);
-    ItemInteractionListener itemListener=itemInteractionListeners.get(i);
+    ItemListenerSet itemListenerSet=itemListenerSets.get(i);
     ExpandButtonInteractionListener buttonListener=expandListeners.get(i);
     int itemHeight=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas).addX(item.getDepth() * itemIndent.get())).getY();
     if (!item.isLeaf()) {
@@ -14,9 +14,12 @@
       drawButton(canvas,buttonRegion,buttonListener);
     }
     canvas.setPart(TREE_ITEM);
-    setItemMode(canvas,item,itemListener);
+    setItemMode(canvas,item,itemListenerSet);
     Rect2i itemRegion=Rect2i.createFromMinAndSize((item.getDepth() + 1) * itemIndent.get(),currentHeight,canvas.size().x - (item.getDepth() + 1) * itemIndent.get(),itemHeight);
-    drawItem(canvas,itemRegion,item,itemListener);
+    drawItem(canvas,itemRegion,item,itemListenerSet);
     currentHeight+=itemHeight;
+    if (mouseOverItemIndex != null && mouseOverItemIndex == i) {
+      drawDragHint(canvas,itemRegion);
+    }
   }
 }

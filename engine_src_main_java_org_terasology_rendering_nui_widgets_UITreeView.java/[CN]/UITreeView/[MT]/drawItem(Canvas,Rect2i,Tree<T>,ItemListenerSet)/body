@@ -1,0 +1,8 @@
+{
+  canvas.drawBackground(itemRegion);
+  itemRenderer.draw(item.getValue(),canvas,canvas.getCurrentStyle().getMargin().shrink(itemRegion));
+  canvas.addInteractionRegion(listenerSet.getTopListener(),itemRenderer.getTooltip(item.getValue()),Rect2i.createFromMinAndSize(itemRegion.minX(),itemRegion.minY(),itemRegion.width(),itemRegion.height() / 3));
+  canvas.addInteractionRegion(listenerSet.getCenterListener(),itemRenderer.getTooltip(item.getValue()),Rect2i.createFromMinAndSize(itemRegion.minX(),itemRegion.minY() + itemRegion.height() / 3,itemRegion.width(),itemRegion.height() / 3));
+  int heightOffset=itemRegion.height() - 3 * (itemRegion.height() / 3);
+  canvas.addInteractionRegion(listenerSet.getBottomListener(),itemRenderer.getTooltip(item.getValue()),Rect2i.createFromMinAndSize(itemRegion.minX(),itemRegion.minY() + 2 * itemRegion.height() / 3,itemRegion.width(),heightOffset + itemRegion.height() / 3));
+}
