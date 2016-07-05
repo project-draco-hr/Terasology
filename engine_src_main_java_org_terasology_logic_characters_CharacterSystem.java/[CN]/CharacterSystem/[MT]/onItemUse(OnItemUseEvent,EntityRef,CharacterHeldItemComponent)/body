@@ -1,0 +1,16 @@
+{
+  EntityRef selectedItemEntity=characterHeldItemComponent.selectedItem;
+  long currentTime=time.getGameTimeInMs();
+  characterHeldItemComponent.lastItemUsedTime=currentTime;
+  characterHeldItemComponent.nextItemUseTime=currentTime;
+  ItemComponent itemComponent=selectedItemEntity.getComponent(ItemComponent.class);
+  if (itemComponent != null) {
+    AffectItemUseCooldownTimeEvent affectItemUseCooldownTimeEvent=new AffectItemUseCooldownTimeEvent(itemComponent.baseCooldownTime);
+    entity.send(affectItemUseCooldownTimeEvent);
+    characterHeldItemComponent.nextItemUseTime+=affectItemUseCooldownTimeEvent.getResultValue();
+  }
+ else {
+    characterHeldItemComponent.nextItemUseTime+=200;
+  }
+  entity.saveComponent(characterHeldItemComponent);
+}
