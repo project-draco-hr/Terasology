@@ -1,0 +1,15 @@
+{
+  if (draggedItemIndex != null) {
+    if (mouseOverItemIndex != null) {
+      model.get().getItem(mouseOverItemIndex).setSelected(false);
+    }
+    if (draggedItemIndex != index && model.get().getItem(index).acceptsChild(model.get().getItem(draggedItemIndex))) {
+      mouseOverItemIndex=index;
+      model.get().getItem(index).setSelected(true);
+      mouseOverItemType=type;
+    }
+ else {
+      mouseOverItemIndex=null;
+    }
+  }
+}
