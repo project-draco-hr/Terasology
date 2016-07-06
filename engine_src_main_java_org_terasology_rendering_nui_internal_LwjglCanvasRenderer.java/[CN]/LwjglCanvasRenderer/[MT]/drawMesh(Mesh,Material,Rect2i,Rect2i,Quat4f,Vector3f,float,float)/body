@@ -15,7 +15,7 @@
   Matrix4f finalMat=new Matrix4f(modelView);
   finalMat.mul(translateTransform);
   MatrixUtils.matrixToFloatBuffer(finalMat,matrixBuffer);
-  material.setFloat4(CROPPING_BOUNDARIES_PARAM,cropRegion.minX(),cropRegion.maxX() + 1,cropRegion.minY(),cropRegion.maxY() + 1);
+  material.setFloat4(CROPPING_BOUNDARIES_PARAM,cropRegion.minX(),cropRegion.maxX(),cropRegion.minY(),cropRegion.maxY());
   material.setMatrix4("posMatrix",translateTransform);
   glEnable(GL11.GL_DEPTH_TEST);
   glClear(GL11.GL_DEPTH_BUFFER_BIT);
