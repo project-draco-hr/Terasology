@@ -1,0 +1,20 @@
+{
+  PerformanceMonitor.startActivity("rendering/finalPostProcessing");
+  ocUndistorted=frameBuffersManager.getFBO("ocUndistorted");
+  sceneFinal=frameBuffersManager.getFBO("sceneFinal");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  fullScale=sceneOpaque.dimensions();
+  if (!renderingDebugConfig.isEnabled()) {
+    finalPost.enable();
+  }
+ else {
+    debug.enable();
+  }
+  if (!renderingConfig.isOculusVrSupport()) {
+    renderFinalMonoImage();
+  }
+ else {
+    renderFinalStereoImage(worldRenderer.getCurrentRenderStage());
+  }
+  PerformanceMonitor.endActivity();
+}

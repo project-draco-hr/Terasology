@@ -1,0 +1,20 @@
+{
+  blur.enable();
+  blur.setFloat("radius",bloomBlurRadius,true);
+  blur.setFloat2("texelSize",1.0f / sceneBloom.width(),1.0f / sceneBloom.height(),true);
+  if (sceneBloom == sceneBloom0) {
+    sceneHighPass.bindTexture();
+  }
+ else   if (sceneBloom == sceneBloom1) {
+    sceneBloom0.bindTexture();
+  }
+ else {
+    sceneBloom1.bindTexture();
+  }
+  sceneBloom.bind();
+  setViewportToSizeOf(sceneBloom);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  setViewportToSizeOf(sceneOpaque);
+}

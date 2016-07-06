@@ -1,0 +1,13 @@
+{
+  PerformanceMonitor.startActivity("rendering/toneMapping");
+  sceneToneMapped=frameBuffersManager.getFBO("sceneToneMapped");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  toneMapping.enable();
+  sceneToneMapped.bind();
+  setViewportToSizeOf(sceneToneMapped);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  setViewportToSizeOf(sceneOpaque);
+  PerformanceMonitor.endActivity();
+}

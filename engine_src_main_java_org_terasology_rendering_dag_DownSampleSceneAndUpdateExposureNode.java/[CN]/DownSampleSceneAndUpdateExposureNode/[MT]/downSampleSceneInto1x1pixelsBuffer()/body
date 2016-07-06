@@ -1,0 +1,23 @@
+{
+  PerformanceMonitor.startActivity("rendering/updateExposure/downSampleScene");
+  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  scenePrePost=frameBuffersManager.getFBO("scenePrePost");
+  downSampler.enable();
+  for (int i=4; i >= 0; i--) {
+    downSampledFBO=downSampledScene[i];
+    downSampler.setFloat("size",downSampledFBO.width(),true);
+    downSampledFBO.bind();
+    setViewportToSizeOf(downSampledFBO);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (i == 4) {
+      scenePrePost.bindTexture();
+    }
+ else {
+      downSampledScene[i + 1].bindTexture();
+    }
+    renderFullscreenQuad();
+    bindDisplay();
+  }
+  setViewportToSizeOf(sceneOpaque);
+  PerformanceMonitor.endActivity();
+}

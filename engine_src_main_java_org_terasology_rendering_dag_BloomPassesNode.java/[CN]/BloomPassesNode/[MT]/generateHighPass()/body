@@ -1,0 +1,14 @@
+{
+  highPass.enable();
+  highPass.setFloat("highPassThreshold",bloomHighPassThreshold,true);
+  int texId=0;
+  GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
+  sceneOpaque.bindTexture();
+  highPass.setInt("tex",texId);
+  sceneHighPass.bind();
+  setViewportToSizeOf(sceneHighPass);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  setViewportToSizeOf(sceneOpaque);
+}

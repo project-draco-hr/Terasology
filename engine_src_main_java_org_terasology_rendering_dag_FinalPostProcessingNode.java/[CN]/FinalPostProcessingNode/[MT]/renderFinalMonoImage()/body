@@ -1,0 +1,13 @@
+{
+  if (postProcessor.isNotTakingScreenshot()) {
+    bindDisplay();
+    renderFullscreenQuad(0,0,Display.getWidth(),Display.getHeight());
+  }
+ else {
+    sceneFinal.bind();
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderFullscreenQuad(0,0,fullScale.width(),fullScale.height());
+    postProcessor.saveScreenshot();
+    setViewportToSizeOf(sceneOpaque);
+  }
+}
