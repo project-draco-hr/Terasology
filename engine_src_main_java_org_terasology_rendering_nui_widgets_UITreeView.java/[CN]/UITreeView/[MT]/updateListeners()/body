@@ -7,7 +7,14 @@
     }
   }
   if (!mouseOver) {
-    onItemMouseRelease();
+    if (draggedItemIndex.get() != null) {
+      selectedIndex.set(null);
+      draggedItemIndex.set(null);
+    }
+    if (mouseOverItemIndex.get() != null) {
+      mouseOverItemIndex.set(null);
+      mouseOverItemType.set(null);
+    }
   }
   while (treeViewListenerSets.size() > model.get().getItemCount()) {
     treeViewListenerSets.remove(treeViewListenerSets.size() - 1);
