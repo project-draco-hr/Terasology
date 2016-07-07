@@ -1,0 +1,13 @@
+{
+  if (selectedUrn != null) {
+    JsonElement json=JsonTreeConverter.deserialize(editorTreeView.getModel().getItem(0).getRoot());
+    String jsonString=new GsonBuilder().setPrettyPrinting().create().toJson(json);
+    Clipboard clipboard=Toolkit.getDefaultToolkit().getSystemClipboard();
+    try {
+      clipboard.setContents(new StringSelection(jsonString),null);
+    }
+ catch (    IllegalStateException e) {
+      logger.warn("Clipboard inaccessible.",e);
+    }
+  }
+}

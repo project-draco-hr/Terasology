@@ -1,10 +1,26 @@
 {
-  while (itemListeners.size() > model.get().getItemCount()) {
-    itemListeners.remove(itemListeners.size() - 1);
+  boolean mouseOver=false;
+  for (  TreeViewListenerSet set : treeViewListenerSets) {
+    if (set.isMouseOver()) {
+      mouseOver=true;
+      break;
+    }
+  }
+  if (!mouseOver) {
+    if (draggedItemIndex.get() != null) {
+      draggedItemIndex.set(null);
+    }
+    if (mouseOverItemIndex.get() != null) {
+      mouseOverItemIndex.set(null);
+      mouseOverItemType.set(null);
+    }
+  }
+  while (treeViewListenerSets.size() > model.get().getItemCount()) {
+    treeViewListenerSets.remove(treeViewListenerSets.size() - 1);
     expandListeners.remove(expandListeners.size() - 1);
   }
-  while (itemListeners.size() < model.get().getItemCount()) {
-    itemListeners.add(new ItemInteractionListener(itemListeners.size()));
+  while (treeViewListenerSets.size() < model.get().getItemCount()) {
+    treeViewListenerSets.add(new TreeViewListenerSet(new ItemTopListener(treeViewListenerSets.size()),new ItemCenterListener(treeViewListenerSets.size()),new ItemBottomListener(treeViewListenerSets.size())));
     expandListeners.add(new ExpandButtonInteractionListener(expandListeners.size()));
   }
 }
