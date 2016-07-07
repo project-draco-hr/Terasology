@@ -1,12 +1,12 @@
 {
-  if (draggedItemIndex != null && mouseOverItemIndex != null) {
-    Tree<T> child=model.get().getItem(draggedItemIndex);
-    Tree<T> parent=model.get().getItem(mouseOverItemIndex);
-    if (mouseOverItemType == MouseOverItemType.TOP) {
+  if (draggedItemIndex.get() != null && mouseOverItemIndex.get() != null) {
+    Tree<T> child=model.get().getItem(draggedItemIndex.get());
+    Tree<T> parent=model.get().getItem(mouseOverItemIndex.get());
+    if (mouseOverItemType.get() == MouseOverItemType.TOP) {
       child.getParent().removeChild(child);
       parent.getParent().addChild(parent.getParent().indexOf(parent),child);
     }
- else     if (mouseOverItemType == MouseOverItemType.CENTER) {
+ else     if (mouseOverItemType.get() == MouseOverItemType.CENTER) {
       child.getParent().removeChild(child);
       parent.addChild(child);
     }
@@ -16,12 +16,13 @@
     }
     fireUpdateListeners();
   }
-  if (draggedItemIndex != null) {
+  if (draggedItemIndex.get() != null) {
     selectedIndex.set(null);
-    draggedItemIndex=null;
+    draggedItemIndex.set(null);
   }
-  if (mouseOverItemIndex != null) {
-    model.get().getItem(mouseOverItemIndex).setSelected(false);
-    mouseOverItemIndex=null;
+  if (mouseOverItemIndex.get() != null) {
+    model.get().getItem(mouseOverItemIndex.get()).setSelected(false);
+    mouseOverItemIndex.set(null);
+    mouseOverItemType.set(null);
   }
 }
