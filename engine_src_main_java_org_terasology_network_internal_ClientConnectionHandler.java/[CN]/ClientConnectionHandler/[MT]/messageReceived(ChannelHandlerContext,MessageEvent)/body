@@ -1,8 +1,8 @@
 {
-  scheduleTimeout();
   if (joinStatus.getStatus() == JoinStatus.Status.FAILED) {
     return;
   }
+  scheduleTimeout(ctx.getChannel());
   NetData.NetMessage message=(NetData.NetMessage)e.getMessage();
 synchronized (joinStatus) {
     timeoutPoint=System.currentTimeMillis() + timeoutThreshold;
