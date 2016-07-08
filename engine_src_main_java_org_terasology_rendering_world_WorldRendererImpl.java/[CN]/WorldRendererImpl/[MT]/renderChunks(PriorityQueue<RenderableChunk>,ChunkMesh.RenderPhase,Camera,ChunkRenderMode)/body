@@ -27,7 +27,8 @@
         chunkShader.setFloat3("chunkPositionWorld",chunkPosition.x * ChunkConstants.SIZE_X,chunkPosition.y * ChunkConstants.SIZE_Y,chunkPosition.z * ChunkConstants.SIZE_Z,true);
         chunkShader.setFloat("animated",chunk.isAnimated() ? 1.0f : 0.0f,true);
       }
-      graphicState.preRenderSetupChunk(chunkPositionRelativeToCamera);
+      GL11.glPushMatrix();
+      GL11.glTranslatef(chunkPositionRelativeToCamera.x,chunkPositionRelativeToCamera.y,chunkPositionRelativeToCamera.z);
       if (renderingDebugConfig.isRenderChunkBoundingBoxes()) {
         AABBRenderer aabbRenderer=new AABBRenderer(chunk.getAABB());
         aabbRenderer.renderLocally(1f);
@@ -35,7 +36,7 @@
       }
       chunk.getMesh().render(phase);
       statRenderedTriangles+=chunk.getMesh().triangleCount();
-      graphicState.postRenderCleanupChunk();
+      GL11.glPopMatrix();
     }
  else {
       statChunkNotReady++;
