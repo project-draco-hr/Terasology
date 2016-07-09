@@ -1,14 +1,11 @@
 {
   buffersManager=new FrameBuffersManager();
   context.put(FrameBuffersManager.class,buffersManager);
-  graphicState=new GraphicState(buffersManager);
   postProcessor=new PostProcessor(buffersManager);
   context.put(PostProcessor.class,postProcessor);
-  buffersManager.setGraphicState(graphicState);
   buffersManager.setPostProcessor(postProcessor);
   buffersManager.initialize();
   shaderManager.initShaders();
-  postProcessor.initializeMaterials();
   initMaterials();
   context.put(WorldRenderer.class,this);
   context.put(RenderQueuesHelper.class,renderQueues);
