@@ -5,27 +5,22 @@
     boolean ctrlDown=keyboard.isKeyDown(Keyboard.KeyId.RIGHT_CTRL) || keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL);
     if (id == Keyboard.KeyId.UP || id == Keyboard.KeyId.DOWN) {
       moveSelected(id);
-      fireUpdateListeners();
       return true;
     }
  else     if (id == Keyboard.KeyId.DELETE) {
       removeSelected();
-      fireUpdateListeners();
       return true;
     }
  else     if ((ctrlDown && id == Keyboard.KeyId.A) || id == Keyboard.KeyId.INSERT) {
       addToSelected();
-      fireUpdateListeners();
       return true;
     }
  else     if (ctrlDown && id == Keyboard.KeyId.C) {
       copy(model.get().getItem(selectedIndex.get()));
-      fireUpdateListeners();
       return true;
     }
  else     if (ctrlDown && id == Keyboard.KeyId.V) {
       paste(model.get().getItem(selectedIndex.get()));
-      fireUpdateListeners();
       return true;
     }
  else {

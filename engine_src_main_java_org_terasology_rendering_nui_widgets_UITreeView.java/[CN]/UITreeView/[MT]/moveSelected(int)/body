@@ -9,12 +9,14 @@
         parent.addChild(itemIndex - 1,selectedItem);
         model.get().resetItems();
         selectedIndex.set(model.get().indexOf(selectedItem));
+        fireUpdateListeners();
       }
  else       if (keyId == Keyboard.KeyId.DOWN && itemIndex < parent.getChildren().size() - 1) {
         parent.removeChild(selectedItem);
         parent.addChild(itemIndex + 1,selectedItem);
         model.get().resetItems();
         selectedIndex.set(model.get().indexOf(selectedItem));
+        fireUpdateListeners();
       }
     }
   }
