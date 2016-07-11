@@ -1,10 +1,8 @@
 {
-  PipelineTask task=null;
-  if (object instanceof Node) {
-    task=new NodeTask((Node)object);
+  if (object instanceof StateChange) {
+    return generateStateChangeTask((StateChange)object);
   }
- else   if (object instanceof StateChange) {
-    task=generateStateChangeTask((StateChange)object);
+ else {
+    return new NodeTask((Node)object);
   }
-  return task;
 }
