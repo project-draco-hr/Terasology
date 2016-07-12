@@ -3,9 +3,9 @@
   try {
     JsonElement element=JsonTreeConverter.deserialize(tree);
     widget=new UIFormat().load(element).getRootWidget();
+    selectedScreenContainer.setContent(widget);
   }
  catch (  Exception e) {
-    widget=new UILabel(ExceptionUtils.getStackTrace(e));
+    selectedScreenContainer.setContent(new UILabel(ExceptionUtils.getStackTrace(e)));
   }
-  selectedScreenContainer.setContent(widget);
 }

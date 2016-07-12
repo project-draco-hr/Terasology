@@ -15,15 +15,15 @@
       drawButton(canvas,buttonRegion,buttonListener);
       canvas.setPart(TREE_ITEM);
     }
-    if (alternativeWidgets.containsKey(i)) {
-      canvas.drawWidget(alternativeWidgets.get(i),itemRegion);
+    if (state.getAlternativeWidgets().containsKey(i)) {
+      canvas.drawWidget(state.getAlternativeWidgets().get(i),itemRegion);
       currentHeight+=itemHeight;
     }
  else {
       setItemMode(canvas,item,treeViewListenerSet);
       drawItem(canvas,itemRegion,item,treeViewListenerSet);
       currentHeight+=itemHeight;
-      if (mouseOverItemIndex.get() != null && mouseOverItemIndex.get() == i) {
+      if (state.getMouseOverItemIndex() != null && state.getMouseOverItemIndex() == i) {
         drawDragHint(canvas,itemRegion);
       }
     }

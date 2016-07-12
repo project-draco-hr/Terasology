@@ -1,6 +1,6 @@
 {
-  if (selectedIndex.get() != null) {
-    Tree<T> selectedItem=model.get().getItem(selectedIndex.get());
+  if (state.getSelectedIndex() != null) {
+    Tree<T> selectedItem=model.get().getItem(state.getSelectedIndex());
     Tree<T> parent=selectedItem.getParent();
     if (!selectedItem.isRoot()) {
       int itemIndex=parent.getIndex(selectedItem);
@@ -8,14 +8,14 @@
         parent.removeChild(selectedItem);
         parent.addChild(itemIndex - 1,selectedItem);
         model.get().resetItems();
-        selectedIndex.set(model.get().indexOf(selectedItem));
+        state.setSelectedIndex(model.get().indexOf(selectedItem));
         fireUpdateListeners();
       }
  else       if (keyId == Keyboard.KeyId.DOWN && itemIndex < parent.getChildren().size() - 1) {
         parent.removeChild(selectedItem);
         parent.addChild(itemIndex + 1,selectedItem);
         model.get().resetItems();
-        selectedIndex.set(model.get().indexOf(selectedItem));
+        state.setSelectedIndex(model.get().indexOf(selectedItem));
         fireUpdateListeners();
       }
     }
