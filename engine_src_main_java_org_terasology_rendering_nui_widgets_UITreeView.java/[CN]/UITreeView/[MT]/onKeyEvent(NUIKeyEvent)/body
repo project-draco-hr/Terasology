@@ -1,4 +1,7 @@
 {
+  for (  TreeKeyEventListener listener : keyEventListeners) {
+    listener.onKeyEvent(event);
+  }
   if (event.isDown()) {
     int id=event.getKey().getId();
     KeyboardDevice keyboard=event.getKeyboard();
@@ -16,11 +19,11 @@
       return true;
     }
  else     if (ctrlDown && id == Keyboard.KeyId.C) {
-      copy(model.get().getItem(state.getSelectedIndex()));
+      copy(model.get().getNode(state.getSelectedIndex()));
       return true;
     }
  else     if (ctrlDown && id == Keyboard.KeyId.V) {
-      paste(model.get().getItem(state.getSelectedIndex()));
+      paste(model.get().getNode(state.getSelectedIndex()));
       return true;
     }
  else {

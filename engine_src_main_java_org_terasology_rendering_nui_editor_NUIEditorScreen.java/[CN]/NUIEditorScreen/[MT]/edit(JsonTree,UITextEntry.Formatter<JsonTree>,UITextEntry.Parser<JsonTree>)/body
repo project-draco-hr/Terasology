@@ -1,27 +1,2 @@
 {
-  UITextEntry<JsonTree> inlineEditorEntry=new UITextEntry<>();
-  inlineEditorEntry.bindValue(new Binding<JsonTree>(){
-    @Override public JsonTree get(){
-      return item;
-    }
-    @Override public void set(    JsonTree value){
-      if (value != null) {
-        item.setValue(value.getValue());
-        editorTreeView.clearAlternativeWidgets();
-        JsonTree tree=(JsonTree)(editorTreeView.getModel().getItem(0).getRoot());
-        if (editorHistoryPosition < editorHistory.size() - 1) {
-          editorHistory=editorHistory.subList(0,editorHistoryPosition + 1);
-        }
-        editorHistory.add(tree);
-        editorHistoryPosition++;
-        updateTreeView((JsonTree)item.getRoot());
-        updateWidget((JsonTree)item.getRoot());
-      }
-    }
-  }
-);
-  inlineEditorEntry.setFormatter(formatter);
-  inlineEditorEntry.setParser(parser);
-  editorTreeView.clearAlternativeWidgets();
-  editorTreeView.addAlternativeWidget(editorTreeView.getModel().indexOf(item),inlineEditorEntry);
 }

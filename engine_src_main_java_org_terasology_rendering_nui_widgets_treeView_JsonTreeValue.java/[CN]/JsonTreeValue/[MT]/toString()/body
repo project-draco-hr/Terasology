@@ -1,0 +1,20 @@
+{
+  if (type == Type.KEY_VALUE_PAIR) {
+    if (key != null && value != null) {
+      return key + ": " + value;
+    }
+    return key == null ? value.toString() : key;
+  }
+ else   if (type == Type.VALUE) {
+    return value.toString();
+  }
+ else   if (type == Type.ARRAY) {
+    return key != null ? key : ARRAY_STRING;
+  }
+ else   if (type == Type.OBJECT) {
+    return key != null ? key : OBJECT_STRING;
+  }
+ else {
+    return key != null ? key : NULL_STRING;
+  }
+}

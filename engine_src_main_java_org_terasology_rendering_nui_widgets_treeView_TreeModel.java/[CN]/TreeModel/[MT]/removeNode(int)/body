@@ -1,0 +1,15 @@
+{
+  Tree<T> item=this.getNode(index);
+  if (item.isRoot()) {
+    return;
+  }
+  Iterator it=this.nodes.get(0).getRoot().getDepthFirstIterator(enumerateExpandedOnly);
+  while (it.hasNext()) {
+    Tree<T> next=(Tree<T>)it.next();
+    if (next.containsChild(item)) {
+      next.removeChild(item);
+      break;
+    }
+  }
+  this.resetNodes(this.nodes.get(0).getRoot());
+}

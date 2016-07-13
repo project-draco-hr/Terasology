@@ -7,20 +7,20 @@
     }
   }
   if (!mouseOver) {
-    if (state.getDraggedItemIndex() != null) {
-      state.setDraggedItemIndex(null);
+    if (state.getDraggedIndex() != null) {
+      state.setDraggedIndex(null);
     }
-    if (state.getMouseOverItemIndex() != null) {
-      state.setMouseOverItemIndex(null);
-      state.setMouseOverItemType(null);
+    if (state.getMouseOverIndex() != null) {
+      state.setMouseOverIndex(null);
+      state.setMouseOverType(null);
     }
   }
-  while (treeViewListenerSets.size() > model.get().getItemCount()) {
+  while (treeViewListenerSets.size() > model.get().getNodeCount()) {
     treeViewListenerSets.remove(treeViewListenerSets.size() - 1);
     expandListeners.remove(expandListeners.size() - 1);
   }
-  while (treeViewListenerSets.size() < model.get().getItemCount()) {
-    treeViewListenerSets.add(new TreeViewListenerSet(new ItemTopListener(treeViewListenerSets.size()),new ItemCenterListener(treeViewListenerSets.size()),new ItemBottomListener(treeViewListenerSets.size())));
+  while (treeViewListenerSets.size() < model.get().getNodeCount()) {
+    treeViewListenerSets.add(new TreeViewListenerSet(new NodeTopListener(treeViewListenerSets.size()),new NodeCenterListener(treeViewListenerSets.size()),new NodeBottomListener(treeViewListenerSets.size())));
     expandListeners.add(new ExpandButtonInteractionListener(expandListeners.size()));
   }
 }

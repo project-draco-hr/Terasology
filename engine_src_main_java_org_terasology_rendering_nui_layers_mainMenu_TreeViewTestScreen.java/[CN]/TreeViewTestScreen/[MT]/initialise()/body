@@ -11,7 +11,7 @@
   JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
   Iterator it=tree.getDepthFirstIterator(false);
   while (it.hasNext()) {
-    ((Tree<JsonTreeNode>)it.next()).setExpanded(true);
+    ((Tree<JsonTreeValue>)it.next()).setExpanded(true);
   }
   for (  String id : new String[]{"treeViewDisabled","treeViewEnabled"}) {
     find(id,UITreeView.class).setModel(tree.copy());
