@@ -48,5 +48,6 @@
   renderGraph.addNode(blurPassesNode,"blurPassesNode");
   renderGraph.addNode(finalPostProcessingNode,"finalPostProcessingNode");
   List<Node> orderedNodes=renderGraph.getNodesInTopologicalOrder();
-  renderPipelineTaskList=RenderTaskListGenerator.createFrom(orderedNodes);
+  RenderTaskListGenerator generator=new RenderTaskListGenerator();
+  renderPipelineTaskList=generator.generateFrom(orderedNodes);
 }
