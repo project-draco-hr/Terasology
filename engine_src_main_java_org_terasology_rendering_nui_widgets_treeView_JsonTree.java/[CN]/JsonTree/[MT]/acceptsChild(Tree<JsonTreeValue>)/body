@@ -1,0 +1,15 @@
+{
+  if (!super.acceptsChild(child)) {
+    return false;
+  }
+  if (getValue().getType() != JsonTreeValue.Type.ARRAY && getValue().getType() != JsonTreeValue.Type.OBJECT) {
+    return false;
+  }
+  if (getValue().getType() == JsonTreeValue.Type.OBJECT && child.getValue().getType() == JsonTreeValue.Type.OBJECT && child.getValue().getKey() == null) {
+    return false;
+  }
+  if (getValue().getType() == JsonTreeValue.Type.ARRAY && (child.getValue().getType() == JsonTreeValue.Type.KEY_VALUE_PAIR)) {
+    return false;
+  }
+  return true;
+}

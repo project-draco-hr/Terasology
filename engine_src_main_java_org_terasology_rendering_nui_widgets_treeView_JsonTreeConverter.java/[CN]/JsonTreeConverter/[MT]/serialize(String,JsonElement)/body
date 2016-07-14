@@ -1,0 +1,36 @@
+{
+  if (json.isJsonPrimitive()) {
+    JsonPrimitive primitive=json.getAsJsonPrimitive();
+    if (primitive.isBoolean()) {
+      return new JsonTree(new JsonTreeValue(name,json.getAsBoolean(),name != null ? JsonTreeValue.Type.KEY_VALUE_PAIR : JsonTreeValue.Type.VALUE));
+    }
+ else     if (primitive.isNumber()) {
+      return new JsonTree(new JsonTreeValue(name,json.getAsNumber(),name != null ? JsonTreeValue.Type.KEY_VALUE_PAIR : JsonTreeValue.Type.VALUE));
+    }
+ else     if (primitive.isString()) {
+      return new JsonTree(new JsonTreeValue(name,json.getAsString(),name != null ? JsonTreeValue.Type.KEY_VALUE_PAIR : JsonTreeValue.Type.VALUE));
+    }
+ else {
+      return new JsonTree(new JsonTreeValue(name,null,name != null ? JsonTreeValue.Type.KEY_VALUE_PAIR : JsonTreeValue.Type.VALUE));
+    }
+  }
+ else   if (json.isJsonArray()) {
+    JsonTree tree=new JsonTree(new JsonTreeValue(name,null,JsonTreeValue.Type.ARRAY));
+    JsonArray array=json.getAsJsonArray();
+    for (int i=0; i < array.size(); i++) {
+      tree.addChild(serialize(array.get(i)));
+    }
+    return tree;
+  }
+ else   if (json.isJsonObject()) {
+    JsonTree tree=new JsonTree(new JsonTreeValue(name,null,JsonTreeValue.Type.OBJECT));
+    JsonObject object=json.getAsJsonObject();
+    for (    Map.Entry<String,JsonElement> entry : object.entrySet()) {
+      tree.addChild(serialize(entry.getKey(),entry.getValue()));
+    }
+    return tree;
+  }
+ else {
+    return new JsonTree(new JsonTreeValue(name,null,JsonTreeValue.Type.NULL));
+  }
+}

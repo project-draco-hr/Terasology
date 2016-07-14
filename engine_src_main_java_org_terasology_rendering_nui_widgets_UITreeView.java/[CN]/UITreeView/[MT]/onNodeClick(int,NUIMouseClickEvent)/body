@@ -1,0 +1,16 @@
+{
+  for (  TreeMouseClickListener listener : nodeClickListeners) {
+    listener.onMouseClick(event,model.get().getNode(index));
+  }
+  if (isEnabled() && event.getMouseButton() == MouseInput.MOUSE_LEFT) {
+    if (state.getSelectedIndex() != null && state.getSelectedIndex() == index) {
+      state.setSelectedIndex(null);
+    }
+ else {
+      state.setSelectedIndex(index);
+    }
+    state.setAlternativeWidget(null);
+    return true;
+  }
+  return false;
+}

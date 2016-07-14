@@ -1,17 +1,17 @@
 {
-  canvas.setPart(TREE_ITEM);
-  if (model.get().getItemCount() == 0) {
+  canvas.setPart(TREE_NODE);
+  if (model.get().getNodeCount() == 0) {
     return new Vector2i();
   }
   model.get().setEnumerateExpandedOnly(false);
   Vector2i result=new Vector2i();
-  for (int i=0; i < model.get().getItemCount(); i++) {
-    Tree<T> item=model.get().getItem(i);
-    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas).addX(item.getDepth() * itemIndent.get()));
+  for (int i=0; i < model.get().getNodeCount(); i++) {
+    Tree<T> node=model.get().getNode(i);
+    Vector2i preferredSize=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(node.getValue(),canvas).addX(node.getDepth() * levelIndent.get()));
     result.x=Math.max(result.x,preferredSize.x);
     result.y+=preferredSize.y;
   }
   model.get().setEnumerateExpandedOnly(true);
-  result.addX(itemIndent.get());
+  result.addX(levelIndent.get());
   return result;
 }

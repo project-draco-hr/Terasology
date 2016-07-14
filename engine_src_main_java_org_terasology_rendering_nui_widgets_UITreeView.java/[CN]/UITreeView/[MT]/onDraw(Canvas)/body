@@ -1,25 +1,31 @@
 {
   updateListeners();
-  canvas.setPart(TREE_ITEM);
+  canvas.setPart(TREE_NODE);
   int currentHeight=0;
-  for (int i=0; i < model.get().getItemCount(); i++) {
-    Tree<T> item=model.get().getItem(i);
+  for (int i=0; i < model.get().getNodeCount(); i++) {
+    Tree<T> node=model.get().getNode(i);
     TreeViewListenerSet treeViewListenerSet=treeViewListenerSets.get(i);
     ExpandButtonInteractionListener buttonListener=expandListeners.get(i);
-    int itemHeight=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(item.getValue(),canvas).addX(item.getDepth() * itemIndent.get())).getY();
-    if (!item.isLeaf()) {
+    int nodeHeight=canvas.getCurrentStyle().getMargin().grow(itemRenderer.getPreferredSize(node.getValue(),canvas).addX(node.getDepth() * levelIndent.get())).getY();
+    Rect2i nodeRegion=Rect2i.createFromMinAndSize((node.getDepth() + 1) * levelIndent.get(),currentHeight,canvas.size().x - (node.getDepth() + 1) * levelIndent.get(),nodeHeight);
+    if (!node.isLeaf()) {
       canvas.setPart(EXPAND_BUTTON);
-      setButtonMode(canvas,item,buttonListener);
-      Rect2i buttonRegion=Rect2i.createFromMinAndSize(item.getDepth() * itemIndent.get(),currentHeight,itemIndent.get(),itemHeight);
+      setButtonMode(canvas,node,buttonListener);
+      Rect2i buttonRegion=Rect2i.createFromMinAndSize(node.getDepth() * levelIndent.get(),currentHeight,levelIndent.get(),nodeHeight);
       drawButton(canvas,buttonRegion,buttonListener);
+      canvas.setPart(TREE_NODE);
     }
-    canvas.setPart(TREE_ITEM);
-    setItemMode(canvas,item,treeViewListenerSet);
-    Rect2i itemRegion=Rect2i.createFromMinAndSize((item.getDepth() + 1) * itemIndent.get(),currentHeight,canvas.size().x - (item.getDepth() + 1) * itemIndent.get(),itemHeight);
-    drawItem(canvas,itemRegion,item,treeViewListenerSet);
-    currentHeight+=itemHeight;
-    if (mouseOverItemIndex.get() != null && mouseOverItemIndex.get() == i) {
-      drawDragHint(canvas,itemRegion);
+    if (state.getSelectedIndex() != null && state.getSelectedIndex() == i && state.getAlternativeWidget() != null) {
+      canvas.drawWidget(state.getAlternativeWidget(),nodeRegion);
+      currentHeight+=nodeHeight;
+    }
+ else {
+      setNodeMode(canvas,node,treeViewListenerSet);
+      drawNode(canvas,nodeRegion,node,treeViewListenerSet);
+      currentHeight+=nodeHeight;
+      if (state.getMouseOverIndex() != null && state.getMouseOverIndex() == i) {
+        drawDragHint(canvas,nodeRegion);
+      }
     }
   }
 }

@@ -1,15 +1,15 @@
 {
   if (event.getMouseButton() == MouseInput.MOUSE_LEFT) {
-    model.get().getItem(index).setExpanded(!model.get().getItem(index).isExpanded());
-    Tree<T> selectedItem=selectedIndex.get() != null ? model.get().getItem(selectedIndex.get()) : null;
-    model.get().resetItems();
-    if (selectedItem != null) {
-      int newIndex=model.get().indexOf(selectedItem);
+    model.get().getNode(index).setExpanded(!model.get().getNode(index).isExpanded());
+    Tree<T> selectedNode=state.getSelectedIndex() != null ? model.get().getNode(state.getSelectedIndex()) : null;
+    model.get().resetNodes();
+    if (selectedNode != null) {
+      int newIndex=model.get().indexOf(selectedNode);
       if (newIndex == -1) {
-        selectedIndex.set(null);
+        state.setSelectedIndex(null);
       }
  else {
-        selectedIndex.set(newIndex);
+        state.setSelectedIndex(newIndex);
       }
     }
     return true;

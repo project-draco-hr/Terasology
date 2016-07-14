@@ -1,0 +1,29 @@
+{
+  if (state.getDraggedIndex() != null && state.getMouseOverIndex() != null) {
+    Tree<T> child=model.get().getNode(state.getDraggedIndex());
+    Tree<T> parent=model.get().getNode(state.getMouseOverIndex());
+    if (state.getMouseOverType() == MouseOverType.TOP) {
+      child.getParent().removeChild(child);
+      parent.getParent().addChild(parent.getParent().indexOf(parent),child);
+    }
+ else     if (state.getMouseOverType() == MouseOverType.CENTER) {
+      child.getParent().removeChild(child);
+      parent.addChild(child);
+    }
+ else {
+      child.getParent().removeChild(child);
+      parent.getParent().addChild(parent.getParent().indexOf(parent) + 1,child);
+    }
+    fireUpdateListeners();
+  }
+  if (state.getDraggedIndex() != null) {
+    if (state.getMouseOverIndex() != null && state.getMouseOverIndex() != index) {
+      state.setSelectedIndex(null);
+    }
+    state.setDraggedIndex(null);
+  }
+  if (state.getMouseOverIndex() != null) {
+    state.setMouseOverIndex(null);
+    state.setMouseOverType(null);
+  }
+}

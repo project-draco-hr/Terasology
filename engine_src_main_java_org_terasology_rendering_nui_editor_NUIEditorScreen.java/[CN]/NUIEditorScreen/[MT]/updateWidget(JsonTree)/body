@@ -1,0 +1,11 @@
+{
+  UIWidget widget;
+  try {
+    JsonElement element=JsonTreeConverter.deserialize(tree);
+    widget=new UIFormat().load(element).getRootWidget();
+    selectedScreenContainer.setContent(widget);
+  }
+ catch (  Exception e) {
+    selectedScreenContainer.setContent(new UILabel(ExceptionUtils.getStackTrace(e)));
+  }
+}

@@ -1,6 +1,7 @@
 {
-  if (assetManager.getAsset(urn,UIElement.class).isPresent()) {
-    UIElement element=assetManager.getAsset(urn,UIElement.class).get();
+  Optional<UIElement> asset=assetManager.getAsset(urn,UIElement.class);
+  if (asset.isPresent()) {
+    UIElement element=asset.get();
     AssetDataFile source=element.getSource();
     String content=null;
     try (JsonReader reader=new JsonReader(new InputStreamReader(source.openStream(),Charsets.UTF_8))){
@@ -19,7 +20,10 @@
       editorHistoryPosition=0;
     }
     if (selectedUrn != null) {
-      assetManager.getAsset(selectedUrn,UIElement.class).get().dispose();
+      Optional<UIElement> selectedAsset=assetManager.getAsset(selectedUrn,UIElement.class);
+      if (selectedAsset.isPresent()) {
+        selectedAsset.get().dispose();
+      }
     }
     selectedUrn=urn;
   }

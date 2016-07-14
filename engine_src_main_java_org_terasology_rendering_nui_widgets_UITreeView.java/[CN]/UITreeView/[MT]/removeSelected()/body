@@ -1,4 +1,7 @@
 {
-  model.get().removeItem(selectedIndex.get());
-  selectedIndex.set(null);
+  if (state.getSelectedIndex() != null) {
+    model.get().removeNode(state.getSelectedIndex());
+    state.setSelectedIndex(null);
+    fireUpdateListeners();
+  }
 }
