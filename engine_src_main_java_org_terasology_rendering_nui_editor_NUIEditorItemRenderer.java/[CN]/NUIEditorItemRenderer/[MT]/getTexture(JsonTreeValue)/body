@@ -1,0 +1,22 @@
+{
+  String textureName;
+  if (value.getType() == JsonTreeValue.Type.KEY_VALUE_PAIR && value.getKey().equalsIgnoreCase("type")) {
+    textureName=value.getValue().toString();
+  }
+ else   if (value.getType() == JsonTreeValue.Type.OBJECT && value.getKey() == null) {
+    textureName=OBJECT_TEXTURE_NAME;
+  }
+ else   if (value.getType() == JsonTreeValue.Type.ARRAY && value.getKey() == null) {
+    textureName=ARRAY_TEXTURE_NAME;
+  }
+ else {
+    textureName=value.getKey();
+  }
+  Optional<Texture> texture=Assets.getTexture(String.format("engine:editor_%s",textureName));
+  if (texture.isPresent()) {
+    return texture.get();
+  }
+ else {
+    return null;
+  }
+}
