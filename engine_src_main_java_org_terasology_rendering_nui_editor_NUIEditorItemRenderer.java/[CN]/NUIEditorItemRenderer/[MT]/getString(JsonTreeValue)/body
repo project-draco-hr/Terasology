@@ -1,3 +1,14 @@
 {
+  if (value.getType() == JsonTreeValue.Type.OBJECT && value.getKey() == null) {
+    JsonTree node=(JsonTree)editorTreeViewModel.getNodeByValue(value);
+    if (node != null) {
+      for (      Tree<JsonTreeValue> child : node.getChildren()) {
+        JsonTreeValue childValue=child.getValue();
+        if (childValue.getType() == JsonTreeValue.Type.KEY_VALUE_PAIR && childValue.getKey().equalsIgnoreCase("id")) {
+          return String.format("{%s}",childValue.getValue());
+        }
+      }
+    }
+  }
   return value.toString();
 }
