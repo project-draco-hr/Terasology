@@ -1,10 +1,12 @@
 {
-  List<RenderPipelineTask> taskList=com.google.common.collect.Lists.newArrayList();
+  logger.info("Task List: ");
+  List<RenderPipelineTask> taskList=Lists.newArrayList();
   for (  Node node : orderedNodes) {
-    RenderPipelineTask task=generateTask(node);
-    if (task != null) {
-      taskList.add(task);
+    for (    StateChange stateChange : node.getStateChanges()) {
+      taskList.add(generateTask(stateChange));
     }
+    RenderPipelineTask task=generateTask(node);
+    taskList.add(task);
   }
   return taskList;
 }
