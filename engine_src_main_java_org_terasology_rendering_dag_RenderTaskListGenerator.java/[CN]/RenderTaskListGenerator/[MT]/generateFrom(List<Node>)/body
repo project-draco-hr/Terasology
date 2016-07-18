@@ -1,12 +1,6 @@
 {
   logger.info("Task List: ");
-  List<RenderPipelineTask> taskList=Lists.newArrayList();
-  for (  Node node : orderedNodes) {
-    for (    StateChange stateChange : node.getDesiredStateChanges()) {
-      taskList.add(generateTask(stateChange));
-    }
-    RenderPipelineTask task=generateTask(node);
-    taskList.add(task);
-  }
-  return taskList;
+  List<Object> intermediateList=generateIntermediateList(orderedNodes);
+  eliminateRedundantStateChanges(intermediateList);
+  return generateTaskList(intermediateList);
 }

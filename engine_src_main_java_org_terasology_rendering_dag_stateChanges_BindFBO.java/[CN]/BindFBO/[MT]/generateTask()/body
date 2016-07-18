@@ -1,4 +1,12 @@
 {
-  task=new BindFBOTask(fboId);
+  if (task == null) {
+    task=new BindFBOTask(fboId);
+    if (fboId != DEFAULT_FRAME_BUFFER_ID) {
+      frameBuffersManager.subscribe(this);
+    }
+  }
+ else {
+    update();
+  }
   return task;
 }

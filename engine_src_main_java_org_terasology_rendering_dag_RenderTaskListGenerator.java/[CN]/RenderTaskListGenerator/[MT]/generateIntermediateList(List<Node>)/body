@@ -1,0 +1,11 @@
+{
+  List<Object> intermediateList=Lists.newArrayList();
+  for (  Node node : orderedNodes) {
+    intermediateList.addAll(node.getDesiredStateChanges());
+    intermediateList.add(node);
+    for (    StateChange stateChange : node.getDesiredStateChanges()) {
+      intermediateList.add(stateChange.getDefaultInstance());
+    }
+  }
+  return intermediateList;
+}
