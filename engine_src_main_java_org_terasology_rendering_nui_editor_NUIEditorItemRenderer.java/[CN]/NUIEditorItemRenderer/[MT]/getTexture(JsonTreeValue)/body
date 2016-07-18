@@ -3,7 +3,7 @@
   if (value.getType() == JsonTreeValue.Type.KEY_VALUE_PAIR) {
     textureName=ATTRIBUTE_TEXTURE_NAME;
   }
- else   if (value.getType() == JsonTreeValue.Type.OBJECT && value.getKey() == null) {
+ else   if (value.getType() == JsonTreeValue.Type.OBJECT) {
     JsonTree node=(JsonTree)editorTreeViewModel.getNodeByValue(value);
     if (node != null) {
       for (      Tree<JsonTreeValue> child : node.getChildren()) {
@@ -28,11 +28,7 @@
     if (texture.isPresent()) {
       return texture.get();
     }
- else {
-      return null;
-    }
-  }
- else {
     return null;
   }
+  return null;
 }
