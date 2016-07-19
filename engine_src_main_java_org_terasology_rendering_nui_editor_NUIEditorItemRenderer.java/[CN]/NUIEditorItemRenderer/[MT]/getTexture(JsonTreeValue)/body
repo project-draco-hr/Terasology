@@ -6,10 +6,15 @@
  else   if (value.getType() == JsonTreeValue.Type.OBJECT) {
     JsonTree node=(JsonTree)editorTreeViewModel.getNodeByValue(value);
     if (node != null) {
-      for (      Tree<JsonTreeValue> child : node.getChildren()) {
-        JsonTreeValue childValue=child.getValue();
-        if (childValue.getType() == JsonTreeValue.Type.KEY_VALUE_PAIR && childValue.getKey().equalsIgnoreCase("type")) {
-          textureName=(String)childValue.getValue();
+      if (node.isRoot()) {
+        return null;
+      }
+ else {
+        for (        Tree<JsonTreeValue> child : node.getChildren()) {
+          JsonTreeValue childValue=child.getValue();
+          if (childValue.getType() == JsonTreeValue.Type.KEY_VALUE_PAIR && childValue.getKey().equalsIgnoreCase("type")) {
+            textureName=(String)childValue.getValue();
+          }
         }
       }
     }
@@ -20,15 +25,17 @@
  else   if (value.getType() == JsonTreeValue.Type.ARRAY) {
     textureName=ARRAY_TEXTURE_NAME;
   }
- else {
+ else   if (value.getKey() != null) {
     textureName=value.getKey();
+  }
+ else {
+    return null;
   }
   if (textureName != null) {
     Optional<Texture> texture=Assets.getTexture(String.format("engine:editor_%s",textureName));
     if (texture.isPresent()) {
       return texture.get();
     }
-    return null;
   }
-  return null;
+  return Assets.getTexture(ICON_BLANK).get();
 }
