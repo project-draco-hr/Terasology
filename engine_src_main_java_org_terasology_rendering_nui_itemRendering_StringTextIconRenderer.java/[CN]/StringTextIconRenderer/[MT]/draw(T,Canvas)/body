@@ -1,15 +1,23 @@
 {
   Texture texture=getTexture(value);
-  if (marginTop + texture.getHeight() + marginBottom > canvas.size().y) {
-    int iconHeight=canvas.size().y - marginTop - marginBottom;
-    canvas.drawTexture(texture,Rect2i.createFromMinAndSize(marginLeft,marginTop,texture.getWidth(),iconHeight));
-  }
+  if (texture != null) {
+    if (marginTop + texture.getHeight() + marginBottom > canvas.size().y) {
+      int iconHeight=canvas.size().y - marginTop - marginBottom;
+      canvas.drawTexture(texture,Rect2i.createFromMinAndSize(marginLeft,marginTop,texture.getWidth(),iconHeight));
+    }
  else {
-    int iconVerticalPosition=(canvas.size().y - texture.getHeight()) / 2;
-    canvas.drawTexture(texture,Rect2i.createFromMinAndSize(marginLeft,iconVerticalPosition,texture.getWidth(),texture.getHeight()));
+      int iconVerticalPosition=(canvas.size().y - texture.getHeight()) / 2;
+      canvas.drawTexture(texture,Rect2i.createFromMinAndSize(marginLeft,iconVerticalPosition,texture.getWidth(),texture.getHeight()));
+    }
   }
   String text=getString(value);
-  int iconWidth=marginLeft + texture.getWidth() + marginRight;
+  int iconWidth;
+  if (texture != null) {
+    iconWidth=marginLeft + texture.getWidth() + marginRight;
+  }
+ else {
+    iconWidth=0;
+  }
   Rect2i textRegion=Rect2i.createFromMinAndSize(iconWidth,0,canvas.getRegion().width() - iconWidth,canvas.getRegion().height());
   if (wrap) {
     canvas.drawText(text,textRegion);

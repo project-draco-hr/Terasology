@@ -1,0 +1,8 @@
+{
+  if (!(tree.getValue().getType() == JsonTreeValue.Type.OBJECT && !tree.isRoot() && tree.getParent().getValue().getType() == JsonTreeValue.Type.ARRAY)) {
+    tree.setExpanded(true);
+  }
+  for (  Tree node : tree.getChildren()) {
+    expandTree((JsonTree)node);
+  }
+}
