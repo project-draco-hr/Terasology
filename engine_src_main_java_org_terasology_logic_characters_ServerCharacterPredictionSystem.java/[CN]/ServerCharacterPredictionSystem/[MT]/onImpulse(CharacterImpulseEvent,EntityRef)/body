@@ -1,0 +1,11 @@
+{
+  Vector3f impulse=event.getDirection();
+  CircularBuffer<CharacterStateEvent> stateBuffer=characterStates.get(entity);
+  CharacterStateEvent lastState=stateBuffer.getLast();
+  CharacterStateEvent newState=new CharacterStateEvent(lastState);
+  newState.setVelocity(impulse.add(newState.getVelocity()));
+  newState.setTime(time.getGameTimeInMs());
+  newState.setMode(MovementMode.WALKING);
+  stateBuffer.add(newState);
+  characterMovementSystemUtility.setToState(entity,newState);
+}
