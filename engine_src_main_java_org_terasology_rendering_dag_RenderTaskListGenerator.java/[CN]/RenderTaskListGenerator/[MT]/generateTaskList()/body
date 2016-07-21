@@ -1,0 +1,16 @@
+{
+  taskList.clear();
+  Map map=Maps.newHashMap();
+  for (  Object object : intermediateList) {
+    if (object instanceof StateChange) {
+      map.put(object.getClass(),object);
+    }
+ else {
+      for (      Object o : map.values()) {
+        taskList.add(((StateChange)o).generateTask());
+      }
+      map.clear();
+      taskList.add(new NodeTask((Node)object));
+    }
+  }
+}
