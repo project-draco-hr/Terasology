@@ -1,16 +1,16 @@
 {
   taskList.clear();
-  Map map=Maps.newHashMap();
+  Map intranodesStateChanges=Maps.newHashMap();
   for (  Object object : intermediateList) {
     if (object instanceof StateChange) {
-      map.put(object.getClass(),object);
+      intranodesStateChanges.put(object.getClass(),object);
     }
  else {
-      for (      Object o : map.values()) {
-        taskList.add(((StateChange)o).generateTask());
+      for (      Object stateChange : intranodesStateChanges.values()) {
+        taskList.add(((StateChange)stateChange).generateTask());
       }
-      map.clear();
-      taskList.add(new NodeTask((Node)object));
+      intranodesStateChanges.clear();
+      taskList.add(((Node)object).generateTask());
     }
   }
 }
