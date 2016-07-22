@@ -1,15 +1,41 @@
 {
   taskList.clear();
+  List<Object> semiReducedStateChanges=Lists.newArrayList();
   Map intranodesStateChanges=Maps.newHashMap();
   for (  Object object : intermediateList) {
     if (object instanceof StateChange) {
       intranodesStateChanges.put(object.getClass(),object);
     }
  else {
-      for (      Object stateChange : intranodesStateChanges.values()) {
-        taskList.add(((StateChange)stateChange).generateTask());
+      Iterator iterator=intranodesStateChanges.entrySet().iterator();
+      while (iterator.hasNext()) {
+        Map.Entry entry=(Map.Entry)iterator.next();
+        semiReducedStateChanges.add(entry.getValue());
+        iterator.remove();
       }
-      intranodesStateChanges.clear();
+      semiReducedStateChanges.add(object);
+    }
+  }
+  for (  Object stateChange : intranodesStateChanges.values()) {
+    semiReducedStateChanges.add(stateChange);
+  }
+  Map persistentStateChanges=Maps.newHashMap();
+  for (  Object object : semiReducedStateChanges) {
+    if (object instanceof StateChange) {
+      StateChange stateChange=(StateChange)object;
+      if (!persistentStateChanges.containsKey(object.getClass())) {
+        persistentStateChanges.put(object.getClass(),object);
+        taskList.add(stateChange.generateTask());
+      }
+ else {
+        StateChange persistenStateChange=(StateChange)persistentStateChanges.get(object.getClass());
+        if (!persistenStateChange.compare(stateChange)) {
+          persistentStateChanges.put(stateChange.getClass(),stateChange);
+          taskList.add(stateChange.generateTask());
+        }
+      }
+    }
+ else {
       taskList.add(((Node)object).generateTask());
     }
   }

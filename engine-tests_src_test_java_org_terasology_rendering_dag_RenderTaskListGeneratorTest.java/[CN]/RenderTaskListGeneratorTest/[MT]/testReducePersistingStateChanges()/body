@@ -1,0 +1,16 @@
+{
+  RenderTaskListGenerator renderTaskListGenerator=new RenderTaskListGenerator();
+  List<Node> orderedNodes=Lists.newArrayList();
+  orderedNodes.add(initialiseNode(new AlphaNode()));
+  orderedNodes.add(initialiseNode(new BravoNode()));
+  orderedNodes.add(initialiseNode(new CharlieNode()));
+  orderedNodes.add(initialiseNode(new DeltaNode()));
+  List<RenderPipelineTask> taskList=renderTaskListGenerator.generateFrom(orderedNodes);
+  assertEquals(taskList.get(0).toString(),"SetNameTask: foo");
+  assertEquals(taskList.get(1).toString(),"NodeTask: AlphaNode");
+  assertEquals(taskList.get(2).toString(),"NodeTask: BravoNode");
+  assertEquals(taskList.get(3).toString(),"NodeTask: CharlieNode");
+  assertEquals(taskList.get(4).toString(),"SetNameTask: delta");
+  assertEquals(taskList.get(5).toString(),"NodeTask: DeltaNode");
+  assertEquals(taskList.get(6).toString(),"SetNameTask: bar");
+}
