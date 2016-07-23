@@ -1,5 +1,18 @@
 {
   canvas.addInteractionRegion(mainListener);
-  Rect2i region=Rect2i.createFromMinAndSize(menuPosition,canvas.calculatePreferredSize(menu));
-  canvas.drawWidget(menu,region);
+  Vector2i currentPosition=null;
+  int currentWidth=0;
+  for (  ContextMenuLevel level : menuLevels) {
+    if (level.isVisible()) {
+      if (currentPosition == null) {
+        currentPosition=new Vector2i(level.getPosition());
+      }
+ else {
+        currentPosition.addX(currentWidth);
+      }
+      Rect2i region=Rect2i.createFromMinAndSize(currentPosition,canvas.calculatePreferredSize(level.getMenuWidget()));
+      canvas.drawWidget(level.getMenuWidget(),region);
+      currentWidth+=region.width();
+    }
+  }
 }
