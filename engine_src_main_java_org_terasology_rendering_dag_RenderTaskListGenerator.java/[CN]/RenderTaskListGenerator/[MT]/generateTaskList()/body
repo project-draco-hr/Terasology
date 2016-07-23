@@ -1,41 +1,35 @@
 {
-  taskList.clear();
-  List<Object> semiReducedStateChanges=Lists.newArrayList();
+  StateChange stateChange;
+  StateChange persistentStateChange;
+  Map persistentStateChanges=Maps.newHashMap();
   Map intranodesStateChanges=Maps.newHashMap();
+  taskList.clear();
   for (  Object object : intermediateList) {
     if (object instanceof StateChange) {
       intranodesStateChanges.put(object.getClass(),object);
     }
  else {
-      Iterator iterator=intranodesStateChanges.entrySet().iterator();
-      while (iterator.hasNext()) {
-        Map.Entry entry=(Map.Entry)iterator.next();
-        semiReducedStateChanges.add(entry.getValue());
-        iterator.remove();
-      }
-      semiReducedStateChanges.add(object);
-    }
-  }
-  for (  Object stateChange : intranodesStateChanges.values()) {
-    semiReducedStateChanges.add(stateChange);
-  }
-  Map persistentStateChanges=Maps.newHashMap();
-  for (  Object object : semiReducedStateChanges) {
-    if (object instanceof StateChange) {
-      StateChange stateChange=(StateChange)object;
-      if (!persistentStateChanges.containsKey(object.getClass())) {
-        persistentStateChanges.put(object.getClass(),object);
-        taskList.add(stateChange.generateTask());
-      }
+      for (      Object preCastStateChange : intranodesStateChanges.values()) {
+        stateChange=(StateChange)preCastStateChange;
+        persistentStateChange=(StateChange)persistentStateChanges.get(stateChange.getClass());
+        if (persistentStateChange == null) {
+          if (!stateChange.isTheDefaultInstance()) {
+            taskList.add(stateChange.generateTask());
+            persistentStateChanges.put(stateChange.getClass(),stateChange);
+          }
+        }
  else {
-        StateChange persistenStateChange=(StateChange)persistentStateChanges.get(object.getClass());
-        if (!persistenStateChange.compare(stateChange)) {
-          persistentStateChanges.put(stateChange.getClass(),stateChange);
-          taskList.add(stateChange.generateTask());
+          if (stateChange.isTheDefaultInstance()) {
+            taskList.add(stateChange.generateTask());
+            persistentStateChanges.remove(stateChange.getClass());
+          }
+ else           if (!stateChange.isEqualTo(persistentStateChange)) {
+            taskList.add(stateChange.generateTask());
+            persistentStateChanges.put(stateChange.getClass(),stateChange);
+          }
         }
       }
-    }
- else {
+      intranodesStateChanges.clear();
       taskList.add(((Node)object).generateTask());
     }
   }
