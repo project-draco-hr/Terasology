@@ -18,7 +18,7 @@
       for (      EntityRef entity : entities) {
         MeshComponent meshComp=entity.getComponent(MeshComponent.class);
         LocationComponent location=entity.getComponent(LocationComponent.class);
-        if (isHidden(entity,meshComp) || location == null || meshComp.mesh == null || !worldProvider.isBlockRelevant(location.getWorldPosition())) {
+        if (isHidden(entity,meshComp) || location == null || meshComp.mesh == null || !isRelevant(entity,location.getWorldPosition())) {
           continue;
         }
         if (meshComp.mesh.isDisposed()) {
