@@ -1,8 +1,14 @@
 {
   if (enabled) {
-    return new SetWireframeTask(ENABLED);
+    if (enablingTask == null) {
+      enablingTask=new SetWireframeTask(true);
+    }
+    return enablingTask;
   }
  else {
-    return new SetWireframeTask(DISABLED);
+    if (disablingTask == null) {
+      disablingTask=new SetWireframeTask(false);
+    }
+    return enablingTask;
   }
 }
