@@ -1,0 +1,19 @@
+{
+  JsonTree tree=new JsonTree(new JsonTreeValue(null,null,JsonTreeValue.Type.OBJECT));
+  tree.addChild(new JsonTreeValue("type","PlaceholderScreenLayer",JsonTreeValue.Type.KEY_VALUE_PAIR));
+  tree.addChild(new JsonTreeValue("skin","engine:default",JsonTreeValue.Type.KEY_VALUE_PAIR));
+  JsonTree layout=new JsonTree(new JsonTreeValue("contents",null,JsonTreeValue.Type.OBJECT));
+  layout.addChild(new JsonTreeValue("type","relativeLayout",JsonTreeValue.Type.KEY_VALUE_PAIR));
+  JsonTree contents=new JsonTree(new JsonTreeValue("contents",null,JsonTreeValue.Type.ARRAY));
+  JsonTree label=new JsonTree(new JsonTreeValue(null,null,JsonTreeValue.Type.OBJECT));
+  label.addChild(new JsonTreeValue("type","UILabel",JsonTreeValue.Type.KEY_VALUE_PAIR));
+  label.addChild(new JsonTreeValue("id","sampleLabel",JsonTreeValue.Type.KEY_VALUE_PAIR));
+  label.addChild(new JsonTreeValue("text",SAMPLE_LABEL_TEXT,JsonTreeValue.Type.KEY_VALUE_PAIR));
+  JsonTree layoutInfo=new JsonTree(new JsonTreeValue("layoutInfo",null,JsonTreeValue.Type.OBJECT));
+  layoutInfo.addChild(new JsonTreeValue("cc","",JsonTreeValue.Type.KEY_VALUE_PAIR));
+  label.addChild(layoutInfo);
+  contents.addChild(label);
+  layout.addChild(contents);
+  tree.addChild(layout);
+  return tree;
+}

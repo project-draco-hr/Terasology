@@ -13,19 +13,8 @@
     }
     if (content != null) {
       JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
-      updateTreeView(tree,true);
-      updateWidget(tree);
-      editorHistory.clear();
-      editorHistory.add(tree);
-      editorHistoryPosition=0;
+      setTree(tree);
+      selection=urn.toString();
     }
-    if (selectedUrn != null) {
-      Optional<UIElement> selectedAsset=assetManager.getAsset(selectedUrn,UIElement.class);
-      if (selectedAsset.isPresent()) {
-        selectedAsset.get().dispose();
-      }
-    }
-    selectedUrn=urn;
-    updateConfig();
   }
 }
