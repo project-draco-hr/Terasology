@@ -19,26 +19,5 @@
     iconWidth=0;
   }
   Rect2i textRegion=Rect2i.createFromMinAndSize(iconWidth,0,canvas.getRegion().width() - iconWidth,canvas.getRegion().height());
-  if (wrap) {
-    canvas.drawText(text,textRegion);
-  }
- else {
-    int maxTextWidth=canvas.size().x - iconWidth;
-    Font font=canvas.getCurrentStyle().getFont();
-    if (font.getWidth(text) <= maxTextWidth) {
-      canvas.drawText(text,textRegion);
-    }
- else {
-      String shortText="...";
-      StringBuilder sb=new StringBuilder(text);
-      while (sb.length() > 0) {
-        shortText=sb.toString() + "...";
-        if (font.getWidth(shortText) <= maxTextWidth) {
-          break;
-        }
-        sb.setLength(sb.length() - 1);
-      }
-      canvas.drawText(shortText,textRegion);
-    }
-  }
+  canvas.drawText(text,textRegion);
 }
