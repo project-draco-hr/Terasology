@@ -3,5 +3,6 @@
   this.shadowMapShader=worldRenderer.getMaterial("engine:prog.shadowMap");
   this.renderingConfig=config.getRendering();
   renderableWorld.setShadowMapCamera(shadowMapCamera);
-  addDesiredStateChange(new BindFBO("sceneShadowMap",frameBuffersManager));
+  addDesiredStateChange(new BindFBO(SHADOW_MAP_FBO_NAME,frameBuffersManager));
+  addDesiredStateChange(new SetViewportSizeOf(SHADOW_MAP_FBO_NAME,frameBuffersManager));
 }

@@ -2,5 +2,6 @@
   this.renderingConfig=config.getRendering();
   this.chunkShader=worldRenderer.getMaterial("engine:prog.chunk");
   this.playerCamera=worldRenderer.getActiveCamera();
-  addDesiredStateChange(new BindFBO("sceneReflected",frameBuffersManager));
+  addDesiredStateChange(new BindFBO(REFLECTED_FBO_NAME,frameBuffersManager));
+  addDesiredStateChange(new SetViewportSizeOf(REFLECTED_FBO_NAME,frameBuffersManager));
 }
