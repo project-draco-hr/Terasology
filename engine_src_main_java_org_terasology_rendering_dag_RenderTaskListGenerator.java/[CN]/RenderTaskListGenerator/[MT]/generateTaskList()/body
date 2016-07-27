@@ -14,23 +14,24 @@
         persistentStateChange=(StateChange)persistentStateChanges.get(stateChange.getClass());
         if (persistentStateChange == null) {
           if (!stateChange.isTheDefaultInstance()) {
-            taskList.add(stateChange.generateTask());
+            addTask(stateChange.generateTask());
             persistentStateChanges.put(stateChange.getClass(),stateChange);
           }
         }
  else {
           if (stateChange.isTheDefaultInstance()) {
-            taskList.add(stateChange.generateTask());
+            addTask(stateChange.generateTask());
             persistentStateChanges.remove(stateChange.getClass());
           }
  else           if (!stateChange.isEqualTo(persistentStateChange)) {
-            taskList.add(stateChange.generateTask());
+            addTask(stateChange.generateTask());
             persistentStateChanges.put(stateChange.getClass(),stateChange);
           }
         }
       }
       intranodesStateChanges.clear();
-      taskList.add(((Node)object).generateTask());
+      addTask(((Node)object).generateTask());
     }
   }
+  logList("-- Task List --",taskList);
 }

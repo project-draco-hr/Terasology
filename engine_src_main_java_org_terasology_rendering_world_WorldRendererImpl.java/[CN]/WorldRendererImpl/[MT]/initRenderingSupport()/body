@@ -1,10 +1,10 @@
 {
-  frameBuffersManager=new FrameBuffersManager();
-  context.put(FrameBuffersManager.class,frameBuffersManager);
-  postProcessor=new PostProcessor(frameBuffersManager);
+  buffersManager=new FrameBuffersManager();
+  context.put(FrameBuffersManager.class,buffersManager);
+  postProcessor=new PostProcessor(buffersManager);
   context.put(PostProcessor.class,postProcessor);
-  frameBuffersManager.setPostProcessor(postProcessor);
-  frameBuffersManager.initialize();
+  buffersManager.setPostProcessor(postProcessor);
+  buffersManager.initialize();
   shaderManager.initShaders();
   initMaterials();
   context.put(WorldRenderer.class,this);

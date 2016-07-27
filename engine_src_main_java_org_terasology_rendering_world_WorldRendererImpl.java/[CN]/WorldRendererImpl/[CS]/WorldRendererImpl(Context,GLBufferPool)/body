@@ -3,7 +3,8 @@
   this.worldProvider=context.get(WorldProvider.class);
   this.backdropProvider=context.get(BackdropProvider.class);
   this.renderingConfig=context.get(Config.class).getRendering();
-  this.renderingDebugConfig=renderingConfig.getDebug();
+  renderingDebugConfig=renderingConfig.getDebug();
+  renderingDebugConfig.subscribe(RenderingDebugConfig.WIREFRAME,this);
   this.shaderManager=context.get(ShaderManager.class);
   if (renderingConfig.isOculusVrSupport()) {
     playerCamera=new OculusStereoCamera();

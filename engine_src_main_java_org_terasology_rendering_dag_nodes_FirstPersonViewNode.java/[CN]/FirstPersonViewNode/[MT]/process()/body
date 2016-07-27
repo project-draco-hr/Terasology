@@ -1,7 +1,6 @@
 {
   if (!renderingDebugConfig.isFirstPersonElementsHidden()) {
     PerformanceMonitor.startActivity("rendering/firstPersonView");
-    enableWireframeIf(renderingDebugConfig.isWireframe());
     GL11.glPushMatrix();
     GL11.glLoadIdentity();
     GL11.glDepthFunc(GL11.GL_ALWAYS);
@@ -14,7 +13,6 @@
     playerCamera.loadProjectionMatrix();
     GL11.glDepthFunc(GL_LEQUAL);
     GL11.glPopMatrix();
-    disableWireframeIf(renderingDebugConfig.isWireframe());
     PerformanceMonitor.endActivity();
   }
 }
