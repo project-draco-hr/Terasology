@@ -1,0 +1,30 @@
+{
+  JsonTreeValue childValue=new JsonTreeValue();
+  childValue.setKey(name);
+  if (UISkin.class.isAssignableFrom(field.getType())) {
+    childValue.setValue("engine:default");
+    childValue.setType(JsonTreeValue.Type.KEY_VALUE_PAIR);
+  }
+ else   if (UILayout.class.isAssignableFrom(metadata.getType())) {
+    Class layoutHintType=(Class)ReflectionUtil.getTypeParameter(metadata.getType().getGenericSuperclass(),0);
+    try {
+      childValue.setValue(field.get(layoutHintType.newInstance()));
+      childValue.setType(getNodeType(field.get(layoutHintType.newInstance())));
+    }
+ catch (    Exception e) {
+      childValue.setValue(getFieldValue(field,metadata));
+      childValue.setType(getNodeType(getFieldValue(field,metadata)));
+    }
+  }
+ else {
+    if (isWidget(field,metadata)) {
+      createWidgetChild(name,node);
+      return;
+    }
+ else {
+      childValue.setValue(getFieldValue(field,metadata));
+      childValue.setType(getNodeType(getFieldValue(field,metadata)));
+    }
+  }
+  node.addChild(childValue);
+}

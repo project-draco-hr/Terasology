@@ -1,8 +1,9 @@
 {
-  if (editorHistoryPosition > 0) {
-    editorHistoryPosition--;
-    JsonTree tree=editorHistory.get(editorHistoryPosition);
-    updateTreeView(tree,false);
-    updateWidget(tree);
+  if (historyPosition > 0) {
+    historyPosition--;
+    JsonTree node=(JsonTree)history.get(historyPosition).copy();
+    setTreeViewModel(node,false);
+    setPreviewWidget(node);
+    updateConfig();
   }
 }

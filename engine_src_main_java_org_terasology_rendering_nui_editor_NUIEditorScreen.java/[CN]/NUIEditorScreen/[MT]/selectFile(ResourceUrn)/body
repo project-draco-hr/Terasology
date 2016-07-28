@@ -12,9 +12,9 @@
       logger.error(String.format("Could not load asset source file for %s",urn.toString()),e);
     }
     if (content != null) {
-      JsonTree tree=JsonTreeConverter.serialize(new JsonParser().parse(content));
-      setTree(tree);
-      selection=urn.toString();
+      JsonTree node=JsonTreeConverter.serialize(new JsonParser().parse(content));
+      resetState(node);
+      selectedAsset=urn.toString();
     }
   }
 }

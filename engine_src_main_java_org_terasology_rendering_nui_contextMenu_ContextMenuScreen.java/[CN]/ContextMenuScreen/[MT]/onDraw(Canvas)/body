@@ -10,8 +10,9 @@
  else {
         currentPosition.addX(currentWidth);
       }
-      Rect2i region=Rect2i.createFromMinAndSize(currentPosition,canvas.calculatePreferredSize(level.getMenuWidget()));
-      currentWidth=level.getMenuWidget().getPreferredContentSize(canvas,null).getX();
+      UIWidget menuWidget=level.getMenuWidget();
+      Rect2i region=Rect2i.createFromMinAndSize(currentPosition,canvas.calculatePreferredSize(menuWidget));
+      currentWidth=canvas.calculatePreferredSize(menuWidget).getX() - 8;
       canvas.drawWidget(level.getMenuWidget(),region);
     }
   }
