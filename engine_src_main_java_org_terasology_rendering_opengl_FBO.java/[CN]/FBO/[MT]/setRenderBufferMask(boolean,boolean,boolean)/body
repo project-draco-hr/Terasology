@@ -1,26 +1,26 @@
 {
-  if (this.color == c && this.normal == n && this.lightBuffer == l) {
+  if (this.colorBufferMask == color && this.normalsBufferMask == normals && this.lightBufferMask == lightBuffer) {
     return;
   }
-  this.color=c;
-  this.normal=n;
-  this.lightBuffer=l;
+  this.colorBufferMask=color;
+  this.normalsBufferMask=normals;
+  this.lightBufferMask=lightBuffer;
   int attachmentId=0;
   IntBuffer bufferIds=BufferUtils.createIntBuffer(3);
   if (colorBufferTextureId != 0) {
-    if (color) {
+    if (this.colorBufferMask) {
       bufferIds.put(GL_COLOR_ATTACHMENT0_EXT + attachmentId);
     }
     attachmentId++;
   }
   if (normalsBufferTextureId != 0) {
-    if (normal) {
+    if (this.normalsBufferMask) {
       bufferIds.put(GL_COLOR_ATTACHMENT0_EXT + attachmentId);
     }
     attachmentId++;
   }
   if (lightBufferTextureId != 0) {
-    if (lightBuffer) {
+    if (this.lightBufferMask) {
       bufferIds.put(GL_COLOR_ATTACHMENT0_EXT + attachmentId);
     }
   }
