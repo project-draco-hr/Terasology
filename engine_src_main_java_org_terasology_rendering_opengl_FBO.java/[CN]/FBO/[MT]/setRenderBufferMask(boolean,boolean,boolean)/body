@@ -1,26 +1,26 @@
 {
-  if (this.colorBufferMask == color && this.normalsBufferMask == normals && this.lightBufferMask == lightBuffer) {
+  if (this.writeToColorBuffer == renderToColorBuffer && this.writeToNormalsBuffer == renderToNormalsBuffer && this.writeToLightBuffer == renderToLightBuffer) {
     return;
   }
-  this.colorBufferMask=color;
-  this.normalsBufferMask=normals;
-  this.lightBufferMask=lightBuffer;
+  this.writeToColorBuffer=renderToColorBuffer;
+  this.writeToNormalsBuffer=renderToNormalsBuffer;
+  this.writeToLightBuffer=renderToLightBuffer;
   int attachmentId=0;
   IntBuffer bufferIds=BufferUtils.createIntBuffer(3);
   if (colorBufferTextureId != 0) {
-    if (this.colorBufferMask) {
+    if (this.writeToColorBuffer) {
       bufferIds.put(GL_COLOR_ATTACHMENT0_EXT + attachmentId);
     }
     attachmentId++;
   }
   if (normalsBufferTextureId != 0) {
-    if (this.normalsBufferMask) {
+    if (this.writeToNormalsBuffer) {
       bufferIds.put(GL_COLOR_ATTACHMENT0_EXT + attachmentId);
     }
     attachmentId++;
   }
   if (lightBufferTextureId != 0) {
-    if (this.lightBufferMask) {
+    if (this.writeToLightBuffer) {
       bufferIds.put(GL_COLOR_ATTACHMENT0_EXT + attachmentId);
     }
   }
