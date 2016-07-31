@@ -12,6 +12,7 @@
     return;
   }
   FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
+  RenderingConfig renderingConfig=CoreRegistry.get(Config.class).getRendering();
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   glBindTexture(GL11.GL_TEXTURE_2D,terrain.get().getId());
@@ -37,14 +38,15 @@
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   buffersManager.bindFboColorTexture("sceneOpaque");
   program.setInt("texSceneOpaque",texId++,true);
-  if (CoreRegistry.get(Config.class).getRendering().isNormalMapping()) {
+  if (renderingConfig.isNormalMapping()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     glBindTexture(GL11.GL_TEXTURE_2D,terrainNormal.get().getId());
     program.setInt("textureAtlasNormal",texId++,true);
-    if (CoreRegistry.get(Config.class).getRendering().isParallaxMapping()) {
+    if (renderingConfig.isParallaxMapping()) {
       GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
       glBindTexture(GL11.GL_TEXTURE_2D,terrainHeight.get().getId());
       program.setInt("textureAtlasHeight",texId++,true);
+      program.setFloat4("parallaxProperties",parallaxBias,parallaxScale,0.0f,0.0f,true);
     }
   }
   Vector4f lightingSettingsFrag=new Vector4f();
@@ -59,7 +61,7 @@
   Vector4f alternativeWaterSettingsFrag=new Vector4f();
   alternativeWaterSettingsFrag.x=waterTint;
   program.setFloat4("alternativeWaterSettingsFrag",alternativeWaterSettingsFrag,true);
-  if (CoreRegistry.get(Config.class).getRendering().isAnimateWater()) {
+  if (renderingConfig.isAnimateWater()) {
     program.setFloat("waveIntensFalloff",waveIntensFalloff,true);
     program.setFloat("waveSizeFalloff",waveSizeFalloff,true);
     program.setFloat("waveSize",waveSize,true);
@@ -68,8 +70,5 @@
     program.setFloat("waveIntens",waveIntens,true);
     program.setFloat("waterOffsetY",waterOffsetY,true);
     program.setFloat("waveOverallScale",waveOverallScale,true);
-  }
-  if (CoreRegistry.get(Config.class).getRendering().isParallaxMapping() && CoreRegistry.get(Config.class).getRendering().isNormalMapping()) {
-    program.setFloat4("parallaxProperties",parallaxBias,parallaxScale,0.0f,0.0f,true);
   }
 }
