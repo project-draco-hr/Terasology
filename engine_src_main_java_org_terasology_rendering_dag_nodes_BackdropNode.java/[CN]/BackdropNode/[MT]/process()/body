@@ -1,6 +1,5 @@
 {
   PerformanceMonitor.startActivity("rendering/backdrop");
-  enableWireframeIf(renderingDebugConfig.isWireframe());
   sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
   initialClearing();
   sceneOpaque.bind();
@@ -8,6 +7,5 @@
   playerCamera.lookThroughNormalized();
   setRenderBufferMask(sceneOpaque,true,false,false);
   backdropRenderer.render(playerCamera);
-  disableWireframeIf(renderingDebugConfig.isWireframe());
   PerformanceMonitor.endActivity();
 }
