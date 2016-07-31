@@ -1,4 +1,5 @@
 {
+  initStateChanges();
   NodeFactory nodeFactory=new NodeFactory(context);
   shadowMapNode=nodeFactory.createInstance(ShadowMapNode.class);
   Node worldReflectionNode=nodeFactory.createInstance(WorldReflectionNode.class);
@@ -47,7 +48,6 @@
   renderGraph.addNode(bloomPassesNode,"bloomPassesNode");
   renderGraph.addNode(blurPassesNode,"blurPassesNode");
   renderGraph.addNode(finalPostProcessingNode,"finalPostProcessingNode");
-  initDefaultStateChanges();
   RenderTaskListGenerator renderTaskListGenerator=new RenderTaskListGenerator();
   List<Node> orderedNodes=renderGraph.getNodesInTopologicalOrder();
   renderPipelineTaskList=renderTaskListGenerator.generateFrom(orderedNodes);
