@@ -1,9 +1,9 @@
 {
   this.fboName=fboName;
-  if (fboName.equals(DEFAULT_FRAME_BUFFER_NAME)) {
-    fboId=DEFAULT_FRAME_BUFFER_ID;
+  if (!fboName.equals(DEFAULT_FRAME_BUFFER_NAME)) {
+    fboId=frameBuffersManager.getFBO(fboName).fboId;
   }
  else {
-    fboId=frameBuffersManager.getFBO(fboName).fboId;
+    fboId=DEFAULT_FRAME_BUFFER_ID;
   }
 }
