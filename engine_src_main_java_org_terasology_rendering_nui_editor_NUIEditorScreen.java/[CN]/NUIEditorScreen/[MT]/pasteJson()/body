@@ -13,9 +13,8 @@
   if (clipboardContents != null) {
     try {
       JsonElement json=new JsonParser().parse(clipboardContents);
-      JsonTree tree=JsonTreeConverter.serialize(json);
-      updateTreeView(tree,true);
-      updateWidget(tree);
+      JsonTree node=JsonTreeConverter.serialize(json);
+      resetState(node);
     }
  catch (    JsonSyntaxException|NullPointerException e) {
       logger.warn("Could not construct a valid tree from clipboard contents.",e);

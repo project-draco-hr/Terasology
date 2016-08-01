@@ -1,18 +1,14 @@
 {
   Font font=canvas.getCurrentStyle().getFont();
   String text=getString(value);
-  List<String> lines=TextLineBuilder.getLines(font,text,canvas.size().x);
   Texture texture=getTexture(value);
   if (texture == null) {
+    List<String> lines=TextLineBuilder.getLines(font,text,canvas.size().x);
     return font.getSize(lines);
   }
  else {
     int iconWidth=marginLeft + texture.getWidth() + marginRight;
-    if (wrap) {
-      return font.getSize(lines).addX(iconWidth);
-    }
- else {
-      return new Vector2i(font.getWidth(text),font.getLineHeight()).addX(iconWidth);
-    }
+    List<String> lines=TextLineBuilder.getLines(font,text,canvas.size().x - iconWidth);
+    return font.getSize(lines).addX(iconWidth);
   }
 }
