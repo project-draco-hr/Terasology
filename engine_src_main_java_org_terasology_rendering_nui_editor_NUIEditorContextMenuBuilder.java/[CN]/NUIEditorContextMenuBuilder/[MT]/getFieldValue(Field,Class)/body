@@ -1,11 +1,16 @@
 {
-  Object value;
-  if (Binding.class.isAssignableFrom(field.getType())) {
-    Binding binding=(Binding)field.get(clazz.newInstance());
-    value=binding.get();
+  if (Enum.class.isAssignableFrom(field.getType())) {
+    return field.getType().getEnumConstants()[0].toString();
   }
  else {
-    value=field.get(clazz.newInstance());
+    Object value;
+    if (Binding.class.isAssignableFrom(field.getType())) {
+      Binding binding=(Binding)field.get(clazz.newInstance());
+      value=binding.get();
+    }
+ else {
+      value=field.get(clazz.newInstance());
+    }
+    return value != null ? value : field.getType().newInstance();
   }
-  return value != null ? value : field.getType().newInstance();
 }
