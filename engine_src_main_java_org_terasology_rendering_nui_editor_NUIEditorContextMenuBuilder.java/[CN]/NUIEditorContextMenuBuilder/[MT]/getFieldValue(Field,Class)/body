@@ -11,6 +11,9 @@
  else {
       value=field.get(clazz.newInstance());
     }
+    if (value != null && value instanceof Boolean) {
+      value=!(Boolean)value;
+    }
     return value != null ? value : field.getType().newInstance();
   }
 }

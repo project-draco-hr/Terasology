@@ -7,20 +7,24 @@
     KeyboardDevice keyboard=event.getKeyboard();
     boolean ctrlDown=keyboard.isKeyDown(Keyboard.KeyId.RIGHT_CTRL) || keyboard.isKeyDown(Keyboard.KeyId.LEFT_CTRL);
     if (id == Keyboard.KeyId.UP || id == Keyboard.KeyId.DOWN) {
-      moveSelected(id);
-      return true;
+      return moveSelected(id);
     }
  else     if (id == Keyboard.KeyId.DELETE) {
-      removeSelected();
-      return true;
+      return removeSelected();
     }
  else     if (ctrlDown && id == Keyboard.KeyId.C) {
-      copy(model.get().getNode(state.getSelectedIndex()));
-      return true;
+      if (state.getSelectedIndex() != null) {
+        copy(model.get().getNode(state.getSelectedIndex()));
+        return true;
+      }
+      return false;
     }
  else     if (ctrlDown && id == Keyboard.KeyId.V) {
-      paste(model.get().getNode(state.getSelectedIndex()));
-      return true;
+      if (state.getSelectedIndex() != null) {
+        paste(model.get().getNode(state.getSelectedIndex()));
+        return true;
+      }
+      return false;
     }
  else {
       return false;
