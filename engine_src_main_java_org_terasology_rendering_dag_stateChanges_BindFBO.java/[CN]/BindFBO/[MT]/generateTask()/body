@@ -1,12 +1,15 @@
 {
   if (task == null) {
-    task=new BindFBOTask(fboId,fboName);
-    if (fboId != DEFAULT_FRAME_BUFFER_ID) {
+    if (!fboName.equals(DEFAULT_FRAME_BUFFER_NAME)) {
+      task=new BindFBOTask(frameBuffersManager.getFBO(fboName).fboId,fboName);
       frameBuffersManager.subscribe(this);
+    }
+ else {
+      task=new BindFBOTask(DEFAULT_FRAME_BUFFER_ID,DEFAULT_FRAME_BUFFER_NAME);
     }
   }
  else {
-    if (fboId != DEFAULT_FRAME_BUFFER_ID) {
+    if (!fboName.equals(DEFAULT_FRAME_BUFFER_NAME)) {
       update();
     }
   }
