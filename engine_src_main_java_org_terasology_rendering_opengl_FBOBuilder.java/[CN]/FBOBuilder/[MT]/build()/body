@@ -2,14 +2,13 @@
   if (generatedFBO != null) {
     return generatedFBO;
   }
-  FBO oldFBO=fboLookup.get(title);
-  if (oldFBO != null) {
-    oldFBO.dispose();
-    fboLookup.remove(title);
+  if (frameBuffersManager.isFBOAvailable(title)) {
+    frameBuffersManager.dispose(title);
+    frameBuffersManager.removeFromLookup(title);
     logger.warn("FBO " + title + " has been overwritten. Ideally it would have been deleted first.");
   }
   generatedFBO=FBO.create(title,dimensions,type,useDepthBuffer,useNormalBuffer,useLightBuffer,useStencilBuffer);
   handleIncompleteAndUnexpectedStatus(generatedFBO);
-  fboLookup.put(title,generatedFBO);
+  frameBuffersManager.putToLookup(title,generatedFBO);
   return generatedFBO;
 }
