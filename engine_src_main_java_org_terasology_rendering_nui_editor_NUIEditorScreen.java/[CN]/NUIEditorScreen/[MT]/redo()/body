@@ -1,9 +1,6 @@
 {
-  if (historyPosition < history.size() - 1) {
-    historyPosition++;
-    JsonTree node=(JsonTree)history.get(historyPosition).copy();
-    setTreeViewModel(node,false);
-    setPreviewWidget(node);
+  if (editor.redo()) {
+    setPreviewWidget(editor.getRoot());
     updateConfig();
   }
 }
