@@ -1,5 +1,12 @@
 {
   renderingConfig=config.getRendering();
   downSampler=worldRenderer.getMaterial("engine:prog.down");
+  requireFBO(new FBOConfig("scene16",16,16,FBO.Type.DEFAULT));
+  requireFBO(new FBOConfig("scene8",8,8,FBO.Type.DEFAULT).setStatic());
+  requireFBO(new FBOConfig("scene4",4,4,FBO.Type.DEFAULT).setStatic());
+  requireFBO(new FBOConfig("scene2",2,2,FBO.Type.DEFAULT).setStatic());
+  requireFBO(new FBOConfig("scene1",1,1,FBO.Type.DEFAULT).setStatic());
+  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
+  requireFBO(new FBOConfig("scenePrePost",1.0f,FBO.Type.HDR));
   obtainStaticFBOs();
 }

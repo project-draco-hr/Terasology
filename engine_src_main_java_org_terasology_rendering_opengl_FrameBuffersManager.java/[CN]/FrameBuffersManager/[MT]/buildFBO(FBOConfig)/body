@@ -1,0 +1,10 @@
+{
+  String title=fboConfig.getTitle();
+  if (isFBOAvailable(title)) {
+    getFBO(title).dispose();
+    fboLookup.remove(title);
+    logger.warn("FBO " + title + " has been overwritten. Ideally it would have been deleted first.");
+  }
+  FBO generatedFBO=fboConfig.generate(fullScale);
+  fboLookup.put(title,generatedFBO);
+}

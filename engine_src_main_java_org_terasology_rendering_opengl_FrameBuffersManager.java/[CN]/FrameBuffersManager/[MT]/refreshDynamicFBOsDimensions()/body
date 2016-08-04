@@ -1,6 +1,4 @@
 {
-  boolean refreshed=false;
-  Dimensions oldFullScale=fullScale;
   if (postProcessor.isNotTakingScreenshot()) {
     fullScale=new Dimensions(Display.getWidth(),Display.getHeight());
     if (renderingConfig.isOculusVrSupport()) {
@@ -11,13 +9,4 @@
     fullScale=new Dimensions(renderingConfig.getScreenshotSize().getWidth(Display.getWidth()),renderingConfig.getScreenshotSize().getHeight(Display.getHeight()));
   }
   fullScale.multiplySelfBy(renderingConfig.getFboScale() / 100f);
-  if (fullScale.isDifferentFrom(oldFullScale)) {
-    halfScale=fullScale.dividedBy(2);
-    quarterScale=fullScale.dividedBy(4);
-    one8thScale=fullScale.dividedBy(8);
-    one16thScale=fullScale.dividedBy(16);
-    one32thScale=fullScale.dividedBy(32);
-    refreshed=true;
-  }
-  return refreshed;
 }

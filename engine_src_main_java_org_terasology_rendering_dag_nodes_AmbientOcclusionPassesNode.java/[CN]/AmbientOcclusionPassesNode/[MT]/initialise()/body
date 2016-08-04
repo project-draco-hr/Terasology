@@ -2,4 +2,7 @@
   renderingConfig=config.getRendering();
   ssaoShader=worldRenderer.getMaterial("engine:prog.ssao");
   ssaoBlurredShader=worldRenderer.getMaterial("engine:prog.ssaoBlur");
+  requireFBO(new FBOConfig("ssao",1.0f,FBO.Type.DEFAULT));
+  requireFBO(new FBOConfig("ssaoBlurred",1.0f,FBO.Type.DEFAULT));
+  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
 }

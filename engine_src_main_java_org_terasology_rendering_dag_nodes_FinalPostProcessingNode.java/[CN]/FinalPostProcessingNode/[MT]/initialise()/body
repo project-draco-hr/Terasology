@@ -4,4 +4,7 @@
   ocDistortion=worldRenderer.getMaterial("engine:prog.ocDistortion");
   finalPost=worldRenderer.getMaterial("engine:prog.post");
   debug=worldRenderer.getMaterial("engine:prog.debug");
+  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
+  requireFBO(new FBOConfig("ocUndistorted",1.0f,FBO.Type.DEFAULT));
+  requireFBO(new FBOConfig("sceneFinal",1.0f,FBO.Type.DEFAULT));
 }

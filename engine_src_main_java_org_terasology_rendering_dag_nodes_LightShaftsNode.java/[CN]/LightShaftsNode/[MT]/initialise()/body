@@ -1,4 +1,6 @@
 {
   renderingConfig=config.getRendering();
   lightShaftsShader=worldRenderer.getMaterial("engine:prog.lightshaft");
+  requireFBO(new FBOConfig("lightShafts",0.5f,FBO.Type.DEFAULT));
+  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
 }

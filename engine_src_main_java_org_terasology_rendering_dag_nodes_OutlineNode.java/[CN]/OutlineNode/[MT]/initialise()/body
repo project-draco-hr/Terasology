@@ -1,4 +1,6 @@
 {
   renderingConfig=config.getRendering();
   outline=worldRenderer.getMaterial("engine:prog.sobel");
+  requireFBO(new FBOConfig("outline",1.0f,FBO.Type.DEFAULT));
+  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
 }

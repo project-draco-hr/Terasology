@@ -1,26 +1,8 @@
 {
-  sceneOpaque=new FBOBuilder("sceneOpaque",fullScale,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer().build();
-  new FBOBuilder("sceneOpaquePingPong",fullScale,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer().build();
-  new FBOBuilder("sceneSkyBand0",one16thScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneSkyBand1",one32thScale,FBO.Type.DEFAULT).build();
-  FBO sceneReflectiveRefractive=new FBOBuilder("sceneReflectiveRefractive",fullScale,FBO.Type.HDR).useNormalBuffer().build();
-  sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
-  new FBOBuilder("sceneReflected",halfScale,FBO.Type.DEFAULT).useDepthBuffer().build();
-  new FBOBuilder("outline",fullScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("ssao",fullScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("ssaoBlurred",fullScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("scenePrePost",fullScale,FBO.Type.HDR).build();
-  new FBOBuilder("lightShafts",halfScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneHighPass",fullScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneBloom0",halfScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneBloom1",quarterScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneBloom2",one8thScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneBlur0",halfScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneBlur1",halfScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("ocUndistorted",fullScale,FBO.Type.DEFAULT).build();
-  new FBOBuilder("sceneFinal",fullScale,FBO.Type.DEFAULT).build();
-  for (  FBOBuilder builder : dynamicFBOBuilders.values()) {
-    builder.build();
+  for (  FBOConfig builder : dynamicFBOConfigs.values()) {
+    builder.generate(fullScale);
   }
+  sceneOpaque=fboLookup.get("sceneOpaque");
+  sceneOpaque.attachDepthBufferTo(fboLookup.get("sceneReflectiveRefractive"));
   notifySubscribers();
 }
