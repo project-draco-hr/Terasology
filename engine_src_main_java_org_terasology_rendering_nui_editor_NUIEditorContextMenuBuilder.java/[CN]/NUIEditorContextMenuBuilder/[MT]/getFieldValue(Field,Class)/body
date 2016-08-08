@@ -5,15 +5,15 @@
  else {
     Object value;
     if (Binding.class.isAssignableFrom(field.getType())) {
-      Binding binding=(Binding)field.get(clazz.newInstance());
+      Binding binding=(Binding)field.get(newInstance(clazz));
       value=binding.get();
     }
  else {
-      value=field.get(clazz.newInstance());
+      value=field.get(newInstance(clazz));
     }
     if (value != null && value instanceof Boolean) {
       value=!(Boolean)value;
     }
-    return value != null ? value : field.getType().newInstance();
+    return value != null ? value : newInstance(field.getType());
   }
 }
