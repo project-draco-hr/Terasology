@@ -1,0 +1,14 @@
+{
+  if (selectedScreen != null) {
+    try {
+      JsonElement element=JsonTreeConverter.deserialize(getEditor().getRoot());
+      UISkinData data=new UISkinFormat().load(element);
+      UIWidget widget=assetManager.getAsset(selectedScreen,UIElement.class).get().getRootWidget();
+      widget.setSkin(Assets.generateAsset(data,UISkin.class));
+      selectedScreenBox.setContent(widget);
+    }
+ catch (    Throwable t) {
+      selectedScreenBox.setContent(new UILabel(ExceptionUtils.getStackTrace(t)));
+    }
+  }
+}
