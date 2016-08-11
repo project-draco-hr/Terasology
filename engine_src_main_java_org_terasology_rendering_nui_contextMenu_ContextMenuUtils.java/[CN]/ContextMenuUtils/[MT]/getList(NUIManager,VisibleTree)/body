@@ -1,0 +1,24 @@
+{
+  UIList<AbstractContextMenuItem> list=new UIList<>();
+  list.setList(tree.getOptions());
+  list.setCanBeFocus(false);
+  list.bindSelection(new Binding<AbstractContextMenuItem>(){
+    @Override public AbstractContextMenuItem get(){
+      return null;
+    }
+    @Override public void set(    AbstractContextMenuItem value){
+      value.select();
+      if (value.isFinalized()) {
+        manager.closeScreen(ContextMenuScreen.ASSET_URI);
+      }
+    }
+  }
+);
+  list.bindVisible(new ReadOnlyBinding<Boolean>(){
+    @Override public Boolean get(){
+      return tree.visible;
+    }
+  }
+);
+  return list;
+}
