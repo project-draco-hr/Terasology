@@ -1,0 +1,16 @@
+{
+  if (options.contains(option)) {
+    if (option instanceof ContextMenuOption) {
+      ((ContextMenuOption)option).select();
+      return ((ContextMenuOption)option).isFinalized();
+    }
+ else     if (option instanceof VisibleTree) {
+      ((VisibleTree)option).visible=!((VisibleTree)option).visible;
+      return false;
+    }
+ else {
+      return false;
+    }
+  }
+  return false;
+}
