@@ -1,0 +1,20 @@
+{
+  Optional<UISkin> asset=assetManager.getAsset(urn,UISkin.class);
+  if (asset.isPresent()) {
+    UISkin skin=asset.get();
+    AssetDataFile source=skin.getSource();
+    String content=null;
+    try (JsonReader reader=new JsonReader(new InputStreamReader(source.openStream(),Charsets.UTF_8))){
+      reader.setLenient(true);
+      content=new JsonParser().parse(reader).toString();
+    }
+ catch (    IOException e) {
+      logger.error(String.format("Could not load asset source file for %s",urn.toString()),e);
+    }
+    if (content != null) {
+      JsonTree node=JsonTreeConverter.serialize(new JsonParser().parse(content));
+      resetState(node);
+      selectedAsset=urn.toString();
+    }
+  }
+}

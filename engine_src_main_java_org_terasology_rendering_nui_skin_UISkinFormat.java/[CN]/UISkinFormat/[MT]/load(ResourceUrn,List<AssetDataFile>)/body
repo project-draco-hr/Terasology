@@ -1,7 +1,9 @@
 {
   try (JsonReader reader=new JsonReader(new InputStreamReader(inputs.get(0).openStream(),Charsets.UTF_8))){
     reader.setLenient(true);
-    return gson.fromJson(reader,UISkinData.class);
+    UISkinData data=gson.fromJson(reader,UISkinData.class);
+    data.setSource(inputs.get(0));
+    return data;
   }
  catch (  JsonParseException e) {
     throw new IOException("Failed to load skin '" + urn + "'",e);

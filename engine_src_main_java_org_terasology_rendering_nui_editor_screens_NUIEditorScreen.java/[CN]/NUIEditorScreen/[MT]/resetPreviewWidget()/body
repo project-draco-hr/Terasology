@@ -1,0 +1,10 @@
+{
+  try {
+    JsonElement element=JsonTreeConverter.deserialize(getEditor().getRoot());
+    UIWidget widget=new UIFormat().load(element).getRootWidget();
+    selectedScreenBox.setContent(widget);
+  }
+ catch (  Throwable t) {
+    selectedScreenBox.setContent(new UILabel(ExceptionUtils.getStackTrace(t)));
+  }
+}
