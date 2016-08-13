@@ -1,14 +1,25 @@
 {
   if (selectedScreen != null) {
     try {
-      JsonElement element=JsonTreeConverter.deserialize(getEditor().getRoot());
-      UISkinData data=new UISkinFormat().load(element);
-      UIWidget widget=assetManager.getAsset(selectedScreen,UIElement.class).get().getRootWidget();
-      widget.setSkin(Assets.generateAsset(data,UISkin.class));
-      selectedScreenBox.setContent(widget);
+      JsonElement skinElement=JsonTreeConverter.deserialize(getEditor().getRoot());
+      UISkinData data=new UISkinFormat().load(skinElement);
+      AssetDataFile source=assetManager.getAsset(selectedScreen,UIElement.class).get().getSource();
+      String content;
+      try (JsonReader reader=new JsonReader(new InputStreamReader(source.openStream(),Charsets.UTF_8))){
+        reader.setLenient(true);
+        content=new JsonParser().parse(reader).toString();
+      }
+       if (content != null) {
+        JsonTree node=JsonTreeConverter.serialize(new JsonParser().parse(content));
+        JsonElement screenElement=JsonTreeConverter.deserialize(node);
+        UIWidget widget=new UIFormat().load(screenElement,alternativeLocale).getRootWidget();
+        widget.setSkin(Assets.generateAsset(data,UISkin.class));
+        selectedScreenBox.setContent(widget);
+      }
     }
  catch (    Throwable t) {
-      selectedScreenBox.setContent(new UILabel(ExceptionUtils.getStackTrace(t)));
+      String truncatedStackTrace=Joiner.on(System.lineSeparator()).join(Arrays.copyOfRange(ExceptionUtils.getStackFrames(t),0,10));
+      selectedScreenBox.setContent(new UILabel(truncatedStackTrace));
     }
   }
 }

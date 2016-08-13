@@ -1,10 +1,11 @@
 {
   try {
     JsonElement element=JsonTreeConverter.deserialize(getEditor().getRoot());
-    UIWidget widget=new UIFormat().load(element).getRootWidget();
+    UIWidget widget=new UIFormat().load(element,alternativeLocale).getRootWidget();
     selectedScreenBox.setContent(widget);
   }
  catch (  Throwable t) {
-    selectedScreenBox.setContent(new UILabel(ExceptionUtils.getStackTrace(t)));
+    String truncatedStackTrace=Joiner.on(System.lineSeparator()).join(Arrays.copyOfRange(ExceptionUtils.getStackFrames(t),0,10));
+    selectedScreenBox.setContent(new UILabel(truncatedStackTrace));
   }
 }
