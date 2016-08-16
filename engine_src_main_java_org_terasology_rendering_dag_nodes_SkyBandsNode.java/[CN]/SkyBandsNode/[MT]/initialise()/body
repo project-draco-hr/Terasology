@@ -1,8 +1,7 @@
 {
   super.initialise();
-  requireFBO(new FBOConfig(SCENE_OPAQUE_FBO,1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
-  requireFBO(new FBOConfig("sceneSkyBand0",0.0625f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneSkyBand1",0.03125f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(SKY_BAND_0_URN,0.0625f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(SKY_BAND_1_URN,0.03125f,FBO.Type.DEFAULT));
   renderingConfig=config.getRendering();
   blurShader=worldRenderer.getMaterial("engine:prog.blur");
   playerCamera=worldRenderer.getActiveCamera();

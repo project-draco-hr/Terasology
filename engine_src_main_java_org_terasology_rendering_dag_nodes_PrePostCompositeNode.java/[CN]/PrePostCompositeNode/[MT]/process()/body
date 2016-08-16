@@ -1,16 +1,16 @@
 {
   PerformanceMonitor.startActivity("rendering/prePostComposite");
   prePostComposite.enable();
-  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
-  sceneOpaquePingPong=frameBuffersManager.getFBO("sceneOpaquePingPong");
-  sceneReflectiveRefractive=frameBuffersManager.getFBO("sceneReflectiveRefractive");
+  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  sceneOpaquePingPong=dynamicFBM.getFBO(DefaultDynamicFBOs.WriteOnlyGBuffer.getResourceUrn());
+  sceneReflectiveRefractive=dynamicFBM.getFBO(REFLECTIVE_REFRACTIVE_URN);
   sceneOpaquePingPong.bind();
   setViewportToSizeOf(sceneOpaquePingPong);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();
   setViewportToSizeOf(sceneOpaque);
-  frameBuffersManager.swapSceneOpaqueFBOs();
+  dynamicFBM.swap(DefaultDynamicFBOs.WriteOnlyGBuffer.getResourceUrn(),DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
   sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
   PerformanceMonitor.endActivity();
 }

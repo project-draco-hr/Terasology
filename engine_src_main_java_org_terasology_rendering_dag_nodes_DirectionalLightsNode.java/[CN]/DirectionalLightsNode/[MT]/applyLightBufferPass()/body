@@ -12,8 +12,8 @@
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   sceneOpaque.bindLightBufferTexture();
   lightBufferPass.setInt("texSceneOpaqueLightBuffer",texId,true);
-  sceneOpaquePingPong=frameBuffersManager.getFBO("sceneOpaquePingPong");
-  sceneReflectiveRefractive=frameBuffersManager.getFBO("sceneReflectiveRefractive");
+  sceneOpaquePingPong=dynamicFBM.getFBO(DefaultDynamicFBOs.WriteOnlyGBuffer.getResourceUrn());
+  sceneReflectiveRefractive=dynamicFBM.getFBO(REFRACTIVE_REFLECTIVE_URN);
   sceneOpaquePingPong.bind();
   setRenderBufferMask(sceneOpaquePingPong,true,true,true);
   setViewportToSizeOf(sceneOpaquePingPong);
@@ -21,6 +21,6 @@
   renderFullscreenQuad();
   bindDisplay();
   setViewportToSizeOf(sceneOpaque);
-  frameBuffersManager.swapSceneOpaqueFBOs();
+  dynamicFBM.swap(DefaultDynamicFBOs.WriteOnlyGBuffer.getResourceUrn(),DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
   sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
 }

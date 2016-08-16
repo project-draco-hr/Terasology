@@ -1,7 +1,10 @@
 {
   if (task == null) {
-    task=new SetViewportSizeOfTask(fboName);
-    frameBuffersManager.subscribe(this);
+    if (isTheDefaultInstance()) {
+      fbm=dynamicFBM;
+    }
+    task=new SetViewportSizeOfTask(resourceUrn);
+    fbm.subscribe(this);
     update();
   }
   return task;

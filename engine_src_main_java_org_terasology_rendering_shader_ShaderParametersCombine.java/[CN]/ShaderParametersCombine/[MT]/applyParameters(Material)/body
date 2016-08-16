@@ -1,8 +1,8 @@
 {
   super.applyParameters(program);
   int texId=0;
-  FrameBuffersManager frameBuffersManager=CoreRegistry.get(FrameBuffersManager.class);
-  FBO sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  DynamicFBM dynamicFBM=CoreRegistry.get(DynamicFBM.class);
+  FBO sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
   if (sceneOpaque != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneOpaque.bindTexture();
@@ -17,7 +17,7 @@
     sceneOpaque.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
-  FBO sceneReflectiveRefractive=frameBuffersManager.getFBO("sceneReflectiveRefractive");
+  FBO sceneReflectiveRefractive=dynamicFBM.getFBO(ChunksRefractiveReflectiveNode.REFRACTIVE_REFLECTIVE_URN);
   if (sceneReflectiveRefractive != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneReflectiveRefractive.bindTexture();
@@ -39,12 +39,12 @@
   }
   if (renderingConfig.isSsao()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    frameBuffersManager.bindFboColorTexture("ssaoBlurred");
+    dynamicFBM.bindFboColorTexture(AmbientOcclusionPassesNode.SSAO_BLURRED_URN);
     program.setInt("texSsao",texId++,true);
   }
   if (renderingConfig.isOutline()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    frameBuffersManager.bindFboColorTexture("outline");
+    dynamicFBM.bindFboColorTexture(OutlineNode.OUTLINE_URN);
     program.setInt("texEdges",texId++,true);
     program.setFloat("outlineDepthThreshold",outlineDepthThreshold,true);
     program.setFloat("outlineThickness",outlineThickness,true);
@@ -54,7 +54,7 @@
   }
   if (renderingConfig.isInscattering()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    frameBuffersManager.bindFboColorTexture("sceneSkyBand1");
+    dynamicFBM.bindFboColorTexture(SkyBandsNode.SKY_BAND_1_URN);
     program.setInt("texSceneSkyBand",texId++,true);
     Vector4f skyInscatteringSettingsFrag=new Vector4f();
     skyInscatteringSettingsFrag.y=skyInscatteringStrength;

@@ -1,10 +1,16 @@
 {
-  frameBuffersManager=new FrameBuffersManager();
-  context.put(FrameBuffersManager.class,frameBuffersManager);
-  postProcessor=new PostProcessor(frameBuffersManager);
+  dynamicFBM=new DynamicFBM();
+  staticFBM=new StaticFBM();
+  shadowMapResolutionDependentFBM=new ShadowMapResolutionDependentFBM();
+  context.put(DynamicFBM.class,dynamicFBM);
+  context.put(StaticFBM.class,staticFBM);
+  context.put(ShadowMapResolutionDependentFBM.class,shadowMapResolutionDependentFBM);
+  postProcessor=new PostProcessor(dynamicFBM);
   context.put(PostProcessor.class,postProcessor);
-  frameBuffersManager.setPostProcessor(postProcessor);
-  frameBuffersManager.initialize();
+  dynamicFBM.setPostProcessor(postProcessor);
+  dynamicFBM.initialise();
+  staticFBM.initialise();
+  shadowMapResolutionDependentFBM.initialise();
   shaderManager.initShaders();
   initMaterials();
   context.put(WorldRenderer.class,this);

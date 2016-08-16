@@ -1,6 +1,6 @@
 {
   super.applyParameters(program);
-  FBO scene=CoreRegistry.get(FrameBuffersManager.class).getFBO("sceneOpaque");
+  FBO scene=CoreRegistry.get(DynamicFBM.class).getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
   if (scene != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0);
     scene.bindDepthTexture();

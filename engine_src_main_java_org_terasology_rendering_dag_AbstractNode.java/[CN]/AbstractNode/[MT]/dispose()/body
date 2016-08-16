@@ -1,5 +1,10 @@
 {
-  for (  String fboName : fboNames) {
-    frameBuffersManager.removeUsage(fboName);
+  for (  Map.Entry<ResourceUrn,Set<BaseFBM>> entry : fboUsages.entrySet()) {
+    ResourceUrn urn=entry.getKey();
+    Set<BaseFBM> fbms=entry.getValue();
+    for (    BaseFBM fbm : fbms) {
+      fbm.release(urn);
+    }
   }
+  fboUsages.clear();
 }

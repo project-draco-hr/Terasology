@@ -1,8 +1,8 @@
 {
   if (renderingConfig.isLightShafts()) {
     PerformanceMonitor.startActivity("rendering/lightShafts");
-    lightShaftsFBO=frameBuffersManager.getFBO("lightShafts");
-    sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+    lightShaftsFBO=dynamicFBM.getFBO(LIGHT_SHAFTS_URN);
+    sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
     lightShaftsShader.enable();
     lightShaftsFBO.bind();
     setViewportToSizeOf(lightShaftsFBO);

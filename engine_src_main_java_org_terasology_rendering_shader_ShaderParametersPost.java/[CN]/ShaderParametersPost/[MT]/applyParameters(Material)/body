@@ -1,14 +1,14 @@
 {
   super.applyParameters(program);
   CameraTargetSystem cameraTargetSystem=CoreRegistry.get(CameraTargetSystem.class);
-  FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
+  DynamicFBM dynamicFBM=CoreRegistry.get(DynamicFBM.class);
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  buffersManager.bindFboColorTexture("sceneToneMapped");
+  dynamicFBM.bindFboColorTexture(ToneMappingNode.TONE_MAPPED_URN);
   program.setInt("texScene",texId++,true);
   if (CoreRegistry.get(Config.class).getRendering().getBlurIntensity() != 0) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    buffersManager.getFBO("sceneBlur1").bindTexture();
+    dynamicFBM.getFBO(BlurPassesNode.BLUR_1_URN).bindTexture();
     program.setInt("texBlur",texId++,true);
     if (cameraTargetSystem != null) {
       program.setFloat("focalDistance",cameraTargetSystem.getFocalDistance(),true);
@@ -20,7 +20,7 @@
     glBindTexture(GL12.GL_TEXTURE_3D,colorGradingLut.getId());
     program.setInt("texColorGradingLut",texId++,true);
   }
-  FBO sceneCombined=buffersManager.getFBO("sceneOpaque");
+  FBO sceneCombined=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
   if (sceneCombined != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneCombined.bindDepthTexture();

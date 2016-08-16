@@ -1,7 +1,7 @@
 {
   PerformanceMonitor.startActivity("rendering/updateExposure/downSampleScene");
-  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
-  scenePrePost=frameBuffersManager.getFBO("scenePrePost");
+  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  scenePrePost=dynamicFBM.getFBO(SCENE_PRE_POST_URN);
   downSampler.enable();
   for (int i=4; i >= 0; i--) {
     downSampledFBO=downSampledScene[i];

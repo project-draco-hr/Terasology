@@ -1,0 +1,14 @@
+{
+  ResourceUrn urn=fboConfig.getResourceUrn();
+  if (!frameBuffersManager.isFBOAvailable(urn)) {
+    frameBuffersManager.allocateFBO(fboConfig);
+  }
+  if (!fboUsages.containsKey(urn)) {
+    Set<BaseFBM> fbms=Sets.newHashSet();
+    fbms.add(frameBuffersManager);
+    fboUsages.put(urn,fbms);
+  }
+ else {
+    fboUsages.get(urn).add(frameBuffersManager);
+  }
+}

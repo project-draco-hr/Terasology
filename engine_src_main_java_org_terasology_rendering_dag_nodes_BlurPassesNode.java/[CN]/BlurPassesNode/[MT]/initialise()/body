@@ -1,8 +1,7 @@
 {
   renderingConfig=config.getRendering();
   blur=worldRenderer.getMaterial("engine:prog.blur");
-  requireFBO(new FBOConfig("sceneBlur0",0.5f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneBlur1",0.5f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
-  requireFBO(new FBOConfig("sceneToneMapped",1.0f,FBO.Type.HDR));
+  requireDynamicFBO(new FBOConfig(BLUR_0_URN,0.5f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(BLUR_1_URN,0.5f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(TONE_MAPPED_URN,1.0f,FBO.Type.HDR));
 }

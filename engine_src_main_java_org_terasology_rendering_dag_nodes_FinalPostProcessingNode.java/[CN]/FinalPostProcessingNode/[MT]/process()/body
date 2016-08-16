@@ -1,8 +1,8 @@
 {
   PerformanceMonitor.startActivity("rendering/finalPostProcessing");
-  ocUndistorted=frameBuffersManager.getFBO("ocUndistorted");
-  sceneFinal=frameBuffersManager.getFBO("sceneFinal");
-  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  ocUndistorted=dynamicFBM.getFBO(OC_UNDISTORTED_URN);
+  sceneFinal=dynamicFBM.getFBO(DefaultDynamicFBOs.Final.getResourceUrn());
+  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
   fullScale=sceneOpaque.dimensions();
   if (!renderingDebugConfig.isEnabled()) {
     finalPost.enable();

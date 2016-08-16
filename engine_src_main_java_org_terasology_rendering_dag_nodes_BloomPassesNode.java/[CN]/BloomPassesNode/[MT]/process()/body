@@ -1,11 +1,11 @@
 {
   if (renderingConfig.isBloom()) {
     PerformanceMonitor.startActivity("rendering/bloomPasses");
-    sceneBloom0=frameBuffersManager.getFBO("sceneBloom0");
-    sceneBloom1=frameBuffersManager.getFBO("sceneBloom1");
-    sceneBloom2=frameBuffersManager.getFBO("sceneBloom2");
-    sceneHighPass=frameBuffersManager.getFBO("sceneHighPass");
-    sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+    sceneBloom0=dynamicFBM.getFBO(BLOOM_0_URN);
+    sceneBloom1=dynamicFBM.getFBO(BLOOM_1_URN);
+    sceneBloom2=dynamicFBM.getFBO(BLOOM_2_URN);
+    sceneHighPass=dynamicFBM.getFBO(HIGH_PASS_URN);
+    sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
     generateHighPass();
     generateBloom(sceneBloom0);
     generateBloom(sceneBloom1);

@@ -2,9 +2,8 @@
   renderingConfig=config.getRendering();
   blur=worldRenderer.getMaterial("engine:prog.blur");
   highPass=worldRenderer.getMaterial("engine:prog.highp");
-  requireFBO(new FBOConfig("sceneHighPass",1.0f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneBloom0",0.5f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneBloom1",0.25f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneBloom2",0.125f,FBO.Type.DEFAULT));
-  requireFBO(new FBOConfig("sceneOpaque",1.0f,FBO.Type.HDR).useDepthBuffer().useNormalBuffer().useLightBuffer().useStencilBuffer());
+  requireDynamicFBO(new FBOConfig(HIGH_PASS_URN,1.0f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(BLOOM_0_URN,0.5f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(BLOOM_1_URN,0.25f,FBO.Type.DEFAULT));
+  requireDynamicFBO(new FBOConfig(BLOOM_2_URN,0.125f,FBO.Type.DEFAULT));
 }

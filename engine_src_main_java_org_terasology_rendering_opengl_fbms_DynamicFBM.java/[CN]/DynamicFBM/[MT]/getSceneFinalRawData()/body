@@ -1,0 +1,12 @@
+{
+  FBO fboSceneFinal=getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  if (fboSceneFinal == null) {
+    logger.error("FBO sceneFinal is unavailable: cannot return data from it.");
+    return null;
+  }
+  ByteBuffer buffer=BufferUtils.createByteBuffer(fboSceneFinal.width() * fboSceneFinal.height() * 4);
+  fboSceneFinal.bindTexture();
+  GL11.glGetTexImage(GL11.GL_TEXTURE_2D,0,GL11.GL_RGBA,GL11.GL_UNSIGNED_BYTE,buffer);
+  FBO.unbindTexture();
+  return buffer;
+}
