@@ -11,14 +11,14 @@
   program.setInt("texScene",texId++,true);
   if (CoreRegistry.get(Config.class).getRendering().isBloom()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    dynamicFBOsManager.bindFboColorTexture(BloomPassesNode.BLOOM_2_URN);
+    dynamicFBOsManager.bindFboColorTexture(BloomPassesNode.BLOOM_2);
     program.setInt("texBloom",texId++,true);
     program.setFloat("bloomFactor",bloomFactor,true);
   }
   program.setFloat2("aberrationOffset",aberrationOffsetX,aberrationOffsetY,true);
   if (CoreRegistry.get(Config.class).getRendering().isLightShafts()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    dynamicFBOsManager.bindFboColorTexture(LightShaftsNode.LIGHT_SHAFTS_URN);
+    dynamicFBOsManager.bindFboColorTexture(LightShaftsNode.LIGHT_SHAFTS);
     program.setInt("texLightShafts",texId++,true);
   }
   Optional<? extends Texture> vignetteTexture=Assets.getTexture("engine:vignette");
