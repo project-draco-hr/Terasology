@@ -2,14 +2,13 @@
   if (renderingConfig.isLightShafts()) {
     PerformanceMonitor.startActivity("rendering/lightShafts");
     lightShaftsFBO=dynamicFBOsManager.get(LIGHT_SHAFTS_URN);
-    sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
     lightShaftsShader.enable();
     lightShaftsFBO.bind();
     setViewportToSizeOf(lightShaftsFBO);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderFullscreenQuad();
     bindDisplay();
-    setViewportToSizeOf(sceneOpaque);
+    setViewportToSizeOf(READ_ONLY_GBUFFER);
     PerformanceMonitor.endActivity();
   }
 }

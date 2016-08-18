@@ -3,7 +3,7 @@
   blurShader.setFloat("radius",8.0f,true);
   blurShader.setFloat2("texelSize",1.0f / skyBand.width(),1.0f / skyBand.height(),true);
   if (skyBand == sceneSkyBand0) {
-    sceneOpaque.bindTexture();
+    READ_ONLY_GBUFFER.bindTexture();
   }
  else {
     sceneSkyBand0.bindTexture();
@@ -14,5 +14,5 @@
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();
-  setViewportToSizeOf(sceneOpaque);
+  setViewportToSizeOf(READ_ONLY_GBUFFER);
 }

@@ -1,13 +1,12 @@
 {
   PerformanceMonitor.startActivity("rendering/initialPostProcessing");
   scenePrePost=dynamicFBOsManager.get(SCENE_PRE_POST_URN);
-  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
   initialPost.enable();
   scenePrePost.bind();
   setViewportToSizeOf(scenePrePost);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();
-  setViewportToSizeOf(sceneOpaque);
+  setViewportToSizeOf(READ_ONLY_GBUFFER);
   PerformanceMonitor.endActivity();
 }

@@ -1,16 +1,16 @@
 {
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  sceneOpaque.bindTexture();
+  READ_ONLY_GBUFFER.bindTexture();
   lightBufferPass.setInt("texSceneOpaque",texId++,true);
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  sceneOpaque.bindDepthTexture();
+  READ_ONLY_GBUFFER.bindDepthTexture();
   lightBufferPass.setInt("texSceneOpaqueDepth",texId++,true);
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  sceneOpaque.bindNormalsTexture();
+  READ_ONLY_GBUFFER.bindNormalsTexture();
   lightBufferPass.setInt("texSceneOpaqueNormals",texId++,true);
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  sceneOpaque.bindLightBufferTexture();
+  READ_ONLY_GBUFFER.bindLightBufferTexture();
   lightBufferPass.setInt("texSceneOpaqueLightBuffer",texId,true);
   sceneOpaquePingPong=dynamicFBOsManager.get(DefaultDynamicFBOs.WRITE_ONLY_GBUFFER.getName());
   sceneReflectiveRefractive=dynamicFBOsManager.get(REFRACTIVE_REFLECTIVE_URN);
@@ -20,7 +20,7 @@
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();
-  setViewportToSizeOf(sceneOpaque);
-  dynamicFBOsManager.swap(DefaultDynamicFBOs.WRITE_ONLY_GBUFFER.getName(),DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
-  sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
+  setViewportToSizeOf(READ_ONLY_GBUFFER);
+  dynamicFBOsManager.swap(DefaultDynamicFBOs.WRITE_ONLY_GBUFFER.getName(),READ_ONLY_GBUFFER.getName());
+  READ_ONLY_GBUFFER.attachDepthBufferTo(sceneReflectiveRefractive);
 }

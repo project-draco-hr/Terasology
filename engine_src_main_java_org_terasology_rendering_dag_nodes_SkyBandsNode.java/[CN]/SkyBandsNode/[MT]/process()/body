@@ -1,14 +1,13 @@
 {
   PerformanceMonitor.startActivity("rendering/skyBands");
-  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
-  setRenderBufferMask(sceneOpaque,true,true,true);
+  READ_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
   if (renderingConfig.isInscattering()) {
     sceneSkyBand0=dynamicFBOsManager.get(SKY_BAND_0_URN);
     sceneSkyBand1=dynamicFBOsManager.get(SKY_BAND_1_URN);
     generateSkyBand(sceneSkyBand0);
     generateSkyBand(sceneSkyBand1);
   }
-  sceneOpaque.bind();
+  READ_ONLY_GBUFFER.bind();
   playerCamera.lookThrough();
   PerformanceMonitor.endActivity();
 }

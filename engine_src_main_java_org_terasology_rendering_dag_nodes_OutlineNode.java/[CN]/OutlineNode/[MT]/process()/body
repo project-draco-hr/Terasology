@@ -2,14 +2,13 @@
   if (renderingConfig.isOutline()) {
     PerformanceMonitor.startActivity("rendering/outline");
     outlineFBO=dynamicFBOsManager.get(OUTLINE_URN);
-    sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
     outline.enable();
     outlineFBO.bind();
     setViewportToSizeOf(outlineFBO);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderFullscreenQuad();
     bindDisplay();
-    setViewportToSizeOf(sceneOpaque);
+    setViewportToSizeOf(READ_ONLY_GBUFFER);
     PerformanceMonitor.endActivity();
   }
 }
