@@ -3,11 +3,12 @@
   Config config=CoreRegistry.get(Config.class);
   int texId=0;
   DynamicFBM dynamicFBM=CoreRegistry.get(DynamicFBM.class);
+  ShadowMapResolutionDependentFBM shadowMapResolutionDependentFBM=CoreRegistry.get(ShadowMapResolutionDependentFBM.class);
   final ResourceUrn sceneOpaqueUrn=DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn();
 switch (config.getRendering().getDebug().getStage()) {
 case SHADOW_MAP:
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  dynamicFBM.bindFboDepthTexture(ShadowMapNode.SHADOW_MAP_URN);
+  shadowMapResolutionDependentFBM.bindFboDepthTexture(ShadowMapNode.SHADOW_MAP_URN);
 program.setInt("texDebug",texId++,true);
 break;
 case OPAQUE_COLOR:
