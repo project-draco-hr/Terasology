@@ -1,8 +1,8 @@
 {
   super.applyParameters(program);
-  DynamicFBOsManager dynamicFBOsManager=CoreRegistry.get(DynamicFBOsManager.class);
+  DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
   ShadowMapResolutionDependentFBOs shadowMapResolutionDependentFBOs=CoreRegistry.get(ShadowMapResolutionDependentFBOs.class);
-  FBO sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
+  FBO sceneOpaque=displayResolutionDependentFBOs.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
   int texId=0;
   if (sceneOpaque != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);

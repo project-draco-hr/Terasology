@@ -1,11 +1,11 @@
 {
   screenGrabber=new ScreenGrabber(context);
   context.put(ScreenGrabber.class,screenGrabber);
-  dynamicFBOsManager=new DynamicFBOsManager(context);
-  staticFBOsManager=new StaticFBOsManager();
+  displayResolutionDependentFBOs=new DisplayResolutionDependentFBOs(context);
+  immutableFBOs=new ImmutableFBOs();
   shadowMapResolutionDependentFBOs=new ShadowMapResolutionDependentFBOs();
-  context.put(DynamicFBOsManager.class,dynamicFBOsManager);
-  context.put(StaticFBOsManager.class,staticFBOsManager);
+  context.put(DisplayResolutionDependentFBOs.class,displayResolutionDependentFBOs);
+  context.put(ImmutableFBOs.class,immutableFBOs);
   context.put(ShadowMapResolutionDependentFBOs.class,shadowMapResolutionDependentFBOs);
   shaderManager.initShaders();
   initMaterials();

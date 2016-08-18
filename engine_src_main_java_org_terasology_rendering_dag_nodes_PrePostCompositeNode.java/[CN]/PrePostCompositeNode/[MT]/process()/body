@@ -1,14 +1,14 @@
 {
   PerformanceMonitor.startActivity("rendering/prePostComposite");
   prePostComposite.enable();
-  sceneReflectiveRefractive=dynamicFBOsManager.get(REFLECTIVE_REFRACTIVE);
+  sceneReflectiveRefractive=displayResolutionDependentFBOs.get(REFLECTIVE_REFRACTIVE);
   WRITE_ONLY_GBUFFER.bind();
   setViewportToSizeOf(WRITE_ONLY_GBUFFER);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();
   setViewportToSizeOf(READ_ONLY_GBUFFER);
-  dynamicFBOsManager.swapReadWriteBuffers();
+  displayResolutionDependentFBOs.swapReadWriteBuffers();
   READ_ONLY_GBUFFER.attachDepthBufferTo(sceneReflectiveRefractive);
   PerformanceMonitor.endActivity();
 }

@@ -12,7 +12,7 @@
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
   READ_ONLY_GBUFFER.bindLightBufferTexture();
   lightBufferPass.setInt("texSceneOpaqueLightBuffer",texId,true);
-  sceneReflectiveRefractive=dynamicFBOsManager.get(REFRACTIVE_REFLECTIVE);
+  sceneReflectiveRefractive=displayResolutionDependentFBOs.get(REFRACTIVE_REFLECTIVE);
   WRITE_ONLY_GBUFFER.bind();
   WRITE_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
   setViewportToSizeOf(WRITE_ONLY_GBUFFER);
@@ -20,6 +20,6 @@
   renderFullscreenQuad();
   bindDisplay();
   setViewportToSizeOf(READ_ONLY_GBUFFER);
-  dynamicFBOsManager.swapReadWriteBuffers();
+  displayResolutionDependentFBOs.swapReadWriteBuffers();
   READ_ONLY_GBUFFER.attachDepthBufferTo(sceneReflectiveRefractive);
 }

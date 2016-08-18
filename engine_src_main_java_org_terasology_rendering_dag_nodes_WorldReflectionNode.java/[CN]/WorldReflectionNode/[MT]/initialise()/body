@@ -1,8 +1,8 @@
 {
-  requiresFBO(new FBOConfig(REFLECTED,HALF_SCALE,FBO.Type.DEFAULT).useDepthBuffer(),dynamicFBOsManager);
+  requiresFBO(new FBOConfig(REFLECTED,HALF_SCALE,FBO.Type.DEFAULT).useDepthBuffer(),displayResolutionDependentFBOs);
   this.renderingConfig=config.getRendering();
   this.chunkShader=worldRenderer.getMaterial("engine:prog.chunk");
   this.playerCamera=worldRenderer.getActiveCamera();
-  addDesiredStateChange(new BindFBO(REFLECTED,dynamicFBOsManager));
-  addDesiredStateChange(new SetViewportSizeOf(REFLECTED,dynamicFBOsManager));
+  addDesiredStateChange(new BindFBO(REFLECTED,displayResolutionDependentFBOs));
+  addDesiredStateChange(new SetViewportSizeOf(REFLECTED,displayResolutionDependentFBOs));
 }

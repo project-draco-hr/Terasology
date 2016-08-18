@@ -1,8 +1,8 @@
 {
   if (renderingConfig.isSsao()) {
     PerformanceMonitor.startActivity("rendering/ambientOcclusionPasses");
-    ssaoBlurredFBO=dynamicFBOsManager.get(SSAO_BLURRED);
-    ssaoFBO=dynamicFBOsManager.get(SSAO);
+    ssaoBlurredFBO=displayResolutionDependentFBOs.get(SSAO_BLURRED);
+    ssaoFBO=displayResolutionDependentFBOs.get(SSAO);
     generateSSAO();
     generateBlurredSSAO();
     PerformanceMonitor.endActivity();
