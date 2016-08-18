@@ -1,8 +1,8 @@
 {
   PerformanceMonitor.startActivity("rendering/prePostComposite");
   prePostComposite.enable();
-  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
-  sceneOpaquePingPong=dynamicFBOsManager.get(DefaultDynamicFBOs.WriteOnlyGBuffer.getName());
+  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
+  sceneOpaquePingPong=dynamicFBOsManager.get(DefaultDynamicFBOs.WRITE_ONLY_GBUFFER.getName());
   sceneReflectiveRefractive=dynamicFBOsManager.get(REFLECTIVE_REFRACTIVE_URN);
   sceneOpaquePingPong.bind();
   setViewportToSizeOf(sceneOpaquePingPong);
@@ -10,7 +10,7 @@
   renderFullscreenQuad();
   bindDisplay();
   setViewportToSizeOf(sceneOpaque);
-  dynamicFBOsManager.swap(DefaultDynamicFBOs.WriteOnlyGBuffer.getName(),DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
+  dynamicFBOsManager.swap(DefaultDynamicFBOs.WRITE_ONLY_GBUFFER.getName(),DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
   sceneOpaque.attachDepthBufferTo(sceneReflectiveRefractive);
   PerformanceMonitor.endActivity();
 }
