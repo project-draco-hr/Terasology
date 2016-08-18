@@ -1,13 +1,8 @@
 {
-  FBO fbo;
   for (  ResourceUrn urn : fboConfigs.keySet()) {
-    fbo=fboLookup.get(urn);
-    if (fbo != null) {
-      fbo.dispose();
-      fboLookup.remove(urn);
-    }
- else {
-      logger.error("Failed to delete FBO '" + urn + "': it doesn't exist!");
-    }
+    FBO fbo=fboLookup.get(urn);
+    fbo.dispose();
+    fboLookup.remove(urn);
   }
+  fboLookup.clear();
 }

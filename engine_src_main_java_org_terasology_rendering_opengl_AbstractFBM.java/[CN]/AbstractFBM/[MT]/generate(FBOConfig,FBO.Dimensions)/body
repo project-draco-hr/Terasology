@@ -1,12 +1,12 @@
 {
   FBO fbo=FBO.create(fboConfig,dimensions);
   if (fbo.getStatus() == FBO.Status.INCOMPLETE) {
-    logger.error("FBO " + fboConfig.getResourceUrn() + " is incomplete. Look earlier in the log for details.");
+    logger.error("FBO " + fboConfig.getName() + " is incomplete. Look earlier in the log for details.");
   }
  else   if (fbo.getStatus() == FBO.Status.UNEXPECTED) {
-    logger.error("FBO " + fboConfig.getResourceUrn() + " has generated an unexpected status code. Look earlier in the log for details.");
+    logger.error("FBO " + fboConfig.getName() + " has generated an unexpected status code. Look earlier in the log for details.");
   }
-  fboLookup.put(fboConfig.getResourceUrn(),fbo);
-  fboConfigs.put(fboConfig.getResourceUrn(),fboConfig);
+  fboLookup.put(fboConfig.getName(),fbo);
+  fboConfigs.put(fboConfig.getName(),fboConfig);
   return fbo;
 }

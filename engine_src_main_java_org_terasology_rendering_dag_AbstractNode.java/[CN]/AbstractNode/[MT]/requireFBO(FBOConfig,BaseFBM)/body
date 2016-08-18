@@ -1,14 +1,11 @@
 {
-  ResourceUrn urn=fboConfig.getResourceUrn();
-  if (!frameBuffersManager.isFBOAvailable(urn)) {
-    frameBuffersManager.allocateFBO(fboConfig);
-  }
-  if (!fboUsages.containsKey(urn)) {
-    Set<BaseFBM> fbms=Sets.newHashSet();
-    fbms.add(frameBuffersManager);
-    fboUsages.put(urn,fbms);
+  ResourceUrn fboName=fboConfig.getName();
+  if (!fboUsages.containsKey(fboName)) {
+    fboUsages.put(fboName,frameBuffersManager);
   }
  else {
-    fboUsages.get(urn).add(frameBuffersManager);
+    logger.warn("FBO " + fboName + " is already requested.");
+    return;
   }
+  frameBuffersManager.request(fboConfig);
 }

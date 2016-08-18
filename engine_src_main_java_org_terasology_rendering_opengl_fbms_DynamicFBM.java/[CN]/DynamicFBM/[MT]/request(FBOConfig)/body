@@ -1,0 +1,12 @@
+{
+  ResourceUrn fboName=fboConfig.getName();
+  if (fboConfigs.containsKey(fboName)) {
+    if (!fboConfig.equals(fboConfigs.get(fboName))) {
+      throw new IllegalArgumentException("Requested FBO is already available with different configuration");
+    }
+  }
+ else {
+    generate(fboConfig,fullScale.multiplyBy(fboConfig.getScale()));
+  }
+  retain(fboName);
+}
