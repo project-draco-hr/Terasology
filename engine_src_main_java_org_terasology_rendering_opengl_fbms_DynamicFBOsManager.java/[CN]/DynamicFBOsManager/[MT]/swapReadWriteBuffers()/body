@@ -1,0 +1,7 @@
+{
+  FBO fbo=READ_ONLY_GBUFFER.getFbo();
+  READ_ONLY_GBUFFER.setFbo(WRITE_ONLY_GBUFFER.getFbo());
+  WRITE_ONLY_GBUFFER.setFbo(fbo);
+  fboLookup.put(READ_ONLY_GBUFFER.getName(),READ_ONLY_GBUFFER.getFbo());
+  fboLookup.put(WRITE_ONLY_GBUFFER.getName(),WRITE_ONLY_GBUFFER.getFbo());
+}
