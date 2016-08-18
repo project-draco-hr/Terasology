@@ -1,12 +1,11 @@
 {
   renderingConfig=config.getRendering();
   downSampler=worldRenderer.getMaterial("engine:prog.down");
-  requiresFBO(new FBOConfig(SCENE_16,16,16,FBO.Type.DEFAULT),immutableFBOs);
-  requiresFBO(new FBOConfig(SCENE_8,8,8,FBO.Type.DEFAULT),immutableFBOs);
-  requiresFBO(new FBOConfig(SCENE_4,4,4,FBO.Type.DEFAULT),immutableFBOs);
-  requiresFBO(new FBOConfig(SCENE_2,2,2,FBO.Type.DEFAULT),immutableFBOs);
-  requiresFBO(new FBOConfig(SCENE_1,1,1,FBO.Type.DEFAULT),immutableFBOs);
+  downSampledScene[4]=requiresFBO(new FBOConfig(SCENE_16,16,16,FBO.Type.DEFAULT),immutableFBOs);
+  downSampledScene[3]=requiresFBO(new FBOConfig(SCENE_8,8,8,FBO.Type.DEFAULT),immutableFBOs);
+  downSampledScene[2]=requiresFBO(new FBOConfig(SCENE_4,4,4,FBO.Type.DEFAULT),immutableFBOs);
+  downSampledScene[1]=requiresFBO(new FBOConfig(SCENE_2,2,2,FBO.Type.DEFAULT),immutableFBOs);
+  downSampledScene[0]=requiresFBO(new FBOConfig(SCENE_1,1,1,FBO.Type.DEFAULT),immutableFBOs);
   requiresFBO(new FBOConfig(SCENE_PRE_POST,FULL_SCALE,FBO.Type.HDR),displayResolutionDependentFBOs);
-  obtainStaticFBOs();
   createPBOs();
 }
