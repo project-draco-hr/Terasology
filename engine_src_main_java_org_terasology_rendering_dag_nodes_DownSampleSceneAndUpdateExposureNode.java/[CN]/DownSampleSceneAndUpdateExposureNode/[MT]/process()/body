@@ -29,15 +29,15 @@
  else     if (targetExposure < hdrMinExposure) {
       targetExposure=hdrMinExposure;
     }
-    postProcessor.setExposure(TeraMath.lerp(postProcessor.getExposure(),targetExposure,hdrExposureAdjustmentSpeed));
+    screenGrabber.setExposure(TeraMath.lerp(screenGrabber.getExposure(),targetExposure,hdrExposureAdjustmentSpeed));
     PerformanceMonitor.endActivity();
   }
  else {
     if (backdropProvider.getDaylight() == 0.0) {
-      postProcessor.setExposure(hdrMaxExposureNight);
+      screenGrabber.setExposure(hdrMaxExposureNight);
     }
  else {
-      postProcessor.setExposure(hdrExposureDefault);
+      screenGrabber.setExposure(hdrExposureDefault);
     }
   }
 }

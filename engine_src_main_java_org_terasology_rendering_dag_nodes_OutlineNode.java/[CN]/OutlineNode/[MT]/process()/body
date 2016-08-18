@@ -1,8 +1,8 @@
 {
   if (renderingConfig.isOutline()) {
     PerformanceMonitor.startActivity("rendering/outline");
-    outlineFBO=dynamicFBM.getFBO(OUTLINE_URN);
-    sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+    outlineFBO=dynamicFBOsManager.get(OUTLINE_URN);
+    sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
     outline.enable();
     outlineFBO.bind();
     setViewportToSizeOf(outlineFBO);

@@ -1,7 +1,7 @@
 {
   PerformanceMonitor.startActivity("rendering/toneMapping");
-  sceneToneMapped=dynamicFBM.getFBO(TONE_MAPPED_URN);
-  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  sceneToneMapped=dynamicFBOsManager.get(TONE_MAPPED_URN);
+  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
   toneMapping.enable();
   sceneToneMapped.bind();
   setViewportToSizeOf(sceneToneMapped);

@@ -1,8 +1,8 @@
 {
   super.applyParameters(program);
-  DynamicFBM dynamicFBM=CoreRegistry.get(DynamicFBM.class);
-  ShadowMapResolutionDependentFBM shadowMapResolutionDependentFBM=CoreRegistry.get(ShadowMapResolutionDependentFBM.class);
-  FBO sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  DynamicFBOsManager dynamicFBOsManager=CoreRegistry.get(DynamicFBOsManager.class);
+  ShadowMapResolutionDependentFBOs shadowMapResolutionDependentFBOs=CoreRegistry.get(ShadowMapResolutionDependentFBOs.class);
+  FBO sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
   int texId=0;
   if (sceneOpaque != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
@@ -17,7 +17,7 @@
   }
   if (CoreRegistry.get(Config.class).getRendering().isDynamicShadows()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    shadowMapResolutionDependentFBM.bindFboDepthTexture(ShadowMapNode.SHADOW_MAP_URN);
+    shadowMapResolutionDependentFBOs.bindFboDepthTexture(ShadowMapNode.SHADOW_MAP_URN);
     program.setInt("texSceneShadowMap",texId++,true);
     Camera lightCamera=CoreRegistry.get(WorldRenderer.class).getLightCamera();
     Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();

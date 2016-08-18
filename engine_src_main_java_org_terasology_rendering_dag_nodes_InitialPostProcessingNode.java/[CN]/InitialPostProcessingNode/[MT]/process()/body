@@ -1,7 +1,7 @@
 {
   PerformanceMonitor.startActivity("rendering/initialPostProcessing");
-  scenePrePost=dynamicFBM.getFBO(SCENE_PRE_POST_URN);
-  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  scenePrePost=dynamicFBOsManager.get(SCENE_PRE_POST_URN);
+  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
   initialPost.enable();
   scenePrePost.bind();
   setViewportToSizeOf(scenePrePost);

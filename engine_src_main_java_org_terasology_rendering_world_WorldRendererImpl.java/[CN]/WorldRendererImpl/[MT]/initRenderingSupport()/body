@@ -1,13 +1,13 @@
 {
-  dynamicFBM=new DynamicFBM();
-  staticFBM=new StaticFBM();
-  shadowMapResolutionDependentFBM=new ShadowMapResolutionDependentFBM();
-  context.put(DynamicFBM.class,dynamicFBM);
-  context.put(StaticFBM.class,staticFBM);
-  context.put(ShadowMapResolutionDependentFBM.class,shadowMapResolutionDependentFBM);
-  postProcessor=new PostProcessor(dynamicFBM);
-  context.put(PostProcessor.class,postProcessor);
-  dynamicFBM.setPostProcessor(postProcessor);
+  dynamicFBOsManager=new DynamicFBOsManager();
+  staticFBOsManager=new StaticFBOsManager();
+  shadowMapResolutionDependentFBOs=new ShadowMapResolutionDependentFBOs();
+  context.put(DynamicFBOsManager.class,dynamicFBOsManager);
+  context.put(StaticFBOsManager.class,staticFBOsManager);
+  context.put(ShadowMapResolutionDependentFBOs.class,shadowMapResolutionDependentFBOs);
+  screenGrabber=new ScreenGrabber(dynamicFBOsManager);
+  context.put(ScreenGrabber.class,screenGrabber);
+  dynamicFBOsManager.setScreenGrabber(screenGrabber);
   shaderManager.initShaders();
   initMaterials();
   context.put(WorldRenderer.class,this);

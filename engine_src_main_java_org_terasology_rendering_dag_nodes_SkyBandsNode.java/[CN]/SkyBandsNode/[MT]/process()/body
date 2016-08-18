@@ -1,10 +1,10 @@
 {
   PerformanceMonitor.startActivity("rendering/skyBands");
-  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
   setRenderBufferMask(sceneOpaque,true,true,true);
   if (renderingConfig.isInscattering()) {
-    sceneSkyBand0=dynamicFBM.getFBO(SKY_BAND_0_URN);
-    sceneSkyBand1=dynamicFBM.getFBO(SKY_BAND_1_URN);
+    sceneSkyBand0=dynamicFBOsManager.get(SKY_BAND_0_URN);
+    sceneSkyBand1=dynamicFBOsManager.get(SKY_BAND_1_URN);
     generateSkyBand(sceneSkyBand0);
     generateSkyBand(sceneSkyBand1);
   }

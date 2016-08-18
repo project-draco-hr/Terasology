@@ -1,6 +1,6 @@
 {
   super.applyParameters(program);
-  FBO scene=CoreRegistry.get(DynamicFBM.class).getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  FBO scene=CoreRegistry.get(DynamicFBOsManager.class).get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
   if (scene != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0);
     scene.bindDepthTexture();

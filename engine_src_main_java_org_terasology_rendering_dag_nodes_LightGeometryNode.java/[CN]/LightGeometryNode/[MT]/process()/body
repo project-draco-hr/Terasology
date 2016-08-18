@@ -1,6 +1,6 @@
 {
   PerformanceMonitor.startActivity("rendering/lightGeometry");
-  sceneOpaque=dynamicFBM.getFBO(DefaultDynamicFBOs.ReadOnlyGBuffer.getResourceUrn());
+  sceneOpaque=dynamicFBOsManager.get(DefaultDynamicFBOs.ReadOnlyGBuffer.getName());
   cleanupSceneOpaque();
   preRenderSetupLightGeometry();
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
