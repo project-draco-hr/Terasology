@@ -1,15 +1,15 @@
 {
   if (task == null) {
-    if (!fboName.equals(DEFAULT_FRAME_BUFFER_NAME)) {
-      task=new BindFBOTask(frameBuffersManager.getFBO(fboName).fboId,fboName);
+    if (!fboName.equals(DEFAULT_FRAME_BUFFER_URN)) {
+      task=new BindFBOTask(frameBuffersManager.get(fboName).fboId,fboName);
       frameBuffersManager.subscribe(this);
     }
  else {
-      task=new BindFBOTask(DEFAULT_FRAME_BUFFER_ID,DEFAULT_FRAME_BUFFER_NAME);
+      task=new BindFBOTask(DEFAULT_FRAME_BUFFER_ID,DEFAULT_FRAME_BUFFER_URN);
     }
   }
  else {
-    if (!fboName.equals(DEFAULT_FRAME_BUFFER_NAME)) {
+    if (!fboName.equals(DEFAULT_FRAME_BUFFER_URN)) {
       update();
     }
   }

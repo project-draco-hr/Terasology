@@ -1,9 +1,7 @@
 {
   PerformanceMonitor.startActivity("rendering/finalPostProcessing");
-  ocUndistorted=frameBuffersManager.getFBO("ocUndistorted");
-  sceneFinal=frameBuffersManager.getFBO("sceneFinal");
-  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
-  fullScale=sceneOpaque.dimensions();
+  ocUndistorted=displayResolutionDependentFBOs.get(OC_UNDISTORTED);
+  fullScale=READ_ONLY_GBUFFER.dimensions();
   if (!renderingDebugConfig.isEnabled()) {
     finalPost.enable();
   }

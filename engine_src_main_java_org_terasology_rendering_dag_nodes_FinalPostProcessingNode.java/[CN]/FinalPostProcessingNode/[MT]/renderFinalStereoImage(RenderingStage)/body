@@ -1,6 +1,6 @@
 {
-  if (postProcessor.isNotTakingScreenshot()) {
-    sceneFinal.bind();
+  if (screenGrabber.isNotTakingScreenshot()) {
+    FINAL.bind();
   }
  else {
     ocUndistorted.bind();
@@ -12,14 +12,14 @@ case LEFT_EYE:
 break;
 case RIGHT_EYE:
 renderFullscreenQuad(fullScale.width() / 2 + 1,0,fullScale.width() / 2,fullScale.height());
-if (postProcessor.isNotTakingScreenshot()) {
+if (screenGrabber.isNotTakingScreenshot()) {
 bindDisplay();
-applyOculusDistortion(sceneFinal);
+applyOculusDistortion(FINAL.getFbo());
 }
  else {
-sceneFinal.bind();
+FINAL.bind();
 applyOculusDistortion(ocUndistorted);
-postProcessor.saveScreenshot();
+screenGrabber.saveScreenshot();
 }
 break;
 case MONO:

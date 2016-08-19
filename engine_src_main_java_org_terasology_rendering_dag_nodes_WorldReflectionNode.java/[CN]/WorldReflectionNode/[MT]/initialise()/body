@@ -1,7 +1,8 @@
 {
+  requiresFBO(new FBOConfig(REFLECTED,HALF_SCALE,FBO.Type.DEFAULT).useDepthBuffer(),displayResolutionDependentFBOs);
   this.renderingConfig=config.getRendering();
   this.chunkShader=worldRenderer.getMaterial("engine:prog.chunk");
   this.playerCamera=worldRenderer.getActiveCamera();
-  addDesiredStateChange(new BindFBO(SCENE_REFLECTED_FBO));
-  addDesiredStateChange(new SetViewportSizeOf(SCENE_REFLECTED_FBO));
+  addDesiredStateChange(new BindFBO(REFLECTED,displayResolutionDependentFBOs));
+  addDesiredStateChange(new SetViewportSizeOf(REFLECTED,displayResolutionDependentFBOs));
 }

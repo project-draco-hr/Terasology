@@ -1,24 +1,24 @@
 {
   super.applyParameters(program);
-  FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
+  DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
   Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();
   WorldProvider worldProvider=CoreRegistry.get(WorldProvider.class);
   Vector3f tint=worldProvider.getBlock(activeCamera.getPosition()).getTint();
   program.setFloat3("inLiquidTint",tint.x,tint.y,tint.z,true);
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  buffersManager.bindFboColorTexture("sceneOpaque");
+  displayResolutionDependentFBOs.bindFboColorTexture(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
   program.setInt("texScene",texId++,true);
   if (CoreRegistry.get(Config.class).getRendering().isBloom()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    buffersManager.bindFboColorTexture("sceneBloom2");
+    displayResolutionDependentFBOs.bindFboColorTexture(BloomPassesNode.BLOOM_2);
     program.setInt("texBloom",texId++,true);
     program.setFloat("bloomFactor",bloomFactor,true);
   }
   program.setFloat2("aberrationOffset",aberrationOffsetX,aberrationOffsetY,true);
   if (CoreRegistry.get(Config.class).getRendering().isLightShafts()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    buffersManager.bindFboColorTexture("lightShafts");
+    displayResolutionDependentFBOs.bindFboColorTexture(LightShaftsNode.LIGHT_SHAFTS);
     program.setInt("texLightShafts",texId++,true);
   }
   Optional<? extends Texture> vignetteTexture=Assets.getTexture("engine:vignette");

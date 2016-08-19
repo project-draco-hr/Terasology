@@ -1,22 +1,21 @@
 {
   super.applyParameters(program);
-  FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
-  FBO sceneOpaque=buffersManager.getFBO("sceneOpaque");
+  ShadowMapResolutionDependentFBOs shadowMapResolutionDependentFBOs=CoreRegistry.get(ShadowMapResolutionDependentFBOs.class);
   int texId=0;
-  if (sceneOpaque != null) {
+  if (READ_ONLY_GBUFFER.getFbo() != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindDepthTexture();
+    READ_ONLY_GBUFFER.bindDepthTexture();
     program.setInt("texSceneOpaqueDepth",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindNormalsTexture();
+    READ_ONLY_GBUFFER.bindNormalsTexture();
     program.setInt("texSceneOpaqueNormals",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindLightBufferTexture();
+    READ_ONLY_GBUFFER.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
   if (CoreRegistry.get(Config.class).getRendering().isDynamicShadows()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    buffersManager.bindFboDepthTexture("sceneShadowMap");
+    shadowMapResolutionDependentFBOs.bindFboDepthTexture(ShadowMapNode.SHADOW_MAP);
     program.setInt("texSceneShadowMap",texId++,true);
     Camera lightCamera=CoreRegistry.get(WorldRenderer.class).getLightCamera();
     Camera activeCamera=CoreRegistry.get(WorldRenderer.class).getActiveCamera();

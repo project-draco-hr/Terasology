@@ -1,0 +1,12 @@
+{
+  if (screenGrabber.isNotTakingScreenshot()) {
+    fullScale=new FBO.Dimensions(Display.getWidth(),Display.getHeight());
+    if (renderingConfig.isOculusVrSupport()) {
+      fullScale.multiplySelfBy(OculusVrHelper.getScaleFactor());
+    }
+  }
+ else {
+    fullScale=new FBO.Dimensions(renderingConfig.getScreenshotSize().getWidth(Display.getWidth()),renderingConfig.getScreenshotSize().getHeight(Display.getHeight()));
+  }
+  fullScale.multiplySelfBy(renderingConfig.getFboScale() / 100f);
+}

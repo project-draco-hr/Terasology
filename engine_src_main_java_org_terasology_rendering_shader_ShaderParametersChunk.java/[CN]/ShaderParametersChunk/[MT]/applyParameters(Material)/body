@@ -11,7 +11,7 @@
   if (!terrain.isPresent() || !water.isPresent() || !lava.isPresent()|| !waterNormal.isPresent()|| !effects.isPresent()) {
     return;
   }
-  FrameBuffersManager buffersManager=CoreRegistry.get(FrameBuffersManager.class);
+  DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
   RenderingConfig renderingConfig=CoreRegistry.get(Config.class).getRendering();
   int texId=0;
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
@@ -33,10 +33,10 @@
   glBindTexture(GL11.GL_TEXTURE_2D,effects.get().getId());
   program.setInt("textureEffects",texId++,true);
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  buffersManager.bindFboColorTexture("sceneReflected");
+  displayResolutionDependentFBOs.bindFboColorTexture(WorldReflectionNode.REFLECTED);
   program.setInt("textureWaterReflection",texId++,true);
   GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-  buffersManager.bindFboColorTexture("sceneOpaque");
+  displayResolutionDependentFBOs.bindFboColorTexture(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
   program.setInt("texSceneOpaque",texId++,true);
   if (renderingConfig.isNormalMapping()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);

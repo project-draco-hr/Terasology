@@ -1,0 +1,46 @@
+{
+  int checkFB=glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+switch (checkFB) {
+case GL_FRAMEBUFFER_COMPLETE_EXT:
+    fbo.setStatus(Status.COMPLETE);
+  break;
+case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT exception");
+fbo.setStatus(Status.INCOMPLETE);
+break;
+case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT exception");
+fbo.setStatus(Status.INCOMPLETE);
+break;
+case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT exception");
+fbo.setStatus(Status.INCOMPLETE);
+break;
+case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT exception");
+fbo.setStatus(Status.INCOMPLETE);
+break;
+case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT exception");
+fbo.setStatus(Status.INCOMPLETE);
+break;
+case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_UNSUPPORTED_EXT exception");
+fbo.setStatus(Status.INCOMPLETE);
+break;
+case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+logger.error("FrameBuffer: " + urn + ", has caused a GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT exception");
+if (type == Type.NO_COLOR) {
+logger.error("FrameBuffer: " + urn + ", ...but the FBO.Type was NO_COLOR, ignoring this error and continuing without this FBO.");
+fbo.dispose();
+}
+ else {
+fbo.setStatus(Status.INCOMPLETE);
+}
+break;
+default :
+logger.error("FBO '" + urn + "' generated an unexpected reply from glCheckFramebufferStatusEXT: "+ checkFB);
+fbo.setStatus(Status.UNEXPECTED);
+break;
+}
+}

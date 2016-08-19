@@ -1,13 +1,12 @@
 {
   PerformanceMonitor.startActivity("rendering/initialPostProcessing");
-  scenePrePost=frameBuffersManager.getFBO("scenePrePost");
-  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
+  scenePrePost=displayResolutionDependentFBOs.get(SCENE_PRE_POST);
   initialPost.enable();
   scenePrePost.bind();
   setViewportToSizeOf(scenePrePost);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   renderFullscreenQuad();
   bindDisplay();
-  setViewportToSizeOf(sceneOpaque);
+  setViewportToSizeOf(READ_ONLY_GBUFFER);
   PerformanceMonitor.endActivity();
 }

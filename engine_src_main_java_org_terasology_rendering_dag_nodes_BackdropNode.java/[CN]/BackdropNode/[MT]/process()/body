@@ -1,11 +1,10 @@
 {
   PerformanceMonitor.startActivity("rendering/backdrop");
-  sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
   initialClearing();
-  sceneOpaque.bind();
-  setRenderBufferMask(sceneOpaque,true,true,true);
+  READ_ONLY_GBUFFER.bind();
+  READ_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
   playerCamera.lookThroughNormalized();
-  setRenderBufferMask(sceneOpaque,true,false,false);
+  READ_ONLY_GBUFFER.setRenderBufferMask(true,false,false);
   backdropRenderer.render(playerCamera);
   PerformanceMonitor.endActivity();
 }

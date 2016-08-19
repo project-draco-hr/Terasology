@@ -1,10 +1,12 @@
 {
-  frameBuffersManager=new FrameBuffersManager();
-  context.put(FrameBuffersManager.class,frameBuffersManager);
-  postProcessor=new PostProcessor(frameBuffersManager);
-  context.put(PostProcessor.class,postProcessor);
-  frameBuffersManager.setPostProcessor(postProcessor);
-  frameBuffersManager.initialize();
+  screenGrabber=new ScreenGrabber(context);
+  context.put(ScreenGrabber.class,screenGrabber);
+  displayResolutionDependentFBOs=new DisplayResolutionDependentFBOs(context);
+  immutableFBOs=new ImmutableFBOs();
+  shadowMapResolutionDependentFBOs=new ShadowMapResolutionDependentFBOs();
+  context.put(DisplayResolutionDependentFBOs.class,displayResolutionDependentFBOs);
+  context.put(ImmutableFBOs.class,immutableFBOs);
+  context.put(ShadowMapResolutionDependentFBOs.class,shadowMapResolutionDependentFBOs);
   shaderManager.initShaders();
   initMaterials();
   context.put(WorldRenderer.class,this);

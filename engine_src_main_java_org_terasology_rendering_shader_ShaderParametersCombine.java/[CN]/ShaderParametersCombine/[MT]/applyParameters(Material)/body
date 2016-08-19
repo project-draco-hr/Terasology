@@ -1,23 +1,22 @@
 {
   super.applyParameters(program);
   int texId=0;
-  FrameBuffersManager frameBuffersManager=CoreRegistry.get(FrameBuffersManager.class);
-  FBO sceneOpaque=frameBuffersManager.getFBO("sceneOpaque");
-  if (sceneOpaque != null) {
+  DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
+  if (READ_ONLY_GBUFFER.getFbo() != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindTexture();
+    READ_ONLY_GBUFFER.bindTexture();
     program.setInt("texSceneOpaque",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindDepthTexture();
+    READ_ONLY_GBUFFER.bindDepthTexture();
     program.setInt("texSceneOpaqueDepth",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindNormalsTexture();
+    READ_ONLY_GBUFFER.bindNormalsTexture();
     program.setInt("texSceneOpaqueNormals",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindLightBufferTexture();
+    READ_ONLY_GBUFFER.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
-  FBO sceneReflectiveRefractive=frameBuffersManager.getFBO("sceneReflectiveRefractive");
+  FBO sceneReflectiveRefractive=displayResolutionDependentFBOs.get(ChunksRefractiveReflectiveNode.REFRACTIVE_REFLECTIVE);
   if (sceneReflectiveRefractive != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
     sceneReflectiveRefractive.bindTexture();
@@ -39,12 +38,12 @@
   }
   if (renderingConfig.isSsao()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    frameBuffersManager.bindFboColorTexture("ssaoBlurred");
+    displayResolutionDependentFBOs.bindFboColorTexture(AmbientOcclusionPassesNode.SSAO_BLURRED);
     program.setInt("texSsao",texId++,true);
   }
   if (renderingConfig.isOutline()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    frameBuffersManager.bindFboColorTexture("outline");
+    displayResolutionDependentFBOs.bindFboColorTexture(OutlineNode.OUTLINE);
     program.setInt("texEdges",texId++,true);
     program.setFloat("outlineDepthThreshold",outlineDepthThreshold,true);
     program.setFloat("outlineThickness",outlineThickness,true);
@@ -54,7 +53,7 @@
   }
   if (renderingConfig.isInscattering()) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    frameBuffersManager.bindFboColorTexture("sceneSkyBand1");
+    displayResolutionDependentFBOs.bindFboColorTexture(SkyBandsNode.SKY_BAND_1);
     program.setInt("texSceneSkyBand",texId++,true);
     Vector4f skyInscatteringSettingsFrag=new Vector4f();
     skyInscatteringSettingsFrag.y=skyInscatteringStrength;
