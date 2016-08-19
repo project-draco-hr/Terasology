@@ -3,10 +3,10 @@
     int shadowMapResFromSettings=(int)evt.getNewValue();
     shadowMapResolution=new FBO.Dimensions(shadowMapResFromSettings,shadowMapResFromSettings);
     for (    Map.Entry<ResourceUrn,FBOConfig> entry : fboConfigs.entrySet()) {
-      ResourceUrn resourceUrn=entry.getKey();
+      ResourceUrn fboName=entry.getKey();
       FBOConfig fboConfig=entry.getValue();
-      if (fboLookup.containsKey(resourceUrn)) {
-        FBO fbo=fboLookup.get(resourceUrn);
+      if (fboLookup.containsKey(fboName)) {
+        FBO fbo=fboLookup.get(fboName);
         if (fbo != null) {
           fbo.dispose();
         }
@@ -17,7 +17,7 @@
         renderingConfig.setDynamicShadows(false);
         break;
       }
-      fboLookup.put(resourceUrn,shadowMapResDependentFBO);
+      fboLookup.put(fboName,shadowMapResDependentFBO);
     }
   }
 }
