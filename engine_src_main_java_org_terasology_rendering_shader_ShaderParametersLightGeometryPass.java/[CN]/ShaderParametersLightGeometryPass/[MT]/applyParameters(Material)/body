@@ -1,18 +1,16 @@
 {
   super.applyParameters(program);
-  DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
   ShadowMapResolutionDependentFBOs shadowMapResolutionDependentFBOs=CoreRegistry.get(ShadowMapResolutionDependentFBOs.class);
-  FBO sceneOpaque=displayResolutionDependentFBOs.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
   int texId=0;
-  if (sceneOpaque != null) {
+  if (READ_ONLY_GBUFFER.getFbo() != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindDepthTexture();
+    READ_ONLY_GBUFFER.bindDepthTexture();
     program.setInt("texSceneOpaqueDepth",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindNormalsTexture();
+    READ_ONLY_GBUFFER.bindNormalsTexture();
     program.setInt("texSceneOpaqueNormals",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindLightBufferTexture();
+    READ_ONLY_GBUFFER.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
   if (CoreRegistry.get(Config.class).getRendering().isDynamicShadows()) {

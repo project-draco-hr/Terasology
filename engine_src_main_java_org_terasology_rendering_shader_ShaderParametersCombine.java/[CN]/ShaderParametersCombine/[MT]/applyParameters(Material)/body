@@ -2,19 +2,18 @@
   super.applyParameters(program);
   int texId=0;
   DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
-  FBO sceneOpaque=displayResolutionDependentFBOs.get(DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName());
-  if (sceneOpaque != null) {
+  if (READ_ONLY_GBUFFER.getFbo() != null) {
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindTexture();
+    READ_ONLY_GBUFFER.bindTexture();
     program.setInt("texSceneOpaque",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindDepthTexture();
+    READ_ONLY_GBUFFER.bindDepthTexture();
     program.setInt("texSceneOpaqueDepth",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindNormalsTexture();
+    READ_ONLY_GBUFFER.bindNormalsTexture();
     program.setInt("texSceneOpaqueNormals",texId++,true);
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-    sceneOpaque.bindLightBufferTexture();
+    READ_ONLY_GBUFFER.bindLightBufferTexture();
     program.setInt("texSceneOpaqueLightBuffer",texId++,true);
   }
   FBO sceneReflectiveRefractive=displayResolutionDependentFBOs.get(ChunksRefractiveReflectiveNode.REFRACTIVE_REFLECTIVE);

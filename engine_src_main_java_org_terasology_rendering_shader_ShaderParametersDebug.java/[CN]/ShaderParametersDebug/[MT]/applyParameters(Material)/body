@@ -4,7 +4,6 @@
   int texId=0;
   DisplayResolutionDependentFBOs displayResolutionDependentFBOs=CoreRegistry.get(DisplayResolutionDependentFBOs.class);
   ShadowMapResolutionDependentFBOs shadowMapResolutionDependentFBOs=CoreRegistry.get(ShadowMapResolutionDependentFBOs.class);
-  final ResourceUrn sceneOpaqueUrn=DefaultDynamicFBOs.READ_ONLY_GBUFFER.getName();
 switch (config.getRendering().getDebug().getStage()) {
 case SHADOW_MAP:
     GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
@@ -13,23 +12,23 @@ program.setInt("texDebug",texId++,true);
 break;
 case OPAQUE_COLOR:
 GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-displayResolutionDependentFBOs.bindFboColorTexture(sceneOpaqueUrn);
+displayResolutionDependentFBOs.bindFboColorTexture(READ_ONLY_GBUFFER.getName());
 program.setInt("texDebug",texId++,true);
 break;
 case OPAQUE_NORMALS:
 GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-displayResolutionDependentFBOs.bindFboNormalsTexture(sceneOpaqueUrn);
+displayResolutionDependentFBOs.bindFboNormalsTexture(READ_ONLY_GBUFFER.getName());
 program.setInt("texDebug",texId++,true);
 break;
 case OPAQUE_DEPTH:
 GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-displayResolutionDependentFBOs.bindFboDepthTexture(sceneOpaqueUrn);
+displayResolutionDependentFBOs.bindFboDepthTexture(READ_ONLY_GBUFFER.getName());
 program.setInt("texDebug",texId++,true);
 break;
 case OPAQUE_SUNLIGHT:
 case OPAQUE_LIGHT_BUFFER:
 GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-displayResolutionDependentFBOs.bindFboLightBufferTexture(sceneOpaqueUrn);
+displayResolutionDependentFBOs.bindFboLightBufferTexture(READ_ONLY_GBUFFER.getName());
 program.setInt("texDebug",texId++,true);
 break;
 case TRANSPARENT_COLOR:
@@ -49,7 +48,7 @@ program.setInt("texDebug",texId++,true);
 break;
 case BAKED_OCCLUSION:
 GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-displayResolutionDependentFBOs.bindFboColorTexture(sceneOpaqueUrn);
+displayResolutionDependentFBOs.bindFboColorTexture(READ_ONLY_GBUFFER.getName());
 program.setInt("texDebug",texId++,true);
 break;
 case RECONSTRUCTED_POSITION:
@@ -58,7 +57,7 @@ if (activeCamera != null) {
 program.setMatrix4("invProjMatrix",activeCamera.getInverseProjectionMatrix(),true);
 }
 GL13.glActiveTexture(GL13.GL_TEXTURE0 + texId);
-displayResolutionDependentFBOs.bindFboDepthTexture(sceneOpaqueUrn);
+displayResolutionDependentFBOs.bindFboDepthTexture(READ_ONLY_GBUFFER.getName());
 program.setInt("texDebug",texId++,true);
 break;
 case BLOOM:
