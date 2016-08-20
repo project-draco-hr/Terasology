@@ -1,4 +1,9 @@
 {
-  FBO fbo=frameBuffersManager.get(fboName);
-  task.setDimensions(fbo.width(),fbo.height());
+  if (defaultDynamicFBO == null) {
+    FBO fbo=frameBuffersManager.get(fboName);
+    task.setDimensions(fbo.width(),fbo.height());
+  }
+ else {
+    task.setDimensions(defaultDynamicFBO.width(),defaultDynamicFBO.height());
+  }
 }
