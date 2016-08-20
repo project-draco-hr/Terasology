@@ -1,14 +1,7 @@
 {
-  if (renderingConfig.isOutline()) {
-    PerformanceMonitor.startActivity("rendering/outline");
-    outlineFBO=displayResolutionDependentFBOs.get(OUTLINE);
-    outline.enable();
-    outlineFBO.bind();
-    setViewportToSizeOf(outlineFBO);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    renderFullscreenQuad();
-    bindDisplay();
-    setViewportToSizeOf(READ_ONLY_GBUFFER);
-    PerformanceMonitor.endActivity();
-  }
+  PerformanceMonitor.startActivity("rendering/outline");
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  bindDisplay();
+  PerformanceMonitor.endActivity();
 }
