@@ -1,8 +1,21 @@
 {
+  boolean isLoaded=assetManager.isLoaded(urn,UIElement.class);
   Optional<UIElement> asset=assetManager.getAsset(urn,UIElement.class);
   if (asset.isPresent()) {
     UIElement element=asset.get();
+    if (!isLoaded) {
+      asset.get().dispose();
+    }
     AssetDataFile source=element.getSource();
+    List<String> path=source.getPath();
+    Name moduleName=new Name(path.get(0));
+    if (moduleManager.getEnvironment().get(moduleName) instanceof PathModule) {
+      path.add(source.getFilename());
+      String[] pathArray=path.toArray(new String[path.size()]);
+      String first=pathArray[0];
+      String[] more=Arrays.copyOfRange(pathArray,1,pathArray.length);
+      selectedAssetPath=moduleManager.getEnvironment().getFileSystem().getPath(first,more);
+    }
     String content=null;
     try (JsonReader reader=new JsonReader(new InputStreamReader(source.openStream(),Charsets.UTF_8))){
       reader.setLenient(true);
