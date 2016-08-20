@@ -1,14 +1,6 @@
 {
-  if (renderingConfig.isLightShafts()) {
-    PerformanceMonitor.startActivity("rendering/lightShafts");
-    lightShaftsFBO=displayResolutionDependentFBOs.get(LIGHT_SHAFTS);
-    lightShaftsShader.enable();
-    lightShaftsFBO.bind();
-    setViewportToSizeOf(lightShaftsFBO);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    renderFullscreenQuad();
-    bindDisplay();
-    setViewportToSizeOf(READ_ONLY_GBUFFER);
-    PerformanceMonitor.endActivity();
-  }
+  PerformanceMonitor.startActivity("rendering/lightShafts");
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  renderFullscreenQuad();
+  PerformanceMonitor.endActivity();
 }

@@ -1,8 +1,8 @@
 {
   intermediateList.clear();
   for (  Node node : orderedNodes) {
+    node.setTaskListGenerator(this);
     if (node.isEnabled()) {
-      node.setTaskListGenerator(this);
       intermediateList.addAll(node.getDesiredStateChanges());
       intermediateList.add(node);
       for (      StateChange stateChange : node.getDesiredStateChanges()) {
