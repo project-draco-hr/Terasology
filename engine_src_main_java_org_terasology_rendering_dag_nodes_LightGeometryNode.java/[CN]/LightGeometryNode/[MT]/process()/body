@@ -1,6 +1,5 @@
 {
   PerformanceMonitor.startActivity("rendering/lightGeometry");
-  cleanupSceneOpaque();
   preRenderSetupLightGeometry();
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
     LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
@@ -8,6 +7,5 @@
     final Vector3f worldPosition=locationComponent.getWorldPosition();
     worldRenderer.renderLightComponent(lightComponent,worldPosition,lightGeometryShader,false);
   }
-  postRenderCleanupLightGeometry();
   PerformanceMonitor.endActivity();
 }
