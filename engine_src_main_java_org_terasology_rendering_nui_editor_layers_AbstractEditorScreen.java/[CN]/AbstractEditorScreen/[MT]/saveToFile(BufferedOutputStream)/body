@@ -1,0 +1,6 @@
+{
+  JsonElement json=JsonTreeConverter.deserialize(getEditor().getModel().getNode(0).getRoot());
+  String jsonString=new GsonBuilder().setPrettyPrinting().create().toJson(json);
+  outputStream.write(jsonString.getBytes());
+  setUnsavedChangesPresent(false);
+}

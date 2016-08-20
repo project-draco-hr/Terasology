@@ -17,6 +17,6 @@
     if (value != null && value instanceof Boolean) {
       value=!(Boolean)value;
     }
-    return value != null ? value : newInstance(field.getType());
+    return (value != null || Binding.class.isAssignableFrom(field.getType())) ? value : newInstance(field.getType());
   }
 }
