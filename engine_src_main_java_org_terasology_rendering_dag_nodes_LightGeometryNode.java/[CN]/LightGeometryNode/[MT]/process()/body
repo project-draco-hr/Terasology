@@ -1,6 +1,8 @@
 {
   PerformanceMonitor.startActivity("rendering/lightGeometry");
-  preRenderSetupLightGeometry();
+  READ_ONLY_GBUFFER.setRenderBufferMask(false,false,true);
+  glStencilFunc(GL_NOTEQUAL,0,0xFF);
+  glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_COLOR);
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
     LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
     LightComponent lightComponent=entity.getComponent(LightComponent.class);
