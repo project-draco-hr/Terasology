@@ -11,6 +11,7 @@
  else     if (arg.equals(START_HEADLESS)) {
       isHeadless=true;
       crashReportEnabled=false;
+      splashEnabled=false;
     }
  else     if (arg.equals(NO_SAVE_GAMES)) {
       System.setProperty(SystemConfig.SAVED_GAMES_ENABLED_PROPERTY,"false");
@@ -29,6 +30,9 @@
     }
  else     if (arg.startsWith(SERVER_PORT)) {
       System.setProperty(ConfigurationSubsystem.SERVER_PORT_PROPERTY,arg.substring(SERVER_PORT.length()));
+    }
+ else     if (arg.startsWith(OVERRIDE_DEFAULT_CONFIG)) {
+      System.setProperty(Config.PROPERTY_OVERRIDE_DEFAULT_CONFIG,arg.substring(OVERRIDE_DEFAULT_CONFIG.length()));
     }
  else {
       recognized=false;

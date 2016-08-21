@@ -1,6 +1,6 @@
 {
   String printUsageFlags=Joiner.on("|").join(PRINT_USAGE_FLAGS);
-  List<String> opts=ImmutableList.of(printUsageFlags,USE_CURRENT_DIR_AS_HOME + "|" + USE_SPECIFIED_DIR_AS_HOME+ "<path>",START_HEADLESS,LOAD_LAST_GAME,NO_CRASH_REPORT,NO_SAVE_GAMES,NO_SOUND,NO_SPLASH,SERVER_PORT + "<port>");
+  List<String> opts=ImmutableList.of(printUsageFlags,USE_CURRENT_DIR_AS_HOME + "|" + USE_SPECIFIED_DIR_AS_HOME+ "<path>",START_HEADLESS,LOAD_LAST_GAME,NO_CRASH_REPORT,NO_SAVE_GAMES,NO_SOUND,NO_SPLASH,OVERRIDE_DEFAULT_CONFIG + "<path>",SERVER_PORT + "<port>");
   StringBuilder optText=new StringBuilder();
   for (  String opt : opts) {
     optText.append(" [").append(opt).append("]");
@@ -30,6 +30,8 @@
   System.out.println("To disable the splash screen use the " + NO_SPLASH + " launch argument.");
   System.out.println();
   System.out.println("To change the port the server is hosted on use the " + SERVER_PORT + " launch argument.");
+  System.out.println();
+  System.out.println("To override the default generated config (useful for headless server) use the " + OVERRIDE_DEFAULT_CONFIG + " launch argument");
   System.out.println();
   System.out.println("Examples:");
   System.out.println();
