@@ -1,0 +1,12 @@
+{
+  boolean isLoaded=assetManager.isLoaded(urn,UISkin.class);
+  Optional<UISkin> asset=assetManager.getAsset(urn,UISkin.class);
+  if (asset.isPresent()) {
+    UISkin skin=asset.get();
+    if (!isLoaded) {
+      asset.get().dispose();
+    }
+    AssetDataFile source=skin.getSource();
+    selectedAssetPath=getPath(source);
+  }
+}

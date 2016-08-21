@@ -4,4 +4,10 @@
   getEditor().clearHistory();
   updateConfig();
   selectedAsset=selectedAssetPending;
+  try {
+    ResourceUrn urn=new ResourceUrn(selectedAsset);
+    setSelectedAssetPath(urn);
+  }
+ catch (  InvalidUrnException ignored) {
+  }
 }

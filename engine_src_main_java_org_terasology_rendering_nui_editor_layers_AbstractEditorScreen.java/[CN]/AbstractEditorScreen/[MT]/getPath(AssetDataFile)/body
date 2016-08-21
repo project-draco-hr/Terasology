@@ -1,0 +1,12 @@
+{
+  List<String> path=source.getPath();
+  Name moduleName=new Name(path.get(0));
+  if (moduleManager.getEnvironment().get(moduleName) instanceof PathModule) {
+    path.add(source.getFilename());
+    String[] pathArray=path.toArray(new String[path.size()]);
+    String first=pathArray[0];
+    String[] more=Arrays.copyOfRange(pathArray,1,pathArray.length);
+    return moduleManager.getEnvironment().getFileSystem().getPath(first,more);
+  }
+  return null;
+}
