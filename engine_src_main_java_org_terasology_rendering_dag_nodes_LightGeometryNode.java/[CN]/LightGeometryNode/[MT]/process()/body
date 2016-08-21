@@ -1,13 +1,13 @@
 {
   PerformanceMonitor.startActivity("rendering/lightGeometry");
-  READ_ONLY_GBUFFER.setRenderBufferMask(false,false,true);
-  glStencilFunc(GL_NOTEQUAL,0,0xFF);
-  glBlendFunc(GL_ONE,GL_ONE_MINUS_SRC_COLOR);
+  cleanupSceneOpaque();
+  preRenderSetupLightGeometry();
   for (  EntityRef entity : entityManager.getEntitiesWith(LightComponent.class,LocationComponent.class)) {
     LocationComponent locationComponent=entity.getComponent(LocationComponent.class);
     LightComponent lightComponent=entity.getComponent(LightComponent.class);
     final Vector3f worldPosition=locationComponent.getWorldPosition();
     worldRenderer.renderLightComponent(lightComponent,worldPosition,lightGeometryShader,false);
   }
+  postRenderCleanupLightGeometry();
   PerformanceMonitor.endActivity();
 }
