@@ -1,14 +1,19 @@
 {
-  try (JsonReader reader=new JsonReader(new InputStreamReader(Files.newInputStream(getAutosaveFile())))){
-    reader.setLenient(true);
-    String content=new JsonParser().parse(reader).toString();
-    JsonTree node=JsonTreeConverter.serialize(new JsonParser().parse(content));
-    resetState(node);
-    setUnsavedChangesPresent(true);
-  }
- catch (  NoSuchFileException ignored) {
-  }
-catch (  IOException e) {
-    logger.warn("Could not load autosaved info",e);
+  if (!disableAutosave) {
+    try (JsonReader reader=new JsonReader(new InputStreamReader(Files.newInputStream(getAutosaveFile())))){
+      reader.setLenient(true);
+      String autosaveString=new JsonParser().parse(reader).toString();
+      JsonObject autosaveObject=new JsonParser().parse(autosaveString).getAsJsonObject();
+      String selectedAsset=autosaveObject.get("selectedAsset").getAsString();
+      setSelectedAsset(selectedAsset);
+      JsonTree editorContents=JsonTreeConverter.serialize(autosaveObject.get("editorContents"));
+      resetState(editorContents);
+      setUnsavedChangesPresent(true);
+    }
+ catch (    NoSuchFileException ignored) {
+    }
+catch (    IOException e) {
+      logger.warn("Could not load autosaved info",e);
+    }
   }
 }
