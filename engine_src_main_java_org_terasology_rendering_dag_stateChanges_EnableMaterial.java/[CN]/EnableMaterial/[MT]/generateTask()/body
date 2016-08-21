@@ -1,0 +1,12 @@
+{
+  if (task == null) {
+    if (materialName.equals(DEFAULT_MATERIAL_NAME)) {
+      task=new DisableMaterialTask();
+    }
+ else {
+      Material shader=getMaterial(materialName);
+      task=new EnableMaterialTask(shader,materialName);
+    }
+  }
+  return task;
+}

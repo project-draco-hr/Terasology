@@ -1,7 +1,6 @@
 {
   PerformanceMonitor.startActivity("rendering/worldReflection");
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  GL11.glCullFace(GL11.GL_FRONT);
   playerCamera.setReflected(true);
   playerCamera.lookThroughNormalized();
   backdropRenderer.render(playerCamera);
@@ -12,6 +11,5 @@
     chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   }
   playerCamera.setReflected(false);
-  GL11.glCullFace(GL11.GL_BACK);
   PerformanceMonitor.endActivity();
 }

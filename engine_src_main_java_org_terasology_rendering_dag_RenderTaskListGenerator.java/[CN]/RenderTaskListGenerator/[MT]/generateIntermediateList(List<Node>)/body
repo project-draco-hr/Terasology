@@ -2,10 +2,12 @@
   intermediateList.clear();
   for (  Node node : orderedNodes) {
     node.setTaskListGenerator(this);
-    intermediateList.addAll(node.getDesiredStateChanges());
-    intermediateList.add(node);
-    for (    StateChange stateChange : node.getDesiredStateChanges()) {
-      intermediateList.add(stateChange.getDefaultInstance());
+    if (node.isEnabled()) {
+      intermediateList.addAll(node.getDesiredStateChanges());
+      intermediateList.add(node);
+      for (      StateChange stateChange : node.getDesiredStateChanges()) {
+        intermediateList.add(stateChange.getDefaultInstance());
+      }
     }
   }
   logList("-- Intermediate List --",intermediateList);

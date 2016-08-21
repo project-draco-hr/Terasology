@@ -1,4 +1,6 @@
 {
-  prePostComposite=worldRenderer.getMaterial("engine:prog.combine");
   requiresFBO(new FBOConfig(REFLECTIVE_REFRACTIVE,FULL_SCALE,FBO.Type.HDR).useNormalBuffer(),displayResolutionDependentFBOs);
+  addDesiredStateChange(new EnableMaterial("engine:prog.combine"));
+  addDesiredStateChange(new BindFBO(WRITE_ONLY_GBUFFER));
+  addDesiredStateChange(new SetViewportToSizeOf(WRITE_ONLY_GBUFFER));
 }

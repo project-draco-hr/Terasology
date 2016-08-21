@@ -1,4 +1,6 @@
 {
   requiresFBO(new FBOConfig(TONE_MAPPED,FULL_SCALE,FBO.Type.HDR),displayResolutionDependentFBOs);
-  toneMapping=worldRenderer.getMaterial("engine:prog.hdr");
+  addDesiredStateChange(new BindFBO(TONE_MAPPED,displayResolutionDependentFBOs));
+  addDesiredStateChange(new EnableMaterial("engine:prog.hdr"));
+  addDesiredStateChange(new SetViewportToSizeOf(TONE_MAPPED,displayResolutionDependentFBOs));
 }

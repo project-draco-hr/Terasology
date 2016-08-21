@@ -1,8 +1,10 @@
 {
-  requiresFBO(new FBOConfig(REFLECTED,HALF_SCALE,FBO.Type.DEFAULT).useDepthBuffer(),displayResolutionDependentFBOs);
   this.renderingConfig=config.getRendering();
   this.chunkShader=worldRenderer.getMaterial("engine:prog.chunk");
   this.playerCamera=worldRenderer.getActiveCamera();
+  requiresFBO(new FBOConfig(REFLECTED,HALF_SCALE,FBO.Type.DEFAULT).useDepthBuffer(),displayResolutionDependentFBOs);
   addDesiredStateChange(new BindFBO(REFLECTED,displayResolutionDependentFBOs));
-  addDesiredStateChange(new SetViewportSizeOf(REFLECTED,displayResolutionDependentFBOs));
+  addDesiredStateChange(new SetViewportToSizeOf(REFLECTED,displayResolutionDependentFBOs));
+  addDesiredStateChange(new EnableFaceCulling());
+  addDesiredStateChange(new SetFacesToCull(GL_FRONT));
 }

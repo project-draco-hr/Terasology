@@ -1,9 +1,9 @@
 {
   PerformanceMonitor.startActivity("rendering/simpleBlendMaterials");
-  preRenderSetupSimpleBlendMaterials();
+  READ_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
+  GL11.glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   for (  RenderSystem renderer : componentSystemManager.iterateRenderSubscribers()) {
     renderer.renderAlphaBlend();
   }
-  postRenderCleanupSimpleBlendMaterials();
   PerformanceMonitor.endActivity();
 }
