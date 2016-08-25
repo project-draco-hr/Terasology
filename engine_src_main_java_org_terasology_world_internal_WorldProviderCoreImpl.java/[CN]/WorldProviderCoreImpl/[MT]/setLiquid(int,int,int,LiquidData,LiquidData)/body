@@ -2,17 +2,11 @@
   Vector3i chunkPos=ChunkMath.calcChunkPos(x,y,z);
   CoreChunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
-    chunk.writeLock();
-    try {
-      Vector3i blockPos=ChunkMath.calcBlockPos(x,y,z);
-      LiquidData liquidState=chunk.getLiquid(blockPos);
-      if (liquidState.equals(oldState)) {
-        chunk.setLiquid(blockPos,newState);
-        return true;
-      }
-    }
-  finally {
-      chunk.writeUnlock();
+    Vector3i blockPos=ChunkMath.calcBlockPos(x,y,z);
+    LiquidData liquidState=chunk.getLiquid(blockPos);
+    if (liquidState.equals(oldState)) {
+      chunk.setLiquid(blockPos,newState);
+      return true;
     }
   }
   return false;

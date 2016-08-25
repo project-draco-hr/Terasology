@@ -1,8 +1,5 @@
 {
-  if (!locked.get()) {
-    throw new IllegalStateException("Attempted to modify block though an unlocked view");
-  }
- else   if (blockRegion.encompasses(blockX,blockY,blockZ)) {
+  if (blockRegion.encompasses(blockX,blockY,blockZ)) {
     int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
     chunks[chunkIndex].setBlock(ChunkMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize),type);
   }
