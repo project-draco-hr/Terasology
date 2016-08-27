@@ -1,0 +1,11 @@
+{
+  Vector3i charecterPos=new Vector3i(location);
+  Vector3i chunkAboveCharacter=ChunkMath.calcChunkPos(charecterPos);
+  chunkAboveCharacter.addY(1);
+  Vector3i chunkRelativePos=ChunkMath.calcBlockPos(charecterPos);
+  Vector3i characterChunkOriginPos=new Vector3i(charecterPos);
+  characterChunkOriginPos.sub(chunkRelativePos);
+  Vector3i chunkAboveOrigin=new Vector3i(characterChunkOriginPos);
+  chunkAboveOrigin.addY(ChunkConstants.CHUNK_SIZE.getY());
+  return ChunkConstants.CHUNK_REGION.move(chunkAboveOrigin);
+}
