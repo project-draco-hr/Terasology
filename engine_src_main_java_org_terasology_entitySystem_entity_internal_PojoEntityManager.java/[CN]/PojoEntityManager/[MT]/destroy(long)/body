@@ -7,11 +7,6 @@
     eventSystem.send(ref,BeforeDeactivateComponent.newInstance());
     eventSystem.send(ref,BeforeRemoveComponent.newInstance());
   }
-  for (  Component comp : store.iterateComponents(entityId)) {
-    notifyComponentRemoved(ref,comp.getClass());
-  }
-  for (  EntityDestroySubscriber destroySubscriber : destroySubscribers) {
-    destroySubscriber.onEntityDestroyed(ref);
-  }
+  notifyComponentRemovalAndEntityDestruction(entityId,ref);
   destroy(ref);
 }

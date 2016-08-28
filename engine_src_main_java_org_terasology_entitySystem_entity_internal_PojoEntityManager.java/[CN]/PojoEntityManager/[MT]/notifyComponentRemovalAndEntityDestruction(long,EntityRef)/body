@@ -1,0 +1,8 @@
+{
+  for (  Component comp : store.iterateComponents(entityId)) {
+    notifyComponentRemoved(ref,comp.getClass());
+  }
+  for (  EntityDestroySubscriber destroySubscriber : destroySubscribers) {
+    destroySubscriber.onEntityDestroyed(ref);
+  }
+}
