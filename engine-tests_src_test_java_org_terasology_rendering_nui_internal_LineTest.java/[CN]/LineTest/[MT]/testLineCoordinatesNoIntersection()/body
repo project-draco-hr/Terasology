@@ -1,24 +1,22 @@
 {
-  for (int i=0; i < RANDOM_TEST_COUNT; i++) {
-    int sx=cropRegion.minX() - shortRnd();
-    int sy=cropRegion.minY() - shortRnd();
-    int ex=cropRegion.minX() - shortRnd();
-    int ey=cropRegion.minY() - shortRnd();
-    assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
-    sx=cropRegion.minX() - shortRnd();
-    sy=cropRegion.maxY() + shortRnd();
-    ex=cropRegion.minX() - shortRnd();
-    ey=cropRegion.maxY() + shortRnd();
-    assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
-    sx=cropRegion.maxX() + shortRnd();
-    sy=cropRegion.minY() - shortRnd();
-    ex=cropRegion.maxX() + shortRnd();
-    ey=cropRegion.maxY() - shortRnd();
-    assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
-    sx=cropRegion.maxX() + shortRnd();
-    sy=cropRegion.maxY() + shortRnd();
-    ex=cropRegion.maxX() + shortRnd();
-    ey=cropRegion.maxY() + shortRnd();
-    assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
-  }
+  int sx=cropRegion.minX() - 5;
+  int sy=cropRegion.minY() - 5;
+  int ex=cropRegion.minX() - 5;
+  int ey=cropRegion.minY() - 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+  sx=cropRegion.minX() - 5;
+  sy=cropRegion.maxY() + 5;
+  ex=cropRegion.minX() - 5;
+  ey=cropRegion.maxY() + 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+  sx=cropRegion.maxX() + 5;
+  sy=cropRegion.minY() - 5;
+  ex=cropRegion.maxX() + 5;
+  ey=cropRegion.maxY() - 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+  sx=cropRegion.maxX() + 5;
+  sy=cropRegion.maxY() + 5;
+  ex=cropRegion.maxX() + 5;
+  ey=cropRegion.maxY() + 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
 }
