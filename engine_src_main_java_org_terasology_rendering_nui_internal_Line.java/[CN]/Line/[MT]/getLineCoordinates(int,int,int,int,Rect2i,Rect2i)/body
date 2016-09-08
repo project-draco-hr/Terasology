@@ -1,0 +1,15 @@
+{
+  Rect2i region=Rect2i.createFromMinAndMax(Math.min(startX,endX),Math.min(startY,endY),Math.max(startX,endX),Math.max(startY,endY));
+  Rect2i absoluteRegion=relativeToAbsolute(region,baseRegion);
+  Rect2i finalRegion=cropRegion.intersect(absoluteRegion);
+  if (!finalRegion.isEmpty()) {
+    int sx=startX > endX ? finalRegion.maxX() : finalRegion.minX();
+    int sy=startY > endY ? finalRegion.maxY() : finalRegion.minY();
+    int ex=startX > endX ? finalRegion.minX() : finalRegion.maxX();
+    int ey=startY > endY ? finalRegion.minY() : finalRegion.maxY();
+    return new LineCoordinates(new Vector2i(sx,sy),new Vector2i(ex,ey));
+  }
+ else {
+    return null;
+  }
+}
