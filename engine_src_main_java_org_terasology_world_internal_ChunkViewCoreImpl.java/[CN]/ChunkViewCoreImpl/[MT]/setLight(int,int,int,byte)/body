@@ -1,10 +1,7 @@
 {
-  if (locked.get() && blockRegion.encompasses(blockX,blockY,blockZ)) {
+  if (blockRegion.encompasses(blockX,blockY,blockZ)) {
     int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
     chunks[chunkIndex].setLight(ChunkMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize),light);
-  }
- else   if (!locked.get()) {
-    throw new IllegalStateException("Attempted to modify light though an unlocked view");
   }
  else {
     logger.warn("Attempted to set light at a position not encompassed by the view");

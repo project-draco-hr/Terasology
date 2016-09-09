@@ -3,9 +3,7 @@
   CoreChunk chunk=chunkProvider.getChunk(chunkPos);
   if (chunk != null) {
     Vector3i blockPos=ChunkMath.calcBlockPos(worldPos);
-    chunk.writeLock();
     Block oldBlockType=chunk.setBlock(blockPos,type);
-    chunk.writeUnlock();
     if (oldBlockType != type) {
       BlockChange oldChange=blockChanges.get(worldPos);
       if (oldChange == null) {

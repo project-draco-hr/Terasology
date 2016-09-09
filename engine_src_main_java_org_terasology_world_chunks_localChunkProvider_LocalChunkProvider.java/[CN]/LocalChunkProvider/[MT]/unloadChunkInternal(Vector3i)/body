@@ -1,37 +1,28 @@
 {
   Chunk chunk=nearCache.get(pos);
-  if (chunk.isLocked()) {
-    return false;
-  }
-  chunk.writeLock();
-  try {
-    if (!chunk.isReady()) {
-      Iterator<ReadyChunkInfo> infoIterator=sortedReadyChunks.iterator();
-      while (infoIterator.hasNext()) {
-        ReadyChunkInfo next=infoIterator.next();
-        if (next.getPos().equals(chunk.getPosition())) {
-          infoIterator.remove();
-          break;
-        }
+  if (!chunk.isReady()) {
+    Iterator<ReadyChunkInfo> infoIterator=sortedReadyChunks.iterator();
+    while (infoIterator.hasNext()) {
+      ReadyChunkInfo next=infoIterator.next();
+      if (next.getPos().equals(chunk.getPosition())) {
+        infoIterator.remove();
+        break;
       }
-      return true;
-    }
-    worldEntity.send(new BeforeChunkUnload(pos));
-    for (    ChunkRelevanceRegion region : regions.values()) {
-      region.chunkUnloaded(pos);
-    }
-    storageManager.deactivateChunk(chunk);
-    chunk.dispose();
-    updateAdjacentChunksReadyFieldOfAdjChunks(chunk);
-    try {
-      unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));
-    }
- catch (    InterruptedException e) {
-      logger.error("Failed to enqueue unload request for {}",chunk.getPosition(),e);
     }
     return true;
   }
-  finally {
-    chunk.writeUnlock();
+  worldEntity.send(new BeforeChunkUnload(pos));
+  for (  ChunkRelevanceRegion region : regions.values()) {
+    region.chunkUnloaded(pos);
   }
+  storageManager.deactivateChunk(chunk);
+  chunk.dispose();
+  updateAdjacentChunksReadyFieldOfAdjChunks(chunk);
+  try {
+    unloadRequestTaskMaster.put(new ChunkUnloadRequest(chunk,this));
+  }
+ catch (  InterruptedException e) {
+    logger.error("Failed to enqueue unload request for {}",chunk.getPosition(),e);
+  }
+  return true;
 }

@@ -1,8 +1,5 @@
 {
-  if (!locked.get()) {
-    throw new IllegalStateException("Attempted to modify biome though an unlocked view");
-  }
- else   if (blockRegion.encompasses(blockX,blockY,blockZ)) {
+  if (blockRegion.encompasses(blockX,blockY,blockZ)) {
     int chunkIndex=relChunkIndex(blockX,blockY,blockZ);
     Vector3i pos=ChunkMath.calcBlockPos(blockX,blockY,blockZ,chunkFilterSize);
     chunks[chunkIndex].setBiome(pos.x,pos.y,pos.z,biome);
