@@ -1,0 +1,22 @@
+{
+  int sx=cropRegion.minX() - 5;
+  int sy=cropRegion.minY() - 5;
+  int ex=cropRegion.minX() - 5;
+  int ey=cropRegion.minY() - 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+  sx=cropRegion.minX() - 5;
+  sy=cropRegion.maxY() + 5;
+  ex=cropRegion.minX() - 5;
+  ey=cropRegion.maxY() + 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+  sx=cropRegion.maxX() + 5;
+  sy=cropRegion.minY() - 5;
+  ex=cropRegion.maxX() + 5;
+  ey=cropRegion.maxY() - 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+  sx=cropRegion.maxX() + 5;
+  sy=cropRegion.maxY() + 5;
+  ex=cropRegion.maxX() + 5;
+  ey=cropRegion.maxY() + 5;
+  assertNull(Line.getLineCoordinates(sx,sy,ex,ey,Rect2i.EMPTY,cropRegion));
+}
