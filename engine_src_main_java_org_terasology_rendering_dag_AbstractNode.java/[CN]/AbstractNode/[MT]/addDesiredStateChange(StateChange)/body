@@ -1,3 +1,7 @@
 {
-  return desiredStateChanges.add(stateChange);
+  if (stateChange.isTheDefaultInstance()) {
+    logger.error("Attempted to add default state change %s to the set of desired state changes",stateChange.getClass().getSimpleName());
+  }
+  desiredStateChanges.add(stateChange);
+  desiredStateResets.add(stateChange.getDefaultInstance());
 }
