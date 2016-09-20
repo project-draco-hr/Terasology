@@ -5,8 +5,12 @@
   orderedNodes.add(initialiseNode(new BravoNode()));
   orderedNodes.add(initialiseNode(new CharlieNode()));
   List<RenderPipelineTask> taskList=renderTaskListGenerator.generateFrom(orderedNodes);
-  assertEquals(taskList.get(0).toString(),"SetNameTask: foo");
-  assertEquals(taskList.get(1).toString(),"NodeTask: AlphaNode");
-  assertEquals(taskList.get(2).toString(),"NodeTask: BravoNode");
-  assertEquals(taskList.get(3).toString(),"NodeTask: CharlieNode");
+  assertEquals("----- AlphaNode",taskList.get(0).toString().trim());
+  assertEquals("SetNameTask: foo",taskList.get(1).toString().trim());
+  assertEquals("AlphaNode: process()",taskList.get(2).toString().trim());
+  assertEquals("----- BravoNode",taskList.get(3).toString().trim());
+  assertEquals("BravoNode: process()",taskList.get(4).toString().trim());
+  assertEquals("----- CharlieNode",taskList.get(5).toString().trim());
+  assertEquals("CharlieNode: process()",taskList.get(6).toString().trim());
+  assertEquals("SetNameTask: bar",taskList.get(7).toString().trim());
 }
