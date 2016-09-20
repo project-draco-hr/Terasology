@@ -1,12 +1,11 @@
 {
-  logger.info("----- INTERMEDIATE RENDERER LIST --------------------------------");
   for (  Node node : orderedNodes) {
     if (node.isEnabled()) {
-      logger.info(String.format(("## Node: %s"),node.getClass().getSimpleName()));
+      logger.info(String.format(("----- %s"),node.getClass().getSimpleName()));
       for (      StateChange desiredStateChange : node.getDesiredStateChanges()) {
         logger.info(desiredStateChange.toString());
       }
-      logger.info(String.format("%s.process()",node.toString()));
+      logger.info(String.format("%s: process()",node.toString()));
       for (      StateChange desiredStateReset : node.getDesiredStateResets()) {
         logger.info(desiredStateReset.toString());
       }

@@ -5,12 +5,16 @@
   Node nextEnabledNode;
   StateChange persistentStateChange;
   Map persistentStateChanges=Maps.newHashMap();
+  int enabledNodes=0;
+  int potentialTasks=0;
   int currentIndex=0;
   for (  Node node : orderedNodes) {
     node.setTaskListGenerator(this);
     if (node.isEnabled()) {
       if (logger.isInfoEnabled()) {
         taskList.add(new MarkerTask(node.getClass().getSimpleName()));
+        enabledNodes++;
+        potentialTasks+=node.getDesiredStateChanges().size() + 1 + node.getDesiredStateResets().size();
       }
       for (      StateChange currentStateChange : node.getDesiredStateChanges()) {
         persistentStateChange=(StateChange)persistentStateChanges.get(currentStateChange.getClass());
@@ -40,9 +44,14 @@
   }
   long endTimeInNanoSeconds=System.nanoTime();
   if (logger.isInfoEnabled()) {
+    logger.info("===== INTERMEDIATE RENDERER LIST =========================");
     logIntermediateRendererListForDebugging(orderedNodes);
-    logList("----- RENDERER TASK LIST --------------------------------",taskList);
-    logger.info(String.format("Task list generated in %.3f ms.",(endTimeInNanoSeconds - startTimeInNanoSeconds) / 1000000f));
+    logger.info("===== RENDERER TASK LIST =================================");
+    logList(taskList);
+    logger.info("----------------------------------------------------------");
+    logger.info(String.format("Task list generated in %.3f ms",endTimeInNanoSeconds - startTimeInNanoSeconds / 1000000f));
+    logger.info(String.format("%s nodes, %s enabled - %s tasks (excluding marker tasks) out of %s potential tasks.",nodeList.size(),enabledNodes,taskList.size() - enabledNodes,potentialTasks));
+    logger.info("----------------------------------------------------------");
   }
   return taskList;
 }
