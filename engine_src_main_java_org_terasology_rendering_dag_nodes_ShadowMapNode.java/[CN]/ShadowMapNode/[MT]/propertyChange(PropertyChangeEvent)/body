@@ -1,0 +1,9 @@
+{
+  if (event.getPropertyName().equals(RenderingConfig.DYNAMIC_SHADOWS)) {
+    super.propertyChange(event);
+  }
+ else   if (event.getPropertyName().equals(RenderingConfig.SHADOW_MAP_RESOLUTION)) {
+    int shadowMapResolution=(int)event.getNewValue();
+    texelSize=calculateTexelSize(shadowMapResolution);
+  }
+}

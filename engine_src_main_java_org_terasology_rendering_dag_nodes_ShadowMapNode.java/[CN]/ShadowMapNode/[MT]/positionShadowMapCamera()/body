@@ -1,18 +1,15 @@
 {
-  Vector3f lightPosition=new Vector3f(playerCamera.getPosition().x,0.0f,playerCamera.getPosition().z);
-  texelSize=1.0f / renderingConfig.getShadowMapResolution();
-  texelSize*=2.0f;
-  shadowMapCamera.getViewProjectionMatrix().transformPoint(lightPosition);
-  lightPosition.set(TeraMath.fastFloor(lightPosition.x / texelSize) * texelSize,0.0f,TeraMath.fastFloor(lightPosition.z / texelSize) * texelSize);
-  shadowMapCamera.getInverseViewProjectionMatrix().transformPoint(lightPosition);
-  stepSize=50f;
-  Vector3f sunDirection=backdropProvider.getQuantizedSunDirection(stepSize);
-  Vector3f sunPosition=new Vector3f(sunDirection);
-  sunPosition.scale(256.0f + 64.0f);
-  lightPosition.add(sunPosition);
-  shadowMapCamera.getPosition().set(lightPosition);
-  Vector3f negSunDirection=new Vector3f(sunDirection);
-  negSunDirection.scale(-1.0f);
-  shadowMapCamera.getViewingDirection().set(negSunDirection);
+  Vector3f mainLightPosition=new Vector3f(playerCamera.getPosition().x,0.0f,playerCamera.getPosition().z);
+  shadowMapCamera.getViewProjectionMatrix().transformPoint(mainLightPosition);
+  mainLightPosition.set(TeraMath.fastFloor(mainLightPosition.x / texelSize) * texelSize,0.0f,TeraMath.fastFloor(mainLightPosition.z / texelSize) * texelSize);
+  shadowMapCamera.getInverseViewProjectionMatrix().transformPoint(mainLightPosition);
+  Vector3f quantizedMainLightDirection=getQuantizedMainLightDirection(STEP_SIZE);
+  Vector3f offsetFromPlayer=new Vector3f(quantizedMainLightDirection);
+  offsetFromPlayer.scale(256.0f + 64.0f);
+  mainLightPosition.add(offsetFromPlayer);
+  shadowMapCamera.getPosition().set(mainLightPosition);
+  Vector3f fromLightToPlayerDirection=new Vector3f(quantizedMainLightDirection);
+  fromLightToPlayerDirection.scale(-1.0f);
+  shadowMapCamera.getViewingDirection().set(fromLightToPlayerDirection);
   shadowMapCamera.update(worldRenderer.getSecondsSinceLastFrame());
 }
