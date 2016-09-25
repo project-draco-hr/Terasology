@@ -1,6 +1,7 @@
 {
   NodeFactory nodeFactory=new NodeFactory(context);
   shadowMapNode=nodeFactory.createInstance(ShadowMapNode.class);
+  Node reflectedBackdropNode=nodeFactory.createInstance(BackdropReflectionNode.class);
   Node worldReflectionNode=nodeFactory.createInstance(WorldReflectionNode.class);
   Node backdropNode=nodeFactory.createInstance(BackdropNode.class);
   Node skybandsNode=nodeFactory.createInstance(SkyBandsNode.class);
@@ -25,6 +26,7 @@
   Node finalPostProcessingNode=nodeFactory.createInstance(FinalPostProcessingNode.class);
   RenderGraph renderGraph=new RenderGraph();
   renderGraph.addNode(shadowMapNode,"shadowMapNode");
+  renderGraph.addNode(reflectedBackdropNode,"reflectedBackdropNode");
   renderGraph.addNode(worldReflectionNode,"worldReflectionNode");
   renderGraph.addNode(backdropNode,"backdropNode");
   renderGraph.addNode(skybandsNode,"skybandsNode");

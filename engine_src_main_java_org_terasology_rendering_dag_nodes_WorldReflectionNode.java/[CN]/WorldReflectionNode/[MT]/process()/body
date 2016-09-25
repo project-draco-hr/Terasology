@@ -1,15 +1,10 @@
 {
   PerformanceMonitor.startActivity("rendering/worldReflection");
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   playerCamera.setReflected(true);
-  playerCamera.lookThroughNormalized();
-  backdropRenderer.render(playerCamera);
   playerCamera.lookThrough();
-  if (renderingConfig.isReflectiveWater()) {
-    chunkShader.activateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
-    worldRenderer.renderChunks(renderQueues.chunksOpaqueReflection,ChunkMesh.RenderPhase.OPAQUE,playerCamera,WorldRendererImpl.ChunkRenderMode.REFLECTION);
-    chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
-  }
+  chunkShader.activateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
+  worldRenderer.renderChunks(renderQueues.chunksOpaqueReflection,ChunkMesh.RenderPhase.OPAQUE,playerCamera,WorldRendererImpl.ChunkRenderMode.REFLECTION);
+  chunkShader.deactivateFeature(ShaderProgramFeature.FEATURE_USE_FORWARD_LIGHTING);
   playerCamera.setReflected(false);
   PerformanceMonitor.endActivity();
 }
