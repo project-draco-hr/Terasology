@@ -1,9 +1,8 @@
 {
-  positionShadowMapCamera();
   if (worldRenderer.isFirstRenderingStageForCurrentFrame()) {
     PerformanceMonitor.startActivity("rendering/shadowMap");
+    positionShadowMapCamera();
     shadowMapCamera.lookThrough();
-    glClear(GL_DEPTH_BUFFER_BIT);
     worldRenderer.renderChunks(renderQueues.chunksOpaqueShadow,ChunkMesh.RenderPhase.OPAQUE,shadowMapCamera,WorldRendererImpl.ChunkRenderMode.SHADOW_MAP);
     playerCamera.lookThrough();
     PerformanceMonitor.endActivity();

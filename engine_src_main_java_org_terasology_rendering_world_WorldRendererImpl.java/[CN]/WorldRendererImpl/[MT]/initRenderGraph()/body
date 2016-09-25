@@ -1,6 +1,10 @@
 {
   NodeFactory nodeFactory=new NodeFactory(context);
+  BufferClearingNode.RequiredData shadowMapClearingData=new BufferClearingNode.RequiredData(new FBOConfig(ShadowMapNode.SHADOW_MAP,FBO.Type.NO_COLOR).useDepthBuffer(),shadowMapResolutionDependentFBOs,GL_DEPTH_BUFFER_BIT);
+  Node shadowMapClearingNode=nodeFactory.createInstance(BufferClearingNode.class,shadowMapClearingData);
   shadowMapNode=nodeFactory.createInstance(ShadowMapNode.class);
+  BufferClearingNode.RequiredData reflectedBufferClearingData=new BufferClearingNode.RequiredData(new FBOConfig(BackdropReflectionNode.REFLECTED,HALF_SCALE,FBO.Type.DEFAULT).useDepthBuffer(),displayResolutionDependentFBOs,GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  Node reflectedBufferClearingNode=nodeFactory.createInstance(BufferClearingNode.class,reflectedBufferClearingData);
   Node reflectedBackdropNode=nodeFactory.createInstance(BackdropReflectionNode.class);
   Node worldReflectionNode=nodeFactory.createInstance(WorldReflectionNode.class);
   Node backdropNode=nodeFactory.createInstance(BackdropNode.class);
@@ -25,7 +29,9 @@
   Node blurPassesNode=nodeFactory.createInstance(BlurPassesNode.class);
   Node finalPostProcessingNode=nodeFactory.createInstance(FinalPostProcessingNode.class);
   RenderGraph renderGraph=new RenderGraph();
+  renderGraph.addNode(shadowMapClearingNode,"shadowMapClearingNode");
   renderGraph.addNode(shadowMapNode,"shadowMapNode");
+  renderGraph.addNode(reflectedBufferClearingNode,"reflectedBufferClearingNode");
   renderGraph.addNode(reflectedBackdropNode,"reflectedBackdropNode");
   renderGraph.addNode(worldReflectionNode,"worldReflectionNode");
   renderGraph.addNode(backdropNode,"backdropNode");
