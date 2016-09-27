@@ -1,6 +1,57 @@
 {
+  long startTimeInNanoSeconds=System.nanoTime();
   nodeList=orderedNodes;
-  generateIntermediateList(orderedNodes);
-  generateTaskList();
+  taskList.clear();
+  Node nextEnabledNode;
+  StateChange persistentStateChange;
+  Map persistentStateChanges=Maps.newHashMap();
+  int enabledNodes=0;
+  int potentialTasks=0;
+  int currentIndex=0;
+  for (  Node node : orderedNodes) {
+    node.setTaskListGenerator(this);
+    if (node.isEnabled()) {
+      if (logger.isInfoEnabled()) {
+        taskList.add(new MarkerTask(node.getClass().getSimpleName()));
+        enabledNodes++;
+        potentialTasks+=node.getDesiredStateChanges().size() + 1 + node.getDesiredStateResets().size();
+      }
+      for (      StateChange currentStateChange : node.getDesiredStateChanges()) {
+        persistentStateChange=(StateChange)persistentStateChanges.get(currentStateChange.getClass());
+        if (persistentStateChange == null || !currentStateChange.equals(persistentStateChange)) {
+          taskList.add(currentStateChange.generateTask());
+          persistentStateChanges.put(currentStateChange.getClass(),currentStateChange);
+        }
+      }
+      taskList.add(node.generateTask());
+      nextEnabledNode=findNextEnabledNode(orderedNodes,currentIndex + 1);
+      if (nextEnabledNode != null) {
+        for (        StateChange currentStateReset : node.getDesiredStateResets()) {
+          if (sameClassStateChangeNotFoundInThe(nextEnabledNode,currentStateReset)) {
+            taskList.add(currentStateReset.generateTask());
+            persistentStateChanges.remove(currentStateReset.getClass());
+          }
+        }
+      }
+ else {
+        for (        StateChange currentStateReset : node.getDesiredStateResets()) {
+          taskList.add(currentStateReset.generateTask());
+          persistentStateChanges.remove(currentStateReset.getClass());
+        }
+      }
+    }
+    currentIndex++;
+  }
+  long endTimeInNanoSeconds=System.nanoTime();
+  if (logger.isInfoEnabled()) {
+    logger.info("===== INTERMEDIATE RENDERER LIST =========================");
+    logIntermediateRendererListForDebugging(orderedNodes);
+    logger.info("===== RENDERER TASK LIST =================================");
+    logList(taskList);
+    logger.info("----------------------------------------------------------");
+    logger.info(String.format("Task list generated in %.3f ms",(endTimeInNanoSeconds - startTimeInNanoSeconds) / 1000000f));
+    logger.info(String.format("%s nodes, %s enabled - %s tasks (excluding marker tasks) out of %s potential tasks.",nodeList.size(),enabledNodes,taskList.size() - enabledNodes,potentialTasks));
+    logger.info("----------------------------------------------------------");
+  }
   return taskList;
 }
