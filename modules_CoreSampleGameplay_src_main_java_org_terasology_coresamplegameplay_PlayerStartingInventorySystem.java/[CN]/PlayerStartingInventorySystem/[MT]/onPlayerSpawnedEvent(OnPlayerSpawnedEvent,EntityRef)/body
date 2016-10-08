@@ -35,4 +35,11 @@
   inventoryManager.giveItem(player,EntityRef.NULL,entityManager.create("core:explodeTool"));
   inventoryManager.giveItem(player,EntityRef.NULL,entityManager.create("core:railgunTool"));
   inventoryManager.giveItem(player,EntityRef.NULL,chest);
+  if (player.hasComponent(CharacterMovementComponent.class)) {
+    CharacterMovementComponent charMoveComp=player.getComponent(CharacterMovementComponent.class);
+    logger.info("Height: " + charMoveComp.height);
+    charMoveComp.height=3.8f;
+    player.saveComponent(charMoveComp);
+    logger.info("Height: " + charMoveComp.height);
+  }
 }
