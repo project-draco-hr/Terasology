@@ -1,0 +1,11 @@
+{
+  ClientComponent clientComp=client.getComponent(ClientComponent.class);
+  CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
+  if (move != null) {
+    float prevHeight=move.height;
+    move.height=amount;
+    clientComp.character.saveComponent(move);
+    return "Height of player set to " + amount + " (was "+ prevHeight+ ")";
+  }
+  return "";
+}
