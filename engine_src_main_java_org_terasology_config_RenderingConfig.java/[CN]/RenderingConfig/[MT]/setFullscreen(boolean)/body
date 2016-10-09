@@ -1,5 +1,16 @@
 {
-  boolean oldValue=this.fullscreen;
+  DisplayModeSetting oldValue=this.displayModeSetting;
   this.fullscreen=fullscreen;
-  propertyChangeSupport.firePropertyChange(FULLSCREEN,oldValue,this.fullscreen);
+  if (fullscreen) {
+    this.displayModeSetting=DisplayModeSetting.FULLSCREEN;
+  }
+ else {
+    if (windowedFullscreen) {
+      this.displayModeSetting=DisplayModeSetting.WINDOWED_FULLSCREEN;
+    }
+ else {
+      this.displayModeSetting=DisplayModeSetting.WINDOWED;
+    }
+  }
+  propertyChangeSupport.firePropertyChange(DISPLAY_MODE_SETTING,oldValue,this.displayModeSetting);
 }
