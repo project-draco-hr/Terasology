@@ -1,10 +1,10 @@
 {
   PerformanceMonitor.startActivity("rendering/backdrop");
-  initialClearing();
   READ_ONLY_GBUFFER.bind();
-  READ_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
   playerCamera.lookThroughNormalized();
   READ_ONLY_GBUFFER.setRenderBufferMask(true,false,false);
-  backdropRenderer.render(playerCamera);
+  glCallList(skySphere);
+  READ_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
+  playerCamera.lookThrough();
   PerformanceMonitor.endActivity();
 }
