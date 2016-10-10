@@ -1,0 +1,13 @@
+{
+  String searchLowercase=searched.toLowerCase();
+  List<String> blocks=findBlockMatches(searchLowercase);
+  String result="Found " + blocks.size() + " block matches when searching for '"+ searched+ "'.";
+  if (blocks.size() > 0) {
+    result+="\nBlocks:";
+    for (    String block : blocks) {
+      result+="\n" + block;
+      giveBlock(sender,block,null,null);
+    }
+  }
+  return result;
+}
