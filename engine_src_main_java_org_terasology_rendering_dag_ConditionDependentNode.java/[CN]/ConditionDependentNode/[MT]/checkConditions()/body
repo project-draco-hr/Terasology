@@ -1,7 +1,13 @@
 {
-  boolean areSatisfied=true;
+  boolean conditionsAreSatisfied=true;
   for (  Supplier<Boolean> condition : conditions) {
-    areSatisfied=areSatisfied && condition.get();
+    conditionsAreSatisfied=conditionsAreSatisfied && condition.get();
   }
-  setEnabled(areSatisfied);
+  if (conditionsAreSatisfied != isEnabled()) {
+    setEnabled(conditionsAreSatisfied);
+    return true;
+  }
+ else {
+    return false;
+  }
 }

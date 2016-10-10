@@ -1,5 +1,9 @@
 {
   super.initialise();
   playerCamera=worldRenderer.getActiveCamera();
-  requiresFBO(new FBOConfig(REFRACTIVE_REFLECTIVE,FULL_SCALE,FBO.Type.HDR).useNormalBuffer(),displayResolutionDependentFBOs);
+  initSkysphere();
+  addDesiredStateChange(new EnableMaterial("engine:prog.sky"));
+  addDesiredStateChange(new DisableDepthMask());
+  addDesiredStateChange(new EnableFaceCulling());
+  addDesiredStateChange(new SetFacesToCull(GL_FRONT));
 }

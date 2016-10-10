@@ -1,0 +1,8 @@
+{
+  float mainLightAngle=(float)Math.floor(backdropProvider.getSunPositionAngle() * stepSize) / stepSize + 0.0001f;
+  Vector3f mainLightDirection=new Vector3f(0.0f,(float)Math.cos(mainLightAngle),(float)Math.sin(mainLightAngle));
+  if (mainLightDirection.y < 0.0f) {
+    mainLightDirection.scale(-1.0f);
+  }
+  return mainLightDirection;
+}
