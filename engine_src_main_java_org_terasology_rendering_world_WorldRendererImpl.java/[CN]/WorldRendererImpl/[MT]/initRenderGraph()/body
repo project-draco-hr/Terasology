@@ -24,7 +24,18 @@
   renderGraph.addNode(readBufferClearingNode,"readBufferClearingNode");
   Node backdropNode=nodeFactory.createInstance(BackdropNode.class);
   renderGraph.addNode(backdropNode,"backdropNode");
-  Node skybandsNode=nodeFactory.createInstance(SkyBandsNode.class);
+  String aLabel="hazeIntermediateNode";
+  FBOConfig hazeIntermediateConfig=new FBOConfig(SkyBandNode.INTERMEDIATE_HAZE,ONE_16TH_SCALE,FBO.Type.DEFAULT);
+  SkyBandNode hazeIntermediateNode=nodeFactory.createInstance(SkyBandNode.class,DELAY_INIT);
+  hazeIntermediateNode.initialise(READ_ONLY_GBUFFER.getConfig(),hazeIntermediateConfig,aLabel);
+  renderGraph.addNode(hazeIntermediateNode,aLabel);
+  aLabel="hazeFinalNode";
+  FBOConfig hazeFinalConfig=new FBOConfig(SkyBandNode.FINAL_HAZE,ONE_32TH_SCALE,FBO.Type.DEFAULT);
+  SkyBandNode hazeFinalNode=nodeFactory.createInstance(SkyBandNode.class,DELAY_INIT);
+  hazeFinalNode.initialise(hazeIntermediateConfig,hazeFinalConfig,aLabel);
+  renderGraph.addNode(hazeFinalNode,aLabel);
+  Node bindReadOnlyFBONode=nodeFactory.createInstance(BindReadOnlyFBONode.class);
+  renderGraph.addNode(bindReadOnlyFBONode,"bindReadOnlyFBONode");
   Node objectOpaqueNode=nodeFactory.createInstance(ObjectsOpaqueNode.class);
   Node chunksOpaqueNode=nodeFactory.createInstance(ChunksOpaqueNode.class);
   Node chunksAlphaRejectNode=nodeFactory.createInstance(ChunksAlphaRejectNode.class);
@@ -44,7 +55,6 @@
   Node bloomPassesNode=nodeFactory.createInstance(BloomPassesNode.class);
   Node blurPassesNode=nodeFactory.createInstance(BlurPassesNode.class);
   Node finalPostProcessingNode=nodeFactory.createInstance(FinalPostProcessingNode.class);
-  renderGraph.addNode(skybandsNode,"skybandsNode");
   renderGraph.addNode(objectOpaqueNode,"objectOpaqueNode");
   renderGraph.addNode(chunksOpaqueNode,"chunksOpaqueNode");
   renderGraph.addNode(chunksAlphaRejectNode,"chunksAlphaRejectNode");
