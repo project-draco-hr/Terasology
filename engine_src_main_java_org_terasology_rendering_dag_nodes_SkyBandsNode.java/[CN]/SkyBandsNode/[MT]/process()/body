@@ -1,13 +1,19 @@
 {
   PerformanceMonitor.startActivity("rendering/skyBands");
-  READ_ONLY_GBUFFER.setRenderBufferMask(true,true,true);
-  if (renderingConfig.isInscattering()) {
-    sceneSkyBand0=displayResolutionDependentFBOs.get(SKY_BAND_0);
-    sceneSkyBand1=displayResolutionDependentFBOs.get(SKY_BAND_1);
-    generateSkyBand(sceneSkyBand0);
-    generateSkyBand(sceneSkyBand1);
-  }
+  blurShader.setFloat("radius",8.0f,true);
+  sceneSkyBand0=displayResolutionDependentFBOs.get(SKY_BAND_0);
+  blurShader.setFloat2("texelSize",1.0f / sceneSkyBand0.width(),1.0f / sceneSkyBand0.height(),true);
+  READ_ONLY_GBUFFER.bindTexture();
+  sceneSkyBand0.bind();
+  setViewportToSizeOf(sceneSkyBand0);
+  renderFullscreenQuad();
+  sceneSkyBand1=displayResolutionDependentFBOs.get(SKY_BAND_1);
+  blurShader.setFloat2("texelSize",1.0f / sceneSkyBand1.width(),1.0f / sceneSkyBand1.height(),true);
+  sceneSkyBand0.bindTexture();
+  sceneSkyBand1.bind();
+  setViewportToSizeOf(sceneSkyBand1);
+  renderFullscreenQuad();
   READ_ONLY_GBUFFER.bind();
-  playerCamera.lookThrough();
+  setViewportToSizeOf(READ_ONLY_GBUFFER);
   PerformanceMonitor.endActivity();
 }
