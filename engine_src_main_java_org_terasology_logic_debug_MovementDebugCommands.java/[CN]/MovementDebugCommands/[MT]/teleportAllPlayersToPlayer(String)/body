@@ -1,0 +1,26 @@
+{
+  Vector3f vPlayerLocation=Vector3f.zero();
+  boolean bPlayerLocationWasFound=false;
+  for (  EntityRef clientEntity : entityManager.getEntitiesWith(ClientComponent.class)) {
+    EntityRef clientInfo=clientEntity.getComponent(ClientComponent.class).clientInfo;
+    DisplayNameComponent name=clientInfo.getComponent(DisplayNameComponent.class);
+    if (username.equals(name.name)) {
+      LocationComponent locationComponent=clientEntity.getComponent(LocationComponent.class);
+      if (locationComponent != null) {
+        vPlayerLocation=locationComponent.getWorldPosition();
+        bPlayerLocationWasFound=true;
+      }
+      break;
+    }
+  }
+  if (!bPlayerLocationWasFound) {
+    throw new IllegalArgumentException("No such user '" + username + "'");
+  }
+  for (  EntityRef clientEntity : entityManager.getEntitiesWith(ClientComponent.class)) {
+    ClientComponent clientComp=clientEntity.getComponent(ClientComponent.class);
+    if (clientComp != null) {
+      clientComp.character.send(new CharacterTeleportEvent(vPlayerLocation));
+    }
+  }
+  return "All possible players teleported";
+}
