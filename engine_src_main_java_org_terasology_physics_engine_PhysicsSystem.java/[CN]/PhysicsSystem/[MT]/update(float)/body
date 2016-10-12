@@ -10,6 +10,15 @@
     if (body.isActive()) {
       body.getLinearVelocity(comp.velocity);
       body.getAngularVelocity(comp.angularVelocity);
+      Vector3f vLocation=Vector3f.zero();
+      body.getLocation(vLocation);
+      Vector3f vDirection=comp.velocity;
+      float fDistance=vDirection.length();
+      vDirection.normalize();
+      HitResult hitInfo=physics.rayTrace(vLocation,vDirection,fDistance * delta,StandardCollisionGroup.WORLD);
+      if (hitInfo.isHit()) {
+        entity.send(new ImpactEvent());
+      }
     }
   }
   if (networkSystem.getMode().isServer() && time.getGameTimeInMs() - TIME_BETWEEN_NETSYNCS > lastNetsync) {
