@@ -1,4 +1,5 @@
 {
+  int quantity=quantityParam != null ? quantityParam : 16;
   String searchLowercase=searched.toLowerCase();
   List<String> blocks=findBlockMatches(searchLowercase);
   String result="Found " + blocks.size() + " block matches when searching for '"+ searched+ "'.";
@@ -6,7 +7,7 @@
     result+="\nBlocks:";
     for (    String block : blocks) {
       result+="\n" + block;
-      giveBlock(sender,block,null,null);
+      giveBlock(sender,block,quantityParam,shapeUriParam);
     }
   }
   return result;
