@@ -11,7 +11,7 @@
  else {
           Set<ResourceUrn> resolvedShapeUris=Assets.resolveAssetUri(shapeUriParam,BlockShape.class);
           if (resolvedShapeUris.isEmpty()) {
-            throw new IllegalArgumentException("No shape found for '" + shapeUriParam + "'");
+            return "No shape found for '" + shapeUriParam + "'";
           }
  else           if (resolvedShapeUris.size() > 1) {
             StringBuilder builder=new StringBuilder();
@@ -33,7 +33,7 @@
       }
     }
  else {
-      throw new IllegalArgumentException("No block found for '" + uri + "'");
+      return "No block found for '" + uri + "'";
     }
   }
  else   if (matchingUris.isEmpty()) {
