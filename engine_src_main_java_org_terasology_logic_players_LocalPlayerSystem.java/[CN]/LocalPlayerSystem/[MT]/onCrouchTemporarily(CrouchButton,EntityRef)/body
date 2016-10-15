@@ -1,0 +1,15 @@
+{
+  ClientComponent clientComp=entity.getComponent(ClientComponent.class);
+  GazeMountPointComponent gazeMountPointComponent=clientComp.character.getComponent(GazeMountPointComponent.class);
+  float height=clientComp.character.getComponent(CharacterMovementComponent.class).height;
+  float eyeHeight=gazeMountPointComponent.translate.getY();
+  if (event.isDown()) {
+    movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height * 0.5f);
+    movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight * 0.5f);
+  }
+ else {
+    movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height / 0.5f);
+    movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight / 0.5f);
+  }
+  event.consume();
+}
