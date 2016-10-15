@@ -1,5 +1,10 @@
 {
   if (character.equals(localPlayer.getCharacterEntity())) {
+    Float height=config.getPlayer().getHeight();
+    movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height);
+    Float eyeHeight=config.getPlayer().getEyeHeight();
+    GazeMountPointComponent gazeMountPointComponent=character.getComponent(GazeMountPointComponent.class);
+    gazeMountPointComponent.translate=new Vector3f(0,eyeHeight,0);
     lookYaw=0f;
     lookPitch=0f;
     update(0);
