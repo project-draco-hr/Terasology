@@ -15,7 +15,7 @@
       Vector3f vDirection=comp.velocity;
       float fDistance=vDirection.length();
       vDirection.normalize();
-      HitResult hitInfo=physics.rayTrace(vLocation,vDirection,fDistance * delta,StandardCollisionGroup.WORLD);
+      HitResult hitInfo=physics.rayTrace(vLocation,vDirection,fDistance * delta,StandardCollisionGroup.WORLD,StandardCollisionGroup.CHARACTER);
       if (hitInfo.isHit()) {
         entity.send(new ImpactEvent());
       }
