@@ -1,0 +1,16 @@
+{
+  this.inputFBOConfig=inputConfig;
+  this.outputFBOConfig=outputConfig;
+  this.fboManager=anfboManager;
+  requiresFBO(inputFBOConfig,fboManager);
+  requiresFBO(outputFBOConfig,fboManager);
+  addDesiredStateChange(new BindFBO(outputFBOConfig.getName(),fboManager));
+  addDesiredStateChange(new SetViewportToSizeOf(outputFBOConfig.getName(),fboManager));
+  update();
+  fboManager.subscribe(this);
+  setupConditions();
+  addDesiredStateChange(new EnableMaterial("engine:prog.blur"));
+  this.blurMaterial=getMaterial(new ResourceUrn("engine:prog.blur"));
+  this.blurRadius=aRadius;
+  this.performanceMonitorLabel=aLabel;
+}
