@@ -2,6 +2,9 @@
   if (event.isDown()) {
     runPerDefault=!runPerDefault;
     run=!run;
+    ClientComponent clientComp=entity.getComponent(ClientComponent.class);
+    CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
+    logger.info(move.mode.toString());
   }
   event.consume();
 }
