@@ -1,15 +1,33 @@
 {
   ClientComponent clientComp=entity.getComponent(ClientComponent.class);
   GazeMountPointComponent gazeMountPointComponent=clientComp.character.getComponent(GazeMountPointComponent.class);
+  CharacterMovementComponent charMoveComp=clientComp.character.getComponent(CharacterMovementComponent.class);
   float height=clientComp.character.getComponent(CharacterMovementComponent.class).height;
   float eyeHeight=gazeMountPointComponent.translate.getY();
   if (event.isDown()) {
-    movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height * 0.5f);
-    movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight * 0.5f);
+    if (charMoveComp.mode == MovementMode.WALKING) {
+      movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height * 0.5f);
+      movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight * 0.5f);
+      charMoveComp.mode=MovementMode.CROUCHING;
+      logger.info(charMoveComp.mode.toString());
+    }
   }
  else {
+    Vector3f pos=entity.getComponent(LocationComponent.class).getWorldPosition();
+    float head_while_crouching=pos.y + height / 2 + 0.1f;
+    float head_while_standing=pos.y + 3 * height / 2 + 0.1f;
+    CharacterCollider collider=physics.getCharacterCollider(clientComp.character);
+    Vector3f to=new Vector3f(pos.x,pos.y + height + VERTICAL_PENETRATION_LEEWAY,pos.z);
+    SweepCallback callback=collider.sweep(pos,to,VERTICAL_PENETRATION_LEEWAY,-1f);
+    if (callback.hasHit()) {
+      logger.info("Cannot stand up here!" + charMoveComp.mode.toString());
+      event.consume();
+      return;
+    }
     movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height / 0.5f);
     movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight / 0.5f);
+    charMoveComp.mode=MovementMode.WALKING;
+    logger.info(charMoveComp.mode.toString());
   }
   event.consume();
 }
