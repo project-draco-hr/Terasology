@@ -1,0 +1,10 @@
+{
+  ClientComponent clientComp=entity.getComponent(ClientComponent.class);
+  GazeMountPointComponent gazeMountPointComponent=clientComp.character.getComponent(GazeMountPointComponent.class);
+  CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
+  float height=clientComp.character.getComponent(CharacterMovementComponent.class).height;
+  float eyeHeight=gazeMountPointComponent.translate.getY();
+  movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height * 0.5f);
+  movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight * 0.5f);
+  clientComp.character.send(new SetMovementModeEvent(MovementMode.CROUCHING));
+}
