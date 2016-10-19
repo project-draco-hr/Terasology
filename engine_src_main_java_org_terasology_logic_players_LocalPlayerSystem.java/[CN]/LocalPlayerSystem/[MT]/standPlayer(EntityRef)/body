@@ -10,6 +10,7 @@
   SweepCallback callback=collider.sweep(pos,to,VERTICAL_PENETRATION_LEEWAY,-1f);
   if (callback.hasHit()) {
     logger.info("Cannot stand up here!" + move.mode.toString());
+    entity.send(new NotificationMessageEvent("Cannot stand here!",entity));
     return;
   }
   movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height / 0.5f);
