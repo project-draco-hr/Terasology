@@ -1,15 +1,13 @@
 {
   ClientComponent clientComp=entity.getComponent(ClientComponent.class);
   GazeMountPointComponent gazeMountPointComponent=clientComp.character.getComponent(GazeMountPointComponent.class);
-  CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
   float height=clientComp.character.getComponent(CharacterMovementComponent.class).height;
   float eyeHeight=gazeMountPointComponent.translate.getY();
   Vector3f pos=entity.getComponent(LocationComponent.class).getWorldPosition();
   CharacterCollider collider=physics.getCharacterCollider(clientComp.character);
-  Vector3f to=new Vector3f(pos.x,pos.y + height + VERTICAL_PENETRATION_LEEWAY,pos.z);
+  Vector3f to=new Vector3f(pos.x,pos.y + height,pos.z);
   SweepCallback callback=collider.sweep(pos,to,VERTICAL_PENETRATION_LEEWAY,-1f);
   if (callback.hasHit()) {
-    logger.info("Cannot stand up here!" + move.mode.toString());
     entity.send(new NotificationMessageEvent("Cannot stand here!",entity));
     return;
   }
