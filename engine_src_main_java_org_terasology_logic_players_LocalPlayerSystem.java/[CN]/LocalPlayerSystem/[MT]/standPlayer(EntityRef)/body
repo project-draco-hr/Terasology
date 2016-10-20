@@ -5,13 +5,13 @@
   float eyeHeight=gazeMountPointComponent.translate.getY();
   Vector3f pos=entity.getComponent(LocationComponent.class).getWorldPosition();
   CharacterCollider collider=physics.getCharacterCollider(clientComp.character);
-  Vector3f to=new Vector3f(pos.x,pos.y + height,pos.z);
+  Vector3f to=new Vector3f(pos.x,pos.y + (1 - crouchFraction) * height / crouchFraction,pos.z);
   SweepCallback callback=collider.sweep(pos,to,VERTICAL_PENETRATION_LEEWAY,-1f);
   if (callback.hasHit()) {
-    entity.send(new NotificationMessageEvent("Cannot stand here!",entity));
+    entity.send(new NotificationMessageEvent("Cannot stand up here!",entity));
     return;
   }
-  movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height / 0.5f);
-  movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight / 0.5f);
+  movementDebugCommands.playerHeight(localPlayer.getClientEntity(),height / crouchFraction);
+  movementDebugCommands.playerEyeHeight(localPlayer.getClientEntity(),eyeHeight / crouchFraction);
   clientComp.character.send(new SetMovementModeEvent(MovementMode.WALKING));
 }
