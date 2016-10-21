@@ -1,0 +1,13 @@
+{
+  ClientComponent clientComp=entity.getComponent(ClientComponent.class);
+  CharacterMovementComponent move=clientComp.character.getComponent(CharacterMovementComponent.class);
+  if (event.isDown()) {
+    if (move.mode == MovementMode.WALKING) {
+      crouchPlayer(entity);
+    }
+ else     if (move.mode == MovementMode.CROUCHING) {
+      standPlayer(entity);
+    }
+  }
+  event.consume();
+}
