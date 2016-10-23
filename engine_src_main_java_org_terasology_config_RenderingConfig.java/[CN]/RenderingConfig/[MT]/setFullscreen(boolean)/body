@@ -1,16 +1,11 @@
 {
-  DisplayModeSetting oldValue=this.displayModeSetting;
-  this.fullscreen=fullscreen;
+  DisplayModeSetting oldValue=displayModeSetting;
   if (fullscreen) {
-    this.displayModeSetting=DisplayModeSetting.FULLSCREEN;
+    displayModeSetting=DisplayModeSetting.FULLSCREEN;
   }
  else {
-    if (windowedFullscreen) {
-      this.displayModeSetting=DisplayModeSetting.WINDOWED_FULLSCREEN;
-    }
- else {
-      this.displayModeSetting=DisplayModeSetting.WINDOWED;
-    }
+    displayModeSetting=DisplayModeSetting.WINDOWED;
   }
-  propertyChangeSupport.firePropertyChange(DISPLAY_MODE_SETTING,oldValue,this.displayModeSetting);
+  displayModeSetting.setCurrent(true);
+  propertyChangeSupport.firePropertyChange(DISPLAY_MODE_SETTING,oldValue,displayModeSetting);
 }
